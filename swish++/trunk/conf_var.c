@@ -117,42 +117,47 @@ int conf_var::current_config_file_line_no_ = 0;
 {
 	static map_type m;
 	if ( m.empty() ) {
+		static char const *const var_name_table[] = {
 #ifdef	MOD_HTML
-		m[ "excludeclass"	] = 0;
+			"excludeclass",
 #endif
-		m[ "excludefile"	] = 0;
-		m[ "excludemeta"	] = 0;
-		m[ "extractextension"	] = 0;
-		m[ "extractfile"	] = 0;
-		m[ "extractfilter"	] = 0;
-		m[ "filesgrow"		] = 0;
-		m[ "filesreserve"	] = 0;
-		m[ "filterfile"		] = 0;
-		m[ "followlinks"	] = 0;
-		m[ "includefile"	] = 0;
-		m[ "includemeta"	] = 0;
-		m[ "incremental"	] = 0;
-		m[ "indexfile"		] = 0;
-		m[ "recursesubdirs"	] = 0;
-		m[ "resultsmax"		] = 0;
-		m[ "stemwords"		] = 0;
-		m[ "stopwordfile"	] = 0;
-		m[ "tempdirectory"	] = 0;
-		m[ "titlelines"		] = 0;
-		m[ "verbosity"		] = 0;
-		m[ "wordfilesmax"	] = 0;
-		m[ "wordpercentmax"	] = 0;
+			"excludefile",
+			"excludemeta",
+			"extractextension",
+			"extractfile",
+			"extractfilter",
+			"filesgrow",
+			"filesreserve",
+			"filterfile",
+			"followlinks",
+			"includefile",
+			"includemeta",
+			"incremental",
+			"indexfile",
+			"recursesubdirs",
+			"resultsmax",
+			"stemwords",
+			"stopwordfile",
+			"tempdirectory",
+			"titlelines",
+			"verbosity",
+			"wordfilesmax",
+			"wordpercentmax",
 #ifdef	SEARCH_DAEMON
-		m[ "pidfile"		] = 0;
-		m[ "searchdaemon"	] = 0;
-		m[ "socketaddress"	] = 0;
-		m[ "socketfile"		] = 0;
-		m[ "socketqueuesize"	] = 0;
-		m[ "sockettimeout"	] = 0;
-		m[ "threadsmax"		] = 0;
-		m[ "threadsmin"		] = 0;
-		m[ "threadtimeout"	] = 0;
+			"pidfile",
+			"searchdaemon",
+			"socketaddress",
+			"socketfile",
+			"socketqueuesize",
+			"sockettimeout",
+			"threadsmax",
+			"threadsmin",
+			"threadtimeout",
 #endif
+			0,
+		};
+		for ( register char const *const *v = var_name_table; *v; ++v )
+			m[ *v ] = 0;
 	}
 	return m;
 }
