@@ -133,6 +133,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"incremental",
 			"indexfile",
 			"recursesubdirs",
+			"resultsformat",
 			"resultseparator",
 			"resultsmax",
 			"stemwords",
