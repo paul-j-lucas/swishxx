@@ -268,22 +268,27 @@ inline bool	is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
+#ifdef abs
+#undef abs
+#endif
+inline int		abs( int n ) { return n >= 0 ? n : -n; }
+
 inline std::ostream&	error( std::ostream &o = std::cerr ) {
 				return o << me << ": error: ";
 			}
 inline std::ostream&	error_string( std::ostream &o = std::cerr ) {
 				return o << ": " << std::strerror( errno )
-					<< std::endl;
+					 << std::endl;
 			}
 
 #define	internal_error	std::cerr << (me ? me : "SWISH++") << ", \"" \
 			<< __FILE__ << "\", line " << __LINE__ \
-			<< ": internal error:\n"
+			<< ": internal error: "
 
 #define	NUM_ELEMENTS(a)	(sizeof (a) / sizeof( (a)[0] ))
 
 inline std::ostream&	report_error( std::ostream &o = std::cerr ) {
-				o << "please report this error\n";
+				o << "; please report this error" << std::endl;
 				::_exit( Exit_Internal_Error );
 				return o;	// just to make compiler happy
 			}
@@ -326,7 +331,11 @@ extern char*	to_lower_r( char const *begin, char const *end );
 #define	FOR_EACH(T,C,I) \
 	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
 
+#define	FOR_EACH_IN_PAIR(T,P,I) \
+	for ( T::const_iterator I = (P).first; I != (P).second; ++I )
+
 #define	TRANSFORM_EACH(T,C,I) \
 	for ( T::iterator I = (C).begin(); I != (C).end(); ++I )
 
 #endif	/* util_H */
+/* vim:set noet sw=8 ts=8: */
