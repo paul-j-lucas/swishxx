@@ -199,7 +199,9 @@
 	new file_info(
 		file_name, file.size(), is_html_pattern ? grep_title( file ) : 0
 	);
-	index_words( file.begin(), file.end(), is_html_pattern );
+	index_words( file.begin(), file.end(),
+		is_html_pattern, No_Meta_ID, true
+	);
 
 	if ( verbosity > 2 )
 		cout	<< " (" << file_info::current_file().num_words_
