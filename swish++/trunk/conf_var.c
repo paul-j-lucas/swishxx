@@ -147,6 +147,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"wordfilesmax",
 			"wordpercentmax",
 #ifdef	SEARCH_DAEMON
+			"group",
 			"pidfile",
 			"searchdaemon",
 			"socketaddress",
@@ -156,6 +157,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"threadsmax",
 			"threadsmin",
 			"threadtimeout",
+			"user",
 #endif
 			0,
 		};
