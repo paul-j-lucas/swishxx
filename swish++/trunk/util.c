@@ -22,12 +22,10 @@
 // standard
 #include <cctype>
 #include <cstring>
-#include <sys/resource.h>
 
 // local
 #include "config.h"
 #include "conf_var.h"
-#include "exit_codes.h"
 #include "fake_ansi.h"
 #include "file_vector.h"
 #include "util.h"
@@ -74,33 +72,6 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
-	void max_out_limit( int resource )
-//
-// DESCRIPTION
-//
-//	Set the limit for the given resource to its maximum value.
-//
-// PARAMETERS
-//
-//	resource	The ID for the resource as given in sys/resources.h.
-//
-// SEE ALSO
-//
-//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
-//	Addison-Wesley, Reading, MA, 1993. pp. 180-184.
-//
-//*****************************************************************************
-{
-	struct rlimit r;
-	::getrlimit( resource, &r );
-	r.rlim_cur = r.rlim_max;
-	::setrlimit( resource, &r );
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	char *to_lower( register char const *s )
 //
 // DESCRIPTION
@@ -128,6 +99,38 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 
 	return buf.current();
 }
+
+#ifdef	SEARCH_DAEMON
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	char *to_lower_r( register char const *s )
+//
+// DESCRIPTION
+//
+//	Return a pointer to a string converted to lower case; the original
+//	string is untouched.  The string returned is dynamically allocated so
+//	the caller is responsible for deleting it.
+//
+// PARAMETERS
+//
+//	s	The string to be converted.
+//
+// RETURN VALUE
+//
+//	A pointer to the lower-case string.
+//
+//*****************************************************************************
+{
+	char *const buf = new char[ ::strlen( s ) + 1 ];
+	register char *p = buf;
+
+	while ( *p++ = to_lower( *s++ ) ) ;
+
+	return buf;
+}
+#endif
 
 //*****************************************************************************
 //
