@@ -38,6 +38,7 @@ extern dir_list_type dir_list;
 //
 //	This contains the list of all directories in the order encountered.
 
-void	do_directory( char const *path );
+void	check_add_directory( char const *dir_path );
+void	do_directory( char const *dir_path );
 
 #endif	/* directory_H */
