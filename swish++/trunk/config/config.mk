@@ -137,6 +137,10 @@ STRIP:=		strip
 CC:=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
+#DEBUG:=		true
+ifdef DEBUG
+OPTIM:=		-g
+else
 OPTIM:=		-O2
 #		The optimization level.  Many compilers allow a digit after the
 #		O to specify the level of optimization; if so, set yours to the
@@ -151,13 +155,18 @@ OPTIM:=		-O2
 #		works just fine with it off, then there is a bug in your
 #		compiler's optimizer.
 
+ifeq ($(findstring g++,$(CC)),g++)
+OPTIM+=		-fomit-frame-pointer
+endif
+endif # DEBUG
+
 CCFLAGS:=	-I. $(MOD_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
 
 ifeq ($(findstring g++,$(CC)),g++)
-CCFLAGS+=	-fno-exceptions
-#		Since SWISH++ doesn't use exceptions, turn off code generation
-#		for them to save space in the executables.
+CCFLAGS+=	-fno-exceptions -fno-rtti
+#		Since SWISH++ doesn't use exceptions or RTTI, turn off code
+#		generation for them to save space in the executables.
 endif
 
 ifeq ($(findstring g++,$(CC)),g++)
