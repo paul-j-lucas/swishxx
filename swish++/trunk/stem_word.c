@@ -375,31 +375,26 @@ int	word_size( char const *word );
 	cerr << "\n---> stem_word( \"" << word << "\" )" << endl;
 #	endif
 
-	static char_buffer_pool<Word_Hard_Max_Size,5> buf;
-	char *const new_word = buf.next();
-	::strcpy( new_word, word );
-	end = new_word + len;
+	char word_buf[ Word_Hard_Max_Size ];
+	::strcpy( word_buf, word );
+	end = word_buf + len;
 
-	replace_suffix( new_word, rules_1a );
-	int const rule = replace_suffix( new_word, rules_1b );
+	replace_suffix( word_buf, rules_1a );
+	int const rule = replace_suffix( word_buf, rules_1b );
 	if ( rule == 106 || rule == 107 )
-		replace_suffix( new_word, rules_1b1 );
-	replace_suffix( new_word, rules_1c );
-	replace_suffix( new_word, rules_2 );
-	replace_suffix( new_word, rules_3 );
-	replace_suffix( new_word, rules_4 );
-	replace_suffix( new_word, rules_5a );
-	replace_suffix( new_word, rules_5b );
+		replace_suffix( word_buf, rules_1b1 );
+	replace_suffix( word_buf, rules_1c );
+	replace_suffix( word_buf, rules_2  );
+	replace_suffix( word_buf, rules_3  );
+	replace_suffix( word_buf, rules_4  );
+	replace_suffix( word_buf, rules_5a );
+	replace_suffix( word_buf, rules_5b );
 
 #	ifdef DEBUG_stem_word
-	cerr << "\n---> stemmed word=" << new_word << endl;
+	cerr << "\n---> stemmed word=" << word_buf << endl;
 #	endif
 
-	cache.insert(				// remember word and its stem
-		stem_cache::value_type( ::strdup( word ), ::strdup( new_word ) )
-	);
-
-	return new_word;
+	return cache[ ::strdup( word ) ] = ::strdup( word_buf );
 }
 
 //*****************************************************************************
