@@ -47,6 +47,8 @@ public:
 	CONF_SET_ASSIGN_OPS( ExcludeClass )
 };
 
+extern ExcludeClass exclude_class_names;
+
 #endif	/* ExcludeClass_H */
 
 #endif	/* MOD_HTML */
