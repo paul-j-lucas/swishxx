@@ -70,6 +70,10 @@ cat > $TARGET <<!
 #ifndef platform_H
 #define platform_H
 
+#if	defined(__GNUC__) && __GNUC__ <= 2 && __GNUC_MINOR__ <= 95
+#define	PJL_GCC_295
+#endif
+
 #ifdef	WIN32
 #define	PJL_NO_SYMBOLIC_LINKS
 #endif
