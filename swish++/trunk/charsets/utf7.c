@@ -30,25 +30,22 @@
 #include "platform.h"
 #include "unicode.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
+
 namespace {
-#endif
 
-class utf7_decoder : public encoded_char_range::decoder {
-public:
-    int buf_count_;
-    pointer prev_c_;
-private:
-    virtual void reset() {
-        buf_count_ = 0;
-        prev_c_ = 0;
-    }
-};
+    class utf7_decoder : public encoded_char_range::decoder {
+    public:
+        int buf_count_;
+        pointer prev_c_;
+    private:
+        virtual void reset() {
+            buf_count_ = 0;
+            prev_c_ = 0;
+        }
+    };
 
-#ifndef PJL_NO_NAMESPACES
-}
-#endif
+} // namespace
 
 //*****************************************************************************
 //

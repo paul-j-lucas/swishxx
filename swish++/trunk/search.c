@@ -84,10 +84,8 @@
 #include "User.h"
 #endif  /* SEARCH_DAEMON */
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 typedef pair< int, int > search_result;
 //

@@ -27,9 +27,7 @@
 #include "platform.h"
 #include "util.h"                               /* for new_strdup() */
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 //*****************************************************************************
 //

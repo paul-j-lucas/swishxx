@@ -26,9 +26,7 @@
 #include "conf_set.h"
 #include "platform.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 //*****************************************************************************
 //

@@ -28,9 +28,7 @@
 #include "util.h"
 #include "WordThreshold.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 //*****************************************************************************
 //

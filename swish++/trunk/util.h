@@ -52,7 +52,6 @@ int const		PATH_MAX = 1024;
 
 // local
 #include "exit_codes.h"
-#include "fake_ansi.h"			/* for std */
 #include "omanip.h"
 #include "platform.h"			/* for PJL_NO_SYMBOLIC_LINKS */
 

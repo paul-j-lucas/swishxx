@@ -36,10 +36,8 @@
 #include "util.h"
 #include "word_util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 static bool is_man_comment( char const *&pos, char const *end );
 static void parse_backslash( char const *&pos, char const *end );

@@ -32,9 +32,7 @@
 #include "platform.h"
 #include "SocketAddress.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 //*****************************************************************************
 //

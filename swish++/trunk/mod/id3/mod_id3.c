@@ -28,10 +28,8 @@
 #include "id3v2.h"
 #include "mod_id3.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 //*****************************************************************************
 //

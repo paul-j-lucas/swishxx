@@ -29,7 +29,6 @@
 #include "charsets/charsets.h"
 #include "encoded_char.h"
 #include "encodings/encodings.h"
-#include "fake_ansi.h"                          /* for std */
 #include "filter.h"
 #include "indexer.h"
 

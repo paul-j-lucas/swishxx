@@ -29,7 +29,6 @@
 #include <utility>			/* for pair<> */
 
 // local
-#include "fake_ansi.h"			/* for std */
 #include "index_segment.h"
 #include "token.h"
 #include "WordFilesMax.h"

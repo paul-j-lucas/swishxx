@@ -26,7 +26,6 @@
 
 // local
 #include "encoded_char.h"
-#include "fake_ansi.h"                          /* for std */
 #include "indexer.h"
 
 //*****************************************************************************

@@ -46,9 +46,7 @@
 #include "less.h"
 #include "util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 //
 // What the ID3v2 specification calls an "encoding" we call a "character set."

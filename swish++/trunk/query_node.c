@@ -30,9 +30,7 @@
 #include "WordsNear.h"
 #include "util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 empty_node empty_node::singleton_;
 

@@ -29,7 +29,6 @@
 // local
 #include "config.h"
 #include "encoded_char.h"
-#include "fake_ansi.h"			/* for std */
 #include "util.h"
 
 //*****************************************************************************

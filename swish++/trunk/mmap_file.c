@@ -35,10 +35,8 @@
 #include "mmap_file.h"
 #include "platform.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 #ifdef	RLIMIT_VMEM			/* SVR4 */
 //*****************************************************************************

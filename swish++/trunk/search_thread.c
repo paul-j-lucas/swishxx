@@ -61,10 +61,8 @@
 #include "search_thread.h"
 #include "util.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 unsigned search_thread::socket_timeout;
 

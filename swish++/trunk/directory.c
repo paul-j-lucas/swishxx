@@ -33,17 +33,14 @@
 
 // local
 #include "directory.h"
-#include "fake_ansi.h"			/* for std */
 #include "my_set.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
 #include "util.h"
 #include "Verbosity.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 extern void		do_file( char const *file_name, int dir_index );
 

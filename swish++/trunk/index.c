@@ -79,10 +79,8 @@
 #include "WordThreshold.h"
 #include "word_util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 static long const   Rank_Factor = 10000000;
 //                  A scaling factor used in rank calculation.  Empirically,
@@ -547,31 +545,14 @@ static void             write_word_index( ostream&, off_t* );
 
     if ( verbosity ) {
         time = ::time( 0 ) - time;              // Stop!
-        cout    << '\n' << me << ": done:\n  "
-#ifdef  PJL_GCC_295 /* see the comment in platform.h */
-        ;
-        cout.fill('0');
-        cout.width( 2 );
-        cout
-#else
-            << setfill('0')
-            << setw(2)
-#endif
-            << (time / 60) << ':'
-#ifdef  PJL_GCC_295 /* see the comment in platform.h */
-        ;
-        cout.width( 2 );
-        cout
-#else
-            << setw(2)
-#endif
-            << (time % 60)
-            << " (min:sec) elapsed time\n  "
-            << num_examined_files << " files, "
-            << file_info::num_files() << " indexed\n  "
-            << num_total_words << " words, "
-            << num_indexed_words << " indexed, "
-            << num_unique_words << " unique\n\n";
+        cout << '\n' << me << ": done:\n  "
+             << setfill('0') << setw(2) << (time / 60) << ':'
+             << setw(2) << (time % 60) << " (min:sec) elapsed time\n  "
+             << num_examined_files << " files, "
+             << file_info::num_files() << " indexed\n  "
+             << num_total_words << " words, "
+             << num_indexed_words << " indexed, "
+             << num_unique_words << " unique\n\n";
     }
 
     ::exit( Exit_Success );
@@ -765,13 +746,8 @@ static void             write_word_index( ostream&, off_t* );
     FOR_EACH( vector<string>, partial_index_file_names, file_name ) {
         index[ i ].open( file_name->c_str() );
         if ( !index[ i ] ) {
-            error() << "can not reopen temp. file \""
-#ifdef  PJL_GCC_295 /* see the comment in platform.h */
-                    << file_name->c_str()
-#else
-                    << *file_name
-#endif
-                    << '"' << error_string( index[i].error() );
+            error() << "can not reopen temp. file \"" << *file_name << '"'
+                    << error_string( index[i].error() );
             ::exit( Exit_No_Open_Temp );
         }
         words[ i ].set_index_file( index[ i ], index_segment::isi_word );
@@ -1214,13 +1190,7 @@ static void             write_word_index( ostream&, off_t* );
         temp_file_name_prefix + itoa( num_temp_files++ );
     ofstream o( temp_file_name.c_str(), ios::out | ios::binary );
     if ( !o ) {
-        error() << "can not write temp. file \""
-#ifdef  PJL_GCC_295 /* see the comment in platform.h */
-                << temp_file_name.c_str()
-#else
-                << temp_file_name
-#endif
-                << "\"\n";
+        error() << "can not write temp. file \"" << temp_file_name << "\"\n";
         ::exit( Exit_No_Write_Temp );
     }
     partial_index_file_names.push_back( temp_file_name );
@@ -1297,11 +1267,7 @@ static void             write_word_index( ostream&, off_t* );
     register int word_index = 0;
     FOR_EACH( word_map, words, w ) {
         offset[ word_index++ ] = o.tellp();
-#ifdef  PJL_GCC_295 /* see the comment in platform.h */
-        o << w->first.c_str() << '\0';
-#else
         o << w->first << '\0';
-#endif
         bool continues = false;
         word_info const &info = w->second;
         FOR_EACH( word_info::file_list, info.files_, file ) {

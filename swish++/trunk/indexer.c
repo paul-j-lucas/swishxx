@@ -38,10 +38,8 @@
 #include "word_info.h"
 #include "word_util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 extern unsigned long    num_indexed_words;
 extern unsigned long    num_total_words;

@@ -25,21 +25,15 @@
 // standard
 #include <iostream>
 
-// local
-#include "fake_ansi.h"                          /* for std */
-
 #if 0
 extern char const* dtoa( double );
 
+// local
 #include "itoa.h"
 #include "util.h"
 #endif
 
-#ifndef PJL_NO_NAMESPACES
 namespace PJL {
-#else
-#define PJL /* nothing */
-#endif
 
 //*****************************************************************************
 //
@@ -172,9 +166,7 @@ private:
     bool            end_;               // reached end of options?
 };
 
-#ifndef PJL_NO_NAMESPACES
-}
-#endif
+} // namespace PJL
 
 #endif  /* option_stream_H */
 /* vim:set et sw=4 ts=4: */

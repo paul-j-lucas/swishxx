@@ -25,14 +25,7 @@
 // standard
 #include <vector>
 
-// local
-#include "fake_ansi.h"			/* for std */
-
-#ifndef	PJL_NO_NAMESPACES
 namespace PJL {
-#else
-#define	PJL /* nothing */
-#endif
 
 template< class T > class simple_pool_object;
 
@@ -99,9 +92,7 @@ private:
 	pool_type *const pool_;
 };
 
-#ifndef	PJL_NO_NAMESPACES
-}
-#endif
+} // namespace PJL
 
 #endif	/* simple_pool_H */
 /* vim:set noet sw=8 ts=8: */

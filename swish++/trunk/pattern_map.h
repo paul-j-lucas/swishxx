@@ -38,7 +38,6 @@
 //
 #include "fnmatch.h"
 #endif
-#include "fake_ansi.h"			/* for std */
 #include "less.h"
 
 //*****************************************************************************

@@ -26,9 +26,7 @@
 #include "platform.h"
 #include "util.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 char_buffer_pool<128,5>	lower_buf;
 struct stat		stat_buf;	// someplace to do a stat(2) in

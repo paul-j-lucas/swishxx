@@ -27,7 +27,6 @@
 #include <vector>
 
 // local
-#include "fake_ansi.h"			/* for std */
 #include "my_set.h"
 
 //*****************************************************************************

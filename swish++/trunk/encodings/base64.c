@@ -29,23 +29,20 @@
 #include "platform.h"
 #include "util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
+
 namespace {
-#endif
 
-class base64_decoder : public encoded_char_range::decoder {
-public:
-    pointer prev_c_;
-private:
-    virtual void reset() {
-        prev_c_ = 0;
-    }
-};
+    class base64_decoder : public encoded_char_range::decoder {
+    public:
+        pointer prev_c_;
+    private:
+        virtual void reset() {
+            prev_c_ = 0;
+        }
+    };
 
-#ifndef PJL_NO_NAMESPACES
-}
-#endif
+} // namespace
 
 //*****************************************************************************
 //

@@ -59,10 +59,8 @@
 #include "User.h"
 #include "util.h"			/* for max_out_limit() */
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 //
 // Turn a socket file descriptor into a server socket.  See also: W. Richard

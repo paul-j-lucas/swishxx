@@ -42,10 +42,8 @@
 #include "util.h"
 #include "word_util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 //
 // The element_stack keeps track of all the HTML or XHTML elements we encounter

@@ -22,13 +22,11 @@
 #ifndef token_H
 #define token_H
 
-// local
-#include "config.h"
-#include "fake_ansi.h"                          /* for explicit, std */
-#include "platform.h"
-
 // standard
 #include <sstream>
+
+// local
+#include "config.h"
 
 class token_stream;
 
@@ -67,16 +65,16 @@ public:
         tt_word
     };
 
-    token() : type_( tt_none )          { }
-    explicit token( token_stream &in )  { in >> *this; }
+    token() : type_( tt_none )                  { }
+    explicit token( token_stream &in )          { in >> *this; }
 
     // default copy constructor is fine
     // default assignment operator is fine
 
-    operator    type() const            { return type_; }
-    int         length() const          { return len_; }
-    char const* str() const             { return buf_; }
-    char const* lower_str() const       { return lower_buf_; }
+    operator    type() const                    { return type_; }
+    int         length() const                  { return len_; }
+    char const* str() const                     { return buf_; }
+    char const* lower_str() const               { return lower_buf_; }
 
     friend token_stream& operator>>( token_stream&, token& );
 private:

@@ -25,9 +25,7 @@
 #include "word_markers.h"
 #include "util.h"				/* for FOR_EACH */
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 word_info::file::file() {
 	// do nothing

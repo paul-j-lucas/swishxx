@@ -27,9 +27,7 @@
 #include "platform.h"
 #include "TempDirectory.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 //*****************************************************************************
 //

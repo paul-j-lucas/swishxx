@@ -29,9 +29,7 @@
 #include "platform.h"
 #include "util.h"			/* for error() */
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 extern char const*	me;
 

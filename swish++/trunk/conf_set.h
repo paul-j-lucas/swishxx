@@ -24,7 +24,6 @@
 
 // local
 #include "conf_var.h"
-#include "fake_ansi.h"			/* for std */
 #include "my_set.h"
 
 //*****************************************************************************

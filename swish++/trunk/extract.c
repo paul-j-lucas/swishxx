@@ -52,10 +52,8 @@
 #include "version.h"
 #include "word_util.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 ExcludeFile		exclude_patterns;	// do not extract these
 ExtractFile		include_patterns;	// do extract these

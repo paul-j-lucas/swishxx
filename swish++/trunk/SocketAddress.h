@@ -31,7 +31,6 @@
 // local
 #include "config.h"
 #include "conf_string.h"
-#include "fake_ansi.h"                          /* for std */
 
 //*****************************************************************************
 //

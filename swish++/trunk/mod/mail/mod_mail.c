@@ -51,10 +51,8 @@
 #include "Verbosity.h"
 #include "word_util.h"
 
-#ifndef PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
-#endif
 
 //
 // The boundary stack keeps track of all the boundary strings for MIME messages

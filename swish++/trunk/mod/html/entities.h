@@ -28,7 +28,6 @@
 #include <map>
 
 // local
-#include "fake_ansi.h"			/* for std */
 #include "less.h"
 
 //*****************************************************************************

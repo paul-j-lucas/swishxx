@@ -27,7 +27,6 @@
 #include <set>
 
 // local
-#include "fake_ansi.h"			/* for iterator, std */
 #include "iso8859-1.h"
 #include "util.h"			/* for to_lower() */
 

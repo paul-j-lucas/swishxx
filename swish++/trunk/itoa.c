@@ -24,10 +24,9 @@
 #include "platform.h"
 #include "util.h"			/* for char_buffer_pool<> */
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
+
 namespace PJL {
-#endif
 
 //*****************************************************************************
 //
@@ -81,7 +80,5 @@ namespace PJL {
 	return buf.current();
 }
 
-#ifndef	PJL_NO_NAMESPACES
-}
-#endif
+} // namespace PJL
 /* vim:set noet sw=8 ts=8: */

@@ -28,7 +28,6 @@
 #include <sys/types.h>                          /* for off_t */
 
 // local
-#include "fake_ansi.h"                          /* for iterator, std */
 #include "mmap_file.h"
 
 //*****************************************************************************

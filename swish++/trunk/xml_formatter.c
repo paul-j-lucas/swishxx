@@ -30,9 +30,7 @@
 #include "util.h"
 #include "xml_formatter.h"
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 #define	SWISH_PATH	"/pauljlucas/software/swish"
 #define	SWISH_NS_URI	"http://www.pauljlucas.org" SWISH_PATH
@@ -113,15 +111,8 @@ extern index_segment directories;
 
 	if ( !stop_words.empty() ) {
 		out_ << "  <IgnoredList>\n";
-		FOR_EACH( stop_word_set, stop_words, word ) {
-			out_ <<	"    <Ignored>"
-#ifdef	PJL_GCC_295 /* see the comment in platform.h */
-			     <<	word->c_str()
-#else
-			     <<	*word
-#endif
-			     <<	"</Ignored>\n";
-		}
+		FOR_EACH( stop_word_set, stop_words, word )
+			out_ <<	"    <Ignored>" << *word << "</Ignored>\n";
 		out_ << "  </IgnoredList>\n";
 	}
 

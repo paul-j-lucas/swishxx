@@ -50,11 +50,7 @@ extern index_segment directories;
 	if ( !stop_words.empty() ) {
 		out_ << "# ignored:";
 		FOR_EACH( stop_word_set, stop_words, word )
-#ifdef	PJL_GCC_295 /* see the comment in platform.h */
-			out_ << ' ' << word->c_str();
-#else
 			out_ << ' ' << *word;
-#endif
 		out_ << '\n';
 	}
 	out_ << "# results: " << results_ << '\n';

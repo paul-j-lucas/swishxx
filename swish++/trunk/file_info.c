@@ -31,9 +31,7 @@
 #include "platform.h"
 #include "util.h"			/* for new_strdup() */
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 file_info::list_type		file_info::list_;
 file_info::name_set_type	file_info::name_set_;

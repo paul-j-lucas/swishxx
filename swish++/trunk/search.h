@@ -26,7 +26,6 @@
 #include <iostream>
 
 // local
-#include "fake_ansi.h"			/* for std */
 #include "option_stream.h"
 
 //*****************************************************************************

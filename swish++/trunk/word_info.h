@@ -32,7 +32,6 @@
 #endif
 
 // local
-#include "fake_ansi.h"                          /* for explicit, std */
 #include "indexer.h"                            /* for Meta_ID_None */
 #include "my_set.h"
 

@@ -35,10 +35,9 @@
 
 extern char const	*me;
 
-#ifndef	PJL_NO_NAMESPACES
 using namespace std;
+
 namespace PJL {
-#endif
 
 pthread_key_t		thread_pool::thread::thread_obj_key_;
 
@@ -617,8 +616,6 @@ pthread_key_t		thread_pool::thread::thread_obj_key_;
 	return queue_task;
 }
 
-#ifndef	PJL_NO_NAMESPACES
-}
-#endif
+} // namespace PJL
 
 #endif	/* MULTI_THREADED */

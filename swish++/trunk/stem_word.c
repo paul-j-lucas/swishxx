@@ -38,9 +38,7 @@
 #include "word_util.h"
 #include "util.h"                               /* for new_strdup() */
 
-#ifndef PJL_NO_NAMESPACES
 using namespace std;
-#endif
 
 struct rule_list {
     int         id;
