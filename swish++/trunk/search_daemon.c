@@ -100,34 +100,11 @@ using namespace std;
 }
 
 void	detach_from_terminal();
+void	handle_accept( int fd );
 int	open_tcp_socket();
 int	open_unix_socket();
+void	reset_socket( int fd );
 void	set_signal_handlers();
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void accept_failed()
-//
-// DESCRIPTION
-//
-//	A call to accept(2) failed.  If errno is among the expected and
-//	recoverable reasons for failure, simply return; otherwise die.
-//
-//*****************************************************************************
-{
-	switch ( errno ) {
-		case ECONNABORTED:	// POSIX.1g
-		case EINTR:
-#ifdef	EPROTO
-		case EPROTO:		// SVR4
-#endif
-			return;
-	}
-	cerr << error << "accept() failed" << error_string;
-	::exit( Exit_No_Accept );
-}
 
 //*****************************************************************************
 //
@@ -243,9 +220,6 @@ void	set_signal_handlers();
 	////////// Accept requests ////////////////////////////////////////////
 
 	search_thread::socket_timeout = socket_timeout;
-	thread_pool threads = thread_pool( new search_thread( threads ),
-		min_threads, max_threads, thread_timeout
-	);
 	while ( true ) {
 #		ifdef DEBUG_threads
 		cerr << "waiting for request\n";
@@ -274,35 +248,20 @@ void	set_signal_handlers();
 		//
 		// Handle one or both requests.
 		//
+		int accept_fd;
 		if ( is_tcp && FD_ISSET( tcp_fd, &rset ) ) {
 			struct sockaddr_in addr;
 			PJL_SOCKLEN_TYPE len = sizeof addr;
-			int const accept_fd = ::accept(
+			handle_accept( ::accept(
 				tcp_fd, (struct sockaddr*)&addr, &len
-			);
-			if ( accept_fd == -1 )
-				accept_failed();
-			else {
-#				ifdef DEBUG_threads
-				cerr << "dispatching request\n";
-#				endif
-				threads.new_task( accept_fd );
-			}
+			) );
 		}
 		if ( is_unix && FD_ISSET( unix_fd, &rset ) ) {
 			struct sockaddr_un addr;
 			PJL_SOCKLEN_TYPE len = sizeof addr;
-			int const accept_fd = ::accept(
+			handle_accept( ::accept(
 				unix_fd, (struct sockaddr*)&addr, &len
-			);
-			if ( accept_fd == -1 )
-				accept_failed();
-			else {
-#				ifdef DEBUG_threads
-				cerr << "dispatching request\n";
-#				endif
-				threads.new_task( accept_fd );
-			}
+			) );
 		}
 	}
 }
@@ -340,6 +299,51 @@ void	set_signal_handlers();
 	}
 	if ( child_pid > 0 )			// parent process ...
 		::exit( Exit_Success );		// ... just exit as described
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void handle_accept( int fd )
+//
+// DESCRIPTION
+//
+//	Handle a recently accepted socket file descriptor.  If the accept(2)
+//	went OK, try to queue the request.  If that doesn't work (because all
+//	the request threads are busy and the number of threads in the thread
+//	pool has been maxed out, reset the TCP connection effectively telling
+//	the client to "go away and try again later."
+//
+// PARAMETERS
+//
+//	fd	The file descriptor for the accepted socket.
+//
+//*****************************************************************************
+{
+	if ( fd == -1 ) {
+		switch ( errno ) {
+			case ECONNABORTED:	// POSIX.1g
+			case EINTR:
+#ifdef	EPROTO
+			case EPROTO:		// SVR4
+#endif
+				return;
+		}
+		cerr << error << "accept() failed" << error_string;
+		::exit( Exit_No_Accept );
+	}
+
+	static thread_pool threads = thread_pool( new search_thread( threads ),
+		min_threads, max_threads, thread_timeout
+	);
+#	ifdef DEBUG_threads
+	cerr << "queueing request\n";
+#	endif
+	if ( !threads.new_task( fd ) ) {
+		reset_socket( fd );
+		::close( fd );
+	}
 }
 
 //*****************************************************************************
@@ -405,6 +409,41 @@ void	set_signal_handlers();
 	}
 	BIND_SOCKET(fd,addr,Unix);
 	return fd;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void reset_socket( int fd )
+//
+// DESCRIPTION
+//
+//	Set the file descriptor for the TCP socket to be reset upon close(2) by
+//	using the SO_LINGER socket option.  From [Stevens 1998], p. 187,
+//	"SO_LINGER Socket Option":
+//
+//		If l_onoff is nonzero and l_linger is 0, TCP aborts the
+//		connection when it is closed.  That is, TCP discards any data
+//		still remaining in the socket send buffer and sends an RST to
+//		the peer, not the normal four-packet connection termination
+//		sequence.
+//
+//	Note: this is not implemented in Linux 2.2.x kernels so the normal
+//	four-packet sequence is done instead.
+//
+// PARAMETERS
+//
+//	fd	The file descriptor of the socket.
+//
+//*****************************************************************************
+{
+	struct linger li;
+	li.l_onoff  = 1;
+	li.l_linger = 0;
+	::setsockopt( fd, SOL_SOCKET, SO_LINGER,
+		reinterpret_cast<char const*>( &li ), sizeof li
+	);
 }
 
 //*****************************************************************************
