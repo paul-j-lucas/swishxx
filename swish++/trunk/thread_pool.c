@@ -24,7 +24,6 @@
 // standard
 #include <cstdlib>			/* for exit(2) */
 #include <ctime>
-#include <pthread.h>
 
 // local
 #include "exit_codes.h"
