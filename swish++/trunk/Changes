@@ -1,20 +1,138 @@
 SWISH++ Changes
 ===============
 
+*******************************************************************************
+4.8
+*******************************************************************************
 
-PROBLEMS
---------
+NEW FEATURES
+------------
 
-NOTE: SWISH++ 4.5 and later currently will not compile under Windows because:
+* The filename pattern matching (FNP) feature introduced in 4.5 has finally
+  been ported to Windows.
 
-1. The port of GNU make for it isn't self-contained in that it doesn't have
-   a Unix shell to do some of the "shell like" things that GNU make does.
+  (This feature shall be knowsn as feature WFNP.)
 
-2. The libraries that come with Mingw32 don't include fnmatch().
 
-Robert Lebowitz <lebowitz@finaltouch.com>, the Win32 maintainer of SWISH++, is
-currently working on these problems, but there's no ETA since SWISH++ isn't his
-day job.
+BUG FIXES
+---------
+
+* The GNUmakefile didn't build dependencies properly for files that are
+  conditionally #include'd.
+
+  (This bug fix shall be knows as bug fix IDB.)
+
+* The directory separator character ('/' for Unix) is apparantly transformed
+  into '\' for Windows by the intermediate Windows port of POSIX functions.
+  However, in the case where '/' is inserted into a string and that string is
+  printed, the mere printing won't do the transformation.
+
+  (This bug fix shall be knows as bug fix WDSC.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* auto_vec.h
+
+	1. Renamed and cleaned-up from managed_ptr.h.
+
+* config.h
+
+	1. Added:
+
+		TempDirectory_Default[]	= "/temp";
+
+	   when compiling for Windows.
+
+* conf_int.c
+
+	1. s/managed_vec/auto_vec/
+
+* copying.dj
+* fnmatch.c
+* fnmatch.h
+
+	1. Added these files for feature WFNP.
+
+* directory.c
+
+	1. Added Dir_Sep_Char for bug fix WDSC.
+
+* GNUmakefile
+
+	1. Added:
+
+		I_SRCS+=	fnmatch.c
+
+	   for feature WFNP.
+
+	2. Performed the following substitution:
+
+		s/CPPFLAGS/CFLAGS/
+
+	   for bug fix IDB.
+
+	3. Added some comments for the clean, distclean, and dist targets.
+
+* index_segment.c
+
+	1. Performed the following substitution:
+
+		s/long/size_type/
+
+	   It should have been that way all along.
+
+* index_segment.h
+
+	1. Performed the following substitution:
+
+		s/long size_type/unsigned long size_type/
+
+	   ...no need for it to be signed.
+
+	2. Performed the following substitution:
+
+		s/char* value_type/char const* value_type/
+
+	   It should have been that way all along.
+
+	3. Eliminated "pointer" and "reference" types since they
+	   weren't used.
+
+	4. Performed the following substitution:
+
+		s/long/size_type/
+
+	   It should have been that way all along.
+
+* managed_ptr.h
+
+	1. Renamed to auto_vec.h.
+
+* man/man1/index.1
+
+	1. Added mention of "/temp" for Windows.
+
+	2. Added section on differences for the Windows command line.
+
+* pattern_map.h
+
+	1. Added:
+
+		#include "fnmatch.h"
+
+	   for feature WFNP.
+
+* search.c
+
+	1. Performed the following substitution:
+
+		1/managed_vec/auto_vec/
+
+* version.h
+
+	1. Updated version to "4.8".
 
 
 *******************************************************************************
