@@ -80,7 +80,8 @@ fi
 # a user-generated signal, if search gets killed and it was killed by SIGUSR2,
 # then it MUST have been done by manual request.
 ##
-USR2=`kill -l USR2 2>&1`
+KILL=`which kill`                           # ensure shell built-in isn't used
+USR2=`$KILL -l USR2 2>&1`
 
 ##
 # If we haven't already put ourselves into the background, call ourselves in
