@@ -31,7 +31,7 @@ CFLAGS=		$(CCFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
-CTARGET=	index search extract
+C_TARGET=	index search extract
 
 I_LINK=		$(CCLINK) -lm
 I_OBJS=		conf_var$(CCOEXT) \
@@ -46,11 +46,15 @@ I_OBJS=		conf_var$(CCOEXT) \
 		file_info$(CCOEXT) \
 		filter$(CCOEXT) \
 		FilterExtension$(CCOEXT) \
+		IncludeExtension$(CCOEXT) \
+		itoa$(CCOEXT) \
 		word_index$(CCOEXT) \
 		file_list$(CCOEXT) \
 		html$(CCOEXT) \
+		option_stream$(CCOEXT) \
 		stop_words$(CCOEXT) \
 		util$(CCOEXT) \
+		word_util$(CCOEXT) \
 		index$(CCOEXT)
 
 S_LINK=		$(CCLINK)
@@ -62,9 +66,11 @@ S_OBJS=		conf_var$(CCOEXT) \
 		file_index$(CCOEXT) \
 		word_index$(CCOEXT) \
 		file_list$(CCOEXT) \
+		option_stream$(CCOEXT) \
 		token$(CCOEXT) \
 		stem_word$(CCOEXT) \
 		util$(CCOEXT) \
+		word_util$(CCOEXT) \
 		search$(CCOEXT)
 
 E_LINK=		$(CCLINK)
@@ -78,23 +84,26 @@ E_OBJS=		conf_var$(CCOEXT) \
 		file_vector$(CCOEXT) \
 		filter$(CCOEXT) \
 		FilterExtension$(CCOEXT) \
+		IncludeExtension$(CCOEXT) \
+		option_stream$(CCOEXT) \
 		postscript$(CCOEXT) \
 		stop_words$(CCOEXT) \
 		util$(CCOEXT) \
+		word_util$(CCOEXT) \
 		extract$(CCOEXT)
 
-LTARGET=	WWW.pm
 VARS=		I_BIN="$(I_BIN)" I_LIB="$(I_LIB)" PERL="$(PERL)"
 
-PTARGET=	httpindex
+PERL_TARGET=	httpindex
+LIB_TARGET=	WWW.pm
 
-BTARGET=	$(CTARGET) $(PTARGET)
+BUILD_TARGET=	$(C_TARGET) $(PERL_TARGET)
 
 ##
 # Build rules
 ##
 
-all:: $(BTARGET)
+all:: $(BUILD_TARGET)
 
 extract: $(E_OBJS)
 	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(E_OBJS) $(E_LINK)
@@ -141,10 +150,13 @@ conf_string$(CCOEXT): \
 	exit_codes$(CCHEXT)
 
 conf_var$(CCOEXT): \
+	config$(CCHEXT) \
 	conf_var$(CCHEXT) \
 		fake_ansi$(CCHEXT) \
 			$(PLATFORM_H) \
 		less$(CCHEXT) \
+	exit_codes$(CCHEXT) \
+	file_vector$(CCHEXT) \
 	util$(CCHEXT)
 
 directory$(CCOEXT): \
@@ -191,6 +203,7 @@ extract$(CCOEXT): \
 	FilterExtension$(CCHEXT) \
 		filter$(CCHEXT) \
 	IncludeExtension$(CCHEXT) \
+	option_stream$(CCHEXT) \
 	$(PLATFORM_H) \
 	postscript$(CCHEXT) \
 	RecurseSubdirs$(CCHEXT) \
@@ -200,7 +213,8 @@ extract$(CCOEXT): \
 	util$(CCHEXT) \
 	Verbosity$(CCHEXT) \
 		conf_int$(CCHEXT) \
-	version$(CCHEXT)
+	version$(CCHEXT) \
+	word_util$(CCHEXT)
 
 file_index$(CCOEXT): \
 	file_index$(CCHEXT) \
@@ -267,7 +281,15 @@ html$(CCOEXT): \
 	meta_map$(CCHEXT) \
 	TitleLines$(CCHEXT) \
 		conf_int$(CCHEXT) \
-	util$(CCHEXT)
+	util$(CCHEXT) \
+	word_util$(CCHEXT)
+
+IncludeExtension$(CCOEXT): \
+	IncludeExtension$(CCHEXT) \
+		conf_var$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+			less$(CCHEXT)
 
 index$(CCOEXT): \
 	config$(CCHEXT) \
@@ -299,7 +321,9 @@ index$(CCOEXT): \
 	index$(CCHEXT) \
 	IndexFile$(CCHEXT) \
 		conf_string$(CCHEXT) \
+	itoa$(CCHEXT) \
 	meta_map$(CCHEXT) \
+	option_stream$(CCHEXT) \
 	$(PLATFORM_H) \
 	RecurseSubdirs$(CCHEXT) \
 	StopWordFile$(CCHEXT) \
@@ -312,7 +336,13 @@ index$(CCOEXT): \
 	WordFilesMax$(CCHEXT) \
 	WordPercentMax$(CCHEXT) \
 	word_index$(CCHEXT) \
-	word_info$(CCHEXT)
+	word_info$(CCHEXT) \
+	word_util$(CCHEXT)
+
+itoa$(CCOEXT): \
+	fake_ansi$(CCHEXT) \
+		$(PLATFORM_H) \
+	util$(CCHEXT)
 
 postscript$(CCOEXT): \
 	postscript$(CCHEXT) \
@@ -327,6 +357,7 @@ search$(CCOEXT): \
 	file_index$(CCHEXT) \
 		file_vector$(CCHEXT) \
 	file_list$(CCHEXT) \
+	file_vector$(CCHEXT) \
 	html$(CCHEXT) \
 	IndexFile$(CCHEXT) \
 		conf_string$(CCHEXT) \
@@ -343,13 +374,15 @@ search$(CCOEXT): \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
 	version$(CCHEXT) \
-	word_index$(CCHEXT)
+	word_index$(CCHEXT) \
+	word_util$(CCHEXT)
 
 stem_word$(CCOEXT): \
-	less$(CCHEXT) \
-		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H) \
-	util$(CCHEXT)
+	stem_word$(CCHEXT) \
+		less$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+	word_util$(CCHEXT)
 
 stop_words$(CCOEXT): \
 	config$(CCHEXT) \
@@ -360,7 +393,8 @@ stop_words$(CCOEXT): \
 			fake_ansi$(CCHEXT) \
 				$(PLATFORM_H) \
 			less$(CCHEXT) \
-	util$(CCHEXT)
+	util$(CCHEXT) \
+	word_util$(CCHEXT)
 
 token$(CCOEXT): \
 	config$(CCHEXT) \
@@ -368,7 +402,7 @@ token$(CCOEXT): \
 	fake_ansi$(CCHEXT) \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
-		file_vector$(CCHEXT)
+	word_util$(CCHEXT)
 
 util$(CCOEXT): \
 	config$(CCHEXT) \
@@ -386,6 +420,10 @@ word_index$(CCOEXT): \
 		$(PLATFORM_H) \
 	word_index$(CCHEXT)
 
+word_util$(CCOEXT): \
+	config$(CCHEXT) \
+	word_util$(CCHEXT)
+
 $(PLATFORM_H):
 	@cd config && $(MAKE)
 
@@ -398,13 +436,13 @@ httpindex: httpindex.in
 
 install: install_bin install_lib install_man
 
-install_bin: $(BTARGET) $(I_BIN)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(CTARGET) $(I_BIN)
-	cd $(I_BIN) && $(STRIP) $(CTARGET)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(PTARGET) $(I_BIN)
+install_bin: $(BUILD_TARGET) $(I_BIN)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(C_TARGET) $(I_BIN)
+	cd $(I_BIN) && $(STRIP) $(C_TARGET)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(PERL_TARGET) $(I_BIN)
 
 install_lib: $(I_LIB)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(LTARGET) $(I_LIB)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(LIB_TARGET) $(I_LIB)
 
 install_man::
 	@cd man && $(MAKE) install
@@ -413,8 +451,8 @@ $(I_BIN) $(I_LIB):
 	$(MKDIR) $@
 
 uninstall::
-	cd $(I_BIN) && $(RM) $(BTARGET)
-	cd $(I_LIB) && $(RM) $(LTARGET)
+	cd $(I_BIN) && $(RM) $(BUILD_TARGET)
+	cd $(I_LIB) && $(RM) $(LIB_TARGET)
 	@cd man && $(MAKE) $@
 
 ##
@@ -422,8 +460,9 @@ uninstall::
 ##
 
 clean::
-	$(RM) *$(CCOEXT) core the.index
+	$(RM) *$(CCOEXT) core swish++.index
+	@cd man && $(MAKE) $@
 
 dist distclean:: clean
-	$(RM) $(BTARGET) $(PLATFORM_H)
+	$(RM) $(BUILD_TARGET) $(PLATFORM_H)
 	@cd man && $(MAKE) $@
