@@ -103,7 +103,8 @@ protected:
 	class encoded_char_range::const_iterator :
 		public encoded_char_range,
 		public std::iterator<
-			std::forward_iterator_tag, value_type const
+			std::forward_iterator_tag,
+			encoded_char_range::value_type const
 		>
 //
 // DESCRIPTION
