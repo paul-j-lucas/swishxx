@@ -1,47 +1,24 @@
-******************************************************************************
-
-NOTE: SWISH++ 4.5 currently will not compile under Windows because:
-
-1. The port of GNU make for it isn't self-contained in that it doesn't have
-   a Unix shell to do some of the "shell like" things that GNU make does.
-
-2. The libraries that come with Mingw32 don't include fnmatch().
-
-Robert Lebowitz <lebowitz@finaltouch.com>, the Win32 maintainer of SWISH++, is
-currently working on these problems, but there's no ETA since SWISH++ isn't his
-day job.
-
-******************************************************************************
-
-
-Here's the original INSALL.win32 file...
-
-
 ===============================================================================
 Prerequisites for Building SWISH++ for Microsoft Windows 95/98/NT
 ===============================================================================
 
-	Note: precompiled Win32 executables will most likely be made
-	available.  Check the SWISH++ web site for a pointer.
+	Note: precompiled Win32 executables are available on the
+	SWISH++ web site.
 
 SWISH++ has the following software as prerequisites:
 
-1. The Mingw32 C++ compiler (based on egcs-1.1.2 or later).  The compiler comes
-   complete with a set of libraries needed to compile SWISH++, including the
-   standard C++ library.  It is available from:
+1. The MinGW software.  This is a collection of files, libraries, a C++
+   compiler, and tools needed to compile SWISH++ under Windows.  It is
+   available from:
 
-	http://www.xraylith.wisc.edu/~khan/software/gnu-win32/egcs.html
+	http://mingw.sourceforge.net/
 
-2. GNU make.  A free binary distribution is available from:
-
-	http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/download.html
-
-3. Perl 5 (or later), but only if you intend on using either httpindex,
+2. Perl 5 (or later), but only if you intend on using either httpindex,
    searchc, or WWW.pm.  A free binary distribution is available from:
 
 	http://www.activestate.com/ActivePerl/
 
-4. The GNU wget command, but only if you intend on using httpindex.  A free
+3. The GNU wget command, but only if you intend on using httpindex.  A free
    binary distribution is available from:
 
 	http://www.qtm.net/~twegscheid/wget.html
@@ -56,9 +33,11 @@ Building SWISH++ for Microsoft Windows 95/98/NT
 	somebody familiar with multi-threaded programming under Windows
 	volunteers to port it.
 
+	Note: extract(1) is not supported as of this release.
+
 1. Edit the "config.h" file to your liking.  This file controls how the
-   software runs.  You REALLY need to understand and properly set TempDirectory
-   and Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
+   software runs.  You REALLY need to understand and properly set 
+   Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
    it should only take minutes.  Once you understand them, comment out the
    #error lines.  (The #error lines are there intentionally to force you to
    edit the file.)
@@ -66,8 +45,12 @@ Building SWISH++ for Microsoft Windows 95/98/NT
 2. Go to the "config" directory and edit the "config.mk" file as necessary.
    This file controls how the software is compiled.
 
-3. Go back to the top-level directory and type "make".  If everything works
-   out, the software will be built.
+3. Go back to the top-level directory and type:
+
+	make -f Win32-Makefile-index.v
+	make -f Win32-Makefile-search.v
+
+   If everything works out, the software will be built.
 
 
 ===============================================================================
