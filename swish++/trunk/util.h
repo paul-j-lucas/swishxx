@@ -33,6 +33,7 @@
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>
 #include <sys/stat.h>
+#include <unistd.h>			/* for _exit(2) */
 
 //
 // POSIX.1 is, IMHO, brain-damaged in the way it makes you determine the
@@ -275,7 +276,8 @@ inline std::ostream&	error_string( std::ostream &o = std::cerr ) {
 
 inline std::ostream&	report_error( std::ostream &o = std::cerr ) {
 				o << "please report this error\n";
-				std::_exit( Exit_Internal_Error );
+				::_exit( Exit_Internal_Error );
+				return o;	// just to make compiler happy
 			}
 
 inline char*		new_strdup( char const *s ) {
