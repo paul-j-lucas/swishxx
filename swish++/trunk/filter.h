@@ -37,9 +37,9 @@
 //
 // DESCRIPTION
 //
-//	A filter is a light-weight class that contains a Unix command-line
-//	and knows how to execute itself on a file to create a filtered file.
-//	The destructor deletes the filtered file.
+//	A filter is a light-weight class that contains a Unix command-line and
+//	knows how to execute itself on a file to create a filtered file.  The
+//	destructor deletes the filtered file.
 //
 //*****************************************************************************
 {
