@@ -442,10 +442,10 @@ next_c:
 		while ( c != nl && is_word_char( *c++ ) ) ;	// too big
 		return;
 	}
+	while ( len > 0 && word[ len - 1 ] == '-' )
+		--len;
 	if ( len < Word_Min_Size )
 		return;
-	if ( word[ len - 1 ] == '-' )
-		--len;
 	word[ len ] = '\0';
 
 	////////// Find the next .SH macro. ///////////////////////////////////
