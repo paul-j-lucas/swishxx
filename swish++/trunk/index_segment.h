@@ -61,8 +61,9 @@ public:
 	enum segment_id {
 		word_index	= 0,
 		stop_word_index	= 1,
-		file_index	= 2,
-		meta_name_index	= 3
+		dir_index	= 2,
+		file_index	= 3,
+		meta_name_index	= 4
 	};
 
 	////////// constructors ///////////////////////////////////////////////
