@@ -23,6 +23,7 @@
 #include <cstring>
 
 // local
+#include "bcd.h"
 #include "config.h"
 #include "directory.h"
 #include "FilesReserve.h"
@@ -71,7 +72,8 @@ FilesReserve			files_reserve;
 //	num_words	The number of words in the file.
 //
 //*****************************************************************************
-	: file_name_(
+	: dir_index_( dir_index ),
+	  file_name_(
 		//
 		// First duplicate the entire path name and put it into the set
 		// of files encountered; then make file_name_ point to the base
@@ -81,8 +83,7 @@ FilesReserve			files_reserve;
 			*name_set_.insert( new_strdup( path_name ) ).first
 		)
 	  ),
-	  dir_index_( dir_index ),
-	  num_words_( num_words ), size_( file_size ),
+	  size_( file_size ), num_words_( num_words ),
 	  title_(
 		//
 		// If there was a title given, use that; otherwise the title is
@@ -94,4 +95,37 @@ FilesReserve			files_reserve;
 	if ( list_.empty() )
 		list_.reserve( files_reserve );
 	list_.push_back( this );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	file_info::file_info( unsigned char const *p )
+//
+// DESCRIPTION
+//
+//	Construct a file_info.  If a title is given, use it; otherwise set the
+//	title to be (just) the file name (not the path name).
+//
+//	Additionally record its address in a list so the entire list can be
+//	iterated over later in the order encountered.  The first time through,
+//	reserve files_reserve slots for files.  If exceeded, the vector will
+//	automatically grow, but with a slight performance penalty.
+//
+// PARAMETERS
+//
+//	p	The full path name of the file.
+//
+//*****************************************************************************
+	: dir_index_( parse_bcd( p ) ),
+	  file_name_( reinterpret_cast<char const*>( p ) ),
+	  size_(
+		  parse_bcd(
+			  p += ::strlen( reinterpret_cast<char const*>( p ) )
+		  )
+	  ),
+	  num_words_( parse_bcd( p ) ),
+	  title_( reinterpret_cast<char const*>( p ) )
+{
 }
