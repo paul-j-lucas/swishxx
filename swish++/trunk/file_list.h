@@ -66,7 +66,7 @@ public:
 	////////// constructors ///////////////////////////////////////////////
 
 	file_list( index_segment::const_iterator const &iter ) :
-		ptr_( REINTERPRET_CAST(unsigned char const*)( *iter ) ),
+		ptr_( reinterpret_cast<unsigned char const*>( *iter ) ),
 		size_( -1 )			// -1 = "haven't computed yet"
 	{
 		while ( *ptr_++ ) ;		// skip past word
