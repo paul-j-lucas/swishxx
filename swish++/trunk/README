@@ -84,6 +84,10 @@
 	    and converted on-the-fly thus properly indexing
 	    attachments.
 
+	    Lastly, attachments having other MIME types can be filtered
+	    on-the-fly before being indexed, e.g., convert Microsoft
+	    Word or PDF attachments to plain text.
+
 	 5. Index Unix manual page files
 	    SWISH++ indexes words in sections and associates them with
 	    the name of the section as meta names that can later be
