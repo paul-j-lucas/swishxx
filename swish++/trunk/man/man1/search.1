@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "February 12, 2000" "SWISH++"
+.TH \f3search\fP 1 "April 5, 2000" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -369,6 +369,26 @@ The number of seconds,
 until an idle spare thread dies while running as a daemon.
 (Default is 30.)
 .TP
+.BI \-p n
+.br
+.ns
+.TP
+.BI \-\-word-percent= n
+The maximum percentage,
+.IR n ,
+of files a word may occur in before it is discarded as being too frequent.
+(Default is 100.)
+If you want to keep all words regardless, specify 101.
+.TP
+.BI \-P f
+.br
+.ns
+.TP
+.BI \-\-pid-file= f
+The name of the file to record the process ID of
+.B search
+if running as a daemon.
+.TP
 .BI \-q n
 .br
 .ns
@@ -391,17 +411,6 @@ Used in conjunction with
 or
 .BR \-\-max-results ,
 results can be returned in ``pages.''
-.TP
-.BI \-p n
-.br
-.ns
-.TP
-.BI \-\-word-percent= n
-The maximum percentage,
-.IR n ,
-of files a word may occur in before it is discarded as being too frequent.
-(Default is 100.)
-If you want to keep all words regardless, specify 101.
 .TP
 .B \-s
 .br
@@ -477,6 +486,12 @@ Same as
 .B \-i
 or
 .B \-\-index-file
+.TP
+.B PidFile
+Same as
+.B \-P
+or
+.B \-\-pid-file
 .TP
 .B ResultsMax
 Same as
@@ -671,40 +686,43 @@ Unable to read index file.
 Malformed query.
 .TP
 51
-Could not open socket file.
+Could not write to PID file.
 .TP
 52
+Could not open socket file.
+.TP
+53
 Could not
 .BR unlink (2)
 socket file.
 .TP
-53
+54
 Could not
 .BR bind (3)
 to socket.
 .TP
-54
+55
 Could not
 .BR listen (3)
 to socket.
 .TP
-55
+56
 Could not
 .BR accept (3)
 a socket connection.
 .TP
-56
+57
 Could not
 .BR fork (2)
 child process.
 .TP
-57
+58
 Could not change directory to \f(CW/\f1.
 .TP
-58
+59
 Could not create thread.
 .TP
-59
+60
 Could not detach thread.
 .PD
 .RE
