@@ -37,6 +37,34 @@ struct stat		stat_buf;	// someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
+	char *to_lower( char *buf, char const *s )
+//
+// DESCRIPTION
+//
+//	Return a pointer to a string converted to lower case using the given
+//	buffer; the original string is untouched.
+//
+// PARAMETERS
+//
+//	buf	The buffer into which the lower case string is to be put.
+//
+//	s	The string to be converted.
+//
+// RETURN
+//
+//	The buf pointer.
+//
+//*****************************************************************************
+{
+	register char *p = buf;
+	while ( *p++ = to_lower( *s++ ) ) ;
+	return buf;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	char *to_lower( register char const *s )
 //
 // DESCRIPTION
