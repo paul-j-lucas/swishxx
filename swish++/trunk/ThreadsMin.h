@@ -1,25 +1,25 @@
 /*
-**	SWISH++
-**	ThreadsMin.h
+**      SWISH++
+**      ThreadsMin.h
 **
-**	Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998  Paul J. Lucas
 **
-**	This program is free software; you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation; either version 2 of the License, or
-**	(at your option) any later version.
+**      This program is free software; you can redistribute it and/or modify
+**      it under the terms of the GNU General Public License as published by
+**      the Free Software Foundation; either version 2 of the License, or
+**      (at your option) any later version.
 **
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
+**      This program is distributed in the hope that it will be useful,
+**      but WITHOUT ANY WARRANTY; without even the implied warranty of
+**      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**      GNU General Public License for more details.
 **
-**	You should have received a copy of the GNU General Public License
-**	along with this program; if not, write to the Free Software
-**	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+**      You should have received a copy of the GNU General Public License
+**      along with this program; if not, write to the Free Software
+**      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	SEARCH_DAEMON
+#ifdef  SEARCH_DAEMON
 
 #ifndef ThreadsMin_H
 #define ThreadsMin_H
@@ -32,25 +32,25 @@
 //
 // SYNOPSIS
 //
-	class ThreadsMin : public conf<int>
+        class ThreadsMin : public conf<int>
 //
 // DESCRIPTION
 //
-//	A ThreadsMin is-a conf<int> containing the minimum number of threads
-//	that will exist at any one time to service clients
+//      A ThreadsMin is-a conf<int> containing the minimum number of threads
+//      that will exist at any one time to service clients
 //
-//	This is the same as search's -t command-line option.
+//      This is the same as search's -t command-line option.
 //
 //*****************************************************************************
 {
 public:
-	ThreadsMin() : conf<int>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
-	CONF_INT_ASSIGN_OPS( ThreadsMin )
+    ThreadsMin() : conf<int>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
+    CONF_INT_ASSIGN_OPS( ThreadsMin )
 };
 
 extern ThreadsMin min_threads;
 
-#endif	/* ThreadsMin_H */
+#endif  /* ThreadsMin_H */
 
-#endif	/* SEARCH_DAEMON */
-/* vim:set noet sw=8 ts=8: */
+#endif  /* SEARCH_DAEMON */
+/* vim:set et sw=4 ts=4: */
