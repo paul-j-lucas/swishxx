@@ -24,12 +24,10 @@
 // standard
 #include <cctype>
 #include <cstring>
-#include <map>
 #include <string>
 
 // local
 #include "config.h"
-#include "ExcludeMeta.h"
 #include "IncludeMeta.h"
 #include "less.h"
 #include "meta_map.h"
@@ -46,30 +44,14 @@
 using namespace std;
 #endif
 
-struct key_value {
-	//
-	// A simple struct for containing a key and a value.
-	//
-	char const *key;
-	char const *value_begin, *value_end;
-};
+mail_indexer::stack_type	mail_indexer::boundary_stack_;
+bool				mail_indexer::did_last_header;
 
-extern ExcludeMeta	exclude_meta_names;
-extern IncludeMeta	include_meta_names;
-extern TitleLines	num_title_lines;
-
-mail_indexer::stack_type mail_indexer::boundary_stack_;
-
-bool			header_cmp(
-				file_vector::const_iterator &pos,
-				file_vector::const_iterator end,
-				char const *tag
-			);
-bool			parse_header(
-				file_vector::const_iterator &pos,
-				file_vector::const_iterator end,
-				key_value*
-			);
+bool				header_cmp(
+					file_vector::const_iterator &pos,
+					file_vector::const_iterator end,
+					char const *tag
+				);
 
 //*****************************************************************************
 //
@@ -390,28 +372,6 @@ bool			parse_header(
 //
 //*****************************************************************************
 {
-	typedef map< char const*, header_type > header_map;
-
-	static header_map h_map;
-	if ( h_map.empty() ) {
-		//
-		// These are the headers we're interested in.  Any header not
-		// listed here is ignored.
-		//
-		h_map[ "bcc" ]			= Index_Header;
-		h_map[ "cc" ]			= Index_Header;
-		h_map[ "comments" ]		= Index_Header;
-		h_map[ "content-description" ]	= Index_Header;
-		h_map[ "content-transfer-encoding"] = Content_Transfer_Encoding;
-		h_map[ "content-type" ]		= Content_Type;
-		h_map[ "from" ]			= Index_Header;
-		h_map[ "keywords" ]		= Index_Header;
-		h_map[ "newsgroups" ]		= Index_Header;
-		h_map[ "resent-to" ]		= Index_Header;
-		h_map[ "subject" ]		= Index_Header;
-		h_map[ "to" ]			= Index_Header;
-	}
-
 	//
 	// We assume text/plain and 7-bit US-ASCII as stated in RFC 2045, sec.
 	// 5.2., "Content-Type Defaults":
@@ -429,113 +389,90 @@ bool			parse_header(
 
 	key_value kv;
 	while ( parse_header( c, end, &kv ) ) {
-		header_map::const_iterator const i = h_map.find( kv.key );
-		if ( i == h_map.end() ) {
-			//
-			// We're not interested in any header not specifically
-			// accounted for above.
-			//
+
+		//
+		// Deal with Content-Transfer-Encoding.
+		//
+		if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
+			char const *const v = to_lower(
+				kv.value_begin, kv.value_end
+			);
+			if ( ::strstr( v, "quoted-printable" ) )
+				type.second = Quoted_Printable;
+			else if ( ::strstr( v, "base64" ) )
+				type.second = Base64;
+			else if ( ::strstr( v, "binary" ) )
+				type.second = Binary;
 			continue;
 		}
 
-		switch ( i->second ) {
-
-			case Index_Header: {
-				int const meta_id = find_meta( kv.key );
-				if ( meta_id == No_Meta_ID )
-					break;
-				//
-				// Index the words in the value of the header
-				// marking them as being associated with the
-				// name of the header.
-				//
-				encoded_char_range::const_iterator e(
-					kv.value_begin, kv.value_end, Seven_Bit
-				);
-				indexer::index_words( e, meta_id );
-				break;
-			}
-
-			case Content_Transfer_Encoding: {
-				char const *const v = to_lower(
-					kv.value_begin, kv.value_end
-				);
-				if ( ::strstr( v, "quoted-printable" ) )
-					type.second = Quoted_Printable;
-				else if ( ::strstr( v, "base64" ) )
-					type.second = Base64;
-				else if ( ::strstr( v, "binary" ) )
-					type.second = Binary;
-				break;
-			}
-
-			case Content_Type: {
-				char const *const v = to_lower(
-					kv.value_begin, kv.value_end
-				);
-				//
-				// See if it's the text/"something"
-				//
-				if ( ::strstr( v, "text/plain" ) ) {
-					type.first = Text_Plain;
-					break;
-				}
-				if ( ::strstr( v, "text/enriched" ) ) {
-					type.first = Text_Enriched;
-					break;
-				}
+		//
+		// Deal with Content-Type.
+		//
+		if ( !::strcmp( kv.key, "content-type" ) ) {
+			char const *const v = to_lower(
+				kv.value_begin, kv.value_end
+			);
+			//
+			// See if it's the text/"something" or "message/rfc822".
+			//
+			if ( ::strstr( v, "text/plain" ) )
+				type.first = Text_Plain;
+			else if ( ::strstr( v, "text/enriched" ) )
+				type.first = Text_Enriched;
 #ifdef	MOD_HTML
-				if ( ::strstr( v, "text/html" ) ) {
-					type.first = Text_HTML;
-					break;
-				}
+			else if ( ::strstr( v, "text/html" ) )
+				type.first = Text_HTML;
 #endif
-				if ( ::strstr( v, "vcard" ) ) {
-					type.first = Text_vCard;
-					break;
-				}
-				if ( ::strstr( v, "message/rfc822" ) ) {
-					type.first = Message_RFC822;
-					break;
-				}
-				//
-				// See if it's a multipart/"something," i.e.,
-				// alternative, mixed, or parallel.  If not, we
-				// don't know what to do with it so it's not
-				// indexable.
-				//
-				if ( !::strstr( v, "multipart/" ) ) {
-					type.first = Not_Indexable;
-					continue;
-				}
-
-				//
-				// If so, we have to extract the boundary
-				// string.
-				//
-				char const *b = ::strstr( v, "boundary=" );
-				if ( !b || !*(b+=9) )
-					continue;	// weird case
-				//
-				// Erase everything (including any surrounding
-				// quotes) except the boundary string from the
-				// value.
-				//
-				string boundary(
-					kv.value_begin + (b-v), kv.value_end
-				);
-				if ( boundary[0] == '"' )
-					boundary.erase( 0, 1 );
-				if ( boundary[ boundary.length() - 1 ] == '"' )
-					boundary.erase( boundary.size()-1, 1 );
-
-				//
-				// Push the boundary onto the stack.
-				//
-				boundary_stack_.push_back( boundary );
-				type.first = Multipart;
+			else if ( ::strstr( v, "vcard" ) )
+				type.first = Text_vCard;
+			else if ( ::strstr( v, "message/rfc822" ) )
+				type.first = Message_RFC822;
+			//
+			// See if it's a multipart/"something," i.e.,
+			// alternative, mixed, or parallel.  If not, we don't
+			// know what to do with it so it's not indexable.
+			//
+			else if ( !::strstr( v, "multipart/" ) ) {
+				type.first = Not_Indexable;
+				continue;
 			}
+			//
+			// It's multipart/"something": we have to extract the
+			// boundary string.
+			//
+			char const *b = ::strstr( v, "boundary=" );
+			if ( !b || !*(b += 9) )
+				continue;	// weird case
+			//
+			// Erase everything (including any surrounding quotes)
+			// except the boundary string from the value.
+			//
+			string boundary( kv.value_begin + (b-v), kv.value_end );
+			if ( boundary[0] == '"' )
+				boundary.erase( 0, 1 );
+			if ( boundary[ boundary.length() - 1 ] == '"' )
+				boundary.erase( boundary.size()-1, 1 );
+			//
+			// Push the boundary onto the stack.
+			//
+			boundary_stack_.push_back( boundary );
+			type.first = Multipart;
+			continue;
 		}
+
+		//
+		// Potentially index the works in all other headers where the
+		// words in the value of the headers are associated with the
+		// names of the headers as meta names.
+		//
+		int const meta_id = find_meta( kv.key );
+		if ( meta_id == No_Meta_ID )
+			continue;
+		encoded_char_range::const_iterator e(
+			kv.value_begin, kv.value_end, Seven_Bit
+		);
+		indexer::index_words( e, meta_id );
 	}
 
 	return type;
@@ -624,8 +561,8 @@ bool			parse_header(
 //
 // DESCRIPTION
 //
-//	Index the words in a vCard attachment.  The vCard "types" are made meta
-//	names.
+//	Index the words in a vCard attachment.  The vCard "types" are made into
+//	meta names.
 //
 // PARAMETERS
 //
@@ -646,41 +583,13 @@ bool			parse_header(
 //
 //*****************************************************************************
 {
-	typedef map< char const*, char const* > type_map;
-
-	static type_map t_map;
-	if ( t_map.empty() ) {
-		//
-		// These are the types we're interested in.  Any type not
-		// listed here is ignored.  Non-null values on the right hand
-		// side are better (IMHO) meta names that the original vCard
-		// type names.  Null values mean to use the original type
-		// names.
-		//
-		t_map[ "adr" ]		= "address";
-		t_map[ "categories" ]	= 0;
-		t_map[ "class" ]	= 0;
-		t_map[ "label" ]	= "address";
-		t_map[ "fn" ]		= "name";
-		t_map[ "nickname" ]	= 0;
-		t_map[ "note" ]		= 0;
-		t_map[ "org" ]		= 0;
-		t_map[ "role" ]		= 0;
-		t_map[ "title" ]	= 0;
-	}
-
 	key_value kv;
 	while ( parse_header( c, end, &kv ) ) {
-		type_map::const_iterator const i = t_map.find( kv.key );
-		if ( i == t_map.end() ) {
-			//
-			// We're not interested in any type not specifically
-			// accounted for above.
-			//
-			continue;
-		}
-
-		int const meta_id = find_meta( i->second ? i->second : kv.key );
+		//
+		// Reuse parse_header() to parse vCard types, but trim them at
+		// semicolons.
+		//
+		int const meta_id = find_meta( ::strtok( kv.key, ";" ) );
 		if ( meta_id == No_Meta_ID )
 			continue;
 		//
@@ -784,13 +693,14 @@ bool			parse_header(
 //*****************************************************************************
 {
 	boundary_stack_.clear();
+	did_last_header = false;
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	bool parse_header(
+	/* static */ bool mail_indexer::parse_header(
 		register file_vector::const_iterator &c,
 		register file_vector::const_iterator end,
 		key_value *kv
@@ -811,7 +721,7 @@ bool			parse_header(
 //	end	The iterator marking the end of the range.
 //
 //	kv	A pointer to the key_value to be modified only if a header is
-//		parsed.
+//		parsed.  The key is always converted to lower case.
 //
 // SEE ALSO
 //
@@ -821,23 +731,38 @@ bool			parse_header(
 //
 //*****************************************************************************
 {
-	static bool did_last_header;
 	if ( did_last_header )
 		return did_last_header = false;
 
-	file_vector::const_iterator nl = find_newline( c, end );
-	if ( nl == end )
-		return false;
+	file_vector::const_iterator header_begin, header_end, nl;
 
-	//
-	// Parse a header by looking for the terminating ':'.
-	//
-	file_vector::const_iterator const header_begin = c;
-	while ( c != nl && *c != ':' )
-		++c;
-	if ( c == nl )				// didn't find it: weird
-		return false;
-	file_vector::const_iterator const header_end = c;
+	while ( 1 ) {
+		if ( (nl = find_newline( c, end )) == end )
+			return false;
+		//
+		// Parse a header by looking for the terminating ':'.
+		//
+		header_begin = c;
+		while ( c != nl && *c != ':' )
+			++c;
+		//
+		// We have to check for the special case of the "From" header
+		// that doesn't have the ':', i.e., the one in the envelope,
+		// not the letter, and ignore it.
+		//
+		if ( c >= header_begin + 4 /* 4 == strlen( "From" ) */ &&
+			!::strncmp( header_begin, "From ", 5 )
+		) {
+			if ( (c = skip_newline( nl, end )) == end )
+				return false;
+			continue;
+		}
+
+		if ( c == nl )			// didn't find it: weird
+			return false;
+		header_end = c;
+		break;
+	}
 
 	//
 	// Parse a value.
