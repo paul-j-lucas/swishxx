@@ -145,7 +145,9 @@ dep:
 	$(MKDIR) $@
 
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
+ifneq ($(MAKECMDGOALS),dist)
 include	 $(I_SRCS:%.c=dep/%.d) $(E_SRCS:%.c=dep/%.d) $(S_SRCS:%.c=dep/%.d)
+endif
 endif
 
 ps pdf txt:
