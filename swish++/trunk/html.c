@@ -238,7 +238,7 @@ void			skip_html_tag(
 		// Found the start of a potentially matching attribute name.
 		//
 		register char const *a = attribute;
-		while ( c != end && to_upper( *c ) == to_upper( *a ) )
+		while ( c != end && to_lower( *c ) == to_lower( *a ) )
 			++c, ++a;
 		while ( c != end && ( isalpha( *c ) || *c == '-' ) )
 			++c;
@@ -316,7 +316,7 @@ void			skip_html_tag(
 //*****************************************************************************
 {
 	register file_vector<char>::const_iterator d = c;
-	while ( *tag && d != end && to_upper( *tag++ ) == to_upper( *d++ ) ) ;
+	while ( *tag && d != end && to_lower( *tag++ ) == to_lower( *d++ ) ) ;
 	return *tag ? false : c = d;
 }
 
@@ -394,8 +394,8 @@ void			skip_html_tag(
 //*****************************************************************************
 {
 	static char const *const title_tag[] = {	// tag_index
-		"TITLE",				//	0
-		"/TITLE"				//	1
+		"title",				//	0
+		"/title"				//	1
 	};
 	int tag_index = 0;
 	int lines = 0;
@@ -517,9 +517,9 @@ void			skip_html_tag(
 //
 // PARAMETERS
 //
-//	c		The iterator to use.  It is presumed to start at any
-//			position after the '<' and before the '>'; it is left
-//			at the first character after the '>'.
+//	c		The iterator to use.  It must be positioned at the
+//			character after the '<'; it is repositioned at the
+//			first character after the '>'.
 //
 //	end		The iterator marking the end of the file.
 //
