@@ -20,8 +20,9 @@
 */
 
 // local
-#include "bcd.h"
+#include "enc_int.h"
 #include "word_info.h"
+#include "word_markers.h"
 #include "util.h"				/* for FOR_EACH */
 
 #ifndef	PJL_NO_NAMESPACES
@@ -44,8 +45,8 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	o << '\xEE';
+	o << Meta_Name_List_Marker;
 	FOR_EACH( meta_set, meta_ids_, meta_id )
-		o << bcd( *meta_id );
-	o << '\xEE';
+		o << enc_int( *meta_id );
+	o << Stop_Marker;
 }
