@@ -31,17 +31,25 @@ all: $(TARGET)
 ROOT:=		.
 include		$(ROOT)/config/config.mk
 
+# Don't do the "include" if the goal contains the word "clean," i.e., either
+# the "clean" or "distclean" goal.
+ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
+include		$(ROOT)/config/platform.mk
+endif
+
 DEBUGFLAGS:=
 #		Various debug flags; add to DEBUGFLAGS for debugging.
+#		-DDEBUG_id3v2
 #		-DDEBUG_is_ok_word
 #		-DDEBUG_parse_query
 #		-DDEBUG_stem_word
 #		-DDEBUG_threads
-CFLAGS:=	$(CCFLAGS) $(DEBUGFLAGS)
+CCFLAGS+=	$(DEBUGFLAGS)
+CFLAGS:=	$(CCFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
-SUBDIRS:=	man mod/*
+SUBDIRS:=	config man mod/*
 
 ifdef CHARSET_LIST
 SUBDIRS+=		charsets
@@ -95,7 +103,11 @@ ifdef WIN32
 I_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
 I_OBJECTS:=	$(I_SOURCES:.c=.o)
-I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PTHREAD_LIB) -lm
+ifndef HAVE_ZLIB
+ZLIB_LINK:=
+endif
+I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PTHREAD_LIB) \
+		-lm $(ZLIB_LINK)
 
 S_SOURCES:=	bcd.c \
 		mmap_file.c \
@@ -134,7 +146,7 @@ S_SOURCES+=	fdbuf.c \
 		User.c
 endif
 S_OBJECTS:=	$(S_SOURCES:.c=.o)
-S_LINK:=	$(SOCKET_LIB) $(PTHREAD_LIB)
+S_LINK:=	$(SOCKET_LINK) $(PTHREAD_LINK)
 
 E_SOURCES:=	mmap_file.c \
 		conf_var.c \
@@ -253,5 +265,5 @@ clean:
 	@$(call MAKE_SUBDIRS,$@)
 
 distclean: clean
-	$(RM) $(TARGET) .*.d init_modules.c platform.h
+	$(RM) $(TARGET) .*.d init_modules.c
 	@$(call MAKE_SUBDIRS,$@)
