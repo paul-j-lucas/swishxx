@@ -233,17 +233,11 @@ static void		write_word_index( ostream&, off_t* );
 		"help",			0, '?',
 		"no-assoc-meta",	0, 'A',
 		"config-file",		1, 'c',
-#ifdef	MOD_html
-		"no-class",		1, 'C',
-#endif
 		"pattern",		1, 'e',
 		"no-pattern",		1, 'E',
 		"file-max",		1, 'f',
 		"files-reserve",	1, 'F',
 		"files-grow",		1, 'g',
-#ifdef	MOD_html
-		"dump-html",		0, 'H',
-#endif
 		"index-file",		1, 'i',
 		"incremental",		0, 'I',
 #ifndef	PJL_NO_SYMBOLIC_LINKS
