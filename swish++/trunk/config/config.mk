@@ -48,33 +48,46 @@ OS:=		$(FREE_BSD) $(LINUX) $(MAC_OS_X) $(SOLARIS) $(WIN32)
 #
 ###############################################################################
 
-MOD_LIST:=	html latex mail man rtf
-#		The indexing modules you want built into index(1).  If you have
-#		no intention of indexing mail or news files, you should NOT
-#		build-in "mail" since it requires more processing per character
-#		and therefore will be slower for all files (not just mail and
-#		news files).
-#
-#		If you do want to index mail files and you want to be able to
-#		index HTML attachments, then you also need to build-in "html";
-#		similarly, if you want to be able to index RTF attachments,
-#		then you also need to build-in "rtf".
+MOD_LIST:=	html id3 latex mail man rtf
+#		The indexing modules you want built into index(1).  If you want
+#		to index mail files and you want to be able to index HTML
+#		attachments, then you need to build-in "html"; similarly, if
+#		you want to be able to index RTF attachments, then you need to
+#		build-in "rtf".
 
-ifeq ($(findstring mail,$(MOD_LIST)),mail)
-CHARSET_LIST:=	utf7 utf8
-#		The character sets you want index(1) to be able to decode only
-#		when MOD_LIST contains "mail".  Note that "us-ascii" and
-#		"iso8859-1" are implicitly included.
+CHARSET_LIST:=	utf7 utf8 utf16
+#		The character sets you want index(1) to be able to decode.
+#		Note that "us-ascii" and "iso8859-1" are implicitly included.
+#
+#		If you have no intention of indexing mail or news files, then
+#		you do not need utf7.
+#
+#		If you have no intention of indexing either mail, news, or MP3
+#		files and being able to index ID3 tags containing Unicode
+#		characters, then you do not need either utf8 or utf16.
 
 ENCODING_LIST:=	base64 quoted_printable
 #		The Content-Transfer-Encodings you want index(1) to be able to
 #		decode only when MOD_LIST contains "mail".
-endif
+
+#------------->	Including any character sets or encodings requires more
+#		processing PER CHARACTER and therefore will be slower for ALL
+#		files (not just those that are encoded).  So if you don't need
+#		any character sets (other than ISO 8859-1) or encodings, do NOT
+#		compile them in.
 
 # Leave the following lines alone!
 CHARSET_DEFS:=	$(foreach charset,$(CHARSET_LIST),-DCHARSET_$(charset))
 ENCODING_DEFS:=	$(foreach encoding,$(ENCODING_LIST),-DENCODING_$(encoding))
 MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-DMOD_$(mod))
+
+# These too!
+ifneq ($(CHARSET_DEFS),"")
+DECODING:=	-DIMPLEMENT_DECODING
+endif
+ifneq ($(ENCODING_DEFS),"")
+DECODING:=	-DIMPLEMENT_DECODING
+endif
 
 ifndef WIN32
 #		The search daemon ability is not currently supported for
@@ -99,9 +112,9 @@ SEARCH_DAEMON:=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 ifdef SEARCH_DAEMON
 
 ifdef FREE_BSD
-PTHREAD_LIB:=	-pthread
+PTHREAD_LINK:=	-pthread
 else
-PTHREAD_LIB:=	-lpthread
+PTHREAD_LINK:=	-lpthread
 endif
 #		Library to link against for POSIX threads if building with the
 #		search daemon ability.
@@ -112,13 +125,19 @@ SEARCH_DAEMON+=	-D_XOPEN_SOURCE=500
 endif
 
 ifdef SOLARIS
-SOCKET_LIB:=	-lsocket -lnsl
+SOCKET_LINK:=	-lsocket -lnsl
 #		Library to link against for sockets if building with the search
 #		daemon ability.
 endif
 
 endif # SEARCH_DAEMON
 endif # WIN32
+
+ifeq ($(findstring id3,$(MOD_LIST)),id3)
+ZLIB_LINK:=	-lz
+#		Library to link against for zlib compression if building with
+#		the ID3 module.
+endif
 
 ###############################################################################
 #
@@ -183,7 +202,7 @@ OPTIM+=		-fomit-frame-pointer
 endif
 endif # DEBUG
 
-CCFLAGS:=	-I. $(CHARSET_DEFS) $(ENCODING_DEFS) $(MOD_DEFS) \
+CCFLAGS:=	-I. $(CHARSET_DEFS) $(ENCODING_DEFS) $(DECODING) $(MOD_DEFS) \
 		$(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
 
@@ -245,8 +264,8 @@ MKDIR:=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 .%.d : %.c $(ROOT)/platform.h
 	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
 
-ifneq ($(TARGET),$(ROOT)/platform.h)
-$(ROOT)/platform.h:
+ifneq ($(findstring platform,$(TARGET)),platform)
+$(ROOT)/platform.h $(ROOT)/config/platform.mk:
 	@$(MAKE) -C $(ROOT)/config
 endif
 
