@@ -262,10 +262,9 @@ bool				header_cmp(
 //
 //*****************************************************************************
 {
-	char		buf[ Word_Hard_Max_Size + 1 ];
-	register char*	word;
-	bool		in_word = false;
-	int		len;
+	char	word[ Word_Hard_Max_Size + 1 ];
+	bool	in_word = false;
+	int	len;
 
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
@@ -276,7 +275,6 @@ bool				header_cmp(
 		if ( is_word_char( ch ) ) {
 			if ( !in_word ) {
 				// start a new word
-				word = buf;
 				word[ 0 ] = ch;
 				len = 1;
 				in_word = true;
