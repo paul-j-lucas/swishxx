@@ -13,8 +13,7 @@ SWISH++ has the following software as prerequisites:
 
 	http://www.xraylith.wisc.edu/~khan/software/gnu-win32/egcs.html
 
-2. A "make" command such as GNU make.  A free binary distribution is available
-   from:
+2. GNU make.  A free binary distribution is available from:
 
 	http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/download.html
 
@@ -43,13 +42,11 @@ Building SWISH++ for Microsoft Windows 95/98/NT
    and Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
    it should only take minutes.
 
-2. Copy the file "platform.h.win32" to "platform.h".
-
-3. Go to the "config" directory and edit the "config.mk" file as necessary.
+2. Go to the "config" directory and edit the "config.mk" file as necessary.
    This file controls how the software is compiled.
 
-4. Go back to the top-level directory and type "make -f Makefile.win32".  If
-   everything works out, the software will be built.
+3. Go back to the top-level directory and type "make".  If everything works
+   out, the software will be built.
 
 
 ===============================================================================
