@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "May 24, 2000" "SWISH++"
+.TH \f3index\f1 1 "September 7, 2000" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -612,7 +612,8 @@ The path of the directory,
 .IR d ,
 to use for temporary files.
 The directory must exist.
-(Default is \f(CW/tmp\f1.)
+(Default is \f(CW/tmp\f1 for Unix
+or \f(CW/temp\f1 for Windows.)
 .IP ""
 If your OS mounts swap space on \f(CW/tmp\f1,
 as indexing progresses and more files get created in \f(CW/tmp\f1,
@@ -777,7 +778,7 @@ or
 .PD
 .RE
 .SH EXAMPLES
-.SS Command-Lines
+.SS Unix Command-Lines
 All these example assume you change your working directory
 to your web server's document root prior to indexing.
 .P
@@ -789,6 +790,15 @@ To index all files not under directories named \f(CWSCCS\f1:
 .cS
 find . -name SCCS -prune -o -type f -a -print | index -h '*.*htm*' -
 .cE
+.SS Windows Command-Lines
+When using the Windows command interpreter,
+single quotes around filename patterns don't work; you
+.I must
+use double quotes:
+.cS
+index -v3 -h "*.*htm*" -e "*.txt" .
+.cE
+(Double quotes will also work under Unix.)
 .SS Using \f(CWCLASS\fP Attributes to Index Selectively
 In an HTML or XHTML document, there may be sections that should not be indexed.
 For example, if every page of a web site contains a navigation menu such as:
