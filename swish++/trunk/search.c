@@ -52,6 +52,7 @@
 #include "option_stream.h"
 #include "platform.h"
 #include "ResultsMax.h"
+#include "ResultSeparator.h"
 #include "search.h"
 #include "stem_word.h"
 #include "StemWords.h"
@@ -214,6 +215,8 @@ inline omanip< char const* > index_file_info( int index ) {
 		index_file_name = opt.index_file_name_arg;
 	if ( opt.max_results_arg )
 		max_results = opt.max_results_arg;
+	if ( opt.result_separator_arg )
+		result_separator = opt.result_separator_arg;
 	if ( opt.stem_words_opt )
 		stem_words = true;
 	if ( opt.word_file_max_arg )
@@ -325,7 +328,8 @@ inline omanip< char const* > index_file_info( int index ) {
 	}
 	file_list const list( found.first );
 	FOR_EACH( file_list, list, file )
-		out	<< file->occurrences_ << ' ' << file->rank_ << ' '
+		out	<< file->occurrences_ << ' '
+			<< file->rank_ << result_separator
 			<< index_file_info( file->index_ ) << '\n';
 	out << '\n';
 }
@@ -936,7 +940,7 @@ no_put_back:
 		i != sorted.end() && max_results-- > 0;
 		++i
 	)
-		out	<< int( i->second * normalize ) << ' '
+		out	<< int( i->second * normalize ) << result_separator
 			<< index_file_info( i->first ) << '\n';
 }
 
@@ -981,6 +985,7 @@ no_put_back:
 	dump_word_index_opt		= false;
 	index_file_name_arg		= 0;
 	max_results_arg			= 0;
+	result_separator_arg		= 0;
 	skip_results_arg		= 0;
 	stem_words_opt			= false;
 	word_file_max_arg		= 0;
@@ -1063,6 +1068,10 @@ no_put_back:
 				skip_results_arg = ::atoi( opt.arg() );
 				if ( skip_results_arg < 0 )
 					skip_results_arg = 0;
+				break;
+
+			case 'R': // Result separator.
+				result_separator_arg = opt.arg();
 				break;
 
 			case 's': // Stem words.
@@ -1165,7 +1174,7 @@ no_put_back:
 			file_list const list( word );
 			FOR_EACH( file_list, list, file )
 				out	<< "  " << file->occurrences_ << ' '
-					<< file->rank_ << ' '
+					<< file->rank_ << result_separator
 					<< index_file_info( file->index_ )
 					<< '\n';
 			out << '\n';
@@ -1236,6 +1245,7 @@ ostream& usage( ostream &err ) {
 	"-q n | --queue-size n     : Maximum queued socket connections [default: " << SocketQueueSize_Default << "]\n"
 #endif
 	"-r n | --skip-results n   : Number of initial results to skip [default: 0]\n"
+	"-R s | --separator s      : Result separator string [default: \" \"]\n"
 	"-s   | --stem-words       : Stem words prior to search [default: no]\n"
 	"-S   | --dump-stop        : Dump stop-word index, exit\n"
 #ifdef SEARCH_DAEMON
