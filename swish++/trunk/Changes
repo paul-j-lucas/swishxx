@@ -119,6 +119,11 @@ CHANGES, file-by-file
 
 	1. In set_signal_handlers(), removed SA_RESTART.
 
+* swish++.conf
+
+	1. Removed DirectoriesGrow and DirectoriesReserve as part of bug fix
+	   ISI2.
+
 * thread_pool.c
 
 	1. In thread_destroy(), added code to unlock q_lock for bug fix TPD.
