@@ -37,6 +37,10 @@ CHANGES, file-by-file
 
 	1. Changed to "5.15.2".
 
+* xml_formatter.c
+
+	1. Changed xmlns location.
+
 
 *******************************************************************************
 5.15.1
