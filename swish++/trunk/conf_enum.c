@@ -75,11 +75,11 @@ extern char const*	me;
 //
 //*****************************************************************************
 {
-	char const *const lower = to_lower( line );
+	char *const lower = to_lower( line );
 	if ( *lower )
 		for ( char const *const *v = legal_values_; *v; ++v )
 			if ( !::strcmp( lower, *v ) ) {
-				operator=( *v );
+				conf<string>::parse_value( lower );
 				return;
 			}
 
