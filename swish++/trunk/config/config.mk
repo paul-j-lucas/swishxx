@@ -26,6 +26,15 @@
 
 ###############################################################################
 #
+#	SWISH++ stuff
+#
+###############################################################################
+
+#WIN32=		-DWIN32
+#		If uncommented, build SWISH++ for Windows.
+
+###############################################################################
+#
 #	General stuff
 #
 ###############################################################################
@@ -61,10 +70,8 @@ STRIP=		strip
 CC=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
-CCFLAGS=	-O3 #-DWIN32 -g -pg
-#		Flags for C++ compiler:
-#
-#		-DWIN32	Compiling under Windows.
+CCFLAGS=	$(WIN32) -O3 # -g -pg
+#		Additional flags for the C++ compiler:
 #
 #		-g	Include symbol-table information in object file.  (You
 #			normally wouldn't want to do this unless you are
@@ -194,4 +201,7 @@ MAN=		$(ROOT)/man
 PLATFORM_H=	platform$(CCHEXT)
 
 .SUFFIXES:
-.SUFFIXES: $(CCCEXT) $(CCHEXT) $(CCOEXT)
+.SUFFIXES: $(CCCEXT) $(CCHEXT) $(CCOEXT) .in
+
+.in:
+	$(PERL) $(CONFIG)/config.pl $@ $(VARS)
