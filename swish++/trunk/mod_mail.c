@@ -787,7 +787,7 @@ more_headers:
 	//
 	// Canonicalize the name of the header to lower case.
 	//
-	kv->key = to_lower( header_begin, header_end );
+	kv->key = to_lower_r( header_begin, header_end );
 	return true;
 }
 
