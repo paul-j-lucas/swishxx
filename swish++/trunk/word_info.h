@@ -50,10 +50,10 @@ public:
 	struct file {
 		typedef PJL::my_set< short > meta_set;
 
-		int		index_;		// occurs in i-th file
 		meta_set	meta_ids_;	// meta name(s) associated with
-		short		occurrences_;	// in this file only
-		short		rank_;
+		int		index_;		// occurs in i-th file
+		int		occurrences_;	// in this file only
+		int		rank_;
 
 		file() { }
 		explicit file( int index ) :
