@@ -32,12 +32,13 @@ all: $(TARGET)
 ROOT:=		.
 include		$(ROOT)/config/config.mk
 
-CFLAGS:=	$(CCFLAGS)
-#		Various debug flags; add to CFLAGS for debugging.
+DEBUGFLAGS:=	
+#		Various debug flags; add to DEBUGFLAGS for debugging.
 #		-DDEBUG_is_ok_word
 #		-DDEBUG_parse_query
 #		-DDEBUG_stem_word
 #		-DDEBUG_threads
+CFLAGS:=	$(CCFLAGS) $(DEBUGFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
@@ -149,7 +150,7 @@ search: $(S_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(S_LINK)
 
 $(MOD_LIBS): FORCE
-	@$(MAKE) -C $(dir $@) DEBUG="$(DEBUG)"
+	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
 
 .PHONY: FORCE
 
