@@ -1,6 +1,6 @@
 /*
 **	SWISH++
-**	IncludeExtension.h
+**	FilterFile.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,47 +19,53 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef IncludeExtension_H
-#define IncludeExtension_H
+#ifndef FilterFile_H
+#define FilterFile_H
 
 // standard
 #include <map>
-#include <string>
 
 // local
 #include "conf_var.h"
+#include "filter.h"
+#include "pattern_map.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class IncludeExtension :
-		public conf_var, public std::map< std::string, bool >
+	class FilterFile : public conf_var
 //
 // DESCRIPTION
 //
-//	An IncludeExtension is-a conf_var containing the set of filename
-//	extensions of files to include during either indexing or extraction.
-//	Additionally, an extension can be inserted marked as being one for HTML
-//	files.
-//
-//	This is the same as either index's or extract's -e and index's -h
-//	command-line option.
+//	A FilterFile is-a conf_var for mapping a filename pattern to a filter
+//	(being a Unix process called via command-line).  Certain filename
+//	patterns need to be filtered first, e.g., uncompressed.
 //
 //*****************************************************************************
 {
 public:
-	IncludeExtension() : conf_var( "IncludeExtension" ) {
-		alias_name( "HTMLExtension" );
-	}
+	typedef char const* key_type;
+	typedef filter value_type;
+	typedef value_type const* const_pointer;
 
-	bool contains( key_type s ) const { return find( s ) != end(); }
-	void insert( key_type extension, bool is_html_ext = false ) {
-		(*this)[ extension ] = is_html_ext;
+	FilterFile();
+
+	const_pointer operator[]( key_type key ) const {
+		map_type::const_iterator const i = map_.find( key );
+		return i != map_.end() ? &i->second : 0;
 	}
 private:
+	// Note that the declaration of std::map has a default "Compare"
+	// template parameter of "less< key_type >" and, since we've included
+	// less.h above that defines "less< char const* >", C-style string
+	// comparisons work properly.
+	//
+	typedef pattern_map< value_type > map_type;
+	map_type map_;
+
 	virtual void	parse_value( char const *var_name, char *line );
-	virtual void	reset() { clear(); }
+	virtual void	reset() { map_.clear(); }
 };
 
-#endif	/* IncludeExtension_H */
+#endif	/* FilterFile_H */

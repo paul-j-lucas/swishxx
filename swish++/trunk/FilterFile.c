@@ -1,6 +1,6 @@
 /*
 **	SWISH++
-**	FilterExtension.c
+**	FilterFile.c
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -25,7 +25,7 @@
 
 // local
 #include "exit_codes.h"
-#include "FilterExtension.h"
+#include "FilterFile.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -35,15 +35,15 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	FilterExtension::FilterExtension() :
+	FilterFile::FilterFile() :
 //
 // DESCRIPTION
 //
-//	Construct (initialize) a FilterExtension: load the extension map with
+//	Construct (initialize) a FilterFile: load the pattern map with
 //	default common filters.
 //
 //*****************************************************************************
-	conf_var( "FilterExtension" )
+	conf_var( "FilterFile" )
 {
 #if 0	/* I'm not convinced that default filters are a good idea. */
 
@@ -63,16 +63,16 @@ using namespace std;
 // SYNOPSIS
 //
 	/* virtual */
-	void FilterExtension::parse_value( char const *var_name, char *line )
+	void FilterFile::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
-//	Parse a FilterExtension configuration file line.  The format of such a
-//	line is:
+//	Parse a FilterFile configuration file line.  The format of such a line
+//	is:
 //
-//		ext	command
+//		pattern	command
 //
-//	where "ext" is a filename extension and "command" is the command-line
+//	where "pattern" is a filename pattern and "command" is the command-line
 //	for executing the filter on a file.
 //
 //	Furthermore, ensure the filter contains % and @ filename substitutions.
@@ -85,9 +85,9 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	char const *const ext = ::strtok( line, " \r\t" );
-	if ( !ext ) {
-		cerr << error << "no filename extension" << endl;
+	char const *const pattern = ::strtok( line, " \r\t" );
+	if ( !pattern ) {
+		cerr << error << "no filename pattern" << endl;
 		::exit( Exit_Config_File );
 	}
 	char const *const command = ::strtok( 0, "\n" );
@@ -142,6 +142,6 @@ using namespace std;
 	}
 
 	map_.insert( map_type::value_type(
-		::strdup( ext ), value_type( ::strdup( command ) )
+		::strdup( pattern ), value_type( ::strdup( command ) )
 	) );
 }

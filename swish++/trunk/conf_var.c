@@ -116,14 +116,14 @@ int conf_var::current_config_file_line_no_ = 0;
 	static map_type m;
 	if ( m.empty() ) {
 		m[ "ExcludeClass"	] = 0;
-		m[ "ExcludeExtension"	] = 0;
+		m[ "ExcludeFile"	] = 0;
 		m[ "ExcludeMeta"	] = 0;
 		m[ "FilesGrow"		] = 0;
 		m[ "FilesReserve"	] = 0;
-		m[ "FilterExtension"	] = 0;
+		m[ "FilterFile"		] = 0;
 		m[ "FollowLinks"	] = 0;
-		m[ "HTMLExtension"	] = 0;
-		m[ "IncludeExtension"	] = 0;
+		m[ "HTMLFile"		] = 0;
+		m[ "IncludeFile"	] = 0;
 		m[ "IncludeMeta"	] = 0;
 		m[ "Incremental"	] = 0;
 		m[ "IndexFile"		] = 0;

@@ -1,6 +1,6 @@
 /*
 **	SWISH++
-**	FilterExtension.h
+**	IncludeFile.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,53 +19,36 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef FilterExtension_H
-#define FilterExtension_H
-
-// standard
-#include <map>
+#ifndef IncludeFile_H
+#define IncludeFile_H
 
 // local
 #include "conf_var.h"
-#include "filter.h"
-#include "less.h"
+#include "pattern_map.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class FilterExtension : public conf_var
+	class IncludeFile : public conf_var, public pattern_map< bool >
 //
 // DESCRIPTION
 //
-//	A FilterExtension is-a conf_var for mapping a filename extension to a
-//	filter (being a Unix process called via command-line).  Certain
-//	filename extensions needs to be filtered first, e.g., uncompressed.
+//	An IncludeFile is-a conf_var containing the set of filename patterns
+//	to include during either indexing or extraction.  Additionally, a
+//	pattern can be inserted marked as being one for HTML or XHTML files.
+//
+//	This is the same as either index's or extract's -e and index's -h
+//	command-line option.
 //
 //*****************************************************************************
 {
 public:
-	typedef char const* key_type;
-	typedef filter value_type;
-	typedef value_type const* const_pointer;
-
-	FilterExtension();
-
-	const_pointer operator[]( key_type key ) const {
-		map_type::const_iterator const i = map_.find( key );
-		return i != map_.end() ? &i->second : 0;
-	}
+	IncludeFile() : conf_var( "IncludeFile" ) { alias_name( "HTMLFile" ); }
+	CONF_VAR_ASSIGN_OPS( IncludeFile )
 private:
-	// Note that the declaration of std::map has a default "Compare"
-	// template parameter of "less< key_type >" and, since we've included
-	// less.h above that defines "less< char const* >", C-style string
-	// comparisons work properly.
-	//
-	typedef std::map< key_type, value_type > map_type;
-	map_type map_;
-
 	virtual void	parse_value( char const *var_name, char *line );
-	virtual void	reset() { map_.clear(); }
+	virtual void	reset() { clear(); }
 };
 
-#endif	/* FilterExtension_H */
+#endif	/* IncludeFile_H */

@@ -1,6 +1,6 @@
 /*
 **	SWISH++
-**	ExcludeExtension.h
+**	IncludeFile.c
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,30 +19,34 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef ExcludeExtension_H
-#define ExcludeExtension_H
+// standard
+#include <cstring>
 
 // local
-#include "conf_set.h"
+#include "IncludeFile.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class ExcludeExtension : public conf_set
+	/* virtual */
+	void IncludeFile::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
-//	An ExcludeExtension is-a conf_set containing the set of filename
-//	extensions of files to exclude during either indexing or extraction.
+//	Parse the line of text by splitting it into words that are separated by
+//	whitespace.  It also handles the configuration variable alias case for
+//	HTMLFile.
 //
-//	This is the same as either index's or extract's -E command-line option.
+// PARAMETERS
+//
+//	var_name	The name of the configuration variable.
+//
+//	line		The line of text to be parsed.
 //
 //*****************************************************************************
 {
-public:
-	ExcludeExtension() : conf_set( "ExcludeExtension" ) { }
-	CONF_SET_ASSIGN_OPS( ExcludeExtension )
-};
-
-#endif	/* ExcludeExtension_H */
+	bool const is_html_pattern = !::strcmp( var_name, "HTMLFile" );
+	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
+		insert( ::strdup( s ), is_html_pattern );
+}

@@ -1,6 +1,6 @@
 /*
 **	SWISH++
-**	IncludeExtension.c
+**	ExcludeFile.c
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -23,20 +23,19 @@
 #include <cstring>
 
 // local
-#include "IncludeExtension.h"
+#include "ExcludeFile.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
 	/* virtual */
-	void IncludeExtension::parse_value( char const *var_name, char *line )
+	void ExcludeFile::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
 //	Parse the line of text by splitting it into words that are separated by
-//	whitespace.  It also handles the configuration variable alias case for
-//	HTMLExtension.
+//	whitespace.
 //
 // PARAMETERS
 //
@@ -46,7 +45,6 @@
 //
 //*****************************************************************************
 {
-	bool const is_html_ext = !::strcmp( var_name, "HTMLExtension" );
 	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
-		insert( s, is_html_ext );
+		insert( ::strdup( s ) );
 }
