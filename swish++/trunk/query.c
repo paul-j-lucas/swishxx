@@ -515,7 +515,7 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> '('\n";
 #			endif
-			if ( !parse_meta(
+			if ( !parse_query2(
 				query, results, stop_words_found, and_results,
 				ignore, meta_id
 			) )
@@ -532,7 +532,7 @@ no_put_back:
 			cerr << "---> begin not\n";
 #			endif
 			search_results temp;
-			if ( !parse_primary(
+			if ( !parse_meta(
 				query, temp, stop_words_found, and_results,
 				ignore, meta_id
 			) )
