@@ -1,0 +1,158 @@
+#! %%PERL%%
+##
+#	SWISH++
+#	searchc: Simple search client script used mostly to test 'search' when
+#	running as a server daemon.
+#
+#	Copyright (C) 1999  Paul J. Lucas
+#
+#	This program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your option) any later version.
+#
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+#
+#	You should have received a copy of the GNU General Public License
+#	along with this program; if not, write to the Free Software
+#	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##
+
+$ConfigFile_Default	= 'swish++.conf';
+$ResultsMax_Default	= 100;
+$SocketAddress_Default	= '1967';
+$SocketFile_Default	= '/tmp/search.socket';
+
+########## You should't have to change anything below this line. ##############
+
+##
+# SEE ALSO
+#
+#	Larry Wall, et al.  "Programming Perl," 3rd ed., O'Reilly and
+#	Associates, Inc., Sebastopol, CA, 1996, pp. 439-440.
+##
+
+require 5.003;
+
+use File::Basename;
+use Getopt::Std;
+use Socket;
+
+$me = basename( $0 );
+sub usage;
+
+########## Process command-line options #######################################
+
+( getopts( 'a:c:dDhm:Mr:sSTu:UVw:' ) && !$opt_h ) || usage();
+die "$me: one of -[auTU] must be specified\n"
+	unless $opt_a || $opt_u || $opt_T || $opt_U;
+die "$me: -T and -U are mutually exclusive\n" if $opt_T && $opt_U;
+
+( $ConfigFile = $opt_c ) ||= $ConfigFile_Default;
+$SocketAddress	= $SocketAddress_Default;
+$SocketFile	= $SocketFile_Default;
+
+##
+# First, parse the config. file (if any); then override variables specified on
+# the command line with options.
+##
+if ( open( CONF, $ConfigFile ) ) {
+	my $conf = join( '', grep( !/^\s*#/, <CONF> ) ); # without comments
+	close( CONF );
+	$conf =~ /SocketAddress\s+(\S+)/im;
+	$SocketAddress = $1 if $1;
+	$conf =~ /SocketFile\s+(\S+)/im;
+	$SocketFile = $1 if $1;
+	$conf =~ /ResultsMax\s+(\S+)/im;
+	$ResultsMax = $1 if $1;
+} else {
+	die "$me: could not read configuration \"$ConfigFile\"\n"
+		if $ConfigFile ne $ConfigFile_Default;
+}
+
+$ResultsMax	= $opt_m if $opt_m;
+$SocketAddress	= $opt_a if $opt_a;
+$SocketFile	= $opt_u if $opt_u;
+
+##
+# Build a command line to pass to 'search'.
+##
+unshift( @ARGV, '-d' ) if $opt_d;
+unshift( @ARGV, '-D' ) if $opt_D;
+unshift( @ARGV, "-m$ResultsMax" ) if $ResultsMax;
+unshift( @ARGV, '-M' ) if $opt_M;
+unshift( @ARGV, "-r$opt_r" ) if $opt_r;
+unshift( @ARGV, '-s' ) if $opt_s;
+unshift( @ARGV, '-S' ) if $opt_S;
+unshift( @ARGV, '-V' ) if $opt_V;
+unshift( @ARGV, "-w$opt_w" ) if $opt_w;
+
+########## Main ###############################################################
+
+if ( $opt_T ) {
+	##
+	# Connect to the 'search' server via a TCP socket.
+	##
+	my( $host, $port ) = $SocketAddress =~ /(?:([^\s:]+):)?(\d+)/;
+	$host = 'localhost' if $host eq '' || $host =~ /^\*?$/;
+	my $iaddr = inet_aton( $host ) ||
+		die "$me: \"$host\": bad or unknown host\n";
+	socket( SEARCH, PF_INET, SOCK_STREAM, getprotobyname( 'tcp' ) ) ||
+		die "$me: can not open socket: $!\n";
+	connect( SEARCH, sockaddr_in( $port, $iaddr ) ) ||
+		die "$me: can not connect to \"$SocketAddress\": $!\n";
+} else {
+	##
+	# Connect to the 'search' server via a Unix domain socket.
+	##
+	socket( SEARCH, PF_UNIX, SOCK_STREAM, 0 ) ||
+		die "$me: can not open socket: $!\n";
+	connect( SEARCH, sockaddr_un( $SocketFile ) ) ||
+		die "$me: can not connect to \"$SocketFile\": $!\n";
+}
+
+##
+# We *MUST* set autoflush for the socket filehandle, otherwise the server
+# thread will hang since I/O buffering will wait for the buffer to fill that
+# will never happen since queries are short.  See [Wall], p. 781.
+##
+select( (select( SEARCH ), $| = 1)[0] );
+
+##
+# We also *MUST* print a trailing newline since the server reads an entire line
+# of input (so therefore it looks and waits for a newline).
+##
+print SEARCH 'search ', join( ' ', @ARGV ), "\n";	# send query to server
+shutdown( SEARCH, 1 );					# finished sending
+
+print while <SEARCH>;					# read results back
+close( SEARCH );
+exit 0;
+
+########## Miscellaneous function(s) ##########################################
+
+sub usage {
+	die <<USAGE;
+usage: $me [options] [query]
+options:
+========
+-a socket_addr  : Host and port of socket address [default: *:1967]
+-c config_file  : Name of configuration file [default: $ConfigFile_Default]
+-d              : Dump query word indices and exit
+-D              : Dump entire word index and exit
+-h              : Print this help message
+-m max_results  : Maximum number of results [default: $ResultsMax_Default]
+-M              : Dump meta-name index and exit
+-r skip_results : Number of initial results to skip [default: 0]
+-s              : Stem words prior to search [default: no]
+-S              : Dump stop-word index and exit
+-T              : Connect via TCP socket
+-u socket_file  : Name of socket file [default: $SocketFile_Default]
+-U              : Connect via Unix domain socket
+-V              : Print version number and exit
+-w size[,chars] : Dump window of words around query words [default: 0]
+USAGE
+}
