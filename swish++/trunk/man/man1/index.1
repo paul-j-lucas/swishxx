@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "December 19, 1999" "SWISH++"
+.TH \f3index\f1 1 "February 16, 2000" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -269,6 +269,45 @@ configuration file variable,
 files having particular extensions can be filtered prior to indexing.
 (See FILTERS in
 .BR swish++.conf (4).)
+.SS Incremental Indexing
+In order to add words from new documents to an existing index,
+either the entire set of documents can be reindexed
+or the new documents alone can be incrementally indexed.
+In many cases, reindexing everything is sufficient since
+.B index
+is really fast.
+For a very large document set, however,
+this may use too many resources.
+.P
+However, there is a pitfall for incremental indexing:
+if any of the
+.BR \-f ,
+.BR \-\-word-files ,
+.BR \-p ,
+or
+.B \-\-word-percent
+options or
+.B WordFilesMax
+or
+.B WordPercentMax
+variables are used,
+then words that are too frequent are discarded.
+If new documents are added containing very few of those words,
+then they could no longer be too frequent.
+However, there is no way to get them back since they were discared.
+.P
+The way around this problem is not to discard any words
+by specifying 101%.
+However, because no words are discarded,
+the size of the index file will be larger,
+perhaps significantly so.
+.P
+It is possible that, in practice, the loss of words may not be that important
+espcially if new documents are very similar to old documents
+and that words that were too frequent in the old set
+would also be too frequent in new set.
+.P
+Another way around this problem is to do periodic full indexing.
 .SH OPTIONS
 Options begin with either a `\f(CW-\f1' for short options
 or a ``\f(CW--\f1'' for long options.
@@ -378,13 +417,29 @@ a word may occur in before it is discarded as being too frequent.
 .br
 .ns
 .TP
-.BI \-\-file-reserve= n
+.BI \-\-files-reserve= n
 Reserve space for this number of files,
 .IR n ,
 to start.
 More space will be allocated as necessary,
 but with a slight performace penalty.
 (Default is 1000.)
+.TP
+.BI \-G
+.br
+.ns
+.BI \-\-files-grow= n
+Grow the space for the reserved number of files when incrementally indexing.
+The number,
+.IR n ,
+can either be an absolute number of files
+or a percentage (when followed by a percent sign \f(CW%\f1).
+Just as with the
+.B \-F
+option,
+more space will be allocated as necessary,
+but with a slight performace penalty.
+(Default is 100.)
 .TP
 .BI \-h e
 .br
@@ -416,8 +471,20 @@ Dump the built-in set of recognized HTML elements to standard output and exit.
 .TP
 .BI \-\-index-file= f
 The name of the generated index file,
-.IR f .
-(Default is \f(CWswish++.index\f1 in the current directory.)
+.I f
+(for new indexes;
+default is \f(CWswish++.index\f1 in the current directory)
+or the old index file when doing incremental indexing.
+.TP
+.B \-I
+.br
+.ns
+.TP
+.B \-\-incremental
+Incrementally add the indexed files and words to an existing index.
+The existing index is not touched;
+instead, a new index is created having the same pathname of the existing index
+with ``\f(CW.new\f1'' appended.
 .TP
 .B \-l
 .br
@@ -627,7 +694,7 @@ or
 Same as
 .B \-F
 or
-.B \-\-file-reserve
+.B \-\-files-reserve
 .TP
 .B FilterExtension
 (See FILTERS in
@@ -656,6 +723,12 @@ Same as
 .B \-m
 or
 .B \-\-meta
+.TP
+.B Incremental
+Same as
+.B \-I
+or
+.B \-\-incremental
 .TP
 .B IndexFile
 Same as
@@ -708,14 +781,15 @@ or
 .RE
 .SH EXAMPLES
 .SS Command-Lines
+All these example assume you change your working directory
+to your web server's document root prior to indexing.
+.P
 To index all HTML and text files on a web server:
 .cS
-cd /home/www/htdocs
 index -v3 -h html -h shtml -e txt .
 .cE
 To index all files not under directories named \f(CWSCCS\f1:
 .cS
-cd /home/www/htdocs
 find . -name SCCS -prune -o -type f -a -print | index -h html -
 .cE
 .SS Using \f(CWCLASS\fP Attributes to Index Selectively
@@ -818,16 +892,11 @@ Generated index files are machine-dependent
 (size of data types and byte order).
 .TP
 3.
-Incremental indexing
-(adding files to an existing index and having to adjust existing rankings)
-is not possible since word occurrence counts are not stored.
-.TP
-4.
 The character encoding always used is ISO 8859-1 (Latin 1).
 Character encodings specified either in \f(CWMETA\f1 elements
-or via the \f(CWcharset\f1 attribute in other elements are ignored.
+or via the \f(CWCHARSET\f1 attribute in other elements are ignored.
 .TP
-5.
+4.
 The word-determination heuristics employed are heavily geared for English.
 Using SWISH++ as-is to index and search files in non-English languages
 is not recommended.
@@ -860,7 +929,7 @@ International Standards Organization.
 .PP
 Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
 ``On SGML and HTML: SGML constructs used in HTML: Entities,''
-.I HTML 4.0 Specification, section 3.2.3,
+.I HTML 4.0 Specification, \(sc3.2.3,
 World Wide Web Consortium,
 April 1998.
 .RS
@@ -869,7 +938,7 @@ http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.3
 .PP
 \-\-.
 ``The global structure of an HTML document: The document head: The \f(CWtitle\f1 attribute,''
-.I HTML 4.0 Specification, section 7.4.3,
+.I HTML 4.0 Specification, \(sc7.4.3,
 World Wide Web Consortium,
 April 1998.
 .RS
@@ -878,7 +947,7 @@ http://www.w3.org/TR/REC-html40/struct/global.html#adef-title
 .PP
 \-\-.
 ``The global structure of an HTML document: The document head: Meta data,''
-.I HTML 4.0 Specification, section 7.4.4,
+.I HTML 4.0 Specification, \(sc7.4.4,
 World Wide Web Consortium,
 April 1998.
 .RS
@@ -887,7 +956,7 @@ http://www.w3.org/TR/PR-html40/struct/global.html#h-7.4.4
 .PP
 \-\-.
 ``The global structure of an HTML document: The document body: Element identifiers: the \f(CWid\f1 and \f(CWclass\f1 attributes,''
-.I HTML 4.0 Specification, section 7.5.2,
+.I HTML 4.0 Specification, \(sc7.5.2,
 World Wide Web Consortium,
 April 1998.
 .RS
@@ -896,7 +965,7 @@ http://www.w3.org/TR/PR-html40/struct/global.html#h-7.5.2
 .PP
 \-\-.
 ``Tables: Elements for constructing tables: The \f(CWTABLE\f1 element,''
-.I HTML 4.0 Specification, section 11.2.1,
+.I HTML 4.0 Specification, \(sc11.2.1,
 World Wide Web Consortium,
 April 1998.
 .RS
@@ -905,7 +974,7 @@ http://www.w3.org/TR/REC-html40/struct/tables.html#adef-summary
 .PP
 \-\-.
 ``Objects, Images, and Applets: Generic inclusion: the \f(CWOBJECT\f1 element,''
-.I HTML 4.0 Specification, section 13.3,
+.I HTML 4.0 Specification, \(sc13.3,
 World Wide Web Consortium,
 April 1998.
 .RS
@@ -914,7 +983,7 @@ http://www.w3.org/TR/REC-html40/struct/objects.html#adef-standby
 .PP
 \-\-.
 ``Objects, Images, and Applets: How to specify alternate text,''
-.I HTML 4.0 Specification, section 13.8,
+.I HTML 4.0 Specification, \(sc13.8,
 World Wide Web Consortium,
 April 1998.
 .RS
