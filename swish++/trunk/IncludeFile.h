@@ -36,10 +36,10 @@
 // DESCRIPTION
 //
 //	An IncludeFile is-a conf_var containing the set of filename patterns
-//	to include during either indexing or extraction.  Additionally, each
-//	pattern is mapped to the indexer that indexes that kind of file.
+//	to include during indexing.  Additionally, each pattern is mapped to
+//	the indexer that indexes that kind of file.
 //
-//	This is the same as either index's or extract's -e command-line option.
+//	This is the same as either index's -e command-line option.
 //
 //*****************************************************************************
 {
