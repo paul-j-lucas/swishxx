@@ -94,12 +94,8 @@ private:
 		External_Filter,
 
 		Text_Plain,
-#ifdef	MOD_rtf
 		Text_Enriched,
-#endif
-#ifdef	MOD_html
 		Text_HTML,
-#endif
 		Text_vCard,
 		Message_RFC822,
 		Multipart,
