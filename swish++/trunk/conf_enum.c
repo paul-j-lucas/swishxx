@@ -85,7 +85,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( *value ) {
-		auto_vec< char > const lower( to_lower_r( value ) );
+		auto_vec<char> const lower( to_lower_r( value ) );
 		for ( char const *const *v = legal_values_; *v; ++v )
 			if ( !::strcmp( lower, *v ) )
 				return true;
@@ -122,6 +122,6 @@ extern char const*	me;
 {
 	if ( !is_legal( line ) )
 		::exit( Exit_Config_File );
-	auto_vec< char > const lower( to_lower_r( line ) );
+	auto_vec<char> lower( to_lower_r( line ) );
 	conf<string>::parse_value( lower );
 }

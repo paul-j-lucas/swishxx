@@ -54,7 +54,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	auto_vec< char > const lower( to_lower_r( line ) );
+	auto_vec<char> lower( to_lower_r( line ) );
 	char *p = lower;
 	for (	register char const *meta_name;
 		meta_name = ::strtok( p, " \r\t" );
