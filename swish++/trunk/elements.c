@@ -95,8 +95,13 @@
 		"cite",		R,	"/cite",
 		"code",		R,	"/code",
 		"col",		F,
-		"colgroup",	O,	"/colgroup", "tbody", "tfoot", "thead",
-					"tr", "/table", 0,
+
+		"colgroup",	O,	"colgroup", "/colgroup",
+					"tbody", "tfoot", "thead",
+					"tr",
+					"/table",
+					0,
+
 		"dd",		O,	"dd", "/dd", "/dl", 0,
 		"del",		R,	"/del",
 		"dfn",		R,	"/dfn",
@@ -146,8 +151,12 @@
 		"object",	R,	"/object",
 		"ol",		R,	"/ol",
 		"optgroup",	R,	"/optgroup",
-		"option",	O,	"/optgroup", "option", "/option",
-					"/select", 0,
+
+		"option",	O,	"/optgroup",
+					"option", "/option",
+					"/select",
+					0,
+
 		"p",		O,	"address", "/address",
 					"applet", "/applet",
 					"blockquote", "/blockquote",
@@ -198,6 +207,7 @@
 					"ul", "/ul",
 					"xmp", "/xmp",
 					0,
+
 		"param",	F,
 		"plaintext",	F,				// deprecated
 		"pre",		R,	"/pre",
@@ -216,14 +226,37 @@
 		"sub",		R,	"/sub",
 		"sup",		R,	"/sup",
 		"table",	R,	"/table",
-		"tbody",	O,	"/tbody", 0,
-		"td",		O,	"td", "th", "/table", 0,
+		"tbody",	O,	"tbody", "/tbody", 0,
+
+		"td",		O,	"tbody", "/tbody",
+					"td", "/td",
+					"tfoot", "/tfoot",
+					"th",
+					"/table",
+					"tr", "/tr",
+					0,
+
 		"textarea",	R,	"/textarea",
-		"tfoot",	O,	"/tfoot", 0,
-		"th",		O,	"td", "th", "/table", 0,
-		"thead",	O,	"/thead", 0,
+		"tfoot",	O,	"tbody", "/tfoot", "thead", 0,
+
+		"th",		O,	"tbody", "/tbody",
+					"td",
+					"tfoot", "/tfoot",
+					"th", "/th",
+					"/table",
+					"tr", "/tr",
+					0,
+
+		"thead",	O,	"tbody", "tfoot", "/thead", 0,
 		"title",	R,	"/title",
-		"tr",		O,	"tr", "/tr", "/table", 0,
+
+		"tr",		O,	"tbody", "/tbody",
+					"tfoot", "/tfoot",
+					"/thead",
+					"tr", "/tr",
+					"/table",
+					0,
+
 		"tt",		R,	"/tt",
 		"u",		R,	"/u",			// deprecated
 		"ul",		R,	"/ul",
@@ -235,7 +268,7 @@
 	};
 
 	for ( register char const *const *p = end_tag_table; *p; ++p ) {
-		element::end_tag_value const v = (element::end_tag_value)(p[1]);
+		element::end_tag_value const v = (element::end_tag_value const)(p[1]);
 		element &e = insert( value_type( *p, element( v ) ) ).first->second;
 		++p;
 		switch ( v ) {
