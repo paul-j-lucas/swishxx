@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "July 14, 2001" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "September 6, 2001" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -155,7 +155,6 @@ A special string of \f(CWinfinity\f1 is taken to mean
 ``the largest possible integer value.''
 Case is irrelevant.
 Variables of this type are:
-.BR DirectoriesReserve ,
 .BR FilesReserve ,
 .BR ResultsMax ,
 .BR SocketQueueSize ,
@@ -173,8 +172,6 @@ Variables of this type are like integer variables
 except that if an optional trailing percent sign (\f(CW%\f1) is present,
 the value is taken to be a percentage rather than an absolute number.
 Variables of this type are:
-.B DirectoriesGrow
-and
 .BR FilesGrow .
 .SS String variables
 Variables of this type take one argument that is the remainder of the line
