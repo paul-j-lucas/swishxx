@@ -20,43 +20,33 @@
 */
 
 // standard
-#include <algorithm>
-#include <cstdlib>
+#include <algorithm>			/* for binary_search(), etc */
+#include <cstdlib>			/* for exit(2) */
 #include <cstring>
-#include <functional>
+#include <functional>			/* for binary_function<> */
+#include <iomanip>			/* for omanip<> */
 #include <iostream>
 #include <iterator>
 #include <map>
 #include <set>
 #include <string>
 #ifndef	WIN32
-#include <sys/resource.h>
+#include <sys/resource.h>		/* for RLIMIT_* */
 #endif
-#include <unistd.h>
-#include <utility>
+#include <utility>			/* for pair<> */
 #include <vector>
-#ifdef	SEARCH_DAEMON
-#include <arpa/inet.h>
-#include <cerrno>
-#include <signal.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#ifndef AF_LOCAL
-#define AF_LOCAL AF_UNIX
-#endif
-#endif	/* SEARCH_DAEMON */
 
 // local
 #include "bcd.h"
 #include "config.h"
 #include "exit_codes.h"
-#include "file_index.h"
+#include "file_info.h"
 #include "file_list.h"
 #include "file_vector.h"
 #include "html.h"
 #include "IndexFile.h"
+#include "index_segment.h"
 #include "less.h"
-#include "managed_ptr.h"
 #include "my_set.h"
 #include "option_stream.h"
 #include "platform.h"
@@ -67,11 +57,12 @@
 #include "token.h"
 #include "util.h"
 #include "version.h"
-#include "word_index.h"
+#include "WordFilesMax.h"
+#include "WordPercentMax.h"
 #include "word_util.h"
 #ifdef	SEARCH_DAEMON
+#include "managed_ptr.h"
 #include "SearchDaemon.h"
-#include "search_thread.h"
 #include "SocketFile.h"
 #include "SocketQueueSize.h"
 #include "SocketTimeout.h"
@@ -84,66 +75,38 @@
 using namespace std;
 #endif
 
-//*****************************************************************************
+typedef	pair< int, int > search_result_type;
 //
-// SYNOPSIS
-//
-	typedef pair< int, int > result_type;
-//
-// DESCRIPTION
-//
-//	A result_type is an individual search result where the first int is a
-//	file index and the second int is that file's rank.
-//
-//*****************************************************************************
+//	A search_result_type is an individual search result where the first
+//	int is a file index and the second int is that file's rank.
 
-//*****************************************************************************
+typedef	map< int, int > search_results_type;
 //
-// SYNOPSIS
-//
-	typedef map< int, int > results_type;
-//
-// DESCRIPTION
-//
-//	A results_type contains a set of search results.
-//
-//*****************************************************************************
+//	A search_results_type contains a set of search results.
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	typedef pair< word_index::const_iterator, word_index::const_iterator >
-		find_result_type;
-//
-// DESCRIPTION
+typedef	pair< index_segment::const_iterator, index_segment::const_iterator >
+	find_result_type;
 //
 //	A find_result_type is-a pair of iterators marking the beginning and end
 //	of a range over which a given word matches.
-//
-//*****************************************************************************
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	struct sort_by_rank /* :
-		binary_function< result_type const&, result_type const&, bool >
-		*/
+	struct sort_by_rank : binary_function<
+		search_result_type const&, search_result_type const&, bool
+	>
 //
 // DESCRIPTION
 //
 //	A sort_by_rank is-a binary_function used to sort search results by rank
 //	in descending order (highest rank first).
 //
-// BUGS
-//
-//	This struct should be derived from binary_function, but g++ 2.8 barfs
-//	on it.  It must be a compiler bug.
-//
 //*****************************************************************************
 {
-	bool operator()( result_type const &a, result_type const &b ) {
+	result_type
+	operator()( first_argument_type a, second_argument_type b ) {
 		return a.second > b.second;
 	}
 };
@@ -155,34 +118,39 @@ using namespace std;
 //*****************************************************************************
 
 char const*	me;				// executable name
-file_index	files;
 #ifdef	SEARCH_DAEMON
 SearchDaemon	am_daemon;
 #endif
-word_index	words, stop_words, meta_names;
+index_segment	files, meta_names, stop_words, words;
 ResultsMax	max_results;
 StemWords	stem_words;
+WordFilesMax	word_file_max;
+WordPercentMax	word_percent_max;
 
 #ifdef	SEARCH_DAEMON
 void		become_daemon( char const*, int, int, int, int, int );
 #endif
 void		dump_single_word( char const*, ostream& = cout );
 void		dump_word_window( char const*, int, int, ostream& = cout );
-int		get_meta_id( word_index::const_iterator );
+int		get_meta_id( index_segment::const_iterator );
 
 bool		parse_meta(
-			token_stream&, results_type&, set< string >&, bool&,
-			int = No_Meta_ID
+			token_stream&, search_results_type&, set< string >&,
+			bool&, int = No_Meta_ID
 		);
 bool		parse_primary(
-			token_stream&, results_type&, set< string >&, bool&,
-			int = No_Meta_ID
+			token_stream&, search_results_type&, set< string >&,
+			bool&, int = No_Meta_ID
 		);
 bool		parse_query(
-			token_stream&, results_type&, set< string >&, bool&,
-			int = No_Meta_ID
+			token_stream&, search_results_type&, set< string >&,
+			bool&, int = No_Meta_ID
 		);
 bool		parse_optional_relop( token_stream&, token::type& );
+
+inline omanip< char const* > index_file_info( int index ) {
+	return omanip< char const* >( file_info::out, files[ index ] );
+}
 
 //*****************************************************************************
 //
@@ -261,6 +229,10 @@ bool		parse_optional_relop( token_stream&, token::type& );
 		max_results = opt.max_results_arg;
 	if ( opt.stem_words_opt )
 		stem_words = true;
+	if ( opt.word_file_max_arg )
+		word_file_max = opt.word_file_max_arg;
+	if ( opt.word_percent_max_arg )
+		word_percent_max = opt.word_percent_max_arg;
 
 #ifdef	SEARCH_DAEMON
 	if ( opt.daemon_opt )
@@ -287,10 +259,10 @@ bool		parse_optional_relop( token_stream&, token::type& );
 			<< index_file_name << '"' << endl;
 		::exit( Exit_No_Read_Index );
 	}
-	words.set_index_file( the_index );
-	stop_words.set_index_file( the_index, word_index::stop_word_index );
-	files.set_index_file( the_index );
-	meta_names.set_index_file( the_index, word_index::meta_name_index );
+	words     .set_index_file( the_index, index_segment::word_index );
+	stop_words.set_index_file( the_index, index_segment::stop_word_index );
+	files     .set_index_file( the_index, index_segment::file_index );
+	meta_names.set_index_file( the_index, index_segment::meta_name_index );
 
 #ifdef	SEARCH_DAEMON
 	////////// Become a daemon ////////////////////////////////////////////
@@ -307,182 +279,6 @@ bool		parse_optional_relop( token_stream&, token::type& );
 	service_request( argv, opt );
 	::exit( Exit_Success );
 }
-
-#ifdef	SEARCH_DAEMON
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void become_daemon(
-		char const *socket_file_name,
-		int socket_queue_size, int socket_timeout,
-		int min_threads, int max_threads, int thread_timeout
-	)
-//
-// DESCRIPTION
-//
-//	Do things needed to becomd a daemon process: increase resource limits,
-//	create a socket, detach from the terminal, change to the root
-//	directory, and finally service requests.  This function never returns.
-//
-// PARAMETERS
-//
-//	socket_file_name	The full path to the file to use for the Unix
-//				domain socket.
-//
-//	socket_queue_size	Maximum number of queued connections for a
-//				socket.  (See the comment in config.h.)
-//
-//	socket_timeout		The number of seconds a client has to complete
-//				a search request.
-//
-//	min_threads		The minimum number of threads to maintain in
-//				the thread pool.
-//
-//	max_threads		The maximum number of threads to allow to exist
-//				in the thread pool.
-//
-//	thread_timeout		The number of seconds until an idle spare
-//				thread times out and destroys itself.
-//
-// SEE ALSO
-//
-//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
-//	Addison-Wesley, Reading, MA, 1993.
-//
-//	---.  "Unix Network Programming, Vol 1, 2nd ed."  Prentice-Hall, Upper
-//	Saddle River, NJ, 1998.  Chapter 14.
-//
-//*****************************************************************************
-{
-	////////// Increase resource limits (hopefully) ///////////////////////
-
-#ifdef	RLIMIT_CPU				/* SVR4, 4.3+BSD */
-	//
-	// Max-out the amount of CPU time we can run since we will be a daemon
-	// and will run indefinitely.
-	//
-	max_out_limit( RLIMIT_CPU );
-#endif
-#ifdef	RLIMIT_NOFILE				/* SVR4 */
-	//
-	// Max-out the number of file descriptors we can have open to be able
-	// to service as many clients concurrently as possible.
-	//
-	max_out_limit( RLIMIT_NOFILE );
-#elif	defined( RLIMIT_OFILE )			/* 4.3+BSD name for NOFILE */
-	max_out_limit( RLIMIT_OFILE );
-#endif
-	////////// Create a socket ////////////////////////////////////////////
-
-	int const sock_fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 );
-	if ( sock_fd == -1 ) {
-		cerr << error << "socket() failed" << error_string;
-		::exit( Exit_No_Socket );
-	}
-
-	struct sockaddr_un addr;
-	::memset( &addr, 0, sizeof addr );
-	addr.sun_family = AF_LOCAL;
-	::strncpy( addr.sun_path, socket_file_name, sizeof( addr.sun_path )-1 );
-
-	// The socket file can not already exist prior to the bind().
-	if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
-		cerr	<< error << "can not delete \"" << socket_file_name
-			<< '"' << error_string;
-		::exit( Exit_No_Unlink );
-	}
-	if ( ::bind( sock_fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
-		cerr << error << "bind() failed" << error_string;
-		::exit( Exit_No_Bind );
-	}
-	if ( ::listen( sock_fd, socket_queue_size ) == -1 ) {
-		cerr << error << "listen() failed" << error_string;
-		::exit( Exit_No_Listen );
-	}
-
-#ifndef DEBUG_threads
-	////////// Detach from terminal ///////////////////////////////////////
-	//
-	// From [Stevens 1993], p. 417, "Coding Rules":
-	//
-	//	The first thing to do is call fork and have the parent exit.
-	//	This does several things.  First, if the daemon was started as
-	//	a simple shell command, having the parent terminate makes the
-	//	shell think that the command is done.  Second, the child
-	//	inherits the process group ID of the parent but gets a new
-	//	process ID, so we're guaranteed that the child is not a process
-	//	group leader.  This is a prerequisite for the call to setsid
-	//	that is done next.
-	//
-	pid_t const child_pid = ::fork();
-	if ( child_pid == -1 ) {
-		cerr << error << "fork() failed" << error_string;
-		::exit( Exit_No_Fork );
-	}
-	if ( child_pid > 0 )			// parent process ...
-		::exit( Exit_Success );		// ... just exit as described
-
-	//
-	// Ibid.:
-	//
-	//	Call setsid to create a new session.  The process (1) becomes a
-	//	session leader of a new session, (2) becomes the process group
-	//	leader of a new process group, and (3) has no controlling
-	//	terminal.
-	//
-	::setsid();
-
-	//
-	// Ibid.:
-	//
-	//	Change the current working directory to the root directory.
-	//	The current working directory inherited from the parent could
-	//	be on a mounted filesystem.  Since daemons normally exist until
-	//	the system is rebooted, if the daemon stays on a mounted
-	//	filesystem, that filesystem can not be unmounted.
-	//
-	if ( ::chdir( "/" ) == -1 ) {
-		cerr << error << "chdir() failed" << error_string;
-		::exit( Exit_No_Change_Dir );
-	}
-#endif	/* DEBUG_threads */
-
-	////////// Accept requests ////////////////////////////////////////////
-
-	search_thread::socket_timeout = socket_timeout;
-	thread_pool threads = thread_pool( new search_thread( threads ),
-		min_threads, max_threads, thread_timeout
-	);
-	while ( true ) {
-		struct sockaddr_un addr;
-#ifdef	PJL_SOCKLEN_NOT_INT
-		unsigned addr_len = sizeof addr;
-#else
-		int addr_len = sizeof addr;
-#endif
-#		ifdef DEBUG_threads
-		cerr << "waiting for request" << endl;
-#		endif
-		int const accept_fd = ::accept(
-			sock_fd, (struct sockaddr*)&addr, &addr_len
-		);
-		if ( accept_fd == -1 ) {
-			switch ( errno )
-				case ECONNABORTED:	// POSIX.1g
-				case EINTR:
-				case EPROTO:		// SVR4
-					continue;
-			cerr << error << "accept() failed" << error_string;
-			::exit( Exit_No_Accept );
-		}
-#		ifdef DEBUG_threads
-		cerr << "dispatching request" << endl;
-#		endif
-		threads.new_task( accept_fd );
-	}
-}
-#endif	/* SEARCH_DAEMON */
 
 //*****************************************************************************
 //
@@ -530,7 +326,8 @@ bool		parse_optional_relop( token_stream&, token::type& );
 	}
 	file_list const list( found.first );
 	FOR_EACH( file_list, list, file )
-		out << file->rank_ << ' ' << files[ file->index_ ] << '\n';
+		out	<< file->occurrences_ << ' ' << file->rank_ << ' '
+			<< index_file_info( file->index_ ) << '\n';
 	out << '\n';
 }
 
@@ -611,7 +408,7 @@ bool		parse_optional_relop( token_stream&, token::type& );
 //
 // SYNOPSIS
 //
-	int get_meta_id( word_index::const_iterator i )
+	int get_meta_id( index_segment::const_iterator i )
 //
 // DESCRIPTION
 //
@@ -637,8 +434,33 @@ bool		parse_optional_relop( token_stream&, token::type& );
 //
 // SYNOPSIS
 //
+	inline bool is_too_frequent( int file_count )
+//
+// DESCRIPTION
+//
+//	Checks to see if a word is too frequent by either exceeding the maximum
+//	number or percentage of files it can be in.
+//
+// PARAMETERS
+//
+//	file_count	The number of files a word occurs in.
+//
+// RETURN VALUE
+//
+//	Returns true only if a word is too frequent.
+//
+//*****************************************************************************
+{
+	return	file_count > word_file_max ||
+		file_count * 100 / files.size() >= word_percent_max;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	bool parse_query(
-		token_stream &query, results_type &result,
+		token_stream &query, search_results_type &result,
 		set< string > &stop_words_found, bool &ignore, int meta_id
 	)
 //
@@ -708,7 +530,7 @@ bool		parse_optional_relop( token_stream&, token::type& );
 	//
 	token::type relop;
 	while ( parse_optional_relop( query, relop ) ) {
-		results_type result1;
+		search_results_type result1;
 		bool ignore1;
 		if ( !parse_meta(
 			query, result1, stop_words_found, ignore1, meta_id
@@ -730,10 +552,10 @@ bool		parse_optional_relop( token_stream&, token::type& );
 #				ifdef DEBUG_parse_query
 				cerr << "---> performing and" << endl;
 #				endif
-				results_type result2;
-				FOR_EACH( results_type, result1, i ) {
-					results_type::const_iterator found =
-						result.find( i->first );
+				search_results_type result2;
+				FOR_EACH( search_results_type, result1, i ) {
+					search_results_type::const_iterator
+						found = result.find( i->first );
 					if ( found != result.end() )
 						result2[ found->first ] = 
 						(found->second + i->second) / 2;
@@ -746,10 +568,20 @@ bool		parse_optional_relop( token_stream&, token::type& );
 #				ifdef DEBUG_parse_query
 				cerr << "---> performing or" << endl;
 #				endif
-				FOR_EACH( results_type, result1, i )
+				FOR_EACH( search_results_type, result1, i )
 					result[ i->first ] += i->second;
 				break;
 			}
+
+			default:
+				//
+				// We should never get anything other than an
+				// and_token or an or_token.  If we get there,
+				// the programmer goofed.
+				//
+				cerr	<< "parse_query(): got non and/or token"
+					<< endl;
+				::abort();
 		}
 	}
 	return true;
@@ -760,7 +592,7 @@ bool		parse_optional_relop( token_stream&, token::type& );
 // SYNOPSIS
 //
 	bool parse_meta(
-		token_stream &query, results_type &result,
+		token_stream &query, search_results_type &result,
 		set< string > &stop_words_found, bool &ignore, int meta_id
 	)
 //
@@ -872,7 +704,7 @@ no_put_back:
 // SYNOPSIS
 //
 	bool parse_primary(
-		token_stream &query, results_type &result,
+		token_stream &query, search_results_type &result,
 		set< string > &stop_words_found, bool &ignore, int meta_id
 	)
 //
@@ -918,10 +750,10 @@ no_put_back:
 				stop_words.begin(), stop_words.end(),
 				t.lower_str(), comparator
 			) ) {
-				stop_words_found.insert( ::strdup( t.str() ) );
+				stop_words_found.insert( t.str() );
 #				ifdef DEBUG_parse_query
 				cerr	<< "---> word \"" << t.str()
-					<< "\" (ignored)" << endl;
+					<< "\" (ignored: not OK)" << endl;
 #				endif
 				return ignore = true;
 			}
@@ -982,7 +814,7 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> begin not" << endl;
 #			endif
-			results_type temp;
+			search_results_type temp;
 			if ( !parse_primary(
 				query, temp, stop_words_found, ignore, meta_id
 			) )
@@ -995,7 +827,7 @@ no_put_back:
 				// Iterate over all files and mark the ones the
 				// results are NOT in.
 				//
-				for ( register int i = 0; i < files.size(); ++i)
+				for ( int i = 0; i < files.size(); ++i )
 					if ( temp.find( i ) == temp.end() )
 						result[ i ] = 100;
 			}
@@ -1006,21 +838,34 @@ no_put_back:
 			return false;
 	}
 
+#	ifdef DEBUG_parse_query
+	cerr << "---> word \"" << t.str() << "\", meta-ID=" << meta_id << endl;
+#	endif
 	//
 	// Found a word or set of words matching a wildcard: iterate over all
 	// files the word(s) is/are in and add their ranks together, but only
 	// if the meta-names match (if any).
 	//
-#	ifdef DEBUG_parse_query
-	cerr << "---> word \"" << t.str() << "\", meta-ID=" << meta_id << endl;
-#	endif
-	while ( found.first != found.second ) {
-		file_list const list( found.first++ );
-		FOR_EACH( file_list, list, file )
-			if (	meta_id == No_Meta_ID ||
-				file->meta_ids_.contains( meta_id )
-			)
-				result[ file->index_ ] += file->rank_;
+	// Also start off assuming that this (sub)query should be ignored until
+	// we get at least one word that isn't too frequent.
+	//
+	ignore = true;
+	for ( ; found.first != found.second; ++found.first ) {
+		file_list const list( found.first );
+		if ( is_too_frequent( list.size() ) ) {
+			stop_words_found.insert( t.str() );
+#			ifdef DEBUG_parse_query
+			cerr	<< "---> word \"" << t.str()
+				<< "\" (ignored: too frequent)" << endl;
+#			endif
+		} else {
+			ignore = false;
+			FOR_EACH( file_list, list, file )
+				if (	meta_id == No_Meta_ID ||
+					file->meta_ids_.contains( meta_id )
+				)
+					result[ file->index_ ] += file->rank_;
+		}
 	}
 
 	return true;
@@ -1053,10 +898,10 @@ no_put_back:
 //
 //*****************************************************************************
 {
-	token_stream	query_stream( query );
-	results_type	results;
-	set< string >	stop_words_found;
-	bool		ignore;
+	token_stream		query_stream( query );
+	search_results_type	results;
+	set< string >		stop_words_found;
+	bool			ignore;
 
 	if ( !( parse_query( query_stream, results, stop_words_found, ignore )
 		&& query_stream.eof()
@@ -1084,7 +929,7 @@ no_put_back:
 		return;
 
 	// Copy the results to a vector to sort them by rank.
-	typedef vector< result_type > sorted_results_type;
+	typedef vector< search_result_type > sorted_results_type;
 	sorted_results_type sorted;
 	sorted.reserve( results.size() );
 	::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
@@ -1096,8 +941,8 @@ no_put_back:
 		i != sorted.end() && max_results-- > 0;
 		++i
 	)
-		out	<< int( i->second * normalize )
-			<< ' ' << files[ i->first ] << '\n';
+		out	<< int( i->second * normalize ) << ' '
+			<< index_file_info( i->first ) << '\n';
 }
 
 //*****************************************************************************
@@ -1113,7 +958,7 @@ no_put_back:
 // DESCRIPTION
 //
 //	Construct (initialze) a search_options by parsing options from the argv
-//	vector accoring to the given option specification.
+//	vector according to the given option specification.
 //
 // PARAMETERS
 //
@@ -1143,6 +988,8 @@ no_put_back:
 	max_results_arg			= 0;
 	skip_results_arg		= 0;
 	stem_words_opt			= false;
+	word_file_max_arg		= 0;
+	word_percent_max_arg		= 0;
 #ifdef	SEARCH_DAEMON
 	daemon_opt			= false;
 	max_threads_arg			= 0;
@@ -1173,6 +1020,10 @@ no_put_back:
 				dump_entire_index_opt = true;
 				break;
 
+			case 'f': // Specify the word/file file maximum.
+				word_file_max_arg = opt.arg();
+				break;
+
 			case 'i': // Specify index file overriding the default.
 				index_file_name_arg = opt.arg();
 				break;
@@ -1192,7 +1043,11 @@ no_put_back:
 			case 'O': // Specify thread timeout.
 				thread_timeout_arg = ::atoi( opt.arg() );
 				break;
-
+#endif
+			case 'p': // Specify the word/file percentage.
+				word_percent_max_arg = opt.arg();
+				break;
+#ifdef	SEARCH_DAEMON
 			case 'q': // Specify socket queue size.
 				socket_queue_size_arg = ::atoi( opt.arg() );
 				if ( socket_queue_size_arg < 1 )
@@ -1300,12 +1155,14 @@ no_put_back:
 		return;
 	}
 	if ( opt.dump_entire_index_opt ) {
-		FOR_EACH( word_index, words, w ) {
-			out << *w << '\n';
-			file_list const list( w );
+		FOR_EACH( index_segment, words, word ) {
+			out << *word << '\n';
+			file_list const list( word );
 			FOR_EACH( file_list, list, file )
-				out	<< "  " << file->rank_ << ' '
-					<< files[ file->index_ ] << '\n';
+				out	<< "  " << file->occurrences_ << ' '
+					<< file->rank_ << ' '
+					<< index_file_info( file->index_ )
+					<< '\n';
 			out << '\n';
 		}
 		return;
@@ -1359,11 +1216,13 @@ ostream& usage( ostream &err ) {
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"-d   | --dump-words       : Dump query word indices and exit\n"
 	"-D   | --dump-index       : Dump entire word index and exit\n"
+	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
 	"-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
 	"-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
 	"-M   | --dump-meta        : Dump meta-name index and exit\n"
 #ifdef SEARCH_DAEMON
 	"-o s | --socket-timeout s : Search client request timeout [default: " << SocketTimeout_Default << "]\n"
+	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
 	"-O s | --thread-timeout s : Idle spare thread timeout [default: " << ThreadTimeout_Default << "]\n"
 	"-q n | --queue-size n     : Maximum queued socket connections [default: " << SocketQueueSize_Default << "]\n"
 #endif
