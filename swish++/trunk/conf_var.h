@@ -78,8 +78,8 @@ protected:
 	//		Reset value to default.  Derived classes must define
 	//		this.
 
-	static std::ostream&	error( std::ostream& );
-	static std::ostream&	warning( std::ostream& );
+	static std::ostream&	error( std::ostream& = cerr);
+	static std::ostream&	warning( std::ostream& = cerr );
 private:
 	// Note that the declaration of std::map has a default "Compare"
 	// template parameter of "less< key_type >" and, since we've included
