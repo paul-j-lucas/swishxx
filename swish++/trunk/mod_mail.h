@@ -28,6 +28,7 @@
 #include <vector>
 
 // local
+#include "auto_vec.h"
 #include "indexer.h"
 
 //*****************************************************************************
@@ -103,7 +104,7 @@ private:
 		message_type;
 
 	struct key_value {
-		char *key;
+		auto_vec<char> key;
 		char const *value_begin, *value_end;
 	};
 
