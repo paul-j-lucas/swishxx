@@ -32,7 +32,7 @@
 //
 // SYNOPSIS
 //
-	template<> class conf<string> : public conf_var
+	template<> class conf<std::string> : public conf_var
 //
 // DESCRIPTION
 //
@@ -45,23 +45,41 @@ public:
 	operator char const*() const	{ return value_.c_str(); }
 protected:
 	conf( char const *name, char const *default_value = "" );
-	CONF_VAR_ASSIGN_OPS( conf<string> )
-private:
-	string const	default_value_;
-	string		value_;
+	CONF_VAR_ASSIGN_OPS( conf<std::string> )
+
+	conf<std::string>& operator+=( std::string const &s ) {
+		value_ += s;
+		return *this;
+	}
+	conf<std::string>& operator+=( char const *s ) {
+		value_ += s;
+		return *this;
+	}
 
 	virtual void	parse_value( char const *var_name, char *line );
+private:
+	std::string const	default_value_;
+	std::string		value_;
+
 	virtual void	reset()		{ value_ = default_value_; }
 };
 
-#define	CONF_STRING_ASSIGN_OPS(T)		\
-	T& operator=( string const &s ) {	\
-		conf<string>::operator=( s );	\
-		return *this;			\
-	}					\
-	T& operator=( char const *s ) {		\
-		conf<string>::operator=( s );	\
-		return *this;			\
+#define	CONF_STRING_ASSIGN_OPS(T)			\
+	T& operator=( std::string const &s ) {		\
+		conf<std::string>::operator=( s );	\
+		return *this;				\
+	}						\
+	T& operator=( char const *s ) {			\
+		conf<std::string>::operator=( s );	\
+		return *this;				\
+	}						\
+	T& operator+=( std::string const &s ) {		\
+		conf<std::string>::operator+=( s );	\
+		return *this;				\
+	}						\
+	T& operator+=( char const *s ) {		\
+		conf<std::string>::operator+=( s );	\
+		return *this;				\
 	}
 
 #endif	/* conf_string_H */
