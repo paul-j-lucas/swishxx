@@ -1125,85 +1125,15 @@ static void		write_word_index( ostream&, off_t* );
 //
 //	Write the index to the given ostream.  The index file is written in
 //	such a way so that it can be mmap'd and used instantly with no parsing
-//	or other processing.  The format of an index file is:
-//
-//		long	num_unique_words;
-//		off_t	word_offset[ num_unique_words ];
-//		long	num_stop_words;
-//		off_t	stop_word_offset[ num_stop_words ];
-//		long	num_directories;
-//		off_t	directory_offset[ num_directories ];
-//		long	num_files;
-//		off_t	file_offset[ num_files ];
-//		long	num_meta_names;
-//		off_t	meta_name_offset[ num_meta_names ];
-//			(word index)
-//			(stop-word index)
-//			(directory index)
-//			(file index)
-//			(meta-name index)
-//
-//	The word index is a list of all the words indexed in alphabetical
-//	order.  Each entry is of the form:
-//
-//		word\0{data}...\xFF
-//
-//	that is: a null-terminated word followed by one or more data entries
-//	followed by an \xFF byte where a data entry is:
-//
-//		{I}[\xEE{M}...\xEE]{O}{R}
-//
-//	that is: a file-index (I) followed by zero or more meta-IDs (M)
-//	surrounded by \xEE bytes followed by the number of occurrences in the
-//	file (O) followed by a rank (R).  The integers are in BCD (binary coded
-//	decimal) not raw binary.  A BCD integer that has an odd number of
-//	digits is terminated by a low-order nybble with the value \xA; an
-//	integer that has an even number of digits is terminated by a a byte
-//	with the value \xAA.  (These values were chosen because they are
-//	invalid BCD.  All other values \xA0 through \xFE are reserved for
-//	future use.)  The file-index is an index into the file offset table;
-//	the meta-IDs, if present, are unique integers identifying which meta
-//	name(s) a word is associated with in the meta-name index.
-//
-//	The stop-word index is a list of all the stop words (either the built-
-//	in list or the list supplied from a file, plus those that exceed either
-//	the file limit or word percentage) in alphabetical order.  Each entry
-//	is of the form:
-//
-//		word\0
-//
-//	where the word is terminated by a null byte.
-//
-//	The directory index is a list of all the directories in the order
-//	encountered.  Each entry is of the form:
-//
-//		path\0
-//
-//	where the path is terminated by a null byte.
-//
-//	The file index is a list of file information.  Each entry is of the
-//	form:
-//
-//		{D}file_name\0{S}{W}file_title\0
-//
-//	that is: a directory-index (D) followed by a null-terminated file name
-//	followed by the file's size in bytes (S) followed by the number of
-//	words in the file (W) followed by the file's null-terminated title.
-//	The integers are in BCD format.
-//
-//	The meta-name index is a list of all the meta names (in alphabetical
-//	order) encountered during indexing of all the files.  Each meta-name is
-//	followed by its numeric ID that is simply a unique integer to identify
-//	it.  Each entry is of the form:
-//
-//		meta_name\0{I}
-//
-//	that is: a null-terminated meta-name followed by the ID (I) in BCD
-//	format.
+//	or other processing.
 //
 // PARAMETERS
 //
 //	o	The ostream to write the index to.
+//
+// SEE ALSO
+//
+//	swish++.index(4)
 //
 //*****************************************************************************
 {
