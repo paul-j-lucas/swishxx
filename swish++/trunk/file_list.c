@@ -23,6 +23,7 @@
 #include <cctype>
 
 // local
+#include "bcd.h"
 #include "fake_ansi.h"				/* for CONST_CAST */
 #include "file_list.h"
 
@@ -49,10 +50,26 @@
 #	define THIS	this
 #endif
 	THIS->size_ = 0;
-	for ( register char const *c = ptr; *c; ++c )
-		if ( *c == ' ' )
-			++THIS->size_;
-	return THIS->size_ /= 2;
+
+	//
+	// It would be nice if there were a way to calculate the size of the
+	// file list other than by just marching though it.  Since this should
+	// be as fast as possible, a much simplified version of the parse_bcd()
+	// code has been inlined here by hand -- twice.  (We also don't care
+	// what the actual numbers are, so there's no point in computing them,
+	// so we save having to do two multiplies, adds, shifts, and logical
+	// ands for each file.)
+	//
+	for ( register unsigned char const *p = ptr_; *p != 0xFF; ) {
+		while ( (*p++ & 0x0F) != 0x0A ) ;	// skip past file index
+		if ( *p == 0xEE ) {			// META ID list follows
+			while ( *++p != 0xEE ) ;
+			++p;				// skip past 0xEE
+		}
+		while ( (*p++ & 0x0F) != 0x0A ) ;	// skip past rank
+		++THIS->size_;
+	}
+	return size_;
 }
 
 //*****************************************************************************
@@ -77,30 +94,26 @@
 //
 //*****************************************************************************
 {
-	if ( !*c_ ) {
+	if ( *c_ == 0xFF ) {
 		//
-		// Reached end of null-terminated list: set iterator to end.
+		// Reached the end of the list: set iterator to end.
 		//
 		c_ = 0;
 		return *this;
 	}
 
-	v_.index_ = 0;
-	while ( isdigit( *c_ ) ) v_.index_ = v_.index_ * 10 + *c_++ - '0';
+	v_.index_ = parse_bcd( c_ );
 
 	if ( !v_.meta_ids_.empty() )
 		v_.meta_ids_.erase( v_.meta_ids_.begin(), v_.meta_ids_.end() );
-	while ( *c_ == '\2' ) {			// is a META ID
-		++c_;
-		register int meta_id = 0;
-		while ( isdigit( *c_ ) ) meta_id = meta_id * 10 + *c_++ - '0';
-		v_.meta_ids_.insert( meta_id );
+	if ( *c_ == 0xEE ) {			// META ID list follows
+		++c_;				// skip past 0xEE
+		while ( *c_ != 0xEE )
+			v_.meta_ids_.insert( parse_bcd( c_ ) );
+		++c_;				// skip past 0xEE
 	}
-	++c_;					// skip past non-digit
 
-	v_.rank_ = 0;
-	while ( *c_ != '\1' ) v_.rank_  = v_.rank_  * 10 + *c_++ - '0';
-	++c_;					// skip past non-digit
+	v_.rank_ = parse_bcd( c_ );
 
 	return *this;
 }

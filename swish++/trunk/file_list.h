@@ -68,9 +68,10 @@ public:
 	////////// constructors ///////////////////////////////////////////////
 
 	file_list( word_index::const_iterator const &iter ) :
-		ptr( *iter ), size_( -1 )
+		ptr_( REINTERPRET_CAST(unsigned char const*)( *iter ) ),
+		size_( -1 )			// -1 = "haven't computed yet"
 	{
-		while ( *ptr++ ) ;		// skip past word
+		while ( *ptr_++ ) ;		// skip past word
 	}
 
 	////////// member functions ///////////////////////////////////////////
@@ -107,18 +108,18 @@ public:
 		}
 
 	private:
-		const_iterator( char const *p ) : c_( p ) {
+		const_iterator( unsigned char const *p ) : c_( p ) {
 			if ( c_ ) operator++();
 		}
-		char const *c_;
+		unsigned char const *c_;
 		value_type v_;
 		friend class file_list;
 	};
 
-	const_iterator begin() const	{ return const_iterator( ptr ); }
+	const_iterator begin() const	{ return const_iterator( ptr_ ); }
 	const_iterator end() const	{ return const_iterator( 0 ); }
 private:
-	char const *ptr;
+	unsigned char const *ptr_;
 	mutable size_type size_;
 
 	size_type calc_size() const;
