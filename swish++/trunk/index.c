@@ -201,7 +201,7 @@ void			write_word_index( ostream&, off_t* );
 		"dump-stop",		0, 'S',
 		"title-lines",		1, 't',
 		"temp-dir",		1, 'T',
-		"verbose",		1, 'v',
+		"verbosity",		1, 'v',
 		"version",		0, 'V',
 		0
 	};
