@@ -20,10 +20,12 @@
 */
 
 // standard
+#include <cerrno>
 #include <fcntl.h>				/* for open(2), O_RDONLY, ... */
 #ifndef	WIN32
 #include <sys/mman.h>				/* for mmap(2) */
 #endif
+#include <sys/resource.h>			/* for get/setrlimit(2) */
 #include <sys/stat.h>				/* for stat(2) */
 #include <unistd.h>				/* for close(2) */
 
@@ -35,20 +37,47 @@
 using namespace std;
 #endif
 
+#ifdef	RLIMIT_VMEM				/* SVR4 */
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	void file_vector_base::close()
+	extern "C" void max_out_limits()
+//
+// DESCRIPTION
+//
+//	Max-out our memory-mapped address space since we can potentially
+//	mmap(2) very large files.
+//
+// NOTE
+//
+//	This function is declared extern "C" since it is called via the C
+//	library function pthread_once() (if MULTI_THREADED is defined) and,
+//	because it's a C function, it expects C linkage.
+//
+//*****************************************************************************
+{
+	struct rlimit r;
+	::getrlimit( RLIMIT_VMEM, &r );
+	r.rlim_cur = r.rlim_max;
+	::setrlimit( RLIMIT_VMEM, &r );
+}
+#endif	/* RLIMIT_VMEM */
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void file_vector::close()
 //
 // DESCRIPTION
 //
 //	Munmaps and closes a file previously opened and mmapped by
-//	file_vector_base::open().
+//	file_vector::open().
 //
 // SEE ALSO
 //
-//	close(2), file_vector_base::open(3), munmap(2)
+//	close(2), file_vector::open(3), munmap(2)
 //
 //*****************************************************************************
 {
@@ -72,28 +101,41 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	void file_vector_base::init()
+	void file_vector::init()
 //
 // DESCRIPTION
 //
-//	Initialize an instance of file_vector_base.
+//	Initialize an instance of file_vector.
 //
 //*****************************************************************************
 {
+#ifdef	RLIMIT_VMEM				/* SVR4 */
+	//
+	// This OS defines a separate resource limit for memory-mapped address
+	// space as opposed to data, stack, or heap space.  Anyway, we want to
+	// max it out so we can mmap(2) very large files.
+	//
+	static bool maxed_out;
+	if ( !maxed_out ) {
+		max_out_limits();
+		maxed_out = true;
+	}
+#endif	/* RLIMIT_VMEM */
+
 	size_ = 0;
 	fd_ = 0;
 #ifdef	WIN32
 	map_ = 0;
 #endif
 	addr_ = 0;
-	error_ = 0;
+	errno_ = 0;
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	bool file_vector_base::open( char const *path, ios::open_mode mode )
+	bool file_vector::open( char const *path, ios::open_mode mode )
 //
 // DESCRIPTION
 //
@@ -119,12 +161,12 @@ using namespace std;
 	);
 	if ( fd_ == INVALID_HANDLE_VALUE ) {
 		fd_ = 0;
-		error_ = 1;
+		errno_ = 1;
 		return false;
 	}
 
 	if ( ( size_ = ::GetFileSize( fd_, 0 ) ) == 0xFFFFFFFF ) {
-		error_ = 2;
+		errno_ = 2;
 		return false;
 	}
 
@@ -133,7 +175,7 @@ using namespace std;
 		0, 0, NULL
 	);
 	if ( !map_ ) {
-		error_ = 3;
+		errno_ = 3;
 		return false;
 	}
 
@@ -142,13 +184,13 @@ using namespace std;
 		0, 0, 0
 	);
 	if ( !addr_ ) {
-		error_ = 4;
+		errno_ = 4;
 		return false;
 	}
 #else
 	struct stat stat_buf;
 	if ( ::stat( path, &stat_buf ) == -1 ) {
-		error_ = 1;
+		errno_ = errno;
 		return false;
 	}
 
@@ -158,7 +200,7 @@ using namespace std;
 
 	if ( ( fd_ = ::open( path, flags ) ) == -1 ) {
 		fd_ = 0;
-		error_ = 2;
+		errno_ = errno;
 		return false;
 	}
 
@@ -166,16 +208,17 @@ using namespace std;
 	if ( mode & ios::in  )	prot |= PROT_READ;
 	if ( mode & ios::out )	prot |= PROT_WRITE;
 
-	if ( stat_buf.st_size ) {
-		addr_ = ::mmap( 0, stat_buf.st_size, prot, MAP_SHARED, fd_, 0 );
-		if ( addr_ == REINTERPRET_CAST( caddr_t )( -1 ) ) {
-			addr_ = 0;
-			error_ = 3;
-			return false;
-		}
+	if ( !( size_ = stat_buf.st_size ) ) {
+		errno_ = ENODATA;
+		return false;
 	}
 
-	size_ = stat_buf.st_size;
+	addr_ = ::mmap( 0, stat_buf.st_size, prot, MAP_SHARED, fd_, 0 );
+	if ( addr_ == REINTERPRET_CAST( caddr_t )( -1 ) ) {
+		addr_ = 0;
+		errno_ = errno;
+		return false;
+	}
 
 #endif	/* WIN32 */
 
