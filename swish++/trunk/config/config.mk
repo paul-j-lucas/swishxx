@@ -30,6 +30,13 @@
 #
 ###############################################################################
 
+#WIN32=		-DWIN32
+#		If uncommented, build SWISH++ for Windows.
+
+ifndef WIN32
+#		The search daemon ability is not currently supported for
+#		Windows.
+
 SEARCH_DAEMON=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 #		These definitions will build search(1) with the ability to run
 #		in the background as a multi-threaded daemon process.  Comment
@@ -52,11 +59,7 @@ PTHREAD_LIB=	-lpthread
 SOCKET_LIB=	-lsocket
 #		Library to link against for sockets if building with the search
 #		daemon ability.  Comment this out on Linux systems.
-
-#WIN32=		-DWIN32
-#		If uncommented, build SWISH++ for Windows.  If uncommented, you
-#		*MUST* comment out SEARCH_DAEMON since that feature is *NOT*
-#		currently supported for Windows.
+endif
 
 ###############################################################################
 #
@@ -121,24 +124,9 @@ CCFLAGS=	$(GCC_WARNINGS) $(SEARCH_DAEMON) $(WIN32) -O3
 #			g++-specific.  If you are not using g++, consult your
 #			C++ compiler's documentation.
 
-CCHEXT=		.h
-#		C++ declaration file name extension; usually ".h", ".H", ".hh",
-#		".hpp", or ".hxx".
-
-CCCEXT=		.c
-#		C++ definition file name extension; usually ".c", ".C", ".cc",
-#		".cpp", or ".cxx".
-
-CCOEXT=		.o
-#		C++ object file name extension; usually ".o" or ".obj".
-
 CCLINK=		#-liberty
 #		Flags for the linker:
 #		-liberty	May be required under Windows for getopt(3C).
-
-CCLOPT=		-L
-#		Flag for locating libraries; usually "-L" but some systems,
-#		for example UTS, use "-Wl,-L".
 
 ###############################################################################
 #
@@ -176,61 +164,11 @@ I_XMODE=	-m 755
 MKDIR=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 #		Command used to create a directory.
 
-
 ########## You shouldn't have to change anything below this line. #############
 
+# $(ROOT) is defined by the Makefile including this.
 
-###############################################################################
-#
-#	Manual pages
-#
-#	This section is for me only who generates plain text and PDF versions
-#	of the manual pages from the original [nt]roff source.  You shouldn't
-#	need to change any of this unless you are changing SWISH++ and those
-#	changes require corresponding changes to the manual pages.
-#
-###############################################################################
+.SUFFIXES: .in
 
-DISTILL=	distill
-#		Command for converting PostScript to PDF; usually "distill".
-
-NROFF=		nroff
-#		Command for formatting [nt]roff input for a terminal screen;
-#		usually "nroff".
-
-NROFF_FLAGS=	-man
-#		Flags for nroff to format manual pages; usually "-man".
-
-TBL=		tbl
-#		Command for processing 'tbl' input to [nt]roff; usually "tbl".
-
-TROFF=		troff
-#		Command for formatting [nt]roff input for a phototypesetter;
-#		usually "troff".
-
-TROFF_FLAGS=	-man -Tpost
-#		Flags for troff to format manual pages; usually "-man -Tpost".
-
-TO_PS=		/usr/lib/lp/postscript/dpost
-#		Command to convert troff output to PostScript; usually
-#		"/usr/lib/lp/postscript/dpost" on Solaris.
-
-TO_TXT=		col -b
-#		Command to strip all non-text characters from nroff output to
-#		generate plain text versions of manual pages; usually
-#		"col -b".
-
-###############################################################################
-
-# ROOT is defined by the Makefile including this.
-
-CONFIG=		$(ROOT)/config
-MAN=		$(ROOT)/man
-
-PLATFORM_H=	platform$(CCHEXT)
-
-.SUFFIXES:
-.SUFFIXES: $(CCCEXT) $(CCHEXT) $(CCOEXT) .in
-
-.in:
-	$(PERL) $(CONFIG)/config.pl $@ $(VARS)
+% :: %.in
+	$(PERL) $(ROOT)/config/config.pl $< < $(ROOT)/config/config.mk
