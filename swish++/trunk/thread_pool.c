@@ -158,7 +158,7 @@ namespace PJL {
 		::pthread_mutex_lock( &t->pool_.q_lock_ );
 		while ( t->pool_.queue_.empty() ) {
 			::pthread_mutex_lock( &t->pool_.t_lock_ );
-			if ( t->pool_.threads_.size() <= t->pool_.t_min_ ) {
+			if ( t->pool_.threads_.size() <= t->pool_.min_threads_){
 				::pthread_mutex_unlock( &t->pool_.t_lock_ );
 				//
 				// There are no threads beyond those originally
@@ -365,7 +365,7 @@ namespace PJL {
 //			min_threads presently exist.
 //
 //*****************************************************************************
-	: t_min_( min_threads ), t_max_( max_threads ),
+	: min_threads_( min_threads ), max_threads_( max_threads ),
 	  destructing_( false ), timeout_( timeout )
 {
 	if (	::pthread_mutex_init( &t_busy_lock_, 0 ) ||
@@ -386,7 +386,7 @@ namespace PJL {
 	::pthread_mutex_lock( &t_lock_ );
 	threads_.insert( prototype );
 	prototype->run();
-	for ( int i = 1; i < t_min_; ++i )
+	for ( int i = 1; i < min_threads_; ++i )
 		threads_.insert( prototype->create_and_run() );
 	::pthread_mutex_unlock( &t_lock_ );
 }
@@ -461,7 +461,7 @@ namespace PJL {
 		// All the existing threads are busy.
 		//
 		::pthread_mutex_unlock( &t_busy_lock_ );
-		if ( threads_.size() < t_max_ ) {
+		if ( threads_.size() < max_threads_ ) {
 			//
 			// We haven't maxed-out the number of threads we can
 			// make, so create another one to handle the request by

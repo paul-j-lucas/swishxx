@@ -155,7 +155,7 @@ private:
 	typedef std::set< thread* > thread_set;
 	typedef std::queue< thread::argument_type > task_queue_type;
 
-	int const	t_min_, t_max_;			// number of threads
+	int const	min_threads_, max_threads_;
 	thread_set	threads_;
 	pthread_mutex_t	t_lock_;
 
