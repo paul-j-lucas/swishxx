@@ -123,8 +123,8 @@ char const	Index_Filename_Default[]	= "the.index";
 //		overridden on the command line.
 
 int const	Results_Max_Default		= 100;
-//		Default maximum number of results; this can be overridden on
-//		the command line.
+//		Default maximum number of search results; this can be
+//		overridden on the command line.
 
 char const	Tmp_Dir[]			= "/tmp/";
 //		The directory to use for temporary files.  Note that it MUST
