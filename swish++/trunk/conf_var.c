@@ -21,7 +21,6 @@
 
 // standard
 #include <cctype>
-#include <cstdlib>			/* for abort(3) */
 #include <cstring>
 #include <iostream>
 
@@ -63,9 +62,9 @@ int conf_var::current_config_file_line_no_ = 0;
 {
 	conf_var *&var = map_ref()[ to_lower( name_ ) ];
 	if ( var ) {
-		cerr	<< "conf_var::conf_var(): \"" << name_
-			<< "\" registered more than once\n";
-		::abort();
+		internal_error
+			<< "conf_var::conf_var(): \"" << name_
+			<< "\" registered more than once\n" << report_error;
 	}
 	var = this;
 }

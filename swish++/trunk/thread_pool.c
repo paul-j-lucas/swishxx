@@ -24,6 +24,9 @@
 // standard
 #include <cstdlib>			/* for exit(2) */
 #include <ctime>
+#ifdef	DEBUG_threads
+#include <iostream>
+#endif
 
 // local
 #include "exit_codes.h"
@@ -31,12 +34,12 @@
 #include "thread_pool.h"
 #include "util.h"
 
+extern char const*	me;
+
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
 namespace PJL {
 #endif
-
-extern char const*	me;
 
 //*****************************************************************************
 //
@@ -174,7 +177,11 @@ extern char const*	me;
 				//
 				::pthread_mutex_unlock( &t->pool_.q_lock_ );
 				delete t;
-				::abort();	// should not get here
+				internal_error
+					<< "thread_main(): "
+					   "thread exists after "
+					   "alleged destruction\n"
+					<< report_error;
 			}
 			//
 			// Wait only a finite amount of time for a task to
@@ -309,7 +316,9 @@ extern char const*	me;
 	if ( !destructing_ ) {
 		destructing_ = true;
 		::pthread_exit( 0 );
-		::abort();			// should not get here
+		internal_error
+			<< "thread_main(): thread exists after "
+			   "alleged destruction\n" << report_error;
 	}
 }
 

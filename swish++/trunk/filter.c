@@ -20,7 +20,7 @@
 */
 
 // standard
-#include <cstdlib>			/* for abort(3), system(3) */
+#include <cstdlib>			/* for system(3) */
 #include <cstring>
 #include <unistd.h>			/* for sleep(3) */
 
@@ -59,8 +59,8 @@ using namespace std;
 		// This should never happen: substitute() was never called on
 		// this filter.  If this happens, the programmer goofed.
 		//
-		cerr << "filter::exec(): command is empty\n";
-		::abort();
+		internal_error
+			<< "filter::exec(): command is empty\n" << report_error;
 	}
 	int exit_code;
 	int attempt_count = 0;
@@ -206,8 +206,9 @@ using namespace std;
 		// been checked by FilterFile::parse_line() for the existence
 		// of an @.  If this happens, the programmer goofed.
 		//
-		cerr << "filter::substitute(): target_pos == string::npos\n";
-		::abort();
+		internal_error
+			<< "filter::substitute(): target_pos == string::npos\n"
+			<< report_error;
 	}
 
 	target_file_name_ = string(

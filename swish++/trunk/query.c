@@ -21,6 +21,9 @@
 
 // standard
 #include <algorithm>			/* for binary_search(), etc */
+#ifdef	DEBUG_parse_query
+#include <iostream>
+#endif
 
 // local
 #include "bcd.h"
@@ -215,8 +218,10 @@ extern index_segment	files, meta_names, stop_words, words;
 				// and_token or an or_token.  If we get there,
 				// the programmer goofed.
 				//
-				cerr << "parse_query(): got non and/or token\n";
-				::abort();
+				internal_error
+					<< "parse_query(): "
+					   "got non-and/or token\n"
+					<< report_error;
 		}
 	}
 	return true;
