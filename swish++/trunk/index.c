@@ -990,7 +990,7 @@ void			write_word_index( ostream&, off_t* );
 	char const *const title = reinterpret_cast<char const*>( u );
 
 	string const dir_str( directories[ dir_index ] );
-	string const path( dir_str + '/' + p );
+	string const path( dir_str + '/' + file_name );
 	char const *const path_name = ::strdup( path.c_str() );
 
 	new file_info( path_name, dir_index, size, title, num_words );
