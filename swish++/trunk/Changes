@@ -2,13 +2,93 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.3.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Indexing via standard input did NOT index all files: it still required you to
+  specify extensions via -e.  This is totally wrong.  It seems it's been wrong
+  since version 3.1.  I'm surprised nobody noticed.
+
+  (This bug fix will be know as bug fix SII.)
+
+* Fixed build problem on Debian Linux systems having to do with the type of the
+  3rd argument to accept(3).
+
+  (This bug fix will be know as bug fix A3A.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config-sh
+
+	1. Completely reworked to support multiple tests for the same
+	   thing for bug fix A3A.
+
+* config/src/explicit.c
+* config/src/mutable.c
+* config/src/namespaces.c
+* config/src/new_casts.c
+
+	1. Performed following subtitution:
+
+		s/DEFINE/FAIL/
+
+	   for bug fix A3A.
+
+* config/socklen.c
+
+	1. Replaced by other socklen*.c files.
+
+* config/socklen_1_socklen_t.c
+* config/socklen_2_int.c
+* config/socklen_2_unsigned.c
+
+	1. Replaced socklen.c with individual tests for bug fix A3A.
+
+* do_file.c
+
+	1. Performed following substitution:
+
+		s/exclude_extensions.empty()/!include_extensions.empty()/
+
+	   for bug fix SII.
+
+* GNUmakefile
+
+	1. Added platform.h as a dependency for all .*.d files so it
+	   will get built first since it is #include'd by most other
+	   files.
+
+* httpindex.in
+
+	1. Added more options that are passed to index(1).
+
+* man/man1/httpindex.1
+
+	1. Corresponding changes for httpindex.in.
+
+* search_daemon.c
+
+	1. Replaced use of PJL_SOCKLEN_NOT_INT with PJL_SOCKLEN_TYPE
+	   for bug fix A3A.
+
+* version.h
+
+	1. Updated version to "4.3.1".
+
+
+*******************************************************************************
 4.3
 *******************************************************************************
 
 NEW FEATURES
 ------------
 
-* 'search' as a new -P (or --pid-file) option and PidFile configuration
+* 'search' has a new -P (or --pid-file) option and PidFile configuration
   variable to specify a file to write its process ID when running as a daemon.
 
   (This feature will be known as feature PID.)
@@ -20,13 +100,13 @@ BUG FIXES
 * The FilesGrow feature was broken because I forgot a needed set of parentheses
   to get the precedence right.  :-(
 
-  (This bug will will be know as FGP.)
+  (This bug will be known as bug fix FGP.)
 
 * For 'search', the description of the -p and --word-percent option in the
   usage message wasn't printed unless it was compiled as a daemon (and these
   options have nothing to do with it being a daemon).
 
-  (This bug fill will be known as bug fix WPO.)
+  (This bug will be known as bug fix WPO.)
 
 
 CHANGES, file-by-file
@@ -34,7 +114,7 @@ CHANGES, file-by-file
 
 * config.h
 
-	1. Performed following substitution:
+	1. Performed the following substitution:
 
 		s/swish++.socket/search.socket/
 
@@ -158,7 +238,7 @@ CHANGES, file-by-file
 
 * version.h
 
-	1. Updated version to "4.2".
+	1. Updated version to "4.3".
 
 * www_example/search.cgi
 
