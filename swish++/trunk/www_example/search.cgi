@@ -103,10 +103,14 @@ if ( $SOCKET_FILE || $SOCKET_ADDRESS ) {
 	select( (select( SEARCH ), $| = 1)[0] );
 
 	##
+	# We should end command-line options with "--" to signal the end of
+	# legitimate options.  If not given, it may be possible for a user to
+	# give options in the search terms.
+	#
 	# We also *MUST* print a trailing newline since the server reads an
 	# entire line of input (so therefore it looks and waits for a newline).
 	##
-	print SEARCH "search @options $search\n";
+	print SEARCH "search @options -- $search\n";
 } else {
 	##
 	# Zap dangerous characters before exposing to shell; escape rest.
@@ -116,9 +120,13 @@ if ( $SOCKET_FILE || $SOCKET_ADDRESS ) {
 
 	##
 	# Open a pipe from the 'search' command.
+	#
+	# We should end command-line options with "--" to signal the end of
+	# legitimate options.  If not given, it may be possible for a user to
+	# give options in the search terms.
 	##
-	open( SEARCH, "$SWISH_BIN/search -i $INDEX_FILE @options $search |" ) ||
-		die "open: $!";
+	open( SEARCH, "$SWISH_BIN/search -i $INDEX_FILE @options -- $search |" )
+		|| die "open: $!";
 }
 
 ##
