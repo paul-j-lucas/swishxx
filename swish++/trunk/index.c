@@ -440,12 +440,12 @@ static void		write_word_index( ostream&, off_t* );
 		::exit( Exit_Success );
 	}
 
+	/////////// Index specified directories and files /////////////////////
+
 	temp_file_name_prefix = temp_directory;
 	if ( *temp_file_name_prefix.rbegin() != '/' )
 		temp_file_name_prefix += '/';
 	temp_file_name_prefix += string( itoa( ::getpid() ) ) + string( "." );
-
-	/////////// Index specified directories and files /////////////////////
 
 	bool const using_stdin = *argv && (*argv)[0] == '-' && !(*argv)[1];
 	if ( !using_stdin &&
