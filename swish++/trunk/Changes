@@ -2,6 +2,44 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Searching with more that two "and" terms caused a core cump.  This bug was a
+  result of the "enhancement" to doing multiple "and" terms in 5.3.
+
+  (This bug fix shall be known as bug fix MAT.)
+
+* Compiling with all but the text module produced a syntax error.
+
+  (This bug fix shall be known as bug fix NMS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_bool.h
+* conf_int.h
+
+	1. Removed extraneous backslash.
+
+* init_modules.c
+
+	1. Added #include "indexer" for bug fix NMS.
+
+* query.c
+
+	1. In perform_and(), added needed "break" for bug fix MAT.
+
+* version.h
+
+	1. Changed version to "5.3.1".
+
+
+*******************************************************************************
 5.3
 *******************************************************************************
 
