@@ -176,7 +176,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	IndexFile	index_file_name;
 
-	search_options opt( &argc, &argv, opt_spec );
+	search_options const opt( &argc, &argv, opt_spec );
 	if ( !opt )
 		::exit( Exit_Usage );
 
