@@ -97,7 +97,7 @@ long			num_indexed_words;	// over all files indexed
 static long		num_unique_words;	// over all files indexed
 static vector<string>	partial_index_file_names;
 RecurseSubdirs		recurse_subdirectories;
-static string		temp_file_name_prefix;
+string			temp_file_name_prefix;
 Verbosity		verbosity;		// how much to print
 word_map		words;			// the index being generated
 WordFilesMax		word_file_max;
