@@ -228,39 +228,39 @@ private:
 inline bool	file_exists( char const *path ) {
 			return ::stat( path, &stat_buf ) != -1;
 		}
-inline bool	file_exists( string const &path ) {
+inline bool	file_exists( std::string const &path ) {
 			return file_exists( path.c_str() );
 		}
 
 inline bool	is_directory() {
-			return ( stat_buf.st_mode & S_IFMT ) == S_IFDIR;
+			return S_ISDIR( stat_buf.st_mode );
 		}
 inline bool	is_directory( char const *path ) {
 			return file_exists( path ) && is_directory();
 		}
-inline bool	is_directory( string const &path ) {
+inline bool	is_directory( std::string const &path ) {
 			return is_directory( path.c_str() );
 		}
 
 inline bool	is_plain_file() {
-			return ( stat_buf.st_mode & S_IFMT ) == S_IFREG;
+			return S_ISREG( stat_buf.st_mode & S_IFMT );
 		}
 inline bool	is_plain_file( char const *path ) {
 			return file_exists( path ) && is_plain_file();
 		}
-inline bool	is_plain_file( string const &path ) {
+inline bool	is_plain_file( std::string const &path ) {
 			return is_plain_file( path.c_str() );
 		}
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 inline bool	is_symbolic_link() {
-			return ( stat_buf.st_mode & S_IFLNK ) == S_IFLNK;
+			return S_ISLNK( stat_buf.st_mode & S_IFLNK );
 		}
 inline bool	is_symbolic_link( char const *path ) {
 			return	::lstat( path, &stat_buf ) != -1
 				&& is_symbolic_link();
 		}
-inline bool	is_symbolic_link( string const &path ) {
+inline bool	is_symbolic_link( std::string const &path ) {
 			return is_symbolic_link( path.c_str() );
 		}
 #endif	/* PJL_NO_SYMBOLIC_LINKS */
