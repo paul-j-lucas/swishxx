@@ -34,7 +34,8 @@ CFLAGS=		$(CCFLAGS)
 C_TARGET=	index search extract
 
 I_LINK=		$(CCLINK) -lm
-I_OBJS=		conf_var$(CCOEXT) \
+I_OBJS=		bcd$(CCOEXT) \
+		conf_var$(CCOEXT) \
 		conf_bool$(CCOEXT) \
 		conf_int$(CCOEXT) \
 		conf_set$(CCOEXT) \
@@ -54,11 +55,13 @@ I_OBJS=		conf_var$(CCOEXT) \
 		option_stream$(CCOEXT) \
 		stop_words$(CCOEXT) \
 		util$(CCOEXT) \
+		word_info$(CCOEXT) \
 		word_util$(CCOEXT) \
 		index$(CCOEXT)
 
 S_LINK=		$(CCLINK) $(SOCKET_LIB) $(PTHREAD_LIB)
-S_OBJS=		conf_var$(CCOEXT) \
+S_OBJS=		bcd$(CCOEXT) \
+		conf_var$(CCOEXT) \
 		conf_bool$(CCOEXT) \
 		conf_int$(CCOEXT) \
 		conf_string$(CCOEXT) \
@@ -116,6 +119,10 @@ index: $(I_OBJS)
 
 search: $(S_OBJS)
 	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(S_OBJS) $(S_LINK)
+
+bcd$(CCOEXT): \
+	fake_ansi$(CCHEXT) \
+		$(PLATFORM_H)
 
 conf_bool$(CCOEXT): \
 	conf_bool$(CCHEXT) \
@@ -237,6 +244,7 @@ file_info$(CCOEXT): \
 				less$(CCHEXT)
 
 file_list$(CCOEXT): \
+	bcd$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
 	file_list$(CCHEXT) \
@@ -295,6 +303,7 @@ IncludeExtension$(CCOEXT): \
 			less$(CCHEXT)
 
 index$(CCOEXT): \
+	bcd$(CCHEXT) \
 	config$(CCHEXT) \
 	directory$(CCHEXT) \
 		FollowLinks$(CCHEXT) \
@@ -355,6 +364,7 @@ postscript$(CCOEXT): \
 			less$(CCHEXT)
 
 search$(CCOEXT): \
+	bcd$(CCHEXT) \
 	config$(CCHEXT) \
 	exit_codes$(CCHEXT) \
 	file_index$(CCHEXT) \
@@ -457,6 +467,17 @@ word_index$(CCOEXT): \
 		file_vector$(CCHEXT) \
 		$(PLATFORM_H) \
 	word_index$(CCHEXT)
+
+word_info$(CCOEXT): \
+	bcd$(CCHEXT) \
+	util$(CCHEXT) \
+	word_info$(CCHEXT) \
+		fake_ansi$(CCHEXT) \
+			$(PLATFORM_H) \
+		html$(CCHEXT) \
+			file_vector$(CCHEXT) \
+		my_set$(CCHEXT) \
+			less$(CCHEXT)
 
 word_util$(CCOEXT): \
 	config$(CCHEXT) \
