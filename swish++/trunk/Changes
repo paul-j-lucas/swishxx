@@ -3,6 +3,63 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.7.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Some "and" query results were slightly messed up due to an iterator being
+  invalidated.
+
+  (This bug fix shall be known as bug fix PAI.)
+
+* Ranks could be printed as zero (wrong!).
+
+  (This bug fix shall be known as bug fix RANK0.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* auto_vec.h
+
+	1. Made const/non-const versions of accessors.
+
+* conf_enum.c
+* IncludeMeta.c
+
+	1. In parse_value(), made "lower" non-const to work with updated
+	   auto_vec.
+
+* config/GNUmakefile
+* GNUmakefile
+
+	1. Removed "dist" target.
+
+* query.c
+
+	1. In perform_and(), added a temporary iterator for bug fix PAI.
+
+* search.c
+
+	1. In search(), added code to ensure rank is not zero for bug fix
+	   RANK0.
+
+	2. In search(), added const to highest_rank.
+
+* thread_pool.h
+
+	1. Made various thread_pool data members "volatile" because
+	   this should be done for variables that are accessed by
+	   multiple threads.
+
+* version.h
+
+	1. Upped version to to "5.7.1".
+
+
+*******************************************************************************
 5.7
 *******************************************************************************
 
