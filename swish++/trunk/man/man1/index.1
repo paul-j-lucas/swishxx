@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "September 7, 2000" "SWISH++"
+.TH \f3index\f1 1 "December 12, 2000" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -60,16 +60,12 @@ option or the
 variable is given).
 Files are indexed either only if their filename matches
 one of the patterns in the set specified with either the
-.BR \-e ,
-.BR \-\-pattern ,
-.BR \-h ,
+.B \-e
 or
-.B \-\-html-pattern
+.B \-\-pattern
 option or the
 .B IncludeFile
-or
-.B HTMLFile
-variables (unless standard input is used; see next paragraph)
+variable (unless standard input is used; see next paragraph)
 or is not in the set specified with either the
 .B \-E
 or
@@ -108,12 +104,6 @@ specified will result in those files being indexed more than once.
 Characters in the ISO 8859-1 (Latin 1) character set
 are mapped to their closest ASCII equivalent
 before further examination and indexing.
-.SS Character Entities
-Both HTML or XHTML character and numeric
-(decimal and hexadecimal) entity references
-are converted to their ASCII character equivalents
-before further examination and indexing.
-For example, ``r&eacute;sum&#233;'' becomes ``resume'' before indexing.
 .SS Word Determination
 Stop words, words that occur too frequently or have no information content,
 are not indexed.
@@ -162,107 +152,6 @@ Contains more than \f(CWWord_Max_Consec_Vowels\f1 consecutive vowels.
 Contains more than \f(CWWord_Max_Consec_Puncts\f1 consecutive punctuation
 characters.
 (Default is 1.)
-.SS HTML or XHTML Files
-Additional processing is done for HTML or XHTML files.
-(HTML or XHTML files are recognized as such only if their filename matches
-one of the patterns in the set specified via the
-.B \-h
-or
-.B \-\-html-pattern
-option or the
-.B HTMLFile
-variable.)
-The additional processing is:
-.TP 4
-1.
-If a matched set of \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 tags is found
-within the first \f(CWTitleLines\f1 lines of the file (default is 12),
-then the text between the tags is stored in the generated index file as the
-file's title rather than the file's name.
-(Every non-space whitespace character in the title is converted to a space;
-leading and trailing spaces are removed.)
-.TP
-2.
-If an HTML or XHTML element contains a \f(CWCLASS\f1 attribute
-whose value is among the set of class names specified
-as those not to index (via one or more of either the
-.B \-C
-or
-.B \-\-no-class
-option or the
-.B ExcludeClass
-variable),
-then all the text up to the tag that ends the element will not be indexed.
-.IP ""
-For an element that has an optional end tag, ``the tag that ends the element''
-is either the element's end tag or a tag of another element that implicitly
-ends it;
-for an element that does not have an end tag, ``the tag that ends the element''
-is the element's start tag.
-(See the EXAMPLES.)
-All elements from the HTML 4.0 specification (including deprecated elements),
-plus common, browser-specific elements are recognized;
-unrecognized elements are ignored.
-(See the
-.B \-H
-or
-.B \-\-dump-html
-option.)
-.TP
-3.
-If an HTML or XHTML element contains a \f(CWTITLE\f1 attribute,
-then the words specified as the value of the \f(CWTITLE\f1 attribute
-are indexed.
-.TP
-4.
-If an \f(CWAREA\f1, \f(CWIMG\f1, or \f(CWINPUT\f1 element
-contains an \f(CWALT\f1 attribute,
-then the words specified as the value of the \f(CWALT\f1 attribute
-are indexed.
-.TP
-5.
-If a \f(CWMETA\f1 element contains both a \f(CWNAME\f1 and \f(CWCONTENT\f1
-attribute, then the words specified
-as the value of the \f(CWCONTENT\f1 attribute
-are indexed associated with the meta name specified as the value of the
-\f(CWNAME\f1 attribute.
-(See also the
-.BR \-m ,
-.BR \-\-meta ,
-.BR \-M ,
-and
-.B \-\-no-meta
-option or the
-.B IncludeClass
-or
-.B ExcludeClass
-variables.)
-Meta names can later be queried against specifically using
-.BR search (1).
-.TP
-6.
-If a \f(CWTABLE\f1 element contains a \f(CWSUMMARY\f1 attribute,
-then the words specified as the value of the \f(CWSUMMARY\f1 attribute
-are indexed.
-.TP
-7.
-If an \f(CWOBJECT\f1 element contains a \f(CWSTANDBY\f1 attribute,
-then the words specified as the value of the \f(CWSTANDBY\f1 attribute
-are indexed.
-.TP
-8.
-All other HTML or XHTML tags and comments
-(anything between \f(CW<\f1 and \f(CW>\f1 characters)
-are discarded.
-.PP
-In compliance with the HTML specification,
-any one of no quotes, single quotes, or double quotes may be used
-to contain attribute values and attributes can appear in any order.
-Values containing whitespace, however, must be quoted.
-The specification is vague as to whether whitespace surrounding the \f(CW=\f1
-is legal, but
-.B index
-allows it.
 .SS Filters
 Via the
 .B FilterFile
@@ -309,6 +198,202 @@ and that words that were too frequent in the old set
 would also be too frequent in new set.
 .P
 Another way around this problem is to do periodic full indexing.
+.SH INDEXING MODULES
+.B index
+is written in a modular fashion
+where different types of files have different indexing modules.
+Currently, there are 3 modules:
+Text (plain text),
+HTML (HTML and XHTML),
+and
+Mail (RFC 822 and Usenet News).
+.SS Text Module
+This module simply indexes plain text files
+performing character mapping and word determination
+as has already been described.
+.SS HTML and XHTML Module
+Additional processing is done for HTML and XHTML files.
+The additional processing is:
+.TP 4
+1.
+Character and numeric
+(decimal and hexadecimal)
+entity references
+are converted to their ASCII character equivalents
+before further examination and indexing.
+For example, ``r&eacute;sum&#233;'' becomes ``resume'' before indexing.
+.TP
+2.
+If a matched set of \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 tags is found
+within the first \f(CWTitleLines\f1 lines of the file (default is 12),
+then the text between the tags is stored in the generated index file as the
+file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.TP
+3.
+If an HTML or XHTML element contains a \f(CWCLASS\f1 attribute
+whose value is among the set of class names specified
+as those not to index (via one or more of either the
+.B \-C
+or
+.B \-\-no-class
+option or the
+.B ExcludeClass
+variable),
+then all the text up to the tag that ends the element will not be indexed.
+.IP ""
+For an element that has an optional end tag, ``the tag that ends the element''
+is either the element's end tag or a tag of another element that implicitly
+ends it;
+for an element that does not have an end tag, ``the tag that ends the element''
+is the element's start tag.
+(See the EXAMPLES.)
+All elements from the HTML 4.0 specification (including deprecated elements),
+plus common, browser-specific elements are recognized;
+unrecognized elements are ignored.
+(See the
+.B \-H
+or
+.B \-\-dump-html
+option.)
+.TP
+4.
+If an HTML or XHTML element contains a \f(CWTITLE\f1 attribute,
+then the words specified as the value of the \f(CWTITLE\f1 attribute
+are indexed.
+.TP
+5.
+If an \f(CWAREA\f1, \f(CWIMG\f1, or \f(CWINPUT\f1 element
+contains an \f(CWALT\f1 attribute,
+then the words specified as the value of the \f(CWALT\f1 attribute
+are indexed.
+.TP
+6.
+If a \f(CWMETA\f1 element contains both a \f(CWNAME\f1 and \f(CWCONTENT\f1
+attribute, then the words specified
+as the value of the \f(CWCONTENT\f1 attribute
+are indexed associated with the meta name specified as the value of the
+\f(CWNAME\f1 attribute.
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.TP
+7.
+If a \f(CWTABLE\f1 element contains a \f(CWSUMMARY\f1 attribute,
+then the words specified as the value of the \f(CWSUMMARY\f1 attribute
+are indexed.
+.TP
+8.
+If an \f(CWOBJECT\f1 element contains a \f(CWSTANDBY\f1 attribute,
+then the words specified as the value of the \f(CWSTANDBY\f1 attribute
+are indexed.
+.TP
+9.
+All other HTML or XHTML tags and comments
+(anything between \f(CW<\f1 and \f(CW>\f1 characters)
+are discarded.
+.PP
+In compliance with the HTML specification,
+any one of no quotes, single quotes, or double quotes may be used
+to contain attribute values and attributes can appear in any order.
+Values containing whitespace, however, must be quoted.
+The specification is vague as to whether whitespace surrounding the \f(CW=\f1
+is legal, but
+.B index
+allows it.
+.SS Mail Module
+Additional processing is done for mail and news files.
+The additional processing is:
+.TP 4
+1.
+If a
+.B Subject
+header is found within the first \f(CWTitleLines\f1 lines of the file
+(default is 12),
+then the value of the subject is stored in the generated index file as the
+file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.TP
+2.
+Text that is the value of a header
+is indexed associated with the header as a meta name.
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+The recommended headers to be indexed are:
+.BR Bcc ,
+.BR Cc ,
+.BR Comments ,
+.BR Content-Description ,
+.BR From ,
+.BR Keywords ,
+.BR Newsgroups ,
+.BR Resent-To ,
+.BR Subject ,
+and
+.BR To .
+.TP
+3.
+MIME attachments are indexed.
+.TP
+4.
+Text that is in the text/enriched content type is converted to plain text
+prior to indexing.
+.TP
+5.
+Text that is encoded as either quoted-printable or base-64
+is decoded prior to indexing.
+.TP
+6.
+Text in vCards is indexed such that the values of types (fields)
+are associated with the types as meta names.
+.IP ""
+The recommended vCard types (with reassignments) to be indexed are:
+.BR adr=address ,
+.BR categories ,
+.BR class ,
+.BR label=address ,
+.BR fn=name ,
+.BR nickname ,
+.BR note ,
+.BR org ,
+.BR role ,
+and
+.BR title .
+.PP
+Indexing mail and news files is most effective
+only when there is exactly one message per file.
+While Usenet news files are usually this way, mail files are not.
+Mail files, e.g., mailboxes, are usually comprised of multiple messages.
+Such files would need to be split up into files of individual messages
+prior to indexing since there's no point in indexing a single mailbox:
+every search result would return a rank of 100 for the same file.
+Therefore, the
+.BR splitmail (1)
+utility is included in the SWISH++ distribution.
 .SH OPTIONS
 Options begin with either a `\f(CW-\f1' for short options
 or a ``\f(CW--\f1'' for long options.
@@ -368,15 +453,18 @@ or
 .B \-\-no-class
 options may be specified.
 .TP
-.BI \-e p
+.BI \-e m : p
 .br
 .ns
 .TP
-.BI \-\-pattern= p
-A filename pattern,
+.BI \-\-pattern= m : p
+A module name,
+.IR m ,
+and a filename pattern,
 .IR p ,
 of files to index.
-Case is significant.
+Case is irrelevant for the module name,
+but significant for the pattern.
 Multiple
 .B \-e
 or
@@ -439,21 +527,6 @@ more space will be allocated as necessary,
 but with a slight performace penalty.
 (Default is 100.)
 .TP
-.BI \-h p
-.br
-.ns
-.TP
-.BI \-\-html-pattern= p
-A filename pattern,
-.IR p ,
-of HTML or XHTML files to index.
-Case is significant.
-Multiple
-.B \-h
-or
-.B \-\-html-pattern
-options may be specified.
-.TP
 .B \-H
 .br
 .ns
@@ -493,15 +566,14 @@ Follow symbolic links during indexing.
 This option is not available under Microsoft Windows
 since it doesn't support symbolic links.
 .TP
-.BI \-m m
+.BI \-m m [ =n ]
 .br
 .ns
 .TP
-.BI \-\-meta= m
-For HTML or XHTML files only, the value of a meta \f(CWNAME\f1 attribute,
+.BI \-\-meta= m [ =n ]
+The value of a meta name,
 .IR m ,
-for which the words in the value of the associated \f(CWCONTENT\f1 attribute
-should be indexed.
+for which words are to be associated when indexed.
 Case is irrelevant.
 Multiple
 .B \-m
@@ -509,11 +581,18 @@ or
 .B \-\-meta
 options may be specified.
 .IP ""
-By default, words in the value of the \f(CWCONTENT\f1 attribute
-for all meta names are indexed.
+A meta name can be reassigned when followed by a new name,
+.IR n ,
+meaning that the name
+.I n
+and not
+.I m
+is stored in the generated index file
+so that queries would use the new name rather than the original.
+.IP ""
+By default, words associated with all meta names are indexed.
 Specifying at least one meta name via this option changes that
-so that only the words in the value of the \f(CWCONTENT\f1 attribute
-associated with a member of the set of meta names
+so that only the words associated with a member of the set of meta names
 explicitly specified via one or more
 .B \-m
 or
@@ -525,10 +604,9 @@ options are indexed.
 .ns
 .TP
 .BI \-\-no-meta= m
-For HTML or XHTML files only, the value of a meta \f(CWNAME\f1 attribute,
+The value of a meta name,
 .IR m ,
-for which the words in the value of the associated \f(CWCONTENT\f1 attribute
-should not be indexed.
+for which words are not to be indexed.
 Case is irrelevant.
 Multiple
 .B \-M
@@ -558,14 +636,11 @@ all the files in that directory are indexed
 (modulo the filename patterns specified via either the
 .BR \-e ,
 .BR \-\-pattern ,
-.BR \-h ,
-.BR \-\-html-pattern ,
 .BR \-E ,
 or
 .B \-\-no-pattern
 options or the
-.BR IncludeFile ,
-.BR HTMLFile ,
+.B IncludeFile
 or
 .B ExcludeFile
 variables) but subdirectories encountered are ignored
@@ -704,12 +779,6 @@ Same as
 or
 .B \-\-follow-links
 .TP
-.B HTMLFile
-Same as
-.B \-h
-or
-.B \-\-html-pattern
-.TP
 .B IncludeFile
 Same as
 .B \-e
@@ -784,11 +853,11 @@ to your web server's document root prior to indexing.
 .P
 To index all HTML and text files on a web server:
 .cS
-index -v3 -h '*.*htm*' -e '*.txt' .
+index -v3 -e 'html:*.*htm*' -e 'text:*.txt' .
 .cE
 To index all files not under directories named \f(CWSCCS\f1:
 .cS
-find . -name SCCS -prune -o -type f -a -print | index -h '*.*htm*' -
+find . -name SCCS -prune -o -type f -a -print | index -e 'html:*.*htm*' -
 .cE
 .SS Windows Command-Lines
 When using the Windows command interpreter,
@@ -796,10 +865,10 @@ single quotes around filename patterns don't work; you
 .I must
 use double quotes:
 .cS
-index -v3 -h "*.*htm*" -e "*.txt" .
+index -v3 -e "html:*.*htm*" -e "text:*.txt" .
 .cE
 (Double quotes will also work under Unix.)
-.SS Using \f(CWCLASS\fP Attributes to Index Selectively
+.SS Using \f(CWCLASS\fP Attributes to Index HTML Selectively
 In an HTML or XHTML document, there may be sections that should not be indexed.
 For example, if every page of a web site contains a navigation menu such as:
 .cS
@@ -897,8 +966,7 @@ Generated index files are machine-dependent
 .TP
 2.
 The character encoding always used is ISO 8859-1 (Latin 1).
-Character encodings specified either in \f(CWMETA\f1 elements
-or via the \f(CWCHARSET\f1 attribute in other elements are ignored.
+Character encodings that are specified in files are ignored.
 .TP
 3.
 The word-determination heuristics employed are heavily geared for English.
@@ -917,8 +985,34 @@ default index file name
 .BR extract (1),
 .BR find (1),
 .BR search (1),
+.BR splitmail (1),
 .BR swish++.conf (4),
 .BR glob (7)
+.PP
+Tim Berners-Lee.
+``The text/enriched MIME Content-type,''
+.IR "Request for Comments 1563" ,
+Network Working Group of the Internet Engineering Task Force,
+January 1994.
+.PP
+David H. Crocker.
+``Standard for the Format of ARPA Internet Text Messages,''
+.IR "Request for Comments 822" ,
+Department of Electrical Engineering,
+University of Delaware,
+August 1982.
+.PP
+Frank Dawson and Tim Howes.
+``vCard MIME Directory Profile,''
+.IR "Request for Comments 2426" ,
+Network Working Group of the Internet Engineering Task Force,
+September 1998.
+.PP
+Ned Freed and Nathaniel S. Borenstein.
+``Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,''
+.IR "Request for Comments 2045" ,
+RFC 822 Extensions Working Group of the Internet Engineering Task Force,
+November 1996.
 .PP
 International Standards Organization.
 .I ISO 8859-1: Information Processing
@@ -939,84 +1033,57 @@ International Standards Organization.
 1993.
 .PP
 Steven Pemberton, et al.
-.I XHTML 1.0: The Extensible HyperText Markup Language,
+.IR "XHTML 1.0: The Extensible HyperText Markup Language" ,
 World Wide Web Consortium,
 January 2000.
-.RS
-http://www.w3.org/TR/xhtml1/
-.RE
 .PP
 Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
 ``On SGML and HTML: SGML constructs used in HTML: Entities,''
 .I HTML 4.0 Specification, \(sc3.2.3,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.3
-.RE
 .PP
 \-\-.
 ``The global structure of an HTML document: The document head: The \f(CWtitle\f1 attribute,''
 .I HTML 4.0 Specification, \(sc7.4.3,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/REC-html40/struct/global.html#adef-title
-.RE
 .PP
 \-\-.
 ``The global structure of an HTML document: The document head: Meta data,''
 .I HTML 4.0 Specification, \(sc7.4.4,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/PR-html40/struct/global.html#h-7.4.4
-.RE
 .PP
 \-\-.
 ``The global structure of an HTML document: The document body: Element identifiers: the \f(CWid\f1 and \f(CWclass\f1 attributes,''
 .I HTML 4.0 Specification, \(sc7.5.2,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/PR-html40/struct/global.html#h-7.5.2
-.RE
 .PP
 \-\-.
 ``Tables: Elements for constructing tables: The \f(CWTABLE\f1 element,''
 .I HTML 4.0 Specification, \(sc11.2.1,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/REC-html40/struct/tables.html#adef-summary
-.RE
 .PP
 \-\-.
 ``Objects, Images, and Applets: Generic inclusion: the \f(CWOBJECT\f1 element,''
 .I HTML 4.0 Specification, \(sc13.3,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/REC-html40/struct/objects.html#adef-standby
-.RE
 .PP
 \-\-.
 ``Objects, Images, and Applets: How to specify alternate text,''
 .I HTML 4.0 Specification, \(sc13.8,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/REC-html40/struct/objects.html#h-13.8
-.RE
 .PP
 \-\-.
 ``Index of Elements,''
 .I HTML 4.0 Specification,
 World Wide Web Consortium,
 April 1998.
-.RS
-http://www.w3.org/TR/REC-html40/index/elements.html
-.RE
 .SH AUTHOR
 Paul J. Lucas
-.RI < pjl@best.com >
+.RI < pauljlucas@mac.com >
