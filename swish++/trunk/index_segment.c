@@ -20,7 +20,6 @@
 */
 
 // local
-#include "fake_ansi.h"			/* for REINTERPRET_CAST */
 #include "index_segment.h"
 
 //*****************************************************************************
@@ -49,12 +48,12 @@
 //*****************************************************************************
 {
 	register file_vector::const_iterator c = begin_ = file.begin();
-	register size_type const *p = REINTERPRET_CAST( size_type const* )( c );
+	register size_type const *p = reinterpret_cast<size_type const*>( c );
 	num_entries_ = p[ 0 ];
 	for ( int i = id; i > 0; --i ) {
 		c += sizeof( num_entries_ ) + num_entries_ * sizeof( off_t );
-		p = REINTERPRET_CAST( size_type const* )( c );
+		p = reinterpret_cast<size_type const*>( c );
 		num_entries_ = p[ 0 ];
 	}
-	offset_ = REINTERPRET_CAST( off_t const* )( &p[ 1 ] );
+	offset_ = reinterpret_cast<off_t const*>( &p[ 1 ] );
 }
