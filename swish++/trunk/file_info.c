@@ -98,7 +98,7 @@ FilesReserve			files_reserve;
 	o << u;
 	while ( *u++ ) ;				// skip past filename
 	off_t const size = parse_bcd( u );
-	int const num_words = parse_bcd( u );
+	parse_bcd( u );					// skip past num_words
 	return o << ' ' << size << ' ' << u;
 }
 
