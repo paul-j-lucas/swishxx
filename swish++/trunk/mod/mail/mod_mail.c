@@ -359,10 +359,14 @@ could_not_filter:
 			);
 			if ( ::strstr( value, "binary" ) )
 				type.decoder_ = Binary;
+#ifdef	DECODE_base64
 			else if ( ::strstr( value, "base64" ) )
 				type.decoder_ = decode_base64;
+#endif
+#ifdef	DECODE_quoted_printable
 			else if ( ::strstr( value, "quoted-printable" ) )
 				type.decoder_ = decode_quoted_printable;
+#endif
 			continue;
 		}
 
