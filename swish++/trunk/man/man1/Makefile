@@ -21,13 +21,6 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=		../..
-include		$(ROOT)/config/config.mk
-
-SECT=		1
-PAGES=		httpindex.$(SECT) index.$(SECT) search.$(SECT) extract.$(SECT)
-TARGET_TXT=	httpindex.txt index.txt search.txt extract.txt
-TARGET_PDF=	httpindex.pdf index.pdf search.pdf extract.pdf
-TARGET_PS=	httpindex.ps index.ps search.ps extract.ps
-
-include		$(ROOT)/config/man.mk
+ROOT=	../..
+SECT=	1
+include	$(ROOT)/config/man.mk

@@ -21,13 +21,6 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=		../..
-include		$(ROOT)/config/config.mk
-
-SECT=		3
-PAGES=		WWW.$(SECT)
-TARGET_TXT=	WWW.txt
-TARGET_PDF=	WWW.pdf
-TARGET_PS=	WWW.ps
-
-include		$(ROOT)/config/man.mk
+ROOT=	../..
+SECT=	3
+include	$(ROOT)/config/man.mk

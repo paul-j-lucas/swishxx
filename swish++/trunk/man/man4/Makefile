@@ -21,13 +21,6 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=		../..
-include		$(ROOT)/config/config.mk
-
-SECT=		4
-PAGES=		swish++.conf.$(SECT) swish++.index.$(SECT)
-TARGET_TXT=	swish++.conf.txt swish++.index.txt
-TARGET_PDF=	swish++.conf.pdf swish++.index.pdf
-TARGET_PS=	swish++.conf.ps swish++.index.ps
-
-include		$(ROOT)/config/man.mk
+ROOT=	../..
+SECT=	4
+include	$(ROOT)/config/man.mk
