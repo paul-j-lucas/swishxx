@@ -64,7 +64,7 @@ int conf_var::current_config_file_line_no_ = 0;
 	if ( var )
 		internal_error
 			<< "conf_var::conf_var(): \"" << name_
-			<< "\" registered more than once\n" << report_error;
+			<< "\" registered more than once" << report_error;
 	var = this;
 }
 
@@ -147,6 +147,10 @@ int conf_var::current_config_file_line_no_ = 0;
 			"wordfilesmax",
 			"wordpercentmax",
 			"wordthreshold",
+#ifdef	FEATURE_word_pos
+			"storewordpositions",
+			"wordsnear",
+#endif
 #ifdef	SEARCH_DAEMON
 			"group",
 			"pidfile",
@@ -371,7 +375,7 @@ next_line:
 	if ( i != map_ref().end() )
 		internal_error
 			<< "conf_var::register_var(): \"" << name
-			<< "\" registered more than once\n" << report_error;
+			<< "\" registered more than once" << report_error;
 	map_ref()[ name ] = 0;
 }
 
