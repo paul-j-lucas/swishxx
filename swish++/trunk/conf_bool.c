@@ -77,7 +77,7 @@ extern char const*	me;
 //
 //*****************************************************************************
 {
-	auto_vec< char > const lower( to_lower_r( line ) );
+	auto_vec<char> const lower( to_lower_r( line ) );
 	if ( *lower ) {
 		if (	!::strcmp( lower, "false" ) ||
 			!::strcmp( lower, "no" ) ||

@@ -118,7 +118,7 @@ extern char const*	me;
 		error() << '"' << name() << "\" has no value\n";
 		::exit( Exit_Config_File );
 	}
-	auto_vec< char > const lower( to_lower_r( line ) );
+	auto_vec<char> const lower( to_lower_r( line ) );
 	if ( !::strcmp( lower, "infinity" ) ) {
 		operator=( INT_MAX );
 		return;

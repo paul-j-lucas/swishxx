@@ -301,7 +301,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-	auto_vec< char > const lower_word( to_lower_r( word ) );
+	auto_vec<char> const lower_word( to_lower_r( word ) );
 	less< char const* > const comparator;
 
 	if ( !is_ok_word( word ) || ::binary_search(
