@@ -50,12 +50,8 @@ public:
 	typedef PJL::char_ptr_set name_set_type;
 
 	file_info(
-		char const *path_name, size_t file_size, char const *title,
-		int num_words = 0
-	);
-	file_info(
 		char const *path_name, int dir_index, size_t file_size,
-		char const *title, int num_words
+		char const *title, int num_words = 0
 	);
 
 	int			dir_index() const	{ return dir_index_; }
