@@ -122,7 +122,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"associatemeta",
 			"directoriesgrow",
 			"directoriesreserve",
-#ifdef	MOD_HTML
+#ifdef	mod_html
 			"excludeclass",
 #endif
 			"excludefile",
@@ -132,7 +132,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"extractfilter",
 			"filesgrow",
 			"filesreserve",
-#ifdef	MOD_MAIL
+#ifdef	mod_mail
 			"filterattachment",
 #endif
 			"filterfile",
