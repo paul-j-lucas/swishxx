@@ -30,16 +30,16 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#ifdef	WIN32
+#include <process.h>				/* for getpid(2) */
+#endif
 #include <string>
+#ifndef	WIN32
+#include <sys/resource.h>
+#endif
 #include <sys/types.h>
 #include <unistd.h>
 #include <vector>
-
-#ifdef	WIN32
-int const	MAXNAMLEN = 255;
-#else
-#include <dirent.h>				/* for MAXNAMLEN */
-#endif
 
 // local
 #include "config.h"
@@ -49,17 +49,19 @@ int const	MAXNAMLEN = 255;
 #include "ExcludeExtension.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
-#include "FilesReserve.h"
 #include "file_info.h"
 #include "file_list.h"
+#include "FilesReserve.h"
 #include "file_vector.h"
 #include "FilterExtension.h"
 #include "html.h"
 #include "IncludeExtension.h"
 #include "IncludeMeta.h"
-#include "index.h"
 #include "IndexFile.h"
+#include "index.h"
+#include "itoa.h"
 #include "meta_map.h"
+#include "option_stream.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
@@ -70,14 +72,10 @@ int const	MAXNAMLEN = 255;
 #include "Verbosity.h"
 #include "version.h"
 #include "WordFilesMax.h"
-#include "WordPercentMax.h"
 #include "word_index.h"
 #include "word_info.h"
-
-extern "C" {
-	extern char*	optarg;
-	extern int	optind, opterr;
-}
+#include "WordPercentMax.h"
+#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -89,10 +87,10 @@ int		exclude_class_count;		// don't index words if > 0
 ExcludeClass	exclude_class_names;		// class names not to index
 ExcludeMeta	exclude_meta_names;		// meta names not to index
 IncludeMeta	include_meta_names;		// meta names to index
+FilesReserve	files_reserve;
 FilterExtension	filters;
 char const*	me;				// executable name
 meta_map	meta_names;
-FilesReserve	num_files_reserve;
 TitleLines	num_title_lines;
 long		num_total_words;		// over all files indexed
 long		num_indexed_words;		// over all files indexed
@@ -106,7 +104,6 @@ word_map	words;				// the index being generated
 WordFilesMax	word_file_max;
 WordPercentMax	word_percent_max;
 
-void		do_file( char const *path );
 void		index_word( char *word, int len, int meta_id );
 void		merge_indicies( ostream& );
 void		rank_full_index();
@@ -119,6 +116,9 @@ void		write_partial_index();
 void		write_stop_word_index( ostream&, off_t* );
 void		write_word_index( ostream&, off_t* );
 
+#define	INDEX
+#include "do_file.c"
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -127,38 +127,85 @@ void		write_word_index( ostream&, off_t* );
 //
 // DESCRIPTION
 //
-//	Parse the command line, initialize, call other functions ... the
-//	usual things that are done in main().
+//	Parse the command line, initialize, call other functions ... the usual
+//	things that are done in main().
 //
 // PARAMETERS
 //
 //	argc	The number of arguments.
 //
-//	argv	A vector of the arguments; argv[argc] is null.  Aside from
-//		the options below, the arguments are the names of the files
-//		and directories to be indexed.
+//	argv	A vector of the arguments; argv[argc] is null.  Aside from the
+//		options below, the arguments are the names of the files and
+//		directories to be indexed.
 //
 // SEE ALSO
 //
 //	Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//	Addison-Wesley, Reading, MA.  pp. 116-118.
+//	Addison-Wesley, Reading, MA, 1997.  pp. 116-118.
 //
 //*****************************************************************************
 {
 	me = ::strrchr( argv[0], '/' );		// determine base name...
 	me = me ? me + 1 : argv[0];		// ...of executable
 
+	////////// Max-out various system resources ///////////////////////////
+
+#ifdef	RLIMIT_AS				/* SVR4 */
+	//
+	// Max-out out out total memory potential.
+	//
+	max_out_limit( RLIMIT_AS );
+#endif
+#ifdef	RLIMIT_CPU				/* SVR4, 4.3+BSD */
+	//
+	// Max-out the amount of CPU time we can run since indexing can take a
+	// while.
+	//
+	max_out_limit( RLIMIT_CPU );
+#endif
+#ifdef	RLIMIT_DATA				/* SVR4, 4.3+BSD */
+	//
+	// Max-out our heap allocation potential.
+	//
+	max_out_limit( RLIMIT_DATA );
+#endif
 	/////////// Process command-line options //////////////////////////////
+
+	static option_stream::spec const opt_spec[] = {
+		"help",			0, '?',
+		"config",		1, 'c',
+		"no-class",		1, 'C',
+		"extension",		1, 'e',
+		"no-extension",		1, 'E',
+		"file-max",		1, 'f',
+		"file-reserve",		1, 'F',
+		"html-extension",	1, 'h',
+		"dump-html",		0, 'H',
+		"index-file",		1, 'i',
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+		"follow-links",		0, 'l',
+#endif
+		"meta",			1, 'm',
+		"no-meta",		1, 'M',
+		"percent-max",		1, 'p',
+		"no-recurse",		0, 'r',
+		"stop-file",		1, 's',
+		"dump-stop",		0, 'S',
+		"title-lines",		1, 't',
+		"verbose",		1, 'v',
+		"version",		0, 'V',
+		0
+	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_elements_opt = false;
 	bool		dump_stop_words_opt = false;
+	char const*	files_reserve_arg = 0;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
 #endif
 	IndexFile	index_file_name;
 	char const*	index_file_name_arg = 0;
-	char const*	num_files_reserve_arg = 0;
 	char const*	num_title_lines_arg = 0;
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
@@ -169,40 +216,41 @@ void		write_word_index( ostream&, off_t* );
 	char const*	word_file_max_arg = 0;
 	char const*	word_percent_max_arg = 0;
 
-	char const opts[] =
-#ifndef	PJL_NO_SYMBOLIC_LINKS
-		"l"
-#endif
-		"c:C:e:E:f:F:Hi:m:M:p:rs:St:T:v:V";
-
-	::opterr = 1;
-	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
+	option_stream opt_in( argc, argv, opt_spec );
+	for ( option_stream::option opt; opt_in >> opt; )
 		switch ( opt ) {
 
+			case '?': // Print help.
+				usage();
+
 			case 'c': // Specify config. file.
-				config_file_name_arg = ::optarg;
+				config_file_name_arg = opt.arg();
 				break;
 
 			case 'C': // Specify CLASS name not to index.
 				exclude_class_names.insert(
-					::strdup( to_lower( ::optarg ) )
+					::strdup( to_lower( opt.arg() ) )
 				);
 				break;
 
 			case 'e': // Specify filename extension(s) to index.
-				include_extensions.insert( ::optarg );
+				include_extensions.insert( opt.arg() );
 				break;
 
 			case 'E': // Specify filename extension(s) not to index.
-				exclude_extensions.insert( ::optarg );
+				exclude_extensions.insert( opt.arg() );
 				break;
 
 			case 'f': // Specify the word/file file maximum.
-				word_file_max_arg = ::optarg;
+				word_file_max_arg = opt.arg();
 				break;
 
 			case 'F': // Specify files to reserve space for.
-				num_files_reserve_arg = ::optarg;
+				files_reserve_arg = opt.arg();
+				break;
+
+			case 'h': // Specify HTML extension(s) to index.
+				include_extensions.insert( opt.arg(), true );
 				break;
 
 			case 'H': // Dump recognized HTML elements.
@@ -210,7 +258,7 @@ void		write_word_index( ostream&, off_t* );
 				break;
 
 			case 'i': // Specify index file overriding the default.
-				index_file_name_arg = ::optarg;
+				index_file_name_arg = opt.arg();
 				break;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 			case 'l': // Follow symbolic links during indexing.
@@ -219,18 +267,18 @@ void		write_word_index( ostream&, off_t* );
 #endif
 			case 'm': // Specify meta name(s) to index.
 				include_meta_names.insert(
-					::strdup( to_lower( ::optarg ) )
+					::strdup( to_lower( opt.arg() ) )
 				);
 				break;
 
 			case 'M': // Specify meta name(s) not to index.
 				exclude_meta_names.insert(
-					::strdup( to_lower( ::optarg ) )
+					::strdup( to_lower( opt.arg() ) )
 				);
 				break;
 
 			case 'p': // Specify the word/file percentage.
-				word_percent_max_arg = ::optarg;
+				word_percent_max_arg = opt.arg();
 				break;
 
 			case 'r': // Specify whether to index recursively.
@@ -238,7 +286,7 @@ void		write_word_index( ostream&, off_t* );
 				break;
 
 			case 's': // Specify stop-word list.
-				stop_word_file_name_arg = ::optarg;
+				stop_word_file_name_arg = opt.arg();
 				break;
 
 			case 'S': // Dump stop-word list.
@@ -246,40 +294,40 @@ void		write_word_index( ostream&, off_t* );
 				break;
 
 			case 't': // Specify number of title lines.
-				num_title_lines_arg = ::optarg;
+				num_title_lines_arg = opt.arg();
 				break;
 
 			case 'T': // Specify temp. directory.
-				temp_directory_arg = ::optarg;
+				temp_directory_arg = opt.arg();
 				break;
 
 			case 'v': // Specify verbosity level.
-				verbosity_arg = ::optarg;
+				verbosity_arg = opt.arg();
 				break;
 
 			case 'V': // Display version and exit.
 				cout << "SWISH++ " << version << endl;
 				::exit( Exit_Success );
 
-			case '?': // Bad option.
+			default: // Bad option.
 				usage();
 		}
-	argc -= ::optind, argv += ::optind;
+	argc -= opt_in.shift(), argv += opt_in.shift();
 
 	//
 	// First, parse the config. file (if any); then override variables
-	// specified on the command line with options.
+	// with options specified on the command line.
 	//
-	parse_config_file( config_file_name_arg );
+	conf_var::parse_file( config_file_name_arg );
 
+	if ( files_reserve_arg )
+		files_reserve = files_reserve_arg;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( follow_symbolic_links_opt )
 		follow_symbolic_links = true;
 #endif
 	if ( index_file_name_arg )
 		index_file_name = index_file_name_arg;
-	if ( num_files_reserve_arg )
-		num_files_reserve = num_files_reserve_arg;
 	if ( num_title_lines_arg )
 		num_title_lines = num_title_lines_arg;
 	if ( recurse_subdirectories_opt )
@@ -324,7 +372,7 @@ void		write_word_index( ostream&, off_t* );
 	if ( !using_stdin &&
 		include_extensions.empty() && exclude_extensions.empty()
 	) {
-		ERROR << "extensions must be specified "
+		error()	<< "extensions must be specified "
 			"when not using standard input" << endl;
 		usage();
 	}
@@ -333,7 +381,7 @@ void		write_word_index( ostream&, off_t* );
 
 	ofstream out( index_file_name, ios::out | ios::binary );
 	if ( !out ) {
-		ERROR	<< "can not write index to \""
+		error()	<< "can not write index to \""
 			<< index_file_name << '"' << endl;
 		::exit( Exit_No_Write_Index );
 	}
@@ -344,11 +392,12 @@ void		write_word_index( ostream&, off_t* );
 		//
 		// Read file/directory names from standard input.
 		//
-		char file_name[ MAXNAMLEN + 1 ];
-		while ( cin.getline( file_name, MAXNAMLEN ) ) {
+		char file_name[ NAME_MAX + 1 ];
+		while ( cin.getline( file_name, NAME_MAX ) ) {
 			if ( !file_exists( file_name ) ) {
 				if ( verbosity > 3 )
-					cout << " (skipped: does not exist)\n";
+					cout << "  " << file_name
+					     << " (skipped: does not exist)\n";
 				continue;
 			}
 			if ( is_directory() )
@@ -363,7 +412,8 @@ void		write_word_index( ostream&, off_t* );
 		for ( ; *argv; ++argv ) {
 			if ( !file_exists( *argv ) ) {
 				if ( verbosity > 3 )
-					cout << " (skipped: does not exist)\n";
+					cout << "  " << *argv
+					     << " (skipped: does not exist)\n";
 				continue;
 			}
 			if ( is_directory() )
@@ -407,9 +457,6 @@ void		write_word_index( ostream&, off_t* );
 
 	::exit( Exit_Success );
 }
-
-#define	INDEX
-#include "do_file.c"
 
 //*****************************************************************************
 //
@@ -510,8 +557,8 @@ void		write_word_index( ostream&, off_t* );
 // SYNOPSIS
 //
 	void index_words(
-		register file_vector<char>::const_iterator c,
-		register file_vector<char>::const_iterator end,
+		register file_vector::const_iterator c,
+		register file_vector::const_iterator end,
 		bool is_html, int meta_id
 	)
 //
@@ -545,8 +592,8 @@ void		write_word_index( ostream&, off_t* );
 	while ( c != end ) {
 		register char ch = *c++;
 
-		if ( is_html && ch == '&' )
-			ch = convert_entity( c, end );
+		ch = ( is_html && ch == '&' ) ?
+			convert_entity( c, end ) : iso8859_to_ascii( ch );
 
 		////////// Collect a word /////////////////////////////////////
 
@@ -593,9 +640,9 @@ void		write_word_index( ostream&, off_t* );
 //
 // DESCRIPTION
 //
-//	Compute the rank of a word in a file.  This equation was taken from
-//	the one used in SWISH-E whose author thinks (?) it is the one taken
-//	from WAIS.  I can't find this equation in the refernece cited below,
+//	Compute the rank of a word in a file.  This equation was taken from the
+//	one used in SWISH-E whose author thinks (?) it is the one taken from
+//	WAIS.  I can't find this equation in the refernece cited below,
 //	although that reference does list a different equation.  But, if it
 //	ain't broke, don't fix it.
 //
@@ -659,8 +706,8 @@ void		write_word_index( ostream&, off_t* );
 // DESCRIPTION
 //
 //	Perform an n-way merge of the partial word index files.  It first
-//	determines the number of unique words in all the partial indicies,
-//	then merges them all together and performs ranking at the same time.
+//	determines the number of unique words in all the partial indicies, then
+//	merges them all together and performs ranking at the same time.
 //
 // PARAMETERS
 //
@@ -668,7 +715,7 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	vector< file_vector<char> > index( num_temp_files );
+	vector< file_vector > index( num_temp_files );
 	vector< word_index > words( num_temp_files );
 	vector< word_index::const_iterator > word( num_temp_files );
 	register int i, j;
@@ -680,7 +727,7 @@ void		write_word_index( ostream&, off_t* );
 		string const temp_file = temp_file_prefix + itoa( i );
 		index[ i ].open( temp_file.c_str() );
 		if ( !index[ i ] ) {
-			ERROR	<< "can not reopen temp. file \""
+			error()	<< "can not reopen temp. file \""
 				<< temp_file << '"' << endl;
 			::exit( Exit_No_Open_Temp );
 		}
@@ -714,7 +761,7 @@ void		write_word_index( ostream&, off_t* );
 				i = j;
 		}
 
-		file_list list( word[ i ] );
+		file_list const list( word[ i ] );
 		int file_count = list.size();
 
 		// See if there are any duplicates and eliminate them.
@@ -723,7 +770,7 @@ void		write_word_index( ostream&, off_t* );
 				continue;
 			if ( !::strcmp( *word[ i ], *word[ j ] ) ) {
 				--num_unique_words;
-				file_list list( word[ j ] );
+				file_list const list( word[ j ] );
 				file_count += list.size();
 				++word[ j ];
 			}
@@ -1012,12 +1059,14 @@ void		write_word_index( ostream&, off_t* );
 //
 // DESCRIPTION
 //
-//	Remove the temporary partial index files.  This function is called
-//	via atexit(3).
+//	Remove the temporary partial index files.  This function is called via
+//	atexit(3).
 //
-// SEE ALSO
+// NOTE
 //
-//	atexit(3)
+//	This function is declared extern "C" since it is called via the C
+//	library function atexit(3) and, because it's a C function, it expects C
+//	linkage.
 //
 //*****************************************************************************
 {
@@ -1061,8 +1110,8 @@ void		write_word_index( ostream&, off_t* );
 //
 // DESCRIPTION
 //
-//	Write the meta name index to the given ostream recording the offsets
-//	as it goes.
+//	Write the meta name index to the given ostream recording the offsets as
+//	it goes.
 //
 // PARAMETERS
 //
@@ -1088,8 +1137,8 @@ void		write_word_index( ostream&, off_t* );
 // DESCRIPTION
 //
 //	Write the index to the given ostream.  The index file is written in
-//	such a way so that it can be mmap'd and used instantly with no
-//	parsing or other processing.  The format of an index file is:
+//	such a way so that it can be mmap'd and used instantly with no parsing
+//	or other processing.  The format of an index file is:
 //
 //		long	num_unique_words;
 //		off_t	word_offset[ num_unique_words ];
@@ -1114,21 +1163,20 @@ void		write_word_index( ostream&, off_t* );
 //
 //		file_index[\2meta_id]\1rank\1
 //
-//	that is: a file-index followed by zero or more meta-IDs (each
-//	preceeded by the ASCII 2 character) followed by a rank (both
-//	preceeded and followed by the ASCII 1 character).  The integers are
-//	in ASCII, not binary.  Currently, only ASCII characters 1 and 2 (the
-//	binary values 1 and 2, not the digits 1 and 2 having ASCII codes of
-//	49 and 50 decimal, respectively) are used.  (Other low ASCII
-//	characters are reserved for future use.)  The file-index is an index
-//	into the file_offset table; the meta-IDs, if present, are unique
-//	integers identifying which meta name(s) a word is associated with in
-//	the meta-name index.
+//	that is: a file-index followed by zero or more meta-IDs (each preceeded
+//	by the ASCII 2 character) followed by a rank (both preceeded and
+//	followed by the ASCII 1 character).  The integers are in ASCII, not
+//	binary.  Currently, only ASCII characters 1 and 2 (the binary values 1
+//	and 2, not the digits 1 and 2 having ASCII codes of 49 and 50 decimal,
+//	respectively) are used.  (Other low ASCII characters are reserved for
+//	future use.)  The file-index is an index into the file_offset table;
+//	the meta-IDs, if present, are unique integers identifying which meta
+//	name(s) a word is associated with in the meta-name index.
 //
-//	The stop-word index is a list of all the stop words (either the
-//	built-in list or the list supplied from a file, plus those that
-//	exceed either the file limit or word percentage) in alphabetical
-//	order.  Each entry is of the form:
+//	The stop-word index is a list of all the stop words (either the built-
+//	in list or the list supplied from a file, plus those that exceed either
+//	the file limit or word percentage) in alphabetical order.  Each entry
+//	is of the form:
 //
 //		word\0
 //
@@ -1139,8 +1187,8 @@ void		write_word_index( ostream&, off_t* );
 //
 //		path_name file_size file_title\0
 //
-//	where the parts are separated by a single space and are teminated by
-//	a null character.  (Any spaces after the second one are part of the
+//	where the parts are separated by a single space and are teminated by a
+//	null character.  (Any spaces after the second one are part of the
 //	title.)  For example:
 //
 //		/path/my.html 1234 Some Title
@@ -1148,9 +1196,9 @@ void		write_word_index( ostream&, off_t* );
 //	Each file_offset points to the first character in a path name.
 //
 //	The meta-name index is a list of all the meta names (in alphabetical
-//	order) encountered during indexing of all the files.  Each meta-name
-//	is followed by its numeric ID that is simply a unique integer to
-//	identify it.  Each entry is of the form:
+//	order) encountered during indexing of all the files.  Each meta-name is
+//	followed by its numeric ID that is simply a unique integer to identify
+//	it.  Each entry is of the form:
 //
 //		meta-name\0ID\0
 //
@@ -1257,7 +1305,7 @@ void		write_word_index( ostream&, off_t* );
 	string const temp_file = temp_file_prefix + itoa( num_temp_files++ );
 	ofstream o( temp_file.c_str(), ios::out | ios::binary );
 	if ( !o ) {
-		ERROR	<< "can not write temp. file \""
+		error()	<< "can not write temp. file \""
 			<< temp_file << '"' << endl;
 		::exit( Exit_No_Write_Temp );
 	}
@@ -1294,8 +1342,8 @@ void		write_word_index( ostream&, off_t* );
 //
 // DESCRIPTION
 //
-//	Write the stop-word index to the given ostream recording the offsets
-//	as it goes.
+//	Write the stop-word index to the given ostream recording the offsets as
+//	it goes.
 //
 // PARAMETERS
 //
@@ -1356,27 +1404,30 @@ void		write_word_index( ostream&, off_t* );
 
 void usage() {
 	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
-	" options:\n"
-	" --------\n"
-	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"  -C class_name   : Class name not to index [default: none]\n"
-	"  -e ext          : Extension to index [default: none]\n"
-	"  -E ext          : Extension not to index [default: none]\n"
-	"  -f file_max     : Word/file maximum [default: infinity]\n"
-	"  -F file_reserve : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
-	"  -H              : Dump built-in set of recognized HTML elements and exit\n"
-	"  -i index_file   : Name of index file to use [default: " << IndexFile_Default << "]\n"
+	"options: (unambiguous abbreviations may be used for long options)\n"
+	"========\n"
+	"-?   | --help             : Print this help message\n"
+	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+	"-C c | --no-class c       : Class name not to index [default: none]\n"
+	"-e e | --extension e      : Extension to index [default: none]\n"
+	"-E e | --no-extension e   : Extension not to index [default: none]\n"
+	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
+	"-F n | --files-reserve n  : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
+	"-h e | --html-extension e : HTML extension to index [default: none]\n"
+	"-H   | --dump-html        : Dump built-in recognized HTML elements and exit\n"
+	"-i f | --index-file f     : Name of index file to use [default: " << IndexFile_Default << "]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-	"  -l              : Follow symbolic links [default: no]\n"
+	"-l   | --follow-links     : Follow symbolic links [default: no]\n"
 #endif
-	"  -m meta_name    : Meta name to index [default: all]\n"
-	"  -M meta_name    : Meta name not to index [default: none]\n"
-	"  -p percent_max  : Word/file percentage [default: 100]\n"
-	"  -r              : Do not recursively index subdirectories [default: do]\n"
-	"  -s stop_file    : Stop-word file to use instead of compiled-in default\n"
-	"  -S              : Dump stop-words and exit\n"
-	"  -t title_lines  : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
-	"  -v verbosity    : Verbosity level [0-4; default: 0]\n"
-	"  -V              : Print version number and exit\n";
+	"-m m | --meta m           : Meta name to index [default: all]\n"
+	"-M m | --no-meta m        : Meta name not to index [default: none]\n"
+	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
+	"-r   | --no-recurse       : Don't index subdirectories [default: do]\n"
+	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
+	"-S   | --dump-stop        : Dump stop-words and exit\n"
+	"-t n | --title-lines n    : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
+	"-T d | --temp-dir d       : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
+	"-v n | --verbosity n      : Verbosity level [0-4; default: 0]\n"
+	"-V   | --version          : Print version number and exit\n";
 	::exit( Exit_Usage );
 }
