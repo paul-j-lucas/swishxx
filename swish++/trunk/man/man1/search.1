@@ -705,7 +705,7 @@ regardless of the author.
 .SS Sending Queries to a Search Daemon
 To send a query request to a search daemon using Perl,
 first open the socket and connect to the daemon
-(see [Wall], p. 353):
+(see [Wall], pp. 439-440):
 .cS
 use Socket;
 
@@ -718,7 +718,7 @@ connect( SEARCH, sockaddr_un( $SocketFile ) ) or
 Autoflush
 .I must
 be set for the socket filehandle
-(see [Wall], p. 130, 211),
+(see [Wall], p. 781),
 otherwise the server thread will hang
 since I/O buffering will wait for the buffer to fill
 that will never happen since queries are short:
@@ -874,9 +874,9 @@ Prentice-Hall, Upper Saddle River, NJ,
 1998.
 .PP
 Larry Wall, et al.
-.I Programming Perl, 2nd ed.,
+.I Programming Perl, 3rd ed.,
 O'Reilly & Associates, Inc., Sebastopol, CA,
-1996.
+2000.
 .SH AUTHOR
 Paul J. Lucas
 .RI < pauljlucas@mac.com >
