@@ -116,6 +116,7 @@ WordPercentMax		word_percent_max;
 
 void			load_old_index( char const *index_file_name );
 void			merge_indicies( ostream& );
+void			parse_file_info( char const*, index_segment const& );
 void			rank_full_index();
 extern "C" void		remove_temp_files( void );
 ostream&		usage( ostream& = cerr );
@@ -667,7 +668,7 @@ void			write_word_index( ostream&, off_t* );
 		files_reserve = files_grow( old_files.size() );
 	}
 	FOR_EACH( index_segment, old_files, fi )
-		file_info::parse( *fi, old_dirs );
+		parse_file_info( *fi, old_dirs );
 
 	index_segment old_meta_names(
 		index_file, index_segment::meta_name_index
@@ -961,6 +962,38 @@ void			write_word_index( ostream&, off_t* );
 
 	if ( verbosity > 1 )
 		cout << '\n';
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void parse_file_info( char const *p, index_segment const &directories )
+//
+// DESCRIPTION
+//
+//	Parse a file_info from an index file to reconstitute an instance.
+//
+// PARAMETERS
+//
+//	p	A pointer to the first character containing a file_info inside
+//		an index file.
+//
+//*****************************************************************************
+{
+	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
+	int const dir_index = parse_bcd( u );
+	char const *const file_name = reinterpret_cast<char const*>( u );
+	while ( *u++ ) ;				// skip past filename
+	size_t const size = parse_bcd( u );
+	int const num_words = parse_bcd( u );
+	char const *const title = reinterpret_cast<char const*>( u );
+
+	string const dir_str( directories[ dir_index ] );
+	string const path( dir_str + '/' + p );
+	char const *const path_name = ::strdup( path.c_str() );
+
+	new file_info( path_name, dir_index, size, title, num_words );
 }
 
 //*****************************************************************************
