@@ -42,6 +42,7 @@
 {
 public:
 	ExcludeMeta() : conf_set( "ExcludeMeta" ) { }
+	CONF_SET_ASSIGN_OPS( ExcludeMeta )
 };
 
 #endif	/* ExcludeMeta_H */

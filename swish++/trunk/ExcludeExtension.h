@@ -42,6 +42,7 @@
 {
 public:
 	ExcludeExtension() : conf_set( "ExcludeExtension" ) { }
+	CONF_SET_ASSIGN_OPS( ExcludeExtension )
 };
 
 #endif	/* ExcludeExtension_H */

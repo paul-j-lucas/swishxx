@@ -42,6 +42,7 @@
 {
 public:
 	ExcludeClass() : conf_set( "ExcludeClass" ) { }
+	CONF_SET_ASSIGN_OPS( ExcludeClass )
 };
 
 #endif	/* ExcludeClass_H */

@@ -42,6 +42,7 @@
 {
 public:
 	IncludeMeta() : conf_set( "IncludeMeta" ) { }
+	CONF_SET_ASSIGN_OPS( IncludeMeta )
 };
 
 #endif	/* IncludeMeta_H */
