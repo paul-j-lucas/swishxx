@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "November 9, 2001" "SWISH++"
+.TH \f3index\f1 1 "December 18, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -121,42 +121,30 @@ Second, there are several other checks that are applied.
 A word is not indexed if it:
 .TP 4
 1.
-Starts with a capital letter, is of mixed case,
-and contains more than a third capital letters, e.g., ``BizZARE.''
-.TP
-2.
-Contains a capital letter other than the first, e.g, ``weIrd.''
-.TP
-3.
 Is less than \f(CWWord_Min_Size\f1 letters.
 (Default is 4.)
 .TP
-4.
+2.
 Contains less than \f(CWWord_Min_Vowels\f1 vowels.
 (Default is 1.)
 .TP
-5.
+3.
 Contains more than \f(CWWord_Max_Consec_Same\f1 of the same character
 consecutively (not including digits).
 (Default is 2.)
 .TP
-6.
+4.
 Contains more than \f(CWWord_Max_Consec_Consonants\f1 consecutive consonants.
 (Default is 5.)
 .TP
-7.
+5.
 Contains more than \f(CWWord_Max_Consec_Vowels\f1 consecutive vowels.
 (Default is 4.)
 .TP
-8.
+6.
 Contains more than \f(CWWord_Max_Consec_Puncts\f1 consecutive punctuation
 characters.
 (Default is 1.)
-.PP
-Note that the checks above that involve capital letters
-are used only to determine whether a given word should be indexed.
-If and when a word is indexed,
-it is converted to lower case first.
 .SS Filters
 Via the
 .B FilterFile

@@ -92,24 +92,19 @@ char const iso8859_map[] = {
 //	Second, there are several other checks that are applied.  A word is not
 //	indexed if it:
 //
-//	1. Starts with a capital letter, is of mixed case, and contains more
-//	   than a third capital letters, e.g., "BizZARE."
+//	1. Is less that Word_Min_Size characters and is not an acronym.
 //
-//	2. Contains a capital letter other than the first, e.g, "weIrd."
+//	2. Contains less than Word_Min_Vowels.
 //
-//	3. Is less that Word_Min_Size characters and is not an acronym.
-//
-//	4. Contains less than Word_Min_Vowels.
-//
-//	5. Contains more than Word_Max_Consec_Same of the same character
+//	3. Contains more than Word_Max_Consec_Same of the same character
 //	   consecutively (not including digits).
 //
-//	6. Contains more than Word_Max_Consec_Consonants consecutive
+//	4. Contains more than Word_Max_Consec_Consonants consecutive
 //	   consonants.
 //
-//	7. Contains more than Word_Max_Consec_Vowels consecutive vowels.
+//	5. Contains more than Word_Max_Consec_Vowels consecutive vowels.
 //
-//	8. Contains more than Word_Max_Consec_Puncts consecutive punctuation
+//	6. Contains more than Word_Max_Consec_Puncts consecutive punctuation
 //	   characters.
 //
 // PARAMETERS
@@ -157,24 +152,11 @@ char const iso8859_map[] = {
 	}
 	int const len = c - word;
 
-	if ( is_upper( *word ) ) {		// starts with a capital letter
-		if ( uppers + digits + puncts == len ) {
-#			ifdef DEBUG_is_ok_word
-			cerr << "(potential acronym)\n";
-#			endif
-			return true;
-		}
-		if ( ( uppers + digits ) * 100 / len > 33 ) {
-#			ifdef DEBUG_is_ok_word
-			cerr << "(too many intermediate uppers)\n";
-#			endif
-			return false;
-		}
-	} else if ( uppers ) {			// contains a capital letter
+	if ( is_upper( *word ) && uppers + digits + puncts == len ) {
 #		ifdef DEBUG_is_ok_word
-		cerr << "(intermediate uppers)\n";
+		cerr << "(potential acronym)\n";
 #		endif
-		return false;
+		return true;
 	}
 
 	if ( len < Word_Min_Size ) {
