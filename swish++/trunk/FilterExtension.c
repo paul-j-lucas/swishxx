@@ -83,12 +83,12 @@ using namespace std;
 {
 	char const *const ext = ::strtok( line, " \r\t" );
 	if ( !ext ) {
-		error() << "no filename extension" << endl;
+		cerr << error << "no filename extension" << endl;
 		::exit( Exit_Config_File );
 	}
 	char const *const command = ::strtok( 0, "\n" );
 	if ( !command ) {
-		error() << "no filter command" << endl;
+		cerr << error << "no filter command" << endl;
 		::exit( Exit_Config_File );
 	}
 
@@ -105,7 +105,7 @@ using namespace std;
 	) {
 		if ( *s == '@' )
 			if ( found_target ) {
-				error()	<< "more than one @" << endl;
+				cerr << error << "more than one @" << endl;
 				::exit( Exit_Config_File );
 			} else
 				found_target = true;
@@ -117,22 +117,21 @@ using namespace std;
 				++substitutions;
 				continue;
 		}
-		error()	<< "non-[eEf] character after " << *s << endl;
+		cerr << error << "non-[eEf] character after " << *s << endl;
 		::exit( Exit_Config_File );
 	}
 
 	if ( substitutions < 2 ) {
-		error()	<< "at least two substitutions are required" << endl;
+		cerr	<< error << "at least two substitutions are required"
+			<< endl;
 		::exit( Exit_Config_File );
 	}
 	if ( !found_target ) {
-		error()	<< "filter does not contain required @" << endl;
+		cerr << error << "filter does not contain required @" << endl;
 		::exit( Exit_Config_File );
 	}
 
-	map_.insert(
-		map_type::value_type(
-			::strdup( ext ), value_type( ::strdup( command ) )
-		)
-	);
+	map_.insert( map_type::value_type(
+		::strdup( ext ), value_type( ::strdup( command ) )
+	) );
 }
