@@ -83,7 +83,6 @@ S_SRCS:=	bcd.c \
 		conf_bool.c \
 		conf_int.c \
 		conf_string.c \
-		file_info.c \
 		index_segment.c \
 		file_list.c \
 		option_stream.c \
