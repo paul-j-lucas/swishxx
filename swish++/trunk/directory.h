@@ -27,9 +27,10 @@
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 #include "FollowLinks.h"
 
-extern FollowLinks	follow_symbolic_links;
+extern FollowLinks follow_symbolic_links;
 #endif
 
-void			do_directory( char const *path );
+
+void	do_directory( char const *path );
 
 #endif	/* directory_H */
