@@ -24,11 +24,11 @@
 #include <iostream>
 
 // local
+#ifdef	MULTI_THREADED
+#include "auto_vec.h"
+#endif
 #include "conf_int.h"
 #include "exit_codes.h"
-#ifdef	MULTI_THREADED
-#include "managed_ptr.h"
-#endif
 #include "util.h"
 
 extern char const*	me;
@@ -117,7 +117,7 @@ extern char const*	me;
 		::exit( Exit_Config_File );
 	}
 #ifdef	MULTI_THREADED
-	managed_vec< char > const lower = to_lower_r( line );
+	auto_vec< char > const lower( to_lower_r( line ) );
 #else
 	char const *const lower = to_lower( line );
 #endif
