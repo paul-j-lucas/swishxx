@@ -19,20 +19,33 @@
 #	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-########## You shouldn't have to change anything below this line. #############
-
 ROOT=		.
 include		$(ROOT)/config/config.mk
 
-CTARGET=	index search extract
-CFLAGS=		$(CCFLAGS) -DFEATURE_CLASS # -DDEBUG_parse_class -DDEBUG_parse_query -DDEBUG_is_ok_word -DDEBUG_stem_word
+CFLAGS=		$(CCFLAGS)
+#		Various debug flags; add to CFLAGS for debugging.
+#		-DDEBUG_is_ok_word
+#		-DDEBUG_parse_class
+#		-DDEBUG_parse_query
+#		-DDEBUG_stem_word
 
-I_LINK=		-lm
-I_OBJS=		directory$(CCOEXT) \
+########## You shouldn't have to change anything below this line. #############
+
+CTARGET=	index search extract
+
+I_LINK=		$(CCLINK) -lm
+I_OBJS=		conf_var$(CCOEXT) \
+		conf_bool$(CCOEXT) \
+		conf_int$(CCOEXT) \
+		conf_set$(CCOEXT) \
+		conf_string$(CCOEXT) \
+		directory$(CCOEXT) \
 		elements$(CCOEXT) \
 		entities$(CCOEXT) \
 		file_vector$(CCOEXT) \
 		file_info$(CCOEXT) \
+		filter$(CCOEXT) \
+		FilterExtension$(CCOEXT) \
 		word_index$(CCOEXT) \
 		file_list$(CCOEXT) \
 		html$(CCOEXT) \
@@ -40,21 +53,31 @@ I_OBJS=		directory$(CCOEXT) \
 		util$(CCOEXT) \
 		index$(CCOEXT)
 
-S_LINK=		
-S_OBJS=		file_vector$(CCOEXT) \
+S_LINK=		$(CCLINK)
+S_OBJS=		conf_var$(CCOEXT) \
+		conf_bool$(CCOEXT) \
+		conf_int$(CCOEXT) \
+		conf_string$(CCOEXT) \
+		file_vector$(CCOEXT) \
 		file_index$(CCOEXT) \
 		word_index$(CCOEXT) \
 		file_list$(CCOEXT) \
 		token$(CCOEXT) \
-		search$(CCOEXT) \
 		stem_word$(CCOEXT) \
-		util$(CCOEXT)
+		util$(CCOEXT) \
+		search$(CCOEXT)
 
-E_LINK=
-E_OBJS=		directory$(CCOEXT) \
+E_LINK=		$(CCLINK)
+E_OBJS=		conf_var$(CCOEXT) \
+		conf_bool$(CCOEXT) \
+		conf_int$(CCOEXT) \
+		conf_set$(CCOEXT) \
+		conf_string$(CCOEXT) \
+		directory$(CCOEXT) \
 		entities$(CCOEXT) \
-		ext_proc$(CCOEXT) \
 		file_vector$(CCOEXT) \
+		filter$(CCOEXT) \
+		FilterExtension$(CCOEXT) \
 		postscript$(CCOEXT) \
 		stop_words$(CCOEXT) \
 		util$(CCOEXT) \
@@ -82,15 +105,66 @@ index: $(I_OBJS)
 search: $(S_OBJS)
 	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(S_OBJS) $(S_LINK)
 
+conf_bool$(CCOEXT): \
+	conf_bool$(CCHEXT) \
+		conf_var$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+			less$(CCHEXT) \
+	exit_codes$(CCHEXT) \
+	util$(CCHEXT)
+
+
+conf_int$(CCOEXT): \
+	conf_int$(CCHEXT) \
+		conf_var$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+			less$(CCHEXT) \
+	exit_codes$(CCHEXT) \
+	util$(CCHEXT)
+
+conf_set$(CCOEXT): \
+	conf_set$(CCHEXT) \
+		conf_var$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+			less$(CCHEXT) \
+		my_set$(CCHEXT)
+
+conf_string$(CCOEXT): \
+	conf_string$(CCHEXT) \
+		conf_var$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+			less$(CCHEXT) \
+	exit_codes$(CCHEXT)
+
+conf_var$(CCOEXT): \
+	conf_var$(CCHEXT) \
+		fake_ansi$(CCHEXT) \
+			$(PLATFORM_H) \
+		less$(CCHEXT) \
+	util$(CCHEXT)
+
 directory$(CCOEXT): \
 	directory$(CCHEXT) \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H)
+		FollowLinks$(CCHEXT) \
+			conf_bool$(CCHEXT) \
+				conf_var$(CCHEXT) \
+					fake_ansi$(CCHEXT) \
+						$(PLATFORM_H) \
+					less$(CCHEXT) \
+	RecurseSubdirs$(CCHEXT) \
+	util$(CCHEXT) \
+	Verbosity$(CCHEXT) \
+		conf_int$(CCHEXT)
 
 elements$(CCOEXT): \
 	elements$(CCHEXT) \
 		my_set$(CCHEXT) \
 			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
 			less$(CCHEXT)
 
 entities$(CCOEXT): \
@@ -99,45 +173,56 @@ entities$(CCOEXT): \
 			fake_ansi$(CCHEXT) \
 				$(PLATFORM_H)
 
-ext_proc$(CCOEXT): \
-	config$(CCHEXT) \
-	ext_proc$(CCHEXT) \
-		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H) \
-		less$(CCHEXT)
-
 extract$(CCOEXT): \
 	config$(CCHEXT) \
 	directory$(CCHEXT) \
-	ext_proc$(CCHEXT) \
-		less$(CCHEXT) \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
+		FollowLinks$(CCHEXT) \
+			conf_bool$(CCHEXT) \
+				conf_var$(CCHEXT) \
+					fake_ansi$(CCHEXT) \
+						$(PLATFORM_H) \
+					less$(CCHEXT) \
+	do_file$(CCCEXT) \
+	ExcludeExtension$(CCHEXT) \
+		conf_set$(CCHEXT) \
+			my_set$(CCHEXT) \
+	exit_codes$(CCHEXT) \
 	file_vector$(CCHEXT) \
-	my_set$(CCHEXT) \
+	FilterExtension$(CCHEXT) \
+		filter$(CCHEXT) \
+	IncludeExtension$(CCHEXT) \
+	$(PLATFORM_H) \
 	postscript$(CCHEXT) \
+	RecurseSubdirs$(CCHEXT) \
+	StopWordFile$(CCHEXT) \
+		conf_string$(CCHEXT) \
 	stop_words$(CCHEXT) \
 	util$(CCHEXT) \
+	Verbosity$(CCHEXT) \
+		conf_int$(CCHEXT) \
 	version$(CCHEXT)
 
 file_index$(CCOEXT): \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
 	file_index$(CCHEXT) \
 		file_vector$(CCHEXT) \
 	util$(CCHEXT) \
-		file_vector$(CCHEXT)
+		config$(CCHEXT) \
+		$(PLATFORM_H)
 
 file_info$(CCOEXT): \
 	config$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
-	file_info$(CCHEXT)
+	file_info$(CCHEXT) \
+	FilesReserve$(CCHEXT) \
+		conf_int$(CCHEXT) \
+			conf_var$(CCHEXT) \
+				less$(CCHEXT)
 
 file_list$(CCOEXT): \
+	fake_ansi$(CCHEXT) \
+		$(PLATFORM_H) \
 	file_list$(CCHEXT) \
-		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H) \
 		word_index$(CCHEXT) \
 			file_vector$(CCHEXT) \
 		word_info$(CCHEXT) \
@@ -146,42 +231,87 @@ file_list$(CCOEXT): \
 				less$(CCHEXT)
 
 file_vector$(CCOEXT): \
-	file_vector$(CCHEXT) \
-		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H)
+	fake_ansi$(CCHEXT) \
+		$(PLATFORM_H) \
+	file_vector$(CCHEXT)
+
+filter$(CCOEXT): \
+	config$(CCHEXT) \
+	filter$(CCHEXT)
+
+FilterExtension$(CCOEXT): \
+	exit_codes$(CCHEXT) \
+	FilterExtension$(CCHEXT) \
+		conf_var$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
+		filter$(CCHEXT) \
+		less$(CCHEXT)
 
 html$(CCOEXT): \
 	config$(CCHEXT) \
 	elements$(CCHEXT) \
-		my_set$(CCHEXT) \
-			less$(CCHEXT) \
-				fake_ansi$(CCHEXT) \
-					$(PLATFORM_H) \
 	entities$(CCHEXT) \
+		less$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+	ExcludeClass$(CCHEXT) \
+		conf_set$(CCHEXT) \
+			conf_var$(CCHEXT) \
+				my_set$(CCHEXT) \
+	ExcludeMeta$(CCHEXT) \
+	IncludeMeta$(CCHEXT) \
 	html$(CCHEXT) \
 		file_vector$(CCHEXT) \
 	index$(CCHEXT) \
+	$(PLATFORM_H) \
 	meta_map$(CCHEXT) \
+	TitleLines$(CCHEXT) \
+		conf_int$(CCHEXT) \
 	util$(CCHEXT)
 
 index$(CCOEXT): \
 	config$(CCHEXT) \
 	directory$(CCHEXT) \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
+		FollowLinks$(CCHEXT) \
+			conf_bool$(CCHEXT) \
+				conf_var$(CCHEXT) \
+					fake_ansi$(CCHEXT) \
+					less$(CCHEXT) \
+	do_file$(CCCEXT) \
+	ExcludeClass$(CCHEXT) \
+		conf_set$(CCHEXT) \
+			my_set$(CCHEXT) \
+	ExcludeExtension$(CCHEXT) \
+	ExcludeMeta$(CCHEXT) \
+	exit_codes$(CCHEXT) \
+	FilesReserve$(CCHEXT) \
+		conf_int$(CCHEXT) \
 	file_info$(CCHEXT) \
 	file_list$(CCHEXT) \
+		fake_ansi$(CCHEXT) \
 	file_vector$(CCHEXT) \
+	FilterExtension$(CCHEXT) \
+		filter$(CCHEXT) \
+	html$(CCHEXT) \
+	IncludeExtension$(CCHEXT) \
+	IncludeMeta$(CCHEXT) \
 	index$(CCHEXT) \
-		html$(CCHEXT) \
+	IndexFile$(CCHEXT) \
+		conf_string$(CCHEXT) \
 	meta_map$(CCHEXT) \
-		less$(CCHEXT) \
-	my_set$(CCHEXT) \
+	$(PLATFORM_H) \
+	RecurseSubdirs$(CCHEXT) \
+	StopWordFile$(CCHEXT) \
 	stop_words$(CCHEXT) \
+	TempDirectory$(CCHEXT) \
+	TitleLines$(CCHEXT) \
 	util$(CCHEXT) \
+	Verbosity$(CCHEXT) \
 	version$(CCHEXT) \
-	word_info$(CCHEXT) \
-	word_index$(CCHEXT)
+	WordFilesMax$(CCHEXT) \
+	WordPercentMax$(CCHEXT) \
+	word_index$(CCHEXT) \
+	word_info$(CCHEXT)
 
 postscript$(CCOEXT): \
 	postscript$(CCHEXT) \
@@ -192,57 +322,67 @@ postscript$(CCOEXT): \
 
 search$(CCOEXT): \
 	config$(CCHEXT) \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
+	exit_codes$(CCHEXT) \
 	file_index$(CCHEXT) \
 		file_vector$(CCHEXT) \
 	file_list$(CCHEXT) \
 	html$(CCHEXT) \
+	IndexFile$(CCHEXT) \
+		conf_string$(CCHEXT) \
+			conf_var$(CCHEXT) \
+				fake_ansi$(CCHEXT) \
 	less$(CCHEXT) \
 	my_set$(CCHEXT) \
+	$(PLATFORM_H) \
+	ResultsMax$(CCHEXT) \
+		conf_int$(CCHEXT) \
 	stem_word$(CCHEXT) \
+	StemWords$(CCHEXT) \
+		conf_bool$(CCHEXT) \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
 	version$(CCHEXT) \
 	word_index$(CCHEXT)
 
 stem_word$(CCOEXT): \
-	util$(CCHEXT) \
-	config$(CCHEXT) \
-	file_vector$(CCHEXT) \
+	less$(CCHEXT) \
 		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H)
+			$(PLATFORM_H) \
+	util$(CCHEXT)
 
 stop_words$(CCOEXT): \
 	config$(CCHEXT) \
+	exit_codes$(CCHEXT) \
 	file_vector$(CCHEXT) \
-		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H) \
 	stop_words$(CCHEXT) \
 		my_set$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+				$(PLATFORM_H) \
 			less$(CCHEXT) \
 	util$(CCHEXT)
 
 token$(CCOEXT): \
 	config$(CCHEXT) \
+	$(PLATFORM_H) \
 	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
 		file_vector$(CCHEXT)
 
 util$(CCOEXT): \
 	config$(CCHEXT) \
+	conf_var$(CCHEXT) \
+		less$(CCHEXT) \
+	exit_codes$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
-	util$(CCHEXT) \
-		file_vector$(CCHEXT)
+	file_vector$(CCHEXT) \
+	util$(CCHEXT)
 
 word_index$(CCOEXT): \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
 	util$(CCHEXT) \
 		file_vector$(CCHEXT) \
+		$(PLATFORM_H) \
 	word_index$(CCHEXT)
 
 $(PLATFORM_H):
