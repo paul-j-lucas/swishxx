@@ -20,15 +20,13 @@
 */
 
 // standard
-#include <algorithm>
-#include <cstdlib>
+#include <cstdlib>			/* for exit(2) */
 #include <cstring>
 #include <ctime>
 #include <fstream>
-#include <iomanip>
+#include <iomanip>			/* for setfill(), setw() */
 #include <iostream>
 #include <string>
-#include <sys/stat.h>
 #include <sys/types.h>
 
 // local
@@ -54,23 +52,23 @@
 using namespace std;
 #endif
 
-ExcludeExtension exclude_extensions;		// do not extract these
-IncludeExtension include_extensions;		// do extract these
-FilterExtension	filters;
-bool		in_postscript;
-char const*	me;				// executable name
-int		num_examined_files;
-int		num_extracted_files;
-RecurseSubdirs	recurse_subdirectories;
-Verbosity	verbosity;			// how much to print
+ExcludeExtension	exclude_extensions;	// do not extract these
+IncludeExtension	include_extensions;	// do extract these
+FilterExtension		filters;
+bool			in_postscript;
+char const*		me;			// executable name
+int			num_examined_files;
+int			num_extracted_files;
+RecurseSubdirs		recurse_subdirectories;
+Verbosity		verbosity;		// how much to print
 
-bool		extract_word( char *word, int len, ofstream& );
-void		extract_words(
-			file_vector::const_iterator begin,
-			file_vector::const_iterator end,
-			ofstream&
-		);
-void		usage();
+bool			extract_word( char *word, int len, ofstream& );
+void			extract_words(
+				file_vector::const_iterator begin,
+				file_vector::const_iterator end,
+				ofstream&
+			);
+void			usage();
 
 #define	EXTRACT
 #include "do_file.c"
