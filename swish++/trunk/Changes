@@ -26,6 +26,10 @@ NEW FEATURES
 
   (This feature shall be known as feature TCP.)
 
+* You can now specify the separator character in search results.
+
+  (This feature shall be known as feature SRS.)
+
 * Added parsing of XHTML 1.1 ruby elements.
 
   (This feature shall be known as feature RUBY.)
@@ -171,6 +175,12 @@ CHANGES, file-by-file
 	1. Switched to using auto_vec<char> and to_lower_r() for bug
 	   fix BOB.
 
+* conf_string.c
+
+	1. Added (missing) include of platform.h and namespace stuff.
+
+	2. Added code to strip leading/trailing quotes for feature SRS.
+
 * conf_string.h
 
 	1. Added == and != operators.
@@ -212,6 +222,8 @@ CHANGES, file-by-file
 	E. In conf_var::map_ref(), changed to doing initialization via
 	   a table.  (This had the side-effect of making "search" work
 	   under FreeBSD.)
+
+	F. Added ResultSeparator variable for feature SRS.
 
 * conf_var.h
 
@@ -309,6 +321,10 @@ CHANGES, file-by-file
 	3. Added: #ifndef PJL_NO_NAMESPACES (it should have been there
 	   all along).
 
+	4. Added definition of result_separator variable for feature SRS.
+
+	5. s/' '/result_separator for feature SRS.
+
 * file_info.h
 
 	1. s/ostream/std::ostream/
@@ -342,18 +358,6 @@ CHANGES, file-by-file
 
 	1. Replaced by mmap_file.[ch]
 
-* mmap_file.c
-
-	1. Added "#include <sys/time.h>" for bug fix BSD3.
-
-	2. s/REINTERPRET_CAST( caddr_t )( -1 )/MAP_FAILED/
-
-	3. Removed all WIN32 code.
-
-* mmap_file.h
-
-	1. Removed all WIN32 code.
-
 * FilesReserve.h
 
 	1. Added "extern FilesReserve files_reserve;".
@@ -361,6 +365,8 @@ CHANGES, file-by-file
 * filter.c
 
 	1. Removed all WIN32 special cases.
+
+	1. Added (missing) #include "platform.h"
 
 * GNUmakefile
 
@@ -523,6 +529,12 @@ CHANGES, file-by-file
 
 	5. Added references for feature MAIL.
 
+* man/man1/search.1
+
+	1. Added -R, --separator, ResultSeparator for feature SRS.
+
+	2. Made "select" in daemon example more concise.
+
 * man/man1/splitmail.1
 
 	1. Added for feature MAIL.
@@ -552,6 +564,26 @@ CHANGES, file-by-file
 	5. s/pjl@best.com/pauljlucas@mac.com/
 
 	6. Added: "For variables_names, case is irrelevant."
+
+	7. Added note about preserving whitespace in string values.
+
+	8. Added ResultSeparator for feature SRS.
+
+	9. Added more IP address detail for SocketAddress.
+
+	A. Added "# WRONG!" comment to filter example.
+
+* mmap_file.c
+
+	1. Added "#include <sys/time.h>" for bug fix BSD3.
+
+	2. s/REINTERPRET_CAST( caddr_t )( -1 )/MAP_FAILED/
+
+	3. Removed all WIN32 code.
+
+* mmap_file.h
+
+	1. Removed all WIN32 code.
 
 * mod_html.c
 
@@ -591,9 +623,21 @@ CHANGES, file-by-file
 
 	1. Removed since not longer needed under cygwin.
 
+* README
+
+	1. Added new feature descriptions.
+
+	2. s!www.best.com/~pjl!homepage.mac.com/pauljlucas!
+
+	3. Added mention of Christop Conrad.
+
 * RecurseSubdirs.h
 
 	1. Added "extern RecurseSubdirs recurse_subdirs;".
+
+* ResultSeparator.h
+
+	1. Added this file for feature SRS.
 
 * search.c
 
@@ -627,6 +671,17 @@ CHANGES, file-by-file
 
 	B. Removed all WIN32 special cases.
 
+	C. Added: #include "ResultsSeparator.h" for feature SRS.
+
+	D. In main(), added code for result_separator for feature SRS.
+
+	E. In dump_single_word(), search(), and service_request():
+	   s/' '/result_separator/ for feature SRS.
+
+	F. In search_options::search_options(), added 'R' case for feature SRS.
+
+	G. In usage(), added line for -R for feature SRS.
+
 * search.h
 
 	1. s/bool daemon_opt/char const* daemon_opt_arg/ for feature
@@ -636,6 +691,8 @@ CHANGES, file-by-file
 
 	3. s/ostream/std::ostream/ (it should have been that way all
 	   along).
+
+	4. Added result_separator_arg for feature SRS.
 
 * searchc.in
 
@@ -671,6 +728,10 @@ CHANGES, file-by-file
 * SearchDaemon.c
 
 	1. Added this file for feature TCP.
+
+* search_options.c
+
+	1. Added "separator", 'R' option for feature SRS.
 
 * search_thread.c
 
@@ -732,6 +793,8 @@ CHANGES, file-by-file
 	6. Added missing variables and sorted alphabetically properly.
 
 	7. Added IncludeMeta values for mail/news.
+
+	8. Added ResultSeparator variable for feature SRS.
 
 * thread_pool.c
 
