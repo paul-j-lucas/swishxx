@@ -25,7 +25,6 @@
 // standard
 #include <cstddef>				/* for ptrdiff_t */
 #include <iterator>
-#include <sys/types.h>				/* for off_t */
 
 // local
 #include "fake_ansi.h"				/* for mutable */
