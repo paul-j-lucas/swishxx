@@ -46,15 +46,15 @@ static option_stream::spec const opt_spec[] = {
 	"config-file",		1, 'c',
 	"index-file",		1, 'i',
 #ifdef	SEARCH_DAEMON
-	"daemon",		0, 'b',
+	"daemon-type",		1, 'b',
 	"pid-file",		1, 'P',
 	"socket-timeout",	1, 'o',
 	"thread-timeout",	1, 'O',
 	"queue-size",		1, 'q',
 	"min-threads",		1, 't',
 	"max-threads",		1, 'T',
+	"socket-address",	1, 'a',
 	"socket-file",		1, 'u',
-	"socket-port",		1, 'U',
 #endif	/* SEARCH_DAEMON */
 #endif	/* SEARCH_DAEMON_OPTIONS_ONLY */
 	0
