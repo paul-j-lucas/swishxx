@@ -30,8 +30,9 @@
 #include <map>
 
 // local
-#include "less.h"
+#include "stem_word.h"
 #include "util.h"
+#include "word_util.h"
 
 struct rule_list {
 	int		id;
@@ -230,7 +231,7 @@ int	word_size( char const *word );
 //
 // SYNOPSIS
 //
-	char const *stem_word( char const *word )
+	/* static */ char const* less_stem::stem_word( char const *word )
 //
 // DESCRIPTION
 //
@@ -355,6 +356,12 @@ int	word_size( char const *word );
 		0,
 	};
 
+	////////// Ensure word is exclusively alphabetic //////////////////////
+
+	int const len = ::strlen( word );
+	if ( ::strspn( word, "abcdefghijklmnopqrstuvwxyz" ) < len )
+		return word;
+
 	////////// Stemming is really slow: look in a private cache ///////////
 
 	typedef map< char const*, char const* > stem_cache;
@@ -362,12 +369,6 @@ int	word_size( char const *word );
 	stem_cache::const_iterator const found = cache.find( word );
 	if ( found != cache.end() )
 		return found->second;
-
-	////////// Ensure word is exclusively alphabetic //////////////////////
-
-	int const len = ::strlen( word );
-	if ( ::strspn( word, "abcdefghijklmnopqrstuvwxyz" ) < len )
-		return word;
 
 	////////// Stem the word //////////////////////////////////////////////
 
