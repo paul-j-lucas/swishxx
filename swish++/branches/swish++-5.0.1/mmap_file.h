@@ -24,6 +24,7 @@
 
 // standard
 #include <cstddef>			/* for ptrdiff_t, size_t */
+#include <fstream>			/* for openmode */
 #include <iterator>
 
 //
@@ -82,7 +83,7 @@ public:
 	////////// constructors & destructor //////////////////////////////////
 
 	mmap_file()			{ init(); }
-	mmap_file( char const *path, ios::open_mode mode = ios::in ) {
+	mmap_file( char const *path, std::ios::openmode mode = std::ios::in ) {
 		init();
 		open( path, mode );
 	}
@@ -93,11 +94,11 @@ public:
 	typedef pointer iterator;
 	typedef const_pointer const_iterator;
 
-	typedef reverse_bidirectional_iterator<
+	typedef std::reverse_bidirectional_iterator<
 		iterator, value_type, reference, difference_type
 	> reverse_iterator;
 
-	typedef reverse_bidirectional_iterator<
+	typedef std::reverse_bidirectional_iterator<
 		const_iterator, value_type, const_reference, difference_type
 	> const_reverse_iterator;
 
@@ -127,7 +128,10 @@ public:
 	const_reference	back() const		{ return *( end() - 1 ); }
 	reference	front()			{ return *begin(); }
 	const_reference	front() const		{ return *begin(); }
-	bool		open( char const *path, ios::open_mode = ios::in );
+	bool		open(
+				char const *path,
+				std::ios::openmode = std::ios::in
+			);
 	void		close();
 	bool		empty() const		{ return !size_; }
 	int		error() const		{ return errno_; }
