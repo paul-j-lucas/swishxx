@@ -64,11 +64,11 @@ int			num_extracted_files;
 RecurseSubdirs		recurse_subdirectories;
 Verbosity		verbosity;		// how much to print
 
-bool			extract_word( char *word, int len, ofstream& );
+bool			extract_word( char *word, int len, ostream& );
 void			extract_words(
 				file_vector::const_iterator begin,
 				file_vector::const_iterator end,
-				ofstream&
+				ostream&
 			);
 ostream&		usage( ostream& = cerr );
 
@@ -296,7 +296,7 @@ ostream&		usage( ostream& = cerr );
 // SYNOPSIS
 //
 	bool extract_word(
-		register char *word, register int len, ofstream &out
+		register char *word, register int len, ostream &out
 	)
 //
 // DESCRIPTION
@@ -308,6 +308,8 @@ ostream&		usage( ostream& = cerr );
 //	word	The candidate word to be extracted.
 //
 //	len	The length of the word since it is not null-terminated.
+//
+//	out	The ostream to write the word to.
 //
 // RETURN VALUE
 //
@@ -379,7 +381,7 @@ ostream&		usage( ostream& = cerr );
 	void extract_words(
 		register file_vector::const_iterator c,
 		register file_vector::const_iterator end,
-		ofstream &out
+		ostream &out
 	)
 //
 // DESCRIPTION
@@ -391,6 +393,8 @@ ostream&		usage( ostream& = cerr );
 //	c	The iterator marking the beginning of the text to extract.
 //
 //	end	The iterator marking the end of the text to extract.
+//
+//	out	The ostream to write the words to.
 //
 //*****************************************************************************
 {
