@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "May 7, 2000" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "May 17, 2000" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -109,8 +109,8 @@ and
 Variables of this type take one or more arguments separated by whitespace.
 Variables of this type are:
 .BR ExcludeClass ,
-.BR IncludeExtension ,
-.BR ExcludeExtension ,
+.BR IncludeFile ,
+.BR ExcludeFile ,
 .BR IncludeMeta ,
 and
 .BR ExcludeMeta .
@@ -118,7 +118,7 @@ and
 Variables of this type are:
 .B FilesGrow
 and
-.B FilterExtension
+.B FilterFile
 (see FILTERS below).
 The
 .B FilesGrow
@@ -127,19 +127,19 @@ except that it may contain a trailing percent sign \f(CW%\f1
 to indicate a percentage rather than an absolute number.
 .SH FILTERS
 Via the
-.H FilterExtension
+.H FilterFile
 configuration file variable,
-files having particular extensions can be filtered
+files matching particular patterns can be filtered
 prior to indexing or extraction.
 A
-.B FilterExtension
+.B FilterFile
 configuration file line is of the form:
 .cS
-FilterExtension \f2extension command\fP
+FilterFile \f2pattern command\fP
 .cE
 where
-.I extension
-is the filename extension (without the dot) and
+.I pattern
+is a filename pattern and
 .I command
 is the command-line to execute the filter.
 .PP
@@ -185,12 +185,12 @@ filename should be indexed or extracted
 (because it is among the set of extensions specified with either the
 .B \-e
 option or the
-.B IncludeExtension
+.B IncludeFile
 variable
 or is not among the set specified with either the
 .B \-E
 option or the
-.B ExcludeExtension
+.B ExcludeFile
 variable),
 then the filter(s) are executed to create it.
 (See the EXAMPLES.)
@@ -200,16 +200,16 @@ To use a literal \f(CW%\f1 or \f(CW@\f1, simply double it.
 .SS Filters
 To uncompress \f(CWgzip\f1'd and \f(CWcompress\f1'd files
 prior to indexing or extraction, the
-.B FilterExtension
+.B FilterFile
 variable lines in a configuration file would be:
 .cS
-FilterExtension gz   gunzip -c %f > @E
-FilterExtension Z    uncompress -c %f > @E
+FilterFile *.gz   gunzip -c %f > @E
+FilterFile *.Z    uncompress -c %f > @E
 .cE
 Given that, a filename such as \f(CWfoo.txt.gz\f1 would become \f(CWfoo.txt\f1.
 If files having \f(CWtxt\f1 extensions should be indexed, then it will be.
 Note that the command on the
-.B FilterExtension
+.B FilterFile
 line must
 .I not
 simply be:
@@ -224,7 +224,7 @@ Here's an example to convert PDF to plain text for indexing using the
 .BR xpdf (1)
 package's \f(CWpdftotext\f1 command:
 .cS
-FilterExtension pdf  pdftotext %f @E.txt
+FilterFile *.pdf  pdftotext %f @E.txt
 .cE
 Not that if used in conjunction with the uncompression filters above,
 then compressed PDF files will also be indexed, i.e.,
@@ -238,7 +238,14 @@ double extension.
 .BR index (1),
 .BR pdftotext (1),
 .BR search (1),
-.BR uncompress (1)
+.BR uncompress (1),
+.BR glob (7)
+.PP
+International Standards Organization.
+``ISO/IEC 9945-2: Information Technology
+-- Portable Operating System Interface (POSIX)
+-- Part 2: Shell and Utilities,''
+1993.
 .SH AUTHOR
 Paul J. Lucas
 .RI < pjl@best.com >
