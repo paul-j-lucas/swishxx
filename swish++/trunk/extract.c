@@ -59,7 +59,7 @@ ExcludeFile		exclude_patterns;	// do not extract these
 ExtractFile		include_patterns;	// do extract these
 ExtractFilter		extract_as_filter;
 ExtractExtension	extract_extension;
-FilterFile		filters;
+FilterFile		file_filters;
 bool			in_postscript;
 char const*		me;			// executable name
 int			num_examined_files;

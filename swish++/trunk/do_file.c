@@ -117,7 +117,7 @@
 		// Determine if the file needs to be filtered and, if so, set
 		// the filename to what it would become if it were filtered.
 		//
-		FilterFile::const_pointer const f = filters[ file_name ];
+		FilterFile::const_pointer const f = file_filters[ file_name ];
 		if ( !f )
 			break;
 		filter_list.push_back( *f );

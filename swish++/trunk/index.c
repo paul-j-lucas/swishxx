@@ -96,7 +96,7 @@ ExcludeClass		exclude_class_names;	// class names not to index
 ExcludeMeta		exclude_meta_names;	// meta names not to index
 IncludeMeta		include_meta_names;	// meta names to index
 FilesGrow		files_grow;
-FilterFile		filters;
+FilterFile		file_filters;
 Incremental		incremental;
 char const*		me;			// executable name
 meta_map		meta_names;
