@@ -270,7 +270,7 @@ int conf_var::current_config_file_line_no_ = 0;
 		// skipped.
 		//
 		for ( ; c != nl; ++c ) {
-			if ( isspace( *c ) )
+			if ( is_space( *c ) )
 				continue;
 			if ( *c == '#' )
 				goto next_line;
@@ -287,7 +287,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			ptrdiff_t len = nl - c;
 			::strncpy( buf, c, len );
 			while ( len > 0 )
-				if ( isspace( buf[ len - 1 ] ) )
+				if ( is_space( buf[ len - 1 ] ) )
 					--len;
 				else
 					break;
@@ -333,7 +333,7 @@ next_line:
 		// value.
 		//
 		register char *value = ::strtok( 0, "\r\n" );
-		while ( *value && isspace( *value ) )
+		while ( *value && is_space( *value ) )
 			++value;
 		i->second->parse_value( value );
 	} // else
