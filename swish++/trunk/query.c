@@ -30,12 +30,12 @@
 // local
 #include "enc_int.h"
 #include "file_list.h"
+#include "IndexFile.h"
 #include "query.h"
+#include "query_node.h"
 #include "stem_word.h"
 #include "StemWords.h"
 #include "util.h"
-#include "WordFilesMax.h"
-#include "WordPercentMax.h"
 #include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -43,24 +43,51 @@ using namespace PJL;
 using namespace std;
 #endif
 
-typedef	vector< search_results* > and_results_type;
+struct parse_args {
+	//
+	// This is a simple struct used to pass a bunch of function arguments
+	// around as a single unit.
+	//
+	typedef query_node::pool_type node_pool;
+
+	node_pool&			pool;
+	token_stream&			query;
+	and_node::child_node_list	and_nodes;
+	bool				ignore;
+	int				meta_id;
+	query_node*			node;
+	stop_word_set&			stop_words_found;
+#ifdef	FEATURE_word_pos
+	bool&				got_near;
+#endif
+
+	parse_args( node_pool &p, token_stream &t, stop_word_set &s
+#ifdef	FEATURE_word_pos
+		, bool &b
+#endif
+	) : pool( p ), query( t ), stop_words_found( s ), meta_id( No_Meta_ID )
+#ifdef	FEATURE_word_pos
+		, got_near( b )
+#endif
+	{
+	}
+
+	parse_args( parse_args const &a ) :
+		meta_id( a.meta_id ), pool( a.pool ), query( a.query ),
+		stop_words_found( a.stop_words_found )
+#ifdef	FEATURE_word_pos
+		, got_near( a.got_near )
+#endif
+	{
+	}
+};
 
 extern index_segment	files, meta_names, stop_words, words;
 
-static bool		parse_meta(
-				token_stream&, search_results&, stop_word_set&,
-				and_results_type&, bool&, int
-			);
-static bool		parse_primary(
-				token_stream&, search_results&, stop_word_set&,
-				and_results_type&, bool&, int
-			);
-static bool		parse_query2(
-				token_stream&, search_results&, stop_word_set&,
-				and_results_type&, bool&, int
-			);
-static bool		parse_optional_relop( token_stream&, token::type& );
-static void		perform_and( search_results&, and_results_type& );
+static bool	parse_meta( parse_args& );
+static bool	parse_primary( parse_args& );
+static bool	parse_query2( parse_args& );
+static bool	parse_optional_relop( token_stream&, token::type& );
 
 //*****************************************************************************
 //
@@ -92,31 +119,6 @@ static void		perform_and( search_results&, and_results_type& );
 //
 // SYNOPSIS
 //
-	inline bool is_too_frequent( int file_count )
-//
-// DESCRIPTION
-//
-//	Checks to see if a word is too frequent by either exceeding the maximum
-//	number or percentage of files it can be in.
-//
-// PARAMETERS
-//
-//	file_count	The number of files a word occurs in.
-//
-// RETURN VALUE
-//
-//	Returns true only if a word is too frequent.
-//
-//*****************************************************************************
-{
-	return	file_count > word_file_max ||
-		file_count * 100 / files.size() >= word_percent_max;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	bool parse_query(
 		token_stream &query, search_results &results,
 		stop_word_set &stop_words_found
@@ -142,24 +144,49 @@ static void		perform_and( search_results&, and_results_type& );
 //
 //*****************************************************************************
 {
-	and_results_type and_results;
-	bool ignore;
+	parse_args::node_pool pool;
 
-	return parse_query2(
-		query, results, stop_words_found, and_results, ignore,
-		No_Meta_ID
-	);
+#ifdef	FEATURE_word_pos
+	bool got_near = false;
+	parse_args args( pool, query, stop_words_found, got_near );
+#else
+	parse_args args( pool, query, stop_words_found );
+#endif
+	if ( !parse_query2( args ) )
+		return false;
+
+#ifdef	FEATURE_word_pos
+	if ( args.got_near ) {
+		file_list const list( words.begin() );
+		file_list::const_iterator const file = list.begin();
+		if ( file->pos_deltas_.empty() ) {
+			extern IndexFile index_file_name;
+			error()	<< '"' << index_file_name
+				<< "\" does not contain word position data"
+				<< endl;
+			::exit( 1 );
+		}
+		//
+		// We got a "near" somewhere in the query: walk the tree and
+		// distirbute the terms of all the near nodes.
+		//
+		near_node::distributor const d( 0 );
+		args.node = args.node->visit( d );
+#		ifdef DEBUG_eval_query
+		args.node->print( cerr );
+		cerr << endl;
+#		endif
+	}
+#endif	/* FEATURE_word_pos */
+	args.node->eval( results );
+	return true;
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	bool parse_query2(
-		token_stream &query, search_results &results,
-		stop_word_set &stop_words_found, and_results_type &and_results,
-		bool &ignore, int meta_id
-	)
+	bool parse_query2( parse_args &args )
 //
 // DESCRIPTION
 //
@@ -180,6 +207,8 @@ static void		perform_and( search_results&, and_results_type& );
 //			|	word*
 //
 //		optional_relop:	'and'
+//			|	'near'
+//			|	'not' 'near'
 //			|	'or'
 //			|	(empty)
 //
@@ -197,17 +226,17 @@ static void		perform_and( search_results&, and_results_type& );
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	results			The query results go here.
+//	meta_id			The meta ID to constrain the matches against,
+//				if any.
+//
+//	node			The query node tree gets built here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
-//	and_results		The partial results to be and-ed together.
+//	and_nodes		The partial trees to be and-ed together.
 //
 //	ignore			Set to true only if this (sub)query should be
 //				ignored.
-//
-//	meta_id			The meta ID to constrain the matches against,
-//				if any.
 //
 // RETURN VALUE
 //
@@ -220,9 +249,7 @@ static void		perform_and( search_results&, and_results_type& );
 //
 //*****************************************************************************
 {
-	if ( !parse_meta(
-		query, results, stop_words_found, and_results, ignore, meta_id
-	) )
+	if ( !parse_meta( args ) )
 		return false;
 
 	//
@@ -230,22 +257,19 @@ static void		perform_and( search_results&, and_results_type& );
 	// is followed by a "rest" in the grammar.
 	//
 	token::type relop;
-	while ( parse_optional_relop( query, relop ) ) {
-		auto_ptr<search_results> results_rhs( new search_results );
-		bool ignore_rhs;
-		if ( !parse_meta(
-			query, *results_rhs, stop_words_found, and_results,
-			ignore_rhs, meta_id
-		) )
+	while ( parse_optional_relop( args.query, relop ) ) {
+		parse_args args_rhs( args );
+		if ( !parse_meta( args_rhs ) )
 			return false;
-		if ( ignore ) {
-			if ( !ignore_rhs ) {	// results are simply the RHS
-				results.swap( *results_rhs );
-				ignore = false;
+		if ( args.ignore ) {
+			if ( !args_rhs.ignore ) {
+				// results are simply the RHS
+				args.node = args_rhs.node;
+				args.ignore = false;
 			}
 			continue;
 		}
-		if ( ignore_rhs )		// results are simply the LHS
+		if ( args_rhs.ignore )		// results are simply the LHS
 			continue;
 
 		switch ( relop ) {
@@ -256,40 +280,78 @@ static void		perform_and( search_results&, and_results_type& );
 				// that all the "and"s at the same level can be
 				// performed together.
 				//
-				and_results.push_back( results_rhs.release() );
+				args.and_nodes.push_back( args_rhs.node );
 				break;
-
-			case token::or_token: {
+#ifdef	FEATURE_word_pos
+			case token::near_token:
+			case token::not_near_token: {
 				//
-				// Encountering an "or" forces us to perform
-				// the accumulated "and"s now.
+				// Ensure that neither child node of the
+				// near_node we want to create is a not_node
+				// since it's nonsensical.
 				//
-				perform_and( results, and_results );
-#				ifdef DEBUG_parse_query
-				cerr << "---> performing or\n";
-#				endif
-				FOR_EACH( search_results, *results_rhs, i )
-					results[ i->first ] += i->second;
+				if ( dynamic_cast<not_node*>( args_rhs.node ) )
+					return false;
+				query_node *const lhs_node =
+					args.and_nodes.empty() ? args.node :
+					new and_node(
+						args.pool, args.and_nodes
+					);
+				if ( dynamic_cast<not_node*>( lhs_node ) )
+					return false;
+				//
+				// If both child nodes have meta IDs specified,
+				// then they must be equal; if not, the results
+				// must be empty.
+				//
+				if (	args    .meta_id != No_Meta_ID &&
+					args_rhs.meta_id != No_Meta_ID &&
+					args    .meta_id != args_rhs.meta_id
+				) {
+					args.node = new empty_node;
+					break;
+				}
+				args.got_near = true;
+				args.node = relop == token::not_near_token ?
+					new not_near_node( args.pool,
+						lhs_node, args_rhs.node
+					) :
+					new near_node( args.pool,
+						lhs_node, args_rhs.node
+					);
 				break;
 			}
+#endif	/* FEATURE_word_pos */
+
+			case token::or_token:
+				args.node = new or_node(
+					args.pool,
+					args.and_nodes.empty() ? args.node :
+					new and_node(
+						args.pool, args.and_nodes
+					),
+					args_rhs.node
+				);
+				break;
 
 			default://
 				// We should never get anything other than an
-				// and_token or an or_token.  If we get there,
-				// the programmer goofed.
+				// and_token, near_token, or an or_token.  If
+				// we get here, the programmer goofed.
 				//
 				internal_error
-					<< "parse_query2(): "
-					   "got non-and/or token\n"
+					<< "parse_query2(): unexpected token"
 					<< report_error;
 		}
 	}
 
-	//
-	// We're done with this level: perform the "and" of the accumulated
-	// partial results now.
-	//
-	perform_and( results, and_results );
+	if ( !args.and_nodes.empty() ) {
+		//
+		// TODO
+		//
+		args.and_nodes.push_back( args.node );
+		args.node = new and_node( args.pool, args.and_nodes );
+	}
 	return true;
 }
 
@@ -297,11 +359,7 @@ static void		perform_and( search_results&, and_results_type& );
 //
 // SYNOPSIS
 //
-	bool parse_meta(
-		token_stream &query, search_results &results,
-		stop_word_set &stop_words_found, and_results_type &and_results,
-		bool &ignore, int meta_id
-	)
+	bool parse_meta( parse_args &args )
 //
 // DESCRIPTION
 //
@@ -312,17 +370,17 @@ static void		perform_and( search_results&, and_results_type& );
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	results			The query results go here.
+//	meta_id			The meta ID to constrain the matches against,
+//				if any.
+//
+//	node			The query node tree gets built here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
-//	and_results		The partial results to be and-ed together.
+//	and_nodes		The partial trees to be and-ed together.
 //
 //	ignore			Set to true only if this (sub)query should be
 //				ignored.
-//
-//	meta_id			The meta ID to constrain the matches against,
-//				if any.
 //
 // RETURN VALUE
 //
@@ -330,16 +388,16 @@ static void		perform_and( search_results&, and_results_type& );
 //
 //*****************************************************************************
 {
-	token const t( query );
+	token const t( args.query );
 	if ( t == token::word_token ) {			// meta name ...
-		token const t2( query );
+		token const t2( args.query );
 		if ( t2 == token::equal_token ) {	// ... followed by '='
 			less< char const* > const comparator;
 			word_range const range = ::equal_range(
 				meta_names.begin(), meta_names.end(),
 				t.lower_str(), comparator
 			);
-			meta_id = range.first != meta_names.end() &&
+			args.meta_id = range.first != meta_names.end() &&
 				!comparator( t.lower_str(), *range.first )
 			?
 				get_meta_id( range.first )
@@ -347,14 +405,12 @@ static void		perform_and( search_results&, and_results_type& );
 				Meta_ID_Not_Found;
 			goto no_put_back;
 		}
-		query.put_back( t2 );
+		args.query.put_back( t2 );
 	}
-	query.put_back( t );
+	args.query.put_back( t );
 
 no_put_back:
-	return parse_primary(
-		query, results, stop_words_found, and_results, ignore, meta_id
-	);
+	return parse_primary( args );
 }
 
 //*****************************************************************************
@@ -365,9 +421,9 @@ no_put_back:
 //
 // DESCRIPTION
 //
-//	Parse an optional relational operator of either "and" or "or" from the
-//	given token_stream.  In the absense of a relational operator, "and" is
-//	implied.
+//	Parse an optional relational operator of "and", "near", or "or" from
+//	the given token_stream.  In the absense of a relational operator, "and"
+//	is implied.
 //
 // PARAMETERS
 //
@@ -378,24 +434,51 @@ no_put_back:
 //
 // RETURN VALUE
 //
-//	Returns true unless no token at all could be extracted.
+//	Returns true unless no token at all could be parsed.
 //
 //*****************************************************************************
 {
 	token const t( query );
-	switch ( t ) {
+	token::type tt = t;
+	switch ( tt ) {
 
 		case token::no_token:
 			return false;
 
 		case token::and_token:
+		case token::not_token:
+#ifdef	FEATURE_word_pos
+		{
+			token const t2( query );
+			if ( t2 == token::near_token )
+				tt = token::not_near_token;
+			else
+				query.put_back( t2 );
+		}
+		case token::near_token:
+#endif
 		case token::or_token:
 #			ifdef DEBUG_parse_query
-			cerr	<< "---> relop \""
-				<< ( t == token::and_token ? "and" : "or" )
-				<< "\"\n";
+			cerr << "---> relop \"";
+			switch ( tt ) {
+				case token::and_token:
+					cerr << "and";
+					break;
+#ifdef	FEATURE_word_pos
+				case token::not_near_token:
+					cerr << "not ";
+					// no break;
+				case token::near_token:
+					cerr << "near";
+					break;
+#endif
+				case token::or_token:
+					cerr << "or";
+					break;
+			}
+			cerr << "\"\n";
 #			endif
-			relop = t;
+			relop = tt;
 			return true;
 
 		default:
@@ -414,11 +497,7 @@ no_put_back:
 //
 // SYNOPSIS
 //
-	bool parse_primary(
-		token_stream &query, search_results &results,
-		stop_word_set &stop_words_found, and_results_type &and_results,
-		bool &ignore, int meta_id
-	)
+	bool parse_primary( parse_args &args )
 //
 // DESCRIPTION
 //
@@ -429,17 +508,17 @@ no_put_back:
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	results			The query results go here.
+//	meta_id			The meta ID to constrain the matches against,
+//				if any.
+//
+//	node			The query node tree gets built here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
-//	and_results		The partial results to be and-ed together.
+//	and_nodes		The partial trees to be and-ed together.
 //
 //	ignore			Set to true only if this (sub)query should be
 //				ignored.
-//
-//	meta_id			The meta ID to constrain the matches against,
-//				if any.
 //
 // RETURN VALUE
 //
@@ -447,9 +526,10 @@ no_put_back:
 //
 //*****************************************************************************
 {
-	ignore = false;
+	args.ignore = false;
+	args.node = new empty_node;
 	word_range range;
-	token t( query );
+	token t( args.query );
 
 	switch ( t ) {
 
@@ -464,12 +544,17 @@ no_put_back:
 				stop_words.begin(), stop_words.end(),
 				t.lower_str(), comparator
 			) ) {
-				stop_words_found.insert( t.str() );
+				args.stop_words_found.insert( t.str() );
 #				ifdef DEBUG_parse_query
 				cerr	<< "---> word \"" << t.str()
 					<< "\" (ignored: not OK)\n";
 #				endif
-				return ignore = true;
+				//
+				// The following "return true" indicates that a
+				// word was parsed successfully, not that we
+				// found the word.
+				//
+				return args.ignore = true;
 			}
 			//
 			// Look up the word.
@@ -513,12 +598,9 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> '('\n";
 #			endif
-			if ( !parse_query2(
-				query, results, stop_words_found, and_results,
-				ignore, meta_id
-			) )
+			if ( !parse_query2( args ) )
 				return false;
-			query >> t;
+			args.query >> t;
 #			ifdef DEBUG_parse_query
 			if ( t == token::rparen_token )
 				cerr << "---> ')'\n";
@@ -529,24 +611,14 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> begin not\n";
 #			endif
-			search_results temp;
-			if ( !parse_meta(
-				query, temp, stop_words_found, and_results,
-				ignore, meta_id
-			) )
+			parse_args temp( args );
+			if ( !parse_meta( temp ) )
 				return false;
 #			ifdef DEBUG_parse_query
 			cerr << "---> end not\n";
 #			endif
-			if ( !ignore ) {
-				//
-				// Iterate over all files and mark the ones the
-				// results are NOT in.
-				//
-				for ( int i = 0; i < files.size(); ++i )
-					if ( temp.find( i ) == temp.end() )
-						results[ i ] = 100;
-			}
+			if ( temp.node )
+				args.node = new not_node( args.pool, temp.node );
 			return true;
 		}
 
@@ -555,7 +627,8 @@ no_put_back:
 	}
 
 #	ifdef DEBUG_parse_query
-	cerr << "---> word \"" << t.str() << "\", meta-ID=" << meta_id << "\n";
+	cerr	<< "---> word \"" << t.str()
+		<< "\", meta-ID=" << args.meta_id << "\n";
 #	endif
 	//
 	// Found a word or set of words matching a wildcard: iterate over all
@@ -565,112 +638,22 @@ no_put_back:
 	// Also start off assuming that this (sub)query should be ignored until
 	// we get at least one word that isn't too frequent.
 	//
-	ignore = true;
-	for ( ; range.first != range.second; ++range.first ) {
-		file_list const list( range.first );
+	args.ignore = true;
+	FOR_EACH_IN_PAIR( index_segment, range, i ) {
+		file_list const list( i );
 		if ( is_too_frequent( list.size() ) ) {
-			stop_words_found.insert( t.str() );
+			args.stop_words_found.insert( t.lower_str() );
 #			ifdef DEBUG_parse_query
 			cerr	<< "---> word \"" << t.str()
 				<< "\" (ignored: too frequent)\n";
 #			endif
-		} else {
-			ignore = false;
-			FOR_EACH( file_list, list, file )
-				if (	meta_id == No_Meta_ID ||
-					file->meta_ids_.contains( meta_id )
-				)
-					results[ file->index_ ] += file->rank_;
-		}
+		} else
+			args.ignore = false;
 	}
 
+	if ( !args.ignore )
+		args.node = new word_node(
+			args.pool, t.str(), range, args.meta_id
+		);
 	return true;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void perform_and(
-		search_results &results, and_results_type &and_results
-	)
-//
-// DESCRIPTION
-//
-//	Perform "and"s among all the partial results at a given level at the
-//	same time.  This is done to solve the weighting problem with more than
-//	two "and" terms.  For example, the query:
-//
-//		mouse and computer and keyboard
-//
-//	is parsed and treated as:
-//
-//		(mouse and computer) and keyboard
-//		  25%         25%           50%
-//
-//	The problem is that the last term always gets 50% of the weighting.
-//
-//	In order to weight all the terms equally, the "and" results for each
-//	term are saved in a list and then and'ed together at the end.
-//
-// PARAMETERS
-//
-//	results		The results go here.
-//
-//	and_results	The list of results to be and'ed together.
-//
-//*****************************************************************************
-{
-	if ( and_results.empty() )
-		return;
-#	ifdef DEBUG_parse_query
-	cerr << "---> performing and\n";
-#	endif
-
-	//
-	// For each search result, see if it's in each and-result: if it is,
-	// sum the ranks; if it isn't, delete the result.
-	//
-	for ( search_results::iterator
-		result = results.begin(); result != results.end();
-	) {
-		bool increment_result_iterator = true;
-		FOR_EACH( and_results_type, and_results, and_result ) {
-			search_results::const_iterator const
-				found = (*and_result)->find( result->first );
-			if ( found != (*and_result)->end() ) {
-				result->second += found->second;
-				continue;
-			}
-			//
-			// Erasing an element at a given iterator invalidates
-			// the iterator: copy the iterator to a temporary and
-			// increment the real iterator off of the element to be
-			// erased so the real iterator won't be invalidated.
-			//
-			search_results::iterator const erase_me = result++;
-			results.erase( erase_me );
-			increment_result_iterator = false;
-			break;
-		}
-		if ( increment_result_iterator )
-			++result;
-	}
-
-	//
-	// Now that the and-results have been summed, divide each by the number
-	// of and-results, i.e., average them.  (It's +1 below because you have
-	// to include the "results" variable itself.)
-	//
-	int const num_ands = and_results.size() + 1;
-	TRANSFORM_EACH( search_results, results, result )
-		result->second /= num_ands;
-
-	//
-	// Blow away the "and" search results pointed to by each and-result and
-	// then blow away the pointers themselves.
-	//
-	FOR_EACH( and_results_type, and_results, and_result )
-		delete *and_result;
-	and_results.clear();
 }
