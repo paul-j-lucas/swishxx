@@ -27,6 +27,9 @@
 // standard
 #include <vector>
 
+// local
+#include "encoded_char.h"
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -227,6 +230,9 @@
 
 	////////// Index the file /////////////////////////////////////////////
 
+#ifdef	MOD_mail
+	encoded_char_range::decoder::reset_all();
+#endif
 	static indexer *const text = indexer::find_indexer( "text" );
 	indexer *const i = found_pattern ? include_pattern->second : text;
 	file_info *const fi = new file_info(
