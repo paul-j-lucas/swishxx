@@ -7,11 +7,11 @@
 #
 # SYNOPSIS
 #
-#	<FORM ACTION="search.cgi">
-#	  <INPUT TYPE=text NAME="Search"><BR>
-#	  <INPUT TYPE=checkbox NAME="Stem"><B>Stem words</B>
-#	  <INPUT TYPE=submit VALUE="Search">
-#	</FORM>
+#	<form action="search.cgi">
+#	  <input type="text" name="Search" /><br />
+#	  <input type="checkbox" name="Stem" /><b>Stem words</b>
+#	  <input type="submit" value="Search" />
+#	</form>
 #
 # DESCRIPTION
 #
@@ -34,7 +34,7 @@ use lib qw( /home/www/swish++/lib/ );
 #		Put the path to where the WWW library is above.
 require WWW;
 
-$SWISH_BIN =	'/home/www/swish++/bin';
+$SWISH_BIN =	'/usr/local/bin';
 #		The full path to the bin directory where you installed the
 #		SWISH++ executables.
 
@@ -127,14 +127,11 @@ if ( $SOCKET_FILE || $SOCKET_ADDRESS ) {
 print <<END;
 Content-Type: text/html
 
-<HTML>
-  <HEAD>
-  <TITLE>Search Results</TITLE>
-  </HEAD>
-<BODY>
-<BIG><B>Search Results</B></BIG>
-<HR>
-<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<html>
+<head><title>Search Results</title></head>
+<body>
+<big><b>Search Results</b></big><hr>
+<table border="0" cellpadding="0" cellspacing="0">
 END
 
 ##
@@ -166,23 +163,23 @@ while ( <SEARCH> ) {
 	}
 
 	print <<END;
-	<TR VALIGN=top><TD ALIGN=right>$rank%&nbsp;&nbsp;</TD>
-	<TD><DL><DT><B><A HREF="$file">$title</A></B> ($size)<DD>$desc</DL></TD>
+	<tr valign="top"><td align="right">$rank%&nbsp;&nbsp;</td>
+	<td><dl><dt><b><a href="$file">$title</a></b> ($size)<dd>$desc</dl></td>
 END
 }
 close( SEARCH ) || die "close: $!";
 
-print "</TABLE>\n";
+print "</table>\n";
 if ( $? ) {
-	print "<B>malformed query</B>\n";
+	print "<b>malformed query</b>\n";
 } else {
-	print "<P>ignored: $ignored\n" if $ignored;
+	print "<p>ignored: $ignored\n" if $ignored;
 }
 
 ##
 # Print footer HTML
 ##
 print <<END;
-</BODY>
-</HTML>
+</body>
+</html>
 END
