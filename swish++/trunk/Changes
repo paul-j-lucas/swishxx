@@ -2,6 +2,89 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+3.0.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The code failed to compile under g++ 2.95 because it caught errors that
+  previous versions of g++ allowed to compile.
+
+  (This bug fix will be known as GCC2.95.)
+
+* There were a few mistakes in the section 1 manual pages to cover all the
+  changes to version 3.0.
+
+  (This bug fix will be known as MAN3.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* elements.c
+
+	1. On line 276, added an intermediate cast to int to get rid of
+	   an error trying to convert directly from a char* to an enum
+	   for bug fix GCC2.95.
+
+* index.c
+
+	1. In rank_full_index(), added another local scope for bug fix
+	   GCC2.95.
+
+* man/man1/extract.1
+* man/man1/index.1
+* man/man1/search.1
+
+	1. Performed following substitution:
+
+		s/the.index/swish++.index/
+
+	   for bug fix MAN3.
+
+	2. Fixed some formatting errors.
+
+* man/man4/swish++.conf.4
+
+	1. Fixed some formatting errors.
+
+* search.c
+
+	1. Performed following substitution:
+
+		s/result_type/results_type/
+		s/sorted_result_type/sorted_results_type/
+
+	   and added new result_type type for bug fix GCC2.95.
+
+	2. In main(), performed following substitution;:
+
+		s/typedef vector< result_type::value_type > sorted_result_type;
+		 /typedef vector< result_type > sorted_results_type;/
+
+	   for bug fix GCC2.95.
+
+* util.h
+
+	1. Rewrote is_directory() and is_plain_file() in terms of
+	   file_exists().
+
+* version.h
+
+	1. Updated version to "3.0.1".
+
+* word_index.h
+
+	1. Added definitions for:
+
+		word_index::const_iterator::operator+=()
+		word_index::const_iterator::operator-=()
+
+	   for bug fix GCC2.95.
+
+
+*******************************************************************************
 3.0
 *******************************************************************************
 
