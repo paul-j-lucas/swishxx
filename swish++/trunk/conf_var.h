@@ -50,24 +50,12 @@ public:
 	static void		parse_file( char const *file_name );
 	char const*		name() const { return name_; }
 protected:
-	conf_var( char const *var_name ) : name_( var_name ) {
-		alias_name( name_ );
-	}
+	conf_var( char const *var_name );
 	virtual ~conf_var();
 
-	void		alias_name( char const *var_name );
-	//		An instance of a derived class can call this in its
-	//		constructor to have more than one variable name map to
-	//		itself in the case where what it does is very similar
-	//		for all names and doesn't justify creating another
-	//		derived class.
-
-	virtual void	parse_value( char const *var_name, char *line ) = 0;
+	virtual void	parse_value( char *line ) = 0;
 	//		Derived classes must define this to parse a line and
-	//		set their value.  The var_name is the name of the
-	//		configuration variable whose line is being parsed that
-	//		can differ from the name of the derived instance
-	//		variable when an alias is involved.
+	//		set their value.
 
 	void		parse_const_value( char const *line );
 	//		This is a convenience function that can be called to

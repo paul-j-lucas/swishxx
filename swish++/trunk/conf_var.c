@@ -44,29 +44,13 @@ int conf_var::current_config_file_line_no_ = 0;
 //
 // SYNOPSIS
 //
-	/* virtual */ conf_var::~conf_var()
+	conf_var::conf_var( char const *var_name )
 //
 // DESCRIPTION
 //
-//	Destructs a conf_var.  It is out-of-line only because it's virtual
-//	(so its address is taken and put into the vtbl).
-//
-//*****************************************************************************
-{
-	// do nothing
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void conf_var::alias_name( char const *var_name )
-//
-// DESCRIPTION
-//
-//	Map a configuration file variable name to an instance of a conf_var
-//	(really, an instance of some derived class).  Only a single instance of
-//	any given variable may exist.
+//	Construct a configuration variable by mapping a variable name to an
+//	instance of a conf_var (really, an instance of some derived class).
+//	Only a single instance of any given variable may exist.
 //
 // PARAMETERS
 //
@@ -81,6 +65,22 @@ int conf_var::current_config_file_line_no_ = 0;
 		::abort();
 	}
 	var = this;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ conf_var::~conf_var()
+//
+// DESCRIPTION
+//
+//	Destructs a conf_var.  It is out-of-line only because it's virtual
+//	(so its address is taken and put into the vtbl).
+//
+//*****************************************************************************
+{
+	// do nothing
 }
 
 //*****************************************************************************
@@ -203,7 +203,7 @@ int conf_var::current_config_file_line_no_ = 0;
 //*****************************************************************************
 {
 	char *const line_copy = new_strdup( line );
-	parse_value( name_, line_copy );
+	parse_value( line_copy );
 	delete[] line_copy;
 }
 
@@ -324,7 +324,7 @@ next_line:
 		register char *value = ::strtok( 0, "\r\n" );
 		while ( *value && isspace( *value ) )
 			++value;
-		i->second->parse_value( line, value );
+		i->second->parse_value( value );
 	} // else
 	//
 	//	This config. variable is not used by the current executable:
