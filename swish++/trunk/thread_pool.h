@@ -72,7 +72,14 @@ extern "C" void		thread_destroy( void* );
 //
 //*****************************************************************************
 {
+	class thread;
+	class q_lock;
+	friend class	thread;
+	friend void*	thread_main( void* );
+	friend void	thread_destroy( void* );
 public:
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 	class thread {
 		//
 		// A thread is an abstract base class wrapped around a POSIX
@@ -117,6 +124,15 @@ public:
 			long	i;
 			void*	p;
 		};
+
+		void operator delete( void*, size_t ) { }
+		//
+		// Override "delete" for a thread to do nothing, i.e., do not
+		// deallocate memory for the object, because the POSIX thread
+		// clean-up function still needs to access the thread object
+		// after its destructor has been called.  The clean-up function
+		// deallocates the object.
+		//
 	protected:
 		typedef void* (*start_function_type)( void* );
 
@@ -127,7 +143,8 @@ public:
 	private:
 		pthread_t	thread_;		// our POSIX thread
 		pthread_mutex_t	run_lock_;
-		thread_pool	&pool_;			// to which we belong
+		thread_pool&	pool_;			// to which we belong
+		q_lock*		q_lock_;
 		bool		destructing_;		// destructor called?
 
 		void		run() { ::pthread_mutex_unlock( &run_lock_ ); }
@@ -145,17 +162,49 @@ public:
 		thread& operator=( thread const& );	// forbid assignment
 	};
 
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 	thread_pool( thread *prototype,
 		int min_threads, int max_threads, int timeout
 	);
 	~thread_pool();
 
 	void		new_task( thread::argument_type );
+	//		Supply a new task to be worked upon by a thread.
+
+	void		max_threads( int n ) 		{ max_threads_ = n; }
+	void		min_threads( int n ) 		{ min_threads_ = n; }
+	void		timeout( int t )		{ timeout_ = t; }
+	//		Adjust the thread pool's parameters.  Such adjustments
+	//		do not occur immediately, however; rather, the pool
+	//		slowly adjusts as tasks are completed.
 private:
+	class q_lock {
+		//
+		// A q_lock is a reference-counted mutex used for the task
+		// queue that is shared by the thread_pool and all of its
+		// threads.  A reference count is needed because the mutex has
+		// to persist until all the POSIX thread clean-up functions run
+		// and that can be after the thread_pool object is destroyed
+		// (which is why q_lock can't be an ordinary data member like
+		// t_lock_ below).
+		//
+	public:
+		pthread_mutex_t mutex_;
+
+		q_lock()		{ count_ = 1; }
+		~q_lock()		{ ::pthread_mutex_destroy( &mutex_ ); }
+
+		q_lock*	inc_ref();
+		void	dec_ref();
+	private:
+		int	count_;
+	};
+
 	typedef std::set< thread* > thread_set;
 	typedef std::queue< thread::argument_type > task_queue_type;
 
-	int const	min_threads_, max_threads_;
+	int		min_threads_, max_threads_;
 	thread_set	threads_;
 	pthread_mutex_t	t_lock_;
 
@@ -164,16 +213,11 @@ private:
 	pthread_cond_t	t_idle_;			// a thread is idle
 
 	task_queue_type	queue_;
-	pthread_mutex_t	q_lock_;
+	q_lock*		q_lock_;
 	pthread_cond_t	q_not_empty_;			// a task is available
 
 	bool		destructing_;			// destructor called?
-	pthread_mutex_t	destructing_lock_;
-	int const	timeout_;
-
-	friend class	thread;
-	friend void*	thread_main( void* );
-	friend void	thread_destroy( void* );
+	int		timeout_;
 };
 
 #ifndef	PJL_NO_NAMESPACES
