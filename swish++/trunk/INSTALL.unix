@@ -62,9 +62,9 @@ Building SWISH++ for Unix
 3. Go back to the top-level directory and type "make".  Note: lines of the
    form:
 
-	GNUmakefile:169: dep/bcd.d: No such file or directory
-	GNUmakefile:169: dep/mmap_file.d: No such file or directory
-	GNUmakefile:169: dep/conf_var.d: No such file or directory
+	GNUmakefile:169: .bcd.d: No such file or directory
+	GNUmakefile:169: .mmap_file.d: No such file or directory
+	GNUmakefile:169: .conf_var.d: No such file or directory
 	...
 
    are EXPECTED and NORMAL.  Those files INTENTIONALLY are not distributed in

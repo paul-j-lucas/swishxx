@@ -43,4 +43,4 @@ $(TARGET): src/*.c
 clean:
 
 distclean dist: clean
-	$(RM) $(TARGET) dep
+	$(RM) $(TARGET) .*.d
