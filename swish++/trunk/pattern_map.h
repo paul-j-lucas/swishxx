@@ -91,10 +91,14 @@ public:
 	void insert( value_type const &n ) { map_type::insert( n ); }
 private:
 	class pattern_match : public unary_function< value_type const&, bool > {
+		//
+		// A pattern_match is-a unary_function to serve as a predicate
+		// to find_if() above.
+		//
 	public:
 		pattern_match( char const *file_name ) :
 			file_name_( file_name ) { }
-		bool operator()( value_type const &map_node ) const {
+		result_type operator()( value_type const &map_node ) const {
 			return !::fnmatch( map_node.first, file_name_, 0 );
 		}
 	private:
