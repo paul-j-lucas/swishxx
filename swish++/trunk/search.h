@@ -64,10 +64,11 @@
 	char const*	word_file_max_arg;
 	char const*	word_percent_max_arg;
 #ifdef	SEARCH_DAEMON
-	bool		daemon_opt;
+	char const*	daemon_type_arg;
 	int		max_threads_arg;
 	int		min_threads_arg;
 	char const*	pid_file_name_arg;
+	char const*	socket_address_arg;
 	char const*	socket_file_name_arg;
 	int		socket_queue_size_arg;
 	int		socket_timeout_arg;
@@ -76,7 +77,7 @@
 	search_options(
 		int *argc, char ***argv,
 		option_stream::spec const[],
-		ostream& = cerr
+		std::ostream& = cerr
 	);
 
 	operator bool() const			{ return !bad_; }
@@ -87,9 +88,9 @@ private:
 void		service_request(
 			char *argv[],
 			search_options const&,
-			ostream& = cout, ostream& = cerr
+			std::ostream& = cout, std::ostream& = cerr
 		);
 
-ostream&	usage( ostream& );
+std::ostream&	usage( std::ostream& );
 
 #endif	/* search_H */
