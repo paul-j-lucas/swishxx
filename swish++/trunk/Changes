@@ -61,6 +61,11 @@ CHANGES, file-by-file
 	1. Added dir_list for feature DIR1.
 	2. Added directories_reserve.
 	3. Added check_add_directory() for feature DIR1.
+	4. s/queue< string >/queue< char const* >/
+	5. Switched from using std::string to create the current path to using
+	   a simpler char buffer.
+	6. Made sure the directory that is passed to do_directory() recursively
+	   has been strdup()'d.
 
 * directory.h
 
@@ -74,6 +79,13 @@ CHANGES, file-by-file
 	1. Added: #include "fake_ansi.h"
 
 * ExcludeFile.h
+
+	1. Added extern declaration.
+
+* extract.c
+
+	1. s/do_directory( file_name )/do_directory( ::strdup( file_name ) )/
+
 * ExtractFile.h
 * ExtractFilter.h
 
@@ -172,6 +184,7 @@ CHANGES, file-by-file
 	A. In main(), added: check_add_directory( "." );
 	B. s/file_info::parse/parse_file_info/
 	C. Added parse_file_info().
+	D. s/do_directory( file_name )/do_directory( ::strdup( file_name ) )/
 
 * IndexFile.h
 
@@ -209,6 +222,7 @@ CHANGES, file-by-file
 
 	1. Added directory index description.
 	2. Added other module cases describing a file's title.
+	3. Made separate BCD subsection.
 
 * meta_map.h
 * mmap_file.h
