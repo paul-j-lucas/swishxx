@@ -25,21 +25,9 @@
 // standard
 #include <vector>
 
-// local
-#include "fake_ansi.h"			/* for std */
-#include "platform.h"
-#ifndef	PJL_NO_SYMBOLIC_LINKS
-#include "FollowLinks.h"
-
-extern FollowLinks follow_symbolic_links;
-#endif
-
 typedef std::vector< char const* > dir_list_type;
 extern dir_list_type dir_list;
 //
 //	This contains the list of all directories in the order encountered.
-
-void	check_add_directory( char const *dir_path );
-void	do_directory( char const *dir_path );
 
 #endif	/* directory_H */
