@@ -31,6 +31,7 @@
 #include "encoded_char.h"
 #include "entities.h"
 #include "ExcludeClass.h"
+#include "html_config.h"
 #include "mod_html.h"
 #include "platform.h"
 #include "TitleLines.h"
