@@ -119,15 +119,12 @@ id3v1:	c = file.begin();
 		int		length;
 	};
 	static id3v1_field const field_table[] = {
-		//
-		// We use the ID3v2 names here so they will be reassigned.
-		//
-		"tit2",	ID3v1_Title_Size,
-		"tpe1",	ID3v1_Artist_Size,
-		"talb",	ID3v1_Album_Size,
-		"year", ID3v1_Year_Size,
-		"comm",	ID3v1_Comments_Size,
-		"tcon",	ID3v1_Genre_Size,
+		"title",	ID3v1_Title_Size,
+		"artist",	ID3v1_Artist_Size,
+		"album",	ID3v1_Album_Size,
+		"year", 	ID3v1_Year_Size,
+		"comments",	ID3v1_Comments_Size,
+		"genre",	ID3v1_Genre_Size,
 		0
 	};
 
