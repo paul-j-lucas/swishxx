@@ -30,6 +30,7 @@
 #include "conf_var.h"
 #include "exit_codes.h"
 #include "mmap_file.h"
+#include "platform.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -135,6 +136,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"incremental",
 			"indexfile",
 			"recursesubdirs",
+			"resultseparator",
 			"resultsmax",
 			"stemwords",
 			"stopwordfile",
