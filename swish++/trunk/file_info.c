@@ -25,8 +25,8 @@
 #include "file_info.h"
 #include "FilesReserve.h"
 
-extern FilesReserve	num_files_reserve;
 file_info::set_type	file_info::set_;
+extern FilesReserve	files_reserve;
 
 //*****************************************************************************
 //
@@ -38,8 +38,8 @@ file_info::set_type	file_info::set_;
 //
 // DESCRIPTION
 //
-//	Construct a file_info.  This is out-of-line since it's doubtful that
-//	a compiler will inline the initialization of all the data members.
+//	Construct a file_info.  This is out-of-line since it's doubtful that a
+//	compiler will inline the initialization of all the data members.
 //
 //*****************************************************************************
 :
@@ -57,10 +57,10 @@ file_info::set_type	file_info::set_;
 // DESCRIPTION
 //
 //	Allocate the memory as usual for an instance of file_info, but also
-//	record its address so the entire collection can be iterated over
-//	later.  Also, the first time through, reserve num_files_reserve slots
-//	for files.  If exceeded, the vector will automatically grow, but with a
-//	slight performance penalty.
+//	record its address so the entire collection can be iterated over later.
+//	Also, the first time through, reserve files_reserve slots for files.
+//	If exceeded, the vector will automatically grow, but with a slight
+//	performance penalty.
 //
 // PARAMETERS
 //
@@ -74,7 +74,7 @@ file_info::set_type	file_info::set_;
 //*****************************************************************************
 {
 	if ( set_.empty() )
-		set_.reserve( num_files_reserve );
+		set_.reserve( files_reserve );
 	void *const p = std::operator new( size );
 	set_.push_back( STATIC_CAST( file_info* )( p ) );
 	return p;
@@ -101,7 +101,7 @@ file_info::set_type	file_info::set_;
 // SEE ALSO
 //
 //	Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//	Addison-Wesley, Reading, MA.  p. 612.
+//	Addison-Wesley, Reading, MA, 1997.  p. 612.
 //
 //*****************************************************************************
 {
