@@ -18,6 +18,30 @@ day job.
 
 
 *******************************************************************************
+4.6.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* extract(1) incorrectly required arguments for -l and -r.
+
+  (This bug fix will be known as bug fix LRO.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* extract.c
+
+	1. In main(), fixed opt_spec for bug fix LRO.
+
+* version.h
+
+	1. Updated version to "4.6.1".
+
+
+*******************************************************************************
 4.6
 *******************************************************************************
 
@@ -36,7 +60,7 @@ NEW FEATURES
 BUG FIXES
 ---------
 
-* extract(1) didn't print the file anme of files that didn't exist in its error
+* extract(1) didn't print the file name of files that didn't exist in its error
   message.
 
   (This bug fix will be known as bug fix DNE.)
