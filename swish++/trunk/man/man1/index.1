@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "December 12, 2000" "SWISH++"
+.TH \f3index\f1 1 "May 9, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -202,11 +202,16 @@ Another way around this problem is to do periodic full indexing.
 .B index
 is written in a modular fashion
 where different types of files have different indexing modules.
-Currently, there are 3 modules:
+Currently, there are 4 modules:
 Text (plain text),
 HTML (HTML and XHTML),
+Mail (RFC 822 and Usenet News),
 and
-Mail (RFC 822 and Usenet News).
+Manual (Unix manual pages in
+.BR nroff (1)
+with
+.BR man (7)
+macros).
 .SS Text Module
 This module simply indexes plain text files
 performing character mapping and word determination
@@ -394,11 +399,66 @@ every search result would return a rank of 100 for the same file.
 Therefore, the
 .BR splitmail (1)
 utility is included in the SWISH++ distribution.
+.SS Manual Module
+Additional processing is done for Unix manual page files.
+The additional processing is:
+.TP 4
+1.
+If a
+.B NAME
+section heading macro
+(\f(CW.SH\f1)
+is found within the first \f(CWTitleLines\f1 lines
+of the file (default is 12),
+then the contents of the next line are stored in the generated index file
+as the file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces
+as well as backslash sequences, such as \f(CW\\f2\f1,
+are removed.)
+.TP
+2.
+Text that is in a section is indexed associated with the name of the section
+as a meta name.
+Spaces in multi-word section headings are converted to dashes, e.g.,
+``see also'' becomes ``see-also'' as a meta name.
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+The recommended sections to be indexed are:
+.BR AUTHOR ,
+.BR BUGS ,
+.BR CAVEATS ,
+.BR DESCRIPTION ,
+.BR DIAGNOSTICS ,
+.BR ERRORS ,
+.BR EXAMPLES ,
+.BR EXIT-STATUS ,
+.BR FILES ,
+.BR NAME ,
+.BR NOTES ,
+.BR OPTIONS ,
+.BR RETURN-VALUE ,
+.BR SEE-ALSO ,
+.BR SYNOPSIS ,
+and
+.BR WARNINGS .
 .SH OPTIONS
 Options begin with either a `\f(CW-\f1' for short options
 or a ``\f(CW--\f1'' for long options.
 Either a `\f(CW-\f1' or ``\f(CW--\f1'' by itself explicitly ends the options;
-Either short or long options may be used.
+either short or long options may be used.
 Long option names may be abbreviated
 so long as the abbreviation is unambiguous.
 .PP
@@ -987,7 +1047,8 @@ default index file name
 .BR search (1),
 .BR splitmail (1),
 .BR swish++.conf (4),
-.BR glob (7)
+.BR glob (7),
+.BR man (7).
 .PP
 Tim Berners-Lee.
 ``The text/enriched MIME Content-type,''
