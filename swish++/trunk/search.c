@@ -62,6 +62,7 @@
 #include "word_util.h"
 #ifdef	SEARCH_DAEMON
 #include "managed_ptr.h"
+#include "PidFile.h"
 #include "SearchDaemon.h"
 #include "SocketFile.h"
 #include "SocketQueueSize.h"
@@ -128,7 +129,9 @@ WordFilesMax	word_file_max;
 WordPercentMax	word_percent_max;
 
 #ifdef	SEARCH_DAEMON
-void		become_daemon( char const*, int, int, int, int, int );
+void		become_daemon(
+			char const*, char const*, int, int, int, int, int
+		);
 #endif
 void		dump_single_word( char const*, ostream& = cout );
 void		dump_word_window( char const*, int, int, ostream& = cout );
@@ -195,6 +198,7 @@ inline omanip< char const* > index_file_info( int index ) {
 #ifdef	SEARCH_DAEMON
 	ThreadsMax	max_threads;
 	ThreadsMin	min_threads;
+	PidFile		pid_file_name;
 	SocketFile	socket_file_name;
 	SocketQueueSize	socket_queue_size;
 	SocketTimeout	socket_timeout;
@@ -241,6 +245,8 @@ inline omanip< char const* > index_file_info( int index ) {
 		max_threads = opt.max_threads_arg;
 	if ( opt.min_threads_arg )
 		min_threads = opt.min_threads_arg;
+	if ( opt.pid_file_name_arg )
+		pid_file_name = opt.pid_file_name_arg;
 	if ( opt.socket_file_name_arg )
 		socket_file_name = opt.socket_file_name_arg;
 	if ( opt.socket_queue_size_arg )
@@ -269,6 +275,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	if ( am_daemon )			// function does not return
 		become_daemon(
+			pid_file_name,
 			socket_file_name, socket_queue_size, socket_timeout,
 			min_threads, max_threads, thread_timeout
 		);
@@ -994,6 +1001,7 @@ no_put_back:
 	daemon_opt			= false;
 	max_threads_arg			= 0;
 	min_threads_arg			= 0;
+	pid_file_name_arg		= 0;
 	socket_file_name_arg		= 0;
 	socket_queue_size_arg		= 0;
 	socket_timeout_arg		= 0;
@@ -1048,6 +1056,10 @@ no_put_back:
 				word_percent_max_arg = opt.arg();
 				break;
 #ifdef	SEARCH_DAEMON
+			case 'P': // Specify PID file.
+				pid_file_name_arg = opt.arg();
+				break;
+
 			case 'q': // Specify socket queue size.
 				socket_queue_size_arg = ::atoi( opt.arg() );
 				if ( socket_queue_size_arg < 1 )
@@ -1222,8 +1234,11 @@ ostream& usage( ostream &err ) {
 	"-M   | --dump-meta        : Dump meta-name index and exit\n"
 #ifdef SEARCH_DAEMON
 	"-o s | --socket-timeout s : Search client request timeout [default: " << SocketTimeout_Default << "]\n"
-	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
 	"-O s | --thread-timeout s : Idle spare thread timeout [default: " << ThreadTimeout_Default << "]\n"
+#endif
+	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
+#ifdef SEARCH_DAEMON
+	"-P f | --pid-file f       : Name of file to record daemon PID in [default: none]\n"
 	"-q n | --queue-size n     : Maximum queued socket connections [default: " << SocketQueueSize_Default << "]\n"
 #endif
 	"-r n | --skip-results n   : Number of initial results to skip [default: 0]\n"
