@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.index\f1 4 "August 27, 2003" "SWISH++"
+.TH \f3swish++.index\f1 4 "March 29, 2004" "SWISH++"
 .SH NAME
 swish++.index \- SWISH++ index file format
 .SH SYNOPSIS
@@ -180,6 +180,13 @@ Meta-ID list.
 Meta-IDs are unique integers
 identifying which meta name(s) a word is associated with
 in the meta-name index.
+.TP
+\f(CW02\fP
+Word-position list.
+Every word in a file has a position:
+the first word is 1, the second word is 2, etc.
+Each word position is stored as a delta from the previous position
+for compactness.
 .SS Stop-Word Entries
 Every stop-word entry in the
 .I "stop-word index"
