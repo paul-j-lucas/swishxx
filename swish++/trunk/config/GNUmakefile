@@ -21,8 +21,8 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=		..
-TARGET=		$(ROOT)/platform.h platform.mk
+ROOT:=		..
+TARGET:=	$(ROOT)/platform.h platform.mk
 
 .PNONY: all
 all: $(TARGET)
