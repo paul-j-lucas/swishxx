@@ -81,7 +81,7 @@ using namespace std;
 //	socket option to allow the server to be restarted in this situation.
 //
 // The reason this is done as a macro rather than a function is because if it
-// were a function, we'd have to pass an additional parameters to generate the
+// were a function, we'd have to pass additional parameters to generate the
 // correct error messages and exit codes.  That's too much work.
 //
 #define	BIND_SOCKET(FD,ADR,TYPE) {					\
