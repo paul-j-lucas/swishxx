@@ -156,7 +156,7 @@ ostream&		usage( ostream& = cerr );
 				config_file_name_arg = opt.arg();
 				break;
 
-			case 'e': { // Specify filename pattern(s) to extract.
+			case 'e': { // Filename pattern(s) to extract.
 				char *a = opt.arg();
 				for ( char *pat; pat = ::strtok( a, "," ); ) {
 					include_patterns.insert( pat );
@@ -165,9 +165,14 @@ ostream&		usage( ostream& = cerr );
 				break;
 			}
 
-			case 'E': // Specify filename pattern(s) not to extract.
-				exclude_patterns.insert( opt.arg() );
+			case 'E': { // Filename pattern(s) not to extract.
+				char *a = opt.arg();
+				for ( char *pat; pat = ::strtok( a, "," ); ) {
+					exclude_patterns.insert( pat );
+					a = 0;
+				}
 				break;
+			}
 
 			case 'f': // Run as a filter.
 				extract_as_filter_opt = true;
