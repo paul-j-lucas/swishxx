@@ -3,6 +3,69 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.14.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* When filenames containing shell meta-characters were passed to the shell for
+  filtering, they weren't escaped.
+
+  (This bug fix shall be known as bug fix SMC.)
+
+* For extract(1), added check to ensure that the extracted file name's length
+  does not exceed PATH_MAX.
+
+  (This bug fix shall be known as bug fix EEL.)
+
+* The call to change the behavior of mmap(2) was in the wrong place.
+
+  (This bug fix shall be known as bug fix MMB.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config.h
+
+	1. Updated Word_Max_Consec_Consonants to 7.
+	2. Updated Word_Max_Consec_Vowels to 5
+	3. Added ShellFilenameDelimChars and ShellFilenameEscapeChars for bug
+	   fix SMC.
+
+* conf_string.h
+
+	1. Added length() and size().
+
+* do_file.c
+
+	1. Added check against PATH_MAX for bug fix EEL.
+	2. Moved call to change behavior of mmap(2) for bug fix MMB.
+
+* filter.c
+
+	1. Added escape_filename() and unescape_filename() for bug fix SMC.
+	2. Changed substitute() to use escaped filename for bug fix SMC.
+
+* man/man1/index.1
+
+	1. s/subdiretories/subdirectories/
+
+* man/man1/search.1
+
+	1. Added missing mention of exit codes 68 and 69.
+
+* searchc.in
+
+	1. Added -F option.
+
+* version.h
+
+	1. Changed to "5.14.2".
+
+
+*******************************************************************************
 5.14.1
 *******************************************************************************
 
