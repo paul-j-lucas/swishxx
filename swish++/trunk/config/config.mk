@@ -47,11 +47,11 @@ OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 #
 ###############################################################################
 
-MOD_HTML:=	-DMOD_HTML
-MOD_MAIL:=	-DMOD_MAIL
-MOD_MAN:=	-DMOD_MAN
-MOD_LIST:=	$(MOD_HTML) $(MOD_MAIL) $(MOD_MAN)
+MOD_LIST:=	html mail man
 #		The indexing modules you want built into index(1).
+
+# Leave the following line alone!
+MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-Dmod_$(mod))
 
 ifndef WIN32
 #		The search daemon ability is not currently supported for
@@ -108,6 +108,12 @@ PERL:=		/usr/local/bin/perl
 #		Windows.  You need this only if you intend on using
 #		httpindex(1) or searchc(1).
 
+RANLIB:=	ranlib
+#		The command to generate library tables-of-contents; usually
+#		"ranlib".  If your OS doesn't need this done to libraries, you
+#		can still leave this here since errors from this command are
+#		ignored in the makefiles.
+
 SHELL:=		/bin/sh
 #		The shell to spawn for subshells; usually "/bin/sh".
 
@@ -140,7 +146,7 @@ OPTIM:=		-O2
 #		works just fine with it off, then there is a bug in your
 #		compiler's optimizer.
 
-CCFLAGS:=	$(MOD_LIST) $(SEARCH_DAEMON) $(OS) $(OPTIM)
+CCFLAGS:=	-I. $(MOD_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
 ifeq ($(findstring g++,$(CC)),g++)
 CCFLAGS+=	-fno-exceptions
@@ -194,8 +200,16 @@ MKDIR:=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 
 # $(ROOT) is defined by the Makefile including this.
 
-.SUFFIXES: .in
+dep/%.d : %.c $(ROOT)/platform.h dep
+	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
 
+dep:
+	$(MKDIR) $@
+
+$(ROOT)/platform.h:
+	@$(MAKE) -C $(ROOT)/config
+
+.SUFFIXES: .in
 % :: %.in
 	$(PERL) $(ROOT)/config/config.pl $< < $(ROOT)/config/config.mk
 
