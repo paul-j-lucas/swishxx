@@ -39,7 +39,7 @@ SOURCES:=	$(foreach charset,$(CHARSET_LIST),$(charset).c)
 
 $(TARGET): $(SOURCES:.c=.o)
 	$(RM) $@
-	$(AR) rv $@ $^
+	$(AR) $@ $^
 	-$(RANLIB) $@
 
 # Don't do the "include" if the goal contains the word "clean," i.e., either
@@ -53,7 +53,7 @@ endif
 ##
 
 clean:
-	$(RM) *.o
+	$(RM) *.o $(TEMPLATE_REPOSITORY)
 
 distclean: clean
 	$(RM) $(TARGET) .*.d
