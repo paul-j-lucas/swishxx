@@ -21,13 +21,13 @@
 
 // standard
 #include <cstring>
-#include <iostream>
 
 // local
 #include "FilesGrow.h"
-#include "exit_codes.h"
 
-extern char const*	me;
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 //*****************************************************************************
 //
@@ -38,9 +38,8 @@ extern char const*	me;
 //
 // DESCRIPTION
 //
-//	Parse an integer value from a configuration file line.  If successful,
-//	assign the value to ourselves; otherwise complain.  The string
-//	"infinity" (regardless of case) is accepted as a legal value.
+//	Parse an integer value from a configuration file line.  If the value is
+//	followed by a '%' then it's a percentage.
 //
 // PARAMETERS
 //
