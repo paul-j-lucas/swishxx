@@ -3,6 +3,36 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.0.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Changes to make it compile with g++ 3.4.0 which purports to be much more
+  standards-conforming.
+
+  (This bug fix shall be known as bug fix G34.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* my_set.h
+
+	1. s/end()/this->end()/ for bug fix G34
+
+* pattern_map.h
+
+	1. s/begin()/this->begin()/, s/end()/this->end()/ for bug fix G34
+	2. Made __SUNPRO_CC section the only one for bug fix G34.
+
+* version.h
+
+	1. Changed to "6.0.1".
+
+
+*******************************************************************************
 6.0
 *******************************************************************************
 
