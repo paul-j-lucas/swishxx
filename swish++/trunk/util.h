@@ -294,19 +294,34 @@ inline char*		new_strdup( char const *s ) {
 				);
 			}
 
-			// ensure function semantics: 'c' is expanded once
-inline bool		is_alnum( char c )	{ return isalnum( c ); }
-inline bool		is_alpha( char c )	{ return isalpha( c ); }
-inline bool		is_digit( char c )	{ return isdigit( c ); }
-inline bool		is_punct( char c )	{ return ispunct( c ); }
-inline bool		is_space( char c )	{ return isspace( c ); }
-inline bool		is_upper( char c )	{ return isupper( c ); }
-inline bool		is_xdigit( char c )	{ return isxdigit( c ); }
-inline char		to_lower( char c )	{ return tolower( c ); }
-extern char*		to_lower( char const* );
-extern char*		to_lower_r( char const* );
-extern char*		to_lower( char const *begin, char const *end );
-extern char*		to_lower_r( char const *begin, char const *end );
+		// ensure function semantics: 'c' is expanded once
+inline bool	is_alnum( char c ) {
+			return isalnum( static_cast<unsigned char>( c ) );
+		}
+inline bool	is_alpha( char c ) {
+			return isalpha( static_cast<unsigned char>( c ) );
+		}
+inline bool	is_digit( char c ) {
+			return isdigit( static_cast<unsigned char>( c ) );
+		}
+inline bool	is_punct( char c ) {
+			return ispunct( static_cast<unsigned char>( c ) );
+		}
+inline bool	is_space( char c ) {
+			return isspace( static_cast<unsigned char>( c ) );
+		}
+inline bool	is_upper( char c ) {
+			return isupper( static_cast<unsigned char>( c ) );
+		}
+inline bool	is_xdigit( char c ) {
+			return isxdigit( static_cast<unsigned char>( c ) );
+		}
+
+inline char	to_lower( char c ) { return tolower( c ); }
+extern char*	to_lower( char const* );
+extern char*	to_lower_r( char const* );
+extern char*	to_lower( char const *begin, char const *end );
+extern char*	to_lower_r( char const *begin, char const *end );
 
 #define	FOR_EACH(T,C,I) \
 	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
