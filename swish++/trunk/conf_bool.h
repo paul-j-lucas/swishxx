@@ -39,6 +39,9 @@
 //*****************************************************************************
 {
 public:
+	operator bool() const { return value_; }
+protected:
+	conf( char const *name, bool default_value );
 	conf<bool>& operator=( bool new_value ) {
 		value_ = new_value;
 		return *this;
@@ -47,9 +50,6 @@ public:
 		parse_const_value( s );
 		return *this;
 	}
-	operator bool() const { return value_; }
-protected:
-	conf( char const *name, bool default_value );
 private:
 	bool const	default_value_;
 	bool		value_;

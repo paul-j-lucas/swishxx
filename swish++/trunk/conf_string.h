@@ -39,13 +39,13 @@
 //*****************************************************************************
 {
 public:
+	operator char const*() const { return value_; }
+protected:
+	conf( char const *name, char const *default_value = "" );
 	conf<char const*>& operator=( char const *s ) {
 		parse_const_value( s );
 		return *this;
 	}
-	operator char const*() const { return value_; }
-protected:
-	conf( char const *name, char const *default_value = "" );
 private:
 	char const*	const default_value_;
 	char const*	value_;

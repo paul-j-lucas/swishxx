@@ -42,11 +42,6 @@
 //*****************************************************************************
 {
 public:
-	conf<int>& operator=( int );
-	conf<int>& operator=( char const *s ) {
-		parse_const_value( s );
-		return *this;
-	}
 	conf<int>& operator++() {
 		++value_;
 		return *this;
@@ -70,6 +65,11 @@ protected:
 	conf( char const *name,
 		int default_value, int min = 0, int max = INT_MAX
 	);
+	conf<int>& operator=( int );
+	conf<int>& operator=( char const *s ) {
+		parse_const_value( s );
+		return *this;
+	}
 private:
 	int const	default_value_, min_, max_;
 	int		value_;
