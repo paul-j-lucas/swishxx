@@ -51,7 +51,6 @@ int const		PATH_MAX = 1024;
 
 // local
 #include "config.h"
-#include "file_vector.h"
 #include "platform.h"			/* for PJL_NO_SYMBOLIC_LINKS */
 
 extern char const*	me;
@@ -93,10 +92,7 @@ private:
 //
 // SYNOPSIS
 //
-	inline file_vector::const_iterator find_newline(
-		file_vector::const_iterator c,
-		file_vector::const_iterator end
-	)
+	inline char const* find_newline( char const *c, char const *end )
 //
 // DESCRIPTION
 //
@@ -124,10 +120,7 @@ private:
 //
 // SYNOPSIS
 //
-	inline file_vector::const_iterator skip_newline(
-		file_vector::const_iterator c,
-		file_vector::const_iterator end
-	)
+	inline char const* skip_newline( char const *c, char const *end )
 //
 // DESCRIPTION
 //
