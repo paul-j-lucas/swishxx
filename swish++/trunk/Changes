@@ -3,6 +3,32 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.0.4
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Queries containing meta-names didn't work right if the meta-name was given
+  in any position other than last.
+
+  (This bug fix shall be known as bug fix MN1.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* query.c
+
+	1. In parse_meta(), added: "args.meta_id = No_Meta_ID" for bug
+	   fix MN1.
+
+* version.h
+
+	1. Changed to "6.0.4".
+
+
+*******************************************************************************
 6.0.3
 *******************************************************************************
 
