@@ -55,7 +55,7 @@ MOD_HEADERS=`echo mod/*/mod_*.h`
 
 for header in $MOD_HEADERS
 do cat <<!
-#ifdef	`basename $header | sed 's/\.h$//'`
+#ifdef	`basename $header | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
 #include "$header"
 #endif
 !
@@ -83,7 +83,7 @@ for header in $MOD_HEADERS
 do
 	CLASS=`fgrep " : public indexer" $header | sed 's/.*class  *\([A-Za-z_][A-Za-z0-9_]*\).*/\1/'`
 	cat <<!
-#ifdef	`basename $header | sed 's/\.h$//'`
+#ifdef	`basename $header | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
 	static $CLASS	${CLASS}_instance;
 #endif
 !
