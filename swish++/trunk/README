@@ -133,7 +133,7 @@
 	    server accepting query requests and returning results via a
 	    Unix domain or TCP socket or both.  For search-intensive
 	    applications, such as a search engine on a heavily used web
-	    site, this can yield a large performace improvement since
+	    site, this can yield a large performance improvement since
 	    the start-up cost (fork(2), exec(2), and initialization) is
 	    paid only once.
 
