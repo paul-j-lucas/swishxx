@@ -67,6 +67,7 @@ enum {
 	Exit_No_Init_Thread_Mutex	= 67,
 	Exit_No_User			= 68,
 	Exit_No_Group			= 69,
+	Exit_No_Create_Thread_Key	= 70,
 #endif
 
 	Exit_End_Enum_Marker
