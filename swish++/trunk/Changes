@@ -18,6 +18,34 @@ day job.
 
 
 *******************************************************************************
+4.6.5
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Adding files incrementally to an index that has meta names caused a SEGFAULT.
+
+  (This bug fix shall be known as bug fix IIM.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* index.c
+
+	1. In load_old_index(), performed the following substitution
+	   for bug fix IIM:
+
+		s/meta_names[ *meta_name ] = parse_bcd( p );/
+		  meta_names[ ::strdup( *meta_name ) ] = parse_bcd( p );/
+
+* version.h
+
+	1. Updated version to "4.6.5".
+
+
+*******************************************************************************
 4.6.4
 *******************************************************************************
 
