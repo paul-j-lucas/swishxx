@@ -28,7 +28,6 @@
 
 // local
 #include "exit_codes.h"
-#include "fake_ansi.h"			/* for REINTERPRET_CAST() */
 #include "SocketAddress.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -75,7 +74,7 @@ using namespace std;
 	// really "struct in_addr**" (this seems really brain damaged), so we
 	// have to do an ugly cast.
 	//
-	addr_ = *REINTERPRET_CAST(struct in_addr*)( host->h_addr_list[0] );
+	addr_ = *reinterpret_cast<struct in_addr*>( host->h_addr_list[0] );
 }
 
 //*****************************************************************************

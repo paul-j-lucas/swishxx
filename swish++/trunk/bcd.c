@@ -23,7 +23,7 @@
 #include <iostream>
 
 // local
-#include "fake_ansi.h"
+#include "platform.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -73,10 +73,10 @@ using namespace std;
 		if ( high )
 			byte = *p << 4;
 		else
-			o << STATIC_CAST(unsigned char)( byte | *p );
+			o << static_cast<unsigned char>( byte | *p );
 		high = !high;
 	} while ( p-- > buf );
-	return o << STATIC_CAST(unsigned char)( high ? 0xAA : byte | 0x0A );
+	return o << static_cast<unsigned char>( high ? 0xAA : byte | 0x0A );
 }
 
 //*****************************************************************************
