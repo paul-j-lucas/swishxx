@@ -259,10 +259,9 @@ inline char*		new_strdup( char const *s ) {
 			// ensure function semantics: 'c' is expanded once
 inline char		to_lower( char c )	{ return tolower( c ); }
 extern char*		to_lower( char const* );
-#ifdef	SEARCH_DAEMON
 extern char*		to_lower_r( char const* );
-#endif
 extern char*		to_lower( char const *begin, char const *end );
+extern char*		to_lower_r( char const *begin, char const *end );
 
 #define	FOR_EACH(T,C,I) \
 	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
