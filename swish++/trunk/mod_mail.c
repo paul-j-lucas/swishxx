@@ -190,7 +190,7 @@ bool			parse_header(
 {
 	int lines = 0;
 
-	register file_vector::const_iterator c = file.begin();
+	file_vector::const_iterator c = file.begin();
 	while ( c != file.end() ) {
 		if ( is_newline( c, file.end() ) || ++lines > num_title_lines ){
 			//
@@ -406,6 +406,7 @@ bool			parse_header(
 		h_map[ "content-type" ]		= Content_Type;
 		h_map[ "from" ]			= Index_Header;
 		h_map[ "keywords" ]		= Index_Header;
+		h_map[ "newsgroups" ]		= Index_Header;
 		h_map[ "resent-to" ]		= Index_Header;
 		h_map[ "subject" ]		= Index_Header;
 		h_map[ "to" ]			= Index_Header;
@@ -715,10 +716,10 @@ bool			parse_header(
 //*****************************************************************************
 {
 	message_type const type( index_headers( c.pos(), c.end_pos() ) );
-	if ( type.second == Binary ) {
+	if ( type.first == Not_Indexable || type.second == Binary ) {
 		//
-		// We can't index binary so just skip over it by setting the
-		// pos to end.
+		// The attachment is something we can't index so just skip over
+		// it by setting the pos to end.
 		//
 		c.pos( c.end_pos() );
 		return;
