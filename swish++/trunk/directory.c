@@ -19,6 +19,11 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+/*
+**	Note that this file is #include'd into index.c and extract.c because
+**	it generates different code depending on which one it's compiled into.
+*/
+
 // standard
 #include <cstring>
 #include <iostream>
@@ -27,8 +32,9 @@
 #include <dirent.h>
 
 // local
-#include "directory.h"
 #include "DirectoriesReserve.h"
+#include "directory.h"
+#include "fake_ansi.h"			/* for std */
 #include "my_set.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
@@ -56,13 +62,17 @@ char const		Dir_Sep_Char = '\\';
 char const		Dir_Sep_Char = '/';
 #endif
 
+#ifdef	INDEX
 DirectoriesReserve	directories_reserve;
 dir_list_type		dir_list;
+#endif
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
+#include "FollowLinks.h"
 FollowLinks		follow_symbolic_links;
 #endif
 
+#ifdef	INDEX
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -88,6 +98,34 @@ FollowLinks		follow_symbolic_links;
 		dir_list.push_back( dir_path );
 	}
 }
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void do_check_add_file( char const *file_name )
+//
+// SYNOPSIS
+//
+//	In the cases where a file is indexed directly from either the command
+//	line or via standard input, its directory has to be added to dir_list.
+//
+//*****************************************************************************
+{
+	char *const dir_path = new_strdup( file_name );
+	char *const slash = ::strrchr( dir_path, '/' );
+	//
+	// Check for the case of "./file": the directory "." doesn't need to be
+	// added since it's automatically added.
+	//
+	if ( slash && (slash > dir_path + 1 || *dir_path != '.' ) ) {
+		*slash = '\0';
+		check_add_directory( dir_path );
+	} else
+		delete[] dir_path;
+	do_file( file_name );
+}
+#endif	/* INDEX */
 
 //*****************************************************************************
 //
@@ -147,7 +185,9 @@ FollowLinks		follow_symbolic_links;
 		cout << '\n';
 	}
 
+#ifdef	INDEX
 	check_add_directory( dir_path );
+#endif
 	//
 	// Have a buffer for the full path to a file in a directory.  For each
 	// file, simply strcpy() the file name into place one character past
@@ -164,7 +204,7 @@ FollowLinks		follow_symbolic_links;
 			continue;
 		::strcpy( file, dir_ent->d_name );
 		if ( is_directory( path ) && recurse_subdirectories )
-			dir_queue.push( ::strdup( path ) );
+			dir_queue.push( new_strdup( path ) );
 		else {
 			// Note that do_file() is called in the case where
 			// 'path' is a directory and recurse_subdirectories is
