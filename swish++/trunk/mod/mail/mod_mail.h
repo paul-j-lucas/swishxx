@@ -98,9 +98,11 @@ private:
 		Text_HTML,
 		Text_vCard,
 		Message_RFC822,
-		Multipart,
+		Multipart
 	};
 
+	struct message_type;
+	friend struct message_type;
 	struct message_type {
 		//
 		// A message_type contains information about the mail/news
