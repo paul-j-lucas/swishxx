@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_latex
+#ifdef	MOD_latex
 
 #ifndef	latex_config_H
 #define	latex_config_H
@@ -32,4 +32,4 @@ int const	Command_Name_Max_Size		= 13;
 
 #endif	/* latex_config_H */
 
-#endif	/* mod_latex */
+#endif	/* MOD_latex */

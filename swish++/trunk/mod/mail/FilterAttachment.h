@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_mail
+#ifdef	MOD_mail
 
 #ifndef FilterAttachment_H
 #define FilterAttachment_H
@@ -49,4 +49,4 @@ extern FilterAttachment attachment_filters;
 
 #endif	/* FilterAttachment_H */
 
-#endif	/* mod_mail */
+#endif	/* MOD_mail */

@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_latex
+#ifdef	MOD_latex
 
 // local
 #include "commands.h"
@@ -381,4 +381,4 @@ collect:	if ( is_word_char( ch ) ) {
 	}
 }
 
-#endif	/* mod_latex */
+#endif	/* MOD_latex */

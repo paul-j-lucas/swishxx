@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_html
+#ifdef	MOD_html
 
 // local
 #include "entities.h"
@@ -122,4 +122,4 @@
 	return m;
 }
 
-#endif	/* mod_html */
+#endif	/* MOD_html */

@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_mail
+#ifdef	MOD_mail
 
 #ifndef	mod_mail_H
 #define	mod_mail_H
@@ -29,6 +29,7 @@
 
 // local
 #include "auto_vec.h"
+#include "encoded_char.h"
 #include "fake_ansi.h"			/* for std */
 #include "filter.h"
 #include "indexer.h"
@@ -91,10 +92,10 @@ private:
 		External_Filter,
 
 		Text_Plain,
-#ifdef	mod_rtf
+#ifdef	MOD_rtf
 		Text_Enriched,
 #endif
-#ifdef	mod_html
+#ifdef	MOD_html
 		Text_HTML,
 #endif
 		Text_vCard,
@@ -107,9 +108,9 @@ private:
 		// A message_type contains information about the mail/news
 		// message including whether or not it ought to be filtered.
 		//
-		content_type			content_type_;
-		content_transfer_encoding	encoding_;
-		mutable filter*			filter_;
+		content_type				content_type_;
+		encoded_char_range::decoder_type	decoder_;
+		mutable filter*				filter_;
 
 		message_type();
 		message_type( message_type const& );
@@ -154,12 +155,12 @@ inline mail_indexer::message_type::message_type() :
 	//	This default is assumed if no Content-Type header field is
 	//	specified.
 	//
-	content_type_( Text_Plain ), encoding_( Seven_Bit ), filter_( 0 )
+	content_type_( Text_Plain ), decoder_( Seven_Bit ), filter_( 0 )
 {
 }
 
 inline mail_indexer::message_type::message_type( message_type const &mt ) :
-	content_type_( mt.content_type_ ), encoding_( mt.encoding_ ),
+	content_type_( mt.content_type_ ), decoder_( mt.decoder_ ),
 	filter_( mt.filter_ )
 {
 	// On copy, null the pointer to the filter in the source message_type
@@ -173,4 +174,4 @@ inline mail_indexer::message_type::message_type( message_type const &mt ) :
 
 #endif	/* mod_mail_H */
 
-#endif	/* mod_mail */
+#endif	/* MOD_mail */

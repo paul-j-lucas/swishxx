@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_html
+#ifdef	MOD_html
 
 #ifndef element_map_H
 #define element_map_H
@@ -127,4 +127,4 @@ private:
 
 #endif	/* element_map_H */
 
-#endif	/* mod_html */
+#endif	/* MOD_html */

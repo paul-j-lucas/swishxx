@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_rtf
+#ifdef	MOD_rtf
 
 #ifndef	mod_rtf_H
 #define	mod_rtf_H
@@ -62,4 +62,4 @@ public:
 
 #endif	/* mod_rtf_H */
 
-#endif	/* mod_rtf */
+#endif	/* MOD_rtf */

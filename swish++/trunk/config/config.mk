@@ -62,7 +62,7 @@ MOD_LIST:=	html latex mail man rtf
 #		then you also need to build-in "rtf".
 
 # Leave the following line alone!
-MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-Dmod_$(mod))
+MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-DMOD_$(mod))
 
 ifndef WIN32
 #		The search daemon ability is not currently supported for

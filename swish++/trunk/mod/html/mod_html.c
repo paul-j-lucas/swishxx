@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_html
+#ifdef	MOD_html
 
 // standard
 #include <cctype>
@@ -1019,4 +1019,4 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n";
 }
 
-#endif	/* mod_html */
+#endif	/* MOD_html */

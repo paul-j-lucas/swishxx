@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_rtf
+#ifdef	MOD_rtf
 
 // local
 #include "config.h"
@@ -125,4 +125,4 @@ using namespace std;
 	}
 }
 
-#endif	/* mod_rtf */
+#endif	/* MOD_rtf */

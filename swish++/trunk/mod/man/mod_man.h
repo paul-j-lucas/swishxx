@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_man
+#ifdef	MOD_man
 
 #ifndef	mod_man_H
 #define	mod_man_H
@@ -57,4 +57,4 @@ private:
 
 #endif	/* mod_man_H */
 
-#endif	/* mod_man */
+#endif	/* MOD_man */
