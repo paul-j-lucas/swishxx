@@ -25,26 +25,28 @@
 #define SearchDaemon_H
 
 // local
-#include "conf_bool.h"
+#include "conf_enum.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class SearchDaemon : public conf<bool>
+	class SearchDaemon : public conf_enum
 //
 // DESCRIPTION
 //
-//	A SearchDaemon is-a conf<bool> containing the Boolean value indicating
-//	whether "search" should run in the background as a daemon process.
+//	A SearchDaemon is-a conf_enum containing the whether we're a search
+//	daemon and, if so, which kind: TCP, Unix domain, or both.
 //
 //	This is the same as search's -b command-line option.
 //
 //*****************************************************************************
 {
 public:
-	SearchDaemon() : conf<bool>( "SearchDaemon", false ) { }
-	CONF_BOOL_ASSIGN_OPS( SearchDaemon )
+	SearchDaemon() : conf_enum( "SearchDaemon", legal_values_ ) { }
+	CONF_ENUM_ASSIGN_OPS( SearchDaemon )
+private:
+	static char const *const legal_values_[];
 };
 
 #endif	/* SearchDaemon_H */
