@@ -19,6 +19,16 @@
 #	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
+CPP_TARGET:=	index search extract
+PERL_TARGET:=	httpindex splitmail
+ifndef WIN32
+PERL_TARGET+=	searchc
+endif
+TARGET:=	$(CPP_TARGET) $(PERL_TARGET)
+
+.PHONY: all
+all: $(TARGET)
+
 ROOT:=		.
 include		$(ROOT)/config/config.mk
 
@@ -31,9 +41,11 @@ CFLAGS:=	$(CCFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
-C_TARGET:=	index search extract
+MOD_LIBS:=	$(foreach mod,$(MOD_LIST),mod/$(mod)/libmod_$(mod).a)
+MOD_LIB_PATHS:=	$(foreach mod,$(MOD_LIST),-Lmod/$(mod))
+MOD_LINK:=	$(foreach mod,$(MOD_LIST),-lmod_$(mod))
 
-I_SRCS:=	bcd.c \
+I_SOURCES:=	bcd.c \
 		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
@@ -43,6 +55,7 @@ I_SRCS:=	bcd.c \
 		conf_set.c \
 		conf_string.c \
 		directory.c \
+		encoded_char.c \
 		ExcludeFile.c \
 		file_info.c \
 		file_list.c \
@@ -59,25 +72,13 @@ I_SRCS:=	bcd.c \
 		word_info.c \
 		word_util.c \
 		index.c
-ifdef MOD_HTML
-I_SRCS+=	elements.c \
-		entities.c \
-		mod_html.c
-endif
-ifdef MOD_MAIL
-I_SRCS+=	encoded_char.c \
-		mod_mail.c
-endif
-ifdef MOD_MAN
-I_SRCS+=	mod_man.c
-endif
 ifdef WIN32
-I_SRCS+=	fnmatch.c		# see the comment in pattern_map.h
+I_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
-I_OBJS:=	$(I_SRCS:.c=.o)
-I_LINK:=	$(CCLINK) -lm
+I_OBJECTS:=	$(I_SOURCES:.c=.o)
+I_LINK:=	$(MOD_LINK) -lm
 
-S_SRCS:=	bcd.c \
+S_SOURCES:=	bcd.c \
 		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
@@ -96,7 +97,7 @@ ifdef SEARCH_DAEMON
 ##
 # See the comment in config/config.mk regarding the search daemon ability.
 ##
-S_SRCS+=	conf_enum.c \
+S_SOURCES+=	conf_enum.c \
 		fdbuf.c \
 		thread_pool.c \
 		search_thread.c \
@@ -104,10 +105,10 @@ S_SRCS+=	conf_enum.c \
 		SearchDaemon.c \
 		SocketAddress.c
 endif
-S_OBJS:=	$(S_SRCS:.c=.o)
-S_LINK:=	$(CCLINK) $(SOCKET_LIB) $(PTHREAD_LIB)
+S_OBJECTS:=	$(S_SOURCES:.c=.o)
+S_LINK:=	$(SOCKET_LIB) $(PTHREAD_LIB)
 
-E_SRCS:=	mmap_file.c \
+E_SOURCES:=	mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
 		conf_filter.c \
@@ -115,7 +116,6 @@ E_SRCS:=	mmap_file.c \
 		conf_set.c \
 		conf_string.c \
 		directory.c \
-		entities.c \
 		ExcludeFile.c \
 		ExtractFile.c \
 		filter.c \
@@ -127,50 +127,40 @@ E_SRCS:=	mmap_file.c \
 		word_util.c \
 		extract.c
 ifdef WIN32
-E_SRCS+=	fnmatch.c		# see the comment in pattern_map.h
+E_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
-E_OBJS:=	$(E_SRCS:.c=.o)
-E_LINK:=	$(CCLINK)
+E_OBJECTS:=	$(E_SOURCES:.c=.o)
+E_LINK:=	
 
-PERL_TARGET:=	httpindex splitmail
-ifndef WIN32
-PERL_TARGET+=	searchc
-endif
 LIB_TARGET:=	WWW.pm
-
-BUILD_TARGET:=	$(C_TARGET) $(PERL_TARGET)
 
 ##
 # Build rules
 ##
 
-.PHONY: all
-all: $(BUILD_TARGET)
+extract: $(E_OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^ $(E_LINK)
 
-extract: $(E_OBJS)
-	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(E_OBJS) $(E_LINK)
+index: $(I_OBJECTS) $(MOD_LIBS)
+	$(CC) $(CFLAGS) $(MOD_LIB_PATHS) -o $@ $(I_OBJECTS) $(I_LINK)
 
-index: $(I_OBJS)
-	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(I_OBJS) $(I_LINK)
+init_modules.c: mod/*/mod_*.h init_modules-sh
+	./init_modules-sh > $@ || $(RM) $@
 
-search: $(S_OBJS)
-	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(S_OBJS) $(S_LINK)
+search: $(S_OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^ $(S_LINK)
 
-platform.h:
-	@$(MAKE) -C config
+$(MOD_LIBS): FORCE
+	@$(MAKE) -C $(dir $@) DEBUG="$(DEBUG)"
 
-dep/%.d : %.c platform.h dep
-	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
-
-dep:
-	$(MKDIR) $@
+.PHONY: FORCE
 
 # Don't do the "include" if the goal contains the word "clean," i.e., either
 # the "clean" or "distclean" goal.
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
 # Also, don't do the "include" if the goal is the "dist" goal.
 ifneq ($(MAKECMDGOALS),dist)
-include $(I_SRCS:%.c=dep/%.d) $(E_SRCS:%.c=dep/%.d) $(S_SRCS:%.c=dep/%.d)
+include $(I_SOURCES:%.c=dep/%.d) $(E_SOURCES:%.c=dep/%.d) $(S_SOURCES:%.c=dep/%.d)
 endif
 endif
 
@@ -183,9 +173,9 @@ ps pdf txt:
 
 install: install_bin install_lib install_man
 
-install_bin: $(BUILD_TARGET) $(I_BIN)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(C_TARGET) $(I_BIN)
-	cd $(I_BIN) && $(STRIP) $(C_TARGET)
+install_bin: $(TARGET) $(I_BIN)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(CPP_TARGET) $(I_BIN)
+	cd $(I_BIN) && $(STRIP) $(CPP_TARGET)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(PERL_TARGET) $(I_BIN)
 
 install_lib: $(I_LIB)
@@ -198,7 +188,7 @@ $(I_BIN) $(I_LIB):
 	$(MKDIR) $@
 
 uninstall:
-	cd $(I_BIN) && $(RM) $(BUILD_TARGET)
+	cd $(I_BIN) && $(RM) $(TARGET)
 	cd $(I_LIB) && $(RM) $(LIB_TARGET)
 	@$(MAKE) -C man $@
 
@@ -206,14 +196,18 @@ uninstall:
 # Utility rules
 ##
 
+MAKE_SUBDIRS=	for dir in man mod/*; \
+		do [ -e $$dir/*akefile ] && $(MAKE) -C $$dir $1; \
+		done
+
 clean:
 	$(RM) *.o core swish++.index
-	@$(MAKE) -C man $@
+	@$(call MAKE_SUBDIRS,$@)
 
 distclean: clean
-	$(RM) $(BUILD_TARGET) dep platform.h
-	@$(MAKE) -C man $@
+	$(RM) $(TARGET) dep init_modules.c platform.h
+	@$(call MAKE_SUBDIRS,$@)
 
 dist: clean
-	$(RM) $(BUILD_TARGET) platform.h
-	@$(MAKE) -C man $@
+	$(RM) $(TARGET) init_modules.c platform.h
+	@$(call MAKE_SUBDIRS,$@)
