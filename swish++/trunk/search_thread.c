@@ -71,7 +71,7 @@ unsigned search_thread::socket_timeout;
 int	split_args( char *s, char *argv[], int arg_max );
 bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 
-/*****************************************************************************/
+//*****************************************************************************
 //
 // SYNOPSIS
 //
@@ -96,6 +96,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 #	endif
 
 	char buf[ 1024 ];
+	bool ok = false;
 	if ( timed_read_line( arg.i, buf, sizeof buf, socket_timeout ) ) {
 
 #		ifdef DEBUG_threads
@@ -116,9 +117,35 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		else {
 			search_options const opt( &argc, &argv, opt_spec, out );
 			if ( opt )
-				service_request( argv, opt, out, out );
+				ok = service_request( argv, opt, out, out );
 		}
 		out << flush;
+	}
+
+	if ( !ok ) {
+		//
+		// It was a bad request because it (a) timed out, (b) had too
+		// few or many arguments, (c) had an error in usage, or (d) was
+		// malformed.  That being the case, reset the TCP connection by
+		// using the SO_LINGER socket option.  From [Stevens 1998], p.
+		// 187, "SO_LINGER Socket Option":
+		//
+		//	If l_onoff is nonzero and l_linger is 0, TCP aborts the
+		//	connection when it is closed.  That is, TCP discards
+		//	any data still remaining in the socket send buffer and
+		//	sends an RST to the peer, not the normal four-packet
+		//	connection termination sequence.
+		//
+		// The reason for doing this is so we don't waste an ephemeral
+		// port from a socket lingering in TIME-WAIT on a client that
+		// was too dumb to give us a valid request in the first place.
+		//
+		linger li;
+		li.l_onoff  = 1;
+		li.l_linger = 0;
+		::setsockopt( arg.i, SOL_SOCKET, SO_LINGER,
+			reinterpret_cast<char const*>( &li ), sizeof li
+		);
 	}
 
 	::close( arg.i );
