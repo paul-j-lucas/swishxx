@@ -138,9 +138,13 @@ endif
 .%.d : %.c platform.h
 	$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | sed "s/\([^:]*\):/\1 $@ : /g" > $@; [ -s $@ ] || $(RM) $@'
 
+ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
+ifneq ($(MAKECMDGOALS),dist)
 include	 $(I_SRCS:%.c=.%.d) $(E_SRCS:%.c=.%.d) $(S_SRCS:%.c=.%.d)
+endif
+endif
 
-ps pdf::
+ps pdf txt:
 	@$(MAKE) -C man $@
 
 ##
@@ -157,13 +161,13 @@ install_bin: $(BUILD_TARGET) $(I_BIN)
 install_lib: $(I_LIB)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(LIB_TARGET) $(I_LIB)
 
-install_man::
+install_man:
 	@$(MAKE) -C man install
 
 $(I_BIN) $(I_LIB):
 	$(MKDIR) $@
 
-uninstall::
+uninstall:
 	cd $(I_BIN) && $(RM) $(BUILD_TARGET)
 	cd $(I_LIB) && $(RM) $(LIB_TARGET)
 	@$(MAKE) -C man $@
@@ -172,10 +176,10 @@ uninstall::
 # Utility rules
 ##
 
-clean::
+clean:
 	$(RM) *.o .*.d core swish++.index
 	@$(MAKE) -C man $@
 
-dist distclean:: clean
+dist distclean: clean
 	$(RM) $(BUILD_TARGET) platform.h
 	@$(MAKE) -C man $@
