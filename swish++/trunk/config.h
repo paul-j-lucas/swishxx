@@ -134,6 +134,11 @@ int const	ThreadsMax_Default		= 100;
 int const	ThreadTimeout_Default		= 30; // seconds
 //		The number of seconds until an idle spare thread times out and
 //		destroys itself.
+
+char const	User_Default[]			= "nobody";
+char const	Group_Default[]			= "nobody";
+//		The user and group to switch to after initialization (if root
+//		to begin with).
 #endif
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
