@@ -92,14 +92,14 @@ private:
 //
 // SYNOPSIS
 //
-	inline file_vector::const_iterator skip_line(
+	inline file_vector::const_iterator find_newline(
 		file_vector::const_iterator c,
 		file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
 //
-//	Skips all characters up to, but not including, a newline.
+//	Finds the next newline (CR or LF) in a character sequence.
 //
 // PARAMETERS
 //
@@ -109,12 +109,45 @@ private:
 //
 // RETURN VALUE
 //
-//	Returns an iterator positioned either at a newline if found, or at
-//	"end" if not.
+//	Returns an iterator positioned either at the first character of a CR-LF
+//	if found, or at "end" if not.
 //
 //*****************************************************************************
 {
-	while ( c != end && *c != '\n' )
+	while ( c != end && *c != '\n' && *c != '\r' )
+		++c;
+	return c;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline file_vector::const_iterator skip_newline(
+		file_vector::const_iterator c,
+		file_vector::const_iterator end
+	)
+//
+// DESCRIPTION
+//
+//	Skips the next newline (CR and/or LF) in a character sequence.
+//
+// PARAMETERS
+//
+//	c	The iterator positioned at either a CR or LF.
+//
+//	end	The iterator marking the end of the range.
+//
+// RETURN VALUE
+//
+//	Returns an iterator positioned either at a character after a newline if
+//	found, or untouched if not.
+//
+//*****************************************************************************
+{
+	if ( c != end && *c == '\r' )
+		++c;
+	if ( c != end && *c == '\n' )
 		++c;
 	return c;
 }
