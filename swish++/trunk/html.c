@@ -44,7 +44,7 @@
 using namespace std;
 #endif
 
-extern int		exclude_class_count;
+int			exclude_class_count;	// don't index words if > 0
 extern ExcludeClass	exclude_class_names;
 extern ExcludeMeta	exclude_meta_names;
 extern IncludeMeta	include_meta_names;
@@ -548,8 +548,7 @@ bool			tag_cmp(
 //
 //	end		The iterator marking the end of the file.
 //
-//
-//	is_new_file	If true, clear our internal element stack.
+//	is_new_file	If true, we are just starting to index a new file.
 //
 // SEE ALSO
 //
@@ -611,9 +610,6 @@ bool			tag_cmp(
 		*to = '\0';
 		}
 
-		typedef	vector< pair< element_map::value_type const*, bool > >
-			stack_type;
-		static stack_type element_stack;
 		//
 		// The element_stack keeps track of all the HTML or XHTML
 		// elements we encounter until they are closed.  The first
@@ -628,8 +624,18 @@ bool			tag_cmp(
 		// able to clear the entire stack and, unfortunately, clear()
 		// isn't supported for stacks...an oversight in STL, IMHO.
 		//
-		if ( is_new_file )
+		typedef	vector< pair< element_map::value_type const*, bool > >
+			stack_type;
+		static stack_type element_stack;
+
+		if ( is_new_file ) {
+			//
+			// We are just starting to index a new file; therefore,
+			// reset stuff.
+			//
 			element_stack.clear();
+			exclude_class_count = 0;
+		}
 
 		////////// Close open element(s) //////////////////////////////
 
