@@ -52,24 +52,25 @@ public:
 
 		int		index_;		// occurs in i-th file
 		meta_set	meta_ids_;	// meta name(s) associated with
-		union {
-			short	occurrences_;	// in this file only
-			short	rank_;
-		};
+		short		occurrences_;	// in this file only
+		short		rank_;
 
 		file() { }
-		explicit file( int i ) : index_( i ), occurrences_( 1 ) { }
-		file( int i, int mi ) : index_( i ), occurrences_( 1 ) {
-			if ( mi != No_Meta_ID )
-				meta_ids_.insert( mi );
+		explicit file( int index ) :
+			index_( index ), occurrences_( 1 ), rank_( 0 ) { }
+		file( int index, int meta_id ) :
+			index_( index ), occurrences_( 1 ), rank_( 0 )
+		{
+			if ( meta_id != No_Meta_ID )
+				meta_ids_.insert( meta_id );
 		}
 
 		void	write_meta_ids( ostream& ) const;
 	};
 
-	typedef std::list< file > file_set;
+	typedef std::list< file > file_list;
 
-	file_set	files_;			// the files this word is in
+	file_list	files_;			// the files this word is in
 	int		occurrences_;		// over all files
 
 	word_info() : occurrences_( 0 ) { }
