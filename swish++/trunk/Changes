@@ -3,6 +3,32 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.15.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Fixed a bug in the code that merges partial indicies.  (Hopefully, this was
+  the last bug introduced as a result of the new index file format.)
+
+  (This bug fix shall be known as bug fix NMF.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* index.c
+
+	1. In merge_indicies(), moves declaration of "continues" out of
+	   the loop for bug fix NMF.
+
+* version.h
+
+	1. Changed to "5.15.3".
+
+
+*******************************************************************************
 5.15.2
 *******************************************************************************
 
