@@ -28,11 +28,7 @@
 
 // standard
 #include <iostream>
-#ifdef	PJL_GCC_2xx
-#include <streambuf.h>
-#else
 #include <streambuf>
-#endif
 
 #ifndef	PJL_NO_NAMESPACES
 namespace PJL {
