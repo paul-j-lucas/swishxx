@@ -37,7 +37,6 @@
 // we use a local copy.
 //
 #include "fnmatch.h"
-#define	PJL_LOCAL_FNMATCH 1
 #endif
 #include "less.h"
 
@@ -95,7 +94,8 @@ public:
 	void insert( char const *pattern, T const &t ) { (*this)[pattern] = t; }
 	void insert( value_type const &n ) { map_type::insert( n ); }
 private:
-	class pattern_match : public unary_function< value_type const&, bool > {
+	class pattern_match :
+		public std::unary_function< value_type const&, bool > {
 		//
 		// A pattern_match is-a unary_function to serve as a predicate
 		// to find_if() above.
@@ -104,11 +104,7 @@ private:
 		pattern_match( char const *file_name ) :
 			file_name_( file_name ) { }
 		result_type operator()( argument_type map_node ) const {
-#ifdef	PJL_LOCAL_FNMATCH
 			return !::fnmatch( map_node.first, file_name_, 0 );
-#else
-			return !std::fnmatch( map_node.first, file_name_, 0 );
-#endif
 		}
 	private:
 		char const *const file_name_;
