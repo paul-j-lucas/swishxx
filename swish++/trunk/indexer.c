@@ -21,6 +21,7 @@
 
 // local
 #include "config.h"
+#include "encoded_char.h"
 #include "file_info.h"
 #include "ExcludeMeta.h"
 #include "IncludeMeta.h"
@@ -61,8 +62,8 @@ int			indexer::suspend_indexing_count_ = 0;
 {
 	indexer *&i = map_ref()[ to_lower( mod_name ) ];
 	if ( i ) {
-		cerr	<< "indexer::indexer(): \"" << mod_name
-			<< "\" registered more than once" << endl;
+		cerr	<< "indexer::indexer(\"" << mod_name << "\"): "
+			"registered more than once" << endl;
 		::abort();
 	}
 	i = this;
@@ -141,7 +142,7 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
-	void indexer::index_word(
+	/* static */ void indexer::index_word(
 		register char *word, register int len, int meta_id
 	)
 //
@@ -242,8 +243,7 @@ int			indexer::suspend_indexing_count_ = 0;
 // SYNOPSIS
 //
 	/* virtual */ void indexer::index_words(
-		file_vector::const_iterator c,
-		register file_vector::const_iterator end,
+		encoded_char_range::const_iterator &c,
 		int meta_id
 	)
 //
@@ -254,22 +254,24 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 // PARAMETERS
 //
-//	c		The iterator marking the beginning of the text to
+//	pos		The iterator marking the beginning of the text to
 //			index.
 //
 //	end		The iterator marking the end of the text to index.
+//
+//	encoding	The Content-Transfer-Encoding of the text.
 //
 //	meta_id		The numeric ID of the META NAME the words index are to
 //			to be associated with.
 //
 //*****************************************************************************
 {
-	char buf[ Word_Hard_Max_Size + 1 ];
-	register char *word;
-	int len;
-	bool in_word = false;
+	char		buf[ Word_Hard_Max_Size + 1 ];
+	register char*	word;
+	bool		in_word = false;
+	int		len;
 
-	while ( c != end ) {
+	while ( !c.at_end() ) {
 		register file_vector::value_type ch = iso8859_to_ascii( *c++ );
 
 		////////// Collect a word /////////////////////////////////////
@@ -289,7 +291,7 @@ int			indexer::suspend_indexing_count_ = 0;
 				continue;
 			}
 			in_word = false;	// too big: skip chars
-			while ( c != end && is_word_char( *c++ ) ) ;
+			while ( !c.at_end() && is_word_char( *c++ ) ) ;
 			continue;
 		}
 
@@ -344,6 +346,7 @@ int			indexer::suspend_indexing_count_ = 0;
 	if ( !init ) {
 		init = true;		// must set this before init_modules()
 		init_modules();		// defined in init_modules.c
+		static indexer text( "text" );
 	}
 	return m;
 }
@@ -368,38 +371,14 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
-	/* static */ indexer* indexer::text_indexer()
-//
-// DESCRIPTION
-//
-//	Define and initialize the singleton instance of the default plain text
-//	indexer.
-//
-// RETURN VALUE
-//
-//	Returns a pointer to the indexer.
-//
-// SEE ALSO
-//
-//	The comments for map_ref() above.
-//
-//*****************************************************************************
-{
-	static indexer text( "Text" );
-	return &text;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	/* static */ char const* indexer::tidy_title(
-		char const *begin, char const *end
+		file_vector::const_iterator begin,
+		file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
 //
-//	"Tidy up" a title string by trimming leadinf and trailing whitespace as
+//	"Tidy up" a title string by trimming leading and trailing whitespace as
 //	well as converting all non-space whitespace characters to spaces.
 //
 //	Additionally, if the length of the title exceeds Title_Max_Size, then
