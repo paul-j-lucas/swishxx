@@ -858,7 +858,7 @@ ostream& usage( ostream &err ) {
 	"-d   | --dump-words       : Dump query word indices, exit\n"
 	"-D   | --dump-index       : Dump entire word index, exit\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
-	"-F f | --format f         : Output format [default: classic]\n"
+	"-F f | --format f         : Results format [default: classic]\n"
 #ifdef SEARCH_DAEMON
 	"-G s | --group s          : Daemon group to run as [default: " << Group_Default << "]\n"
 #endif
