@@ -3,6 +3,32 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.9.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* If the "mail" module wasn't selected for compilation, then overall
+  compilation failed due to a missing #ifdef.
+
+  (This bug fix shall be known as bug fix MMI.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* encoded_char.h
+
+	1. In encoded_char_range::const_iterator::const_iterator(), added
+	   missing "#ifdef MOD_mail" for bug fix MMI.
+
+* version.h
+
+	1. Upped version to "5.9.2".
+
+
+*******************************************************************************
 5.9.1
 *******************************************************************************
 
@@ -92,7 +118,7 @@ NEW FEATURES
   
   	not (foo = bar)
 
-  (It's not a bug because they query parser was doing exactly what it was
+  (It's not a bug because the query parser was doing exactly what it was
   documented to do.)
 
   (This feature shall be known as feature NMN.)
