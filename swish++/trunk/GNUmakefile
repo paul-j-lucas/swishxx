@@ -106,11 +106,13 @@ ifdef SEARCH_DAEMON
 # See the comment in config/config.mk regarding the search daemon ability.
 ##
 S_SOURCES+=	fdbuf.c \
+		Group.c \
 		thread_pool.c \
 		search_thread.c \
 		search_daemon.c \
 		SearchDaemon.c \
-		SocketAddress.c
+		SocketAddress.c \
+		User.c
 endif
 S_OBJECTS:=	$(S_SOURCES:.c=.o)
 S_LINK:=	$(SOCKET_LIB) $(PTHREAD_LIB)
