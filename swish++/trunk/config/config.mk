@@ -137,7 +137,7 @@ CCLINK=		#-liberty
 INSTALL=	$(ROOT)/install-sh
 #		Install command; usually "$(ROOT)/install-sh".
 
-I_ROOT=		/home/www/packages/swish++
+I_ROOT=		/usr/local/packages/swish++
 #		The top-level directory of where SWISH++ will be installed.
 
 I_BIN=		$(I_ROOT)/bin
@@ -172,3 +172,7 @@ MKDIR=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 
 % :: %.in
 	$(PERL) $(ROOT)/config/config.pl $< < $(ROOT)/config/config.mk
+
+##
+# The end.
+##
