@@ -29,7 +29,7 @@
 //
 // SYNOPSIS
 //
-	class StopWordFile : public conf<string>
+	class StopWordFile : public conf<std::string>
 //
 // DESCRIPTION
 //
@@ -41,7 +41,7 @@
 //*****************************************************************************
 {
 public:
-	StopWordFile() : conf<string>( "StopWordFile" ) { }
+	StopWordFile() : conf<std::string>( "StopWordFile" ) { }
 	CONF_STRING_ASSIGN_OPS( StopWordFile )
 };
 
