@@ -29,7 +29,7 @@
 
 // local
 #include "fake_ansi.h"				/* for mutable */
-#include "word_index.h"
+#include "index_segment.h"
 #include "word_info.h"
 
 //*****************************************************************************
@@ -40,13 +40,13 @@
 //
 // DESCRIPTION
 //
-//	This class, given a word_index::const_iterator, accesses the list of
+//	This class, given a index_segment::const_iterator, accesses the list of
 //	files the word is in.  Once an instance is created, the list of files
 //	can be iterated over.
 //
 // SEE ALSO
 //
-//	word_index.h
+//	index_segment.h
 //	word_info.h
 //	index.c		write_full_index() for a description of the index file
 //			format.
@@ -67,7 +67,7 @@ public:
 
 	////////// constructors ///////////////////////////////////////////////
 
-	file_list( word_index::const_iterator const &iter ) :
+	file_list( index_segment::const_iterator const &iter ) :
 		ptr_( REINTERPRET_CAST(unsigned char const*)( *iter ) ),
 		size_( -1 )			// -1 = "haven't computed yet"
 	{
@@ -119,8 +119,8 @@ public:
 	const_iterator begin() const	{ return const_iterator( ptr_ ); }
 	const_iterator end() const	{ return const_iterator( 0 ); }
 private:
-	unsigned char const *ptr_;
-	mutable size_type size_;
+	unsigned char const	*ptr_;
+	mutable size_type	size_;
 
 	size_type calc_size() const;
 };
