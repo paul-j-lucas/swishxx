@@ -716,6 +716,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 			}
 		}
 
+		////////// Look-up the HTML element ///////////////////////////
+
 		element_map const &elements = element_map::instance();
 		element_map::const_iterator const e = elements.find( tag_buf );
 		if ( e != elements.end() ) {
