@@ -20,11 +20,10 @@
 */
 
 // standard
-#include <algorithm>
 #include <cctype>
 #include <cstring>
 #include <vector>
-#include <utility>				/* for pair<> */
+#include <utility>			/* for pair<> */
 
 // local
 #include "config.h"
@@ -69,7 +68,7 @@ bool			skip_html_tag(
 //
 // SYNOPSIS
 //
-	char convert_entity(
+	char entity_to_ascii(
 		register file_vector::const_iterator &c,
 		register file_vector::const_iterator end
 	)
@@ -432,7 +431,7 @@ bool			skip_html_tag(
 	//
 	file_vector::const_iterator after, before;
 
-	register file_vector::const_iterator c = file.begin();
+	file_vector::const_iterator c = file.begin();
 	while ( c != file.end() ) {
 		if ( *c == '\n' && ++lines > num_title_lines ) {
 			//
@@ -505,6 +504,12 @@ bool			skip_html_tag(
 
 		return title;
 	}
+
+	//
+	// The file has less than num_title_lines lines and no <TITLE> was
+	// found.
+	//
+	return 0;
 }
 
 //*****************************************************************************
@@ -812,8 +817,8 @@ bool			skip_html_tag(
 			// Look up the vlaue of the NAME attribute to get its
 			// associated unique integer ID.
 			//
-			meta_map::const_iterator const i
-				= meta_names.find( name );
+			meta_map::const_iterator const
+				i = meta_names.find( name );
 			int meta_id;
 			if ( i != meta_names.end() )
 				meta_id = i->second;
@@ -821,7 +826,7 @@ bool			skip_html_tag(
 				//
 				// Do this in two statements intentionally
 				// because C++ doesn't guarantee that the RHS
-				// of assignment is evaulated first.
+				// of assignment is evaluated first.
 				//
 				meta_id = meta_names.size();
 				meta_names[ ::strdup( name ) ] = meta_id;
