@@ -23,33 +23,31 @@
 #include <algorithm>
 #include <cctype>
 #include <cstring>
-#ifdef	FEATURE_CLASS
 #include <vector>
-#endif	/* FEATURE_CLASS */
 
 // local
 #include "config.h"
-#ifdef	FEATURE_CLASS
 #include "elements.h"
-#endif	/* FEATURE_CLASS */
 #include "entities.h"
-#include "fake_ansi.h"
+#include "ExcludeClass.h"
+#include "ExcludeMeta.h"
 #include "html.h"
+#include "IncludeMeta.h"
 #include "index.h"
 #include "meta_map.h"
-#include "my_set.h"
+#include "platform.h"
+#include "TitleLines.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
 #endif
 
-extern string_set	exclude_meta_names, include_meta_names;
-#ifdef	FEATURE_CLASS
-extern int		no_index_class_count;
-extern string_set	no_index_class_names;
-#endif	/* FEATURE_CLASS */
-extern int		num_title_lines;
+extern int		exclude_class_count;
+extern ExcludeClass	exclude_class_names;
+extern ExcludeMeta	exclude_meta_names;
+extern IncludeMeta	include_meta_names;
+extern TitleLines	num_title_lines;
 
 bool			find_attribute(
 				file_vector<char>::const_iterator &begin,
@@ -511,10 +509,8 @@ bool			skip_html_tag(
 //
 	void parse_html_tag(
 		register file_vector<char>::const_iterator &c,
-		register file_vector<char>::const_iterator end
-#ifdef	FEATURE_CLASS
-		, bool is_new_file
-#endif	/* FEATURE_CLASS */
+		register file_vector<char>::const_iterator end,
+		bool is_new_file
 	)
 //
 // DESCRIPTION
@@ -594,15 +590,16 @@ bool			skip_html_tag(
 //
 //*****************************************************************************
 {
+	if ( c == end )
+		return;
 	file_vector<char>::const_iterator tag_begin = c;
 	if ( skip_html_tag( c, end ) || *tag_begin == '!' )
 		return;
 	file_vector<char>::const_iterator tag_end = c - 1;
 
-#ifdef	FEATURE_CLASS
 	////////// Deal with elements of a class not to index /////////////////
 
-	if ( !no_index_class_names.empty() ) {		// else, don't bother
+	if ( !exclude_class_names.empty() ) {		// else, don't bother
 		char *const tag = to_lower( tag_begin, tag_end );
 		static char const whitespace[] = " \f\n\r\t\v";
 		::strtok( tag, whitespace );		// just the element name
@@ -641,14 +638,13 @@ bool			skip_html_tag(
 				// The tag we're parsing closes the currently
 				// open element: if the currently open element
 				// is a member of one of the classes not being
-				// being indexed, decrement
-				// no_index_class_count.
+				// being indexed, decrement exclude_class_count.
 				//
 				if ( element_stack.back().second ) {
-					--no_index_class_count;
+					--exclude_class_count;
 #					ifdef DEBUG_parse_class
 					cerr	<< "---- decrement: "
-						<< no_index_class_count << endl;
+						<< exclude_class_count << endl;
 #					endif
 				}
 				element_stack.pop_back();
@@ -672,7 +668,7 @@ bool			skip_html_tag(
 			char *names = to_lower( class_begin, class_end );
 			register char const *name;
 			while ( name = ::strtok( names, whitespace ) ) {
-				if ( no_index_class_names.find( name ) ) {
+				if ( exclude_class_names.find( name ) ) {
 					is_no_index_class = true;
 					break;
 				}
@@ -719,12 +715,12 @@ bool			skip_html_tag(
 					// A class name in the value of this
 					// element's CLASS attribute is among
 					// the set not to index: increment
-					// no_index_class_count.
+					// exclude_class_count.
 					//
-					++no_index_class_count;
+					++exclude_class_count;
 #					ifdef DEBUG_parse_class
 					cerr	<< "---> increment: "
-						<< no_index_class_count << endl;
+						<< exclude_class_count << endl;
 #					endif
 				}
 			}
@@ -744,7 +740,6 @@ bool			skip_html_tag(
 			// be done.
 		}
 	}
-#endif	/* FEATURE_CLASS */
 
 	////////// Look for a TITLE attribute /////////////////////////////////
 
