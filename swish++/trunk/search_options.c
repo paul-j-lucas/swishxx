@@ -31,7 +31,7 @@ static option_stream::spec const opt_spec[] = {
 	"dump-index",		0, 'D',
 	"word-files",		1, 'f',
 	"format",		1, 'F',
-	"results",		1, 'm',
+	"max-results",		1, 'm',
 	"dump-meta",		0, 'M',
 	"word-percent",		1, 'p',
 	"skip-results",		1, 'r',
