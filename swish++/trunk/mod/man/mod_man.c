@@ -168,7 +168,7 @@ static void parse_backslash( char const *&pos, char const *end );
 	bool	newline = false;
 
 	char const* c = e.begin_pos();
-	while ( true ) {
+	while ( c != e.end_pos() ) {
 		register char const ch = *c;
 
 		////////// Collect a word /////////////////////////////////////
