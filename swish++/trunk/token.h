@@ -64,6 +64,9 @@ public:
 	token() : type_( no_token )		{ }
 	explicit token( token_stream &in )	{ in >> *this; }
 
+	// default copy constructor is fine
+	// default assignment operator is fine
+
 	operator	type() const		{ return type_; }
 	int		length() const		{ return len_; }
 	char const*	str() const		{ return buf_; }
@@ -77,15 +80,17 @@ private:
 	int		len_;
 };
 
+#ifdef	PJL_GCC_2xx
+#define	TOKEN_STREAM_BASE std::istrstream
+#else
+#define	TOKEN_STREAM_BASE std::istringstream
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-#ifdef	PJL_GCC_2xx
-	class token_stream : public std::istrstream
-#else
-	class token_stream : public std::istringstream
-#endif
+	class token_stream : public TOKEN_STREAM_BASE
 //
 // DESCRIPTION
 //
@@ -97,19 +102,17 @@ private:
 //*****************************************************************************
 {
 public:
-#ifdef	PJL_GCC_2xx
-	token_stream( char const *s ) : std::istrstream( s ), top_( -1 ) { }
-#else
-	token_stream( char const *s ) : std::istringstream( s ), top_( -1 ) { }
-#endif
+	token_stream( char const *s ) : TOKEN_STREAM_BASE( s ), top_( -1 ) { }
 	void	put_back( token const &t ) { stack_[ ++top_ ] = t; }
+	friend token_stream& operator>>( token_stream&, token& );
 private:
 	// Our query parser needs at most 2 look-ahead tokens.
 	token	stack_[ 2 ];
 	int	top_;
 
 	token*	put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
-	friend token_stream& operator>>( token_stream&, token& );
 };
+
+#undef	TOKEN_STREAM_BASE
 
 #endif	/* token_H */
