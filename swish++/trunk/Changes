@@ -56,6 +56,11 @@ CHANGES, file-by-file
 
 	3. Edit corresponding error message for feature BBS.
 
+* GNUmakefile
+
+	1. Undid the split of the dist and distclean targets done in
+	   version 4.5 since that change started to bug me to much.
+
 * man/man4/swish++.conf.4
 
 	1. Changed description of filter substitutions to match feature
