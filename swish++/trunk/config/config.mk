@@ -206,8 +206,10 @@ dep/%.d : %.c $(ROOT)/platform.h dep
 dep:
 	$(MKDIR) $@
 
+ifneq ($(TARGET),$(ROOT)/platform.h)
 $(ROOT)/platform.h:
 	@$(MAKE) -C $(ROOT)/config
+endif
 
 .SUFFIXES: .in
 % :: %.in
