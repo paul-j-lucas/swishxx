@@ -78,8 +78,6 @@ private:
 
 	static list_type	list_;
 	static name_set_type	name_set_;
-
-	void			construct();
 };
 
 #endif	/* file_info_H */
