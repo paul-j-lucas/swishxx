@@ -40,7 +40,6 @@
 #include "bcd.h"
 #include "config.h"
 #include "exit_codes.h"
-#include "file_info.h"
 #include "file_list.h"
 #include "indexer.h"
 #include "IndexFile.h"
@@ -124,6 +123,7 @@ typedef	pair< index_segment::const_iterator, index_segment::const_iterator >
 index_segment	directories, files, meta_names, stop_words, words;
 ResultsMax	max_results;
 char const*	me;				// executable name
+ResultSeparator	result_separator;
 StemWords	stem_words;
 WordFilesMax	word_file_max;
 WordPercentMax	word_percent_max;
