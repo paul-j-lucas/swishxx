@@ -56,6 +56,17 @@ public:
 		and_token,
 		equal_token,
 		lparen_token,
+#ifdef	FEATURE_word_pos
+		near_token,
+		//
+		// The "not_near_token" isn't a real token in that it's not
+		// parsed as a single word.  The parser synthesizes it by using
+		// look-ahead, i.e., a "not" token followed by a "near" token.
+		// Having a distinct enum value for it here just makes life
+		// easier.
+		//
+		not_near_token,
+#endif
 		not_token,
 		or_token,
 		rparen_token,
@@ -112,3 +123,4 @@ private:
 #undef	TOKEN_STREAM_BASE
 
 #endif	/* token_H */
+/* vim:set noet sw=8 ts=8: */
