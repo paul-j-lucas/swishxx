@@ -40,28 +40,6 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-	void option_stream::option::copy( option const &o )
-//
-// DESCRIPTION
-//
-//	Copy an option_stream to ourselves.  This is a utility function for the
-//	copy constructor and assignment operator.
-//
-// PARAMETERS
-//
-//	o	The option_stream to copy from.
-//
-//*****************************************************************************
-{
-	c_ = o.c_;
-	::strcpy( arg_ = new char[ ::strlen( o.arg_ ) + 1 ], o.arg_ );
-	am_copy_ = true;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	option_stream::option_stream(
 		int argc, char *argv[], spec const specs[], ostream &err
 	)
@@ -83,7 +61,7 @@ namespace PJL {
 //
 //*****************************************************************************
 	: argc_( argc ), argv_( argv ), specs_( specs ), err_( err ),
-	  index_( 0 ), next_c_( 0 ), end_( false )
+	  argi_( 0 ), next_c_( 0 ), end_( false )
 {
 	// do nothing else
 }
@@ -129,8 +107,9 @@ namespace PJL {
 {
 	register char *arg;
 	register option_stream::spec const *s, *found = 0;
+	bool was_short_option = false;
 
-	o.c_ = '\0';
+	o.short_name_ = '\0';
 
 	if ( os.next_c_ && *os.next_c_ ) {
 		//
@@ -142,17 +121,18 @@ namespace PJL {
 		goto short_option;
 	}
 
-	if ( ++os.index_ >= os.argc_ )		// no more arguments
+	if ( ++os.argi_ >= os.argc_ )		// no more arguments
 		goto the_end;
-	arg = os.argv_[ os.index_ ];
+	arg = os.argv_[ os.argi_ ];
 	if ( !arg || *arg != '-' || !*++arg )	// no more options
 		goto the_end;
 
 	if ( *arg == '-' ) {
 		if ( !*++arg ) {		// "--": end of options
-			++os.index_;
+			++os.argi_;
 			goto the_end;
 		}
+		was_short_option = false;
 
 		//
 		// Got the start of a long option: find the last character of
@@ -179,13 +159,13 @@ namespace PJL {
 			ERROR << '"';
 			::copy( arg, end, ostream_iterator<char>(os.err_, "") );
 			os.err_ << "\" is ambiguous\n";
-			return os;
+			goto option_error;
 		}
 		if ( !found ) {
 			ERROR << '"';
 			::copy( arg, end, ostream_iterator<char>(os.err_, "") );
 			os.err_ << "\" unrecognized\n";
-			return os;
+			goto option_error;
 		}
 
 		//
@@ -198,7 +178,7 @@ namespace PJL {
 				if ( *end == '=' ) {
 					ERROR	<< '"' << found->long_name
 						<< "\" takes no argument\n";
-					goto set_arg;
+					goto option_error;
 				}
 				break;
 
@@ -208,44 +188,28 @@ namespace PJL {
 					arg = ++end;
 					break;
 				}
-				if ( ++os.index_ >= os.argc_ )
-					break;
-				arg = os.argv_[ os.index_ ];
-				if ( *arg == '-' ) {
-					//
-					// The next argv looks like an option
-					// so assume it is one and that there
-					// is no argument for this option.
-					//
-					arg = 0;
-				}
-				break;
+				goto arg_next;
 
 			default:
 				goto bad_spec;
 		}
 
-		if ( !arg && found->arg_type == option_stream::req_arg )
-			ERROR	<< '"' << found->long_name
-				<< "\" requires an argument\n";
-		else
-			o.c_ = found->c;
-
-		goto set_arg;
+		goto check_arg;
 	}
 
 short_option:
+	was_short_option = true;
 	//
 	// Got a single '-' for a short option: look for it in the specs.
 	//
-	for ( s = os.specs_; s->c; ++s )
-		if ( *arg == s->c ) {
+	for ( s = os.specs_; s->short_name; ++s )
+		if ( *arg == s->short_name ) {
 			found = s;
 			break;
 		}
 	if ( !found ) {
 		ERROR << '"' << *arg << "\" unrecognized\n";
-		return os;
+		goto option_error;
 	}
 
 	//
@@ -278,9 +242,9 @@ short_option:
 				// The argument, if any, is given in the next
 				// argv.
 				//
-				if ( ++os.index_ >= os.argc_ )
+arg_next:			if ( ++os.argi_ >= os.argc_ )
 					break;
-				arg = os.argv_[ os.index_ ];
+				arg = os.argv_[ os.argi_ ];
 				if ( *arg == '-' ) {
 					//
 					// The next argv looks like an option
@@ -296,14 +260,22 @@ short_option:
 			goto bad_spec;
 	}
 
-	if ( !arg && found->arg_type == option_stream::req_arg )
-		ERROR << '"' << found->c << "\" requires an argument\n";
+check_arg:
+	if ( (arg && *arg) || found->arg_type != option_stream::req_arg ) {
+		o.short_name_ = found->short_name;
+		o.arg_ = arg;
+		return os;
+	}
+	ERROR << '"';
+	if ( was_short_option )
+		os.err_ << found->short_name;
 	else
-		o.c_ = found->c;
-
-set_arg:
-	o.arg_ = arg;
-	return os;
+		os.err_ << found->long_name;
+	os.err_ << "\" requires an argument\n";
+	// fall through
+option_error:
+	o.arg_ = '\0';
+	// fall through
 the_end:
 	os.end_ = true;
 	return os;
@@ -325,24 +297,28 @@ using namespace PJL;
 
 int main( int argc, char *argv[] ) {
 	static option_stream::spec const spec[] = {
-		"no-arg",	0, 'n',
-		"req-arg",	1, 'r',
-		"opt-arg",	2, 'o',
+		"n-no-arg",	0, 'n',
+		"m-no-arg",	0, 'm',
+		"r-req-arg",	1, 'r',
+		"o-opt-arg",	2, 'o',
 		0,
 	};
 	option_stream opt_in( argc, argv, spec );
 	option_stream::option opt;
 	while ( opt_in >> opt ) {
 		switch ( opt ) {
+			case 'm':
+				cout << "got --m-no-arg\n";
+				break;
 			case 'n':
-				cout << "got --no-arg\n";
+				cout << "got --n-no-arg\n";
 				break;
 			case 'r':
-				cout << "got --req-arg=" << opt.arg() << '\n';
+				cout << "got --r-req-arg=" << opt.arg() << '\n';
 				break;
 			case 'o':
-				cout << "got --opt-arg=";
-				cout << (opt.arg() ? opt.arg() : "(null)") << endl;
+				cout << "got --o-opt-arg=";
+				cout << (opt.arg() ? opt.arg() : "(null)") << '\n';
 				break;
 			default:
 				cout << "got weird=" << (int)(char)opt << '\n';
