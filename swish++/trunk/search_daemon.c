@@ -212,11 +212,7 @@ using namespace std;
 	);
 	while ( true ) {
 		struct sockaddr_un addr;
-#ifdef	PJL_SOCKLEN_NOT_INT
-		unsigned addr_len = sizeof addr;
-#else
-		int addr_len = sizeof addr;
-#endif
+		PJL_SOCKLEN_TYPE addr_len = sizeof addr;
 #		ifdef DEBUG_threads
 		cerr << "waiting for request" << endl;
 #		endif
