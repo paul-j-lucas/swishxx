@@ -204,3 +204,91 @@ using namespace std;
 #	endif
 	return true;
 }
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool move_if_match(
+		char const *&c, char const *end, char const *s,
+		bool ignore_case
+	)
+//
+// SYNOPSIS
+//
+//	Compares a string starting at the given iterator to another.
+//
+// PARAMETERS
+//
+//	c		The iterator to use.  If the string matches, it is
+//			repositioned at the first character past the string;
+//			otherwise it is not touched.
+//
+//	end		The iterator marking the end of the range to search.
+//
+//	s		The string to compare against.  If ignore_case is true,
+//			then this string must be in lower case.
+//
+//	ignore_case	True if case should be ignored.
+//
+// RETURN VALUE
+//
+//	Returns true only if the string matches.
+//
+//*****************************************************************************
+{
+	register char const *d = c;
+	if ( ignore_case )
+		while ( *s && d != end && *s == to_lower( *d ) )
+			++s, ++d;
+	else
+		while ( *s && d != end && *s == *d )
+			++s, ++d;
+	if ( *s )			// didn't match before null
+		return false;
+	c = d;
+	return true;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool move_if_match(
+		encoded_char_range::const_iterator &c, char const *s,
+		bool ignore_case
+	)
+//
+// SYNOPSIS
+//
+//	Compares a string starting at the given iterator to another.
+//
+// PARAMETERS
+//
+//	c		The iterator to use.  If the string matches, it is
+//			repositioned at the first character past the string;
+//			otherwise it is not touched.
+//
+//	s		The string to compare against.  If ignore_case is true,
+//			then this string must be in lower case.
+//
+//	ignore_case	True if case should be ignored.
+//
+// RETURN VALUE
+//
+//	Returns true only if the string matches.
+//
+//*****************************************************************************
+{
+	encoded_char_range::const_iterator d = c;
+	if ( ignore_case )
+		while ( *s && !d.at_end() && *s == to_lower( *d ) )
+			++s, ++d;
+	else
+		while ( *s && !d.at_end() && *s == *d )
+			++s, ++d;
+	if ( *s )			// didn't match before null
+		return false;
+	c = d;
+	return true;
+}

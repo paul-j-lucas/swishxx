@@ -28,6 +28,7 @@
 
 // local
 #include "config.h"
+#include "encoded_char.h"
 #include "fake_ansi.h"			/* for std */
 #include "util.h"
 
@@ -158,5 +159,13 @@
 //*****************************************************************************
 
 extern bool	is_ok_word( char const *word );
+extern bool	move_if_match(
+			char const *&c, char const *end, char const *s,
+			bool ignore_case = false
+		);
+extern bool	move_if_match(
+			encoded_char_range::const_iterator &c, char const *s,
+			bool ignore_case = false
+		);
 
 #endif	/* word_util_H */
