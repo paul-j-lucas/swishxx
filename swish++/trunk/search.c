@@ -65,7 +65,9 @@
 #include "word_util.h"
 #include "xml_formatter.h"
 #ifdef	SEARCH_DAEMON
+#include "Group.h"
 #include "PidFile.h"
+#include "SearchBackground.h"
 #include "SearchDaemon.h"
 #include "SocketAddress.h"
 #include "SocketFile.h"
@@ -74,6 +76,7 @@
 #include "ThreadsMax.h"
 #include "ThreadsMin.h"
 #include "ThreadTimeout.h"
+#include "User.h"
 #endif	/* SEARCH_DAEMON */
 
 #ifndef	PJL_NO_NAMESPACES
@@ -123,14 +126,17 @@ WordFilesMax	word_file_max;
 WordPercentMax	word_percent_max;
 #ifdef	SEARCH_DAEMON
 SearchDaemon	daemon_type;
+Group		group;
 ThreadsMax	max_threads;
 ThreadsMin	min_threads;
 PidFile		pid_file_name;
+SearchBackground search_background;
 SocketAddress	socket_address;
 SocketFile	socket_file_name;
 SocketQueueSize	socket_queue_size;
 SocketTimeout	socket_timeout;
 ThreadTimeout	thread_timeout;
+User		user;
 
 void		become_daemon();
 #endif
@@ -209,12 +215,16 @@ inline omanip< char const* > index_file_info( int index ) {
 #ifdef	SEARCH_DAEMON
 	if ( opt.daemon_type_arg )
 		daemon_type = opt.daemon_type_arg;
+	if ( opt.group_arg )
+		group = opt.group_arg;
 	if ( opt.max_threads_arg )
 		max_threads = opt.max_threads_arg;
 	if ( opt.min_threads_arg )
 		min_threads = opt.min_threads_arg;
 	if ( opt.pid_file_name_arg )
 		pid_file_name = opt.pid_file_name_arg;
+	if ( opt.search_background_opt )
+		search_background = false;
 	if ( opt.socket_address_arg )
 		socket_address = opt.socket_address_arg;
 	if ( opt.socket_file_name_arg )
@@ -225,6 +235,8 @@ inline omanip< char const* > index_file_info( int index ) {
 		socket_timeout = opt.socket_timeout_arg;
 	if ( opt.thread_timeout_arg )
 		thread_timeout = opt.thread_timeout_arg;
+	if ( opt.user_arg )
+		user = opt.user_arg;
 #endif	/* SEARCH_DAEMON */
 
 	//
@@ -397,7 +409,7 @@ inline omanip< char const* > index_file_info( int index ) {
 // SYNOPSIS
 //
 	void search( char const *query,
-		int skip_results, int max_results,
+		int skip_results, int max_results, char const *results_format,
 		ostream &out, ostream &err
 	)
 //
@@ -412,6 +424,8 @@ inline omanip< char const* > index_file_info( int index ) {
 //	skip_results	The number of initial results to skip.
 //
 //	max_results	The maximum number of results to output.
+//
+//	results_format	The results format.
 //
 //	out		The ostream to print the results to.
 //
@@ -437,7 +451,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	////////// Print the results //////////////////////////////////////////
 
 	results_formatter const *format;
-	if ( results_format == "xml" )
+	if ( to_lower( *results_format ) == 'x' /* must be "xml" */ )
 		format = new xml_formatter( out, results.size() );
 	else
 		format = new classic_formatter( out, results.size() );
@@ -472,7 +486,8 @@ inline omanip< char const* > index_file_info( int index ) {
 			++i
 		) {
 			format->result(
-				i->second * normalize,
+				// cast gets rid of warning
+				static_cast<int>( i->second * normalize ),
 				file_info(
 					reinterpret_cast<unsigned char const*>(
 						files[ i->first ]
@@ -535,14 +550,17 @@ inline omanip< char const* > index_file_info( int index ) {
 	word_percent_max_arg		= 0;
 #ifdef	SEARCH_DAEMON
 	daemon_type_arg			= 0;
+	group_arg			= 0;
 	max_threads_arg			= 0;
 	min_threads_arg			= 0;
 	pid_file_name_arg		= 0;
+	search_background_opt		= false;
 	socket_address_arg		= 0;
 	socket_file_name_arg		= 0;
 	socket_queue_size_arg		= 0;
 	socket_timeout_arg		= 0;
 	thread_timeout_arg		= 0;
+	user_arg			= 0;
 #endif
 	option_stream opt_in( *argc, *argv, opt_spec );
 	for ( option_stream::option opt; opt_in >> opt; )
@@ -553,8 +571,12 @@ inline omanip< char const* > index_file_info( int index ) {
 				socket_address_arg = opt.arg();
 				break;
 
-			case 'b': // Run in background as a daemon.
+			case 'b': // Run as a daemon.
 				daemon_type_arg = opt.arg();
+				break;
+
+			case 'B': // Do not run daemon in the background.
+				search_background_opt = true;
 				break;
 #endif
 			case 'c': // Config. file.
@@ -574,9 +596,16 @@ inline omanip< char const* > index_file_info( int index ) {
 				break;
 
 			case 'F': // Results format.
-				results_format_arg = opt.arg();
+				if ( results_format.is_legal( opt.arg(), err ) )
+					results_format_arg = opt.arg();
+				else
+					bad_ = true;
 				break;
-
+#ifdef	SEARCH_DAEMON
+			case 'G': // Group.
+				group_arg = opt.arg();
+				break;
+#endif
 			case 'i': // Index file.
 				index_file_name_arg = opt.arg();
 				break;
@@ -639,6 +668,10 @@ inline omanip< char const* > index_file_info( int index ) {
 
 			case 'u': // Unix domain socket file.
 				socket_file_name_arg = opt.arg();
+				break;
+
+			case 'U': // User.
+				user_arg = opt.arg();
 				break;
 #endif
 			case 'V': // Display version and exit.
@@ -763,6 +796,8 @@ inline omanip< char const* > index_file_info( int index ) {
 		opt.skip_results_arg,
 		opt.max_results_arg ?
 			::atoi( opt.max_results_arg ) : max_results,
+		opt.results_format_arg ?
+			opt.results_format_arg : results_format,
 		out, err
 	);
 }
@@ -811,12 +846,16 @@ ostream& usage( ostream &err ) {
 #ifdef SEARCH_DAEMON
 	"-a a | --socket-address a : Socket address [default: *:" << SocketPort_Default << "]\n"
 	"-b t | --daemon-type t    : Daemon type to run as [default: none]\n"
+	"-B   | --no-background    : Don't run daemon in the background [default: do]\n"
 #endif
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"-d   | --dump-words       : Dump query word indices, exit\n"
 	"-D   | --dump-index       : Dump entire word index, exit\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
 	"-F f | --format f         : Output format [default: classic]\n"
+#ifdef SEARCH_DAEMON
+	"-G s | --group s          : Daemon group to run as [default: " << Group_Default << "]\n"
+#endif
 	"-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
 	"-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
 	"-M   | --dump-meta        : Dump meta-name index, exit\n"
@@ -837,6 +876,7 @@ ostream& usage( ostream &err ) {
 	"-t n | --min-threads n    : Minimum number of threads [default: " << ThreadsMin_Default << "] \n"
 	"-T n | --max-threads n    : Maximum number of threads [default: " << ThreadsMax_Default << "] \n"
 	"-u f | --socket-file f    : Name of socket file [default: " << SocketFile_Default << "]\n"
+	"-U s | --user s           : Daemon user to run as [default: " << User_Default << "]\n"
 #endif
 	"-V   | --version          : Print version number, exit\n"
 	"-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n";
