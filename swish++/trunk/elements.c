@@ -53,9 +53,9 @@
 	// below where each "row" has varying length.  It's kind of a hack, but
 	// it works.
 	//
-	static cpcc F = REINTERPRET_CAST( char const* )( element::forbidden );
-	static cpcc O = REINTERPRET_CAST( char const* )( element::optional  );
-	static cpcc R = REINTERPRET_CAST( char const* )( element::required  );
+	static cpcc F = reinterpret_cast<char const*>( element::forbidden );
+	static cpcc O = reinterpret_cast<char const*>( element::optional  );
+	static cpcc R = reinterpret_cast<char const*>( element::required  );
 
 	//
 	// Elements that have forbidden end tags (obviously) have no tags
