@@ -330,6 +330,6 @@
 //
 //*****************************************************************************
 {
-	static element_map m;
+	static element_map const m;
 	return m;
 }
