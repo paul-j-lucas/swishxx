@@ -36,6 +36,10 @@ CHANGES, file-by-file
 	1. Added DirectoriesGrow_Default and DirectoriesReserve_Default for
 	   feature DIR1.
 
+* config/config.mk
+
+	1. Added g++ 3.0-specific warnings to CCFLAGS for development purposes.
+
 * conf_bool.h
 * conf_enum.h
 * conf_int.h
@@ -230,6 +234,11 @@ CHANGES, file-by-file
 * mod_mail.h
 
 	1. Added: #include "fake_ansi.h"
+
+* mod_man.c
+
+	1. In index_words(), s/register char const* c/char const* c/ since its
+	   address is taken.
 
 * my_set.h
 
