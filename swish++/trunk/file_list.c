@@ -54,7 +54,7 @@
 	// them, so we save having to do two shifts, and logical or for each
 	// file.)
 	//
-	register unsigned char const *p = ptr_;
+	register byte const *p = ptr_;
 	while ( true ) {
 		++size_;
 		while ( *p++ & 0x80 ) ;			// skip file index
@@ -72,8 +72,10 @@
 				case Word_Entry_Continues_Marker:
 					more_lists = false;
 					break;
-				default:		// skip number
-					while ( *p++ != Stop_Marker ) ;
+				default:		// must be a list marker
+					while ( *p != Stop_Marker )
+						while ( *p++ & 0x80 ) ;
+					++p;
 			}
 		}
 	}
@@ -100,8 +102,14 @@
 //
 //*****************************************************************************
 {
-	if ( !c_ )					// at "end"
+	if ( c_ == reinterpret_cast<byte const*>( this ) || !c_ ) {
+		//
+		// If c_'s value is the "just hit end" flag or "already at end"
+		// (null), set to the "already at end" value (null).
+		//
+		c_ = 0;			
 		return *this;
+	}
 
 	v_.index_ = dec_int( c_ );
 	v_.occurrences_ = dec_int( c_ );
@@ -117,10 +125,12 @@
 		switch ( *c_++ ) {
 			case Stop_Marker:
 				//
-				// Reached end of file list: set iterator to
-				// end.
+				// Reached end of file list: set iterator to a
+				// "just hit end" value.  Use "this" since
+				// it's a value guaranteed not to be in the
+				// buffer and also portable.
 				//
-				c_ = 0;
+				c_ = reinterpret_cast<byte const*>( this );
 				// no break;
 
 			case Word_Entry_Continues_Marker:
