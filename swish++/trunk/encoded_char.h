@@ -47,8 +47,8 @@
 //
 //	However, doing this is a serious performance hit since it has to be
 //	done for every single character examined.  Hence, the code is #ifdef'd
-//	for MOD_mail: if MOD_mail isn't used, there's no need for any special
-//	decoding.
+//	for MOD_id3 and MOD_mail: if neither is used, there's no need for any
+//	special decoding.
 //
 //*****************************************************************************
 {
@@ -82,7 +82,7 @@ public:
 	void		end_pos( pointer p )		{ end_ = p; }
 	void		end_pos( const_iterator const& );
 
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	class decoder;
 #endif
 protected:
@@ -90,7 +90,7 @@ protected:
 
 	pointer		begin_;
 	pointer		end_;
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	charset_type	charset_;
 	encoding_type	encoding_;
 #endif
@@ -145,19 +145,19 @@ public:
 private:
 	mutable pointer	pos_;
 	mutable pointer	prev_;
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	mutable value_type	ch_;
 	mutable bool		decoded_;
 	mutable int		delta_;
 #endif
 	const_iterator( encoded_char_range const*, pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	void		decode() const;
 #endif
 };
 
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -185,7 +185,7 @@ private:
 	typedef std::set< decoder* > set_type;
 	static set_type set_;
 };
-#endif	/* MOD_mail */
+#endif	/* MOD_id3 || MOD_mail */
 
 ////////// encoded_char_range inlines /////////////////////////////////////////
 
@@ -197,7 +197,7 @@ inline ECR::ECR(
 	pointer begin, pointer end, charset_type charset, encoding_type encoding
 ) :
 	begin_( begin ), end_( end )
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	, charset_( charset ), encoding_( encoding )
 #endif
 {
@@ -205,7 +205,7 @@ inline ECR::ECR(
 
 inline ECR::ECR( const_iterator const &i ) :
 	begin_( i.pos_ ), end_( i.end_ )
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	, charset_( i.charset_ ), encoding_( i.encoding_ )
 #endif
 {
@@ -213,7 +213,7 @@ inline ECR::ECR( const_iterator const &i ) :
 
 inline ECR::ECR( const_iterator const &begin, const_iterator const &end ) :
 	begin_( begin.pos_ ), end_( end.pos_ )
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	, charset_( begin.charset_ ), encoding_( begin.encoding_ )
 #endif
 {
@@ -242,7 +242,7 @@ inline ECR_CI::const_iterator(
 	charset_type charset, encoding_type encoding
 ) :
 	encoded_char_range( begin, end, charset, encoding ), pos_( begin )
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	, decoded_( false )
 #endif
 {
@@ -251,18 +251,18 @@ inline ECR_CI::const_iterator(
 inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 	encoded_char_range(
 		start_pos, ecr->end_
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 		, ecr->charset_, ecr->encoding_
 #endif
 	),
 	pos_( start_pos )
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	, decoded_( false )
 #endif
 {
 }
 
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -309,7 +309,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 		ch_ = iso8859_1_to_ascii( *c++ );
 	delta_ = c - pos_;
 }
-#endif	/* MOD_mail */
+#endif	/* MOD_id3 || MOD_mail */
 
 //*****************************************************************************
 //
@@ -328,7 +328,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 //
 //*****************************************************************************
 {
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	if ( !decoded_ ) {
 		decode();
 		decoded_ = true;
@@ -355,7 +355,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 //
 //*****************************************************************************
 {
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	if ( decoded_ ) {
 		//
 		// The character at the current position has previously been
@@ -376,7 +376,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 	}
 #endif
 	prev_ = pos_;
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	pos_ += delta_;
 #else
 	++pos_;
