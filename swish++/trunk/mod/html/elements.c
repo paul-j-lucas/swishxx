@@ -36,6 +36,10 @@
 //
 // SEE ALSO
 //
+//	Shane McCarron, et al.  "XHTML 2.0," World Wide Web Consortium,
+//	August 2002.
+//		http://www.w3.org/TR/xhtml2/
+//
 //	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "Index of Elements,"
 //	HTML 4.0 Specification, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/REC-html40/index/elements.html
@@ -122,6 +126,7 @@
 		"form",		R,	"/form",
 		"frame",	F,
 		"frameset",	R,	"/frameset",
+		"h",		R,	"/h",			// XHTML 2.0
 		"h1",		R,	"/h1",
 		"h2",		R,	"/h2",
 		"h3",		R,	"/h3",
@@ -144,11 +149,14 @@
 		"layer",	R,	"/layer",		// nonstandard
 		"legend",	R,	"/legend",
 		"li",		O,	"li", "/li", "/ol", "/ul", 0,
+		"line",		R,	"/line",		// XHTML 2.0
 		"link",		F,
 		"map",		R,	"/map",
 		"menu",		R,	"/menu",		// deprecated
 		"meta",		F,
 		"multicol",	R,	"/multicol",		// nonstandard
+		"name",		R,	"/name",		// XHTML 2.0
+		"nl",		R,	"/nl",			// XHTML 2.0
 		"nobr",		F,				// nonstandard
 		"noembed",	R,	"/noembed",		// nonstandard
 		"noframes",	R,	"/noframes",
@@ -216,7 +224,8 @@
 		"param",	F,
 		"plaintext",	F,				// deprecated
 		"pre",		R,	"/pre",
-		"q",		R,	"/q",
+		"q",		R,	"/q",			// deprecated
+		"quote",	R,	"/quote",		// XHTML 2.0
 
 		"ruby",		R,	"/ruby",		// ruby elements
 		"rb",		R,	"/rb",
@@ -228,6 +237,7 @@
 		"s",		R,	"/s",			// deprecated
 		"samp",		R,	"/samp",
 		"script",	R,	"/script",
+		"section",	R,	"/section",		// XHTML 2.0
 		"select",	R,	"/select",
 		"server",	R,	"/server",		// nonstandard
 		"small",	R,	"/small",
