@@ -53,7 +53,7 @@ public:
 	enum end_tag_value { forbidden, optional, required };
 
 	end_tag_value const	end_tag;
-	string_set		close_tags;
+	char_ptr_set		close_tags;
 private:
 	explicit element( end_tag_value v ) : end_tag( v ) { }
 	friend class element_map;
@@ -67,20 +67,20 @@ private:
 //
 // DESCRIPTION
 //
-//	An element_map is-a map from the character strings for HTML elements
-//	to instances of the element class declared above.  The only reason
-//	for having a derived class rather than a typedef is so that we can
-//	have a custom constructor that initializes itself.
+//	An element_map is-a map from the character strings for HTML elements to
+//	instances of the element class declared above.  The only reason for
+//	having a derived class rather than a typedef is so that we can have a
+//	custom constructor that initializes itself.
 //
-//	The contructor is private, however, to ensure that only instance()
-//	can be called to initialize and access a single, static instance.
+//	The constructor is private, however, to ensure that only instance() can
+//	be called to initialize and access a single, static instance.
 //
 // NOTE
 //
-//	Note that the declaration of std::map has a default "Compare"
-//	template parameter of "less< key_type >" and, since we've included
-//	less.h above that defines "less< char const* >", C-style string
-//	comparisons work properly.
+//	Note that the declaration of std::map has a default "Compare" template
+//	parameter of "less< key_type >" and, since we've included less.h above
+//	that defines "less< char const* >", C-style string comparisons work
+//	properly.
 //
 // SEE ALSO
 //
@@ -103,9 +103,9 @@ private:
 //
 // DESCRIPTION
 //
-//	Write the key of an element_map::value_type (the HTML element name)
-//	to an ostream.  This is useful so an ostream_iterator can be used to
-//	dump the entire element_map.
+//	Write the key of an element_map::value_type (the HTML element name) to
+//	an ostream.  This is useful so an ostream_iterator can be used to dump
+//	the entire element_map.
 //
 // PARAMETERS
 //
