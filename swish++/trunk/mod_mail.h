@@ -102,6 +102,11 @@ private:
 	typedef	std::pair< content_type, content_transfer_encoding >
 		message_type;
 
+	struct key_value {
+		char *key;
+		char const *value_begin, *value_end;
+	};
+
 	void			mail_indexer::index_enriched(
 					encoded_char_range::const_iterator&
 				);
@@ -117,17 +122,13 @@ private:
 					file_vector::const_iterator &begin,
 					file_vector::const_iterator end
 				);
+	static bool		parse_header(
+					file_vector::const_iterator &begin,
+					file_vector::const_iterator end,
+					key_value*
+				);
 
-	enum header_type {
-		//
-		// This is used only within index_headers() but C++ doesn't
-		// allow template arguments to be of local-to-function types;
-		// hence it's declared here.
-		//
-		Index_Header,
-		Content_Transfer_Encoding,
-		Content_Type,
-	};
+	static bool		did_last_header;
 };
 
 #endif	/* mod_mail_H */
