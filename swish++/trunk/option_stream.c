@@ -23,6 +23,7 @@
 #include <algorithm>			/* for copy() */
 #include <cstdlib>			/* for abort(3) */
 #include <cstring>
+#include <iterator>
 #include <iostream>
 
 // local
