@@ -90,6 +90,31 @@ private:
 //
 // SYNOPSIS
 //
+	inline char const* basename( char const *file_name )
+//
+// DESCRIPTION
+//
+//	Determine the base name of a given file name.
+//
+// PARAMETERS
+//
+//	file_name	The file_name.
+//
+// RETURN VALUE
+//
+//	Returns a pointer to the base name of the file name.  Note that the
+//	pointer points within file_name, i.e., the two will share storage.
+//
+//*****************************************************************************
+{
+	char const *const slash = ::strrchr( file_name, '/' );
+	return slash ? slash + 1 : file_name;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	inline char const* find_newline( char const *c, char const *end )
 //
 // DESCRIPTION
