@@ -3,6 +3,34 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.9.5
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* For document sets that contain a lot of words (more than 2^31), the number of
+  total words reported was negative due to signed integer overflow.  The fix
+  was to make the counter unsigned.
+
+  (This bug fix shall be known as bug fix ULN.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* index.c
+* indexer.c
+
+	1. Made num_indexed_words, num_total_words, and num_unique_words
+	   unsigned long rather than just long for bug fix ULN.
+
+* version.h
+
+	1. Upped version to "5.9.5".
+
+
+*******************************************************************************
 5.9.4
 *******************************************************************************
 
