@@ -21,6 +21,7 @@
 
 // standard
 #include <algorithm>
+#include <clocale>
 #include <cstdlib>
 #include <cstring>
 #include <functional>
@@ -28,6 +29,7 @@
 #include <iterator>
 #include <map>
 #include <string>
+#include <sys/resource.h>
 #include <strstream>
 #include <utility>
 #include <vector>
@@ -37,10 +39,12 @@
 #include "exit_codes.h"
 #include "file_index.h"
 #include "file_list.h"
+#include "file_vector.h"
 #include "html.h"
 #include "IndexFile.h"
 #include "less.h"
 #include "my_set.h"
+#include "option_stream.h"
 #include "platform.h"
 #include "ResultsMax.h"
 #include "stem_word.h"
@@ -49,11 +53,7 @@
 #include "util.h"
 #include "version.h"
 #include "word_index.h"
-
-extern "C" {
-	extern char*	optarg;
-	extern int	optind, opterr;
-}
+#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -93,8 +93,8 @@ using namespace std;
 //
 // DESCRIPTION
 //
-//	A find_result_type is-a pair of iterators marking the beginning and
-//	end of a range over which a given word matches.
+//	A find_result_type is-a pair of iterators marking the beginning and end
+//	of a range over which a given word matches.
 //
 //*****************************************************************************
 
@@ -108,8 +108,8 @@ using namespace std;
 //
 // DESCRIPTION
 //
-//	A sort_by_rank is-a binary_function used to sort search results by
-//	rank in descending order (highest rank first).
+//	A sort_by_rank is-a binary_function used to sort search results by rank
+//	in descending order (highest rank first).
 //
 // BUGS
 //
@@ -138,10 +138,10 @@ string_set	stop_words_found;
 void	dump_single_word( char const *word );
 void	dump_word_window( char const *word, int window_size, int match );
 int	get_meta_id( word_index::const_iterator );
-bool	parse_meta( istream&, results_type&, bool &ignore, int = No_Meta_ID );
-bool	parse_primary( istream&, results_type&, bool &ignore, int = No_Meta_ID);
-bool	parse_query( istream&, results_type&, bool &ignore, int = No_Meta_ID );
-bool	parse_optional_relop( istream&, token::type& );
+bool	parse_meta( token_stream&, results_type&, bool&, int = No_Meta_ID );
+bool	parse_primary( token_stream&, results_type&, bool&, int = No_Meta_ID);
+bool	parse_query( token_stream&, results_type&, bool&, int = No_Meta_ID );
+bool	parse_optional_relop( token_stream&, token::type& );
 void	usage();
 
 //*****************************************************************************
@@ -152,27 +152,50 @@ void	usage();
 //
 // DESCRIPTION
 //
-//	Parse the command line, initialize, call other functions ... the
-//	usual things that are done in main().
+//	Parse the command line, initialize, call other functions ... the usual
+//	things that are done in main().
 //
 // PARAMETERS
 //
 //	argc	The number of arguments.
 //
-//	argv	A vector of the arguments; argv[argc] is null.  Aside from
-//		the options below, the arguments form the query.
+//	argv	A vector of the arguments; argv[argc] is null.  Aside from the
+//		options below, the arguments form the query.
 //
 // SEE ALSO
 //
+//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+//	Addison-Wesley, Reading, MA, 1993.
+//
 //	Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//	Addison-Wesley, Reading, MA.  pp. 116-118.
+//	Addison-Wesley, Reading, MA, 1997.  pp. 116-118.
 //
 //*****************************************************************************
 {
 	me = ::strrchr( argv[0], '/' );		// determine base name ...
 	me = me ? me + 1 : argv[0];		// ... of executable
 
+#ifdef	RLIMIT_AS				/* SVR4 */
+	max_out_limit( RLIMIT_AS );		// max-out total avail. memory
+#endif
+	::setlocale( LC_CTYPE, "" );
+
 	/////////// Process command-line options //////////////////////////////
+
+	static option_stream::spec const opt_spec[] = {
+		"config-file",	1, 'c',
+		"dump-words",	1, 'd',
+		"dump-index",	1, 'D',
+		"index-file",	1, 'i',
+		"results",	1, 'm',
+		"dump-meta",	0, 'M',
+		"skip-results",	1, 'r',
+		"stem-words",	0, 's',
+		"dump-stop",	0, 'S',
+		"version",	0, 'V',
+		"window",	1, 'w',
+		0
+	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_entire_index_opt = false;
@@ -189,13 +212,12 @@ void	usage();
 	int		skip_results_arg = 0;
 	bool		stem_words_opt = false;
 
-	::opterr = 1;
-	char const opts[] = "c:dDi:m:Mr:RsSVw:";
-	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
+	option_stream opt_in( argc, argv, opt_spec );
+	for ( option_stream::option opt; opt_in >> opt; )
 		switch ( opt ) {
 
 			case 'c': // Specify config. file.
-				config_file_name_arg = ::optarg;
+				config_file_name_arg = opt.arg();
 				break;
 
 			case 'd': // Dump query word indices.
@@ -207,11 +229,11 @@ void	usage();
 				break;
 
 			case 'i': // Specify index file overriding the default.
-				index_file_name_arg = ::optarg;
+				index_file_name_arg = opt.arg();
 				break;
 
 			case 'm': // Specify max. number of results.
-				max_results_arg = ::optarg;
+				max_results_arg = opt.arg();
 				break;
 
 			case 'M': // Dump meta-name list.
@@ -219,13 +241,9 @@ void	usage();
 				break;
 
 			case 'r': // Specify number of initial results to skip.
-				skip_results_arg = ::atoi( ::optarg );
+				skip_results_arg = ::atoi( opt.arg() );
 				if ( skip_results_arg < 0 )
 					skip_results_arg = 0;
-				break;
-
-			case 'R': // Print result-count only.
-				print_result_count_only_opt = true;
 				break;
 
 			case 's': // Stem words.
@@ -241,10 +259,10 @@ void	usage();
 				::exit( Exit_Success );
 
 			case 'w': { // Dump words around query words.
-				dump_window_size_arg = ::atoi( ::optarg );
+				dump_window_size_arg = ::atoi( opt.arg() );
 				if ( dump_window_size_arg < 0 )
 					dump_window_size_arg = 0;
-				char const *comma = ::strchr( ::optarg, ',' );
+				char const *comma = ::strchr( opt.arg(), ',' );
 				if ( comma &&
 					(dump_match_arg = ::atoi( comma+1 )) < 0
 				)
@@ -252,11 +270,11 @@ void	usage();
 				break;
 			}
 
-			case '?': // Bad option.
+			case '\0': // Bad option.
 				usage();
 		}
 
-	argc -= ::optind, argv += ::optind;
+	argc -= opt_in.shift(), argv += opt_in.shift();
 	if ( !( argc ||
 		dump_entire_index_opt ||
 		dump_meta_names_opt ||
@@ -268,7 +286,7 @@ void	usage();
 	// First, parse the config. file (if any); then override variables
 	// specified on the command line with options.
 	//
-	parse_config_file( config_file_name_arg );
+	conf_var::parse_file( config_file_name_arg );
 
 	if ( index_file_name_arg )
 		index_file_name = index_file_name_arg;
@@ -279,9 +297,9 @@ void	usage();
 
 	/////////// Load index file ///////////////////////////////////////////
 
-	file_vector<char> the_index( index_file_name );
+	file_vector the_index( index_file_name );
 	if ( !the_index ) {
-		ERROR	<< "could not read index from \""
+		error()	<< "could not read index from \""
 			<< index_file_name << '"' << endl;
 		::exit( Exit_No_Read_Index );
 	}
@@ -341,14 +359,15 @@ void	usage();
 		query += ' ';
 		query += *argv++;
 	}
-	istrstream query_stream( query.c_str() );
 
-	results_type results;
-	bool ignore;
+	token_stream	query_stream( query.c_str() );
+	results_type	results;
+	bool		ignore;
+
 	if ( !( parse_query( query_stream, results, ignore ) &&
 		query_stream.eof()
 	) ) {
-		ERROR << "malformed query" << endl;
+		error() << "malformed query" << endl;
 		::exit( Exit_Malformed_Query );
 	}
 
@@ -363,7 +382,7 @@ void	usage();
 	}
 
 	cout << "# results: " << results.size() << '\n';
-	if ( print_result_count_only_opt || skip_results_arg >= results.size() )
+	if ( skip_results_arg >= results.size() || !max_results )
 		::exit( Exit_Success );
 
 	// Copy the results to a vector to sort them by rank.
@@ -527,7 +546,8 @@ void	usage();
 // SYNOPSIS
 //
 	bool parse_query(
-		istream &query, results_type &result, bool &ignore, int meta_id
+		token_stream &query, results_type &result, bool &ignore,
+		int meta_id
 	)
 //
 // DESCRIPTION
@@ -563,13 +583,13 @@ void	usage();
 //
 // PARAMETERS
 //
-//	query	The istream from which the query string is extracted.
+//	query		The token_stream whence the query string is extracted.
 //
-//	result	Where the result of performing the (sub)query is deposited.
+//	result		Where the result of performing the (sub)query is put.
 //
-//	ignore	Set to true only if this (sub)query should be ignored.
+//	ignore		Set to true only if this (sub)query should be ignored.
 //
-//	meta_id	The meta ID to constrain the matches against, if any.
+//	meta_id		The meta ID to constrain the matches against, if any.
 //
 // RETURN VALUE
 //
@@ -577,9 +597,8 @@ void	usage();
 //
 // SEE ALSO
 //
-//	Alfred V. Aho, Ravi Sethi, Jeffrey D. Ullman.  "Compilers:
-//	Principles, Techniques, and Tools," Addison-Wesley, Reading, MA,
-//	1986, pp. 44-48.
+//	Alfred V. Aho, Ravi Sethi, Jeffrey D. Ullman.  "Compilers: Principles,
+//	Techniques, and Tools," Addison-Wesley, Reading, MA, 1986, pp. 44-48.
 //
 //*****************************************************************************
 {
@@ -642,7 +661,8 @@ void	usage();
 // SYNOPSIS
 //
 	bool parse_meta(
-		istream &query, results_type &result, bool &ignore, int meta_id
+		token_stream &query, results_type &result, bool &ignore,
+		int meta_id
 	)
 //
 // DESCRIPTION
@@ -651,13 +671,13 @@ void	usage();
 //
 // PARAMETERS
 //
-//	query	The istream from which the query string is extracted.
+//	query		The token_stream whence the query string is extracted.
 //
-//	result	Where the result of performing the (sub)query is deposited.
+//	result		Where the result of performing the (sub)query is put.
 //
-//	ignore	Set to true only if this (sub)query should be ignored.
+//	ignore		Set to true only if this (sub)query should be ignored.
 //
-//	meta_id	The meta ID to constrain the matches against, if any.
+//	meta_id		The meta ID to constrain the matches against, if any.
 //
 // RETURN VALUE
 //
@@ -665,9 +685,9 @@ void	usage();
 //
 //*****************************************************************************
 {
-	token t( query );
+	token const t( query );
 	if ( t == token::word_token ) {			// meta name ...
-		token t2( query );
+		token const t2( query );
 		if ( t2 == token::equal_token ) {	// ... followed by '='
 			less< char const* > const comparator;
 			find_result_type const found = ::equal_range(
@@ -682,9 +702,9 @@ void	usage();
 				Meta_ID_Not_Found;
 			goto no_put_back;
 		}
-		t2.put_back();
+		query.put_back( t2 );
 	}
-	t.put_back();
+	query.put_back( t );
 
 no_put_back:
 	return parse_primary( query, result, ignore, meta_id );
@@ -694,17 +714,17 @@ no_put_back:
 //
 // SYNOPSIS
 //
-	bool parse_optional_relop( istream &query, token::type &relop )
+	bool parse_optional_relop( token_stream &query, token::type &relop )
 //
 // DESCRIPTION
 //
-//	Parse an optional relational operator of either "and" or "or" from
-//	the given istream.  In the absense of a relational operator, "and" is
+//	Parse an optional relational operator of either "and" or "or" from the
+//	given token_stream.  In the absense of a relational operator, "and" is
 //	implied.
 //
 // PARAMETERS
 //
-//	query	The istream from which the relational operator string is
+//	query	The token_stream whence the relational operator string is
 //		extracted (if present).
 //
 //	relop	Where the type of the relational operator is deposited.
@@ -715,7 +735,7 @@ no_put_back:
 //
 //*****************************************************************************
 {
-	token t( query );
+	token const t( query );
 	switch ( t ) {
 
 		case token::no_token:
@@ -732,7 +752,7 @@ no_put_back:
 			return true;
 
 		default:
-			t.put_back();
+			query.put_back( t );
 			if ( t == token::rparen_token )
 				return false;
 #			ifdef DEBUG_parse_query
@@ -748,22 +768,23 @@ no_put_back:
 // SYNOPSIS
 //
 	bool parse_primary(
-		istream &query, results_type &result, bool &ignore, int meta_id
+		token_stream &query, results_type &result, bool &ignore,
+		int meta_id
 	)
 //
 // DESCRIPTION
 //
-//	Parse a primary from the given istream.
+//	Parse a "primary" from the given token_stream.
 //
 // PARAMETERS
 //
-//	query	The istream from which the primary is extracted.
+//	query		The token_stream whence the primary is extracted.
 //
-//	result	Where the result of performing the (sub)query is deposited.
+//	result		Where the result of performing the (sub)query is put.
 //
-//	ignore	Set to true only if the word should be ignored.
+//	ignore		Set to true only if the word should be ignored.
 //
-//	meta_id	The meta ID to constrain the matches against, if any.
+//	meta_id		The meta ID to constrain the matches against, if any.
 //
 // RETURN VALUE
 //
@@ -778,46 +799,31 @@ no_put_back:
 	switch ( t ) {
 
 		case token::word_token: {
-			less< char const* > const comparator;
-			less_stem const stem_comparator;
+			less_stem const comparator( stem_words );
 			//
 			// First check to see if the word wasn't indexed either
 			// because it's not an "OK" word according to the
 			// heuristics employed or because it's a stop-word.
 			//
-			if ( !is_ok_word( t.str() ) || ( stem_words ?
-				::binary_search(
-					stop_words.begin(), stop_words.end(),
-					t.lower_str(), stem_comparator
-				)
-			:
-				::binary_search(
-					stop_words.begin(), stop_words.end(),
-					t.lower_str(), comparator
-				)
+			if ( !is_ok_word( t.str() ) || ::binary_search(
+				stop_words.begin(), stop_words.end(),
+				t.lower_str(), comparator
 			) ) {
 				stop_words_found.insert( ::strdup( t.str() ) );
 #				ifdef DEBUG_parse_query
-				cerr << "---> word \"" << t.str() << "\" (ignored)" << endl;
+				cerr	<< "---> word \"" << t.str()
+					<< "\" (ignored)" << endl;
 #				endif
 				return ignore = true;
 			}
 			//
 			// Look up the word.
 			//
-			found = stem_words ?
-				::equal_range( words.begin(), words.end(),
-					t.lower_str(), stem_comparator
-				)
-			:
-				::equal_range( words.begin(), words.end(),
-					t.lower_str(), comparator
-				);
-			if ( found.first == words.end() || ( stem_words ?
-				stem_comparator( t.lower_str(), *found.first )
-			:
-				comparator( t.lower_str(), *found.first )
-			) ) {
+			found = ::equal_range( words.begin(), words.end(),
+				t.lower_str(), comparator
+			);
+			if ( found.first == words.end() ||
+				comparator( t.lower_str(), *found.first ) ) {
 				//
 				// The following "return true" indicates that a
 				// word was parsed successfully, not that we
@@ -915,19 +921,20 @@ no_put_back:
 
 void usage() {
 	cerr <<	"usage: " << me << " [options] query\n"
-	" options:\n"
-	" --------\n"
-	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"  -d              : Dump query word indices and exit\n"
-	"  -D              : Dump entire word index and exit\n"
-	"  -i index_file   : Name of index file to use [default: " << IndexFile_Default << "]\n"
-	"  -m max_results  : Maximum number of results [default: " << ResultsMax_Default << "]\n"
-	"  -M              : Dump meta-name index and exit\n"
-	"  -R              : Print result-count only [default: no]\n"
-	"  -r skip_results : Number of initial results to skip [default: 0]\n"
-	"  -s              : Stem words prior to search [default: no]\n"
-	"  -S              : Dump stop-word index and exit\n"
-	"  -V              : Print version number and exit\n"
-	"  -w size[,match] : Dump size window of words around query words [default: 0]\n";
+	"options: (unambiguous abbreviations may be used for long options)\n"
+	"========\n"
+	"-c f | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+	"-d   | --dump-words      : Dump query word indices and exit\n"
+	"-D   | --dump-index      : Dump entire word index and exit\n"
+	"-h   | --help            : Print this help message\n"
+	"-i f | --index-file f    : Name of index file [default: " << IndexFile_Default << "]\n"
+	"-m n | --max-results n   : Maximum number of results [default: " << ResultsMax_Default << "]\n"
+	"-M   | --dump-meta       : Dump meta-name index and exit\n"
+	"-r n | --skip-results n  : Number of initial results to skip [default: 0]\n"
+	"-s   | --stem-words      : Stem words prior to search [default: no]\n"
+	"-S   | --dump-stop       : Dump stop-word index and exit\n"
+	"-V   | --version         : Print version number and exit\n"
+	"-w n[,c]\n"
+	"     | --window n[,c]    : Dump window of words around query words [default: 0]\n";
 	::exit( Exit_Usage );
 }
