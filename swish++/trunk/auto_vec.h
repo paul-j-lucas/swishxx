@@ -19,8 +19,6 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	SEARCH_DAEMON
-
 #ifndef	auto_vec_H
 #define	auto_vec_H
 
@@ -58,5 +56,3 @@ private:
 };
 
 #endif	/* auto_vec_H */
-
-#endif	/* SEARCH_DAEMON */
