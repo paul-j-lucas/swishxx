@@ -26,6 +26,7 @@
 
 // local
 #include "encoded_char.h"
+#include "iso8859-1.h"
 #include "platform.h"
 #include "util.h"
 
@@ -198,7 +199,7 @@ reached_end:	c = end;
 	// chunks, i.e., ordinary characters.
 	//
 	for ( i = 2; i >= 0; --i ) {
-		buf[ i ] = value & 255;
+		buf[ i ] = iso8859_1_to_ascii( value & 255 );
 		value >>= 8;
 	}
 
