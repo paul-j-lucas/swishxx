@@ -27,6 +27,7 @@
 
 // local
 #include "AssociateMeta.h"
+#include "charsets/unicode.h"
 #include "config.h"
 #include "encoded_char.h"
 #include "entities.h"
@@ -190,8 +191,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		}
 	}
 
-	return	n < sizeof( iso8859_map ) / sizeof( iso8859_map[0] ) ?
-		iso8859_to_ascii( n ) : ' ';
+	return unicode_to_ascii( n );
 }
 
 //*****************************************************************************
@@ -431,10 +431,10 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		register char ch = *c++;
 		//
 		// If the character is an '&' (the start of a entity
-		// reference), convert the entity reference to ASCII;
-		// otherwise, convert the ISO 8859 character to ASCII.
+		// reference), convert the entity reference to ASCII.
 		//
-		ch = ch == '&' ? entity_to_ascii( c ) : iso8859_to_ascii( ch );
+		if ( ch == '&' )
+			ch = entity_to_ascii( c );
 
 		////////// Collect a word /////////////////////////////////////
 
