@@ -86,7 +86,7 @@ using namespace std;
 		return ' ';
 
 	encoded_char_range::value_type h1;
-	while ( 1 ) {
+	while ( true ) {
 		h1 = *c++;
 		if ( h1 == '\r' ) {
 			//

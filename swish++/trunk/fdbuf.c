@@ -125,7 +125,7 @@ namespace PJL {
 		// buffer is exhausted: read more.
 		//
 		ssize_t bytes;
-		while ( 1 ) {
+		while ( true ) {
 			if ( (bytes = ::read( fd_, rbuf_, buf_size )) > 0 ) {
 				//
 				// We read some bytes so stop.
@@ -170,7 +170,7 @@ namespace PJL {
 //*****************************************************************************
 {
 	streamsize total_bytes_written = 0;
-	while ( 1 ) {
+	while ( true ) {
 		ssize_t const bytes_written = ::write( fd_, buf, len );
 		if ( bytes_written >= 0 ) {
 			//
