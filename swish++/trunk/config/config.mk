@@ -73,9 +73,6 @@ endif
 #
 ###############################################################################
 
-MAKE=		make
-#		The 'make' software you are using; usually "make".
-
 RM=		rm -fr
 #		The command to remove files recursively and ignore errors;
 #		usually "rm -fr" for Unix or "erase" for Windows.
