@@ -63,11 +63,13 @@ public:
 			if ( mi != No_Meta_ID )
 				meta_ids_.insert( mi );
 		}
+
+		void	write_meta_ids( ostream& ) const;
 	};
 
 	typedef std::list< file > file_set;
 
-	file_set	files_;
+	file_set	files_;			// the files this word is in
 	int		occurrences_;		// over all files
 
 	word_info() : occurrences_( 0 ) { }
