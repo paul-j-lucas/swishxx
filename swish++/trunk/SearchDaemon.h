@@ -49,6 +49,8 @@ private:
 	static char const *const legal_values_[];
 };
 
+extern SearchDaemon daemon_type;
+
 #endif	/* SearchDaemon_H */
 
 #endif	/* SEARCH_DAEMON */
