@@ -79,6 +79,12 @@ using namespace PJL;
 using namespace std;
 #endif
 
+static long const	Rank_Factor = 10000000;
+//			A scaling factor used in rank calculation.
+//			Empirically, this was found to be a good number:
+//			higher, the results don't get better; lower, the
+//			results get more striated.
+
 AssociateMeta		associate_meta;
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
@@ -684,7 +690,7 @@ static void		write_word_index( ostream&, off_t* );
 //				file.
 //
 //	factor			This should be precomputed to be the value of
-//				10000.0 divided by the total number of
+//				Rank_Factor divided by the total number of
 //				occurrences across all files.  This number is
 //				constant for a given word, hence the
 //				precomputation.
@@ -867,7 +873,7 @@ static void		write_word_index( ostream&, off_t* );
 			FOR_EACH( file_list, list, file )
 				total_occurrences += file->occurrences_;
 		}
-		double const factor = 10000.0 / total_occurrences;
+		double const factor = (double)Rank_Factor / total_occurrences;
 
 		////////// Copy all index info and compute ranks //////////////
 
@@ -912,7 +918,8 @@ static void		write_word_index( ostream&, off_t* );
 			file_list const list( word[ j ] );
 			FOR_EACH( file_list, list, file )
 				total_occurrences += file->occurrences_;
-			double const factor = 10000.0 / total_occurrences;
+			double const factor =
+				(double)Rank_Factor / total_occurrences;
 
 			////////// Copy all index info and compute ranks //////
 
@@ -979,7 +986,7 @@ static void		write_word_index( ostream&, off_t* );
 		//
 		// Compute the rank for this word in every file it's in.
 		//
-		double const factor = 10000.0 / info.occurrences_;
+		double const factor = (double)Rank_Factor / info.occurrences_;
 		TRANSFORM_EACH( word_info::file_list, info.files_, file )
 			file->rank_ = rank(
 				file->index_, file->occurrences_, factor
