@@ -53,7 +53,7 @@ public:
 		not_token,
 		lparen_token,
 		rparen_token,
-		equal_token,
+		equal_token
 	};
 
 	token() : type_( no_token )		{ }
