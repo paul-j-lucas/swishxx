@@ -71,7 +71,7 @@
 //*****************************************************************************
 {
 public:
-	mail_indexer() : indexer( "mail" ) { }
+	mail_indexer();
 
 	virtual char const*	find_title( PJL::mmap_file const& ) const;
 	virtual void		index_words(
