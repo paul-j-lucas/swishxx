@@ -39,6 +39,7 @@
 #include "platform.h"
 #include "TitleLines.h"
 #include "util.h"
+#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -51,17 +52,17 @@ extern IncludeMeta	include_meta_names;
 extern TitleLines	num_title_lines;
 
 bool			find_attribute(
-				file_vector<char>::const_iterator &begin,
-				file_vector<char>::const_iterator &end,
+				file_vector::const_iterator &begin,
+				file_vector::const_iterator &end,
 				char const *attribute
 			);
 void			skip_html_comment(
-				file_vector<char>::const_iterator &pos,
-				file_vector<char>::const_iterator end
+				file_vector::const_iterator &pos,
+				file_vector::const_iterator end
 			);
 bool			skip_html_tag(
-				file_vector<char>::const_iterator &pos,
-				file_vector<char>::const_iterator end
+				file_vector::const_iterator &pos,
+				file_vector::const_iterator end
 			);
 
 //*****************************************************************************
@@ -69,8 +70,8 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	char convert_entity(
-		register file_vector<char>::const_iterator &c,
-		register file_vector<char>::const_iterator end
+		register file_vector::const_iterator &c,
+		register file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
@@ -83,8 +84,8 @@ bool			skip_html_tag(
 //		&#xh;
 //		&#Xh;
 //
-//	where 'd' is a sequence of 1 or more decimal digits [0-9] and 'h' is
-//	a sequence of 1 or more hexadecimal digits [0-9A-Fa-f].  A character
+//	where 'd' is a sequence of 1 or more decimal digits [0-9] and 'h' is a
+//	sequence of 1 or more hexadecimal digits [0-9A-Fa-f].  A character
 //	entity reference is a character sequence having the form:
 //
 //		&ref;
@@ -106,19 +107,19 @@ bool			skip_html_tag(
 //
 // EXAMPLE
 //
-//	The references in "r&eacute;sum&#233;" will be converted to the
-//	letter 'e' resulting in the "resume" string.
+//	The references in "r&eacute;sum&#233;" will be converted to the letter
+//	'e' resulting in the "resume" string.
 //
 // SEE ALSO
 //
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML:
-//	SGML constructs used in HTML: Entities," HTML 4.0 Specification,
-//	section 3.2.3, World Wide Web Consortium, April 1998.
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
+//	constructs used in HTML: Entities," HTML 4.0 Specification, section
+//	3.2.3, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.3
 //
 //	International Standards Organization.  "ISO 8859-1: Information
-//	Processing -- 8-bit single-byte coded graphic character sets -- Part
-//	1: Latin alphabet No. 1," 1987.
+//	Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
+//	Latin alphabet No. 1," 1987.
 //
 //	International Standards Organization.  "ISO 8879: Information
 //	Processing -- Text and Office Systems -- Standard Generalized Markup
@@ -138,7 +139,7 @@ bool			skip_html_tag(
 	int entity_len = 0;
 
 	while ( c != end && *c != ';' ) {
-		if ( ++entity_len >= sizeof( entity_buf ) )
+		if ( ++entity_len > Entity_Max_Size )
 			return ' ';			// give up looking
 		entity_buf[ entity_len - 1 ] = *c++;
 	}
@@ -170,8 +171,8 @@ bool			skip_html_tag(
 		}
 	}
 
-	return	n < sizeof( num_entities ) / sizeof( num_entities[0] ) ?
-		num_entities[ n ] : ' ';
+	return	n < sizeof( iso8859_map ) / sizeof( iso8859_map[0] ) ?
+		iso8859_map[ n ] : ' ';
 }
 
 //*****************************************************************************
@@ -179,8 +180,8 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	bool find_attribute(
-		file_vector<char>::const_iterator &begin,
-		file_vector<char>::const_iterator &end,
+		file_vector::const_iterator &begin,
+		file_vector::const_iterator &end,
 		char const *attribute
 	)
 //
@@ -188,11 +189,11 @@ bool			skip_html_tag(
 //
 //	Given an attribute's name, find its value within an HTML element's
 //	start tag, e.g., find the value of the NAME attribute within the META
-//	element.
+//	element.  Case is irrelevant.
 //
 //	The HTML 4.0 specification is vague in stating whether whitespace is
-//	legal around the '=' character separating an attribute's name from
-//	its value; hence, this function is lenient in that it will consider:
+//	legal around the '=' character separating an attribute's name from its
+//	value; hence, this function is lenient in that it will consider:
 //
 //		NAME = "Author"
 //	and:
@@ -202,10 +203,10 @@ bool			skip_html_tag(
 //
 // PARAMETERS
 //
-//	begin		The iterator marking the beginning of where to look.
-//			If the attribute is found, this iterator is
-//			repositioned to be at the first character of the
-//			value; otherwise, it is not touched.
+//	begin		The iterator marking the beginning of where to look. If
+//			the attribute is found, this iterator is repositioned
+//			to be at the first character of the value; otherwise,
+//			it is not touched.
 //
 //	end		The iterator marking the end of where to look (usually
 //			positioned at the closing '>' character of the HTML
@@ -213,7 +214,8 @@ bool			skip_html_tag(
 //			repositioned to one past the value's end; otherwise, it
 //			is not touched.
 //
-//	attribute	The name of the attribute to find; case is irrelevant.
+//	attribute	The name of the attribute to find; it must be in lower
+//			case.
 //
 // RETURN VALUE
 //
@@ -221,21 +223,21 @@ bool			skip_html_tag(
 //
 // CAVEAT
 //
-//	This function only handles attributes with explicit values, i.e.,
-//	those followed by an '=' and value, and not Boolean attributes.  But,
-//	since it was written with the intent of only parsing attributes in
-//	META tags, namely NAME and CONTENT, it's OK.
+//	This function only handles attributes with explicit values, i.e., those
+//	followed by an '=' and value, and not Boolean attributes.  But, since
+//	it was written with the intent of only parsing attributes in META tags,
+//	namely NAME and CONTENT, it's OK.
 //
 // SEE ALSO
 //
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML:
-//	SGML constructs used in HTML: Attributes," HTML 4.0 Specification,
-//	section 3.2.2, World Wide Web Consortium, April 1998.
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
+//	constructs used in HTML: Attributes," HTML 4.0 Specification, section
+//	3.2.2, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.2
 //
 //*****************************************************************************
 {
-	register file_vector<char>::const_iterator c = begin;
+	register file_vector::const_iterator c = begin;
 	while ( c != end ) {
 		if ( !isalpha( *c ) ) {
 			++c;
@@ -245,7 +247,7 @@ bool			skip_html_tag(
 		// Found the start of a potentially matching attribute name.
 		//
 		register char const *a = attribute;
-		while ( c != end && to_lower( *c ) == to_lower( *a ) )
+		while ( c != end && to_lower( *c ) == *a )
 			++c, ++a;
 		while ( c != end && ( isalpha( *c ) || *c == '-' ) )
 			++c;
@@ -272,7 +274,7 @@ bool			skip_html_tag(
 		char const quote = ( *c == '"' || *c == '\'' ) ? *c : 0;
 		if ( quote && ++c == end )
 			break;
-		file_vector<char>::const_iterator const b = c;
+		file_vector::const_iterator const b = c;
 		for ( ; c != end; ++c )
 			if ( quote ) {		// stop at matching quote only
 				if ( *c == quote )
@@ -296,15 +298,15 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	bool tag_cmp(
-		file_vector<char>::const_iterator &c,
-		register file_vector<char>::const_iterator end,
+		file_vector::const_iterator &c,
+		register file_vector::const_iterator end,
 		register char const *tag
 	)
 //
 // DESCRIPTION
 //
 //	Compares the tag name starting at the given iterator to the given
-//	string.
+//	string.  Case is irrelevant.
 //
 // PARAMETERS
 //
@@ -315,7 +317,7 @@ bool			skip_html_tag(
 //
 //	end	The iterator marking the end of the file.
 //
-//	tag	The string to compare against; case is irrelevant.
+//	tag	The string to compare against; it must be in lower case.
 //
 // RETURN VALUE
 //
@@ -323,8 +325,8 @@ bool			skip_html_tag(
 //
 //*****************************************************************************
 {
-	register file_vector<char>::const_iterator d = c;
-	while ( *tag && d != end && to_lower( *tag++ ) == to_lower( *d++ ) ) ;
+	register file_vector::const_iterator d = c;
+	while ( *tag && d != end && *tag++ == to_lower( *d++ ) ) ;
 	return *tag ? false : c = d;
 }
 
@@ -333,8 +335,8 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	inline bool is_html_comment(
-		file_vector<char>::const_iterator &c,
-		file_vector<char>::const_iterator end
+		file_vector::const_iterator &c,
+		file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
@@ -352,14 +354,13 @@ bool			skip_html_tag(
 //
 // RETURN VALUE
 //
-//	Returns true only if the current element is the beginning of a
-//	comment.
+//	Returns true only if the current element is the beginning of a comment.
 //
 // SEE ALSO
 //
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML:
-//	SGML constructs used in HTML: Comments," HTML 4.0 Specification,
-//	section 3.2.4, World Wide Web Consortium, April 1998.
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
+//	constructs used in HTML: Comments," HTML 4.0 Specification, section
+//	3.2.4, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.4
 //
 //*****************************************************************************
@@ -371,18 +372,18 @@ bool			skip_html_tag(
 //
 // SYNOPSIS
 //
-	char const* grep_title( file_vector<char> const &file )
+	char const* grep_title( file_vector const &file )
 //
 // DESCRIPTION
 //
 //	Scan ("grep") through the first num_title_lines lines in an HTML file
-//	looking for <TITLE>...</TITLE> tags to extract the title.  Every
-//	non-space whitespace character in the title is converted to a space;
+//	looking for <TITLE>...</TITLE> tags to extract the title.  Every non-
+//	space whitespace character in the title is converted to a space;
 //	leading and trailing spaces are removed.
 //
 //	If the length of the title exceeds Title_Max_Size, then the title is
-//	truncated and the last 3 characters of the truncated title are
-//	replaced with an elipsis ("...").
+//	truncated and the last 3 characters of the truncated title are replaced
+//	with an elipsis ("...").
 //
 // PARAMETERS
 //
@@ -407,8 +408,8 @@ bool			skip_html_tag(
 //
 // SEE ALSO
 //
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "The global structure
-//	of an HTML document: The document head: The TITLE element," HTML 4.0
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "The global structure of
+//	an HTML document: The document head: The TITLE element," HTML 4.0
 //	Specification, section 7.4.2, orld Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-7.4.2
 //
@@ -429,9 +430,9 @@ bool			skip_html_tag(
 	// Mark the positions after the closing '>' of the start tag and before
 	// the opening '<' of the end tag.  What's in between is the title.
 	//
-	file_vector<char>::const_iterator after, before;
+	file_vector::const_iterator after, before;
 
-	register file_vector<char>::const_iterator c = file.begin();
+	register file_vector::const_iterator c = file.begin();
 	while ( c != file.end() ) {
 		if ( *c == '\n' && ++lines > num_title_lines ) {
 			//
@@ -511,8 +512,8 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	void parse_html_tag(
-		register file_vector<char>::const_iterator &c,
-		register file_vector<char>::const_iterator end,
+		register file_vector::const_iterator &c,
+		register file_vector::const_iterator end,
 		bool is_new_file
 	)
 //
@@ -522,14 +523,13 @@ bool			skip_html_tag(
 //	does extra parsing for certain HTML elements:
 //
 //	1. If the tag contains a CLASS attribute whose value is among the set
-//	   of class names specified as those not to index, then all the text
-//	   up to the tag that ends the element will not be indexed.
+//	   of class names specified as those not to index, then all the text up
+//	   to the tag that ends the element will not be indexed.
 //
-//	   For an element that has an optional end tag, "the tag that ends
-//	   the element" is either the element's end tag or a tag of another
-//	   element that implicitly ends it; for an element that does not have
-//	   an end tag, "the tag that ends the element" is the element's start
-//	   tag.
+//	   For an element that has an optional end tag, "the tag that ends the
+//	   element" is either the element's end tag or a tag of another element
+//	   that implicitly ends it; for an element that does not have an end
+//	   tag, "the tag that ends the element" is the element's start tag.
 //
 //	2. If the tag contains a TITLE attribute, it indexes the words of its
 //	   value.
@@ -541,8 +541,8 @@ bool			skip_html_tag(
 //	   attributes indexing the words of the latter associated with the
 //	   former.
 //
-//	5. If the tag is an OBJECT element and contains a STANDBY attribute,
-//	   it indexes the words of its value.
+//	5. If the tag is an OBJECT element and contains a STANDBY attribute, it
+//	   indexes the words of its value.
 //
 //	6. If the tag is a TABLE element and contains a SUMMARY attribute, it
 //	   indexes the words of its value.
@@ -560,10 +560,9 @@ bool			skip_html_tag(
 //
 // SEE ALSO
 //
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs. "The global structure
-//	of an HTML document: The document head: The title attribute," HTML
-//	4.0 Specification, section 7.4.3, World Wide Web Consortium, April
-//	1998.
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs. "The global structure of
+//	an HTML document: The document head: The title attribute," HTML 4.0
+//	Specification, section 7.4.3, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/REC-html40/struct/global.html#adef-title
 //
 //	---.  "The global structure of an HTML document: The document head:
@@ -587,83 +586,102 @@ bool			skip_html_tag(
 //		http://www.w3.org/TR/REC-html40/struct/objects.html#adef-standby
 //
 //	---. "Objects, Images, and Applets: How to specify alternate text,"
-//	HTML 4.0 Specification, section 13.8, World Wide Web Consortium,
-//	April 1998.
+//	HTML 4.0 Specification, section 13.8, World Wide Web Consortium, April
+//	1998.
 //		http://www.w3.org/TR/REC-html40/struct/objects.html#h-13.8
 //
 //*****************************************************************************
 {
 	if ( c == end )
 		return;
-	file_vector<char>::const_iterator tag_begin = c;
+	file_vector::const_iterator tag_begin = c;
 	if ( skip_html_tag( c, end ) || *tag_begin == '!' )
 		return;
-	file_vector<char>::const_iterator tag_end = c - 1;
+	file_vector::const_iterator tag_end = c - 1;
 
 	////////// Deal with elements of a class not to index /////////////////
 
 	if ( !exclude_class_names.empty() ) {		// else, don't bother
-		char *const tag = to_lower( tag_begin, tag_end );
-		static char const whitespace[] = " \f\n\r\t\v";
-		::strtok( tag, whitespace );		// just the element name
+		char tag[ Tag_Name_Max_Size + 1 ];
+		{ // local scope
+		//
+		// Copy only the tag name by stopping at a whitespace character
+		// (or running into tag_end); also convert it to lower case.
+		// (We don't call to_lower() in util.c so as not to waste time
+		// copying the entire tag with its attributes since we only
+		// want the tag name.)
+		//
+		register char *to = tag;
+		register char const *from = tag_begin;
+		while ( from != tag_end && !isspace( *from ) )
+			*to++ = to_lower( *from++ );
+		*to = '\0';
+		}
 
-		static vector< pair< element const*, bool > > element_stack;
+		typedef	vector< pair< element_map::value_type const*, bool > >
+			stack_type;
+		static stack_type element_stack;
 		//
 		// The element_stack keeps track of all the HTML elements we
 		// encounter until they are closed.  The first member of the
-		// pair is a pointer to the element and the second member of
-		// the pair is a flag indicating whether the words between the
-		// start and end tags of that element are not to be indexed
-		// (true = "don't index").
+		// pair is a pointer to the element_map's value_type or the
+		// key/value pair of the map where the key is the element name
+		// and the value is a pointer to the element.  The second
+		// member of the pair is a flag indicating whether the words
+		// between the start and end tags of that element are not to be
+		// indexed (true = "don't index").
 		//
 		// Note: I can't use an actual STL stack since I need to be
 		// able to clear the entire stack and, unfortunately, clear()
 		// isn't supported for stacks...an oversight in STL, IMHO.
 		//
-		if ( is_new_file ) {
-#			ifdef DEBUG_parse_class
-			cerr << "---> new file: clear stack" << endl;
-#			endif
+		if ( is_new_file )
 			element_stack.clear();
-		}
 
 		////////// Close open element(s) //////////////////////////////
 
-		while ( !element_stack.empty() ) {
-#			ifdef DEBUG_parse_class
-			cerr << "---> stack not empty: find: " << tag << endl;
-#			endif
-			if ( element_stack.back().first->
-				close_tags.contains( tag )
-			) {
-#				ifdef DEBUG_parse_class
-				cerr << "---> found it" << endl;
-#				endif
+		while ( !element_stack.empty() &&
+			element_stack.back().first->second.close_tags.contains(
+				tag
+			)
+		) {
+			//
+			// This tag closes the currently open element.
+			//
+			if ( element_stack.back().second ) {
 				//
-				// The tag we're parsing closes the currently
-				// open element: if the currently open element
-				// is a member of one of the classes not being
-				// being indexed, decrement exclude_class_count.
+				// The currently open element is a member of
+				// one of the classes not being being indexed:
+				// decrement exclude_class_count.
 				//
-				if ( element_stack.back().second ) {
-					--exclude_class_count;
-#					ifdef DEBUG_parse_class
-					cerr	<< "---- decrement: "
-						<< exclude_class_count << endl;
-#					endif
-				}
-				element_stack.pop_back();
-			} else
+				--exclude_class_count;
+			}
+			char const *const
+				start_tag = element_stack.back().first->first;
+			element_stack.pop_back();
+
+			//
+			// We have to stop closing elements if we encounter the
+			// start tag matching the end tag.
+			//
+			if ( !::strcmp( tag + 1, start_tag ) )
 				break;
+		}
+
+		if ( *tag == '/' ) {
+			//
+			// The tag is an end tag: it doesn't have attributes.
+			//
+			return;
 		}
 
 		////////// Look for CLASS attribute ///////////////////////////
 
 		bool is_no_index_class = false;
 
-		file_vector<char>::const_iterator class_begin = tag_begin;
-		file_vector<char>::const_iterator class_end = tag_end;
-		if ( find_attribute( class_begin, class_end, "CLASS" ) ) {
+		file_vector::const_iterator class_begin = tag_begin;
+		file_vector::const_iterator class_end = tag_end;
+		if ( find_attribute( class_begin, class_end, "class" ) ) {
 			//
 			// CLASS attribute values can contain multiple classes
 			// separated by whitespace: we must iterate over all of
@@ -672,7 +690,7 @@ bool			skip_html_tag(
 			//
 			char *names = to_lower( class_begin, class_end );
 			register char const *name;
-			while ( name = ::strtok( names, whitespace ) ) {
+			while ( name = ::strtok( names, " \f\n\r\t\v" ) ) {
 				if ( exclude_class_names.contains( name ) ) {
 					is_no_index_class = true;
 					break;
@@ -689,9 +707,6 @@ bool			skip_html_tag(
 			// different stuff depending upon whether its end tag
 			// is forbidden or not.
 			//
-#			ifdef DEBUG_parse_class
-			cerr << "---> found new: " << tag << endl;
-#			endif
 			if ( e->second.end_tag != element::forbidden ) {
 				//
 				// The element's end tag isn't forbidden, so we
@@ -710,11 +725,8 @@ bool			skip_html_tag(
 				//	</DIV>
 				//
 				element_stack.push_back( make_pair(
-					&e->second, is_no_index_class
+					&*e, is_no_index_class
 				) );
-#				ifdef DEBUG_parse_class
-				cerr << "---> push stack: " << tag << endl;
-#				endif
 				if ( is_no_index_class ) {
 					//
 					// A class name in the value of this
@@ -723,10 +735,6 @@ bool			skip_html_tag(
 					// exclude_class_count.
 					//
 					++exclude_class_count;
-#					ifdef DEBUG_parse_class
-					cerr	<< "---> increment: "
-						<< exclude_class_count << endl;
-#					endif
 				}
 			}
 			if ( is_no_index_class ) {
@@ -746,40 +754,47 @@ bool			skip_html_tag(
 		}
 	}
 
+	if ( *tag_begin == '/' ) {
+		//
+		// The tag is an end tag: it doesn't have attributes.
+		//
+		return;
+	}
+
 	////////// Look for a TITLE attribute /////////////////////////////////
 
-	file_vector<char>::const_iterator title_begin = tag_begin;
-	file_vector<char>::const_iterator title_end   = tag_end;
-	if ( find_attribute( title_begin, title_end, "TITLE" ) )
+	file_vector::const_iterator title_begin = tag_begin;
+	file_vector::const_iterator title_end   = tag_end;
+	if ( find_attribute( title_begin, title_end, "title" ) )
 		index_words( title_begin, title_end, true );
 
 	////////// Look for an ALT attribute //////////////////////////////////
 
-	if (	tag_cmp( tag_begin, tag_end, "AREA"  ) ||
-		tag_cmp( tag_begin, tag_end, "IMG"   ) ||
-		tag_cmp( tag_begin, tag_end, "INPUT" )
+	if (	tag_cmp( tag_begin, tag_end, "area"  ) ||
+		tag_cmp( tag_begin, tag_end, "img"   ) ||
+		tag_cmp( tag_begin, tag_end, "input" )
 	) {
-		if ( find_attribute( tag_begin, tag_end, "ALT" ) )
+		if ( find_attribute( tag_begin, tag_end, "alt" ) )
 			index_words( tag_begin, tag_end, true );
 		return;
 	}
 
 	////////// Parse a META element ///////////////////////////////////////
 
-	if ( tag_cmp( tag_begin, tag_end, "META" ) ) {
-		file_vector<char>::const_iterator
+	if ( tag_cmp( tag_begin, tag_end, "meta" ) ) {
+		file_vector::const_iterator
 			name_begin = tag_begin, name_end = tag_end,
 			content_begin = tag_begin, content_end = tag_end;
 
-		if (	find_attribute( name_begin, name_end, "NAME" ) &&
-			find_attribute( content_begin, content_end, "CONTENT" )
+		if (	find_attribute( name_begin, name_end, "name" ) &&
+			find_attribute( content_begin, content_end, "content" )
 		) {
 			//
 			// Canonicalize the value of the NAME attribute to
 			// lower case.
 			//
-			char const *const name
-				= to_lower( name_begin, name_end );
+			char const *const
+				name = to_lower( name_begin, name_end );
 
 			//
 			// Do not index the words in the value of the CONTENT
@@ -824,16 +839,16 @@ bool			skip_html_tag(
 
 	////////// Look for a STANDBY attribute ///////////////////////////////
 
-	if ( tag_cmp( tag_begin, tag_end, "OBJECT" ) ) {
-		if ( find_attribute( tag_begin, tag_end, "STANDBY" ) )
+	if ( tag_cmp( tag_begin, tag_end, "object" ) ) {
+		if ( find_attribute( tag_begin, tag_end, "standby" ) )
 			index_words( tag_begin, tag_end, true );
 		return;
 	}
 
 	////////// Look for a SUMMARY attribute ///////////////////////////////
 
-	if ( tag_cmp( tag_begin, tag_end, "TABLE" ) ) {
-		if ( find_attribute( tag_begin, tag_end, "SUMMARY" ) )
+	if ( tag_cmp( tag_begin, tag_end, "table" ) ) {
+		if ( find_attribute( tag_begin, tag_end, "summary" ) )
 			index_words( tag_begin, tag_end, true );
 		return;
 	}
@@ -844,21 +859,21 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	void skip_html_comment(
-		register file_vector<char>::const_iterator &c,
-		register file_vector<char>::const_iterator end
+		register file_vector::const_iterator &c,
+		register file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
 //
-//	Skip an HTML comment scanning for the closing "-->" character
-//	sequence.  The HTML specification permits whitespace between the "--"
-//	and the ">" (for some strange reason).  Unlike skipping an ordinary
-//	HTML tag, quotes are not significant and no attempt must be made
-//	either to "balance" them or to ignore what is in between them.
+//	Skip an HTML comment scanning for the closing "-->" character sequence.
+//	The HTML specification permits whitespace between the "--" and the ">"
+//	(for some strange reason).  Unlike skipping an ordinary HTML tag,
+//	quotes are not significant and no attempt must be made either to
+//	"balance" them or to ignore what is in between them.
 //
 //	This function is more lenient than the HTML 4.0 specification in that
-//	it allows for a string of hyphens within a comment since this is
-//	common in practice; the specification considers this to be an error.
+//	it allows for a string of hyphens within a comment since this is common
+//	in practice; the specification considers this to be an error.
 //
 // PARAMETERS
 //
@@ -869,9 +884,9 @@ bool			skip_html_tag(
 //
 // SEE ALSO
 //
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML:
-//	SGML constructs used in HTML: Comments," HTML 4.0 Specification,
-//	section 3.2.4, World Wide Web Consortium, April 1998.
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
+//	constructs used in HTML: Comments," HTML 4.0 Specification, section
+//	3.2.4, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.4
 //
 //*****************************************************************************
@@ -893,8 +908,8 @@ bool			skip_html_tag(
 // SYNOPSIS
 //
 	bool skip_html_tag(
-		register file_vector<char>::const_iterator &c,
-		register file_vector<char>::const_iterator end
+		register file_vector::const_iterator &c,
+		register file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
@@ -905,11 +920,11 @@ bool			skip_html_tag(
 //
 // PARAMETERS
 //
-//	c		The iterator to use.  It is presumed to start at any
-//			position after the '<' and before the '>'; it is left
-//			at the first character after the '>'.
+//	c	The iterator to use.  It is presumed to start at any position
+//		after the '<' and before the '>'; it is left at the first
+//		character after the '>'.
 //
-//	end		The iterator marking the end of the file.
+//	end	The iterator marking the end of the file.
 //
 // RETURN VALUE
 //
