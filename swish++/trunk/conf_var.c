@@ -116,7 +116,10 @@ int conf_var::current_config_file_line_no_ = 0;
 //*****************************************************************************
 {
 	static map_type m;
-	if ( m.empty() ) {
+	static bool init;
+	if ( !init ) {
+		init = true;		// must set this before init_modules()
+		init_mod_vars();	// defined in init_mod_vars.c
 		static char const *const var_name_table[] = {
 			"associatemeta",
 			"excludefile",
