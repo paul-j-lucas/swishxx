@@ -28,6 +28,9 @@
 #include <climits>
 #include <cstring>
 #include <string>
+#ifndef	WIN32
+#include <sys/resource.h>
+#endif
 #include <sys/stat.h>
 
 //
@@ -52,13 +55,13 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	template< int Size, int N > class char_buffer_pool
+	template< int Buf_Size, int N > class char_buffer_pool
 //
 // DESCRIPTION
 //
 //	A char_buffer_pool maintains a small set ("pool") of size N of
-//	available character buffers, each of size Size, and issues them in a
-//	round-robin manner.
+//	available character buffers, each of size Buf_Size, and issues them in
+//	a round-robin manner.
 //
 //	This is used by functions to return a character string without having
 //	to allocate memory dynamically nor have previously returned strings
@@ -76,15 +79,47 @@ public:
 			return cur_buf_;
 		}
 private:
-	char	buf_[ N ][ Size ];
+	char	buf_[ N ][ Buf_Size ];
 	int	next_buf_index_;
 	char	*cur_buf_;
 };
 
 //*****************************************************************************
 //
-//	File test functions.  Those that do not take an argument operate on
-//	the last file stat'ed.
+// SYNOPSIS
+//
+	template< class T > void max_out_limit( T resource )
+//
+// DESCRIPTION
+//
+//	Set the limit for the given resource to its maximum value.
+//
+// PARAMETERS
+//
+//	resource	The ID for the resource as given in sys/resources.h.
+//
+// NOTE
+//
+//	This can't be an ordinary function since the type "resource" isn't int
+//	on some systems (e.g., Linux).
+//
+// SEE ALSO
+//
+//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+//	Addison-Wesley, Reading, MA, 1993. pp. 180-184.
+//
+//*****************************************************************************
+{
+	struct rlimit r;
+	::getrlimit( resource, &r );
+	r.rlim_cur = r.rlim_max;
+	::setrlimit( resource, &r );
+}
+
+//*****************************************************************************
+//
+//	File test functions.  Those that do not take an argument operate on the
+//	last file stat'ed.
 //
 //*****************************************************************************
 
@@ -136,10 +171,10 @@ inline bool	is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
-inline ostream&		error( ostream &o = cerr ) {
+inline std::ostream&	error( std::ostream &o = cerr ) {
 				return o << me << ": error: ";
 			}
-inline ostream&		error_string( ostream &o = cerr ) {
+inline std::ostream&	error_string( std::ostream &o = cerr ) {
 				return o << ": " << std::strerror( errno )
 					<< endl;
 			}
@@ -149,7 +184,6 @@ extern void		get_index_info(
 				long *n, off_t const **offset
 			);
 
-void			max_out_limit( int resource );
 inline char*		new_strdup( char const *s ) {
 				return std::strcpy(
 					new char[ std::strlen( s ) + 1 ], s
@@ -159,6 +193,9 @@ inline char*		new_strdup( char const *s ) {
 			// ensure function semantics: 'c' is expanded once
 inline char		to_lower( char c )	{ return tolower( c ); }
 extern char*		to_lower( char const* );
+#ifdef	SEARCH_DAEMON
+extern char*		to_lower_r( char const* );
+#endif
 extern char*		to_lower( char const *begin, char const *end );
 
 #define	FOR_EACH(T,C,I) \
