@@ -48,6 +48,7 @@ I_SRCS:=	bcd.c \
 		FilesGrow.c \
 		FilterFile.c \
 		IncludeFile.c \
+		IncludeMeta.c \
 		indexer.c \
 		index_segment.c \
 		init_modules.c \
