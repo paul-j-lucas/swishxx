@@ -239,6 +239,7 @@ int conf_var::current_config_file_line_no_ = 0;
 //*****************************************************************************
 {
 	mmap_file const conf_file( file_name );
+	conf_file.behavior( mmap_file::sequential );
 	if ( !conf_file ) {
 		if ( !::strcmp( file_name, ConfigFile_Default ) ) {
 			//
