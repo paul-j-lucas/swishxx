@@ -51,7 +51,7 @@
 
 	my_write( o, &num_dirs, sizeof( num_dirs ) );
 	streampos const dir_offset_pos = o.tellp();
-	my_write( o, dir_offset, num_files * sizeof( dir_offset[0] ) );
+	my_write( o, dir_offset, num_dirs * sizeof( dir_offset[0] ) );
 
 	my_write( o, &num_files, sizeof( num_files ) );
 	streampos const file_offset_pos = o.tellp();
