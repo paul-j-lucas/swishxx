@@ -557,8 +557,9 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // DESCRIPTION
 //
-//	"Tidy up" a title string by trimming leading and trailing whitespace as
-//	well as converting all non-space whitespace characters to spaces.
+//	"Tidy up" a title string by trimming leading and trailing whitespace,
+//	squeezing multiple spaces to single spaces, and converting all
+//	non-space whitespace characters to spaces.
 //
 //	Additionally, if the length of the title exceeds Title_Max_Size, then
 //	the title is truncated and the last 3 characters of the truncated title
@@ -584,22 +585,25 @@ int		indexer::suspend_indexing_count_ = 0;
 	while ( begin < --end && is_space( *end ) ) ;
 	++end;
 
+	// Squeeze/convert multiple whitespace characters to single spaces.
 	static char title[ Title_Max_Size + 1 ];
-	int len = end - begin;
-	if ( len > Title_Max_Size ) {
-		::strncpy( title, begin, Title_Max_Size );
-		::strcpy( title + Title_Max_Size - 3, "..." );
-		len = Title_Max_Size;
-	} else {
-		::copy( begin, end, title );
+	int consec_spaces = 0, len = 0;
+	while ( begin < end ) {
+		char c = *begin++;
+		if ( is_space( c ) ) {
+			if ( ++consec_spaces >= 2 )
+				continue;
+			c = ' ';
+		} else
+			consec_spaces = 0;
+
+		title[ len++ ] = c;
+		if ( len == Title_Max_Size ) {
+			::strcpy( title + Title_Max_Size - 3, "..." );
+			break;
+		}
 	}
 	title[ len ] = '\0';
-
-	// Normalize all whitespace chars to space chars.
-	for ( register char *p = title; *p; ++p )
-		if ( is_space( *p ) )
-			*p = ' ';
-
 	return title;
 }
 
