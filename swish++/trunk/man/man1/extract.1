@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3extract\fP 1 "May 24, 2000" "SWISH++"
+.TH \f3extract\fP 1 "June 14, 2000" "SWISH++"
 .SH NAME
 extract \- SWISH++ text extractor
 .SH SYNOPSIS
@@ -96,22 +96,16 @@ variable), are extracted, i.e.,
 .B extract
 assumes you know what you're doing when specifying filenames in this manner.
 .PP
-In any case, care must be taken not to specify files or subdirectories
-in directories that are also specified:
-since directories are recursively extracted by default (unless the
-.B \-r
-or
-.B \-\-no-recurse
-option or the
-.B RecurseSubdirs
-variable  is given),
-explicitly specifying a subdirectory or file in a directory that is also
-specified will result in those files being extracted more than once.
-(Unlike with indexing, this is harmless: it just wastes time.)
-.PP
 Extracted files have the same filename with the ``\f(CW.txt\fP'' extension
-appended, e.g., ``\f(CWfoo.doc\fP'' becomes ``\f(CWfoo.doc.txt\fP''
+appended by default, e.g., ``\f(CWfoo.doc\fP'' becomes ``\f(CWfoo.doc.txt\fP''
 after extraction.
+(See also the
+.B \-x
+or
+.B \-\-extension
+option or the
+.B ExtractExtension
+variable.)
 However, extraction is not performed if the extracted text file exists.
 .SS Filters
 Via the
@@ -340,6 +334,15 @@ Same as 3 but also prints all files that are not extracted and why.
 Print the version number of
 .BR SWISH++
 and exit.
+.TP
+.BI \-x e
+.br
+.ns
+.TP
+.BI \-\-extension= e
+The extension to append to filenames during extraction.
+(It can be specified with or without the dot;
+default is \f(CWtxt\f1.)
 .SH CONFIGURATION FILE
 The following variables can be set in a configuration file.
 Variables and command-line options can be mixed.
@@ -352,6 +355,12 @@ Same as
 .B \-E
 or
 .B \-\-no-pattern
+.TP
+.B ExtractExtension
+Same as
+.B \-x
+or
+.B \-\-extension
 .TP
 .B FilterFile
 (See Filters.)
@@ -392,7 +401,7 @@ or
 To extract text from all Microsoft Office files on a web server:
 .cS
 cd /home/www/htdocs
-extract -v3 -e '*.doc' -e *.ppt' -e '*.xls' .
+extract -v3 -e '*.doc' -e '*.ppt' -e '*.xls' .
 .cE
 .SS Filters
 (See the examples in
