@@ -66,6 +66,8 @@ private:
 	virtual void	parse_value( char *line );
 };
 
+extern SocketAddress socket_address;
+
 #endif	/* SocketAddress_H */
 
 #endif	/* SEARCH_DAEMON */
