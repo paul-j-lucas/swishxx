@@ -34,6 +34,7 @@ static option_stream::spec const opt_spec[] = {
 	"dump-meta",		0, 'M',
 	"word-percent",		1, 'p',
 	"skip-results",		1, 'r',
+	"separator",		1, 'R',
 	"stem-words",		0, 's',
 	"dump-stop",		0, 'S',
 	"version",		0, 'V',
