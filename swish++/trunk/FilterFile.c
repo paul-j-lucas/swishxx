@@ -49,8 +49,8 @@ using namespace std;
 #if 0	/* I'm not convinced that default filters are a good idea. */
 
 	static char const *const default_filter_table[] = {
-		"gz",	"gunzip -c %f > @F",
-		"Z",	"uncompress -c %f > @F",
+		"gz",	"gunzip -c %f > @%F",
+		"Z",	"uncompress -c %f > @%F",
 		0
 	};
 
@@ -115,25 +115,27 @@ using namespace std;
 			if ( found_target ) {
 				cerr << error << "more than one @" << endl;
 				::exit( Exit_Config_File );
-			} else
+			} else {
 				found_target = true;
+				continue;
+			}
 
 		switch ( s[1] ) {
 			case 'b':
 			case 'B':
 			case 'e':
+			case 'E':
 			case 'f':
 			case 'F':
 				++num_substitutions;
 				continue;
 		}
-		cerr << error << "non-[bBefF%@] character after " << *s << endl;
+		cerr << error << "non-[bBeEfF%] character after %" << endl;
 		::exit( Exit_Config_File );
 	}
 
-	if ( num_substitutions < 2 ) {
-		cerr	<< error << "at least two substitutions are required"
-			<< endl;
+	if ( num_substitutions < 1 ) {
+		cerr << error << "at least 1 substitution is required" << endl;
 		::exit( Exit_Config_File );
 	}
 	if ( !found_target ) {
