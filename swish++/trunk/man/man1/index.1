@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "July 23, 2001" "SWISH++"
+.TH \f3index\f1 1 "September 6, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -565,18 +565,6 @@ or
 .B \-\-no-class
 options may be specified.
 .TP
-.BI \-D n
-.br
-.ns
-.TP
-.BI \-\-dirs-reserve= n
-Reserve space for this number of directories,
-.IR n ,
-to start.
-More space will be allocated as necessary,
-but with a slight performace penalty.
-(Default is 100.)
-.TP
 .BI \-e m : p
 .br
 .ns
@@ -650,23 +638,6 @@ option,
 more space will be allocated as necessary,
 but with a slight performace penalty.
 (Default is 100.)
-.TP
-.BI \-G
-.br
-.ns
-.TP
-.BI \-\-dirs-grow= n
-Grow the space for the reserved number of directories,
-.IR n ,
-when incrementally indexing.
-The number can either be an absolute number of directories
-or a percentage (when followed by a percent sign \f(CW%\f1).
-Just as with the
-.B \-D
-option,
-more space will be allocated as necessary,
-but with a slight performace penalty.
-(Default is 20.)
 .TP
 .B \-H
 .br
@@ -897,18 +868,6 @@ Same as
 .B \-C
 or
 .B \-\-no-class
-.TP
-.B DirectoriesGrow
-Same as
-.B \-G
-or
-.B \-\-dirs-grow
-.TP
-.B DirectoriesReserve
-Same as
-.B \-D
-or
-.B \-\-dirs-reserve
 .TP
 .B ExcludeFile
 Same as
