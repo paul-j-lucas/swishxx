@@ -232,11 +232,11 @@
 
 	////////// Index the file /////////////////////////////////////////////
 
-#ifdef	MOD_mail
+#if defined( MOD_id3 ) || defined( MOD_mail )
 	encoded_char_range::decoder::reset_all();
 #endif
-	static indexer *const text = indexer::find_indexer( "text" );
-	indexer *const i = found_pattern ? include_pattern->second : text;
+	indexer *const i = found_pattern ?
+		include_pattern->second : indexer::text_indexer();
 	file_info *const fi = new file_info(
 		orig_file_name, dir_index, orig_file_size, i->find_title( file )
 	);
