@@ -126,6 +126,7 @@ select( (select( SEARCH ), $| = 1)[0] );
 # of input (so therefore it looks and waits for a newline).
 ##
 print SEARCH 'search ', join( ' ', @ARGV ), "\n";	# send query to server
+shutdown( SEARCH, 1 );					# finished sending
 
 print while <SEARCH>;					# read results back
 close( SEARCH );
