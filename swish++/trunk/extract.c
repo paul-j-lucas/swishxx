@@ -448,7 +448,7 @@ ostream&		usage( ostream& = cerr );
 	in_postscript = false;
 
 	while ( c != end ) {
-		register char const ch = iso8859_to_ascii( *c++ );
+		register char const ch = *c++;
 
 		////////// Collect a word /////////////////////////////////////
 
