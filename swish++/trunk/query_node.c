@@ -258,8 +258,8 @@ query_node* query_node::visit( visitor const &v ) {
     if ( !node[0] || !node[1] )
         return;
 
-    if ( node[0]->meta_id() != No_Meta_ID &&
-         node[1]->meta_id() != No_Meta_ID &&
+    if ( node[0]->meta_id() != Meta_ID_None &&
+         node[1]->meta_id() != Meta_ID_None &&
          node[0]->meta_id() != node[1]->meta_id()
     )
         return;
