@@ -63,18 +63,20 @@ while ( <STDIN> ) {
 ##
 sub substitute {
 	return unless /\.in$/ && -T $_;
-	my $file_out = $_;
-	$file_out =~ s/\.in$//;
 	unless ( open( FILE_IN, $_ ) ) {
 		warn "$ME: can not read $_\n";
 		return;
 	}
+	my( $mode, $uid, $gid ) = (stat( _ ))[2,4,5];
+
+	my $file_out = $_;
+	$file_out =~ s/\.in$//;
 	unless ( open( FILE_OUT, ">$file_out" ) ) {
 		warn "$ME: can not write $file_out\n";
 		close( FILE_IN );
 		return;
 	}
-	my( $mode, $uid, $gid ) = (stat( _ ))[2,4,5];
+
 	while ( <FILE_IN> ) {
 		s/%%$k%%/$v/g while ( $k, $v ) = each %kv;
 		print FILE_OUT;
