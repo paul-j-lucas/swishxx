@@ -47,8 +47,9 @@ public:
 	CONF_INT_ASSIGN_OPS( FilesGrow )
 
 	int operator()( int size ) {
-		return	size + is_percentage_ ?
-			size * operator int() / 100 : operator int();
+		return	size + (is_percentage_ ?
+			size * operator int() / 100 : operator int()
+		);
 	}
 protected:
 	virtual void	parse_value( char const *var_name, char *line );
