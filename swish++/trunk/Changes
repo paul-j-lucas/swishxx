@@ -3,6 +3,33 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.12.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Some ranks returned were negative.  (This became broken in 5.11.)
+
+  (This bug fix shall be known as bug fix FNR.)
+
+* The version number for 5.12 wasn't updated in the code from 5.11.1.
+
+
+CHANGES, file-by-file
+---------------------
+
+* word_info.h
+
+	1. Changed occurrences_ and rank_ from short to int
+	   for bug fix FNR.
+
+* version.h
+
+	1. Changed to "5.12.1."
+
+
+*******************************************************************************
 5.12
 *******************************************************************************
 
@@ -10,7 +37,7 @@ NEW FEATURES
 ------------
 
 * WordThreshold may now be set either in a config. file or on the command line
-  (as opposed to being only a compiled-in constant.)  However, only the super-
+  (as opposed to being only a compiled-in constant).  However, only the super-
   user may specify a value larger than the default.
 
   (This feature shall be know as feature SWT.)
