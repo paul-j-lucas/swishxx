@@ -582,11 +582,11 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	if ( c.at_end() )
 		return;
 
-	encoded_char_range::const_iterator tag = c;
-	if ( skip_html_tag( c ) || *tag == '!' )
+	encoded_char_range::const_iterator name = c;
+	if ( skip_html_tag( c ) || *name == '!' )
 		return;
-	tag.end_pos( c.prev_pos() );
-	bool const is_end_tag = *tag == '/';
+	name.end_pos( c.prev_pos() );
+	bool const is_end_tag = *name == '/';
 
 	////////// Deal with elements of a class not to index /////////////////
 
@@ -601,14 +601,14 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		// since we only want the tag name.)
 		//
 		register char *to = tag_buf;
-		encoded_char_range::const_iterator from = tag;
+		encoded_char_range::const_iterator from = name;
 		while ( !from.at_end() && !isspace( *from ) ) {
 			//
-			// Check to see if the tag is too long to be a valid
+			// Check to see if the name is too long to be a valid
 			// one for an HTML element: if it is, invalidate it by
-			// writing "garbage" into the tag so something like
-			// "BLOCKQUOTED" (an invalid tag) won't match
-			// "BLOCKQUOTE" (a valid tag) when one letter shorter
+			// writing "garbage" into the name so something like
+			// "BLOCKQUOTED" (an invalid name) won't match
+			// "BLOCKQUOTE" (a valid name) when one letter shorter
 			// and throw off element closures.
 			//
 			if ( to - tag_buf >= Tag_Name_Max_Size + is_end_tag ) {
@@ -628,7 +628,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 				tag_buf
 			)
 		) {
-			// This tag closes the currently open element.
+			// This element closes the currently open element.
 			//
 			if ( element_stack_.back().second ) {
 				//
@@ -661,7 +661,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 		bool is_no_index_class = false;
 
-		encoded_char_range::const_iterator class_att = tag;
+		encoded_char_range::const_iterator class_att = name;
 		if ( find_attribute( class_att, "class" ) ) {
 			//
 			// CLASS attribute values can contain multiple classes
@@ -744,17 +744,17 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for a TITLE attribute /////////////////////////////////
 
-	encoded_char_range::const_iterator title_att = tag;
+	encoded_char_range::const_iterator title_att = name;
 	if ( find_attribute( title_att, "title" ) )
 		index_words( title_att );
 
 	////////// Look for an ALT attribute //////////////////////////////////
 
-	if (	tag_cmp( tag, "area" ) ||
-		tag_cmp( tag, "img" ) ||
-		tag_cmp( tag, "input" )
+	if (	tag_cmp( name, "area" ) ||
+		tag_cmp( name, "img" ) ||
+		tag_cmp( name, "input" )
 	) {
-		encoded_char_range::const_iterator alt_att = tag;
+		encoded_char_range::const_iterator alt_att = name;
 		if ( find_attribute( alt_att, "alt" ) )
 			index_words( alt_att );
 		return;
@@ -762,9 +762,9 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Parse a META element ///////////////////////////////////////
 
-	if ( tag_cmp( tag, "meta" ) ) {
-		encoded_char_range::const_iterator name_att    = tag;
-		encoded_char_range::const_iterator content_att = tag;
+	if ( tag_cmp( name, "meta" ) ) {
+		encoded_char_range::const_iterator name_att    = name;
+		encoded_char_range::const_iterator content_att = name;
 		if (	find_attribute( name_att, "name" ) &&
 			find_attribute( content_att, "content" )
 		) {
@@ -796,8 +796,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for a STANDBY attribute ///////////////////////////////
 
-	if ( tag_cmp( tag, "object" ) ) {
-		encoded_char_range::const_iterator standby_att = tag;
+	if ( tag_cmp( name, "object" ) ) {
+		encoded_char_range::const_iterator standby_att = name;
 		if ( find_attribute( standby_att, "standby" ) )
 			index_words( standby_att );
 		return;
@@ -805,8 +805,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for a SUMMARY attribute ///////////////////////////////
 
-	if ( tag_cmp( tag, "table" ) ) {
-		encoded_char_range::const_iterator summary_att = tag;
+	if ( tag_cmp( name, "table" ) ) {
+		encoded_char_range::const_iterator summary_att = name;
 		if ( find_attribute( summary_att, "summary" ) )
 			index_words( summary_att );
 		return;
