@@ -62,7 +62,7 @@
 #include "WordPercentMax.h"
 #include "word_util.h"
 #ifdef	SEARCH_DAEMON
-#include "managed_ptr.h"
+#include "auto_vec.h"
 #include "PidFile.h"
 #include "SearchDaemon.h"
 #include "SocketFile.h"
@@ -308,7 +308,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //*****************************************************************************
 {
 #ifdef	SEARCH_DAEMON
-	managed_vec< char > const lower_word = to_lower_r( word );
+	auto_vec< char > const lower_word( to_lower_r( word ) );
 #else
 	char const *const lower_word = to_lower( word );
 #endif
@@ -365,7 +365,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //*****************************************************************************
 {
 #ifdef	SEARCH_DAEMON
-	managed_vec< char > const lower_word = to_lower_r( word );
+	auto_vec< char > const lower_word( to_lower_r( word ) );
 #else
 	char const *const lower_word = to_lower( word );
 #endif
