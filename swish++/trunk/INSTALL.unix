@@ -21,10 +21,12 @@ SWISH++ has the following software as prerequisites:
 	http://www.cs.rpi.edu/~musser/stl.html
 	http://www.sgi.com/Technology/STL/
 
-3. Perl 5 (or later), but only if you intend on using either httpindex or
+3. GNU make.
+
+4. Perl 5 (or later), but only if you intend on using either httpindex or
    WWW.pm.
 
-4. The GNU wget command, but only if you intend on using httpindex.
+5. The GNU wget command, but only if you intend on using httpindex.
 
 All GNU software is freely available from:
 
