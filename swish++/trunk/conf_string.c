@@ -20,11 +20,17 @@
 */
 
 // standard
+#include <cstring>
 #include <iostream>
 
 // local
 #include "conf_string.h"
 #include "exit_codes.h"
+#include "platform.h"
+
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 extern char const*	me;
 
@@ -32,11 +38,11 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	conf<string>::conf( char const *name, char const *default_value ) :
+	conf<std::string>::conf( char const *name, char const *default_value ) :
 //
 // DESCRIPTION
 //
-//	Construct a conf<string> setting its name and default value.
+//	Construct a conf<std::string> setting its name and default value.
 //
 // PARAMETERS
 //
@@ -56,7 +62,7 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	/* virtual */ void conf<string>::parse_value( char *line )
+	/* virtual */ void conf<std::string>::parse_value( char *line )
 //
 // DESCRIPTION
 //
@@ -72,5 +78,16 @@ extern char const*	me;
 		cerr << error << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
+
+	//
+	// If the first non-whitespace character is a quote and the last
+	// non-whitespace character is the SAME quote, strip the quotes.
+	//
+	if ( *line == '\'' || *line == '"' ) {
+		char *const last = line + ::strlen( line ) - 1;
+		if ( *line == *last )
+			++line, *last = '\0';
+	}
+
 	value_ = line;
 }
