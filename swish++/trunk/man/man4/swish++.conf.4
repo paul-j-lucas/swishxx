@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.conf\f1 4 "August 20, 1999" "SWISH++"
+.TH \f3swish++.conf\f1 4 "September 23, 1999" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -74,7 +74,8 @@ or
 \f(CWyes\f1.
 Case is irrelevant.
 Variables of this type are:
-.B RecurseSubdirs
+.BR RecurseSubdirs ,
+.BR SearchDaemon ,
 and
 .BR StemWords .
 .SS Integer variables
@@ -84,6 +85,11 @@ A special string of ``infinity'' is taken to mean
 Case is irrelevant.
 Variables of this type are:
 .BR ResultsMax ,
+.BR SocketQueueSize ,
+.BR SocketTimeout ,
+.BR ThreadsMax ,
+.BR ThreadsMin ,
+.BR ThreadTimeout ,
 .BR TitleLines ,
 .BR Verbosity ,
 .BR WordFilesMax ,
@@ -93,7 +99,8 @@ and
 Variables of this type take one argument that is the remainder of the line
 minus leading and trailing whitespace.
 Variables of this type are:
-.B IndexFile
+.BR IndexFile ,
+.BR SocketFile ,
 and
 .BR StopWordFile .
 .SS Set variables
