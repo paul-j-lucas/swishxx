@@ -121,7 +121,7 @@ typedef	pair< index_segment::const_iterator, index_segment::const_iterator >
 //
 //*****************************************************************************
 
-index_segment	files, meta_names, stop_words, words;
+index_segment	directories, files, meta_names, stop_words, words;
 ResultsMax	max_results;
 char const*	me;				// executable name
 StemWords	stem_words;
@@ -158,8 +158,10 @@ bool		parse_query(
 		);
 bool		parse_optional_relop( token_stream&, token::type& );
 
+ostream&	write_file_info( ostream&, char const* );
+
 inline omanip< char const* > index_file_info( int index ) {
-	return omanip< char const* >( file_info::out, files[ index ] );
+	return omanip< char const* >( write_file_info, files[ index ] );
 }
 
 //*****************************************************************************
@@ -266,14 +268,15 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	mmap_file const the_index( index_file_name );
 	if ( !the_index ) {
-		cerr	<< error << "could not read index from \""
-			<< index_file_name << '"' << endl;
+		error()	<< "could not read index from \""
+			<< index_file_name << "\"\n";
 		::exit( Exit_No_Read_Index );
 	}
-	words     .set_index_file( the_index, index_segment::word_index );
-	stop_words.set_index_file( the_index, index_segment::stop_word_index );
-	files     .set_index_file( the_index, index_segment::file_index );
-	meta_names.set_index_file( the_index, index_segment::meta_name_index );
+	words      .set_index_file( the_index, index_segment::word_index );
+	stop_words .set_index_file( the_index, index_segment::stop_word_index );
+	directories.set_index_file( the_index, index_segment::dir_index );
+	files      .set_index_file( the_index, index_segment::file_index );
+	meta_names .set_index_file( the_index, index_segment::meta_name_index );
 
 #ifdef	SEARCH_DAEMON
 	////////// Become a daemon ////////////////////////////////////////////
@@ -550,7 +553,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 			case token::and_token: {
 #				ifdef DEBUG_parse_query
-				cerr << "---> performing and" << endl;
+				cerr << "---> performing and\n";
 #				endif
 				search_results_type result2;
 				FOR_EACH( search_results_type, result1, i ) {
@@ -566,7 +569,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 			case token::or_token: {
 #				ifdef DEBUG_parse_query
-				cerr << "---> performing or" << endl;
+				cerr << "---> performing or\n";
 #				endif
 				FOR_EACH( search_results_type, result1, i )
 					result[ i->first ] += i->second;
@@ -579,8 +582,7 @@ inline omanip< char const* > index_file_info( int index ) {
 				// and_token or an or_token.  If we get there,
 				// the programmer goofed.
 				//
-				cerr	<< "parse_query(): got non and/or token"
-					<< endl;
+				cerr << "parse_query(): got non and/or token\n";
 				::abort();
 		}
 	}
@@ -682,7 +684,7 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr	<< "---> relop \""
 				<< ( t == token::and_token ? "and" : "or" )
-				<< '"' << endl;
+				<< "\"\n";
 #			endif
 			relop = t;
 			return true;
@@ -692,7 +694,7 @@ no_put_back:
 			if ( t == token::rparen_token )
 				return false;
 #			ifdef DEBUG_parse_query
-			cerr << "---> relop \"and\" (implicit)" << endl;
+			cerr << "---> relop \"and\" (implicit)\n";
 #			endif
 			relop = token::and_token;
 			return true;
@@ -753,7 +755,7 @@ no_put_back:
 				stop_words_found.insert( t.str() );
 #				ifdef DEBUG_parse_query
 				cerr	<< "---> word \"" << t.str()
-					<< "\" (ignored: not OK)" << endl;
+					<< "\" (ignored: not OK)\n";
 #				endif
 				return ignore = true;
 			}
@@ -797,7 +799,7 @@ no_put_back:
 
 		case token::lparen_token:
 #			ifdef DEBUG_parse_query
-			cerr << "---> '('" << endl;
+			cerr << "---> '('\n";
 #			endif
 			if ( !parse_query(
 				query, result, stop_words_found, ignore, meta_id
@@ -806,13 +808,13 @@ no_put_back:
 			query >> t;
 #			ifdef DEBUG_parse_query
 			if ( t == token::rparen_token )
-				cerr << "---> ')'" << endl;
+				cerr << "---> ')'\n";
 #			endif
 			return t == token::rparen_token;
 
 		case token::not_token: {
 #			ifdef DEBUG_parse_query
-			cerr << "---> begin not" << endl;
+			cerr << "---> begin not\n";
 #			endif
 			search_results_type temp;
 			if ( !parse_primary(
@@ -820,7 +822,7 @@ no_put_back:
 			) )
 				return false;
 #			ifdef DEBUG_parse_query
-			cerr << "---> end not" << endl;
+			cerr << "---> end not\n";
 #			endif
 			if ( !ignore ) {
 				//
@@ -839,7 +841,7 @@ no_put_back:
 	}
 
 #	ifdef DEBUG_parse_query
-	cerr << "---> word \"" << t.str() << "\", meta-ID=" << meta_id << endl;
+	cerr << "---> word \"" << t.str() << "\", meta-ID=" << meta_id << "\n";
 #	endif
 	//
 	// Found a word or set of words matching a wildcard: iterate over all
@@ -856,7 +858,7 @@ no_put_back:
 			stop_words_found.insert( t.str() );
 #			ifdef DEBUG_parse_query
 			cerr	<< "---> word \"" << t.str()
-				<< "\" (ignored: too frequent)" << endl;
+				<< "\" (ignored: too frequent)\n";
 #			endif
 		} else {
 			ignore = false;
@@ -906,7 +908,7 @@ no_put_back:
 	if ( !( parse_query( query_stream, results, stop_words_found, ignore )
 		&& query_stream.eof()
 	) ) {
-		err << error << "malformed query" << endl;
+		err << error << "malformed query\n";
 #ifdef	SEARCH_DAEMON
 		if ( daemon_type != "none" )
 			return;
@@ -1216,6 +1218,38 @@ no_put_back:
 			::atoi( opt.max_results_arg ) : max_results,
 		out, err
 	);
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	ostream& write_file_info( ostream &o, char const *p )
+//
+// DESCRIPTION
+//
+//	Parse a file_info from an index file and write it to an ostream.
+//
+// PARAMETERS
+//
+//	o	The ostream to write to.
+//
+//	p	A pointer to the first character containing a file_info inside
+//		an index file.
+//
+// RETURN VALUE
+//
+//	The passed-in ostream.
+//
+//*****************************************************************************
+{
+	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
+	int const dir_index = parse_bcd( u );
+	o << directories[ dir_index ] << '/' << u;	// directory/filename
+	while ( *u++ ) ;				// skip past filename
+	size_t const size = parse_bcd( u );
+	parse_bcd( u );					// skip past num_words
+	return o << result_separator << size << result_separator << u;
 }
 
 //*****************************************************************************
