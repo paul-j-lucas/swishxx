@@ -39,7 +39,6 @@ CFLAGS="$* -c"
 
 echo
 echo "$ME: checking C++ compiler $CC"
-echo
 
 trap "rm -f *.o $TARGET; exit 1" 0 1 2 15
 
@@ -77,22 +76,33 @@ cat > $TARGET <<!
 
 !
 
+define() {
+	def=`grep $1 $file | cut -f3-`
+	[ -z "$def" ] && return
+	echo "#ifndef `echo $def | cut -f1 -d' '`"
+	echo "#define $def"
+	echo "#endif"
+}
+
 for file in src/*.c
 do
-	echo "$ME: checking for \"`grep TEST $file | cut -f3-`\"..."
-	$CC $CFLAGS $file >&- 2>&- && continue
 
-	define=`grep DEFINE $file | cut -f3-`
-	if [ -n "$define" ]
-	then echo "#define $define" >> $TARGET; continue
+	echo "+ checking for \"`grep TEST $file | cut -f3-`\"..."
+	if $CC $CFLAGS $file >&- 2>&-
+	then
+		define PASS >> $TARGET
+		continue
 	fi
 
-	echo '----------------------------------------------------------------'
-	grep ERROR $file | cut -f3- | while read error
-	do echo $error
-	done
-	echo '----------------------------------------------------------------'
-	exit 1
+	if grep ERROR $file >&- 2>&-
+	then
+		echo '------------------------------------------------------------------------------'
+		grep ERROR $file | cut -f3-
+		echo '------------------------------------------------------------------------------'
+		exit 1
+	fi
+
+	define FAIL >> $TARGET
 done
 
 echo
