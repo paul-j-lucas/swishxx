@@ -2,6 +2,192 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.5
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* search(1) can now be run as a daemon without it automatically putting itself
+  into the background.  This is useful in order to wrap a start script around
+  it and automatically restart it if it dies for any reason.
+
+  Correspondingly, there are 2 new utility scripts: searchmonitor (a process
+  monitor for search) and searchd (a start/stop script for SysV-like systems).
+
+  (This feature fix shall be known as feature NOB.)
+
+* search(1), when run as a daemon, can give away its root privileges if it
+  started with them.  There are now new command-line options of -U, --user, -G,
+  and --group as well as new configuration variables User and Group.
+
+  (This feature fix shall be known as feature GAR.)
+
+
+BUG FIXES
+---------
+
+* When search(1) was running as a daemon, it ignored -F and --format options
+  specified via the socket.
+
+  (This bug fix shall be known as bug fix SDF.)
+
+* For very large document sets when many partial indicies were generated, if
+  the number of partial indicies exceeded the maximum number of file
+  descriptors a process could have open, merging would fail.
+
+  (This bug fix shall be known as bug fix MFD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_enum.c
+* conf_enum.h
+
+	1. Added the is_legal() function for bug fix SDF.
+
+* config.h
+
+	1. Added Group_Default and UserDefault for feature GAR.
+
+* conf_var.c
+
+	1. In map_ref(), added "user" and "group" for feature GAR.
+	2. In map_ref(), added "searchbackground" for feature NOB.
+
+* GNUmakefile
+
+	1. Added Group.c and User.c to S_SOURCES for feature GAR.
+	2. Removed WIN32 PERL_TARGET conditional since WIN32 isn't set at that
+	   point.
+	3. s/PERL_TARGET/OTHER_TARGET/
+	4. Added searchmonitor to OTHER_TARGET for feature NOB.
+	5. Added INITD_TARGET for feature NOB.
+	6. Added BIN_TARGET since other targets get installed places other than
+	   in a bin directory.
+	7. Added INITD_DIR and LEVEL_DIR to figure out a SysV system's run
+	   level directories for feature NOB.
+	8. Added installation of /etc/swish++.conf for feature NOB.
+	9. Added install_sysv target for feature NOB.
+	A. Added uninstallation of start/stop scripts to uninstall target for
+	   feature NOB.
+
+* Group.c
+* Group.h
+
+	1. New files for feature GAR.
+
+* exit_codes.h
+
+	1. Added Exit_No_User and Exit_No_Group for feature GAR.
+	2. Changed Exit_Internal_Error from 255 to 127.
+
+* index.c
+
+	1. In main(), added maxing out of number of file descriptors to enable
+	   more partial indicies to be generated for bug fix MFD.
+
+* INSTALL.unix
+
+	1. Added step 5 regarding installing the searchd start/stop script for
+	   feature NOB.
+
+* man/man1/index.1
+
+	1. Added missing error codes 40 and 127.
+
+* man/man1/search.1
+
+	1. Added description of -B and --no-background options and the
+	   SearchBackground variable for feature NOB.
+	2. Added description of -U, --user, -G, and --group options and the
+	   User and Group variables for feature GAR.
+	3. Added subsections to Daemon section.
+	4. Added mention of giving away root privileges for feature GAR.
+	5. Added mention of searchmonitor(8) for feature NOB.
+
+* man/man4/swish++.conf.4
+
+	1. Added mention of SearchBackground variable for feature NOB.
+	2. Added mention of Group and User variables for feature GAR.
+
+* man/man8/GNUmakefile
+* man/man8/searchd.8
+* man/man8/searchmonitor.8
+* SearchBackground.h
+
+	1. New files for feature NOB.
+
+* search.c
+
+	1. Added #include "SearchBackground.h" for feature NOB.
+	2. Added global search_background variable for feature NOB.
+	3. In main(), added check of search_background_opt for feature NOB.
+	4. In search_options::search_options(), added initialization of
+	   search_background_opt for feature NOB.
+	5. In search_options::search_options(), added case for 'B' for feature
+	   NOB.
+	6. In usage(), added usage for -B and --no-background for feature NOB.
+	7. In search(), added results_format parameter for bug fix SDF.
+	8. In search_options::search_options(), added code to check legality of
+	   argument to -F option for bug fix SDF.
+	9. In service_request(), added opt.results_format_arg to call to
+	   search() for bug fix SDF.
+	A. Added #include "User.h" and "Group.h" for feature GAR.
+	B. Added global user and group variables for feature GAR.
+	C. In main(), added check of group_arg and user_arg for feature GAR.
+	D. In search(), added static_cast to get rid of float->int conversion
+	   warning.
+	E. In search_options::search_options(), added initialization of
+	   user_arg and group_arg for feature GAR.
+	F. In search_options::search_options(), added cases for 'G' and 'U' for
+	   feature GAR.
+	G. In Usage(), added description of -G and -U for feature GAR.
+
+* search.h
+
+	1. Added search_background_opt for feature NOB.
+	2. Added user_arg and group_arg for feature GAR.
+
+* searchd.in
+* searchmonitor.in
+
+	1. New files for feature NOB.
+
+* search_daemon.c
+
+	1. Added #include "SearchBackground.h" for feature NOB.
+	2. In become_daemon(), added tests of search_background for feature NOB.
+	3. Added #include "User.h" and "Group.h for feature GAR.
+	4. In become_daemon(), added code to change UID/GID for feature GAR.
+
+* search_options.c
+
+	1. Added no-background option for feature NOB.
+	2. Added user and group options for feature GAR.
+
+* swish++.conf
+
+	1. Added SearchBackground for feature NOB.
+	2. s!/tmp/search.pid!/var/run/search.pid!
+
+* User.c
+* User.h
+
+	1. New files for feature GAR.
+
+* util.h
+
+	1. In max_out_limit(), set limit to infinity if running as root for bug
+	   fix MFD.
+
+* version.h
+
+	1. Updated version to "5.5".
+
+
+*******************************************************************************
 5.4.6
 *******************************************************************************
 
@@ -40,7 +226,7 @@ BUG FIXES
 
   (This bug fix shall be known as bug fix CRA.)
 
-* On some systems, the auto-builing of dependencies got into an infinite loop
+* On some systems, the auto-building of dependencies got into an infinite loop
   since the "dep" directory's timestamp was updated for every dependency file
   and thus everything that depended on it was always out of date.  Why this
   doesn't happen on all systems isn't clear.
