@@ -260,9 +260,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		// expires, try to read some more.
 		//
 		time_t const elapsed_time = ::time( 0 ) - start_time;
-		if ( elapsed_time > seconds )
-			break;
-		seconds_remaining -= elapsed_time;
+		seconds_remaining = seconds - elapsed_time;
 	}
 
 	return false;
