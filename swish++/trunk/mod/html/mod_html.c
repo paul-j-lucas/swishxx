@@ -416,7 +416,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator &pos );
 //
 //	e		The encoded text to index.
 //
-//	meta_id		The numeric ID of the META NAME the words index are to
+//	meta_id		The numeric ID of the meta name the words index are to
 //			to be associated with.
 //
 //*****************************************************************************

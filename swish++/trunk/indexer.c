@@ -306,7 +306,7 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 //	len		The length of the word since it is not null-terminated.
 //
-//	meta_id		The numeric ID of the META NAME the word, if indexed,
+//	meta_id		The numeric ID of the meta name the word, if indexed,
 //			is to be associated with.
 //
 //*****************************************************************************
@@ -405,7 +405,7 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 //	e		The encoded text to index.
 //
-//	meta_id		The numeric ID of the META NAME the words index are to
+//	meta_id		The numeric ID of the meta name the words index are to
 //			to be associated with.
 //
 //*****************************************************************************
