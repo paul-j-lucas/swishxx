@@ -38,8 +38,8 @@
 //
 // DESCRIPTION
 //
-//	An instance of this class is used to access either the word,
-//	stop-word, or meta-name index portions of a generated index.
+//	An instance of this class is used to access either the word, stop-word,
+//	or meta-name index portions of a generated index.
 //
 //	By implementing fully-blown random access iterators for it, the STL
 //	algorithms work, in particular binary_search() and equal_range() that
@@ -69,15 +69,14 @@ public:
 	////////// constructors ///////////////////////////////////////////////
 
 	word_index() { }
-	word_index( file_vector<char> const &file, int i = word_index_index ) {
+	word_index( file_vector const &file, int i = word_index_index ) {
 		set_index_file( file, i );
 	}
 
 	////////// member functions ///////////////////////////////////////////
 
 	void		set_index_file(
-				file_vector<char> const&,
-				int = word_index_index
+				file_vector const&, int = word_index_index
 			);
 	size_type	size() const		{ return num_words_; }
 
@@ -152,9 +151,9 @@ public:
 		return begin_ + offset_[ i ];
 	}
 private:
-	file_vector<char>::const_iterator	begin_;
-	size_type				num_words_;
-	off_t const				*offset_;
+	file_vector::const_iterator	begin_;
+	size_type			num_words_;
+	off_t const			*offset_;
 };
 
 #endif	/* word_index_H */

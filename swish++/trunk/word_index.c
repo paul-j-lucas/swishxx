@@ -27,7 +27,7 @@
 //
 // SYNOPSIS
 //
-	void word_index::set_index_file( file_vector<char> const &file, int i )
+	void word_index::set_index_file( file_vector const &file, int i )
 //
 // DESCRIPTION
 //
