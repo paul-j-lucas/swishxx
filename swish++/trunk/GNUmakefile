@@ -92,9 +92,12 @@ ifndef WIN32
 ##
 # See the comment in config/config.mk regarding the search daemon ability.
 ##
-S_SRCS+=	thread_pool.c \
+S_SRCS+=	conf_enum.c \
+		thread_pool.c \
 		search_thread.c \
-		search_daemon.c
+		search_daemon.c \
+		SearchDaemon.c \
+		SocketAddress.c
 endif
 S_OBJS:=	$(S_SRCS:.c=.o)
 S_LINK:=	$(CCLINK) $(SOCKET_LIB) $(PTHREAD_LIB)
