@@ -2,6 +2,464 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+3.0
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* SWISH++ now allows flexible file filtering for extraction and indexing.
+
+  (This feature will be known as feature FFF.)
+
+* SWISH++ now allows configuration files since they were necessary for feature
+  FFF.  If I had to add them, I might as well do it right.
+
+  (This feature will be known as feature CONF.)
+
+* SWISH++ now compiles and runs under Windows (95/98/NT).
+
+  (This feature will be known as feature WIN32.)
+
+* 'index' now accepts a -T option that allows the directory to use for
+  temporary files to be specified.
+
+  (This feature will be known as feature TEMP.)
+
+* 'index' and 'extract' now report the number of files examined in addition to
+  the number indexed or extracted, respectively.
+
+  (This feature will be known as feature EXAM.)
+
+
+BUG FIXES
+---------
+
+* In the admitedly rare case of a malformed HTML file ending in a '<' character
+  (without a newline, i.e., '<' is the *VERY* last character in the file),
+  'index' would core-dump.
+
+  (This bug fix will be known as bug fix EGT.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_bool.c
+* conf_bool.h
+* conf_int.c
+* conf_int.h
+* conf_set.c
+* conf_set.h
+* conf_string.c
+* conf_string.h
+* conf_var.c
+* conf_var.h
+* ExcludeClass.h
+* ExcludeExtension.h
+* ExcludeMeta.h
+* FilesReserve.h
+* filter.c
+* filter.h
+* FilterExtension.c
+* FilterExtension.h
+* FollowLinks.h
+* IncludeExtension.h
+* IncludeMeta.h
+* IndexFile.h
+* man/man4/swish++.conf.4
+* RecurseSubdirs.h
+* ResultsMax.h
+* StemWords.h
+* StopWordFile.h
+* TitleLines.h
+* Verbosity.h
+* WordFilesMax.h
+* WordPercentMax.h
+
+	1. New files for feature CONF.
+
+* config.h
+
+	1. Added Config_Filename_Default for feature CONF.
+
+	2. Performed following substitution:
+
+		s/the.index/swish++.index/
+
+* config/config.mk
+
+	1. Added -DWIN32 to CCFLAGS for feature WIN32.
+
+	2. Added more comments to CCFLAGS.
+
+	3. Added CCLINK for feature WIN32.
+
+	4. Added a "You shouldn't have to change anything below this
+	   line" line.
+
+	5. Added more comments for the "Manual pages" section and the
+	   DISTILL variable.
+
+	6. Added .SUFFIXES at bottom.
+
+* config/config-sh
+
+	1. Renamed from config.sh so some versions of make don't get
+	   confused with the .sh suffix and try to build it.
+
+	2. Define PJL_NO_SYMBOLIC_LINKS if WIN32 is defined for feature
+	   WIN32.
+
+* config/Makefile
+
+	1. Removed test for bool type: bool is now a requirement of the
+	   C++ compiler.  This was necessary for feature CONF since it
+	   specializes a template on bool.
+
+	2. Performed following substitution:
+
+		s/config.sh/config-sh/
+
+	   corresponding to config/config-sh item #1.
+
+* config/src/bool.c
+
+	1. This file was removed corresponding to config/Makefile item
+	   #1.
+
+* directory.c
+
+	1. Performed following substitutions:
+
+	    s/bool recurse_subdirectories/RecurseSubdirs recurse_subdirectories/
+	    s/int verbosity/Verbosity verbosity/
+
+	   for feature CONF.
+
+	2. Added PJL_NO_SYMBOLIC_LINKS for WIN32.
+
+	3. Moved definition of stat_buf to util.c.
+
+* directory.h
+
+	1. Include platform.h for new PJL_NO_SYMBOLIC_LINKS symbol.
+
+	2. Moved stat_buf and file test functions to util.h.
+
+* do_file.c
+
+	1. The common code between 'index' and 'extract' was moved
+	   here.
+
+	2. The increment of "num_examined_files" was added for feature
+	   EXAM.
+
+* exit_codes.h
+
+	1. New header file.
+
+* extract.c
+
+	1. Added explicit definition of MAXNAMLEN under Windows for
+	   feature WIN32.
+
+	2. Performed following substitutions:
+
+	    s/string_set exclude_extensions/ExcludeExtension exclude_extensions/
+	    s/string_set include_extensions/IncludeExtension include_extensions/
+
+	   for feature CONF.
+
+	3. Corresponding change to directory.c item #1.
+
+	4. Added extract_words() function to parallel index.c's
+	   index_words() function.
+
+	5. In main(), redid the way in which command line options are
+	   processed such that they take precedence over configuration
+	   file variables for feature CONF.
+
+	6. In main(), made -l option conditional on whether we're
+	   compiling under Window or not for feature WIN32.
+
+	7. In main(), added -c option for feature CONF.
+
+	8. In main(), added code to test whether a file or directory
+	   actually exists before calling do_directory or do_file().
+
+	9. Moved code for do_file() to do_file.c to factor out code
+	   common between extract and index.
+
+	A. In usage(), added description of -c option for feature CONF.
+
+	B. In usage(), made description of -l option conditional on
+	   Windows for feature WIN32.
+
+	C. Changed all calls to exit(3) to use new exit code enums.
+
+	D. Added "num_examined_files" global variable for feature EXAM.
+
+	E. In main(), added code to print "num_examined_files" for
+	   feature EXAM.
+
+* fake_ansi.h
+
+	1. Removed __cplusplus test.
+
+	2. Removed section for bool type: bool is now a requirement of
+	   the C++ compiler.  This was necessary for feature CONF since
+	   it specializes a template on bool.
+
+* file_index.h
+* file_index.c
+
+	1. Removed #include "fake_ansi.h" since bool is now required.
+
+* file_list.c
+
+	1. Added #include "fake_ansi.h".
+
+	2. Removed erroneous #include "html.h".
+
+* file_vector.h
+
+	1. Added #include's for Windows for feature WIN32.
+
+	2. Added conditional compilation for file_vector_base's
+	   size_type and fd_ for Windows for feature WIN32.
+
+* file_vector.c
+
+	1. Removed #include "fake_ansi.h" since bool is now required.
+
+	2. Added conditional compilation for Windows for feature WIN32.
+
+* html.c
+
+	1. Performed following substitutions:
+
+		s/no_index_class_count/exclude_class_count/
+		s/no_index_class_names/exclude_class_names/
+
+	2. In parse_html_tag(), added:
+
+		if ( c == end )
+			return;
+
+	   for bug fix EGT.
+
+* html.h
+
+	1. Performed following substitutions:
+
+		s/no_meta_id/No_Meta_ID/
+		s/meta_id_not_found/Meta_ID_Not_Found/
+
+	   to make all enum's have capital letters.
+
+* index.c
+
+	1. Corresponding change to extract.c item #1.
+
+	2. Corresponding change to extract.c item #2.
+
+	3. Corresponding change to extract.c item #5.
+
+	4. Corresponding change to extract.c item #6.
+
+	5. Corresponding change to extract.c item #7.
+
+	6. Corresponding change to extract.c item #8.
+
+	7. Corresponding change to extract.c item #9.
+
+	8. Corresponding change to extract.c item #A.
+
+	9. Corresponding change to extract.c item #B.
+
+	A. Corresponding change to extract.c item #C.
+
+	B. Performed following substitutions:
+
+		s/no_index_class_count/exclude_class_count/
+		s/no_index_class_names/exclude_class_names/
+
+	C. Performed following substitutions:
+
+		s/int num_files_reserve/FilesReserve num_files_reserve/
+		s/int num_title_lines/TitleLines num_title_lines/
+		s/int word_file_file_max/WordFilesMax word_file_max/
+		s/int word_file_percent_max/WordPercentMax word_percent_max/
+
+	   for feature CONF.
+
+	D. In main() and write_partial_index(), added "ios::binary" to
+	   "out" ofstream for feature WIN32.
+
+	E. In main(), added code for -T option for feature TEMP.
+
+	F. Corresponding change to extract.c item #D.
+
+	G. Corresponding change to extract.c item #E.
+
+* index.h
+
+	1. Corresponding change as html.h #1.
+
+* INSTALL.unix
+
+	1. Remaned from INSTALL due to introduction of INSTALL.win32
+
+* INSTALL.win32
+
+	1. New file for feature WIN32
+
+* Makefile
+
+	1. Added more comments for DEBUG options.
+
+	2. Added new targets for feature CONF.
+
+	3. Redid a lot of dependencies as a result.
+
+* man/man1/index.1
+
+	1. Added descriptions of configuration file variable for
+	   feature CONF.
+
+	2. Added Filters subsection to DESCRIPTION for feature FFF.
+
+	3. Added description of -c option for feature CONF.
+
+	4. Added caveat that the -l option is not available under
+	   Windows for feature WIN32.
+
+	5. Added description of -T option for feature TEMP.
+
+	6. Added CONFIGURATION FILE section for feature CONF.
+
+	7. Added Filters subsection to EXAMPLES for feature FFF.
+
+	8. Expanded EXIT STATUS section to list specific exit codes.
+
+	9. Added compress(1), gunzip(1), gzip(1), uncompress(1), and
+	   swish++.conf(4) to SEE ALSO section.
+
+* man/man1/extract.1
+
+	1. Added descriptions of configuration file variable for
+	   feature CONF.
+
+	5. Added caveat that the -l option is not available under
+	   Windows for feature WIN32.
+
+	6. Expanded EXIT STATUS section to list specific exit codes.
+
+	7. Added swish++.conf to FILES section for feature CONF.
+
+	8. Performed following substitution:
+
+		s/the.index/swish++.index/
+
+	9. Added swish++.conf(4) to SEE ALSO section for feature CONF.
+
+* man/man1/search.1
+
+	1. Added decription of -c option for feature CONF.
+
+	2. Added CONFIGURATION FILE section for feature CONF.
+
+	3. Expanded EXIT STATUS section to list specific exit codes.
+
+	4. Added swish++.conf to FILES section for feature CONF.
+
+	5. Performed following substitution:
+
+		s/the.index/swish++.index/
+
+	6. Added swish++.conf(4) to SEE ALSO section for feature CONF.
+
+* man/man4/Makefile
+
+	1. Corresponding change to swish++.index.4 item #1.
+
+	2. Added swish++.conf.4 for feature CONF.
+
+* man/man4/swish++.index.4
+
+	1. This file was renamed from swish++.4.
+
+* search.c
+
+	1. Performed following substitution:
+
+		s/bool stem_words/StemWords stem_words/
+
+	   for feature CONF.
+
+	2. Corresponding change as html.h #1.
+
+	3. Corresponding change to extract.c item #C.
+
+	4. Corresponding change to extract.c item #5.
+
+	5. Corresponding change to extract.c item #A.
+
+* stop_words.c
+
+	1. Added local static variable to constructor.
+
+	2. Corresponding change to extract.c item #C.
+
+* stop_words.h
+
+	1. Removed private static data member.
+
+* swish++.conf
+
+	1. Added template configuration for feature FFF.
+
+* token.c
+
+	1. Performed following substitution:
+
+		s/fake_ansi.h/platform.h/
+
+	   since bool is now required.
+
+* util.c
+	
+	1. Moved stat_buf here from directory.h.
+
+	2. Added parse_config_file() for feature CONF.
+
+* util.h
+
+	1. Corresponding change to util.c item #1.
+
+	2. Moved file test functions here from directory.h.
+
+	3. orresponding change to util.c item #2.
+
+* version.h
+
+	1. Updated version to "3.0".
+
+* word_index.c
+
+	1. Removed #include "fake_ansi.h" since bool is now required.
+
+* word_index.h
+
+	1. Removed #include "fake_ansi.h" since bool is now required.
+
+* word_info.h
+
+	1. Corresponding change as html.h #1.
+
+
+*******************************************************************************
 2.0.1
 *******************************************************************************
 
@@ -58,6 +516,10 @@ CHANGES, file-by-file
 
 	3. In skip_html_tag(), changed return type to "bool" and added
 	   "return" statements for bug fix ACP.
+
+* version.h
+
+	1. Updated version to "2.0.1".
 
 
 *******************************************************************************
