@@ -51,7 +51,7 @@ using namespace std;
 {
 	conf<int>::parse_value( line );
 	if ( operator int() > WordThreshold_Default && ::geteuid() != 0 ) {
-		error()	<< '"' << name() << "\" may be increased only by root: "
+		error()	<< "value may be increased only by root: "
 			"permission denied" << endl;
 		::exit( Exit_Not_Root );
 	}
