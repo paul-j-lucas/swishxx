@@ -44,7 +44,7 @@
 // in 2.96, but for earlier versions we define std::iterator here ourselves:
 // the definition is copied/pasted from stl_iterator.h.
 //
-#if	 defined(__GNUC__) && __GNUC__ <= 2 && __GNUC_MINOR__ <= 95 && \
+#if	 defined(PJL_GCC_295) && \
 	 defined(__STL_NO_NAMESPACES) && \
 	!defined(__STL_USE_NAMESPACES)
 namespace std {
