@@ -335,10 +335,6 @@ namespace PJL {
 	if ( !destructing_ ) {
 		destructing_ = true;
 		::pthread_cancel( thread_ );
-		//
-		// Wait until the thread is really dead.
-		//
-		while ( !::pthread_kill( thread_, 0 ) ) ;
 	}
 }
 
