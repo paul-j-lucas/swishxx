@@ -212,6 +212,12 @@ static void		write_word_index( ostream&, off_t* );
 	//
 	max_out_limit( RLIMIT_DATA );
 #endif
+#ifdef	RLIMIT_FSIZE
+	//
+	// Max-out the file-size creation potential.
+	//
+	max_out_limit( RLIMIT_FSIZE );
+#endif
 #ifdef	RLIMIT_NOFILE				/* SVR4 */
 	//
 	// Max-out the number of file descriptors we can have open to be able
