@@ -105,22 +105,29 @@
 	}
 
 	//
-	// Skip the file if either the set of unacceptable extensions contains
-	// the candidate or the set of acceptable extensions doesn't.
+	// Skip the file if the set of unacceptable extensions contains the
+	// candidate.
 	//
 	if ( exclude_extensions.contains( ext ) ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: extension excluded)\n";
 		return;
 	}
+
 	//
 	// We save a copy of the iterator so we can access it later to see if
 	// the extension is an HTML extension.
 	//
 	IncludeExtension::const_iterator const
 		inc_ext = include_extensions.find( ext );
+
+	//
+	// Skip the file if the set of acceptable extensions doesn't contain
+	// the candidate, but only if there was at least one acceptable
+	// extension specified.
+	//
 	bool const found_ext = inc_ext != include_extensions.end();
-	if ( exclude_extensions.empty() && !found_ext ) {
+	if ( !include_extensions.empty() && !found_ext ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: extension not included)\n";
 		return;
@@ -168,6 +175,9 @@
 			return;
 		}
 
+	//
+	// We can (finally!) open the (possibly post-filtered) file.
+	//
 	file_vector file( file_name );
 	if ( !file ) {
 		if ( verbosity > 3 )
