@@ -26,7 +26,7 @@
 // local
 #include "config.h"
 #include "conf_var.h"
-#include "fake_ansi.h"
+#include "platform.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES

@@ -20,7 +20,7 @@
 */
 
 // local
-#include "fake_ansi.h"
+#include "platform.h"
 #include "util.h"			/* for char_buffer_pool<> */
 
 #ifndef	PJL_NO_NAMESPACES
