@@ -22,27 +22,44 @@
 #ifndef IncludeExtension_H
 #define IncludeExtension_H
 
+// standard
+#include <map>
+#include <string>
+
 // local
-#include "conf_set.h"
+#include "conf_var.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class IncludeExtension : public conf_set
+	class IncludeExtension :
+		public conf_var, public std::map< std::string, bool >
 //
 // DESCRIPTION
 //
-//	An IncludeExtension is-a conf_set containing the set of filename
+//	An IncludeExtension is-a conf_var containing the set of filename
 //	extensions of files to include during either indexing or extraction.
+//	Additionally, an extension can be inserted marked as being one for HTML
+//	files.
 //
-//	This is the same as either index's or extract's -e command-line
-//	option.
+//	This is the same as either index's or extract's -e and index's -h
+//	command-line option.
 //
 //*****************************************************************************
 {
 public:
-	IncludeExtension() : conf_set( "IncludeExtension" ) { }
+	IncludeExtension() : conf_var( "IncludeExtension" ) {
+		alias_name( "HTMLExtension" );
+	}
+
+	bool contains( key_type s ) const { return find( s ) != end(); }
+	void insert( key_type extension, bool is_html_ext = false ) {
+		(*this)[ extension ] = is_html_ext;
+	}
+private:
+	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	reset() { clear(); }
 };
 
 #endif	/* IncludeExtension_H */
