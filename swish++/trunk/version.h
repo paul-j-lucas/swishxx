@@ -2,7 +2,7 @@
 **	SWISH++
 **	version.h
 **
-**	Copyright (C) 1998  Paul J. Lucas
+**	Copyright (C) 2001  Paul J. Lucas
 **
 **	This program is free software; you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -22,6 +22,6 @@
 #ifndef	version_H
 #define	version_H
 
-char const	version[] = "5.3";
+char const	version[] = "5.3.1";
 
 #endif	/* version_H */
