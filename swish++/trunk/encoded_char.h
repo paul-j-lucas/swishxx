@@ -401,8 +401,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 //*****************************************************************************
 {
 	ECR_CI const temp = *this;
-	operator++();
-	return temp;
+	return ++*this, temp;
 }
 
 //*****************************************************************************
