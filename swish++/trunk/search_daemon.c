@@ -31,6 +31,7 @@
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <fstream>
 #include <iostream>
+#include <signal.h>
 #include <sys/resource.h>		/* for RLIMIT_* */
 #include <sys/socket.h>			/* for bind(3), socket(3), etc. */
 #include <sys/un.h>			/* for sockaddr_un */
@@ -63,6 +64,7 @@ using namespace std;
 void	detach_from_terminal();
 int	open_tcp_socket();
 int	open_unix_socket();
+void	set_signal_handlers();
 
 //*****************************************************************************
 //
@@ -181,6 +183,8 @@ int	open_unix_socket();
 		::exit( Exit_No_Change_Dir );
 	}
 #endif	/* DEBUG_threads */
+
+	set_signal_handlers();
 
 	////////// Accept requests ////////////////////////////////////////////
 
@@ -361,6 +365,29 @@ int	open_unix_socket();
 		::exit( Exit_No_Unix_Listen );
 	}
 	return fd;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void set_signal_handlers()
+//
+// DESCRIPTION
+//
+//	Set the disposition for various signals.
+//
+//*****************************************************************************
+{
+	struct sigaction sa;
+	::memset( &sa, 0, sizeof sa );
+	//
+	// Ignore SIGPIPE when we try to sent to clients that are no longer
+	// connected; instead, we deal with the EPIPE error.
+	//
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = SA_RESTART;
+	::sigaction( SIGPIPE, &sa, 0 );
 }
 
 #endif	/* SEARCH_DAEMON */
