@@ -471,9 +471,8 @@ no_put_back:
 		case token::no_token:
 			return false;
 
-		case token::not_token:
 #ifdef	FEATURE_word_pos
-		{
+		case token::not_token: {
 			token const t2( query );
 			if ( t2 != token::near_token ) {
 				query.put_back( t2 );
@@ -482,8 +481,6 @@ no_put_back:
 			t_type = token::not_near_token;
 		}
 		case token::near_token:
-#else
-			break;
 #endif
 		case token::and_token:
 		case token::or_token:
