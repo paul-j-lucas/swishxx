@@ -26,6 +26,7 @@
 #include <cstring>
 
 // local
+#include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
 #include "entities.h"
@@ -764,16 +765,20 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		if (	find_attribute( name_att, "name" ) &&
 			find_attribute( content_att, "content" )
 		) {
-			// Do not index the words in the value of the CONTENT
-			// attribute if either the value of the NAME attribute
-			// (canonicalized to lower case) is among the set of
-			// meta names to exclude or not among the set to
-			// include.
-			//
-			int const meta_id = find_meta( to_lower( name_att ) );
-			if ( meta_id == No_Meta_ID )
-				return;
-
+			int meta_id;
+			if ( associate_meta ) {
+				//
+				// Do not index the words in the value of the
+				// CONTENT attribute if either the value of the
+				// NAME attribute (canonicalized to lower case)
+				// is among the set of meta names to exclude or
+				// not among the set to include.
+				//
+				meta_id = find_meta( to_lower( name_att ) );
+				if ( meta_id == No_Meta_ID )
+					return;
+			} else
+				meta_id = No_Meta_ID;
 			//
 			// Index the words in the value of the CONTENT
 			// attribute marking them as being associated with the

@@ -27,6 +27,7 @@
 #include <string>
 
 // local
+#include "AssociateMeta.h"
 #include "auto_vec.h"
 #include "config.h"
 #include "IncludeMeta.h"
@@ -448,14 +449,18 @@ bool				header_cmp(
 			continue;
 		}
 
-		//
-		// Potentially index the works in all other headers where the
-		// words in the value of the headers are associated with the
-		// names of the headers as meta names.
-		//
-		int const meta_id = find_meta( kv.key );
-		if ( meta_id == No_Meta_ID )
-			continue;
+		int meta_id;
+		if ( associate_meta ) {
+			//
+			// Potentially index the words in the value of the
+			// header where they are associated with the name of
+			// the header as a meta name.
+			//
+			if ( (meta_id = find_meta( kv.key )) == No_Meta_ID )
+				continue;
+		} else
+			meta_id = No_Meta_ID;
+
 		encoded_char_range const e(
 			kv.value_begin, kv.value_end, Seven_Bit
 		);
