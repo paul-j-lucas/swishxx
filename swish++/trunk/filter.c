@@ -22,7 +22,11 @@
 // standard
 #include <cstdlib>			/* for abort(3), system(3) */
 #include <cstring>
+#ifdef	WIN32
+#include <stdlib.h>			/* for _sleep(3) */
+#else
 #include <unistd.h>			/* for sleep(3) */
+#endif
 
 // local
 #include "config.h"
@@ -69,7 +73,11 @@ using namespace std;
 		//
 		if ( ++attempt_count > Fork_Attempts )
 			return 0;
+#ifdef	WIN32
+		::_sleep( Fork_Sleep );
+#else
 		::sleep( Fork_Sleep );
+#endif
 	}
 	return exit_code ? 0 : target_file_.c_str();
 }
