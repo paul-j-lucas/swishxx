@@ -42,56 +42,67 @@
 using namespace PJL;
 using namespace std;
 
-//
-// This is a simple struct used to pass a bunch of function arguments around as
-// a single unit.
-//
-struct parse_args {
-    typedef and_node::child_node_list and_node_list_type;
-    typedef query_node::pool_type node_pool_type;
+typedef and_node::child_node_list and_node_list_type;
+typedef query_node::pool_type node_pool_type;
 
-    and_node_list_type  and_nodes;
-    bool                ignore;
-    int                 meta_id;
-    query_node*         node;
+//
+// This is a struct to bundle all the 'q'uery-wide arguments to the various
+// parse_*() functions.
+//
+struct parse_q_args {
     node_pool_type&     node_pool;
     token_stream&       query;
     stop_word_set&      stop_words_found;
 #ifdef  FEATURE_word_pos
-    bool&               got_near;
+    bool                got_near;
 #endif
 
-    parse_args( node_pool_type &p, token_stream &t, stop_word_set &s
+    parse_q_args( node_pool_type &p, token_stream &q, stop_word_set &s ) :
+        node_pool( p ), query( q ), stop_words_found( s )
 #ifdef  FEATURE_word_pos
-        , bool &b
-#endif
-    ) :
-        node_pool( p ), query( t ), stop_words_found( s ),
-        meta_id( Meta_ID_None )
-#ifdef  FEATURE_word_pos
-        , got_near( b )
-#endif
-    {
-    }
-
-    parse_args( parse_args const &a ) :
-        meta_id( a.meta_id ), node_pool( a.node_pool ), query( a.query ),
-        stop_words_found( a.stop_words_found )
-#ifdef  FEATURE_word_pos
-        , got_near( a.got_near )
+        , got_near( false )
 #endif
     {
     }
 private:
-    parse_args& operator=( parse_args const& ); // forbid assignment
+    parse_q_args( parse_q_args const& );            // forbid copy
+    parse_q_args& operator=( parse_q_args const& ); // forbid assignment
+};
+
+//
+// This is a struct to bundle all the 'r'eference arguments to the various
+// parse_*() functions.
+//
+struct parse_r_args {
+    and_node_list_type  and_nodes;
+    bool                ignore;
+    query_node*         node;
+
+    parse_r_args() { }
+private:
+    parse_r_args( parse_r_args const& );            // forbid copy
+    parse_r_args& operator=( parse_r_args const& ); // forbid assignment
+};
+
+//
+// This is a struct to bundle all the 'v'alue arguments to the various
+// parse_*() functions.
+//
+struct parse_v_args {
+    int meta_id;
+
+    parse_v_args() : meta_id( Meta_ID_None ) { }
+    // default copy constructor is OK
+private:
+    parse_v_args& operator=( parse_v_args const& ); // forbid assignment
 };
 
 extern index_segment files, meta_names, stop_words, words;
 
-static bool parse_meta( parse_args& );
-static bool parse_primary( parse_args& );
-static bool parse_query2( parse_args& );
-static bool parse_relop( token_stream&, token::type& );
+static bool parse_meta   ( parse_q_args&, parse_r_args&, parse_v_args );
+static bool parse_primary( parse_q_args&, parse_r_args&, parse_v_args );
+static bool parse_query2 ( parse_q_args&, parse_r_args&, parse_v_args );
+static bool parse_relop  ( token_stream&, token::type& );
 
 //*****************************************************************************
 //
@@ -181,33 +192,30 @@ static bool parse_relop( token_stream&, token::type& );
 //
 //*****************************************************************************
 {
-    parse_args::node_pool_type node_pool;
+    node_pool_type node_pool;
 
-#ifdef  FEATURE_word_pos
-    bool got_near = false;
-    parse_args args( node_pool, query, stop_words_found, got_near );
-#else
-    parse_args args( node_pool, query, stop_words_found );
-#endif
-    if ( !parse_query2( args ) )
+    parse_q_args q_args( node_pool, query, stop_words_found );
+    parse_r_args r_args;
+    parse_v_args v_args;
+    if ( !parse_query2( q_args, r_args, v_args ) )
         return false;
 
 #ifdef  FEATURE_word_pos
-    if ( args.got_near ) {
+    if ( q_args.got_near ) {
         assert_index_has_word_pos_data();
         //
         // We got a "near" somewhere in the query: walk the tree and distirbute
         // the terms of all the near nodes.
         //
         near_node::distributor const d( 0 );
-        args.node = args.node->visit( d );
+        r_args.node = r_args.node->visit( d );
 #       ifdef DEBUG_eval_query
-        args.node->print( cerr );
+        r_args.node->print( cerr );
         cerr << endl;
 #       endif
     }
 #endif  /* FEATURE_word_pos */
-    args.node->eval( results );
+    r_args.node->eval( results );
     return true;
 }
 
@@ -215,7 +223,8 @@ static bool parse_relop( token_stream&, token::type& );
 //
 // SYNOPSIS
 //
-        bool parse_query2( parse_args &args )
+        bool parse_query2( parse_q_args &q_args, parse_r_args& r_args,
+                           parse_v_args v_args )
 //
 // DESCRIPTION
 //
@@ -252,7 +261,11 @@ static bool parse_relop( token_stream&, token::type& );
 //
 // PARAMETERS
 //
-//      args    The query arguments.
+//      q_args  The query-wide arguments.
+//
+//      r_args  The query reference arguments.
+//
+//      v_args  The query value arguments.
 //
 // RETURN VALUE
 //
@@ -265,7 +278,7 @@ static bool parse_relop( token_stream&, token::type& );
 //
 //*****************************************************************************
 {
-    if ( !parse_meta( args ) )
+    if ( !parse_meta( q_args, r_args, v_args ) )
         return false;
 
     //
@@ -273,18 +286,19 @@ static bool parse_relop( token_stream&, token::type& );
     // followed by a "rest" in the grammar.
     //
     token::type relop;
-    while ( parse_relop( args.query, relop ) ) {
-        parse_args args_rhs( args );
-        if ( !parse_meta( args_rhs ) )
+    while ( parse_relop( q_args.query, relop ) ) {
+        parse_r_args r_args_rhs;
+        parse_v_args v_args_rhs( v_args );
+        if ( !parse_meta( q_args, r_args_rhs, v_args_rhs ) )
             return false;
-        if ( args.ignore ) {
-            if ( !args_rhs.ignore ) {           // results are simply the RHS
-                args.node = args_rhs.node;
-                args.ignore = false;
+        if ( r_args.ignore ) {
+            if ( !r_args_rhs.ignore ) {         // results are simply the RHS
+                r_args.node = r_args_rhs.node;
+                r_args.ignore = false;
             }
             continue;
         }
-        if ( args_rhs.ignore )                  // results are simply the LHS
+        if ( r_args_rhs.ignore )                // results are simply the LHS
             continue;
 
         switch ( relop ) {
@@ -294,7 +308,7 @@ static bool parse_relop( token_stream&, token::type& );
                 // Defer performing the "and" until later so that all the
                 // "and"s at the same level can be performed together.
                 //
-                args.and_nodes.push_back( args_rhs.node );
+                r_args.and_nodes.push_back( r_args_rhs.node );
                 break;
 
 #ifdef  FEATURE_word_pos
@@ -304,39 +318,41 @@ static bool parse_relop( token_stream&, token::type& );
                 // Ensure that neither child node of the near_node we want to
                 // create is a not_node since it's nonsensical.
                 //
-                if ( dynamic_cast<not_node*>( args_rhs.node ) )
+                if ( dynamic_cast<not_node*>( r_args_rhs.node ) )
                     return false;
-                query_node *const lhs_node = args.and_nodes.empty() ?
-                    args.node : new and_node( args.node_pool, args.and_nodes );
+                query_node *const lhs_node = r_args.and_nodes.empty() ?
+                    r_args.node :
+                    new and_node( q_args.node_pool, r_args.and_nodes );
                 if ( dynamic_cast<not_node*>( lhs_node ) )
                     return false;
                 //
                 // If both child nodes have meta IDs specified, then they must
                 // be equal; if not, the results must be empty.
                 //
-                if ( args    .meta_id != Meta_ID_None &&
-                     args_rhs.meta_id != Meta_ID_None &&
-                     args    .meta_id != args_rhs.meta_id
+                if ( v_args.    meta_id != Meta_ID_None &&
+                     v_args_rhs.meta_id != Meta_ID_None &&
+                     v_args.    meta_id != v_args_rhs.meta_id
                 ) {
-                    args.node = new empty_node;
+                    r_args.node = new empty_node;
                     break;
                 }
-                args.got_near = true;
-                args.node = relop == token::tt_not_near ?
-                    new not_near_node( args.node_pool, lhs_node,
-                                       args_rhs.node ) :
-                    new near_node( args.node_pool, lhs_node, args_rhs.node );
+                q_args.got_near = true;
+                r_args.node = relop == token::tt_not_near ?
+                    new not_near_node( q_args.node_pool, lhs_node,
+                                       r_args_rhs.node ) :
+                    new near_node( q_args.node_pool, lhs_node,
+                                   r_args_rhs.node );
                 break;
             }
 #endif  /* FEATURE_word_pos */
 
             case token::tt_or:
-                args.node = new or_node(
-                    args.node_pool,
-                    args.and_nodes.empty() ?
-                        args.node :
-                        new and_node( args.node_pool, args.and_nodes ),
-                    args_rhs.node
+                r_args.node = new or_node(
+                    q_args.node_pool,
+                    r_args.and_nodes.empty() ?
+                        r_args.node :
+                        new and_node( q_args.node_pool, r_args.and_nodes ),
+                    r_args_rhs.node
                 );
                 break;
 
@@ -351,9 +367,9 @@ static bool parse_relop( token_stream&, token::type& );
         }
     }
 
-    if ( !args.and_nodes.empty() ) {
-        args.and_nodes.push_back( args.node );
-        args.node = new and_node( args.node_pool, args.and_nodes );
+    if ( !r_args.and_nodes.empty() ) {
+        r_args.and_nodes.push_back( r_args.node );
+        r_args.node = new and_node( q_args.node_pool, r_args.and_nodes );
     }
     return true;
 }
@@ -362,7 +378,8 @@ static bool parse_relop( token_stream&, token::type& );
 //
 // SYNOPSIS
 //
-        bool parse_meta( parse_args &args )
+        bool parse_meta( parse_q_args& q_args, parse_r_args& r_args,
+                         parse_v_args v_args )
 //
 // DESCRIPTION
 //
@@ -370,7 +387,11 @@ static bool parse_relop( token_stream&, token::type& );
 //
 // PARAMETERS
 //
-//      args    The query arguments.
+//      q_args  The query-wide arguments.
+//
+//      r_args  The query reference arguments.
+//
+//      v_args  The query value arguments.
 //
 // RETURN VALUE
 //
@@ -378,28 +399,27 @@ static bool parse_relop( token_stream&, token::type& );
 //
 //*****************************************************************************
 {
-    token const t( args.query );
+    token const t( q_args.query );
     if ( t == token::tt_word ) {                // meta name ...
-        token const t2( args.query );
+        token const t2( q_args.query );
         if ( t2 == token::tt_equal ) {          // ... followed by '='
             less<char const*> const comparator;
             word_range const range = ::equal_range(
                 meta_names.begin(), meta_names.end(),
                 t.lower_str(), comparator
             );
-            args.meta_id = range.first != meta_names.end() &&
+            v_args.meta_id = range.first != meta_names.end() &&
                 !comparator( t.lower_str(), *range.first )
             ?
                 get_meta_id( range.first ) : Meta_ID_Not_Found;
             goto parsed_meta_id;
         }
-        args.query.put_back( t2 );
+        q_args.query.put_back( t2 );
     }
-    args.query.put_back( t );
-    args.meta_id = Meta_ID_None;
+    q_args.query.put_back( t );
 
 parsed_meta_id:
-    return parse_primary( args );
+    return parse_primary( q_args, r_args, v_args );
 }
 
 //*****************************************************************************
@@ -484,7 +504,8 @@ parsed_meta_id:
 //
 // SYNOPSIS
 //
-        bool parse_primary( parse_args &args )
+        bool parse_primary( parse_q_args& q_args, parse_r_args& r_args,
+                            parse_v_args v_args )
 //
 // DESCRIPTION
 //
@@ -492,7 +513,11 @@ parsed_meta_id:
 //
 // PARAMETERS
 //
-//      args    The query arguments.
+//      q_args  The query-wide arguments.
+//
+//      r_args  The query reference arguments.
+//
+//      v_args  The query value arguments.
 //
 // RETURN VALUE
 //
@@ -500,10 +525,10 @@ parsed_meta_id:
 //
 //*****************************************************************************
 {
-    args.ignore = false;
-    args.node = new empty_node;
+    r_args.ignore = false;
+    r_args.node = new empty_node;
     word_range range;
-    token t( args.query );
+    token t( q_args.query );
 
     switch ( t ) {
 
@@ -520,7 +545,7 @@ parsed_meta_id:
                     comparator
                 )
             ) {
-                args.stop_words_found.insert( t.str() );
+                q_args.stop_words_found.insert( t.str() );
 #               ifdef DEBUG_parse_query
                 cerr << "---> word \"" << t.str() << "\" (ignored: not OK)\n";
 #               endif
@@ -528,7 +553,7 @@ parsed_meta_id:
                 // The following "return true" indicates that a word was parsed
                 // successfully, not that we found the word.
                 //
-                return args.ignore = true;
+                return r_args.ignore = true;
             }
             //
             // Look up the word.
@@ -548,7 +573,7 @@ parsed_meta_id:
         }
 
         case token::tt_word_star: {
-            less_n< char const* > const comparator( t.length() );
+            less_n<char const*> const comparator( t.length() );
             //
             // Look up all matching words.
             //
@@ -570,9 +595,9 @@ parsed_meta_id:
 #           ifdef DEBUG_parse_query
             cerr << "---> '('\n";
 #           endif
-            if ( !parse_query2( args ) )
+            if ( !parse_query2( q_args, r_args, v_args ) )
                 return false;
-            args.query >> t;
+            q_args.query >> t;
 #           ifdef DEBUG_parse_query
             if ( t == token::tt_rparen )
                 cerr << "---> ')'\n";
@@ -583,23 +608,23 @@ parsed_meta_id:
 #           ifdef DEBUG_parse_query
             cerr << "---> begin not\n";
 #           endif
-            parse_args temp( args );
-            if ( !parse_meta( temp ) )
+            parse_r_args r_temp;
+            if ( !parse_meta( q_args, r_temp, v_args ) )
                 return false;
 #           ifdef DEBUG_parse_query
             cerr << "---> end not\n";
 #           endif
-            if ( temp.node )
-                args.node = new not_node( args.node_pool, temp.node );
+            if ( r_temp.node )
+                r_args.node = new not_node( q_args.node_pool, r_temp.node );
             return true;
-        }
+                            }
 
         default:
             return false;
     }
 
 #   ifdef DEBUG_parse_query
-    cerr << "---> word \"" << t.str() << "\", meta-ID=" << args.meta_id << "\n";
+    cerr << "---> word \"" << t.str() << "\", meta-ID=" << v_args.meta_id << "\n";
 #   endif
     //
     // Found a word or set of words matching a wildcard: iterate over all files
@@ -609,21 +634,21 @@ parsed_meta_id:
     // Also start off assuming that this (sub)query should be ignored until we
     // get at least one word that isn't too frequent.
     //
-    args.ignore = true;
+    r_args.ignore = true;
     FOR_EACH_IN_PAIR( index_segment, range, i ) {
         file_list const list( i );
         if ( is_too_frequent( list.size() ) ) {
-            args.stop_words_found.insert( t.lower_str() );
+            q_args.stop_words_found.insert( t.lower_str() );
 #           ifdef DEBUG_parse_query
             cerr << "---> word \"" << t.str() << "\" (ignored: too frequent)\n";
 #           endif
         } else
-            args.ignore = false;
+            r_args.ignore = false;
     }
 
-    if ( !args.ignore )
-        args.node =
-            new word_node( args.node_pool, t.str(), range, args.meta_id );
+    if ( !r_args.ignore )
+        r_args.node = new word_node( q_args.node_pool, t.str(), range,
+                                     v_args.meta_id );
     return true;
 }
 /* vim:set et sw=4 ts=4: */
