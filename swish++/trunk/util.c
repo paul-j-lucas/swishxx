@@ -33,8 +33,6 @@
 using namespace std;
 #endif
 
-extern char const*	me;
-
 char_buffer_pool<128,5>	lower_buf;
 struct stat		stat_buf;	// someplace to do a stat(2) in
 
@@ -125,10 +123,8 @@ struct stat		stat_buf;	// someplace to do a stat(2) in
 //*****************************************************************************
 {
 	register char *p = lower_buf.next();
-
 	while ( begin != end )
 		*p++ = to_lower( *begin++ );
 	*p = '\0';
-
 	return lower_buf.current();
 }
