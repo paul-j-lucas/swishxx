@@ -65,20 +65,44 @@ namespace PJL {
 //
 //*****************************************************************************
 {
-#	ifdef DEBUG_threads
-	cerr << "thread_destroy()\n";
-#	endif
-
 	thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
+#	ifdef DEBUG_threads
+	cerr << "thread_destroy(" << (long)t << ')' << endl;
+#	endif
+	//
+	// If this thread was cancelled, it was probably cancelled while in a
+	// pthread_cond_wait() with the q_lock mutex.  Since the mutex lock is
+	// reacquired, we have to unlock it.  However, we don't know for sure
+	// that the mutex was locked, so this mutex was created to have the
+	// PTHREAD_MUTEX_ERRORCHECK attribute that renders unlocking a mutex
+	// that is not locked harmless.
+	//
+	::pthread_mutex_unlock( &t->q_lock_->mutex_ );
+
+	//
+	// Now that we've unlocked the q_lock mutex, we're done with it:
+	// decrememt the reference count.
+	//
+	t->q_lock_->dec_ref();
+
 	if ( !t->destructing_ ) {
 		//
 		// The thread's destructor is not presently executing.  Set the
-		// destructing_ flag so it will not call pthread_cancel() or
-		// pthread_exit(), and then delete it.
+		// destructing_ flag so it will not call pthread_cancel() and
+		// then delete it.  Since thread::operator delete() is
+		// overridden to do nothing, "delete" only calls the destructor
+		// and no memory is deallocated.
 		//
 		t->destructing_ = true;
 		delete t;
 	}
+
+	//
+	// Since no memory is deallocated by thread::operator delete(), call
+	// the global operator delete() to deallocate the storage for the
+	// object.
+	//
+	::operator delete( t );
 }
 
 //*****************************************************************************
@@ -148,6 +172,12 @@ namespace PJL {
 	//
 	::pthread_mutex_lock( &t->run_lock_ );
 
+	//
+	// Since this is a new running thread that will make use of the q_lock,
+	// increment its reference count.
+	//
+	t->q_lock_ = t->pool_.q_lock_->inc_ref();
+
 	while ( true ) {
 
 #		ifdef DEBUG_threads
@@ -155,7 +185,7 @@ namespace PJL {
 #		endif
 
 		result = 0;
-		::pthread_mutex_lock( &t->pool_.q_lock_ );
+		::pthread_mutex_lock( &t->q_lock_->mutex_ );
 		while ( t->pool_.queue_.empty() ) {
 			::pthread_mutex_lock( &t->pool_.t_lock_ );
 			if ( t->pool_.threads_.size() <= t->pool_.min_threads_){
@@ -167,7 +197,7 @@ namespace PJL {
 				::pthread_cond_signal( &t->pool_.t_idle_ );
 				::pthread_cond_wait(
 					&t->pool_.q_not_empty_,
-					&t->pool_.q_lock_
+					&t->q_lock_->mutex_
 				);
 				result = 0;	// ignore possible prior timeout
 				continue;
@@ -184,7 +214,7 @@ namespace PJL {
 				// exit the POSIX thread so the "delete" below
 				// will never return.
 				//
-				::pthread_mutex_unlock( &t->pool_.q_lock_ );
+				::pthread_mutex_unlock( &t->q_lock_->mutex_ );
 				delete t;
 				internal_error
 					<< "thread_main(): "
@@ -201,7 +231,7 @@ namespace PJL {
 			future.tv_nsec = 0;
 			::pthread_cond_signal( &t->pool_.t_idle_ );
 			result = ::pthread_cond_timedwait(
-				&t->pool_.q_not_empty_, &t->pool_.q_lock_,
+				&t->pool_.q_not_empty_, &t->q_lock_->mutex_,
 				&future
 			);
 			//
@@ -222,7 +252,7 @@ namespace PJL {
 		thread_pool::thread::argument_type const
 			arg = t->pool_.queue_.front();
 		t->pool_.queue_.pop();
-		::pthread_mutex_unlock( &t->pool_.q_lock_ );
+		::pthread_mutex_unlock( &t->q_lock_->mutex_ );
 
 #		ifdef DEBUG_threads
 		cerr << "thread_main(): performing task\n";
@@ -272,7 +302,7 @@ namespace PJL {
 	: pool_( p ), destructing_( false )
 {
 #	ifdef DEBUG_threads
-	cerr << "thread::thread()\n";
+	cerr << "thread::thread(" << (long)this << ')' << endl;
 #	endif
 
 	//
@@ -284,7 +314,7 @@ namespace PJL {
 	//
 	if ( ::pthread_mutex_init( &run_lock_, 0 ) ) {
 		error() << "could not init thread mutex\n";
-		::exit( Exit_No_Init_Mutex );
+		::exit( Exit_No_Init_Thread_Mutex );
 	}
 	::pthread_mutex_lock( &run_lock_ );
 
@@ -309,14 +339,11 @@ namespace PJL {
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
-	cerr << "thread::~thread()\n";
+	cerr << "thread::~thread(" << (long)this << ')' << endl;
 #	endif
 	::pthread_mutex_destroy( &run_lock_ );
 
-	::pthread_mutex_lock( &pool_.destructing_lock_ );
-	bool const pool_destructing = pool_.destructing_;
-	::pthread_mutex_unlock( &pool_.destructing_lock_ );
-	if ( !pool_destructing ) {
+	if ( !pool_.destructing_ ) {
 		//
 		// We are committing suicide.  But first, we have to delete the
 		// pointer to us in our thread pool's set of threads.
@@ -333,9 +360,65 @@ namespace PJL {
 	}
 
 	if ( !destructing_ ) {
+		//
+		// We're not being called via the clean-up function, so set a
+		// flag to prevent the clean-up function from calling us when
+		// it eventually runs.
+		//
 		destructing_ = true;
-		::pthread_cancel( thread_ );
+		if ( ::pthread_equal( thread_, ::pthread_self() ) ) {
+			//
+			// This thread is committing suicide because there are
+			// more than the minimum number of threads and it timed
+			// out waiting for a task: call pthread_exit() in this
+			// case since it's cleaner than pthread_cancel().
+			//
+			::pthread_exit( 0 );
+		} else
+			::pthread_cancel( thread_ );
 	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void thread_pool::q_lock::dec_ref()
+//
+// DESCRIPTION
+//
+//	Decrement the reference count for the q_lock mutex.  If the count
+//	becomes zero, delete ourselves.
+//
+//*****************************************************************************
+{
+	::pthread_mutex_lock( &mutex_ );
+	if ( !--count_ )
+		delete this;
+	else
+		::pthread_mutex_unlock( &mutex_ );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	thread_pool::q_lock* thread_pool::q_lock::inc_ref()
+//
+// DESCRIPTION
+//
+//	Increment the reference count for the q_lock mutex.
+//
+// RETURN VALUE
+//
+//	Returns "this" for convenience.
+//
+//*****************************************************************************
+{
+	::pthread_mutex_lock( &mutex_ );
+	++count_;
+	::pthread_mutex_unlock( &mutex_ );
+	return this;
 }
 
 //*****************************************************************************
@@ -366,21 +449,24 @@ namespace PJL {
 //
 //*****************************************************************************
 	: min_threads_( min_threads ), max_threads_( max_threads ),
-	  destructing_( false ), timeout_( timeout )
+	  q_lock_( new q_lock ), destructing_( false ), timeout_( timeout )
 {
-	if (	::pthread_mutex_init( &t_busy_lock_, 0 ) ||
-		::pthread_mutex_init( &destructing_lock_, 0 ) ||
-		::pthread_mutex_init( &q_lock_, 0 ) ||
+	pthread_mutexattr_t at;
+	if (	::pthread_mutexattr_init( &at ) ||
+		::pthread_mutexattr_settype( &at, PTHREAD_MUTEX_ERRORCHECK ) ||
+		::pthread_mutex_init( &t_busy_lock_, 0 ) ||
+		::pthread_mutex_init( &q_lock_->mutex_, &at ) ||
 		::pthread_mutex_init( &t_lock_, 0 )
 	) {
 		error() << "could not init thread mutex\n";
-		::exit( Exit_No_Init_Mutex );
+		::exit( Exit_No_Init_Thread_Mutex );
 	}
+	::pthread_mutexattr_destroy( &at );
 	if (	::pthread_cond_init( &q_not_empty_, 0 ) ||
 		::pthread_cond_init( &t_idle_, 0 )
 	) {
 		error() << "could not init thread condition\n";
-		::exit( Exit_No_Init_Condition );
+		::exit( Exit_No_Init_Thread_Condition );
 	}
 
 	::pthread_mutex_lock( &t_lock_ );
@@ -406,13 +492,9 @@ namespace PJL {
 	//
 	// Set the destructing_ flag to prevent the thread destructor from
 	// removing itself from our set since we're deleting the whole set
-	// anyway, and, more importantly, to make it call pthread_cancel() on
-	// its POSIX thread rather than calling pthread_exit() on our POSIX
-	// thread.
+	// anyway.
 	//
-	::pthread_mutex_lock( &destructing_lock_ );
 	destructing_ = true;
-	::pthread_mutex_unlock( &destructing_lock_ );
 
 	::pthread_mutex_lock( &t_lock_ );
 	for ( thread_set::iterator
@@ -421,11 +503,17 @@ namespace PJL {
 		delete *t;
 	::pthread_mutex_unlock( &t_lock_ );
 
-	::pthread_cond_destroy( &q_not_empty_ );
+	//
+	// Since this thread_pool is being destroyed, decrement the reference
+	// count on the q_lock.  It may not become zero right now because there
+	// are threads that are still in the process of being cancelled (which
+	// is why a reference count is needed).
+	//
+	q_lock_->dec_ref();
+
 	::pthread_cond_destroy( &t_idle_ );
+	::pthread_cond_destroy( &q_not_empty_ );
 	::pthread_mutex_destroy( &t_lock_ );
-	::pthread_mutex_destroy( &q_lock_ );
-	::pthread_mutex_destroy( &destructing_lock_ );
 	::pthread_mutex_destroy( &t_busy_lock_ );
 }
 
@@ -449,10 +537,10 @@ namespace PJL {
 	cerr << "thread_pool::new_task()\n";
 #	endif
 
-	::pthread_mutex_lock( &q_lock_ );
+	::pthread_mutex_lock( &q_lock_->mutex_ );
 	queue_.push( arg );
 	::pthread_cond_signal( &q_not_empty_ );
-	::pthread_mutex_unlock( &q_lock_ );
+	::pthread_mutex_unlock( &q_lock_->mutex_ );
 
 	::pthread_mutex_lock( &t_lock_ );
 	::pthread_mutex_lock( &t_busy_lock_ );
