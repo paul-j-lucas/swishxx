@@ -164,7 +164,7 @@ static void parse_backslash( char const *&pos, char const *end );
 
     char const* c = e.begin_pos();
     while ( c != e.end_pos() ) {
-        register char const ch = iso8859_1_to_ascii( *c );
+        register char const ch = iso8859_1_to_ascii( *c++ );
 
         ////////// Collect a word /////////////////////////////////////////////
 
@@ -182,8 +182,8 @@ static void parse_backslash( char const *&pos, char const *end );
                 goto next_c;
             }
             in_word = false;                    // too big: skip chars
-            while ( ++c != e.end_pos() &&
-                    is_word_char( iso8859_1_to_ascii( *c ) ) )
+            while ( c != e.end_pos() &&
+                    is_word_char( iso8859_1_to_ascii( *c++ ) ) )
                 ;
             goto next_c;
         }
@@ -213,10 +213,10 @@ static void parse_backslash( char const *&pos, char const *end );
             //
             parse_man_macro( c, e.end_pos() );
         }
-next_c:
-        if ( c == e.end_pos() )
+
+next_c: if ( c == e.end_pos() )
             break;
-        newline = *c++ == '\n';
+        newline = ch == '\n';
     }
     if ( in_word ) {
         //
@@ -368,7 +368,7 @@ next_c:
 //
 //*****************************************************************************
 {
-    if ( c == end || !move_if_match( ++c, end, "SH" ) )
+    if ( !move_if_match( c, end, "SH" ) )
         return;
     char const *const nl = find_newline( c, end );
     if ( !nl )
@@ -385,7 +385,7 @@ next_c:
     ////////// Parse the name of the section heading. /////////////////////////
 
     char    word[ Word_Hard_Max_Size + 1 ];
-    int len = 0;
+    int     len = 0;
 
     while ( c != nl ) {
         register char ch = *c++;
@@ -397,7 +397,7 @@ next_c:
             word[ len++ ] = tolower( ch );
             continue;
         }
-        while ( c != nl && is_word_char( *c++ ) ) ; // too big
+        while ( c != nl && is_word_char( *c++ ) ) ; // too big: skip chars
         return;
     }
     while ( len > 0 && word[ len - 1 ] == '-' )
