@@ -82,7 +82,39 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-	void thread_pool_thread_destroy( void *p )
+	void thread_pool_decrement_busy( void *p )
+//
+// DESCRIPTION
+//
+//	This is a clean-up function that is called to decrement the number of
+//	threads that are "busy" performing a task.  It gets called either when
+//	(1) thread::main() completes its task or (2) if the thread gets killed
+//	while performing its task.  A clean-up function is used to guarantee
+//	that this happends for case (2).
+//
+// NOTE
+//
+//	This function is declared extern "C" since it is called via the C
+//	library function pthread_cleanup_push() and, because it's a C function,
+//	it expects C linkage.
+//
+// PARAMETERS
+//
+//	p	Pointer to an instance of a thread_pool::thread.
+//
+//*****************************************************************************
+{
+	thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
+	MUTEX_LOCK( &t->pool_.t_busy_lock_, true );
+	--t->pool_.t_busy_;
+	MUTEX_UNLOCK();
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void thread_pool_thread_cleanup( void *p )
 //
 // DESCRIPTION
 //
@@ -104,7 +136,7 @@ namespace PJL {
 {
 	thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
 #	ifdef DEBUG_threads
-	cerr << "thread_pool_thread_destroy(" << (long)t << ')' << endl;
+	cerr << "thread_pool_thread_cleanup(" << (long)t << ')' << endl;
 #	endif
 	if ( !t->destructing_ ) {
 		//
@@ -174,7 +206,7 @@ namespace PJL {
 	// that we get removed from our thread pool's set of threads even if
 	// the derived class author calls pthread_exit() directly.
 	//
-	pthread_cleanup_push( thread_pool_thread_destroy, p );
+	pthread_cleanup_push( thread_pool_thread_cleanup, p );
 
 	register thread_pool::thread *const
 		t = static_cast<thread_pool::thread*>( p );
@@ -200,16 +232,21 @@ namespace PJL {
 
 		MUTEX_LOCK( &t->pool_.q_lock_, false );
 		while ( t->pool_.queue_.empty() ) {
-			bool le;
+			bool no;
 			MUTEX_LOCK( &t->pool_.t_lock_, false );
-			le = t->pool_.threads_.size() <= t->pool_.min_threads_;
-			MUTEX_UNLOCK();
-			if ( le ) {
+			no = t->pool_.threads_.size() <= t->pool_.min_threads_;
+			if ( no ) {
 				//
 				// There are no threads beyond those originally
-				// created: wait indefinitely for a task.
+				// created: signal that we're idle ...
 				//
 				::pthread_cond_signal( &t->pool_.t_idle_ );
+			}
+			MUTEX_UNLOCK();
+			if ( no ) {
+				//
+				// ... and wait indefinitely for a task.
+				//
 				::pthread_cond_wait(
 					&t->pool_.q_not_empty_,
 					&t->pool_.q_lock_
@@ -261,10 +298,13 @@ namespace PJL {
 		MUTEX_LOCK( &t->pool_.t_busy_lock_, true );
 		++t->pool_.t_busy_;
 		MUTEX_UNLOCK();
+		pthread_cleanup_push( thread_pool_decrement_busy, t );
 
+		DEFER_CANCEL();
 		arg = t->pool_.queue_.front();
 		t->pool_.queue_.pop();
-		MUTEX_UNLOCK();
+		RESTORE_CANCEL();
+		MUTEX_UNLOCK(); // t->pool_.q_lock_
 
 #		ifdef DEBUG_threads
 		cerr << "thread_pool_thread_main(): performing task" << endl;
@@ -276,9 +316,7 @@ namespace PJL {
 		cerr << "thread_pool_thread_main(): completed task" << endl;
 #		endif
 
-		MUTEX_LOCK( &t->pool_.t_busy_lock_, true );
-		--t->pool_.t_busy_;
-		MUTEX_UNLOCK();
+		pthread_cleanup_pop( true );
 	}
 
 	//
@@ -353,6 +391,8 @@ namespace PJL {
 #	ifdef DEBUG_threads
 	cerr << "thread::~thread(" << (long)this << ')' << endl;
 #	endif
+
+	DEFER_CANCEL();
 	::pthread_mutex_destroy( &run_lock_ );
 
 	if ( !pool_.destructing_ ) {
@@ -360,7 +400,7 @@ namespace PJL {
 		// We are committing suicide.  But first, we have to delete the
 		// pointer to us in our thread pool's set of threads.
 		//
-		MUTEX_LOCK( &pool_.t_lock_, true );
+		MUTEX_LOCK( &pool_.t_lock_, false );
 		pool_.threads_.erase( this );
 		MUTEX_UNLOCK();
 	} else {
@@ -370,6 +410,7 @@ namespace PJL {
 		// Therefore, we don't have to do anything.
 		//
 	}
+	RESTORE_CANCEL();
 
 	if ( !destructing_ ) {
 		//
@@ -533,7 +574,7 @@ namespace PJL {
 			::pthread_cond_wait( &t_idle_, &t_lock_ );
 		}
 	}
-	MUTEX_UNLOCK();
+	MUTEX_UNLOCK(); // t_lock_
 }
 
 #ifndef	PJL_NO_NAMESPACES
