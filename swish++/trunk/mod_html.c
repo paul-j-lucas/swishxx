@@ -137,13 +137,13 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	register unsigned n = 0;
 	for ( register char const *e = entity_buf; *e; ++e ) {
 		if ( is_hex ) {
-			if ( !isxdigit( *e ) )		// bad hex num
+			if ( !is_xdigit( *e ) )		// bad hex num
 				return ' ';
-			n = (n << 4) | ( isdigit( *e ) ?
+			n = (n << 4) | ( is_digit( *e ) ?
 				*e - '0' : tolower( *e ) - 'a' + 10
 			);
 		} else {
-			if ( !isdigit( *e ) )		// bad dec num
+			if ( !is_digit( *e ) )		// bad dec num
 				return ' ';
 			n = n * 10 + *e - '0';
 		}
@@ -206,7 +206,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 {
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		if ( !isalpha( *c ) ) {
+		if ( !is_alpha( *c ) ) {
 			++c;
 			continue;
 		}
@@ -217,15 +217,15 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		register char const *a = attribute;
 		while ( !c.at_end() && to_lower( *c ) == *a )
 			++c, ++a;
-		while ( !c.at_end() && ( isalpha( *c ) || *c == '-' ) )
+		while ( !c.at_end() && ( is_alpha( *c ) || *c == '-' ) )
 			++c;
-		while ( !c.at_end() && isspace( *c ) )
+		while ( !c.at_end() && is_space( *c ) )
 			++c;
 		if ( c.at_end() )
 			break;
 		if ( *c != '=' )		// we do only NAME=VALUE form
 			continue;
-		while ( !(++c).at_end() && isspace( *c ) )
+		while ( !(++c).at_end() && is_space( *c ) )
 			;
 		if ( c.at_end() )
 			break;
@@ -247,7 +247,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 			if ( quote ) {		// stop at matching quote only
 				if ( *c == quote )
 					break;
-			} else if ( isspace( *c ) )
+			} else if ( is_space( *c ) )
 				break;		// stop at whitespace
 
 		if ( !*a ) {			// attribute name matched...
@@ -487,7 +487,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 				continue;
 			while ( !c.at_end() && *c == '-' )
 				++c;
-			while ( !c.at_end() && isspace( *c ) )
+			while ( !c.at_end() && is_space( *c ) )
 				++c;
 			if ( !c.at_end() && *c++ == '>' )
 				break;
@@ -598,7 +598,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		//
 		register char *to = tag_buf;
 		encoded_char_range::const_iterator from = name;
-		while ( !from.at_end() && !isspace( *from ) ) {
+		while ( !from.at_end() && !is_space( *from ) ) {
 			//
 			// Check to see if the name is too long to be a valid
 			// one for an HTML element: if it is, invalidate it by
