@@ -49,8 +49,7 @@ mail_indexer::stack_type	mail_indexer::boundary_stack_;
 bool				mail_indexer::did_last_header;
 
 bool				header_cmp(
-					file_vector::const_iterator &pos,
-					file_vector::const_iterator end,
+					char const *&pos, char const *end,
 					char const *tag
 				);
 
@@ -59,8 +58,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	bool boundary_cmp(
-		register file_vector::const_iterator c,
-		register file_vector::const_iterator end,
+		register char const *c, register char const *end,
 		register char const *boundary
 	)
 //
@@ -71,11 +69,8 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c		The iterator to use.  It is presumed to be positioned
-//			at the first character on a line.  If the boundary
-//			string matches, it is repositioned at the first
-//			character past boundary string; otherwise, it is not
-//			touched.
+//	c		The pointer presumed to be positioned at the first
+//			character on a line.
 //
 //	end		The iterator marking the end of the file.
 //
@@ -97,10 +92,7 @@ bool				header_cmp(
 //
 // SYNOPSIS
 //
-	inline bool is_newline(
-		file_vector::const_iterator c,
-		file_vector::const_iterator end
-	)
+	inline bool is_newline( char const *c, char const *end )
 //
 // DESCRIPTION
 //
@@ -109,9 +101,10 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator to use: it is assumed not to be at "end".
+//	c	The pointer to start comparing at; it is assumed not to be at
+//		"end".
 //
-//	end	The iterator marking the end of the range to check.
+//	end	The pointer to the end of the range to check.
 //
 // RETURN VALUE
 //
@@ -188,8 +181,7 @@ bool				header_cmp(
 		// Find the newline ending the header and its value and see if
 		// it's the Subject header.
 		//
-		file_vector::const_iterator const
-			nl = find_newline( c, file.end() );
+		char const *const nl = find_newline( c, file.end() );
 		if ( nl == file.end() )
 			break;
 		if ( header_cmp( c, nl, "subject:" ) )
@@ -210,8 +202,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	bool header_cmp(
-		file_vector::const_iterator &c,
-		register file_vector::const_iterator end,
+		char const *&c, register char const *end,
 		register char const *header
 	)
 //
@@ -222,12 +213,12 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator to use.  It is presumed to be positioned at the
-//		first character after the '<'.  If the tag name matches, it is
-//		repositioned at the first character past the name; otherwise,
-//		it is not touched.
+//	c	The pointer presumed to be positioned at the first character
+//		after the '<'.  If the tag name matches, it is repositioned at
+//		the first character past the name; otherwise, it is not
+//		touched.
 //
-//	end	The iterator marking the end of the file.
+//	end	The pointer to the end of the file.
 //
 //	header	The string to compare against; it must be in lower case.
 //
@@ -237,7 +228,7 @@ bool				header_cmp(
 //
 //*****************************************************************************
 {
-	register file_vector::const_iterator d = c;
+	register char const *d = c;
 	while ( *header && d != end && *header++ == to_lower( *d++ ) ) ;
 	return *header ? false : c = d;
 }
@@ -246,9 +237,7 @@ bool				header_cmp(
 //
 // SYNOPSIS
 //
-	void mail_indexer::index_enriched(
-		register encoded_char_range::const_iterator &c
-	)
+	void mail_indexer::index_enriched( encoded_char_range const &e )
 //
 // DESCRIPTION
 //
@@ -262,9 +251,7 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator marking the beginning of the text to index.
-//
-//	end	The iterator marking the end of the text to index.
+//	e	The encoded character range to index.
 //
 // SEE ALSO
 //
@@ -279,6 +266,7 @@ bool				header_cmp(
 	bool		in_word = false;
 	int		len;
 
+	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
 		register file_vector::value_type ch = iso8859_to_ascii( *c++ );
 
@@ -338,8 +326,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	mail_indexer::message_type mail_indexer::index_headers(
-		register file_vector::const_iterator &c,
-		register file_vector::const_iterator end
+		register char const *&c, register char const *end
 	)
 //
 // DESCRIPTION
@@ -351,10 +338,10 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator to use.  It must be positioned at the first
-//		character in the file.  It is left after the last header.
+//	c	The pointer that must be positioned at the first character in
+//		the file.  It is left after the last header.
 //
-//	end	The iterator marking the end of the file.
+//	end	The pointer to the end of the file.
 //
 // RETURN VALUE
 //
@@ -470,7 +457,7 @@ bool				header_cmp(
 		int const meta_id = find_meta( kv.key );
 		if ( meta_id == No_Meta_ID )
 			continue;
-		encoded_char_range::const_iterator e(
+		encoded_char_range const e(
 			kv.value_begin, kv.value_end, Seven_Bit
 		);
 		indexer::index_words( e, meta_id );
@@ -484,8 +471,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	void mail_indexer::index_multipart(
-		register file_vector::const_iterator &c,
-		register file_vector::const_iterator end
+		register char const *&c, register char const *end
 	)
 //
 // DESCRIPTION
@@ -495,9 +481,9 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator marking the beginning of the text to index.
+//	c	The pointer to beginning of the text to index.
 //
-//	end	The iterator marking the end of the text to index.
+//	end	The poitner to the end of the text to index.
 //
 // SEE ALSO
 //
@@ -508,12 +494,12 @@ bool				header_cmp(
 //
 //*****************************************************************************
 {
-	register file_vector::const_iterator nl;
+	register char const *nl;
 	//
 	// Find the beginning boundary string.
 	//
 	while ( (nl = find_newline( c, end )) != end ) {
-		file_vector::const_iterator const d = c;
+		char const *const d = c;
 		c = skip_newline( nl, end );
 		if ( boundary_cmp( d, nl, boundary_stack_.back().c_str() ) )
 			break;
@@ -522,11 +508,11 @@ bool				header_cmp(
 		return;
 
 	while ( c != end ) {
-		file_vector::const_iterator const part_begin = c;
+		char const *const part_begin = c;
 		//
 		// Find the ending boundary string.
 		//
-		file_vector::const_iterator part_end = end;
+		char const *part_end = end;
 		while ( (nl = find_newline( c, end )) != end ) {
 			part_end = c;
 			c = skip_newline( nl, end );
@@ -539,7 +525,7 @@ bool				header_cmp(
 		//
 		// Index the words between the boundaries.
 		//
-		encoded_char_range::const_iterator part( part_begin, part_end );
+		encoded_char_range const part( part_begin, part_end );
 		index_words( part );
 
 		//
@@ -556,8 +542,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	void mail_indexer::index_vcard(
-		register file_vector::const_iterator &c,
-		file_vector::const_iterator end
+		register char const *&c, char const *end
 	)
 //
 // DESCRIPTION
@@ -567,9 +552,9 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator to use.
+//	c	The pointer to the start of the vCard.
 //
-//	end	The iterator marking the end of the vCard.
+//	end	The pointer to the end of the vCard.
 //
 // CAVEAT
 //
@@ -597,7 +582,7 @@ bool				header_cmp(
 		// Index the words in the value of the type marking them as
 		// being associated with the name of the type.
 		//
-		encoded_char_range::const_iterator e(
+		encoded_char_range const e(
 			kv.value_begin, kv.value_end, Eight_Bit
 		);
 		indexer::index_words( e, meta_id );
@@ -609,8 +594,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	/* virtual */ void mail_indexer::index_words(
-		encoded_char_range::const_iterator &c,
-		int
+		encoded_char_range const &e, int
 	)
 //
 // DESCRIPTION
@@ -619,17 +603,17 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator whose range should be indexed.
+//	e	The encoded character range to be indexed.
 //
 //*****************************************************************************
 {
+	encoded_char_range::const_iterator c = e.begin();
 	message_type const type( index_headers( c.pos(), c.end_pos() ) );
 	if ( type.first == Not_Indexable || type.second == Binary ) {
 		//
 		// The attachment is something we can't index so just skip over
-		// it by setting the pos to end.
+		// it.
 		//
-		c.pos( c.end_pos() );
 		return;
 	}
 
@@ -637,45 +621,38 @@ bool				header_cmp(
 	// Create a new iterator having the same range but the Content-
 	// Transfer-Encoding given in the headers.
 	//
-	encoded_char_range::const_iterator c2(
-		c.pos(), c.end_pos(), type.second
-	);
+	encoded_char_range const e2( c.pos(), c.end_pos(), type.second );
 
 	switch ( type.first ) {
 
 		case Text_Plain:
-			indexer::index_words( c2 );
+			indexer::index_words( e2 );
 			break;
 
 		case Text_Enriched:
-			index_enriched( c2 );
+			index_enriched( e2 );
 			break;
 #ifdef	MOD_HTML
 		case Text_HTML: {
 			static indexer *const
 				html = indexer::find_indexer( "HTML" );
-			html->index_words( c2 );
+			html->index_words( e2 );
 			break;
 		}
 #endif
 		case Text_vCard:
-			index_vcard( c2.pos(), c2.end_pos() );
+			index_vcard( c.pos(), c.end_pos() );
 			break;
 
 		case Message_RFC822:
-			index_words( c2 );
+			index_words( e2 );
 			break;
 
 		case Multipart:
-			index_multipart( c2.pos(), c2.end_pos() );
+			index_multipart( c.pos(), c.end_pos() );
 			boundary_stack_.pop_back();
 			return;
 	}
-
-	//
-	// Propagate the position back to the original iterator.
-	//
-	c.pos( c2.pos() );
 }
 
 //*****************************************************************************
@@ -700,8 +677,7 @@ bool				header_cmp(
 // SYNOPSIS
 //
 	/* static */ bool mail_indexer::parse_header(
-		register file_vector::const_iterator &c,
-		register file_vector::const_iterator end,
+		register char const *&c, register char const *end,
 		key_value *kv
 	)
 //
@@ -712,12 +688,12 @@ bool				header_cmp(
 //
 // PARAMETERS
 //
-//	c	The iterator to use.  It must be positioned at the first
-//		character in a header.  It is left after the last character in
-//		the value, or, if there are no more headers, after the blank
-//		line marking the end of the headers.
+//	c	The pointer that must be positioned at the first character in a
+//		header.  It is left after the last character in the value, or,
+//		if there are no more headers, after the blank line marking the
+//		end of the headers.
 //
-//	end	The iterator marking the end of the range.
+//	end	The pointer to the end of the range.
 //
 //	kv	A pointer to the key_value to be modified only if a header is
 //		parsed.  The key is always converted to lower case.
@@ -733,7 +709,7 @@ bool				header_cmp(
 	if ( did_last_header )
 		return did_last_header = false;
 
-	file_vector::const_iterator header_begin, header_end, nl;
+	char const *header_begin, *header_end, *nl;
 
 	while ( 1 ) {
 		if ( (nl = find_newline( c, end )) == end )
