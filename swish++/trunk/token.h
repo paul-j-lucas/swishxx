@@ -27,7 +27,7 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"				/* for explicit */
+#include "fake_ansi.h"				/* for explicit, std */
 
 class token_stream;
 
