@@ -85,9 +85,14 @@ S_SOURCES:=	bcd.c \
 		conf_int.c \
 		conf_string.c \
 		index_segment.c \
+		file_info.c \
 		file_list.c \
 		option_stream.c \
 		query.c \
+		ResultsFormat.c \
+		results_formatter.c \
+		classic_formatter.c \
+		xml_formatter.c \
 		token.c \
 		stem_word.c \
 		util.c \
