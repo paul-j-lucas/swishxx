@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <cstdlib>			/* for atoi(3) */
 #include <cstring>
 #include <iostream>
 
@@ -27,7 +28,12 @@
 #include "auto_vec.h"
 #include "conf_int.h"
 #include "exit_codes.h"
+#include "platform.h"
 #include "util.h"
+
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 extern char const*	me;
 
@@ -77,7 +83,7 @@ extern char const*	me;
 		return *this;
 	}
 
-	cerr	<< error << '"' << name() << "\" value \""
+	error()	<< '"' << name() << "\" value \""
 		<< new_value << "\" not in range [" << min_ << '-';
 
 	if ( max_ == INT_MAX )
@@ -108,7 +114,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( !line || !*line ) {
-		cerr << error << '"' << name() << "\" has no value" << endl;
+		error() << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
 	auto_vec< char > const lower( to_lower_r( line ) );
@@ -122,6 +128,6 @@ extern char const*	me;
 		return;
 	}
 
-	cerr << error << '"' << name() << "\" has a non-numeric value" << endl;
+	error() << '"' << name() << "\" has a non-numeric value" << endl;
 	::exit( Exit_Config_File );
 }
