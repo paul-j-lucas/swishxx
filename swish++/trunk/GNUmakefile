@@ -41,13 +41,17 @@ CFLAGS:=	$(CCFLAGS) $(DEBUGFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
-DECODER_LIB:=	decoders/libdecoders.a
-DECODER_LIB_PATH:=-Ldecoders
-DECODER_LINK:=	-ldecoders
+CHARSET_LIB:=		charsets/libcharsets.a
+CHARSET_LIB_PATH:=	-Lcharsets
+CHARSET_LINK:=		-lcharsets
 
-MOD_LIBS:=	$(foreach mod,$(MOD_LIST),mod/$(mod)/libmod_$(mod).a)
-MOD_LIB_PATHS:=	$(foreach mod,$(MOD_LIST),-Lmod/$(mod))
-MOD_LINK:=	$(foreach mod,$(MOD_LIST),-lmod_$(mod))
+ENCODING_LIB:=		encodings/libencodings.a
+ENCODING_LIB_PATH:=	-Lencodings
+ENCODING_LINK:=		-lencodings
+
+MOD_LIBS:=		$(foreach mod,$(MOD_LIST),mod/$(mod)/libmod_$(mod).a)
+MOD_LIB_PATHS:=		$(foreach mod,$(MOD_LIST),-Lmod/$(mod))
+MOD_LINK:=		$(foreach mod,$(MOD_LIST),-lmod_$(mod))
 
 I_SOURCES:=	bcd.c \
 		mmap_file.c \
@@ -58,6 +62,7 @@ I_SOURCES:=	bcd.c \
 		conf_percent.c \
 		conf_set.c \
 		conf_string.c \
+		encoded_char.c \
 		ExcludeFile.c \
 		file_info.c \
 		file_list.c \
@@ -68,6 +73,7 @@ I_SOURCES:=	bcd.c \
 		index_segment.c \
 		init_modules.c \
 		init_mod_vars.c \
+		iso8859-1.c \
 		itoa.c \
 		option_stream.c \
 		stop_words.c \
@@ -80,7 +86,7 @@ ifdef WIN32
 I_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
 I_OBJECTS:=	$(I_SOURCES:.c=.o)
-I_LINK:=	$(MOD_LINK) $(DECODER_LINK) -lm
+I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PTHREAD_LIB) -lm
 
 S_SOURCES:=	bcd.c \
 		mmap_file.c \
@@ -93,6 +99,7 @@ S_SOURCES:=	bcd.c \
 		init_mod_vars.c \
 		file_info.c \
 		file_list.c \
+		iso8859-1.c \
 		option_stream.c \
 		query.c \
 		ResultsFormat.c \
@@ -132,6 +139,7 @@ E_SOURCES:=	mmap_file.c \
 		filter.c \
 		index_segment.c \
 		init_mod_vars.c \
+		iso8859-1.c \
 		option_stream.c \
 		postscript.c \
 		stop_words.c \
@@ -153,8 +161,9 @@ LIB_TARGET:=	WWW.pm
 extract: $(E_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(E_LINK)
 
-index: $(I_OBJECTS) $(DECODER_LIB) $(MOD_LIBS)
-	$(CC) $(CFLAGS) $(DECODER_LIB_PATH) $(MOD_LIB_PATHS) -o $@ $(I_OBJECTS) $(I_LINK)
+index: $(I_OBJECTS) $(CHARSET_LIB) $(ENCODING_LIB) $(MOD_LIBS)
+	$(CC) $(CFLAGS) $(CHARSET_LIB_PATH) $(ENCODING_LIB_PATH) \
+		$(MOD_LIB_PATHS) -o $@ $(I_OBJECTS) $(I_LINK)
 
 init_modules.c: mod/*/mod_*.h init_modules-sh
 	./init_modules-sh > $@ || $(RM) $@
@@ -165,7 +174,10 @@ init_mod_vars.c: mod/*/vars init_mod_vars-sh
 search: $(S_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(S_LINK)
 
-$(DECODER_LIB): FORCE
+$(CHARSET_LIB): FORCE
+	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
+
+$(ENCODING_LIB): FORCE
 	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
 
 $(MOD_LIBS): FORCE
@@ -223,7 +235,7 @@ uninstall:
 # Utility rules
 ##
 
-MAKE_SUBDIRS=	for dir in decoders man mod/*; \
+MAKE_SUBDIRS=	for dir in charsets encodings man mod/*; \
 		do [ -f $$dir/*akefile ] && $(MAKE) -C $$dir $1; \
 		done
 
