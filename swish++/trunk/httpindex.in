@@ -30,15 +30,20 @@ use FileHandle;
 use Getopt::Std;
 use IPC::Open2;
 
-use lib ( '%%I_LIB%%' );
+use lib '%%I_LIB%%';
 require WWW;
 
 $me = basename( $0 );
 
-$index_opts = 'f:F:i:p:s:t:';		# options from index(1) we accept
+# options from index(1) we accept
+$index_opts = 'c:C:e:E:f:F:G:h:i:m:M:p:s:t:T:';
 getopts( "${index_opts}dDv:" ) or die "$me: error in command-line options\n";
 die "$me: -d and -D are mutually exclusive\n" if $opt_d && $opt_D;
 
+##
+# We have to reconstruct a set of options and their arguments from the options
+# actually specified.
+##
 for ( split( /:/, $index_opts ) ) {
 	my $v = eval "\$opt_$_";
 	push( @index_opts, "-$_$v" ) if $v;
@@ -85,6 +90,10 @@ while ( <> ) {
 }
 close INDEX_STDIN;
 
+##
+# We must actually read the remaining output from 'index' regardless of whether
+# we print it otherwise 'index' might block.
+##
 while ( <INDEX_STDOUT> ) {
 	print if $opt_v;
 }
