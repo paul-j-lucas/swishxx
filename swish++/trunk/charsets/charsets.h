@@ -25,8 +25,10 @@
 // local
 #include "encoded_char.h"
 
-encoded_char_range::charset_type const US_ASCII   = 0;
-encoded_char_range::charset_type const ISO_8859_1 = 0;
+encoded_char_range::charset_type const US_ASCII		= 0;
+encoded_char_range::charset_type const ISO_8859_1	= 0;
+encoded_char_range::charset_type const UNKNOWN_CHARSET	=
+	reinterpret_cast<encoded_char_range::charset_type>( ~0 );
 
 #ifdef	CHARSET_utf7
 encoded_char_range::value_type charset_utf7(
@@ -38,6 +40,19 @@ encoded_char_range::value_type charset_utf7(
 
 #ifdef	CHARSET_utf8
 encoded_char_range::value_type charset_utf8(
+	encoded_char_range::pointer begin,
+	encoded_char_range::pointer &pos,
+	encoded_char_range::pointer end
+);
+#endif
+
+#ifdef	CHARSET_utf16
+encoded_char_range::value_type charset_utf16be(
+	encoded_char_range::pointer begin,
+	encoded_char_range::pointer &pos,
+	encoded_char_range::pointer end
+);
+encoded_char_range::value_type charset_utf16le(
 	encoded_char_range::pointer begin,
 	encoded_char_range::pointer &pos,
 	encoded_char_range::pointer end
