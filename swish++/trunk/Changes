@@ -2,6 +2,49 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* When compiling without the search daemon, search(1) wouldn't link because it
+  needs conf_enum.o and it wasn't compiled.
+
+  (This bug fix shall be know as big fix CEO.)
+
+* The file thread_pool.c didn't compile under FreeBSD.
+
+  (This bug fix shall be know as big fix BSD4.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. In "OS selection" section, added comment for Mac OS X.
+
+* GNUmakefile
+
+	1. Moved conf_enum.c so that it's always compiled for bug fix CEO.
+
+* INSTALL.unix
+
+	1. Added fact that g++ 2.95.2 works.
+	2. Added note about g++ 2.96.
+
+* thread_pool.c
+
+	1. Added "#ifndef FreeBSD" around use of PTHREAD_MUTEX_ERRORCHECK
+	   for bug fix BSD4.
+
+* version.h
+
+	1. Updated version to "5.4.3".
+
+
+*******************************************************************************
 5.4.2
 *******************************************************************************
 
