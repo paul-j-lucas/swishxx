@@ -182,8 +182,8 @@ ps pdf txt:
 # Install rules
 ##
 
-INITD_DIR:=	$(firstword $(shell ls -d /etc/init.d /etc/rc.d/init.d))
-LEVEL_DIR:=	$(firstword $(shell ls -d /etc/rc3.d /etc/rc.d/rc3.d))
+INITD_DIR:= $(firstword $(shell ls -d /etc/init.d /etc/rc.d/init.d 2>/dev/null))
+LEVEL_DIR:= $(firstword $(shell ls -d /etc/rc3.d /etc/rc.d/rc3.d 2>/dev/null))
 
 install: install_bin install_lib install_man install_conf
 
