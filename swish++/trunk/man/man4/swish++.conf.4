@@ -72,46 +72,50 @@ or
 \f(CWy\f1.
 Case is irrelevant.
 Variables of this type are:
-\f(CWRecurseSubdirs\f1
+.B RecurseSubdirs
 and
-\f(CWStemWords\f1.
+.BR StemWords .
 .SS Integer variables
 Variables of this type take one numeric argument.
 A special string of ``infinity'' is taken to mean
 ``the largest possible integer value.''
 Case is irrelevant.
 Variables of this type are:
-\f(CWResultsMax\f1,
-\f(CWTitleLines\f1,
-\f(CWVerbosity\f1,
-\f(CWWordFilesMax\f1,
+.BR ResultsMax ,
+.BR TitleLines ,
+.BR Verbosity ,
+.BR WordFilesMax ,
 and
-\f(CWWordPercentMax\f1.
+.BR WordPercentMax .
 .SS String variables
 Variables of this type take one argument that is the remainder of the line
 minus leading and trailing whitespace.
 Variables of this type are:
-\f(CWIndexFile\f1
+.B IndexFile
 and
-\f(CWStopWordFile\f1.
+.BR StopWordFile .
 .SS Set variables
 Variables of this type take one or more arguments separated by whitespace.
 Variables of this type are:
-\f(CWExcludeClass\f1,
-\f(CWIncludeExtension\f1,
-\f(CWExcludeExtension\f1,
-\f(CWIncludeMeta\f1,
+.BR ExcludeClass ,
+.BR IncludeExtension ,
+.BR ExcludeExtension ,
+.BR IncludeMeta ,
 and
-\f(CWExcludeMeta\f1.
+.BR ExcludeMeta .
 .SS Other variables
 Variables of this type are:
-\f(CWFilterExtension\f1
+.B FilterExtension
 (see FILTERS below).
 .SH FILTERS
-Via the \f(CWFilterExtension\f1 configuration file variable,
+Via the
+.H FilterExtension
+configuration file variable,
 files having particular extensions can be filtered
 prior to indexing or extraction.
-A \f(CWFilterExtension\f1 configuration file line is of the form:
+A
+.B FilterExtension
+configuration file line is of the form:
 .cS
 FilterExtension \f2extension command\fP
 .cE
@@ -161,24 +165,31 @@ If the extension of
 filename should be indexed or extracted
 (because it is among the set of extensions specified with either the
 .B \-e
-option or the \f(CWIncludeExtension\f1 variable
+option or the
+.B IncludeExtension
+variable
 or is not among the set specified with either the
 .B \-E
-option or the \f(CWExcludeExtension\f1 variable),
+option or the
+.B ExcludeExtension
+variable),
 then the filter(s) are executed to create it.
 (See the EXAMPLES.)
 .SH EXAMPLES
 .SS Filters
 To uncompress \f(CWgzip\f1'd and \f(CWcompress\f1'd files
-prior to indexing or extraction,
-the \f(CWFilterExtension\f1 variable lines in a configuration file would be:
+prior to indexing or extraction, the
+.B FilterExtension
+variable lines in a configuration file would be:
 .cS
-FilterExtension gz	gunzip -c %f > @E
-FilterExtension Z	uncompress -c %f > @E
+FilterExtension gz   gunzip -c %f > @E
+FilterExtension Z    uncompress -c %f > @E
 .cE
 Given that, a filename such as \f(CWfoo.txt.gz\f1 would become \f(CWfoo.txt\f1.
 If files having \f(CWtxt\f1 extensions should be indexed, then it will be.
-Note that the command on the \f(CWFilterExtension\f1 line must
+Note that the command on the
+.B FilterExtension
+line must
 .I not
 simply be:
 .cS
@@ -192,7 +203,7 @@ Here's an example to convert PDF to plain text for indexing using the
 .BR xpdf (1)
 package's \f(CWpdftotext\f1 command:
 .cS
-FilterExtension pdf	pdftotext %f @E.txt
+FilterExtension pdf  pdftotext %f @E.txt
 .cE
 Not that if used in conjunction with the uncompression filters above,
 then compressed PDF files will also be indexed, i.e.,

@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3extract\fP 1 "July 19, 1999" "SWISH++"
+.TH \f3extract\fP 1 "July 31, 1999" "SWISH++"
 .SH NAME
 extract \- SWISH++ text extractor
 .SH SYNOPSIS
@@ -60,15 +60,20 @@ and files in the specified directories;
 text from files in subdiretories of specified directories is also extracted
 by default (unless the
 .B \-r
-option or the \f(CWRecurseSubdirs\f1 variable is given).
+option or the
+.B RecurseSubdirs
+variable is given).
 Text is extracted from files either only if their filename extension
 is among the set specified with either the
 .B \-e
-option or the \f(CWIncludeExtension\f1 variable
-(unless standard input is used; see next paragraph)
+option or the
+.B IncludeExtension
+variable (unless standard input is used; see next paragraph)
 or is not among the set specified with either the
 .B \-E
-option or the \f(CWExcludeExtension\f1 variable.
+option or the
+.B ExcludeExtension
+variable.
 .PP
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to extract is instead taken from standard input (one per line).
@@ -86,7 +91,9 @@ In any case, care must be taken not to specify files or subdirectories
 in directories that are also specified:
 since directories are recursively extracted by default (unless the
 .B \-r
-option or the \f(CWRecurseSubdirs\f1 variable  is given),
+option or the
+.B RecurseSubdirs
+variable  is given),
 explicitly specifying a subdirectory or file in a directory that is also
 specified will result in those files being extracted more than once.
 (Unlike with indexing, this is harmless: it just wastes time.)
@@ -96,7 +103,9 @@ appended, e.g., ``\f(CWfoo.doc\fP'' becomes ``\f(CWfoo.doc.txt\fP''
 after extraction.
 However, extraction is not performed if the extracted text file exists.
 .SS Filters
-Via the \f(CWFilterExtension\f1 configuration file variable,
+Via the
+.B FilterExtension
+configuration file variable,
 files having particular extensions can be filtered prior to extraction.
 (See the examples in
 .BR swish++.conf (4).)
@@ -195,8 +204,11 @@ all the files in that directory are extracted
 .B \-e
 or
 .B \-E
-options),
-but subdirectories encountered are ignored
+options or the
+.B IncludeExtension
+or
+.B ExcludeExtension
+variables) but subdirectories encountered are ignored
 and therefore the files contained in them are not extracted.
 (This option is most useful when specifying the directories and files to extract
 via standard input.)
@@ -313,7 +325,7 @@ Unable to read stop-word file.
 Text extraction is not perfect, nor can be.
 .SH FILES
 .PD 0
-.TP 16
+.TP 18
 \f(CWswish++.conf\f1
 default configuration file name
 .PD

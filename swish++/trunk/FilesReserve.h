@@ -43,7 +43,7 @@
 //*****************************************************************************
 {
 public:
-	FilesReserve() : conf<int>( "FilesReserve", Files_Reserve_Default ) { }
+	FilesReserve() : conf<int>( "FilesReserve", FilesReserve_Default ) { }
 
 	FilesReserve& operator=( int i ) {
 		conf<int>::operator=( i );

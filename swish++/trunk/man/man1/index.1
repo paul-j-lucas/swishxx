@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "July 21, 1999" "SWISH++"
+.TH \f3index\f1 1 "July 31, 1999" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -53,15 +53,20 @@ and files in the specified directories;
 files in subdiretories of specified directories are also indexed by default
 (unless either the
 .B \-r
-option or the \f(CWRecurseSubdirs\f1 variable is given).
+option or the
+.B RecurseSubdirs
+variable is given).
 Files are indexed either only if their filename extension is among the set
 specified with either the
 .B \-e
-option or the \f(CWIncludeExtension\f1 variable
-(unless standard input is used; see next paragraph)
+option or the
+.B IncludeExtension
+variable (unless standard input is used; see next paragraph)
 or is not among the set specified with either the
 .B \-E
-option or the \f(CWExcludeExtension\f1 variable.
+option or the
+.B ExcludeExtension
+variable.
 .PP
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to index is instead taken from standard input (one per line).
@@ -70,7 +75,9 @@ filename extensions of files to index need not be specified explicitly:
 all files, regardless of extension
 (unless it is among the set not to index specified with either the
 .B \-E
-option or the \f(CWExcludeExtension\f1 variable), are indexed, i.e.,
+option or the
+.B ExcludeExtension
+variable), are indexed, i.e.,
 .B index
 assumes you know what you're doing when specifying filenames in this manner.
 .PP
@@ -78,7 +85,9 @@ In any case, care must be taken not to specify files or subdirectories
 in directories that are also specified:
 since directories are recursively indexed by default (unless either the
 .B \-r
-option or the \f(CWRecurseSubdirs\f1 variable  is given),
+option or the
+.B RecurseSubdirs
+variable is given),
 explicitly specifying a subdirectory or file in a directory that is also
 specified will result in those files being indexed more than once.
 .PP
@@ -153,8 +162,11 @@ leading and trailing spaces are removed.)
 2.
 If an HTML element contains a \f(CWCLASS\f1 attribute whose value is among
 the set of class names specified as those not to index (via one or more
+of either the
 .B \-C
-options),
+option or the
+.B ExcludeClass
+variable),
 then all the text up to the tag that ends the element will not be indexed.
 .IP ""
 For an element that has an optional end tag, ``the tag that ends the element''
@@ -185,7 +197,11 @@ are indexed associated with the meta name specified as the value of the
 .B \-m
 and
 .B \-M
-options.)
+options or the
+.B IncludeClass
+or
+.B ExcludeClass
+variables.)
 Meta names can later be queried against specifically using
 .BR search (1).
 .TP
@@ -213,7 +229,9 @@ is legal, but
 .B index
 allows it.
 .SS Filters
-Via the \f(CWFilterExtension\f1 configuration file variable,
+Via the
+.B FilterExtension
+configuration file variable,
 files having particular extensions can be filtered prior to indexing.
 (See FILTERS in
 .BR swish++.conf (4).)
@@ -266,7 +284,7 @@ The default is 1000.
 .TP
 .BI \-i index_file
 The name of the generated index file.
-The default is \f(CWthe.index\f1 in the present working directory.
+The default is \f(CWswish++.index\f1 in the present working directory.
 .TP
 .B \-l
 Follow symbolic links during indexing.
@@ -311,12 +329,15 @@ If you want to keep all words regardless, specify 101.
 Do not recursively index the files in subdirectories,
 that is: when a directory is encountered,
 all the files in that directory are indexed
-(modulo the filename extensions specified via the
+(modulo the filename extensions specified via either the
 .B \-e
 or
 .B \-E
-options),
-but subdirectories encountered are ignored
+options or the
+.B IncludeExtension
+or
+.B ExcludeExtension
+variables) but subdirectories encountered are ignored
 and therefore the files contained in them are not indexed.
 (This option is most useful when specifying the directories and files to index
 via standard input.)
@@ -492,9 +513,11 @@ For example, if every page of a web site contains a navigation menu such as:
 or a common header and footer, then, ordinarily,
 those words would be indexed for every page and therefore be discarded
 because they would be too frequent.
-However, via the
+However, via either the
 .B \-C
-option, one or more class names can be specified and then HTML elements
+option or the
+.B ExcludeClass
+variable, one or more class names can be specified and then HTML elements
 belonging to one of those classes will not have the text
 up to the tag that ends them indexed.
 Given a class name of, say, \f(CWno_index\f1, the above menu can be changed to:
@@ -579,7 +602,7 @@ Character encodings specified either in \f(CWMETA\f1 elements
 or via the \f(CWcharset\f1 attribute in other elements are ignored.
 .SH FILES
 .PD 0
-.TP 16
+.TP 18
 \f(CWswish++.conf\f1
 default configuration file name
 .TP
