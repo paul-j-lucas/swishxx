@@ -28,6 +28,7 @@
 #include "config.h"
 #include "filter.h"
 #include "platform.h"
+#include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -103,8 +104,7 @@ using namespace std;
 	// Determine the base name of the file in case we need it for 'b' or
 	// 'B' substitutions.
 	//
-	char const *const slash = ::strrchr( file_name, '/' );
-	char const *const base_name = slash ? slash + 1 : file_name;
+	char const *const base_name = basename( file_name );
 
 	//
 	// For this kind of string manipulation, the C++ string class is much
