@@ -33,9 +33,7 @@ extern index_segment directories;
 //
 // SYNOPSIS
 //
-	void classic_formatter::pre(
-		stop_word_set const &stop_words, int results
-	) const
+	void classic_formatter::pre( stop_word_set const &stop_words ) const
 //
 // DESCRIPTION
 //
@@ -45,8 +43,6 @@ extern index_segment directories;
 // PARAMETERS
 //
 //	stop_words	The set of stop words.
-//
-//	results		The number of search results.
 //
 //*****************************************************************************
 {
@@ -61,7 +57,7 @@ extern index_segment directories;
 #endif
 		out_ << '\n';
 	}
-	out_ << "# results: " << results << '\n';
+	out_ << "# results: " << results_ << '\n';
 }
 
 //*****************************************************************************

@@ -438,11 +438,11 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	results_formatter const *format;
 	if ( results_format == "xml" )
-		format = new xml_formatter( out );
+		format = new xml_formatter( out, results.size() );
 	else
-		format = new classic_formatter( out );
+		format = new classic_formatter( out, results.size() );
 
-	format->pre( stop_words_found, results.size() );
+	format->pre( stop_words_found );
 	if ( !out )
 		return;
 	if ( skip_results < results.size() && max_results ) {
