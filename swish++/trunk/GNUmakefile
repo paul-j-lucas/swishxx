@@ -20,11 +20,10 @@
 ##
 
 CPP_TARGET:=	index search extract
-PERL_TARGET:=	httpindex splitmail
-ifndef WIN32
-PERL_TARGET+=	searchc
-endif
-TARGET:=	$(CPP_TARGET) $(PERL_TARGET)
+OTHER_TARGET:=	httpindex searchc searchmonitor splitmail
+BIN_TARGET:=	$(CPP_TARGET) $(OTHER_TARGET)
+INITD_TARGET:=	searchd
+TARGET:=	$(BIN_TARGET) $(INITD_TARGET)
 
 .PHONY: all
 all: $(TARGET)
@@ -183,12 +182,14 @@ ps pdf txt:
 # Install rules
 ##
 
-install: install_bin install_lib install_man
+INITD_DIR:=	$(firstword $(shell ls -d /etc/init.d /etc/rc.d/init.d))
+LEVEL_DIR:=	$(firstword $(shell ls -d /etc/rc3.d /etc/rc.d/rc3.d))
 
-install_bin: $(TARGET) $(I_BIN)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(CPP_TARGET) $(I_BIN)
+install: install_bin install_lib install_man install_conf
+
+install_bin: $(BIN_TARGET) $(I_BIN)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(BIN_TARGET) $(I_BIN)
 	cd $(I_BIN) && $(STRIP) $(CPP_TARGET)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(PERL_TARGET) $(I_BIN)
 
 install_lib: $(I_LIB)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(LIB_TARGET) $(I_LIB)
@@ -196,12 +197,22 @@ install_lib: $(I_LIB)
 install_man:
 	@$(MAKE) -C man install
 
+install_conf:
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) swish++.conf /etc
+
 $(I_BIN) $(I_LIB):
 	$(MKDIR) $@
 
+install_sysv: $(INITD_TARGET)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(INITD_TARGET) $(INITD_DIR)
+	$(RM) $(LEVEL_DIR)/[SK]99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(LEVEL_DIR)/S99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(LEVEL_DIR)/K99$(INITD_TARGET)
+
 uninstall:
-	cd $(I_BIN) && $(RM) $(TARGET)
+	cd $(I_BIN) && $(RM) $(BIN_TARGET)
 	cd $(I_LIB) && $(RM) $(LIB_TARGET)
+	$(RM) $(INITD_DIR)/$(INITD_TARGET) $(LEVEL_DIR)/[SK]99$(INITD_TARGET)
 	@$(MAKE) -C man $@
 
 ##
