@@ -95,7 +95,11 @@ STRIP=		strip
 CC=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
-CCFLAGS=	$(SEARCH_DAEMON) $(WIN32) -O3 # -g -pg
+#GCC_WARNINGS=	-W -Wcast-align -Wcast-qual -Winline -Wpointer-arith -Wshadow -Wswitch -Wtraditional -Wuninitialized -Wunused
+#		Warning flags specific to gcc/g++.  Unless you are modifying
+#		the source code, you should leave this commented out.
+
+CCFLAGS=	$(GCC_WARNINGS) $(SEARCH_DAEMON) $(WIN32) -O3
 #		Additional flags for the C++ compiler:
 #
 #		-g	Include symbol-table information in object file.  (You
