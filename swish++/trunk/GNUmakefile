@@ -54,7 +54,6 @@ I_SOURCES:=	bcd.c \
 		conf_percent.c \
 		conf_set.c \
 		conf_string.c \
-		directory.c \
 		encoded_char.c \
 		ExcludeFile.c \
 		file_info.c \
@@ -115,7 +114,6 @@ E_SOURCES:=	mmap_file.c \
 		conf_int.c \
 		conf_set.c \
 		conf_string.c \
-		directory.c \
 		ExcludeFile.c \
 		ExtractFile.c \
 		filter.c \
