@@ -59,7 +59,7 @@ extern "C" void	thread_destroy( void* );
 // SEE ALSO
 //
 //	Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
-//	"Pthreads Programming," O'Reilly & Associates, Sebestabol, CA, 1996.
+//	"Pthreads Programming," O'Reilly & Associates, Sebastopol, CA, 1996.
 //
 //*****************************************************************************
 {

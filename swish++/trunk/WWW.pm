@@ -200,7 +200,7 @@ sub private_extract {
 # SEE ALSO
 #
 #	Larry Wall, et al.  "Programming Perl," 2nd ed., O'Reilly and
-#	Associates, Inc., Sebestapol, CA, 1996, p. 73.
+#	Associates, Inc., Sebastopol, CA, 1996, p. 73.
 #
 ###############################################################################
 {
