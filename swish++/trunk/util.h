@@ -51,7 +51,7 @@ int const		PATH_MAX = 1024;
 // local
 #include "config.h"
 #include "file_vector.h"
-#include "platform.h"				/* for PJL_NO_SYMBOLIC_LINKS */
+#include "platform.h"			/* for PJL_NO_SYMBOLIC_LINKS */
 
 extern char const*	me;
 
@@ -87,6 +87,37 @@ private:
 	int	next_buf_index_;
 	char	*cur_buf_;
 };
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline file_vector::const_iterator skip_line(
+		file_vector::const_iterator c,
+		file_vector::const_iterator end
+	)
+//
+// DESCRIPTION
+//
+//	Skips all characters up to, but not including, a newline.
+//
+// PARAMETERS
+//
+//	c	The iterator to use.
+//
+//	end	The iterator marking the end of the range to check.
+//
+// RETURN VALUE
+//
+//	Returns an iterator positioned either at a newline if found, or at
+//	"end" if not.
+//
+//*****************************************************************************
+{
+	while ( c != end && *c != '\n' )
+		++c;
+	return c;
+}
 
 //*****************************************************************************
 //
