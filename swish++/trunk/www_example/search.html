@@ -1,32 +1,36 @@
-<HTML LANG="en-US">
-<HEAD>
-  <TITLE>Sample SWISH++ Search Form</TITLE>
-  <META NAME="description" CONTENT="
-    This is a toy example HTML form to show how to interface SWISH++ to a
-    web-based search form.
-  ">
-  <META NAME="Author" CONTENT="Paul J. Lucas">
-</HEAD>
-<BODY>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
 
-<SCRIPT LANGUAGE="JavaScript">
-  <!--
-  function not_empty( the_field ) {
-      if ( the_field.value == "" ) {
-          alert( "The " + the_field.name + " field is required." );
-          the_field.focus();
-          return false;
-      }
-      return true;
-  }
-  // -->
-</SCRIPT>
+<head>
+  <title>Sample SWISH++ Search Form</title>
+  <meta name="description"
+   content="This is a toy example XHTML form to show how to interface SWISH++ to a web-based search form." />
+  <meta name="author" content="Paul J. Lucas" />
+  <meta name="copyright" content="Copyright (C) 2001 Paul J. Lucas" />
+</head>
 
-<FORM ACTION="search.cgi" onSubmit="return not_empty( Search )">
-  <INPUT TYPE=text NAME="Search" SIZE=30><BR>
-  <INPUT TYPE=checkbox NAME="Stem"><B>Stem&nbsp;words</B>
-  <INPUT TYPE=submit VALUE="Search">
-</FORM>
+<body>
 
-</BODY>
-</HTML>
+  <script language="JavaScript">
+    <!--
+    function not_empty( the_field ) {
+        if ( the_field.value == "" ) {
+            alert( "The " + the_field.name + " field is required." );
+            the_field.focus();
+            return false;
+        }
+        return true;
+    }
+    // -->
+  </script>
+
+  <form action="search.cgi" onsubmit="return not_empty( Search )">
+    <input type="text" name="Search" size="30" /><br />
+    <input type="checkbox" name="Stem"><b>Stem&nbsp;words</b>
+    <input type="submit" value="Search" />
+  </form>
+
+</body>
+</html>
