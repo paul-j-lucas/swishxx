@@ -99,14 +99,20 @@ using namespace std;
 	//
 	// Check a filter command's %@ substitutions to ensure they're valid,
 	// that there are at least two of them and that exactly one of them is
-	// a @ meaning the target filename.
+	// a @ meaning the target filename.  Also ignore %% or @@ respresenting
+	// literal @ or %, respectively.
 	//
 	bool	found_target = false;
-	int	substitutions = 0;
+	int	num_substitutions = 0;
 
 	for ( register char const*
 		s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s
 	) {
+		if ( s[0] == s[1] ) {		// %% or @@ ...
+			++s;			// ... skip past it
+			continue;
+		}
+
 		if ( *s == '@' )
 			if ( found_target ) {
 				cerr << error << "more than one @" << endl;
@@ -118,14 +124,14 @@ using namespace std;
 			case 'e':
 			case 'E':
 			case 'f':
-				++substitutions;
+				++num_substitutions;
 				continue;
 		}
-		cerr << error << "non-[eEf] character after " << *s << endl;
+		cerr << error << "non-[eEf%@] character after " << *s << endl;
 		::exit( Exit_Config_File );
 	}
 
-	if ( substitutions < 2 ) {
+	if ( num_substitutions < 2 ) {
 		cerr	<< error << "at least two substitutions are required"
 			<< endl;
 		::exit( Exit_Config_File );

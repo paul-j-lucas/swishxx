@@ -100,12 +100,22 @@ using namespace std;
 	string::size_type target_pos = string::npos;
 
 	command_ = command_template_;
-	register string::size_type pos;
-	while ( ( pos = command_.find_first_of( "%@" ) ) != string::npos ) {
+	register string::size_type pos = 0;
+	while ( (pos = command_.find_first_of( "%@", pos )) != string::npos ) {
 		if ( pos + 1 >= command_.length() )
 			break;
+		if ( command_[ pos ] == command_[ pos + 1 ] ) {
+			//
+			// We encountered either a %% or @@ to represent a
+			// literal % or @, respectively.  Simply erase one of
+			// them and skip any substitution.
+			//
+			command_.erase( pos++, 1 );
+			continue;
+		}
 		if ( command_[ pos ] == '@' )
 			target_pos = pos;
+
 		switch ( command_[ pos + 1 ] ) {
 
 			case 'E': // filename minus last extension
