@@ -117,6 +117,7 @@ protected:
 //*****************************************************************************
 {
 public:
+	typedef encoded_char_range::difference_type difference_type;
 	typedef encoded_char_range::value_type value_type;
 
 	const_iterator() { }
