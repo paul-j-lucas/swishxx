@@ -25,6 +25,9 @@
 // standard
 #include <map>
 
+// local
+#include "less.h"
+
 typedef std::map< char const*, int > dir_set_type;
 extern dir_set_type dir_set;
 //
