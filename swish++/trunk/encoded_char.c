@@ -132,7 +132,7 @@ return_decoded_char:
 		// beginning of the line to know where the groups-of-4 encoded
 		// characters start.
 		//
-		while ( line_begin > begin && !isspace( *line_begin ) )
+		while ( line_begin > begin && !is_space( *line_begin ) )
 			--line_begin;
 		if ( line_begin > begin )
 			++line_begin;
@@ -293,7 +293,7 @@ return_decoded_char:
 		}
 		break;
 	}
-	if ( !isxdigit( h1 ) || c == end ) {
+	if ( !is_xdigit( h1 ) || c == end ) {
 		//
 		// If it's not a hexadecimal digit or it's the last character,
 		// it's malformed.
@@ -301,7 +301,7 @@ return_decoded_char:
 		return ' ';
 	}
 	value_type const h2 = *c++;
-	if ( !isxdigit( h2 ) ) {
+	if ( !is_xdigit( h2 ) ) {
 		//
 		// This shouldn't happen in proper quoted-printable text.
 		//
@@ -313,8 +313,8 @@ return_decoded_char:
 		// We're being robust by ensuring the hexadecimal characters
 		// are upper case.
 		//
-		( isdigit( h1 ) ? h1 - '0' : toupper( h1 ) - 'A' + 10 ) << 4 |
-		( isdigit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
+		( is_digit( h1 ) ? h1 - '0' : toupper( h1 ) - 'A' + 10 ) << 4 |
+		( is_digit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
 	);
 }
 #endif	/* MOD_MAIL */
