@@ -142,22 +142,22 @@ char const iso8859_map[] = {
 	int uppers = 0;
 	int vowels = 0;
 	for ( c = word; *c; ++c ) {
-		if ( isdigit( *c ) ) {
+		if ( is_digit( *c ) ) {
 			++digits;
 			continue;
 		};
-		if ( ispunct( *c ) ) {
+		if ( is_punct( *c ) ) {
 			++puncts;
 			continue;
 		}
-		if ( isupper( *c ) )
+		if ( is_upper( *c ) )
 			++uppers;
 		if ( is_vowel( tolower( *c ) ) )
 			++vowels;
 	}
 	int const len = c - word;
 
-	if ( isupper( *word ) ) {		// starts with a capital letter
+	if ( is_upper( *word ) ) {		// starts with a capital letter
 		if ( uppers + digits + puncts == len ) {
 #			ifdef DEBUG_is_ok_word
 			cerr << "(potential acronym)" << endl;
@@ -201,7 +201,7 @@ char const iso8859_map[] = {
 
 	for ( c = word; *c; ++c ) {
 
-		if ( isdigit( *c ) ) {
+		if ( is_digit( *c ) ) {
 			consec_consonants = 0;
 			consec_vowels = 0;
 			consec_puncts = 0;
@@ -209,7 +209,7 @@ char const iso8859_map[] = {
 			continue;
 		}
 
-		if ( ispunct( *c ) ) {
+		if ( is_punct( *c ) ) {
 			if ( ++consec_puncts > Word_Max_Consec_Puncts ) {
 #				ifdef DEBUG_is_ok_word
 				cerr << "(exceeded consec puncts)" << endl;
