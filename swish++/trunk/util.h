@@ -33,7 +33,7 @@
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>
 #include <sys/stat.h>
-#include <unistd.h>			/* for _exit(2) */
+#include <unistd.h>			/* for _exit(2), geteuid(2) */
 
 //
 // POSIX.1 is, IMHO, brain-damaged in the way it makes you determine the
@@ -125,7 +125,8 @@ private:
 //
 // DESCRIPTION
 //
-//	Set the limit for the given resource to its maximum value.
+//	Set the limit for the given resource to its maximum value.  If we're
+//	running as root, set it to infinity.
 //
 // PARAMETERS
 //
@@ -144,7 +145,12 @@ private:
 //*****************************************************************************
 {
 	struct rlimit r;
-	::getrlimit( resource, &r );
+#ifdef	RLIM_INFINITY	/* hey, you never know: it might be undefined */
+	if ( ::geteuid() == 0 )
+		r.rlim_max = RLIM_INFINITY;
+	else
+#endif
+		::getrlimit( resource, &r );
 	r.rlim_cur = r.rlim_max;
 	::setrlimit( resource, &r );
 }
