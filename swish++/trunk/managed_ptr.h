@@ -40,7 +40,10 @@ public:
 	managed_ptr( T *p ) : p_( p ) { }
 	~managed_ptr() { delete p_; }
 
-	operator T*() const { return p_; }
+	T& operator*() const		{ return *p_; }
+	T& operator[]( int i ) const	{ return p_[ i ]; }
+	T* operator->() const		{ return p_; }
+	   operator T*() const		{ return p_; }
 private:
 	T *const p_;
 };
@@ -53,7 +56,7 @@ private:
 //
 // DESCRIPTION
 //
-//	A managed_ptr<T> will delete the vector of objects it points to upon
+//	A managed_vec<T> will delete the vector of objects it points to upon
 //	destruction.
 //
 //*****************************************************************************
@@ -62,7 +65,9 @@ public:
 	managed_vec( T *p ) : p_( p ) { }
 	~managed_vec() { delete[] p_; }
 
-	operator T*() const { return p_; }
+	T& operator*() const		{ return *p_; }
+	T& operator[]( int i ) const	{ return p_[ i ]; }
+	   operator T*() const		{ return p_; }
 private:
 	T *const p_;
 };
