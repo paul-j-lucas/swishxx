@@ -639,7 +639,7 @@ void			write_word_index( ostream&, off_t* );
 {
 	int r = int(
 		( ::log( occurences_in_file ) + 10 ) * factor
-		/ file_info::list_[ file_index ]->num_words_
+		/ file_info::list_[ file_index ]->num_words()
 	);
 	return r > 0 ? r : 1;
 }
@@ -1013,8 +1013,8 @@ void			write_word_index( ostream&, off_t* );
 	register int file_index = 0;
 	FOR_EACH( file_info::list_type, file_info::list_, fi ) {
 		offset[ file_index++ ] = o.tellp();
-		o	<< (*fi)->file_name_ << '\0' << bcd( (*fi)->size_ )
-			<< bcd( (*fi)->num_words_ ) << (*fi)->title_ << '\0';
+		o	<< (*fi)->file_name() << '\0' << bcd( (*fi)->size() )
+			<< bcd( (*fi)->num_words() ) << (*fi)->title() << '\0';
 	}
 }
 
