@@ -43,7 +43,7 @@ class file_info;
 //*****************************************************************************
 {
 public:
-	virtual void	pre( stop_word_set const&, int results ) const = 0;
+	virtual void	pre( stop_word_set const& ) const = 0;
 	//		Output search-result "meta" information before the
 	//		results themselves: the set of stop words found in the
 	//		query (if any) and the number of results.
@@ -55,9 +55,11 @@ public:
 	virtual void	post() const;
 	//		Output any trailing information.
 protected:
-	results_formatter( std::ostream &o ) : out_( o ) { }
+	results_formatter( std::ostream &o, int results ) :
+		out_( o ), results_( results ) { }
 
 	std::ostream&	out_;
+	int const	results_;
 };
 
 #endif	/* results_formatter_H */
