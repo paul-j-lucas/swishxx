@@ -199,7 +199,7 @@ char const	ShellFilenameEscapeChars[]	= " !\"#$&'()*/;<>?[\\]^`{|}~";
 //		to as "meta-characers" because the space and tab characters are
 //		included.  Note again that this says "file" (not "path") name.
 
-#ifdef	WIN32
+#ifdef	__CYGWIN__
 char const	TempDirectory_Default[]		= "/temp";
 #else
 #error		You have not set TempDirectory_Default for your system.

@@ -47,7 +47,7 @@ using namespace std;
 
 extern void		do_file( char const *file_name, int dir_index );
 
-#ifdef	WIN32
+#ifdef	__CYGWIN__
 //
 // The directory separator character ('/' for Unix) is apparantly transformed
 // into '\' for Windows by the intermediate Windows port of POSIX functions.
@@ -59,7 +59,7 @@ extern void		do_file( char const *file_name, int dir_index );
 char const		Dir_Sep_Char = '\\';
 #else
 char const		Dir_Sep_Char = '/';
-#endif
+#endif	/* __CYGWIN__ */
 
 #ifdef	INDEX
 dir_set_type		dir_set;
