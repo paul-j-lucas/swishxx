@@ -23,8 +23,8 @@ SWISH++ has the following software as prerequisites:
 
 3. GNU make.
 
-4. Perl 5 (or later), but only if you intend on using either httpindex or
-   WWW.pm.
+4. Perl 5 (or later), but only if you intend on using either httpindex,
+   splitmail, or WWW.pm.
 
 5. The GNU wget command, but only if you intend on using httpindex.
 
@@ -47,7 +47,11 @@ Building SWISH++ for Unix
    edit the file.)
 
 2. Go to the "config" directory and edit the "config.mk" file as necessary.
-   This file controls how the software is compiled.
+   This file controls how the software is compiled.  Among other things, decide
+   which indexing modules (MOD_*) you want compiled in.  In particular, decide
+   whether you need MOD_MAIL for indexing mail and news files.  If not, you
+   shouldn't compile it in since it requires more processing per character and
+   will be slower for all files (not just mail and news files).
 
 3. Go back to the top-level directory and type "make".  If everything works
    out, the software will be built.  If you're root, you can also type "make
