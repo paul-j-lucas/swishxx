@@ -2,6 +2,481 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+3.1
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* All executables now accept alternate long ("GNU-style") command-line options.
+
+  (This feature will be known as feature LOPT.)
+
+* Added -? option to print usage ("help") message.
+
+  (This feature will be known as feature HELP.)
+
+* Added new -h option and HTMLExtention configuration variable to allow
+  filename extensions that are to be treated as HTML to be specified.
+
+  (This feature will be known as feature HEXT.)
+
+* In 'search', allow max-results to be specified as 0.  This allows the -R
+  option to be eliminated.
+
+  (This feature will be known as feature MR0.)
+
+* Added code to max-out various resource limits since SWISH++ is resource-
+  intensive.  This may alleviate out-of-memory conditions on some platforms.
+
+  (This feature will be known as feature MAXR.)
+
+* Added code to map ISO 8859-1 (Latin 1) characters to their closest ASCII
+  equivalent so that they are treated eactly like character entity references.
+  This should also improve use of SWISH++ in other languages.
+
+  (This feature will be known as feature ISOMAP.)
+
+
+BUG FIXES
+---------
+
+* Feature CLASS has had a subtle bug in it since its inception in version 2.0.
+  It was over-zealous in closing HTML elements.  For example, given:
+
+	<TABLE>
+	    <TR>			<!-- 2 -->
+	        <TD>			<!-- 1 -->
+	            <TABLE>		<!-- 0 -->
+	                <TR>
+	                    <TD>
+	                    Hello
+	                    </TD>
+	            </TABLE>		<!-- trouble -->
+	        </TD>
+	</TABLE>
+
+  The "trouble" tag should have stopped closing elements at tag "0" but it kept
+  closing elements "1" and "2" because </TD> and </TR> have </TABLE> in their
+  set of close tags.
+
+  The fix is to make a tag check to see whether the element it's closing is its
+  own start tag: if so, stop.
+
+  (This bug fix will be known as bug fix CLASS1.)
+
+* Really long start tags, those with lots of attributes, exceeding 128
+  characters, would cuase a buffer overflow and, occasionally, a core dump.
+  The fix is to change the way getting the name of tags is done.
+
+  (This bug fix will be known as bug fix RLST.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config/mk
+
+	1. Added suffix and rule for ".in" files.
+
+* conf_bool.h
+* conf_int.h
+* conf_set.h
+
+	1. Added reset() member function.
+
+	2. Added var_name argument to parse_value() for feature HEXT.
+
+* conf_string.h
+
+	1. Added reset() member function.
+
+	2. Changed use of "char const*" to "string" so as not to have
+	   to sorry about properly managing the value.
+
+	3. Added var_name argument to parse_value() for feature HEXT.
+
+* conf_var.c
+
+	1. Added alias_name() function for feature HEXT.
+
+	2. In parse_const_value() and parse_line(), added var_name
+	   argument to parse_value() call for feature HEXT.
+
+	3. In msg(), performed following substitution:
+
+		s/cerr/o/
+
+	   It should have been that way all along.
+
+	4. Made parse_config_file() a member function.
+
+	5. Added reset_all() member function.
+
+	5. In map_ref(), added "HTMLExtension" for feature HEXT.
+
+* conf_var.h
+
+	1. Added alias_name() function for feature HEXT.
+
+	2. Made error() use the 'o' reference instread of cerr.
+
+	3. Added argument to warning().
+
+	4. Added reset_all() member function.
+
+* config.h
+
+	1. Added WordPercentMax_Default.  It should have been there all
+	   along.
+
+	2. Added Tag_Name_Max_Size for bug fix RLST.
+
+* do_file.c
+
+	1. Removed is_html_ext() for feature HEXT.
+
+	2. Changes MAXNAMLEN to NAME_MAX.
+
+	3. In do_file(), changed access to include_extensions for
+	   feature HEXT.
+
+* entities.c
+* entities.h
+
+	1. Moved num_entities[] to word_util.[ch] for feature ISOMAP.
+
+* exit_codes.h
+
+	1. Flipped errors 50 and 51.
+
+* extract.c
+
+	1. Removed MAXNAMLEN in favor of NAME_MAX in util.h.
+
+	2. Replaced getopt() code with opt_stream code for feature LOPT.
+
+	3. In main(), added code to max-out RLIMIT_CPU for feature MAXR.
+
+	4. In main(), added code for new -? option for feature HELP.
+
+	5. In usage(), added long option descriptions for feature LOPT.
+
+	6. In usage(), added description for -? (and --help) options
+	   for features HELP and LOPT, respectively.
+
+	7. Corresponding change to file_vector.h item #1.
+
+	8. Performed following substitution:
+
+		s/ERROR/error()/
+
+	9. In extract_words(), added call to iso8859_to_ascii() for
+	   feature ISOMAP.
+
+* file_index.h
+
+	1. Corresponding changes for file_vector.h item #1.
+
+* file_info.c
+
+	1. Performed following substitution:
+
+		s/num_files_reserve/files_reserve/
+
+* file_vector.h
+
+	1. Detemplatized file_vector class to be only of char.  I
+	   realized that file_vectors of other types may not have their
+	   elements suitably alogned and could cause alighment faults.
+
+* file_vector.c
+
+	1. Corresponding change to file_vector.h item #1.
+
+	2. In file_vector::init(), added code to max-out RLIMIT_VMEM
+	   for feature MAXR.
+
+	3. For Unix, error() now returns the value of the standard
+	   errno variable.
+
+	4. In open(), made it so that it won't attempt to mmap() the
+	   file if it has zero size; instead set error to ENODATA.
+
+* FilterExtension.c
+
+	1. Added missing #include <cstdlib>
+
+* FilterExtension.h
+
+	1. Added reset() member function.
+
+* html.c
+
+	1. Added #include "word_util.h"
+
+	2. Corresponding change to file_vector.h item #1.
+
+	3. Made find_attribute() insist that the "attribute" argument
+	   be passed as lower case.  This way, it doesn't have to
+	   convert it to lower case.
+
+	4. Made tag_cmp() insist that the "tag" argument be passed as
+	   lower case.  This way, it doesn't have to convert it to
+	   lower case.
+
+	5. In parse_html_tag(), corresponding changes for items #3 and #4.
+
+	6. In parse_html_tag(), added code for bug fix CLASS1.
+
+	7. In parse_html_tag(), changed first call to to_lower( begin, end )
+	   to be inline code for bug fix RLST.
+
+	8. In convert_entity(), performed following substitution:
+
+		s/num_entities/iso8859_map/
+
+	   for feature ISOMAP.
+
+* html.h
+
+	1. Corresponding change to file_vector.h item #1.
+
+* index.c
+
+	1. Same as extract.c item #1.
+
+	2. Same as extract.c item #2.
+
+	3. Same as extract.c item #3.
+
+	4. Same as extract.c item #4.
+
+	5. Same as extract.c item #5.
+
+	6. Same as extract.c item #6.
+
+	7. Same as extract.c item #7.
+
+	8. Same as extract.c item #8.
+
+	9. Same as extract.c item #9.
+
+	A. In main(), added code to max-out RLIMIT_AS and RLIMIT_DATA
+	   for feature MAXR.
+
+	B. In usage(), added missing description for -T option.
+
+	C. Same as file_info.c #1 plus:
+
+		s/num_files_reserve_arg/files_reserve_arg/
+
+* index.h
+
+	1. Corresponding change to file_vector.h item #1.
+
+* IndexFile.h
+
+	1. Corresponding change to conf_string item #2.
+
+* itoa.c
+* itoa.h
+
+	1. Moved ltoa() into its own file.
+
+* Makefile
+
+	1. Added dependencies for option_stream.[cho] for feature LOPT.
+
+	2. Added dependencies for itoa.[ch].
+
+	3. Made TARGET names more explicit.
+
+	4. Performed following substitution:
+
+		s/the.index/swish++.index/
+
+	   This should have been done in release 3.0.
+
+* man/man1/extract.1
+* man/man1/index.1
+* man/man1/search.1
+
+	1. Added descriptions for feature LOPT.
+
+* my_set.h
+
+	1. Eliminated my_set::key_type since it's already defined in set.
+
+	2. Made base_type private.
+
+	3. Changed what was "string_set" to "char_ptr_set" and added a
+	   new "string_set" that really is a set of strings.
+
+* option_stream.c
+* option_stream.h
+
+	1. Added for feature LOPT.
+
+* ResultsMax.h
+
+	1. Changed allowable lower bound for ResultsMax to 0 for
+	   fearure MR0.
+
+* search.c
+
+	1. Same as extract.c item #2.
+
+	2. In main(), added code to max-out RLIMIT_AS for feature MAXR.
+
+	3. Changed use of istrstream to token_stream.
+
+	4. In parse_meta(), made tokens const.
+
+	5. In parse_meta() and parse_optional_relop(), changed lines of
+	   the form:
+
+		t.put_back();
+	   to:
+		query.put_back( t );
+
+	6. In parse_primary(), used improved less_stem to eliminate
+	   conditional calls of binary_search() and equal_range().
+
+	7. Same as extract.c item #5.
+
+	8. In main(), added call to setlocale(3) for feature LOCALE.
+
+* stem_word.h
+
+	1. Enhanced less_stem class to accept a Boolean argument
+	   whether to stem or not.
+
+	2. Made stem_word() a member function.
+
+* stem_word.c
+
+	1. Corresponding change to stem_word.h item #2.
+
+	2. Added #include "word_util.h"
+
+* stop_words.c
+
+	1. Added #include "word_util.h"
+
+	2. Performed following substitution:
+
+		s/ERROR/error()/
+
+	3. Corresponding change to file_vector.h item #1.
+
+	4. Added call to iso8859_to_ascii() for feature ISOMAP.
+
+* StopWordFile.h
+* TempDirectory.h
+
+	1. Corresponding change to conf_string item #2.
+
+* token.c
+
+	1. Removed token::hold() in favor of new token_stream class.
+
+	2. In operator>>(), replaced call to to_lower() with
+	   ::transform() thus making operator>>() thread-safe (since
+	   to_lower() isn't thread-safe).
+
+	3. Added #include "word_util.h"
+
+	4. Added call to iso8859_to_ascii() for feature ISOMAP.
+
+* token.h
+
+	1. Added token_stream class to hold "put back" tokens.  This
+	   makes it thread-safe.
+
+* util.c
+
+	1. Moved ltoa() to itoa.c so it's in its own .o file since only
+	   index(1) uses it so there's no reason for it to be linked
+	   into extract(1) or search(1).
+
+	2. Added max_out_limit() for feature MAXR.
+
+	3. Moved is_ok_word() to word_util.h thereby making it easier
+	   for others to customize or replace it with a custom one
+	   (perhaps with different heuristics for other languages).
+
+	4. Moved parse_config_file() to be a member of conf_var.
+
+	5. Corresponding change to file_vector.h item #1.
+
+* util.h
+
+	1. Added definition of NAME_MAX to replace MAXNAMLEN to be more
+	   POSIXly correct.
+
+	2. Correpsonding change as do_file.c item #1.
+
+	3. Added declaration of max_out_limit() for feature MAXR.
+
+	4. Moved declarations of ltoa() and itoa() to itoa.h.
+
+	5. The is_ok_word(), is_vowel(), is_word_begin_char(),
+	   is_word_char(), and is_word_end_char() have been moved to
+	   word_util.h thereby making it easier for others to customize
+	   or replace them with custom ones (perhaps with different
+	   heuristics for other languages).
+
+	6. Replaced ERROR macro with error() function.
+
+	7. Added error_string() function.
+
+	8. Corresponding change to file_vector.h item #1.
+
+* version.h
+
+	1. Updated version to "3.1".
+
+* word_index.c
+* word_index.h
+
+	1. Corresponding change to file_vector.h item #1.
+
+* WordPercentMax.h
+
+	1. Added WordPercentMax_Default to constructor.  (It should
+	   have been here since version 3.0.)
+
+* word_util.c
+
+	1. Corresponding changes to util.c item #3 and util.h item #5.
+
+	2. Moved num_entities[] definition from entities.c to
+	   word_util.c and renamed it iso8859_map[] for feature ISOMAP.
+
+* word_util.h
+
+	1. Corresponding changes to util.c item #3 and util.h item #5.
+
+	2. Moved num_entities[] declaration from entities.h to
+	   word_util.h and renamed it iso8859_map[] for feature ISOMAP.
+
+	3. Added iso8859_to_ascii() function for feature ISOMAP.
+
+* WWW.pm
+
+	1. Made regular expression for e_mail more accurate.
+
+* www_example/search.cgi
+
+	1. Added code to pass along -s option to do stemming.
+
+* www_example/search.html
+
+	1. Added checkbox for stemming.
+
+
+*******************************************************************************
 3.0.3
 *******************************************************************************
 
@@ -211,7 +686,6 @@ CHANGES, file-by-file
 * version.h
 
 	1. Updated version to "3.0.3".
-
 
 * WWW.pm
 
