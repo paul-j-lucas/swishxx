@@ -303,10 +303,13 @@ inline omanip< char const* > index_file_info( int index ) {
 		return;
 	}
 	file_list const list( found.first );
-	FOR_EACH( file_list, list, file )
+	FOR_EACH( file_list, list, file ) {
 		out	<< file->occurrences_ << ' '
 			<< file->rank_ << result_separator
 			<< index_file_info( file->index_ ) << '\n';
+		if ( !out )
+			return;
+	}
 	out << '\n';
 }
 
@@ -374,6 +377,8 @@ inline omanip< char const* > index_file_info( int index ) {
 		if ( cmp > 0 )
 			break;
 		out << *found.first << '\n';
+		if ( !out )
+			return;
 		++i;
 	}
 	out << '\n';
@@ -433,9 +438,13 @@ inline omanip< char const* > index_file_info( int index ) {
 			out << ' ' << *word;
 #endif
 		out << '\n';
+		if ( !out )
+			return;
 	}
 
 	out << "# results: " << results.size() << '\n';
+	if ( !out )
+		return;
 	if ( skip_results >= results.size() || !max_results )
 		return;
 
@@ -449,7 +458,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	for ( sorted_results_type::const_iterator
 		i  = sorted.begin() + skip_results;
-		i != sorted.end() && max_results-- > 0;
+		i != sorted.end() && max_results-- > 0 && out;
 		++i
 	)
 		out	<< int( i->second * normalize ) << result_separator
@@ -668,7 +677,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	/////////// Dump stuff if requested ///////////////////////////////////
 
 	if ( opt.dump_window_size_arg ) {
-		while ( *argv )
+		while ( *argv && out )
 			dump_word_window( *argv++,
 				opt.dump_window_size_arg, opt.dump_match_arg,
 				out
@@ -676,7 +685,7 @@ inline omanip< char const* > index_file_info( int index ) {
 		return;
 	}
 	if ( opt.dump_word_index_opt ) {
-		while ( *argv )
+		while ( *argv && out )
 			dump_single_word( *argv++, out );
 		return;
 	}
@@ -684,25 +693,32 @@ inline omanip< char const* > index_file_info( int index ) {
 		FOR_EACH( index_segment, words, word ) {
 			out << *word << '\n';
 			file_list const list( word );
-			FOR_EACH( file_list, list, file )
+			FOR_EACH( file_list, list, file ) {
 				out	<< "  " << file->occurrences_ << ' '
 					<< file->rank_ << result_separator
 					<< index_file_info( file->index_ )
 					<< '\n';
+				if ( !out )
+					return;
+			}
 			out << '\n';
 		}
 		return;
 	}
 	if ( opt.dump_stop_words_opt ) {
-		::copy( stop_words.begin(), stop_words.end(),
-			ostream_iterator< char const* >( out, "\n" )
-		);
+		FOR_EACH( index_segment, stop_words, word ) {
+			out << *word << '\n';
+			if ( !out )
+				return;
+		}
 		return;
 	}
 	if ( opt.dump_meta_names_opt ) {
-		::copy( meta_names.begin(), meta_names.end(),
-			ostream_iterator< char const* >( out, "\n" )
-		);
+		FOR_EACH( index_segment, meta_names, meta_name ) {
+			out << *meta_name << '\n';
+			if ( !out )
+				return;
+		}
 		return;
 	}
 
