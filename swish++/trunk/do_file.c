@@ -70,6 +70,14 @@
 			cout << " (skipped: not plain file)\n";
 		return;
 	}
+
+	//
+	// Record the size of the original (non-filtered) file here before we
+	// call is_symbolic_link() below.  This is the size that is stored in
+	// the index.
+	//
+	off_t const orig_file_size = file_size();
+
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
 		//
@@ -82,11 +90,25 @@
 		return;
 	}
 #endif
+
+#ifdef	INDEX
+	//
+	// If incrementally indexing, it's possible that we've encountered the
+	// file before.
+	//
+	if ( incremental && file_info::name_set_.contains( file_name ) ) {
+		if ( verbosity > 3 )
+			cout << " (skipped: encountered before)\n";
+		return;
+	}
+#endif
+
 	////////// Perform filter name substitution(s) ////////////////////////
 
 	typedef vector< filter > filter_list_type;
 	filter_list_type filter_list;
-	filter_list.reserve( 5 );
+	filter_list.reserve( 5 );		// more than this is insane
+	char const *const orig_file_name = file_name;
 
 	while ( true ) {
 		//
@@ -128,18 +150,6 @@
 		return;
 	}
 
-#ifdef	INDEX
-	//
-	// If incrementally indexing, it's possible that we've encountered the
-	// file before.
-	//
-	if ( incremental && file_info::name_set_.contains( file_name ) ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: encountered before)\n";
-		return;
-	}
-#endif
-
 #ifdef	EXTRACT
 	ostream *out;
 	ofstream extracted_file;
@@ -153,17 +163,17 @@
 		// We're not running as a filter: check to see if the extracted
 		// file already exists; if so, skip extraction entirely.
 		//
-		char file_name_extracted[ NAME_MAX + 1 ];
-		::strcpy( file_name_extracted, file_name );
-		::strcat( file_name_extracted, extract_extension );
-		if ( file_exists( file_name_extracted ) ) {
+		char extracted_file_name[ NAME_MAX + 1 ];
+		::strcpy( extracted_file_name, file_name );
+		::strcat( extracted_file_name, extract_extension );
+		if ( file_exists( extracted_file_name ) ) {
 			if ( verbosity > 3 )
 				cout	<< " (skipped: " << extract_extension
 					<< " file already exists)\n";
 			return;
 		}
 
-		extracted_file.open( file_name_extracted );
+		extracted_file.open( extracted_file_name );
 		if ( !extracted_file ) {
 			if ( verbosity > 3 )
 				cout	<< " (skipped: can not create "
@@ -210,7 +220,8 @@
 
 	bool const is_html_pattern = found_pattern ? inc_file->second : false;
 	new file_info(
-		file_name, file.size(), is_html_pattern ? grep_title( file ) : 0
+		orig_file_name, orig_file_size,
+		is_html_pattern ? grep_title( file ) : 0
 	);
 	index_words( file.begin(), file.end(),
 		is_html_pattern, No_Meta_ID, true
