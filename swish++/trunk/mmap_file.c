@@ -223,6 +223,6 @@ using namespace std;
 		return false;
 	}
 
-	return behavior( normal ) == 0;
+	return behavior( bt_normal ) == 0;
 }
 /* vim:set noet sw=8 ts=8: */

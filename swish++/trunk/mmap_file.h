@@ -87,13 +87,13 @@ public:
 
 	enum behavior_type {
 #ifdef	PJL_NO_MADVISE
-		normal,
-		random,
-		sequential
+		bt_normal,
+		bt_random,
+		bt_sequential
 #else
-		normal		= MADV_NORMAL,
-		random		= MADV_RANDOM,
-		sequential	= MADV_SEQUENTIAL
+		bt_normal	= MADV_NORMAL,
+		bt_random	= MADV_RANDOM,
+		bt_sequential	= MADV_SEQUENTIAL
 #endif
 	};
 
