@@ -24,7 +24,6 @@
 
 // local
 #include "bcd.h"
-#include "fake_ansi.h"			/* for CONST_CAST */
 #include "file_list.h"
 
 //*****************************************************************************
@@ -44,13 +43,7 @@
 //
 //*****************************************************************************
 {
-#ifdef	PJL_NO_MUTABLE
-#	define THIS	( CONST_CAST( file_list* )( this ) )
-#else
-#	define THIS	this
-#endif
-	THIS->size_ = 0;
-
+	size_ = 0;
 	//
 	// It would be nice if there were a way to calculate the size of the
 	// file list other than by just marching though it.  Since this should
@@ -68,7 +61,7 @@
 		}
 		while ( (*p++ & 0x0F) != 0x0A ) ;	// skip past occurrences
 		while ( (*p++ & 0x0F) != 0x0A ) ;	// skip past rank
-		++THIS->size_;
+		++size_;
 	}
 	return size_;
 }
