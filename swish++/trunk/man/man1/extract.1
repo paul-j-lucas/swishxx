@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3extract\fP 1 "February 3, 1999" "SWISH++"
+.TH \f3extract\fP 1 "July 19, 1999" "SWISH++"
 .SH NAME
 extract \- SWISH++ text extractor
 .SH SYNOPSIS
@@ -60,14 +60,15 @@ and files in the specified directories;
 text from files in subdiretories of specified directories is also extracted
 by default (unless the
 .B \-r
-option is given).
+option or the \f(CWRecurseSubdirs\f1 variable is given).
 Text is extracted from files either only if their filename extension
-is among the set specified with the
+is among the set specified with either the
 .B \-e
-option (unless standard input is used; see next paragraph)
-or is not among the set specified with the
+option or the \f(CWIncludeExtension\f1 variable
+(unless standard input is used; see next paragraph)
+or is not among the set specified with either the
 .B \-E
-option.
+option or the \f(CWExcludeExtension\f1 variable.
 .PP
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to extract is instead taken from standard input (one per line).
@@ -85,28 +86,20 @@ In any case, care must be taken not to specify files or subdirectories
 in directories that are also specified:
 since directories are recursively extracted by default (unless the
 .B \-r
-option is given),
+option or the \f(CWRecurseSubdirs\f1 variable  is given),
 explicitly specifying a subdirectory or file in a directory that is also
 specified will result in those files being extracted more than once.
-(Unlike with indexing, this is harmless; it just wastes time.)
+(Unlike with indexing, this is harmless: it just wastes time.)
 .PP
 Extracted files have the same filename with the ``\f(CW.txt\fP'' extension
 appended, e.g., ``\f(CWfoo.doc\fP'' becomes ``\f(CWfoo.doc.txt\fP''
 after extraction.
 However, extraction is not performed if the extracted text file exists.
-.SS File Compression
-Files can be compressed either by
-.BR compress (1)
-or
-.BR gzip (1)
-and will be uncompressed and recompressed
-before and after extraction, respectively.
-The original filename extension must be present, however, e.g.,
-``\f(CWfile.doc.gz\fP'' for a compressed Microsoft Word file.
-Text extracted from compressed files have the compression extension
-.I replaced
-by the ``\f(CW.txt\f1'' extension, e.g.,
-``\f(CWfoo.doc.gz\fP'' becomes ``\f(CWfoo.doc.txt\fP'' after extraction.
+.SS Filters
+Via the \f(CWFilterExtension\f1 configuration file variable,
+files having particular extensions can be filtered prior to extraction.
+(See the examples in
+.BR swish++.conf (4).)
 .SS Word Determination
 .B extract
 performs the same character entity conversions
@@ -152,20 +145,27 @@ shouldn't have to pay the performance penatly for doing the extra checks for
 PostScript and hex data.
 .TP
 2.
-If files are compressed on a server, uncompressing and recompressing them
-every time indexing is performed is excessive.
+While
+.BR index (1)
+can uncompress files on the fly using filters also,
+uncompressing them every time indexing is performed is excessive.
 Text extraction, on the other hand, is done only once per file;
 if the file is updated, the text-extracted version should be deleted and
 recreated.
-.TP 0
-A good way to perform extraction is via a cron job.
 .SH OPTIONS
 .TP 18
+.BI \-c config_file
+The name of the configuration file to use.
+The default is \f(CWswish++.conf\f1 in the current directory.
+A configuration file is not required:
+if none is specified and the default does not exist, none is used;
+however, if one is specified and it does not exist, then this is an error.
+.TP
 .BI \-e extension
 A filename extension of files to extract text from
 .I without
 the ``dot.''
-Case is irrelevant.
+Case is significant.
 Multiple
 .B \-e
 options may be specified.
@@ -184,6 +184,8 @@ options may be specified.
 .B \-l
 Follow symbolic links during extraction.
 The default is not to follow them.
+(This option is not available under Microsoft Windows
+since it doesn't support symbolic links.)
 .TP
 .B \-r
 Do not recursively extract the files in subdirectories,
@@ -205,6 +207,9 @@ The name of a file containing the set stop-words to use
 instead of the built-in set.
 Whitespace, including blank lines, and characters starting with \f(CW#\f1
 and continuing to the end of the line (comments) are ignored.
+.TP
+.B \-S
+Dump the built-in set of stop-words to standard output and exit.
 .TP
 .BI \-v verbosity
 The verbosity level, 0-4:
@@ -234,26 +239,89 @@ Same as 3 but also prints all files that are not extracted and why.
 Print the version number of
 .BR SWISH++
 and exit.
-.SH EXAMPLE
+.SH CONFIGURATION FILE
+The following variables can be set in a configuration file.
+Variables and command-line options can be mixed.
+.PP
+.RS 5
+.PD 0
+.TP 18
+.B ExcludeExtension
+Same as the
+.B \-E
+option.
+.TP
+.B FilterExtension
+(See Filters.)
+.TP
+.B FollowLinks
+Same as the
+.B \-l
+option.
+.TP
+.B IncludeExtension
+Same as the
+.B \-e
+option.
+.TP
+.B RecurseSubdirs
+Same as the
+.B \-r
+option.
+.TP
+.B StopWordFile
+Same as the
+.B \-s
+option.
+.TP
+.B Verbosity
+Same as the
+.B \-v
+option.
+.PD
+.RE
+.SH EXAMPLES
+.SS Extraction
 To extract text from all Microsoft Office files on a web server:
 .cS
 cd /home/www/htdocs
 extract -v3 -e doc -e ppt -e xls .
 .cE
+.SS Filters
+(See the examples in
+.BR swish++.conf (4).)
 .SH EXIT STATUS
-Exits with a value of zero only if extraction completed sucessfully;
-non-zero otherwise.
+Exits with one of the values given below:
+.PP
+.RS 5
+.PD 0
+.TP 5
+0
+Success.
+.TP
+1
+Error in configuration file.
+.TP
+2
+Error in command-line options.
+.TP
+30
+Unable to read stop-word file.
+.PD
+.RE
 .SH CAVEATS
 Text extraction is not perfect, nor can be.
+.SH FILES
+.PD 0
+.TP 16
+\f(CWswish++.conf\f1
+default configuration file name
+.PD
 .SH SEE ALSO
-.BR compress (1),
-.BR crontab (1),
-.BR gunzip (1),
-.BR gzip (1),
 .BR index (1),
 .BR search (1),
 .BR strings (1),
-.BR uncompress (1)
+.BR swish++.conf (4)
 .PP
 Adobe Systems Incorporated.
 ``PostScript Langauge Reference Manual, 2nd ed.''

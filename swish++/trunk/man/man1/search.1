@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "May 29, 1998" "SWISH++"
+.TH \f3search\fP 1 "July 19, 1999" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -137,6 +137,13 @@ The total number of results.
 .RE
 .SH OPTIONS
 .TP 16
+.BI \-c config_file
+The name of the configuration file to use.
+The default is \f(CWswish++.conf\f1 in the current directory.
+A configuration file is not required:
+if none is specified and the default does not exist, none is used;
+however, if one is specified and it does not exist, then this is an error.
+.TP
 .BI \-d
 Dump the query word indices to standard output and exit.
 Wildcards are not permitted.
@@ -188,6 +195,30 @@ The default for
 .I match
 is 0.
 Every window ends with a blank line.
+.SH CONFIGURATION FILE
+The following variables can be set in a configuration file.
+Variables and command-line options can be mixed,
+the latter taking priority.
+.PP
+.RS 5
+.PD 0
+.TP 18
+.B IndexFile
+Same as the
+.B \-i
+option.
+.TP
+.B ResultsMax
+Same as the
+.B \-m
+option.
+.TP
+.B StemWords
+Same as the
+.B \-s
+option.
+.PD
+.RE
 .SH EXAMPLES
 The query:
 .cS
@@ -254,17 +285,40 @@ will return only those HTML documents whose author is Lewis Carroll
 or that contain the word ``wonderland'' anywhere in the document
 regardless of the author.
 .SH EXIT STATUS
-Exits with a value of zero only if the query was properly formed;
-non-zero otherwise.
+Exits with one of the values given below:
+.PP
+.RS 5
+.PD 0
+.TP 5
+0
+Success.
+.TP
+1
+Error in configuration file.
+.TP
+2
+Error in command-line options.
+.TP
+50
+Malformed query.
+.TP
+51
+Unable to read index file.
+.PD
+.RE
 .SH FILES
 .PD 0
-.TP 14
-\f(CWthe.index\fP
+.TP 16
+\f(CWswish++.conf\f1
+default configuration file name
+.TP
+\f(CWswish++.index\f1
 default index file name
 .PD
 .SH SEE ALSO
 .BR index (1),
-.BR perlfunc (1)
+.BR perlfunc (1),
+.BR swish++.conf (4)
 .PP
 M.F. Porter.
 ``An Algorithm For Suffix Stripping,''

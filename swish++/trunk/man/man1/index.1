@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "May 13, 1999" "SWISH++"
+.TH \f3index\f1 1 "July 21, 1999" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -51,34 +51,34 @@ is the SWISH++ file indexer.
 It indexes the specified files
 and files in the specified directories;
 files in subdiretories of specified directories are also indexed by default
-(unless the
+(unless either the
 .B \-r
-option is given).
+option or the \f(CWRecurseSubdirs\f1 variable is given).
 Files are indexed either only if their filename extension is among the set
-specified with the
+specified with either the
 .B \-e
-option (unless standard input is used; see next paragraph)
-or is not among the set specified with the
+option or the \f(CWIncludeExtension\f1 variable
+(unless standard input is used; see next paragraph)
+or is not among the set specified with either the
 .B \-E
-option.
+option or the \f(CWExcludeExtension\f1 variable.
 .PP
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to index is instead taken from standard input (one per line).
-In this case, filename extensions of files to index need not be explicitly
-specified with the
-.B \-e
-option; all files, regardless of extension
-(unless it is among the set specified with the
+In this case,
+filename extensions of files to index need not be specified explicitly:
+all files, regardless of extension
+(unless it is among the set not to index specified with either the
 .B \-E
-option), are indexed, i.e.,
+option or the \f(CWExcludeExtension\f1 variable), are indexed, i.e.,
 .B index
-assumes you know what you're doing when specifying filenames.
+assumes you know what you're doing when specifying filenames in this manner.
 .PP
 In any case, care must be taken not to specify files or subdirectories
 in directories that are also specified:
-since directories are recursively indexed by default (unless the
+since directories are recursively indexed by default (unless either the
 .B \-r
-option is given),
+option or the \f(CWRecurseSubdirs\f1 variable  is given),
 explicitly specifying a subdirectory or file in a directory that is also
 specified will result in those files being indexed more than once.
 .PP
@@ -137,15 +137,14 @@ Contains more than \f(CWWord_Max_Consec_Puncts\f1 consecutive punctuation
 characters.
 (Default is 1.)
 .SS HTML Files
-.B index
-does additional processing for HTML files.
+Additional processing is done for HTML files.
 (HTML files are recognized as such only if their filename extension is one of:
 \f(CWhtm\f1, \f(CWhtml\f1, or \f(CWshtml\f1.)
 The additional processing is:
 .TP 4
 1.
 If a matched set of \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 tags is found
-within the first \f(CWTitle_Lines\f1 lines of the file,
+within the first \f(CWTitle_Lines\f1 lines of the file (default is 12),
 then the text between the tags is stored in the generated index file as the
 file's title rather than the file's name.
 (Every non-space whitespace character in the title is converted to a space;
@@ -213,8 +212,20 @@ The specification is vague as to whether whitespace surrounding the \f(CW=\f1
 is legal, but
 .B index
 allows it.
+.SS Filters
+Via the \f(CWFilterExtension\f1 configuration file variable,
+files having particular extensions can be filtered prior to indexing.
+(See FILTERS in
+.BR swish++.conf (4).)
 .SH OPTIONS
 .TP 18
+.BI \-c config_file
+The name of the configuration file to use.
+The default is \f(CWswish++.conf\f1 in the current directory.
+A configuration file is not required:
+if none is specified and the default does not exist, none is used;
+however, if one is specified and it does not exist, then this is an error.
+.TP
 .BI \-C class_name
 For HTML files only,
 a class name of an HTML element whose text is not to be indexed.
@@ -260,6 +271,8 @@ The default is \f(CWthe.index\f1 in the present working directory.
 .B \-l
 Follow symbolic links during indexing.
 The default is not to follow them.
+(This option is not available under Microsoft Windows
+since it doesn't support symbolic links.)
 .TP
 .BI \-m meta_name
 For HTML files only, the value of a meta \f(CWNAME\f1 attribute
@@ -291,9 +304,8 @@ options may be specified.
 .BI \-p percent_max
 The maximum percentage of files a word may occur in
 before it is discarded as being too frequent.
-The detault is 100.
-If you want to keep all words regardless,
-specify a number greater than 100.
+The default is 100.
+If you want to keep all words regardless, specify 101.
 .TP
 .B \-r
 Do not recursively index the files in subdirectories,
@@ -316,7 +328,7 @@ instead of the built-in set.
 Whitespace, including blank lines, and characters starting with \f(CW#\f1
 and continuing to the end of the line (comments) are ignored.
 .TP
-.BI \-S
+.B \-S
 Dump the built-in set of stop-words to standard output and exit.
 .TP
 .BI \-t title_lines
@@ -324,6 +336,18 @@ For HTML files only, the maximum number of lines into a file
 to look at for HTML \f(CW<TITLE>\f1 tags.
 The default is 12.
 Larger numbers slow indexing.
+.TP
+.BI \-T temp_dir
+The path of the directory to use for temporary files.
+The directory must exist.
+The default is \f(CW/tmp\f1.
+.IP ""
+If your OS mounts swap space on \f(CW/tmp\f1,
+as indexing progresses and more files get created in \f(CW/tmp\f1,
+you will have less swap space, indexing will get slower,
+and you may run out of memory.
+If this is the case, you can specify a directory on a real filesystem, i.e.,
+one on a physical disk.
 .TP
 .BI \-v verbosity
 Print additional information to standard output during indexing.
@@ -354,6 +378,94 @@ Same as 3 but also prints all files that are not indexed and why.
 Print the version number of
 .B SWISH++
 to standard output and exit.
+.SH CONFIGURATION FILE
+The following variables can be set in a configuration file.
+Variables and command-line options can be mixed,
+the latter taking priority.
+.PP
+.RS 5
+.PD 0
+.TP 18
+.B ExcludeClass
+Same as the
+.B \-C
+option.
+.TP
+.B ExcludeExtension
+Same as the
+.B \-E
+option.
+.TP
+.B ExcludeMeta
+Same as the
+.B \-M
+option.
+.TP
+.B FilesReserve
+Same as the
+.B \-F
+option.
+.TP
+.B FilterExtension
+(See FILTERS in
+.BR swish++.conf (4).)
+.TP
+.B FollowLinks
+Same as the
+.B \-l
+option.
+.TP
+.B IncludeExtension
+Same as the
+.B \-e
+option.
+.TP
+.B IncludeMeta
+Same as the
+.B \-m
+option.
+.TP
+.B IndexFile
+Same as the
+.B \-i
+option.
+.TP
+.B RecurseSubdirs
+Same as the
+.B \-r
+option.
+.TP
+.B StopWordFile
+Same as the
+.B \-s
+option.
+.TP
+.B TempDirectory
+Same as the
+.B \-T
+option.
+.TP
+.B TitleLines
+Same as the
+.B \-t
+option.
+.TP
+.B Verbosity
+Same as the
+.B \-v
+option.
+.TP
+.B WordFilesMax
+Same as the
+.B \-f
+option.
+.TP
+.B WordPercentMax
+Same as the
+.B \-p
+option.
+.PD
+.RE
 .SH EXAMPLES
 .SS Command-lines
 To index all HTML and text files on a web server:
@@ -408,7 +520,7 @@ All mimsy were the borogoves,<BR>
 And the mome raths outgrabe.
 </BLOCKQUOTE>
 .cE
-The \f(CW<BLOCKQUOTE>\f1 tag implicitly closes the \f(CW<P>\f1 element
+the \f(CW<BLOCKQUOTE>\f1 tag implicitly ends the \f(CW<P>\f1 element
 (as do all block-level elements)
 so the only text that is not indexed above is:
 ``This was the poem that Alice read.''
@@ -421,9 +533,37 @@ For example, in:
 .cE
 the word ``Home'' will not be indexed even though it ordinarily would have been
 if the \f(CWCLASS\f1 attribute were not there.
+.SS Filters
+(See Filters under EXAMPLES in
+.BR swish++.conf (4).)
 .SH EXIT STATUS
-Exits with a value of zero only if indexing completed sucessfully;
-non-zero otherwise.
+Exits with one of the values given below:
+.PP
+.RS 5
+.PD 0
+.TP 5
+0
+Success.
+.TP
+1
+Error in configuration file.
+.TP
+2
+Error in command-line options.
+.TP
+10
+Unable to open temporary file.
+.TP
+11
+Unable to write index file.
+.TP
+12
+Unable to write temporary file.
+.TP
+30
+Unable to read stop-word file.
+.PD
+.RE
 .SH CAVEATS
 .TP 4
 1.
@@ -439,14 +579,18 @@ Character encodings specified either in \f(CWMETA\f1 elements
 or via the \f(CWcharset\f1 attribute in other elements are ignored.
 .SH FILES
 .PD 0
-.TP 14
-\f(CWthe.index\f1
+.TP 16
+\f(CWswish++.conf\f1
+default configuration file name
+.TP
+\f(CWswish++.index\f1
 default index file name
 .PD
 .SH SEE ALSO
 .BR extract (1),
 .BR find (1),
-.BR search (1)
+.BR search (1),
+.BR swish++.conf (4)
 .PP
 International Standards Organization.
 ``ISO 8859-1: Information Processing
