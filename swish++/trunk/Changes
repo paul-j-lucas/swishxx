@@ -3,6 +3,56 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.13.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Fixed threads linking problem.
+
+  (This bug fix shall be know as big fix TL1.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* GNUmakefile
+
+	1. s/PTHREAD_LIB/PTHREAD_LINK/ for bug fix TL1.
+	2. Added $(PTHREAD_LINK) to E_LINK for bug fix TL1.
+
+* version.h
+
+	1. Changed to "5.13.2."
+
+
+*******************************************************************************
+5.13.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Yet more BSD compilation fixes.  (Why the hell can't BSD headers #include
+  everything they need themselves?)
+
+  (This bug fix shall be know as big fix BSD6.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* util.h
+
+	1. Added: #include <sys/types.h> for bug fix BSD6.
+
+* version.h
+
+	1. Changed to "5.13.1."
+
+
+*******************************************************************************
 5.13
 *******************************************************************************
 
@@ -19,6 +69,7 @@ NEW FEATURES
   little-endian) was added.
 
   (This feature shall be known as feature UTF16.)
+
 
 BUG FIXES
 ---------
