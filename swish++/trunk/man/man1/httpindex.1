@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3httpindex\f1 1 "April 13, 2000" "SWISH++"
+.TH \f3httpindex\f1 1 "August 31, 2001" "SWISH++"
 .SH NAME
 httpindex \- HTTP front-end for SWISH++ indexer
 .SH SYNOPSIS
@@ -111,7 +111,8 @@ with copies of remote files.
 To index all HTML and text files on a remote web server
 keeping descriptions locally:
 .cS
-wget -A html,txt -linf -t2 -rxnv -nh -w2 http://www.foo.com 2>&1 | httpindex -d
+wget -A html,txt -linf -t2 -rxnv -nh -w2 http://www.foo.com 2>&1 |
+httpindex -d -e'html:*.html' -e'text:*.txt'
 .cE
 Note that you need to redirect
 .BR wget (1)'s
