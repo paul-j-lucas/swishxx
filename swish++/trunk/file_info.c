@@ -21,7 +21,7 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"
+#include "fake_ansi.h"				/* for std, *_CAST */
 #include "file_info.h"
 
 extern int		num_files_reserve;
