@@ -888,12 +888,12 @@ static void		write_word_index( ostream&, off_t* );
 
 		////////// Copy all index info and compute ranks //////////////
 
+		bool continues = false;
 		for ( j = i; j < partial_index_file_names.size(); ++j ) {
 			if ( word[ j ] == words[ j ].end() )
 				continue;
 			if ( ::strcmp( *word[ j ], *word[ i ] ) )
 				continue;
-			bool continues = false;
 			file_list const list( word[ j ] );
 			FOR_EACH( file_list, list, file ) {
 				if ( continues )
