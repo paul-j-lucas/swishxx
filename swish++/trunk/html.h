@@ -23,12 +23,11 @@
 #define	html_H
 
 // local
-#include "fake_ansi.h"
 #include "file_vector.h"
 
 enum {
-	no_meta_id		= -1,
-	meta_id_not_found	= -2,
+	No_Meta_ID		= -1,
+	Meta_ID_Not_Found	= -2,
 };
 
 char const*	grep_title( file_vector<char> const& );
@@ -40,10 +39,8 @@ char		convert_entity(
 
 void		parse_html_tag(
 			file_vector<char>::const_iterator &pos,
-			file_vector<char>::const_iterator end
-#ifdef	FEATURE_CLASS
-			, bool is_new_file = false
-#endif	/* FEATURE_CLASS */
+			file_vector<char>::const_iterator end,
+			bool is_new_file = false
 		);
 
 #endif	/* html_H */
