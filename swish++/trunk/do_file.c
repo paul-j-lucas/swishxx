@@ -98,7 +98,7 @@
 	// If incrementally indexing, it's possible that we've encountered the
 	// file before.
 	//
-	if ( incremental && file_info::name_set_.contains( file_name ) ) {
+	if ( incremental && file_info::seen_file( file_name ) ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: encountered before)\n";
 		return;
@@ -144,7 +144,6 @@
 	ExtractFile::const_iterator const
 #endif
 		include_pattern = include_patterns.find( file_name );
-
 	//
 	// Skip the file if the set of acceptable patterns doesn't contain the
 	// candidate, but only if there was at least one acceptable pattern
@@ -227,12 +226,13 @@
 
 	static indexer *const text = indexer::find_indexer( "text" );
 	indexer *const i = found_pattern ? include_pattern->second : text;
-	new file_info( orig_file_name, orig_file_size, i->find_title( file ) );
+	file_info *const fi = new file_info(
+		orig_file_name, orig_file_size, i->find_title( file )
+	);
 	i->index_file( file );
 
 	if ( verbosity > 2 )
-		cout	<< " (" << file_info::current_file().num_words_
-			<< " words)\n";
+		cout << " (" << fi->num_words() << " words)\n";
 
 	if ( words.size() >= Word_Threshold )
 		write_partial_index();
