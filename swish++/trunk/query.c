@@ -28,7 +28,7 @@
 #include <vector>
 
 // local
-#include "bcd.h"
+#include "enc_int.h"
 #include "file_list.h"
 #include "query.h"
 #include "stem_word.h"
@@ -85,7 +85,7 @@ static void		perform_and( search_results&, and_results_type& );
 {
 	unsigned char const *p = reinterpret_cast<unsigned char const*>( *i );
 	while ( *p++ ) ;			// skip past word
-	return parse_bcd( p );
+	return dec_int( p );
 }
 
 //*****************************************************************************
