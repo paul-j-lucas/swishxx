@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "February 5, 2002" "SWISH++"
+.TH \f3index\f1 1 "February 6, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -200,9 +200,10 @@ Another way around this problem is to do periodic full indexing.
 .B index
 is written in a modular fashion
 where different types of files have different indexing modules.
-Currently, there are 5 modules:
+Currently, there are 6 modules:
 Text (plain text),
 HTML (HTML and XHTML),
+LaTeX,
 Mail (RFC 822 and Usenet News),
 Manual (Unix manual pages in
 .BR nroff (1)
@@ -329,6 +330,16 @@ The specification is vague as to whether whitespace surrounding the \f(CW=\f1
 is legal, but
 .B index
 allows it.
+.SS LaTeX Module
+Additional processing is done for LaTeX files.
+If a
+.B \\\\title
+command is found within the first \f(CWTitleLines\f1 lines of the file
+(default is 12),
+then the value of the title is stored in the generated index file as the
+file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
 .SS Mail Module
 Additional processing is done for mail and news files.
 The additional processing is:
@@ -975,9 +986,9 @@ To index all HTML and text files on a web server:
 .cS
 index -v3 -e 'html:*.*htm*' -e 'text:*.txt' .
 .cE
-To index all files not under directories named \f(CWSCCS\f1:
+To index all files not under directories named \f(CWCVS\f1:
 .cS
-find . -name SCCS -prune -o -type f -a -print | index -e 'html:*.*htm*' -
+find . -name CVS -prune -o -type f -a -print | index -e 'html:*.*htm*' -
 .cE
 .SS Windows Command-Lines
 When using the Windows command interpreter,
@@ -1173,6 +1184,11 @@ International Standards Organization.
 .I -- Portable Operating System Interface (POSIX)
 .I -- Part 2: Shell and Utilities,
 1993.
+.PP
+Leslie Lamport.
+.IR "LaTeX: A Document Preparation System, 2nd ed." ,
+Addison-Wesley, Reading, MA,
+1994.
 .PP
 Steven Pemberton, et al.
 .IR "XHTML 1.0: The Extensible HyperText Markup Language" ,
