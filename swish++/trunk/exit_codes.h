@@ -25,7 +25,7 @@
 // exit(3) status codes
 enum {
 	// common to all executables
-	Exit_Internal_Error		= 255,
+	Exit_Internal_Error		= 127,
 	Exit_Success			= 0,
 	Exit_Config_File		= 1,
 	Exit_Usage			= 2,
@@ -64,6 +64,8 @@ enum {
 	Exit_No_Detach_Thread		= 65,
 	Exit_No_Init_Thread_Condition	= 66,
 	Exit_No_Init_Thread_Mutex	= 67,
+	Exit_No_User			= 68,
+	Exit_No_Group			= 69,
 #endif
 
 	Exit_End_Enum_Marker
