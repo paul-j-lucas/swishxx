@@ -109,7 +109,6 @@
 
 	typedef vector< filter > filter_list_type;
 	filter_list_type filter_list;
-	filter_list.reserve( 5 );		// more than this is insane
 #ifdef	INDEX
 	char const *const orig_file_name = file_name;
 #endif
