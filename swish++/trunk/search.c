@@ -474,7 +474,7 @@ inline omanip< char const* > index_file_info( int index ) {
 		//
 		// Compute the highest rank and the normalization factor.
 		//
-		int highest_rank = sorted[0].second;
+		int const highest_rank = sorted[0].second;
 		double const normalize = 100.0 / highest_rank;
 		//
 		// Print the sorted results skipping some if requested to and
