@@ -37,14 +37,14 @@
 #endif
 
 //
-// The HP STL headers are broken for g++ 2.95.3 and earlier because
+// The HP STL headers are broken for g++ 2.95.x and earlier because
 // stl_config.h incorrectly defines __STL_NO_NAMESPACES when it shouldn't
 // (causing __STL_USE_NAMESPACES to be undefined) and stl_iterator.h defines
-// "struct iterator" only when __STL_USE_NAMESPACES is defined.  Short of those
-// headers being fixed (supposedly in g++ 3.0), we define std::iterator here
-// ourselves: the definition is copied/pasted from stl_iterator.h.
+// "struct iterator" only when __STL_USE_NAMESPACES is defined.  This is fixed
+// in 2.96, but for earlier versions we define std::iterator here ourselves:
+// the definition is copied/pasted from stl_iterator.h.
 //
-#if	 defined(__GNUC__) && __GNUC__ <= 2 && \
+#if	 defined(__GNUC__) && __GNUC__ <= 2 && __GNUC_MINOR__ <= 95 && \
 	 defined(__STL_NO_NAMESPACES) && \
 	!defined(__STL_USE_NAMESPACES)
 namespace std {
