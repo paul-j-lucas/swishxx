@@ -117,6 +117,7 @@ CHANGES, file-by-file
 	3. Removed -D and -G options as part of bug fix ISI2.
 	4. In write_dir_index(), added code to order the directories for bug
 	   fix ISI2.
+	5. Moved definition of exlude_class_names to mod_html.c.
 
 * index_header.c
 
@@ -135,6 +136,10 @@ CHANGES, file-by-file
 
 	1. Removed DirectoriesGrow and DirectoriesReserve as part of bug fix
 	   ISI2.
+
+* mod/html/mod_html.c
+
+	1. Moved definition of exlude_class_names here.
 
 * search_daemon.c
 
