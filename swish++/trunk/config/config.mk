@@ -31,17 +31,16 @@
 #	Uncomment whichever line represents your OS.  If your OS isn't listed
 #	here, just pick Linux and see if that works.
 #
-#	For Mac OS X, uncomment FREE_BSD.
-#
 ###############################################################################
 
-FREE_BSD:=	-DFreeBSD
-#LINUX:=		-DLinux -D_BSD_SOURCE
+#FREE_BSD:=	-DFreeBSD
+LINUX:=		-DLinux -D_BSD_SOURCE
+#MAC_OS_X:=	-DMacOSX
 #SOLARIS:=	-DSolaris
 #WIN32:=		-DWIN32
 
 # Leave the following line alone!
-OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
+OS:=		$(FREE_BSD) $(LINUX) $(MAC_OS_X) $(SOLARIS) $(WIN32)
 
 ###############################################################################
 #
