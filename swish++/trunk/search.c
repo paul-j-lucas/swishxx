@@ -61,6 +61,9 @@
 #include "version.h"
 #include "WordFilesMax.h"
 #include "WordPercentMax.h"
+#ifdef	FEATURE_word_pos
+#include "WordsNear.h"
+#endif
 #include "word_util.h"
 #include "xml_formatter.h"
 #ifdef	SEARCH_DAEMON
@@ -116,13 +119,17 @@ typedef	pair< int, int > search_result_type;
 //*****************************************************************************
 
 index_segment	directories, files, meta_names, stop_words, words;
+IndexFile	index_file_name;
 ResultsMax	max_results;
 char const*	me;				// executable name
 ResultSeparator	result_separator;
 ResultsFormat	results_format;
 StemWords	stem_words;
-WordFilesMax	word_file_max;
+WordFilesMax	word_files_max;
 WordPercentMax	word_percent_max;
+#ifdef	FEATURE_word_pos
+WordsNear	words_near;
+#endif
 #ifdef	SEARCH_DAEMON
 SearchDaemon	daemon_type;
 Group		group;
@@ -185,8 +192,6 @@ inline omanip< char const* > index_file_info( int index ) {
 #endif
 	/////////// Process command-line options //////////////////////////////
 
-	IndexFile	index_file_name;
-
 	search_options const opt( &argc, &argv, opt_spec );
 	if ( !opt )
 		::exit( Exit_Usage );
@@ -207,10 +212,14 @@ inline omanip< char const* > index_file_info( int index ) {
 		result_separator = opt.result_separator_arg;
 	if ( opt.stem_words_opt )
 		stem_words = true;
-	if ( opt.word_file_max_arg )
-		word_file_max = opt.word_file_max_arg;
+	if ( opt.word_files_max_arg )
+		word_files_max = opt.word_files_max_arg;
 	if ( opt.word_percent_max_arg )
 		word_percent_max = opt.word_percent_max_arg;
+#ifdef	FEATURE_word_pos
+	if ( opt.words_near_arg )
+		words_near = opt.words_near_arg;
+#endif
 #ifdef	SEARCH_DAEMON
 	if ( opt.daemon_type_arg )
 		daemon_type = opt.daemon_type_arg;
@@ -551,8 +560,11 @@ inline omanip< char const* > index_file_info( int index ) {
 	result_separator_arg		= 0;
 	skip_results_arg		= 0;
 	stem_words_opt			= false;
-	word_file_max_arg		= 0;
+	word_files_max_arg		= 0;
 	word_percent_max_arg		= 0;
+#ifdef	FEATURE_word_pos
+	words_near_arg			= 0;
+#endif
 #ifdef	SEARCH_DAEMON
 	daemon_type_arg			= 0;
 	group_arg			= 0;
@@ -596,8 +608,8 @@ inline omanip< char const* > index_file_info( int index ) {
 				dump_entire_index_opt = true;
 				break;
 
-			case 'f': // Word/file file maximum.
-				word_file_max_arg = opt.arg();
+			case 'f': // Word/files file maximum.
+				word_files_max_arg = opt.arg();
 				break;
 
 			case 'F': // Results format.
@@ -622,6 +634,11 @@ inline omanip< char const* > index_file_info( int index ) {
 			case 'M': // Dump meta-name list.
 				dump_meta_names_opt = true;
 				break;
+#ifdef	FEATURE_word_pos
+			case 'n': // Words near.
+				words_near_arg = ::atoi( opt.arg() );
+				break;
+#endif
 #ifdef	SEARCH_DAEMON
 			case 'o': // Socket timeout.
 				socket_timeout_arg = ::atoi( opt.arg() );
@@ -864,6 +881,9 @@ ostream& usage( ostream &err ) {
 	"-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
 	"-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
 	"-M   | --dump-meta        : Dump meta-name index, exit\n"
+#ifdef FEATURE_word_pos
+	"-n n | --near n           : Maximum number of words apart [default: " << WordsNear_Default << "]\n"
+#endif
 #ifdef SEARCH_DAEMON
 	"-o s | --socket-timeout s : Search client request timeout [default: " << SocketTimeout_Default << "]\n"
 	"-O s | --thread-timeout s : Idle spare thread timeout [default: " << ThreadTimeout_Default << "]\n"
