@@ -91,8 +91,8 @@ public:
 
 		const_iterator& operator++();
 		const_iterator  operator++(int) {
-			const_iterator tmp = *this;
-			return ++*this, tmp;
+			const_iterator const temp = *this;
+			return ++*this, temp;
 		}
 
 		friend bool
@@ -105,6 +105,8 @@ public:
 			return !( i == j );
 		}
 
+		// default copy constructor is OK
+		// default assignment operator is OK
 	private:
 		const_iterator( byte const *p ) : c_( p ) {
 			if ( c_ ) operator++();
