@@ -45,27 +45,35 @@
 //
 //*****************************************************************************
 {
-	char const *const	file_name_;
-	char const *const	title_;
-	off_t const		size_;
-	int			num_words_;
-
 	typedef std::vector< file_info* > list_type;
 	typedef char_ptr_set name_set_type;
 
 	static list_type	list_;
-	static name_set_type	name_set_;
 
 	file_info(
 		char const *file_name, size_t file_size, char const *title,
 		int num_words = 0
 	);
 
-	static int		current_index()	{ return list_.size() - 1; }
-	static file_info&	current_file()	{ return *list_.back(); }
+	char const*		file_name() const	{ return file_name_; }
+	int			num_words() const	{ return num_words_; }
+	off_t			size() const		{ return size_; }
+	char const*		title() const		{ return title_; }
 
+	static int		current_index()	{ return list_.size() - 1; }
+	static void		inc_words()	{ ++list_.back()->num_words_; }
 	static std::ostream&	out( std::ostream&, char const* );
 	static file_info*	parse( char const* );
+	static bool		seen_file( char const *file_name ) {
+					return name_set_.contains( file_name );
+				}
+private:
+	char const *const	file_name_;
+	int			num_words_;
+	off_t const		size_;
+	char const *const	title_;
+
+	static name_set_type	name_set_;
 };
 
 #endif	/* file_info_H */
