@@ -3,6 +3,253 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.0
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added the ability to search using "near."  The downside is that word-position
+  data must be stored for every word.  This approximately doubles the size of
+  the generated indicies.
+
+  (This feature shall be known as feature NS.)
+
+
+BUG FIXES
+---------
+
+* file_list::const_iterator didn't work right for copy construction or
+  assignment.
+
+  (This bug fix shall be known as bug fix FLCI.)
+
+
+OTHER CHANGES
+-------------
+
+* Reworked the thread_pool/thread code to use thread-local data.  It makes the
+  code much simpler.
+
+* Moved scripts (*.in files) to new scripts directory.
+
+* Added a makedepend.pl script to make dependencies when g++ is not being used,
+  e.g. CC on Solaris.
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added FEATURE_LIST, FEATURE_DEFS, and word_pos for feature NS.
+	2. Now no longer doing -fno-rtti when the word_pos feature is being
+	   compiled in for feature NS.
+	3. Added MAKEDEPEND variable.
+
+* config/makedepend.pl
+
+	1. New file.
+
+* config/mod.mk
+* charsets/GNUmakefile
+* encodings/GNUmakefile
+
+	1. s/include/-include/ to silence "no such file or directory"
+	   messages.
+
+* config.h
+
+	1. Made comments for ShellFilenameDelimChars and
+	   ShellFilenameEscapeChars clear that they are for FILE (not
+	   path) names.
+	2. Added WordsNear_Default for feature NS.
+
+* conf_var.c
+
+	1. Removed \n from internal_error.
+	2. In conf_var::map_ref(), added storewordpositions and wordsnear
+	   for feature NS.
+
+* do_file.c
+
+	1. Added code to reset word_pos for feature NS.
+
+* exit_codes.h
+
+	1. Added Exit_No_Create_Thread_Key.
+
+* file_list.c
+
+	1. Added definition of file_list::const_iterator::end_value
+	   for bug fix FLCI.
+	2. In operator++(), now using end_value for bug fix FLCI.
+	3. Added code to accumulate word position data for feature NS.
+
+* file_list.h
+
+	1. Made temp object in operator++(int) const.
+	2. Added static end_value for bug fix FLCI.
+
+* filter.c
+
+	1. Got rid of newlines in error messages.
+
+* GNUmakefile
+
+	1. Added: DEBUG_eval_query
+	2. Added query_node.c to S_SOURCES for feature NS.
+	3. s/include/-include/ to silence "no such file or directory"
+	   messages.
+
+* index.c
+
+	1. Added #include "StoreWordPositions.h" for feature NS.
+	2. s/word_file_max/word_files_max/
+	3. Added store_word_positions and word_pos for feature NS.
+	4. Added -P option for feature NS.
+	5. In merge_indicies() and write_word_index(), added call to
+	   write_word_pos() for feature NS.
+
+* indexer.c
+
+	1. Added #include "StoreWordPositions.h" for feature NS.
+	2. Added "extern int word_pos" for feature NS.
+	3. Removed \n from internal_error.
+	4. In indexer::index_word(), added "++word_pos" for feature NS.
+	5. In indexer::index_word(), added code to store word position
+	   data for feature NS.
+
+* INSTALL.unix
+* INSTALL.win32
+
+	1. Removed note about "no such file or directory" warnings.
+
+* man/man1/index.1
+
+	1. In the description of the Mail module, item #7, added mention
+	   of -A option.
+	2. For the -A option, elaborated description.
+	3. Added description of the -P option for feature NS.
+	4. Added mention of StoreWordPositions variable for feature NS.
+	5. Added mention of WordsNear variable for feature NS.
+
+* man/man1/search.1
+
+	1. Added description of "near" for feature NS.
+	2. Reworked EXAMPLES section.
+	3. Added exit code 70: Could not create thread key.
+
+* man/man4/swish++.conf.4
+
+	1. Added StoreWordPositions for feature NS.
+	2. Added WordsNear for feature NS.
+
+* mmap_file.h
+
+	1. Removed trailing ',' from behavior_type.
+
+* query.c
+
+	1. s/find_result/word_range/
+	2. Added #include "query_node.h" for feature NS.
+	3. Added parse_args struct for feature NS.
+	4. Reworked parse functions to take parse_args for feature NS.
+	5. Move is_too_frequent() to query.h.
+	6. Reworked parse functions to build query_nodes.
+	7. Moved the code for perform_and() to query_node.c.
+
+* query.h
+
+	1. s/find_result/word_range/
+	2. Move is_too_frequent() here.
+
+* query_node.[ch]
+
+	1. New files for neature NS.
+
+* search.c
+
+	1. Added #include "WordsNear.h" for feature NS.
+	2. s/word_file_max_arg/word_files_max_arg/
+	3. Added -n option for feature NS.
+
+* search.h
+
+	1. s/word_file_max_arg/word_files_max_arg/
+	2. Added words_near_arg for feature NS.
+
+* search_options.c
+
+	1. Added "-n" for feature NS.
+
+* simple_pool.h
+* StoreWordPositions.h
+
+	1. New file for feature NS.
+
+* swish++.conf
+
+	1. Removed -f and -p options from search(1).
+	2. Added StoreWordPositions for feature NS.
+	3. Added WordsNear for feature NS.
+
+* thread_pool.c
+
+	1. Added thread_pool::thread::thread_obj_key_.
+	2. s/thread_pool_thread_cleanup/thread_pool_thread_data_cleanup/
+	3. Added code to deal with thread-specific data.
+	4. Added thread_pool_thread_once().
+	5. s/destructing_/in_cleanup_/
+
+* thread_pool.h
+
+	1. Removed thread_pool_thread_cleanup().
+	2. Added thread_pool_thread_data_cleanup().
+	3. Added thread_pool_thread_once().
+	4. Removed thread_pool::thread::operator delete().
+	5. s/destructing_/in_cleanup_/
+	6. Removed thread_pool::thread::thread_.
+	7. Added thread_pool::thread::thread_obj_key_.
+
+* token.c
+
+	1. Added "near" for feature NS.
+
+* token.h
+
+	1. Added near_token and not_near_token for feature NS.
+
+* util.h
+
+	1. Added: abs() for feature NS.
+	2. Removed \n from internal_error.
+	3. Added FOR_EACH_IN_PAIR.
+
+* version.h
+
+	1. Changed to "6.0".
+
+* word_info.c
+
+	1. Moved word_info::file constructors here.
+	2. Added write_word_pos() for feature NS.
+
+* word_info.h
+
+	1. Added file::has_meta_id().
+	2. Added word position data for feature NS.
+
+* word_markers.h
+
+	1. Added Word_Pos_List_Marker for feature NS.
+
+* WordsNear.h
+
+	1. New file for feature NS.
+
+
+*******************************************************************************
 5.15.4
 *******************************************************************************
 
