@@ -2,7 +2,7 @@
 **	SWISH++
 **	ExtractFile.c
 **
-**	Copyright (C) 1998  Paul J. Lucas
+**	Copyright (C) 2000  Paul J. Lucas
 **
 **	This program is free software; you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
