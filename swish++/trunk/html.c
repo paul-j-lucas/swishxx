@@ -191,9 +191,9 @@ bool			tag_cmp(
 //
 // DESCRIPTION
 //
-//	Given an attribute's name, find its value within an HTML element's
-//	start tag, e.g., find the value of the NAME attribute within the META
-//	element.  Case is irrelevant.
+//	Given an attribute's name, find its value within an HTML or XHTML
+//	element's start tag, e.g., find the value of the NAME attribute within
+//	the META element.  Case is irrelevant.
 //
 //	The HTML 4.0 specification is vague in stating whether whitespace is
 //	legal around the '=' character separating an attribute's name from its
@@ -214,9 +214,9 @@ bool			tag_cmp(
 //
 //	end		The iterator marking the end of where to look (usually
 //			positioned at the closing '>' character of the HTML
-//			tag).  If the attribute is found, this iterator is
-//			repositioned to one past the value's end; otherwise, it
-//			is not touched.
+//			or XHTML tag).  If the attribute is found, this
+//			iterator is repositioned to one past the value's end;
+//			otherwise, it is not touched.
 //
 //	attribute	The name of the attribute to find; it must be in lower
 //			case.
@@ -305,10 +305,10 @@ bool			tag_cmp(
 //
 // DESCRIPTION
 //
-//	Scan ("grep") through the first num_title_lines lines in an HTML file
-//	looking for <TITLE>...</TITLE> tags to extract the title.  Every non-
-//	space whitespace character in the title is converted to a space;
-//	leading and trailing spaces are removed.
+//	Scan ("grep") through the first num_title_lines lines in an HTML or
+//	XHTML file looking for <TITLE>...</TITLE> tags to extract the title.
+//	Every non-space whitespace character in the title is converted to a
+//	space; leading and trailing spaces are removed.
 //
 //	If the length of the title exceeds Title_Max_Size, then the title is
 //	truncated and the last 3 characters of the truncated title are replaced
@@ -316,7 +316,7 @@ bool			tag_cmp(
 //
 // PARAMETERS
 //
-//	file	The file presumed to be an HTML file.
+//	file	The file presumed to be an HTML or XHTML file.
 //
 // RETURN VALUE
 //
@@ -377,8 +377,8 @@ bool			tag_cmp(
 		}
 
 		//
-		// Found the start of an HTML tag: mark the position before it
-		// in case it turns out to be the </TITLE> tag.
+		// Found the start of an HTML or XHTML tag: mark the position
+		// before it in case it turns out to be the </TITLE> tag.
 		//
 		before = c++;
 
@@ -386,7 +386,7 @@ bool			tag_cmp(
 			continue;
 
 		//
-		// Is the HTML tag a TITLE tag?
+		// Is the HTML or XHTML tag a TITLE tag?
 		//
 		bool const found_title_tag =
 			tag_cmp( c, file.end(), title_tag[ tag_index ] );
@@ -451,12 +451,12 @@ bool			tag_cmp(
 //
 // DESCRIPTION
 //
-//	Checks to see if the current HTML element is the start of a comment. If
-//	so, skip it scanning for the closing "-->" character sequence.  The
-//	HTML specification permits whitespace between the "--" and the ">" (for
-//	some strange reason).  Unlike skipping an ordinary HTML tag, quotes are
-//	not significant and no attempt must be made either to "balance" them or
-//	to ignore what is in between them.
+//	Checks to see if the current HTML or XHTML element is the start of a
+//	comment. If so, skip it scanning for the closing "-->" character
+//	sequence.  The HTML specification permits whitespace between the "--"
+//	and the ">" (for some strange reason).  Unlike skipping an ordinary
+//	HTML or XHTML tag, quotes are not significant and no attempt must be
+//	made either to "balance" them or to ignore what is in between them.
 //
 //	This function is more lenient than the HTML 4.0 specification in that
 //	it allows for a string of hyphens within a comment since this is common
@@ -513,7 +513,7 @@ bool			tag_cmp(
 // DESCRIPTION
 //
 //	This function does everything skip_html_tag() does but additionally
-//	does extra parsing for certain HTML elements:
+//	does extra parsing for certain HTML or XHTML elements:
 //
 //	1. If the tag contains a CLASS attribute whose value is among the set
 //	   of class names specified as those not to index, then all the text up
@@ -615,14 +615,14 @@ bool			tag_cmp(
 			stack_type;
 		static stack_type element_stack;
 		//
-		// The element_stack keeps track of all the HTML elements we
-		// encounter until they are closed.  The first member of the
-		// pair is a pointer to the element_map's value_type or the
-		// key/value pair of the map where the key is the element name
-		// and the value is a pointer to the element.  The second
-		// member of the pair is a flag indicating whether the words
-		// between the start and end tags of that element are not to be
-		// indexed (true = "don't index").
+		// The element_stack keeps track of all the HTML or XHTML
+		// elements we encounter until they are closed.  The first
+		// member of the pair is a pointer to the element_map's
+		// value_type or the key/value pair of the map where the key is
+		// the element name and the value is a pointer to the element.
+		// The second member of the pair is a flag indicating whether
+		// the words between the start and end tags of that element are
+		// not to be indexed (true = "don't index").
 		//
 		// Note: I can't use an actual STL stack since I need to be
 		// able to clear the entire stack and, unfortunately, clear()
@@ -708,10 +708,10 @@ bool			tag_cmp(
 				// tags should be indexed or not.
 				//
 				// Note that we have to keep track of all HTML
-				// elements even if they are not members of a
-				// class not to be indexed because they could
-				// be nested inside of an element that is,
-				// e.g.:
+				// or XHTML elements even if they are not
+				// members of a class not to be indexed because
+				// they could be nested inside of an element
+				// that is, e.g.:
 				//
 				//	<DIV CLASS=ignore>
 				//	<SPAN CLASS=other>Hello</SPAN>
@@ -858,9 +858,10 @@ bool			tag_cmp(
 //
 // DESCRIPTION
 //
-//	Scan for the closing '>' of an HTML tag skipping all characters until
-//	it's found.  It takes care to ignore any '>' inside either single or
-//	double quotation marks.  It properly handles HTML comments.
+//	Scan for the closing '>' of an HTML or XHTML tag skipping all
+//	characters until it's found.  It takes care to ignore any '>' inside
+//	either single or double quotation marks.  It properly handles HTML and
+//	XHTML comments.
 //
 // PARAMETERS
 //
@@ -872,7 +873,7 @@ bool			tag_cmp(
 //
 // RETURN VALUE
 //
-//	Returns true only if the tag is an HTML comment.
+//	Returns true only if the tag is an HTML or XHTML comment.
 //
 //*****************************************************************************
 {

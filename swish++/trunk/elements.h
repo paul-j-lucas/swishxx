@@ -103,9 +103,9 @@ private:
 //
 // DESCRIPTION
 //
-//	Write the key of an element_map::value_type (the HTML element name) to
-//	an ostream.  This is useful so an ostream_iterator can be used to dump
-//	the entire element_map.
+//	Write the key of an element_map::value_type (the HTML or XHTML element
+//	name) to an ostream.  This is useful so an ostream_iterator can be used
+//	to dump the entire element_map.
 //
 // PARAMETERS
 //
