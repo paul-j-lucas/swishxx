@@ -30,11 +30,6 @@ ROOT:=		..
 include		$(ROOT)/config/config.mk
 
 ##
-# Build rules
-##
-
-
-##
 # Install rules
 ##
 
