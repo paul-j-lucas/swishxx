@@ -48,8 +48,10 @@ bool				HTML_indexer::dump_html_elements_opt_ = false;
 HTML_indexer::stack_type	HTML_indexer::element_stack_;
 ExcludeClass			exclude_class_names;
 
-static bool is_html_comment( encoded_char_range::const_iterator &pos );
-static bool skip_html_tag( encoded_char_range::const_iterator &pos );
+static char entity_to_ascii( encoded_char_range::const_iterator& );
+static bool find_attribute( encoded_char_range&, char const* );
+static bool is_html_comment( encoded_char_range::const_iterator& );
+static bool skip_html_tag( encoded_char_range::const_iterator& );
 
 //*****************************************************************************
 //
@@ -218,8 +220,8 @@ static bool skip_html_tag( encoded_char_range::const_iterator &pos );
 // PARAMETERS
 //
 //	e		The range spanning where to look.  If the attribute is
-//			found, this iterator is repositioned to be at the first
-//			character of the value; otherwise, it is not touched.
+//			found, the range is rebounded to span the value;
+//			otherwise, it is not touched.
 //
 //	attribute	The name of the attribute to find; it must be in lower
 //			case.
