@@ -2,6 +2,70 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+*  The modular indexing rearchitecture is now complete.
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_var.c
+
+	1. In map_ref(), removed ExcludeClass and FilterAttachment.
+	2. Added: register_var()
+
+* conf_var.h
+
+	1. Added: register_var()
+
+* index.c
+
+	1. Removed #include of mod_html .h files.
+	2. Removed mod_html command-line options.
+	3. In main(), added code to gather all module options.
+	4. In main(), moved code to dump HTML elements into mod_html.
+	5. In usage(), removed mod_html usage.
+	6. In usage(), added call to: indexer::all_mods_usage().
+
+* indexer.c
+* indexer.h
+
+	1. Added any_mod_claims_option(), all_mods_options(),
+	   all_mods_post_options(), all_mods_usage(), claims_option(),
+	   option_spec(), post_options(), and usage().
+
+* mod/html/mod_html.c
+
+	1. Moved constructor definition here.
+	2. In constructor, added call to register_var( "excludeclass" );
+	3. Moded global dump_html_elements_opt definition here.
+	4. Added claims_option(), option_spec(), post_options(), and usage().
+
+* mod/html/mod_html.h
+
+	1. Mode constructor definition to mod_html.c.
+	2. Added claims_option(), option_spec(), post_options(), and usage().
+
+* mod/mail/mod_mail.c
+
+	1. Moved constructor definition here.
+	2. Added call to register_var( "filterattachment" ).
+
+* mod/mail/mod_mail.h
+
+	1. Moved constructor definition to mod_mail.c.
+
+* version.h
+
+	1. Upped version to "5.4."
+
+
+*******************************************************************************
 5.3.6
 *******************************************************************************
 
