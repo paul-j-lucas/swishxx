@@ -34,8 +34,8 @@
 //
 // DESCRIPTION
 //
-//	A TitleLines is-a conf<int> containing the number of lines to look at
-//	for a <TITLE> tag.
+//	A TitleLines is-a conf<int> containing the number of lines to look into
+//	a file for its "title" (whatever that means for a given file format).
 //
 //	This is the same as index's -t command-line option.
 //
