@@ -153,11 +153,7 @@ search: $(S_OBJS)
 	$(CC) $(CFLAGS) $(LPATHS) -o $@ $(S_OBJS) $(S_LINK)
 
 platform.h:
-ifdef WIN32
-	cp $@.win32 $@
-else
 	@$(MAKE) -C config
-endif
 
 dep/%.d : %.c platform.h dep
 	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
