@@ -9,7 +9,7 @@ SWISH++ Changes
 NEW FEATURES
 ------------
 
-* LaTeX files can not be indexed directly.
+* LaTeX files can now be indexed directly.
 
   (This feature shall be known as feature LATEX.)
 
@@ -20,7 +20,7 @@ NEW FEATURES
 
 * index(1) will now use the value of the environment variable TMPDIR if it's
   set as the default temporary directory.  However, the value is still
-  overriddedn by one of -T, --temp-dir, or TempDirectory if given.
+  superseded by one of -T, --temp-dir, or TempDirectory if given.
 
   (This feature shall be known as feature TMPDIR.)
 
