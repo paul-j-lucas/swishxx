@@ -70,7 +70,17 @@ cat > $TARGET <<!
 #ifndef platform_H
 #define platform_H
 
-#if	defined(__GNUC__) && __GNUC__ <= 2 && __GNUC_MINOR__ <= 95
+#if	defined(__GNUC__) && __GNUC__ <= 2
+#define	PJL_GCC_2xx
+//
+//	The Standard C++ Library bundled with gcc versions less than 3.0 isn't
+//	as standard-conforming as the one bundled with 3.0 and later.  In
+//	particular, older versions don't include the <sstream> and <streambuf>
+//	headers.
+//
+#endif
+
+#if	defined(PJL_GCC_2xx) && __GNUC_MINOR__ <= 95
 #define	PJL_GCC_295
 //
 //	The changes to fix various namespace and library issues for g++ 3.0
