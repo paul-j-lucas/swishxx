@@ -41,6 +41,10 @@ CFLAGS:=	$(CCFLAGS) $(DEBUGFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
+DECODER_LIB:=	decoders/libdecoders.a
+DECODER_LIB_PATH:=-Ldecoders
+DECODER_LINK:=	-ldecoders
+
 MOD_LIBS:=	$(foreach mod,$(MOD_LIST),mod/$(mod)/libmod_$(mod).a)
 MOD_LIB_PATHS:=	$(foreach mod,$(MOD_LIST),-Lmod/$(mod))
 MOD_LINK:=	$(foreach mod,$(MOD_LIST),-lmod_$(mod))
@@ -54,7 +58,6 @@ I_SOURCES:=	bcd.c \
 		conf_percent.c \
 		conf_set.c \
 		conf_string.c \
-		encoded_char.c \
 		ExcludeFile.c \
 		file_info.c \
 		file_list.c \
@@ -77,7 +80,7 @@ ifdef WIN32
 I_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
 I_OBJECTS:=	$(I_SOURCES:.c=.o)
-I_LINK:=	$(MOD_LINK) -lm
+I_LINK:=	$(MOD_LINK) $(DECODER_LINK) -lm
 
 S_SOURCES:=	bcd.c \
 		mmap_file.c \
@@ -150,8 +153,8 @@ LIB_TARGET:=	WWW.pm
 extract: $(E_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(E_LINK)
 
-index: $(I_OBJECTS) $(MOD_LIBS)
-	$(CC) $(CFLAGS) $(MOD_LIB_PATHS) -o $@ $(I_OBJECTS) $(I_LINK)
+index: $(I_OBJECTS) $(DECODER_LIB) $(MOD_LIBS)
+	$(CC) $(CFLAGS) $(DECODER_LIB_PATH) $(MOD_LIB_PATHS) -o $@ $(I_OBJECTS) $(I_LINK)
 
 init_modules.c: mod/*/mod_*.h init_modules-sh
 	./init_modules-sh > $@ || $(RM) $@
@@ -161,6 +164,9 @@ init_mod_vars.c: mod/*/vars init_mod_vars-sh
 
 search: $(S_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(S_LINK)
+
+$(DECODER_LIB): FORCE
+	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
 
 $(MOD_LIBS): FORCE
 	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
@@ -217,7 +223,7 @@ uninstall:
 # Utility rules
 ##
 
-MAKE_SUBDIRS=	for dir in man mod/*; \
+MAKE_SUBDIRS=	for dir in decoders man mod/*; \
 		do [ -f $$dir/*akefile ] && $(MAKE) -C $$dir $1; \
 		done
 
