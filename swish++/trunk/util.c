@@ -21,15 +21,23 @@
 
 // standard
 #include <cctype>
+#include <cstring>
 
 // local
 #include "config.h"
+#include "conf_var.h"
+#include "exit_codes.h"
 #include "fake_ansi.h"
+#include "file_vector.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
 #endif
+
+extern char const*	me;
+
+struct stat	stat_buf;			// someplace to do a stat(2) in
 
 //*****************************************************************************
 //
@@ -291,6 +299,75 @@ using namespace std;
 	}
 
 	return buf.current();
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void parse_config_file( char const *file_name )
+//
+// DESCRIPTION
+//
+//	Parse the lines in a configuration file setting variables accordingly.
+//
+// PARAMETERS
+//
+//	file_name	The name of the configuration file to parse.
+//
+//*****************************************************************************
+{
+	file_vector<char> conf_file( file_name );
+	if ( !conf_file ) {
+		if ( !::strcmp( file_name, Config_Filename_Default ) )
+			return;
+		ERROR	<< "could not read configuration from \""
+			<< file_name << '"' << endl;
+		::exit( Exit_Config_File );
+	}
+
+	register int line_no = 0;
+	register file_vector<char>::const_iterator
+		c = conf_file.begin(), nl = c;
+
+	while ( c != conf_file.end() && nl != conf_file.end() ) {
+		if ( !( nl = ::strchr( c, '\n' ) ) )
+			break;
+		++line_no;
+		//
+		// See if the line is entirely whitespace optionally followed
+		// by a comment starting with '#': if so, skip it.  If we don't
+		// end up skipping it, leading whitespace will have been
+		// skipped.
+		//
+		for ( ; c != nl; ++c ) {
+			if ( isspace( *c ) )
+				continue;
+			if ( *c == '#' )
+				goto next_line;
+			break;
+		}
+		if ( c != nl ) {
+			//
+			// The line has something on it worth parsing further:
+			// copy it (less leading and trailing whitespace) to a
+			// modifyable buffer and null-terminate it to make that
+			// task easier.
+			//
+			char buf[ 256 ];
+			ptrdiff_t len = nl - c;
+			::strncpy( buf, c, len );
+			while ( len > 0 )
+				if ( isspace( buf[ len - 1 ] ) )
+					--len;
+				else
+					break;
+			buf[ len ] = '\0';
+			conf_var::parse_line( buf, line_no );
+		}
+next_line:
+		c = nl + 1;
+	}
 }
 
 //*****************************************************************************
