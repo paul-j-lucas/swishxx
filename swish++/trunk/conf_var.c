@@ -253,8 +253,8 @@ int conf_var::current_config_file_line_no_ = 0;
 			//
 			return;
 		}
-		cerr	<< "could not read configuration from \""
-			<< file_name << "\"\n";
+		cerr	<< "could not read configuration from \"" << file_name
+			<< '"' << error_string( conf_file.error() );
 		::exit( Exit_Config_File );
 	}
 	conf_file.behavior( mmap_file::sequential );

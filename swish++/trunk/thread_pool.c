@@ -186,8 +186,7 @@ pthread_key_t		thread_pool::thread::thread_obj_key_;
 {
 	int result = ::pthread_detach( ::pthread_self() );
 	if ( result ) {
-		error()	<< "could not detach thread: "
-			<< ::strerror( result ) << endl;
+		error() << "could not detach thread" << error_string( result );
 		::exit( Exit_No_Detach_Thread );
 	}
 	register thread_pool::thread *const t =
@@ -340,8 +339,8 @@ pthread_key_t		thread_pool::thread::thread_obj_key_;
 		thread_pool_thread_data_cleanup
 	);
 	if ( result ) {
-		error()	<< "could not create thread key: "
-			<< ::strerror( result ) << endl;
+		error()	<< "could not create thread key"
+			<< error_string( result ) << endl;
 		::exit( Exit_No_Create_Thread_Key );
 	}
 }
@@ -387,8 +386,7 @@ pthread_key_t		thread_pool::thread::thread_obj_key_;
 
 	int const result = ::pthread_create( &thread_, 0, start_func, this );
 	if ( result ) {
-		error()	<< "could not create thread: "
-			<< ::strerror( result ) << endl;
+		error() << "could not create thread" << error_string( result );
 		::exit( Exit_No_Create_Thread );
 	}
 }
