@@ -119,7 +119,7 @@ using namespace std;
 	if ( in_word ) {
 		t.buf_[ t.len_ ] = '\0';
 		::transform(
-			.buf_, t.buf_ + t.len_ + 1,
+			t.buf_, t.buf_ + t.len_ + 1,
 			t.lower_buf_, static_cast<char (*)(char)>( to_lower )
 		);
 		if ( t.type_ )
