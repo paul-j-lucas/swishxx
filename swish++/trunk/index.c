@@ -1088,11 +1088,9 @@ void			write_word_index( ostream&, off_t* );
 //*****************************************************************************
 {
 	register int dir_index = 0;
-	for ( dir_list_type::const_iterator
-		i = dir_list.begin(); i != dir_list.end(); ++i
-	) {
+	FOR_EACH( dir_list_type, dir_list, dir ) {
 		offset[ dir_index++ ] = o.tellp();
-		o << *i << '\0';
+		o << *dir << '\0';
 	}
 }
 
