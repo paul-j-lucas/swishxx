@@ -24,6 +24,10 @@
 #ifndef mod_mail_H
 #define mod_mail_H
 
+// standard
+#include <string>
+#include <vector>
+
 // local
 #include "auto_vec.h"
 #include "charsets/charsets.h"
@@ -70,10 +74,20 @@ public:
 
     virtual char const* find_title( PJL::mmap_file const& ) const;
     virtual void        index_words(
-                            encoded_char_range const&,
-                            int meta_id = Meta_ID_None
+                            encoded_char_range const&, int = Meta_ID_None
                         );
 private:
+    //
+    // The boundary stack keeps track of all the boundary strings for MIME
+    // messages since they can nest.
+    //
+    // Note: I can't use an actual STL stack since I need to be able to clear
+    // the entire stack and, unfortunately, clear() isn't supported for stacks,
+    // an oversight in STL, IMHO.
+    //
+    typedef std::vector<std::string> boundary_stack_type;
+    static boundary_stack_type boundary_stack_;
+
     enum content_type {
         ct_not_indexable, // a type we don't know how to index
         ct_external_filter,
@@ -114,18 +128,14 @@ private:
         char const *value_begin, *value_end;
     };
 
-    message_type        mail_indexer::index_headers(
-                            char const *&begin, char const *end
-                        );
-    void                mail_indexer::index_multipart(
-                            char const *&begin, char const *end
-                        );
-    void                mail_indexer::index_vcard(
-                            char const *&begin, char const *end
-                        );
-    static bool         parse_header(
-                            char const *&begin, char const *end, key_value*
-                        );
+    static bool         boundary_cmp( char const*, char const*, char const* );
+    message_type        index_headers( char const*&, char const* );
+    void                index_multipart( char const*&, char const* );
+    void                index_vcard( char const*&, char const* );
+    static void         new_file();
+    static bool         parse_header( char const*&, char const*, key_value* );
+
+    static bool         did_last_header_;
 };
 
 ////////// Inlines ////////////////////////////////////////////////////////////

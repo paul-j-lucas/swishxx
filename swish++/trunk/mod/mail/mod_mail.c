@@ -54,25 +54,15 @@
 using namespace PJL;
 using namespace std;
 
-//
-// The boundary stack keeps track of all the boundary strings for MIME messages
-// since they can nest.
-//
-// Note: I can't use an actual STL stack since I need to be able to clear the
-// entire stack and, unfortunately, clear() isn't supported for stacks...an
-// oversight in STL, IMHO.
-//
-typedef vector< string > stack_type;
-
-FilterAttachment    attachment_filters;
-static stack_type   boundary_stack;
-static bool         did_last_header;
+FilterAttachment                    attachment_filters;
+mail_indexer::boundary_stack_type   mail_indexer::boundary_stack_;
+bool                                mail_indexer::did_last_header_;
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-        inline void new_file()
+        inline void mail_indexer::new_file()
 //
 // DESCRIPTION
 //
@@ -81,15 +71,15 @@ static bool         did_last_header;
 //
 //*****************************************************************************
 {
-    boundary_stack.clear();
-    did_last_header = false;
+    boundary_stack_.clear();
+    did_last_header_ = false;
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-        static bool boundary_cmp(
+        bool mail_indexer::boundary_cmp(
             register char const *c, register char const *end,
             register char const *boundary
         )
@@ -460,7 +450,7 @@ could_not_filter:
                 //
                 // Push the boundary onto the stack.
                 //
-                boundary_stack.push_back( boundary );
+                boundary_stack_.push_back( boundary );
                 type.content_type_ = ct_multipart;
             } else {
                 //
@@ -492,129 +482,6 @@ not_indexable:  type.content_type_ = ct_not_indexable;
     }
 
     return type;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void mail_indexer::index_multipart(
-            register char const *&c, register char const *end
-        )
-//
-// DESCRIPTION
-//
-//  Index the words between the given iterators.  The text is assumed to be
-    //  multipart data.
-//
-// PARAMETERS
-//
-//      c       The pointer to beginning of the text to index.
-//
-//      end     The poitner to the end of the text to index.
-//
-// SEE ALSO
-//
-//      Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
-//      Internet Mail Extensions (MIME) Part One: Format of Internet Message
-//      Bodies," RFC 822 Extensions Working Group of the Internet Engineering
-//      Task Force, November 1996.
-//
-//*****************************************************************************
-{
-    register char const *nl;
-    //
-    // Find the beginning boundary string.
-    //
-    while ( (nl = find_newline( c, end )) != end ) {
-        char const *const d = c;
-        c = skip_newline( nl, end );
-        if ( boundary_cmp( d, nl, boundary_stack.back().c_str() ) )
-            break;
-    }
-    if ( nl == end )
-        return;
-
-    while ( c != end ) {
-        char const *const part_begin = c;
-        //
-        // Find the ending boundary string.
-        //
-        char const *part_end = end;
-        while ( (nl = find_newline( c, end )) != end ) {
-            part_end = c;
-            c = skip_newline( nl, end );
-            if ( boundary_cmp(
-                part_end, nl, boundary_stack.back().c_str()
-            ) )
-                break;
-        }
-
-        //
-        // Index the words between the boundaries.
-        //
-        encoded_char_range::decoder::reset_all();
-        encoded_char_range const part( part_begin, part_end );
-        index_words( part );
-
-        //
-        // See if the boundary string is the final one, i.e., followed by "--".
-        //
-        if ( part_end == end || nl[-1] == '-' && nl[-2] == '-' )
-            break;
-    }
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void mail_indexer::index_vcard(
-            register char const *&c, char const *end
-        )
-//
-// DESCRIPTION
-//
-//      Index the words in a vCard attachment.  The vCard "types" are made into
-//      meta names.
-//
-// PARAMETERS
-//
-//      c       The pointer to the start of the vCard.
-//
-//      end     The pointer to the end of the vCard.
-//
-// CAVEAT
-//
-//      Nested vCards via the AGENT type are not handled properly, i.e., the
-//      nested vCards are not treated as a vCards.
-//
-// SEE ALSO
-//
-//      Frank Dawson and Tim Howes.  "RFC 2426: vCard MIME Directory Profile,"
-//      Network Working Group of the Internet Engineering Task Force, September
-//  1998.
-//
-//*****************************************************************************
-{
-    key_value kv;
-    while ( parse_header( c, end, &kv ) ) {
-        //
-        // Reuse parse_header() to parse vCard types, but trim them at
-        // semicolons.
-        //
-        int const meta_id = find_meta( ::strtok( kv.key, ";" ) );
-        if ( meta_id == Meta_ID_None )
-            continue;
-        //
-        // Index the words in the value of the type marking them as being
-        // associated with the name of the type.
-        //
-        encoded_char_range const e(
-            kv.value_begin, kv.value_end, ISO_8859_1, Eight_Bit
-        );
-        indexer::index_words( e, meta_id );
-    }
 }
 
 //*****************************************************************************
@@ -657,9 +524,15 @@ not_indexable:  type.content_type_ = ct_not_indexable;
             index_via_filter( type.filter_, e2 );
             break;
 
-        case ct_text_plain:
-            indexer::index_words( e2 );
+        case ct_message_rfc822:
+            index_words( e2 );
             break;
+
+        case ct_multipart:
+            index_multipart( c.pos(), c.end_pos() );
+            boundary_stack_.pop_back();
+            break;
+
 #ifdef  MOD_rtf
         case ct_text_enriched: {
             static indexer &rtf = *indexer::find_indexer( "RTF" );
@@ -674,17 +547,12 @@ not_indexable:  type.content_type_ = ct_not_indexable;
             break;
         }
 #endif
+        case ct_text_plain:
+            indexer::index_words( e2 );
+            break;
+
         case ct_text_vcard:
             index_vcard( c.pos(), c.end_pos() );
-            break;
-
-        case ct_message_rfc822:
-            index_words( e2 );
-            break;
-
-        case ct_multipart:
-            index_multipart( c.pos(), c.end_pos() );
-            boundary_stack.pop_back();
             break;
 
         case ct_not_indexable:
@@ -726,8 +594,8 @@ not_indexable:  type.content_type_ = ct_not_indexable;
 //
 //*****************************************************************************
 {
-    if ( did_last_header )
-        return did_last_header = false;
+    if ( did_last_header_ )
+        return did_last_header_ = false;
 
     char const *header_begin, *header_end, *nl;
 
@@ -800,7 +668,7 @@ not_indexable:  type.content_type_ = ct_not_indexable;
             break;
     }
 last_header:
-    did_last_header = true;
+    did_last_header_ = true;
 more_headers:
     kv->value_end = nl;
     //
