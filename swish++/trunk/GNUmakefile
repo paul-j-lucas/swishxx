@@ -69,7 +69,7 @@ MOD_LIBS:=		$(foreach mod,$(MOD_LIST),mod/$(mod)/libmod_$(mod).a)
 MOD_LIB_PATHS:=		$(foreach mod,$(MOD_LIST),-Lmod/$(mod))
 MOD_LINK:=		$(foreach mod,$(MOD_LIST),-lmod_$(mod))
 
-I_SOURCES:=	bcd.c \
+I_SOURCES:=	enc_int.c \
 		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
@@ -109,7 +109,7 @@ endif
 I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PTHREAD_LINK) \
 		-lm $(ZLIB_LINK)
 
-S_SOURCES:=	bcd.c \
+S_SOURCES:=	enc_int.c \
 		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
