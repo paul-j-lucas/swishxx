@@ -28,6 +28,7 @@
 
 // local
 #include "directory.h"
+#include "DirectoriesReserve.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
 #include "util.h"
@@ -37,7 +38,7 @@
 using namespace std;
 #endif
 
-extern void	do_file( char const *file_name );
+extern void		do_file( char const *file_name );
 
 #ifdef	WIN32
 //
@@ -48,20 +49,55 @@ extern void	do_file( char const *file_name );
 // contains the one place in all of the SWISH++ code where we need to use '\'
 // explicitly when compiling under Windows.
 //
-char const	Dir_Sep_Char = '\\';
+char const		Dir_Sep_Char = '\\';
 #else
-char const	Dir_Sep_Char = '/';
+char const		Dir_Sep_Char = '/';
 #endif
 
+DirectoriesReserve	directories_reserve;
+dir_list_type		dir_list;
+
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-FollowLinks	follow_symbolic_links;
+FollowLinks		follow_symbolic_links;
 #endif
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	void do_directory( char const *dir_name )
+	void check_add_directory( char const *dir_path )
+//
+// DESCRIPTION
+//
+//	Check to see if the given directory has been added to the list of
+//	directories encountered: if not, add it.
+//
+// PARAMETERS
+//
+//	dir_path	The full path of a directory.
+//
+//*****************************************************************************
+{
+	static char const *prev_dir_path = "";
+	//
+	// Because do_directory() traverses in breadth-first order, we are
+	// guaranteed to encounter a given directory exactly once.  This allows
+	// the check to see whether we've encountered a directory before to be
+	// a simple comparison with the previous directory.
+	//
+	if ( ::strcmp( dir_path, prev_dir_path ) ) {
+		if ( dir_list.empty() )
+			dir_list.reserve( directories_reserve );
+		dir_list.push_back( dir_path );
+		prev_dir_path = dir_path;
+	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void do_directory( char const *dir_path )
 //
 // DESCRIPTION
 //
@@ -76,7 +112,7 @@ FollowLinks	follow_symbolic_links;
 //
 // PARAMETERS
 //
-//	dir_name	The full path of the directory of the files and
+//	dir_path	The full path of the directory of the files and
 //			subdirectories to index.
 //
 //*****************************************************************************
@@ -87,11 +123,11 @@ FollowLinks	follow_symbolic_links;
 
 	if ( verbosity > 1 ) {
 		if ( verbosity > 2 ) cout << '\n';
-		cout << dir_name << flush;
+		cout << dir_path << flush;
 	}
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-	if ( is_symbolic_link( dir_name ) && !follow_symbolic_links ) {
+	if ( is_symbolic_link( dir_path ) && !follow_symbolic_links ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: symbolic link)";
 		if ( verbosity > 1 )
@@ -100,7 +136,7 @@ FollowLinks	follow_symbolic_links;
 	}
 #endif
 
-	DIR *const dir_p = ::opendir( dir_name );
+	DIR *const dir_p = ::opendir( dir_path );
 	if ( !dir_p ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: can not open)";
@@ -109,12 +145,14 @@ FollowLinks	follow_symbolic_links;
 		return;
 	}
 
+	check_add_directory( dir_path );
+
 	if ( verbosity > 1 ) {
 		if ( verbosity > 2 ) cout << ':';
 		cout << '\n';
 	}
 
-	string const dir_str( dir_name );
+	string const dir_str( dir_path );
 
 	struct dirent const *dir_ent;
 	while ( dir_ent = ::readdir( dir_p ) ) {
@@ -142,10 +180,10 @@ FollowLinks	follow_symbolic_links;
 	////////// Do all subdirectories //////////////////////////////////////
 
 	while ( !dir_queue.empty() ) {
-		dir_queue_type::value_type const dir_name = dir_queue.front();
+		dir_queue_type::value_type const dir_path = dir_queue.front();
 		dir_queue.pop();
 		++recursion;
-		do_directory( dir_name.c_str() );
+		do_directory( dir_path.c_str() );
 		--recursion;
 	}
 }
