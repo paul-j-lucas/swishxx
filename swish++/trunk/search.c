@@ -44,7 +44,7 @@
 #include "file_info.h"
 #include "file_list.h"
 #include "file_vector.h"
-#include "html.h"
+#include "indexer.h"
 #include "IndexFile.h"
 #include "index_segment.h"
 #include "less.h"
