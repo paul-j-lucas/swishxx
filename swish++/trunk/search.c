@@ -47,6 +47,7 @@
 #endif	/* SEARCH_DAEMON */
 
 // local
+#include "bcd.h"
 #include "config.h"
 #include "exit_codes.h"
 #include "file_index.h"
@@ -163,25 +164,25 @@ ResultsMax	max_results;
 StemWords	stem_words;
 
 #ifdef	SEARCH_DAEMON
-void	become_daemon( char const*, int, int, int, int, int );
+void		become_daemon( char const*, int, int, int, int, int );
 #endif
-void	dump_single_word( char const*, ostream& = cout );
-void	dump_word_window( char const*, int, int, ostream& = cout );
-int	get_meta_id( word_index::const_iterator );
+void		dump_single_word( char const*, ostream& = cout );
+void		dump_word_window( char const*, int, int, ostream& = cout );
+int		get_meta_id( word_index::const_iterator );
 
-bool	parse_meta(
-		token_stream&, results_type&, set< string >&, bool&,
-		int = No_Meta_ID
-	);
-bool	parse_primary(
-		token_stream&, results_type&, set< string >&, bool&,
-		int = No_Meta_ID
-	);
-bool	parse_query(
-		token_stream&, results_type&, set< string >&, bool&,
-		int = No_Meta_ID
-	);
-bool	parse_optional_relop( token_stream&, token::type& );
+bool		parse_meta(
+			token_stream&, results_type&, set< string >&, bool&,
+			int = No_Meta_ID
+		);
+bool		parse_primary(
+			token_stream&, results_type&, set< string >&, bool&,
+			int = No_Meta_ID
+		);
+bool		parse_query(
+			token_stream&, results_type&, set< string >&, bool&,
+			int = No_Meta_ID
+		);
+bool		parse_optional_relop( token_stream&, token::type& );
 
 //*****************************************************************************
 //
@@ -385,7 +386,12 @@ bool	parse_optional_relop( token_stream&, token::type& );
 	addr.sun_family = AF_LOCAL;
 	::strncpy( addr.sun_path, socket_file_name, sizeof( addr.sun_path )-1 );
 
-	::unlink( socket_file_name );		// can't exist before bind
+	// The socket file can not already exist prior to the bind().
+	if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
+		cerr	<< error << "can not delete \"" << socket_file_name
+			<< '"' << error_string;
+		::exit( Exit_No_Unlink );
+	}
 	if ( ::bind( sock_fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
 		cerr << error << "bind() failed" << error_string;
 		::exit( Exit_No_Bind );
@@ -418,7 +424,17 @@ bool	parse_optional_relop( token_stream&, token::type& );
 		::exit( Exit_Success );		// ... just exit as described
 
 	//
-	// From [Stevens 1993], p. 417, "Coding Rules":
+	// Ibid.:
+	//
+	//	Call setsid to create a new session.  The process (1) becomes a
+	//	session leader of a new session, (2) becomes the process group
+	//	leader of a new process group, and (3) has no controlling
+	//	terminal.
+	//
+	::setsid();
+
+	//
+	// Ibid.:
 	//
 	//	Change the current working directory to the root directory.
 	//	The current working directory inherited from the parent could
@@ -438,7 +454,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 	thread_pool threads = thread_pool( new search_thread( threads ),
 		min_threads, max_threads, thread_timeout
 	);
-	while ( 1 ) {
+	while ( true ) {
 		struct sockaddr_un addr;
 #ifdef	PJL_SOCKLEN_NOT_INT
 		unsigned addr_len = sizeof addr;
@@ -512,7 +528,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 		out << "# not found: " << word << endl;
 		return;
 	}
-	file_list list( found.first );
+	file_list const list( found.first );
 	FOR_EACH( file_list, list, file )
 		out << file->rank_ << ' ' << files[ file->index_ ] << '\n';
 	out << '\n';
@@ -612,11 +628,9 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //
 //*****************************************************************************
 {
-	register char const *c = *i;
-	while ( *c++ ) ;			// skip past word
-	register int id = 0;
-	while ( *c ) id = id * 10 + *c++ - '0';
-	return id;
+	unsigned char const *p = REINTERPRET_CAST(unsigned char const*)( *i );
+	while ( *p++ ) ;			// skip past word
+	return parse_bcd( p );
 }
 
 //*****************************************************************************
@@ -1001,7 +1015,7 @@ no_put_back:
 	cerr << "---> word \"" << t.str() << "\", meta-ID=" << meta_id << endl;
 #	endif
 	while ( found.first != found.second ) {
-		file_list list( found.first++ );
+		file_list const list( found.first++ );
 		FOR_EACH( file_list, list, file )
 			if (	meta_id == No_Meta_ID ||
 				file->meta_ids_.contains( meta_id )
@@ -1288,7 +1302,7 @@ no_put_back:
 	if ( opt.dump_entire_index_opt ) {
 		FOR_EACH( word_index, words, w ) {
 			out << *w << '\n';
-			file_list list( w );
+			file_list const list( w );
 			FOR_EACH( file_list, list, file )
 				out	<< "  " << file->rank_ << ' '
 					<< files[ file->index_ ] << '\n';
