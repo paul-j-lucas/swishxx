@@ -35,6 +35,7 @@
 #include "ExcludeFile.h"
 #include "exit_codes.h"
 #include "ExtractExtension.h"
+#include "ExtractFilter.h"
 #include "file_vector.h"
 #include "FilterFile.h"
 #include "IncludeFile.h"
@@ -54,6 +55,7 @@ using namespace std;
 #endif
 
 ExcludeFile		exclude_patterns;	// do not extract these
+ExtractFilter		extract_as_filter;
 ExtractExtension	extract_extension;
 IncludeFile		include_patterns;	// do extract these
 FilterFile		filters;
@@ -118,6 +120,7 @@ ostream&		usage( ostream& = cerr );
 		"config",	1, 'c',
 		"pattern",	1, 'e',
 		"no-pattern",	1, 'E',
+		"filter",	0, 'f',
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 		"follow-links",	1, 'l',
 #endif
@@ -132,6 +135,7 @@ ostream&		usage( ostream& = cerr );
 
 	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_stop_words_opt = false;
+	bool		extract_as_filter_opt = false;
 	char const*	extract_extension_arg = 0;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
@@ -158,6 +162,10 @@ ostream&		usage( ostream& = cerr );
 
 			case 'E': // Specify filename pattern not to extract.
 				exclude_patterns.insert( opt.arg() );
+				break;
+
+			case 'f': // Run as a filter.
+				extract_as_filter_opt = true;
 				break;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 			case 'l': // Follow symbolic links during extraction.
@@ -199,9 +207,21 @@ ostream&		usage( ostream& = cerr );
 	//
 	conf_var::parse_file( config_file_name_arg );
 
+	if ( extract_as_filter_opt )
+		extract_as_filter = true;
+	if ( extract_as_filter ) {
+		//
+		// When running as a filter, patterns aren't used.  We clear
+		// them here in case some were set via an IncludeFile directive
+		// in a configuration file.  That let's us get away with not
+		// having to special-case the code in do_file().
+		//
+		exclude_patterns.clear();
+		include_patterns.clear();
+	}
 	if ( extract_extension_arg )
 		extract_extension = extract_extension_arg;
-	if ( *extract_extension != '.' )
+	if ( *extract_extension != '.' )	// prepend '.' if needed
 		extract_extension =
 			string( "." ) + (char const*)extract_extension;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -228,11 +248,11 @@ ostream&		usage( ostream& = cerr );
 	/////////// Extract specified directories and files ///////////////////
 
 	bool const using_stdin = *argv && (*argv)[0] == '-' && !(*argv)[1];
-	if ( !using_stdin &&
+	if ( !( extract_as_filter || using_stdin ) &&
 		include_patterns.empty() && exclude_patterns.empty()
 	)
-		error()	<< "filename patterns must be specified "
-			"when not using standard inputi\n" << usage;
+		error()	<< "filename patterns must be specified when not"
+			" a filter nor\nusing standard input\n" << usage;
 
 	if ( !argc )
 		cerr << usage;
@@ -241,7 +261,16 @@ ostream&		usage( ostream& = cerr );
 
 	time_t time = ::time( 0 );		// Go!
 
-	if ( using_stdin ) {
+	if ( extract_as_filter ) {
+		//
+		// Do a single file.
+		//
+		if ( !file_exists( *argv ) ) {
+			error() << *argv << " does not exist\n";
+			::exit( Exit_No_Such_File );
+		}
+		do_file( *argv );
+	} else if ( using_stdin ) {
 		//
 		// Read file/directory names from standard input.
 		//
@@ -249,8 +278,8 @@ ostream&		usage( ostream& = cerr );
 		while ( cin.getline( file_name, NAME_MAX ) ) {
 			if ( !file_exists( *argv ) ) {
 				if ( verbosity > 3 )
-					cout	<< " (skipped: does not exist)"
-						<< endl;
+					cout << "  " << file_name
+					     << " (skipped: does not exist)\n";
 				continue;
 			}
 			if ( is_directory() )
@@ -265,8 +294,8 @@ ostream&		usage( ostream& = cerr );
 		for ( ; *argv; ++argv ) {
 			if ( !file_exists( *argv ) ) {
 				if ( verbosity > 3 )
-					cout	<< " (skipped: does not exist)"
-						<< endl;
+					cout << "  " << *argv
+					     << " (skipped: does not exist)\n";
 				continue;
 			}
 			if ( is_directory() )
@@ -284,8 +313,7 @@ ostream&		usage( ostream& = cerr );
 			<< setw(2) << (time % 60)
 			<< " (min:sec) elapsed time\n  "
 			<< num_examined_files << " files, "
-			<< num_extracted_files << " extracted\n\n"
-			<< setfill(' ');
+			<< num_extracted_files << " extracted\n\n";
 	}
 
 	::exit( Exit_Success );
@@ -455,6 +483,7 @@ ostream& usage( ostream &o ) {
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"-e p | --pattern p        : Filename pattern to extract [default: none]\n"
 	"-E p | --no-pattern p     : Filename pattern not to extract [default: none]\n"
+	"-f   | --filter           : Filter one file to standard output [default: no]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	"-l   | --follow-links     : Follow symbolic links [default: no]\n"
 #endif
@@ -463,7 +492,7 @@ ostream& usage( ostream &o ) {
 	"-S   | --dump-stop        : Dump stop-words, exit\n"
 	"-v v | --verbosity v      : Verbosity level [0-4; default: 0]\n"
 	"-V   | --version          : Print version number, exit\n"
-	"-x   | --extension        : Extension to append to filename [default: txt]\n";
+	"-x e | --extension e      : Extension to append to filename [default: txt]\n";
 	::exit( Exit_Usage );
 	return o;			// just to make the compiler happy
 }
