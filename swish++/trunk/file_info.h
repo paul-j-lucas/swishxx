@@ -25,10 +25,11 @@
 // standard
 #include <cstddef>				/* for size_t */
 #include <iostream>
-#include <new>
-#include <string>
 #include <sys/types.h>				/* for off_t */
 #include <vector>
+
+// local
+#include "my_set.h"
 
 //*****************************************************************************
 //
@@ -44,27 +45,27 @@
 //
 //*****************************************************************************
 {
-	int		num_words_;
+	char const *const	file_name_;
+	char const *const	title_;
+	off_t const		size_;
+	int			num_words_;
 
-	file_info( char const *file_name, size_t size, char const *title );
+	typedef std::vector< file_info* > list_type;
+	typedef char_ptr_set name_set_type;
 
-	typedef std::vector< file_info* > set_type;
-	static set_type set_;
+	static list_type	list_;
+	static name_set_type	name_set_;
 
-	void*		operator new( size_t );
-	void		operator delete( void *p ) {
-				// just here to get rid of warning
-				std::operator delete( p );
-			}
+	file_info(
+		char const *file_name, size_t file_size, char const *title,
+		int num_words = 0
+	);
 
-	static int	current_index()		{ return set_.size() - 1; }
-	static file_info& current_file()	{ return *set_.back(); }
+	static int		current_index()	{ return list_.size() - 1; }
+	static file_info&	current_file()	{ return *list_.back(); }
 
-	friend std::ostream& operator<<( std::ostream&, file_info const& );
-private:
-	std::string	file_name_;
-	off_t		size_;
-	std::string	title_;
+	static ostream&		out( ostream&, char const* );
+	static file_info*	parse( char const* );
 };
 
 #endif	/* file_info_H */
