@@ -269,7 +269,7 @@ MAKE_SUBDIRS=	for dir in $(SUBDIRS); \
 		done
 
 clean:
-	$(RM) *.o core swish++.index
+	$(RM) *.o core $(TEMPLATE_REPOSITORY) swish++.index
 	@$(call MAKE_SUBDIRS,$@)
 
 distclean: clean
