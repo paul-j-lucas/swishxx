@@ -8,12 +8,12 @@
 **	it under the terms of the GNU General Public License as published by
 **	the Free Software Foundation; either version 2 of the License, or
 **	(at your option) any later version.
-** 
+**
 **	This program is distributed in the hope that it will be useful,
 **	but WITHOUT ANY WARRANTY; without even the implied warranty of
 **	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **	GNU General Public License for more details.
-** 
+**
 **	You should have received a copy of the GNU General Public License
 **	along with this program; if not, write to the Free Software
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -241,7 +241,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		char const quote = ( *c == '"' || *c == '\'' ) ? *c : 0;
 		if ( quote && (++c).at_end() )
 			break;
-		encoded_char_range::const_pointer const new_begin = c.pos();
+		encoded_char_range::pointer const new_begin = c.pos();
 		for ( ; !c.at_end(); ++c )
 			if ( quote ) {		// stop at matching quote only
 				if ( *c == quote )
@@ -765,19 +765,13 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		if (	find_attribute( name_att, "name" ) &&
 			find_attribute( content_att, "content" )
 		) {
-			//
-			// Canonicalize the value of the NAME attribute to
-			// lower case.
-			//
-			char const *const name = to_lower( name_att );
-
-			//
 			// Do not index the words in the value of the CONTENT
 			// attribute if either the value of the NAME attribute
-			// is among the set of meta names to exclude or not
-			// among the set to include.
+			// (canonicalized to lower case) is among the set of
+			// meta names to exclude or not among the set to
+			// include.
 			//
-			int const meta_id = find_meta( name );
+			int const meta_id = find_meta( to_lower( name_att ) );
 			if ( meta_id == No_Meta_ID )
 				return;
 
