@@ -123,9 +123,9 @@ public:
 		};
 #endif
 
-		char const	*long_name;
+		char const*	long_name;
 		short		arg_type;
-		unsigned char	c;
+		unsigned char	short_name;
 #if 0
 		default_value	def_arg;
 #endif
@@ -135,7 +135,7 @@ public:
 		int argc, char *argv[], spec const[], std::ostream& = std::cerr
 	);
 
-	int	shift() const		{ return index_; }
+	int	shift() const		{ return argi_; }
 	operator bool() const 		{ return !end_; }
 
 	class option {
@@ -150,43 +150,30 @@ public:
 		//
 	public:
 		option( char c = '\0', char *a = 0 ) :
-			c_( c ), arg_( a ), am_copy_( false ) { }
-		option( option const &o ) {
-			if ( &o != this ) copy( o );
-		}
-		~option() {
-			if ( am_copy_ ) delete[] arg_;
-		}
-		option& operator=( option const &o ) {
-			if ( &o != this ) {
-				if ( am_copy_ ) delete[] arg_;
-				copy( o );
-			}
-			return *this;
-		}
+			short_name_( c ), arg_( a ) { }
 
 		char*	arg() const	{ return arg_; }
-		operator char() const	{ return c_; }
+		operator char() const	{ return short_name_; }
 
 		friend option_stream& operator>>( option_stream&, option& );
 	private:
-		char	c_;
+		char	short_name_;
 		char*	arg_;
-		bool	am_copy_;
 
-		void	copy( option const& );
+		option( option const& );		// forbid copy
+		option& operator=( option const& );	// forbid assignment
 	};
 
 	friend option_stream& operator>>( option_stream&, option& );
 private:
-	int		argc_;
-	char**		argv_;
-	spec const*	specs_;
-	std::ostream&	err_;
+	int		argc_;		// argument count from main()
+	char**		argv_;		// argument vector from main()
+	spec const*	specs_;		// the option specifications
+	std::ostream&	err_;		// ostream to write wrrors to
 
-	int		index_;
-	char*		next_c_;
-	bool		end_;
+	int		argi_;		// current index into argv_[]
+	char*		next_c_;	// next char in group of short options
+	bool		end_;		// reached end of options?
 };
 
 #ifndef	PJL_NO_NAMESPACES
