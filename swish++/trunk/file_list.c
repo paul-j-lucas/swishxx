@@ -23,8 +23,8 @@
 #include <cctype>
 
 // local
+#include "fake_ansi.h"				/* for CONST_CAST */
 #include "file_list.h"
-#include "html.h"				/* for no_meta_id */
 
 //*****************************************************************************
 //
