@@ -52,11 +52,7 @@ Building SWISH++ for Unix
    edit the file.)
 
 2. Go to the "config" directory and edit the "config.mk" file as necessary.
-   This file controls how the software is compiled.  Among other things, decide
-   which indexing modules (MOD_LIST) you want compiled in.  In particular,
-   decide whether you need "mail" for indexing mail and news files.  If not,
-   you shouldn't compile it in since it requires more processing per character
-   and will be slower for all files (not just mail and news files).
+   This file controls how the software is compiled.
 
 3. Go back to the top-level directory and type "make".  Note: lines of the
    form:
