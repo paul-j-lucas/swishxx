@@ -27,7 +27,7 @@
 #include <unistd.h>				/* for unlink(2) */
 
 // local
-#include "fake_ansi.h"
+#include "fake_ansi.h"				/* for explicit, std */
 
 //*****************************************************************************
 //
