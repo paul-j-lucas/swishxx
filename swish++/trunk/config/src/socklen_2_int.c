@@ -1,10 +1,11 @@
 /*
-**	socklen_int.c
+**	socklen_2_int.c
 **
 **	TEST	socket length type is int
 **	PASS	PJL_SOCKLEN_TYPE int
 */
 
+#include <sys/types.h>
 #include <sys/socket.h>
 
 void f() {

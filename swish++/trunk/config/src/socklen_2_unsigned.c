@@ -1,10 +1,11 @@
 /*
-**	socklen_unsigned.c
+**	socklen_2_unsigned.c
 **
 **	TEST	socket length type is unsigned
 **	PASS	PJL_SOCKLEN_TYPE unsigned
 */
 
+#include <sys/types.h>
 #include <sys/socket.h>
 
 void f() {
