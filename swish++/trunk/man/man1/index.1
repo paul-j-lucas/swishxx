@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	index.1
 .\"
-.\"	Copyright (C) 1998  Paul J. Lucas
+.\"	Copyright (C) 2003  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -32,10 +32,10 @@
 .ft 1
 .RE
 .fi
-.sp
+.if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "October 20, 2003" "SWISH++"
+.TH \f3index\f1 1 "March 25, 2004" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -540,6 +540,15 @@ is decoded prior to indexing.
 7.
 Text in vCards is indexed such that the values of types (fields)
 are associated with the types as meta names.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of types
+are still indexed, but not associated with the types.)
 .IP ""
 The recommended vCard types (with reassignments) to be indexed are:
 .BR adr=address ,
@@ -670,7 +679,10 @@ Print the usage (``help'') message and exit.
 .ns
 .TP
 .B \-\-no-assoc-meta
-Do not associate words with meta names.
+Do not associate words with meta names during indexing
+nor store such associations in the generated index file.
+This sacrifices meta names
+for decreased memory usage and index file size.
 .TP
 .BI \-c f
 .br
@@ -872,6 +884,18 @@ of files a word may occur in before it is discarded as being too frequent.
 (Default is 100.)
 If you want to keep all words regardless, specify 101.
 .TP
+.B \-P
+.br
+.ns
+.TP
+.B \-\-no-pos-data
+Do not store word positions in memory during indexing
+nor in the generated index file
+needed to do ``near'' searches later during searching.
+This sacrifices ``near'' searching
+for decreased memory usage and index file size
+(approximately 50%).
+.TP
 .B \-r
 .br
 .ns
@@ -990,7 +1014,7 @@ to standard output and exit.
 .ns
 .TP
 .BI \-\-word-threshold= n
-The word count past which partial indicies are generated and merged
+The word count past which partial indices are generated and merged
 since all the words are too big to fit into memory at the same time.
 If you index and your machine begins to swap like mad,
 lower this value.
@@ -1090,6 +1114,12 @@ Same as
 or
 .B \-\-stop-file
 .TP
+.B StoreWordPositions
+Same as
+.B \-P
+or
+.B \-\-no-pos-data
+.TP
 .B TempDirectory
 Same as
 .B \-T
@@ -1119,6 +1149,12 @@ Same as
 .B \-p
 or
 .B \-\-word-percent
+.TP
+.B WordsNear
+Same as
+.B \-n
+or
+.B \-\-near
 .TP
 .B WordThreshold
 Same as
