@@ -43,7 +43,7 @@ $DOC_ROOT =	'/home/www/httpd/htdocs';
 $INDEX_FILE =	'/home/www/the.index';
 #		The full path to the index file to be searched through.
 
-#$SOCKET_FILE =	'/tmp/swish++.socket';
+#$SOCKET_FILE =	'/tmp/search.socket';
 #		The full path to the socket file.  Uncomment this only if you
 #		run 'search' as a daemon.
 
