@@ -51,6 +51,8 @@ public:
 	CONF_INT_ASSIGN_OPS( SocketTimeout )
 };
 
+extern SocketTimeout socket_timeout;
+
 #endif	/* SocketTimeout_H */
 
 #endif	/* SEARCH_DAEMON */
