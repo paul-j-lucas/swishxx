@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"
+#include "fake_ansi.h"				/* for std */
 
 extern char const iso8859_map[ 256 ];
 
@@ -62,7 +62,7 @@ extern char const iso8859_map[ 256 ];
 //
 //*****************************************************************************
 {
-	return iso8859_map[ STATIC_CAST( unsigned char )( c ) ];
+	return iso8859_map[ static_cast<unsigned char>( c ) ];
 }
 
 //*****************************************************************************
