@@ -331,7 +331,7 @@ bool			tag_cmp(
 	//
 	file_vector::const_iterator after, before;
 
-	register file_vector::const_iterator c = file.begin();
+	file_vector::const_iterator c = file.begin();
 	while ( c != file.end() ) {
 		if ( *c == '\n' && ++lines > num_title_lines ) {
 			//
