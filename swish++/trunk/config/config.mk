@@ -49,7 +49,7 @@ OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 #
 ###############################################################################
 
-MOD_LIST:=	html mail man
+MOD_LIST:=	html mail man rtf
 #		The indexing modules you want built into index(1).
 
 # Leave the following line alone!
