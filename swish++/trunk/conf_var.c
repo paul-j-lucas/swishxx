@@ -59,7 +59,7 @@ int conf_var::current_config_file_line_no_ = 0;
 //*****************************************************************************
 	: name_( var_name )
 {
-	conf_var *&var = map_ref()[ name_ ];
+	conf_var *&var = map_ref()[ to_lower( name_ ) ];
 	if ( var ) {
 		cerr	<< "conf_var::conf_var(): \"" << name_
 			<< "\" registered more than once" << endl;
@@ -98,7 +98,8 @@ int conf_var::current_config_file_line_no_ = 0;
 //	translation units, something that would not guaranteed if it were a
 //	static data member initialized at file scope.
 //
-//	We also load the map with all configuration variable names so we can
+//	We also load the map with all configuration variable names (in lower
+//	case so variables in config files will be case-insensitive) so we can
 //	tell the difference between a variable that doesn't exist (and that we
 //	will complain about to the user) and one that simply isn't used in a
 //	particular executable (and will be silently ignored).
@@ -117,40 +118,40 @@ int conf_var::current_config_file_line_no_ = 0;
 	static map_type m;
 	if ( m.empty() ) {
 #ifdef	MOD_HTML
-		m[ "ExcludeClass"	] = 0;
+		m[ "excludeclass"	] = 0;
 #endif
-		m[ "ExcludeFile"	] = 0;
-		m[ "ExcludeMeta"	] = 0;
-		m[ "ExtractExtension"	] = 0;
-		m[ "ExtractFile"	] = 0;
-		m[ "ExtractFilter"	] = 0;
-		m[ "FilesGrow"		] = 0;
-		m[ "FilesReserve"	] = 0;
-		m[ "FilterFile"		] = 0;
-		m[ "FollowLinks"	] = 0;
-		m[ "IncludeFile"	] = 0;
-		m[ "IncludeMeta"	] = 0;
-		m[ "Incremental"	] = 0;
-		m[ "IndexFile"		] = 0;
-		m[ "RecurseSubdirs"	] = 0;
-		m[ "ResultsMax"		] = 0;
-		m[ "StemWords"		] = 0;
-		m[ "StopWordFile"	] = 0;
-		m[ "TempDirectory"	] = 0;
-		m[ "TitleLines"		] = 0;
-		m[ "Verbosity"		] = 0;
-		m[ "WordFilesMax"	] = 0;
-		m[ "WordPercentMax"	] = 0;
+		m[ "excludefile"	] = 0;
+		m[ "excludemeta"	] = 0;
+		m[ "extractextension"	] = 0;
+		m[ "extractfile"	] = 0;
+		m[ "extractfilter"	] = 0;
+		m[ "filesgrow"		] = 0;
+		m[ "filesreserve"	] = 0;
+		m[ "filterfile"		] = 0;
+		m[ "followlinks"	] = 0;
+		m[ "includefile"	] = 0;
+		m[ "includemeta"	] = 0;
+		m[ "incremental"	] = 0;
+		m[ "indexfile"		] = 0;
+		m[ "recursesubdirs"	] = 0;
+		m[ "resultsmax"		] = 0;
+		m[ "stemwords"		] = 0;
+		m[ "stopwordfile"	] = 0;
+		m[ "tempdirectory"	] = 0;
+		m[ "titlelines"		] = 0;
+		m[ "verbosity"		] = 0;
+		m[ "wordfilesmax"	] = 0;
+		m[ "wordpercentmax"	] = 0;
 #ifdef	SEARCH_DAEMON
-		m[ "PidFile"		] = 0;
-		m[ "SearchDaemon"	] = 0;
-		m[ "SocketAddress"	] = 0;
-		m[ "SocketFile"		] = 0;
-		m[ "SocketQueueSize"	] = 0;
-		m[ "SocketTimeout"	] = 0;
-		m[ "ThreadsMax"		] = 0;
-		m[ "ThreadsMin"		] = 0;
-		m[ "ThreadTimeout"	] = 0;
+		m[ "pidfile"		] = 0;
+		m[ "searchdaemon"	] = 0;
+		m[ "socketaddress"	] = 0;
+		m[ "socketfile"		] = 0;
+		m[ "socketqueuesize"	] = 0;
+		m[ "sockettimeout"	] = 0;
+		m[ "threadsmax"		] = 0;
+		m[ "threadsmin"		] = 0;
+		m[ "threadtimeout"	] = 0;
 #endif
 	}
 	return m;
