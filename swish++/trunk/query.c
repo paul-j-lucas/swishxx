@@ -335,14 +335,14 @@ static void		perform_and( search_results&, and_results_type& );
 		token const t2( query );
 		if ( t2 == token::equal_token ) {	// ... followed by '='
 			less< char const* > const comparator;
-			find_result const found = ::equal_range(
+			word_range const range = ::equal_range(
 				meta_names.begin(), meta_names.end(),
 				t.lower_str(), comparator
 			);
-			meta_id = found.first != meta_names.end() &&
-				!comparator( t.lower_str(), *found.first )
+			meta_id = range.first != meta_names.end() &&
+				!comparator( t.lower_str(), *range.first )
 			?
-				get_meta_id( found.first )
+				get_meta_id( range.first )
 			:
 				Meta_ID_Not_Found;
 			goto no_put_back;
@@ -448,7 +448,7 @@ no_put_back:
 //*****************************************************************************
 {
 	ignore = false;
-	find_result found;
+	word_range range;
 	token t( query );
 
 	switch ( t ) {
@@ -474,11 +474,11 @@ no_put_back:
 			//
 			// Look up the word.
 			//
-			found = ::equal_range( words.begin(), words.end(),
+			range = ::equal_range( words.begin(), words.end(),
 				t.lower_str(), comparator
 			);
-			if ( found.first == words.end() ||
-				comparator( t.lower_str(), *found.first ) ) {
+			if ( range.first == words.end() ||
+				comparator( t.lower_str(), *range.first ) ) {
 				//
 				// The following "return true" indicates that a
 				// word was parsed successfully, not that we
@@ -494,11 +494,11 @@ no_put_back:
 			//
 			// Look up all matching words.
 			//
-			found = ::equal_range( words.begin(), words.end(),
+			range = ::equal_range( words.begin(), words.end(),
 				t.lower_str(), comparator
 			);
-			if ( found.first == words.end() ||
-				comparator( t.lower_str(), *found.first ) ) {
+			if ( range.first == words.end() ||
+				comparator( t.lower_str(), *range.first ) ) {
 				//
 				// The following "return true" indicates that a
 				// word was parsed successfully, not that we
@@ -566,8 +566,8 @@ no_put_back:
 	// we get at least one word that isn't too frequent.
 	//
 	ignore = true;
-	for ( ; found.first != found.second; ++found.first ) {
-		file_list const list( found.first );
+	for ( ; range.first != range.second; ++range.first ) {
+		file_list const list( range.first );
 		if ( is_too_frequent( list.size() ) ) {
 			stop_words_found.insert( t.str() );
 #			ifdef DEBUG_parse_query
