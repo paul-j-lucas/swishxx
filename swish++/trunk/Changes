@@ -16,12 +16,29 @@ NEW FEATURES
   (This feature shall be known as feature RTF.)
 
 
+BUG FIXES
+---------
+
+* The files Group.c and SocketAddress.c didn't compile under FreeBSD.
+
+  (This bug fix shall be know as big fix BSD5.)
+
+
 CHANGES, file-by-file
 ---------------------
 
 * config/config.mk
 
 	1. Added "rtf" to MOD_LIST.
+
+* Group.c
+* SocketAddress.c
+
+	1. Added #include <sys/types.h> for bug fix BSD5.
+
+* INSTALL.unix
+
+	1. Added mention of README.Solaris file.
 
 * man/man1/index.1
 
@@ -56,9 +73,46 @@ CHANGES, file-by-file
 
 	1. New files for feature RTF.
 
+* README.Solaris
+
+	1. New file.
+
+* searchc.in
+
+	1. Added call to shutdown() after sending query.
+
+* search_thread.c
+
+	1. In search_thread::main(), added: out << flush;
+	2. In search_thread::main(), removed EINTR guard (not needed).
+
 * swish++.conf
 
 	1. Added: IncludeFile RTF *.rtf
+
+* thread_pool.c
+
+	1. s/thread_main/thread_pool_thread_main/
+	2. s/thread_destroy/thread_pool_thread_destroy/
+	3. Replaced q_lock class by simple mutex again.
+	4. Changed state_ back to destructing_.
+	5. Added DEFER_CANCEL, RESTORE_CANCEL, MUTEX_LOCK, MUTEX_UNLOCK macros.
+	6. In thread_pool_thread_destroy(), removed unlocking of q_lock.
+	7. In thread_pool_thread_main(), moved unlock of run_lock_ here.
+	8. In thread_pool_thread_main(), reworked mutex locking.
+	9. In ~thread(), removed mutex_lock of t_lock_.
+	A. In thread_pool(), removed ERRORCHECK attribute.
+	B. In ~thread_pool(), added DEFER_CANCEL().
+	C. In new_task(), reworked mutex locking.
+	D. In new_task(), Added DEFER_CANCEL().
+
+* thread_pool.h
+
+	1. s/thread_main/thread_pool_thread_main/
+	2. s/thread_destroy/thread_pool_thread_destroy/
+	3. Replaced q_lock class by simple mutex again.
+	4. Added private default constructor to argument_type.
+	5. Changed state_ back to destructing_.
 
 * version.h
 
