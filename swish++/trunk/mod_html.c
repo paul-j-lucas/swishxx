@@ -900,7 +900,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //*****************************************************************************
 {
 	encoded_char_range::const_iterator d = c;
-	while ( *tag && !d.at_end() && *tag++ == to_lower( *d++ ) ) ;
+	while ( *tag && !d.at_end() && *tag == to_lower( *d ) )
+		++tag, ++d;
 	if ( *tag )
 		return false;
 	c = d;
