@@ -151,6 +151,10 @@ endif
 #
 ###############################################################################
 
+AR:=		ar rv
+#		The command (plus arguments) to create archive libraries;
+#		usually "ar rv".
+
 RM:=		rm -fr
 #		The command to remove files recursively and ignore errors;
 #		usually "rm -fr" for Unix or "erase" for Windows.
@@ -158,8 +162,7 @@ RM:=		rm -fr
 PERL:=		/usr/local/bin/perl
 #		The full path to the Perl 5 executable; usually "/bin/perl" or
 #		"/usr/local/bin/perl" for Unix or "\Perl\bin\perl" for
-#		Windows.  You need this only if you intend on using
-#		httpindex(1) or searchc(1).
+#		Windows.
 
 RANLIB:=	ranlib
 #		The command to generate library tables-of-contents; usually
@@ -174,7 +177,7 @@ STRIP:=		strip
 #		The command to strip symbolic information from executables;
 #		usually "strip".  You can leave this defined even if your OS
 #		doesn't have it or any equivalent since any errors from this
-#		command are ignored in the Makefiles.
+#		command are ignored in the makefiles.
 
 ###############################################################################
 #
@@ -233,6 +236,14 @@ ifeq ($(findstring g++,$(CC)),g++)
 endif
 #		Warning flags specific to g++.  Unless you are modifying the
 #		source code, you should leave this commented out.
+
+ifdef SOLARIS
+TEMPLATE_REPOSITORY:=	SunWS_cache
+#		The name of the directory used as C++ template repository.
+#		Using Sun's CC, this is usually "SunWS_cache".  If another
+#		compiler is being used that doesn't use such a repository
+#		(e.g., g++), it's harmless to leave this as-is.
+endif
 
 ###############################################################################
 #
@@ -295,6 +306,4 @@ endif
 % :: %.in
 	$(PERL) $(ROOT)/config/config.pl $< < $(ROOT)/config/config.mk
 
-##
-# The end.
-##
+# vim:set noet sw=8 ts=8:
