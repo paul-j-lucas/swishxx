@@ -48,6 +48,11 @@ using namespace std;
 //
 //	A pointer to the string.
 //
+// CAVEAT
+//
+//	This function is NOT thread-safe because it uses char_buffer_pool which
+//	isn't.
+//
 // SEE ALSO
 //
 //	Brian W. Kernighan, Dennis M. Ritchie.  "The C Programming Language,
