@@ -1,0 +1,115 @@
+#! /bin/sh
+# This code is Bourne Shell for maximal portability.
+##
+#       SWISH++
+#       searchd -- start/stop script for SysV-like systems
+#
+#       Copyright (C) 2001  Paul J. Lucas
+#
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##
+# chkconfig: 35 99 99
+# description: SWISH++ search daemon.
+
+##
+# What stuff is called and where it's located.
+##
+SEARCH="search"
+SEARCH_PATH="%%I_BIN%%/$SEARCH"
+SEARCHMONITOR="%%I_BIN%%/searchmonitor"
+CONF_FILE="/etc/swish++.conf"
+PID_FILE_DEFAULT="/var/run/search.pid"
+
+##
+# You may need to set LD_LIBRARY_PATH to contain the directory of the C++
+# run-time library, e.g. libstdc++.so if g++ was used to compile SWISH++.
+##
+#LD_LIBRARY_PATH=/usr/local/lib
+#export LD_LIBRARY_PATH
+
+##
+# Where this script is installed.
+##
+SCRIPT_DIR="/etc/init.d"
+
+########### You shouldn't have to change anything below this line. ############
+
+##
+# See if the location of the PID file was specified in the configuration file;
+# if not, use the default location.
+##
+PID_FILE=`grep -i '^PidFile' $CONF_FILE | tail -1 | sed 's!^[^/]*!!'`
+[ -z "$PID_FILE" ] && PID_FILE="$PID_FILE_DEFAULT"
+
+##
+# Determine the numeric value for SIGUSR2 that we use to kill search.  By using
+# a user-generated signal, if search gets killed and it was killed by SIGUSR2,
+# then it MUST have been done by manual request.
+##
+KILL=`which kill`                           # ensure shell built-in isn't used
+USR2=`$KILL -l USR2 2>&1`
+
+##
+# Figure out how to do echo without a newline.  This is stolen from Perl's
+# Configure script.
+##
+(echo "hi there\c"; echo) >/tmp/.echotmp
+if grep c /tmp/.echotmp >/dev/null 2>&1
+then c=''  ; n='-n'
+else c='\c'; n=''
+fi
+rm -f /tmp/.echotmp
+
+##
+# If we're on a Linux system, use it's start/stop functions that make the
+# output look perty.
+##
+if [ -f /etc/rc.d/init.d/functions ]
+then
+    . /etc/rc.d/init.d/functions
+    LINUX=true
+fi
+
+case "$1" in
+    start)
+        echo $n "Starting $SEARCH$c"
+        rm -f $PID_FILE
+        OPTS="-c $CONF_FILE -s $SEARCH_PATH"
+        if [ -n "$LINUX" ]
+        then daemon $SEARCHMONITOR $OPTS
+        else $SEARCHMONITOR $OPTS &
+        fi
+        echo
+        ;;
+    stop)
+        [ -r $PID_FILE ] || { echo $PID_FILE not found >&2; exit 1; }
+        echo $n "Stopping $SEARCH$c"
+        if [ -n "$LINUX" ]
+        then killproc $SEARCH -$USR2 2>/dev/null
+        else $KILL -s USR2 `head -1 $PID_FILE` || exit 1
+        fi
+        echo
+        ;;
+    restart)
+        $SCRIPT_DIR/$SEARCH stop || exit 1
+        sleep 3
+        $SCRIPT_DIR/$SEARCH start
+        ;;
+    *)
+        echo "usage: $0 { start | stop | restart }" >&2
+        exit 1
+        ;;
+esac
+# vim:set et sw=4 ts=4:
