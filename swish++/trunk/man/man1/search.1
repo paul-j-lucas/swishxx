@@ -633,7 +633,7 @@ first open the socket and connect to the daemon
 .cS
 use Socket;
 
-$SocketFile = '/tmp/swish++.socket';
+$SocketFile = '/tmp/search.socket';
 socket( SEARCH, PF_UNIX, SOCK_STREAM, 0 ) or
 	die "can not open socket: $!\\n";
 connect( SEARCH, sockaddr_un( $SocketFile ) ) or
