@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3extract\fP 1 "June 14, 2000" "SWISH++"
+.TH \f3extract\fP 1 "June 15, 2000" "SWISH++"
 .SH NAME
 extract \- SWISH++ text extractor
 .SH SYNOPSIS
@@ -59,13 +59,19 @@ Text is extracted from the specified files
 and files in the specified directories;
 text from files in subdirectories of specified directories is also extracted
 by default (unless the
-.B \-r
+.BR \-r ,
+.BR \-\-no-recurse ,
+.BR \-f ,
 or
-.B \-\-no-recurse
+.B \-\-filter
 option or the
 .B RecurseSubdirs
+or
+.B ExtractFilter
 variable is given).
-Text is extracted from files either only if their filename matches
+.PP
+Ordinarily,
+text is extracted from files either only if their filename matches
 one of the patterns in the set specified with either the
 .B \-e
 or
@@ -96,7 +102,9 @@ variable), are extracted, i.e.,
 .B extract
 assumes you know what you're doing when specifying filenames in this manner.
 .PP
-Extracted files have the same filename with the ``\f(CW.txt\fP'' extension
+Ordinarily, the text extracted from a file is written to another file
+in the same directory having the same filename
+but with the ``\f(CW.txt\fP'' extension
 appended by default, e.g., ``\f(CWfoo.doc\fP'' becomes ``\f(CWfoo.doc.txt\fP''
 after extraction.
 (See also the
@@ -107,6 +115,18 @@ option or the
 .B ExtractExtension
 variable.)
 However, extraction is not performed if the extracted text file exists.
+.PP
+If either the
+.B \-f
+or
+.B \-\-filter
+option or the
+.B ExtractFilter
+variable is given,
+then only a single file specified on the command line
+is extracted to standard output.
+In this case, filename patterns are not used
+and the existence of an extracted text file is irrelevant.
 .SS Filters
 Via the
 .B FilterFile
@@ -243,6 +263,13 @@ or
 .B \-\-no-pattern
 options may be specified.
 .TP
+.B \-f
+.br
+.ns
+.TP
+.B \-\-filter
+Extract a single file to standard output and exit.
+.TP
 .B \-l
 .br
 .ns
@@ -362,6 +389,12 @@ Same as
 or
 .B \-\-extension
 .TP
+.B ExtractFilter
+Same as
+.B \-f
+or
+.B \-\-filter
+.TP
 .B FilterFile
 (See Filters.)
 .TP
@@ -420,6 +453,9 @@ Error in configuration file.
 .TP
 2
 Error in command-line options.
+.TP
+20
+File to extract does not exist.
 .TP
 30
 Unable to read stop-word file.
