@@ -1227,12 +1227,12 @@ ostream& usage( ostream &err ) {
 	"-b   | --daemon           : Run in the background as a daemon [default: no]\n"
 #endif
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"-d   | --dump-words       : Dump query word indices and exit\n"
-	"-D   | --dump-index       : Dump entire word index and exit\n"
+	"-d   | --dump-words       : Dump query word indices, exit\n"
+	"-D   | --dump-index       : Dump entire word index, exit\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
 	"-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
 	"-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
-	"-M   | --dump-meta        : Dump meta-name index and exit\n"
+	"-M   | --dump-meta        : Dump meta-name index, exit\n"
 #ifdef SEARCH_DAEMON
 	"-o s | --socket-timeout s : Search client request timeout [default: " << SocketTimeout_Default << "]\n"
 	"-O s | --thread-timeout s : Idle spare thread timeout [default: " << ThreadTimeout_Default << "]\n"
@@ -1244,13 +1244,13 @@ ostream& usage( ostream &err ) {
 #endif
 	"-r n | --skip-results n   : Number of initial results to skip [default: 0]\n"
 	"-s   | --stem-words       : Stem words prior to search [default: no]\n"
-	"-S   | --dump-stop        : Dump stop-word index and exit\n"
+	"-S   | --dump-stop        : Dump stop-word index, exit\n"
 #ifdef SEARCH_DAEMON
 	"-t n | --min-threads n    : Minimum number of threads [default: " << ThreadsMin_Default << "] \n"
 	"-T n | --max-threads n    : Maximum number of threads [default: " << ThreadsMax_Default << "] \n"
 	"-u f | --socket-file f    : Name of socket file [default: " << SocketFile_Default << "]\n"
 #endif
-	"-V   | --version          : Print version number and exit\n"
+	"-V   | --version          : Print version number, exit\n"
 	"-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n";
 	return err;
 }
