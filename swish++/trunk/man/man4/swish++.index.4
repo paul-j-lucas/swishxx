@@ -143,9 +143,16 @@ is of the form:
 \f2meta-name\fP0
 .cE
 that is: every word is null-terminated.
-.SH CAVEAT
+.SH CAVEATS
+.TP 4
+1.
 Generated index files are machine-dependent
 (size of data types and byte-order).
+.TP
+2.
+Incremental indexing
+(adding files to or deleting files from an existing index)
+is not possible since word occurrence counts are not stored.
 .SH SEE ALSO
 .BR index (1),
 .BR search (1)
