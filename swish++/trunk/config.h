@@ -89,6 +89,7 @@ char const	Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 #define		OPTIMIZE_WORD_END_CHARS		1
 //		Same deal as with OPTIMIZE_WORD_CHARS.
 
+#ifdef	MOD_HTML
 ////////// HTML and XHTML parameters //////////////////////////////////////////
 
 int const	Entity_Max_Size			= 6;
@@ -102,13 +103,9 @@ int const	Tag_Name_Max_Size		= 10;
 //		indexing HTML or XHTML documents that contain non-standard tags
 //		and at least one of them is longer than the above.
 
-int const	TitleLines_Default		= 12;
-//		Specifies the maximum number of lines into a file to look at
-//		for HTML or XHTML <TITLE> tags; this can be overridden either
-//		in a config. file or on the command line.
-
 int const	Title_Max_Size			= 200;
 //		Maximum length of a title between <TITLE>...</TITLE>.
+#endif
 
 #ifdef	SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
@@ -207,6 +204,11 @@ char const	TempDirectory_Default[]		= "/tmp";
 //		it either in a config. file or on the command line to use a
 //		directory on a real filesystem, i.e., one on a physical disk,
 //		e.g., /var/tmp on some OSs.  The directory must exist.
+
+int const	TitleLines_Default		= 12;
+//		Specifies the maximum number of lines into a file for its
+//		"title" (whatever that means for a given file format); this can
+//		be overridden either in a config. file or on the command line.
 
 int const	WordPercentMax_Default		= 100;
 //		Default maximum percentage of files a word may occur in before
