@@ -416,7 +416,7 @@ int		indexer::suspend_indexing_count_ = 0;
 
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		register mmap_file::value_type ch = iso8859_to_ascii( *c++ );
+		register char const ch = *c++;
 
 		////////// Collect a word /////////////////////////////////////
 
