@@ -314,34 +314,27 @@ namespace PJL {
 	::pthread_mutex_destroy( &run_lock_ );
 
 	::pthread_mutex_lock( &pool_.destructing_lock_ );
-	if ( pool_.destructing_ ) {
-		::pthread_mutex_unlock( &pool_.destructing_lock_ );
+	bool const pool_destructing = pool_.destructing_;
+	::pthread_mutex_unlock( &pool_.destructing_lock_ );
+	if ( !pool_destructing ) {
+		//
+		// We are committing suicide.  But first, we have to delete the
+		// pointer to us in our thread pool's set of threads.
+		//
+		::pthread_mutex_lock( &pool_.t_lock_ );
+		pool_.threads_.erase( this );
+		::pthread_mutex_unlock( &pool_.t_lock_ );
+	} else {
 		//
 		// The thread pool to which we belong has had its destructor
 		// called and is in the process of destroying itself and us.
-		// Therefore, simply cancel our POSIX thread.
+		// Therefore, we don't have to do anything.
 		//
-		if ( !destructing_ ) {
-			destructing_ = true;
-			::pthread_cancel( thread_ );
-		}
-		return;
 	}
-	::pthread_mutex_unlock( &pool_.destructing_lock_ );
 
-	//
-	// Otherwise, we are committing suicide.  But first, we have to delete
-	// the pointer to us in our thread pool's set of threads.
-	//
-	::pthread_mutex_lock( &pool_.t_lock_ );
-	pool_.threads_.erase( this );
-	::pthread_mutex_unlock( &pool_.t_lock_ );
 	if ( !destructing_ ) {
 		destructing_ = true;
-		::pthread_exit( 0 );
-		internal_error
-			<< "thread_main(): thread exists after "
-			   "alleged destruction\n" << report_error;
+		::pthread_cancel( thread_ );
 	}
 }
 
