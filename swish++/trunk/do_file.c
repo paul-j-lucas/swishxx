@@ -232,7 +232,7 @@
 
 	////////// Index the file /////////////////////////////////////////////
 
-#if defined( MOD_id3 ) || defined( MOD_mail )
+#ifdef	IMPLEMENT_DECODING
 	encoded_char_range::decoder::reset_all();
 #endif
 	indexer *const i = found_pattern ?

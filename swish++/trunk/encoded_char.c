@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#if defined( MOD_id3 ) || defined( MOD_mail )
+#ifdef	IMPLEMENT_DECODING
 
 // local
 #include "encoded_char.h"
@@ -42,4 +42,4 @@ encoded_char_range::decoder::set_type encoded_char_range::decoder::set_;
 		(*i)->reset();
 }
 
-#endif	/* MOD_id3 || MOD_mail */
+#endif	/* IMPLEMENT_DECODING */
