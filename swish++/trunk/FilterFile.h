@@ -22,9 +22,6 @@
 #ifndef FilterFile_H
 #define FilterFile_H
 
-// standard
-#include <map>
-
 // local
 #include "conf_var.h"
 #include "filter.h"
@@ -56,11 +53,6 @@ public:
 		return i != map_.end() ? &i->second : 0;
 	}
 private:
-	// Note that the declaration of std::map has a default "Compare"
-	// template parameter of "less< key_type >" and, since we've included
-	// less.h above that defines "less< char const* >", C-style string
-	// comparisons work properly.
-	//
 	typedef pattern_map< value_type > map_type;
 	map_type map_;
 
