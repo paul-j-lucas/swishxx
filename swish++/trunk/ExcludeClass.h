@@ -33,8 +33,8 @@
 //
 // DESCRIPTION
 //
-//	An ExcludeClass is-a conf_set containing the set of CLASS names
-//	to exclude during indexing.
+//	An ExcludeClass is-a conf_set containing the set of CLASS names to
+//	exclude during indexing.
 //
 //	This is the same as index's -C command-line option.
 //
