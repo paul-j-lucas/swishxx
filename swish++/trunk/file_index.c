@@ -20,7 +20,6 @@
 */
 
 // local
-#include "fake_ansi.h"
 #include "file_index.h"
 #include "util.h"
 
