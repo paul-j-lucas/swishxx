@@ -306,7 +306,7 @@ query_node* query_node::visit( visitor const &v ) {
                     // positions differ by at most words_near.
                     //
                     int const delta = pos[1] - pos[0];
-                    if ( abs( delta ) <= words_near ) {
+                    if ( pjl_abs( delta ) <= words_near ) {
                         results[ file[0]->index_ ] = (
                             file[0]->rank_ + file[1]->rank_
                         ) / 2;
@@ -503,7 +503,7 @@ query_node* query_node::visit( visitor const &v ) {
                             // absolute positions differ by at most words_near.
                             //
                             int const delta = pos[1] - pos[0];
-                            if ( abs( delta ) <= words_near )
+                            if ( pjl_abs( delta ) <= words_near )
                                 goto found_near;
                             //
                             // Increment the ith file's pos_deltas_ index and

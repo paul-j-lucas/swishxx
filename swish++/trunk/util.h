@@ -268,10 +268,7 @@ inline bool	is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
-#ifdef abs
-#undef abs
-#endif
-inline int		abs( int n ) { return n >= 0 ? n : -n; }
+inline int		pjl_abs( int n ) { return n >= 0 ? n : -n; }
 
 inline std::ostream&	error( std::ostream &o = std::cerr ) {
 				return o << me << ": error: ";
