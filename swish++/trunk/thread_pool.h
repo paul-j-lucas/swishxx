@@ -38,9 +38,10 @@ namespace PJL {
 #define	PJL /* nothing */
 #endif
 
-extern "C" void*	thread_pool_thread_main( void* );
-extern "C" void		thread_pool_thread_cleanup( void* );
 extern "C" void		thread_pool_decrement_busy( void* );
+extern "C" void		thread_pool_thread_data_cleanup( void* );
+extern "C" void*	thread_pool_thread_main( void* );
+extern "C" void		thread_pool_thread_once();
 
 //*****************************************************************************
 //
@@ -76,9 +77,8 @@ extern "C" void		thread_pool_decrement_busy( void* );
 public:
 	class thread;
 	friend class	thread;
-	friend void*	thread_pool_thread_main( void* );
-	friend void	thread_pool_thread_cleanup( void* );
 	friend void	thread_pool_decrement_busy( void* );
+	friend void*	thread_pool_thread_main( void* );
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -129,15 +129,6 @@ public:
 			argument_type() { }
 			friend void*	thread_pool_thread_main( void* );
 		};
-
-		void operator delete( void*, size_t ) { }
-		//
-		// Override "delete" for a thread to do nothing, i.e., do not
-		// deallocate memory for the object, because the POSIX thread
-		// clean-up function still needs to access the thread object
-		// after its destructor has been called.  The clean-up function
-		// deallocates the object.
-		//
 	protected:
 		typedef void* (*start_function_type)( void* );
 
@@ -149,10 +140,11 @@ public:
 		virtual thread*	create( thread_pool& ) const = 0;
 		virtual void	main( argument_type ) = 0;
 	private:
-		bool		destructing_;		// destructor called?
-		pthread_t	thread_;		// our POSIX thread
-		pthread_mutex_t	run_lock_;
-		thread_pool&	pool_;			// to which we belong
+		bool			in_cleanup_;	// in clean-up func?
+		thread_pool&		pool_;		// our owning pool
+		pthread_mutex_t		run_lock_;
+		pthread_t		thread_;	// our POSIX thread
+		static pthread_key_t	thread_obj_key_;// thread object
 
 		void		run() { ::pthread_mutex_unlock( &run_lock_ ); }
 		thread*		create_and_run() const {
@@ -162,9 +154,10 @@ public:
 				}
 
 		friend class	thread_pool;
-		friend void*	thread_pool_thread_main( void* );
-		friend void	thread_pool_thread_cleanup( void* );
 		friend void	thread_pool_decrement_busy( void* );
+		friend void	thread_pool_thread_data_cleanup( void* );
+		friend void*	thread_pool_thread_main( void* );
+		friend void	thread_pool_thread_once();
 
 		thread( thread const& );		// forbid copy
 		thread& operator=( thread const& );	// forbid assignment
