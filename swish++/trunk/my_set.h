@@ -52,7 +52,7 @@ namespace PJL {
 //*****************************************************************************
 {
 public:
-	bool contains( T const &s ) const { return find( s ) != end(); }
+	bool contains( T const &s ) const { return find( s ) != this->end(); }
 };
 
 //*****************************************************************************
@@ -69,7 +69,7 @@ public:
 //*****************************************************************************
 {
 public:
-	bool contains( char const *s ) const { return find( s ) != end(); }
+	bool contains( char const *s ) const { return find( s ) != this->end(); }
 };
 
 typedef my_set< char const* >	char_ptr_set;
