@@ -89,7 +89,7 @@ S_SRCS:=	bcd.c \
 		util.c \
 		word_util.c \
 		search.c
-ifndef WIN32
+ifdef SEARCH_DAEMON
 ##
 # See the comment in config/config.mk regarding the search daemon ability.
 ##
