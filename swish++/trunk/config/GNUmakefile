@@ -22,18 +22,19 @@
 ########## You shouldn't have to change anything below this line. #############
 
 ROOT=		..
-include 	$(ROOT)/config/config.mk
-
 TARGET=		$(ROOT)/platform.h
+
+.PNONY: all
+all: $(TARGET)
+
+include 	$(ROOT)/config/config.mk
 
 ##
 # Build rules
 ##
 
-all config: $(TARGET)
-
 $(TARGET): src/*.c
-	./config-sh $(TARGET) $(CC) $(CCFLAGS)
+	./config-sh $@ $(CC) $(CCFLAGS)
 
 ##
 # Utility rules
@@ -42,4 +43,4 @@ $(TARGET): src/*.c
 clean:
 
 distclean dist: clean
-	$(RM) $(TARGET)
+	$(RM) $(TARGET) dep
