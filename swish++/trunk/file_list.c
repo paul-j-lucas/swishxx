@@ -66,7 +66,7 @@
 			//
 			// At this point, p must be pointing to a marker.
 			//
-			switch ( *p++ ) {
+			switch ( *p++ ) {		// skip marker
 				case Stop_Marker:
 					return size_;
 				case Word_Entry_Continues_Marker:
@@ -75,7 +75,6 @@
 				default:		// skip number
 					while ( *p++ != Stop_Marker ) ;
 			}
-			++p;				// skip marker
 		}
 	}
 }
