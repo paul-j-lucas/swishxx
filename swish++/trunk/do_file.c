@@ -245,7 +245,7 @@
 	if ( verbosity > 2 )
 		cout << " (" << fi->num_words() << " words)\n";
 
-	if ( words.size() >= Word_Threshold )
+	if ( words.size() >= word_threshold )
 		write_partial_index();
 #endif	/* INDEX */
 
