@@ -149,6 +149,7 @@ int conf_var::current_config_file_line_no_ = 0;
 #ifdef	SEARCH_DAEMON
 			"group",
 			"pidfile",
+			"searchbackground",
 			"searchdaemon",
 			"socketaddress",
 			"socketfile",
