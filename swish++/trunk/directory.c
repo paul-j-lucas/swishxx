@@ -145,13 +145,12 @@ FollowLinks		follow_symbolic_links;
 // DESCRIPTION
 //
 //	Call do_file() for every file in the given directory; it will queue
-//	subdirectories encountered that do no start with '.' and call
-//	do_directory() on them.  It will not follow symbolic links unless the
-//	-l command-line option was given on the command line.
+//	subdirectories encountered and call do_directory() on them.  It will
+//	not follow symbolic links unless explicitly told to do so.
 //
 //	This function uses a queue and recurses only once so as not to have too
-//	many directories open concurrently.  This has the effect of indexing in
-//	a breadth-first order rather than depth-first.
+//	many directories open concurrently.  This has the side-effect of
+//	indexing in a breadth-first order rather than depth-first.
 //
 // PARAMETERS
 //
@@ -209,8 +208,15 @@ FollowLinks		follow_symbolic_links;
 
 	struct dirent const *dir_ent;
 	while ( dir_ent = ::readdir( dir_p ) ) {
-		if ( *dir_ent->d_name == '.' )		// skip dot files
-			continue;
+		//
+		// See if the name is "." or "..": if so, skip it.
+		//
+		if ( dir_ent->d_name[0] == '.' ) {
+			if ( !dir_ent->d_name[1] )
+				continue;
+			if ( dir_ent->d_name[1] == '.' && !dir_ent->d_name[2] )
+				continue;
+		}
 		::strcpy( file, dir_ent->d_name );
 		if ( is_directory( path ) && recurse_subdirectories )
 			dir_queue.push( new_strdup( path ) );
