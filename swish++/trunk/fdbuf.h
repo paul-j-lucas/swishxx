@@ -24,7 +24,11 @@
 
 // standard
 #include <iostream>
+#if defined(__GNUC__) && __GNUC__ < 3
 #include <streambuf.h>
+#else
+#include <streambuf>
+#endif
 
 // local
 #include "fake_ansi.h"			/* for explicit, std */
