@@ -29,7 +29,7 @@
 //
 // SYNOPSIS
 //
-	struct less_stem : less< char const* >
+	struct less_stem : std::less< char const* >
 //
 // DESCRIPTION
 //
