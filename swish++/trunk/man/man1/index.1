@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "July 9, 2001" "SWISH++"
+.TH \f3index\f1 1 "July 23, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -152,6 +152,11 @@ Contains more than \f(CWWord_Max_Consec_Vowels\f1 consecutive vowels.
 Contains more than \f(CWWord_Max_Consec_Puncts\f1 consecutive punctuation
 characters.
 (Default is 1.)
+.PP
+Note that the checks above that involve capital letters
+are used only to determine whether a given word should be indexed.
+If and when a word is indexed,
+it is converted to lower case first.
 .SS Filters
 Via the
 .B FilterFile
