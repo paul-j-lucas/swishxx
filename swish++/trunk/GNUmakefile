@@ -199,7 +199,7 @@ install_man:
 	@$(MAKE) -C man install
 
 install_conf:
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) swish++.conf /etc
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) swish++.conf $(I_ETC)
 
 $(I_BIN) $(I_LIB):
 	$(MKDIR) $@
