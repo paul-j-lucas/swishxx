@@ -268,9 +268,16 @@
 	};
 
 	for ( register char const *const *p = end_tag_table; *p; ++p ) {
-		element::end_tag_value const v = (element::end_tag_value const)(p[1]);
-		element &e = insert( value_type( *p, element( v ) ) ).first->second;
-		++p;
+		//
+		// The ugly double, old-style casts below are necessary because
+		// C++ has become overly pedantic about casting to enums.
+		//
+		element::end_tag_value const
+			v = (element::end_tag_value const)(int const)(p[1]);
+		element &e = insert(
+			value_type( *p++, element( v ) )
+		).first->second;
+
 		switch ( v ) {
 
 			case element::optional:
