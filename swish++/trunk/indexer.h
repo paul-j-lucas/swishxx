@@ -98,6 +98,12 @@ public:
 	//		This is the main entry point: this is called to index
 	//		the given file.
 
+	static void	index_word( char*, int len, int = No_Meta_ID );
+	//		Once a word has been parsed, this is the function to be
+	//		called from within index_words() to index it,
+	//		potentially.  This is not virtual intentionally for
+	//		performance.
+
 	virtual void	index_words(
 				encoded_char_range const&,
 				int meta_id = No_Meta_ID
@@ -116,12 +122,6 @@ protected:
 	//		indexed.  The default does nothing.  A derived indexer
 	//		class that needs to do some initialization should
 	//		override this function.
-
-	static void	index_word( char*, int len, int = No_Meta_ID );
-	//		Once a word has been parsed, this is the function to be
-	//		called from within index_words() to index it,
-	//		potentially.  This is not virtual intentionally for
-	//		performance.
 
 	static void	suspend_indexing();
 	static void	resume_indexing();
