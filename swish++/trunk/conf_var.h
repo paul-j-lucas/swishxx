@@ -49,6 +49,7 @@
 public:
 	static void		parse_file( char const *file_name );
 	char const*		name() const { return name_; }
+	static void		register_var( char const *name );
 protected:
 	conf_var( char const *var_name );
 	virtual ~conf_var();
