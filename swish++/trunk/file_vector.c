@@ -35,8 +35,8 @@
 #endif
 
 // local
-#include "fake_ansi.h"			/* for *_CAST */
 #include "file_vector.h"
+#include "platform.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -95,7 +95,7 @@ using namespace std;
 		::CloseHandle( fd_ );
 #else
 	if ( addr_ )
-		::munmap( STATIC_CAST( char* )( addr_ ), size_ );
+		::munmap( static_cast<char*>( addr_ ), size_ );
 	if ( fd_ )
 		::close( fd_ );
 #endif

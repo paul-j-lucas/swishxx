@@ -27,8 +27,8 @@
 
 // local
 #include "encoded_char.h"
-#include "fake_ansi.h"
 #include "file_vector.h"
+#include "platform.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -288,7 +288,7 @@ using namespace std;
 		return ' ';
 	}
 
-	return STATIC_CAST(value_type)(
+	return static_cast<value_type>(
 		//
 		// We're being robust by ensuring the hexadecimal characters
 		// are upper case.
