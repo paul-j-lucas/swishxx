@@ -47,6 +47,7 @@ static option_stream::spec const opt_spec[] = {
 	"index-file",		1, 'i',
 #ifdef	SEARCH_DAEMON
 	"daemon",		0, 'b',
+	"pid-file",		1, 'P',
 	"socket-timeout",	1, 'o',
 	"thread-timeout",	1, 'O',
 	"queue-size",		1, 'q',
