@@ -8,20 +8,48 @@ SWISH++ Changes
 NEW FEATURES
 ------------
 
-*  The modular indexing rearchitecture is now complete.
+* Search results an now optionally be output in XML.
+
+  (This feature shall be known as feature XML.)
+
+* The modular indexing rearchitecture is now complete.
 
 
 CHANGES, file-by-file
 ---------------------
 
+* classic_formatter.c
+* classic_formatter.h
+
+	1. New files for feature XML.
+
 * conf_var.c
 
 	1. In map_ref(), removed ExcludeClass and FilterAttachment.
 	2. Added: register_var()
+	3. In map_ref(), added ResultsFormat for feature XML.
 
 * conf_var.h
 
 	1. Added: register_var()
+
+* file_info.c
+
+	1. Reordered mem-initializers to match new order in declaration for
+	   feature XML.
+	2. Added file_info( unsigned char const* ) for feature XML.
+
+* file_info.h
+
+	1. Added file_info( unsigned char const* ) for feature XML.
+	2. Reordered data members to facilitate new constructor for feature
+	   XML.
+
+* GNUmakefile
+
+	1. Added file_info.c, classic_formatter.c, ResultsFormat.c,
+	   results_formatter.c, and xml_formatter.c to S_SOURCES for
+	   feature XML.
 
 * index.c
 
@@ -38,6 +66,27 @@ CHANGES, file-by-file
 	1. Added any_mod_claims_option(), all_mods_options(),
 	   all_mods_post_options(), all_mods_usage(), claims_option(),
 	   option_spec(), post_options(), and usage().
+
+* INSTALL.unix
+
+	1. Updated Unix prerequisites.
+
+* man/man1/search.1
+
+	1. Added XML results description for feature XML.
+	2. Added -F, --format, and ResultsFormat for feature XML.
+	3. Corrected wording regaring titles.
+	4. For -P and --pid-file, added mention of default being none.
+	5. For -u and --socket-file, added mention of default being
+	   /tmp/search.socket.
+	6. In meta data query examples, removed mention of "HTML or XHTML"
+	   since other document types can have meta information.
+	7. Added XML output caveat for feature XML.
+	8. Added reference to XML specification for feature XML.
+
+* man/man4/swish++.conf.4
+
+	1. Added ResultsFormat for feature XML.
 
 * mod/html/mod_html.c
 
@@ -60,9 +109,56 @@ CHANGES, file-by-file
 
 	1. Moved constructor definition to mod_mail.c.
 
+* README
+
+	1. Added "XML search results" for feature XML.
+
+* ResultsFormat.c
+* ResultsFormat.h
+* results_formatter.c
+* results_formatter.h
+
+	1. New files for feature XML.
+
+* search.c
+
+	1. Added #include of classic_formatter.h, file_info.h, ResultsFormat.h,
+	   results_formatter.h, ResultsMax.h, and xml_formatter.h for feature
+	   XML.
+	2. Added global results_format for feature XML.
+	3. In main(), added test of opt.results_format_arg for feature XML.
+	4. In search(), replaced result output with new result formatter
+	   classes for feature XML.
+	5. In search_options::search_options(), added initialization of
+	   restuls_format_arg for feature XML.
+	6. In search_options::search_options(), added case 'F' for feature XML.
+	7. Rewrote write_file_info() using a file_info.
+	8. In usage(), added usage message for -F option for feature XML.
+
+* search.h
+
+	1. Added results_format_arg for feature XML.
+
+* search_options.c
+
+	1. Added "format" for feature XML.
+
+* SearchResults.dtd
+
+	1. New file for feature XML.
+
+* swish++.conf
+
+	1. Added ResultsFormat for feature XML.
+
 * version.h
 
 	1. Upped version to "5.4."
+
+* xml_formatter.c
+* xml_formatter.h
+
+	1. New files for feature XML.
 
 
 *******************************************************************************
