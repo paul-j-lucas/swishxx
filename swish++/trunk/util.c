@@ -64,35 +64,6 @@ struct stat		stat_buf;	// someplace to do a stat(2) in
 	return lower_buf.current();
 }
 
-#ifdef	SEARCH_DAEMON
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	char *to_lower_r( register char const *s )
-//
-// DESCRIPTION
-//
-//	Return a pointer to a string converted to lower case; the original
-//	string is untouched.  The string returned is dynamically allocated so
-//	the caller is responsible for deleting it.
-//
-// PARAMETERS
-//
-//	s	The string to be converted.
-//
-// RETURN VALUE
-//
-//	A pointer to the lower-case string.
-//
-//*****************************************************************************
-{
-	char *const buf = new char[ ::strlen( s ) + 1 ];
-	for ( register char *p = buf; *p++ = to_lower( *s++ ); ) ;
-	return buf;
-}
-#endif	/* SEARCH_DAEMON */
-
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -127,4 +98,66 @@ struct stat		stat_buf;	// someplace to do a stat(2) in
 		*p++ = to_lower( *begin++ );
 	*p = '\0';
 	return lower_buf.current();
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	char *to_lower_r( register char const *s )
+//
+// DESCRIPTION
+//
+//	Return a pointer to a string converted to lower case; the original
+//	string is untouched.  The string returned is dynamically allocated so
+//	the caller is responsible for deleting it.
+//
+// PARAMETERS
+//
+//	s	The string to be converted.
+//
+// RETURN VALUE
+//
+//	A pointer to the lower-case string.
+//
+//*****************************************************************************
+{
+	char *const buf = new char[ ::strlen( s ) + 1 ];
+	for ( register char *p = buf; *p++ = to_lower( *s++ ); ) ;
+	return buf;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	char *to_lower_r(
+		register char const *begin, register char const *end
+	)
+//
+// DESCRIPTION
+//
+//	Return a pointer to a string converted to lower case; the original
+//	string is untouched.  The string returned is dynamically allocated so
+//	the caller is responsible for deleting it.
+//
+// PARAMETERS
+//
+//	begin	The iterator positioned at the first character of the string.
+//
+//	end	The iterator postitioned one past the last character of the
+//		string.
+//
+// RETURN VALUE
+//
+//	A pointer to the lower-case string.
+//
+//*****************************************************************************
+{
+	char *const buf = new char[ end - begin + 1 ];
+	register char *p = buf;
+	while ( begin != end )
+		*p++ = to_lower( *begin++ );
+	*p = '\0';
+	return buf;
 }
