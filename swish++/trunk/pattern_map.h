@@ -87,17 +87,17 @@ public:
 		// insertion, however.
 		//
 		return std::find_if(
-			begin(), end(), pattern_match( file_name )
+			this->begin(), this->end(), pattern_match( file_name )
 		);
 	}
 	const_iterator find( char const *file_name ) const {
 		return std::find_if(
-			begin(), end(), pattern_match( file_name )
+			this->begin(), this->end(), pattern_match( file_name )
 		);
 	}
 
 	bool matches( char const *file_name ) const {
-		return find( file_name ) != end();
+		return find( file_name ) != this->end();
 	}
 	void insert( char const *pattern, T const &t ) { (*this)[pattern] = t; }
 	void insert( value_type const &n ) { map_type::insert( n ); }
@@ -111,11 +111,7 @@ private:
 	public:
 		pattern_match( char const *file_name ) :
 			file_name_( file_name ) { }
-#ifdef	__SUNPRO_CC
 		bool operator()( value_type const &map_node ) const {
-#else
-		result_type operator()( argument_type map_node ) const {
-#endif
 			return !::fnmatch( map_node.first, file_name_, 0 );
 		}
 	private:
