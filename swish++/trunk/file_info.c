@@ -103,7 +103,7 @@ ResultSeparator			result_separator;
 	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
 	o << u;
 	while ( *u++ ) ;				// skip past filename
-	off_t const size = parse_bcd( u );
+	size_t const size = parse_bcd( u );
 	parse_bcd( u );					// skip past num_words
 	return o << result_separator << size << result_separator << u;
 }
@@ -127,7 +127,7 @@ ResultSeparator			result_separator;
 {
 	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
 	while ( *u++ ) ;				// skip past filename
-	off_t const size = parse_bcd( u );
+	size_t const size = parse_bcd( u );
 	int const num_words = parse_bcd( u );
 	return new file_info(
 		p, size, reinterpret_cast<char const*>( u ), num_words
