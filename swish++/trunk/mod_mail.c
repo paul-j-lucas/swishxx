@@ -382,9 +382,8 @@ bool				header_cmp(
 	key_value kv;
 	while ( parse_header( c, end, &kv ) ) {
 
-		//
-		// Deal with Content-Transfer-Encoding.
-		//
+		////////// Deal with Content-Transfer-Encoding ////////////////
+
 		if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
 			auto_vec< char > const v(
 				to_lower_r( kv.value_begin, kv.value_end )
@@ -398,13 +397,13 @@ bool				header_cmp(
 			continue;
 		}
 
-		//
-		// Deal with Content-Type.
-		//
+		////////// Deal with Content-Type /////////////////////////////
+
 		if ( !::strcmp( kv.key, "content-type" ) ) {
 			auto_vec< char > const v(
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
+
 			//
 			// See if it's the text/"something" or "message/rfc822".
 			//
@@ -420,38 +419,46 @@ bool				header_cmp(
 				type.first = Text_vCard;
 			else if ( ::strstr( v, "message/rfc822" ) )
 				type.first = Message_RFC822;
+
 			//
-			// See if it's a multipart/"something," i.e.,
-			// alternative, mixed, or parallel.  If not, we don't
-			// know what to do with it so it's not indexable.
-			//
-			else if ( !::strstr( v, "multipart/" ) ) {
-				type.first = Not_Indexable;
-				continue;
-			}
-			//
-			// It's multipart/"something": we have to extract the
+			// See if it's multipart/"something", i.e., mixed,
+			// alternative, or parallel: we have to extract the
 			// boundary string.
 			//
-			char const *b = ::strstr( v, "boundary=" );
-			if ( !b || !*(b += 9) )
-				continue;	// weird case
+			else if ( ::strstr( v, "multipart/" ) ) {
+				char const *b = ::strstr( v, "boundary=" );
+				if ( !b || !*(b += 9) ) {
+					type.first = Not_Indexable;
+					continue;	// weird case
+				}
+				//
+				// Erase everything (including any surrounding
+				// quotes) except the boundary string from the
+				// value.
+				//
+				string boundary(
+					kv.value_begin + (b - v), kv.value_end
+				);
+				if ( boundary[0] == '"' )
+					boundary.erase( 0, 1 );
+				if ( boundary[ boundary.length() - 1 ] == '"' )
+					boundary.erase( boundary.size()-1, 1 );
+				//
+				// Push the boundary onto the stack.
+				//
+				boundary_stack_.push_back( boundary );
+				type.first = Multipart;
+			}
+
 			//
-			// Erase everything (including any surrounding quotes)
-			// except the boundary string from the value.
+			// It's not a Content-Type we know anything about, so
+			// it's not indexable.
 			//
-			string boundary( kv.value_begin + (b-v), kv.value_end );
-			if ( boundary[0] == '"' )
-				boundary.erase( 0, 1 );
-			if ( boundary[ boundary.length() - 1 ] == '"' )
-				boundary.erase( boundary.size()-1, 1 );
-			//
-			// Push the boundary onto the stack.
-			//
-			boundary_stack_.push_back( boundary );
-			type.first = Multipart;
-			continue;
+			else
+				type.first = Not_Indexable;
 		}
+
+		////////// Index the value of the header //////////////////////
 
 		int meta_id;
 		if ( associate_meta ) {
