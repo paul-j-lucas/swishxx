@@ -1,6 +1,7 @@
 SWISH++ Changes
 ===============
 
+
 *******************************************************************************
 6.0.6
 *******************************************************************************
@@ -24,6 +25,12 @@ BUG FIXES
 * The installation and removal of SYSV start/stop script symlinks was totally
   wrong.
 
+  (This bug fix shall be known as bug fix SYSV.)
+
+* Some words with hyphens in manual pages weren't indexed correctly.
+
+  (This bug fix shall be known as bug fix MHY.)
+
 
 CHANGES, file-by-file
 ---------------------
@@ -32,7 +39,22 @@ CHANGES, file-by-file
 * config/src/namespaces.c
 * fake_ansi.h
 
-	1. Removed since it's no longer needed.
+	1. Removed since they're no longer needed.
+
+* GNUmakefile
+
+	1. Reworked creation of SYSV start/stop symlinks for bug fix SYSV.
+
+* mod/mail/mod_mail.c
+* mod/mail/multipart.c
+* mod/mail/vcard.c
+
+	1. Split handling of multipart and vCard mail into its own files.
+
+* mod/man/mod_man.c
+
+	1. Changed to using "normal" way of using iso8859_1_to_ascii()
+	   for bug fix MHY.
 
 * query.c
 
