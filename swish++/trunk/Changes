@@ -85,6 +85,10 @@ CHANGES, file-by-file
 	1. Added "External_Filter" for feature AFP.
 	2. Changed message_type from s pair<> to a struct for feature AFP.
 
+* README
+
+	1. Added mention of filtering attachments for feature AFP.
+
 * swish++.conf
 
 	1. Added FilterAttachment section for feature AFP.
