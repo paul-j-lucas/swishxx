@@ -67,6 +67,7 @@
 	bool		daemon_opt;
 	int		max_threads_arg;
 	int		min_threads_arg;
+	char const*	pid_file_name_arg;
 	char const*	socket_file_name_arg;
 	int		socket_queue_size_arg;
 	int		socket_timeout_arg;
