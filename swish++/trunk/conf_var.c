@@ -21,7 +21,7 @@
 
 // standard
 #include <cctype>
-#include <cstdlib>				/* for abort(3) */
+#include <cstdlib>			/* for abort(3) */
 #include <cstring>
 #include <iostream>
 
@@ -39,6 +39,22 @@ using namespace std;
 extern char const	*me;
 
 int conf_var::current_config_file_line_no_ = 0;
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ conf_var::~conf_var()
+//
+// DESCRIPTION
+//
+//	Destructs a conf_var.  It is out-of-line only because it's virtual
+//	(so its address is taken and put into the vtbl).
+//
+//*****************************************************************************
+{
+	// do nothing
+}
 
 //*****************************************************************************
 //
@@ -102,12 +118,14 @@ int conf_var::current_config_file_line_no_ = 0;
 		m[ "ExcludeClass"	] = 0;
 		m[ "ExcludeExtension"	] = 0;
 		m[ "ExcludeMeta"	] = 0;
+		m[ "FilesGrow"		] = 0;
 		m[ "FilesReserve"	] = 0;
 		m[ "FilterExtension"	] = 0;
 		m[ "FollowLinks"	] = 0;
 		m[ "HTMLExtension"	] = 0;
 		m[ "IncludeExtension"	] = 0;
 		m[ "IncludeMeta"	] = 0;
+		m[ "Incremental"	] = 0;
 		m[ "IndexFile"		] = 0;
 		m[ "RecurseSubdirs"	] = 0;
 		m[ "ResultsMax"		] = 0;
