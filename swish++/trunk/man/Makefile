@@ -28,7 +28,7 @@ include		$(ROOT)/config/config.mk
 # Build rules
 ##
 
-all text pdf ps clean dist distclean install uninstall::
-	@cd man1 && $(MAKE) $@
-	@cd man3 && $(MAKE) $@
-	@cd man4 && $(MAKE) $@
+%:
+	@$(MAKE) -C man1 $@
+	@$(MAKE) -C man3 $@
+	@$(MAKE) -C man4 $@
