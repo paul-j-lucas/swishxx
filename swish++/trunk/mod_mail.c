@@ -614,13 +614,11 @@ bool				header_cmp(
 //
 // DESCRIPTION
 //
-//	Index the words between the given iterators.
+//	Index the words over the entire range that the iterator covers.
 //
 // PARAMETERS
 //
-//	c	The iterator marking the beginning of the text to index.
-//
-//	end	The iterator marking the end of the text to index.
+//	c	The iterator whose range should be indexed.
 //
 //*****************************************************************************
 {
