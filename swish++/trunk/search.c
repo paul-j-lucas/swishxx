@@ -272,8 +272,8 @@ inline omanip< char const* > index_file_info( int index ) {
 	mmap_file const the_index( index_file_name );
 	the_index.behavior( mmap_file::random );
 	if ( !the_index ) {
-		error()	<< "could not read index from \""
-			<< index_file_name << "\"\n";
+		error()	<< "could not read index from \"" << index_file_name
+			<< '"' << error_string( the_index.error() );
 		::exit( Exit_No_Read_Index );
 	}
 	words      .set_index_file( the_index, index_segment::word_index );

@@ -644,7 +644,7 @@ static void		write_word_index( ostream&, off_t* );
 	mmap_file const index_file( index_file_name );
 	if ( !index_file ) {
 		error()	<< "could not read index from \"" << index_file_name
-			<< "\"\n";
+			<< '"' << error_string( index_file.error() );
 		::exit( Exit_No_Read_Index );
 	}
 
@@ -782,7 +782,7 @@ static void		write_word_index( ostream&, off_t* );
 #else
 				<< *file_name
 #endif
-				<< "\"\n";
+				<< '"' << error_string( index[i].error() );
 			::exit( Exit_No_Open_Temp );
 		}
 		words[ i ].set_index_file(
