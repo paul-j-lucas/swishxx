@@ -257,7 +257,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			<< '"' << error_string( conf_file.error() );
 		::exit( Exit_Config_File );
 	}
-	conf_file.behavior( mmap_file::sequential );
+	conf_file.behavior( mmap_file::bt_sequential );
 
 	register int line_no = 0;
 	register mmap_file::const_iterator c = conf_file.begin();
