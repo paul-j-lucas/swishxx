@@ -505,7 +505,7 @@ void			write_word_index( ostream&, off_t* );
 			<< setw(2) << (time % 60)
 			<< " (min:sec) elapsed time\n  "
 			<< num_examined_files << " files, "
-			<< file_info::list_.size() << " indexed\n  "
+			<< file_info::num_files() << " indexed\n  "
 			<< num_total_words << " words, "
 			<< num_indexed_words << " indexed, "
 			<< num_unique_words << " unique\n\n";
@@ -544,7 +544,7 @@ void			write_word_index( ostream&, off_t* );
 				<< flush;
 		return true;
 	}
-	int const wfp = file_count * 100 / file_info::list_.size();
+	int const wfp = file_count * 100 / file_info::num_files();
 	if ( wfp >= word_percent_max ) {
 		if ( verbosity > 2 )
 			cout	<< "\n  \"" << word
@@ -645,7 +645,7 @@ void			write_word_index( ostream&, off_t* );
 {
 	int r = int(
 		( ::log( occurences_in_file ) + 10 ) * factor
-		/ file_info::list_[ file_index ]->num_words()
+		/ file_info::ith_info( file_index )->num_words()
 	);
 	return r > 0 ? r : 1;
 }
@@ -752,7 +752,7 @@ void			write_word_index( ostream&, off_t* );
 
 	////////// Write index file header ////////////////////////////////////
 
-	long const num_files = file_info::list_.size();
+	long const num_files = file_info::num_files();
 	long const num_stop_words = stop_words->size();
 	long const num_meta_names = meta_names.size();
 	off_t *const word_offset = new off_t[ num_unique_words ];
@@ -1017,10 +1017,12 @@ void			write_word_index( ostream&, off_t* );
 //*****************************************************************************
 {
 	register int file_index = 0;
-	FOR_EACH( file_info::list_type, file_info::list_, fi ) {
+	for ( file_info::const_iterator
+		i = file_info::begin(); i != file_info::end(); ++i
+	) {
 		offset[ file_index++ ] = o.tellp();
-		o	<< (*fi)->file_name() << '\0' << bcd( (*fi)->size() )
-			<< bcd( (*fi)->num_words() ) << (*fi)->title() << '\0';
+		o	<< (*i)->file_name() << '\0' << bcd( (*i)->size() )
+			<< bcd( (*i)->num_words() ) << (*i)->title() << '\0';
 	}
 }
 
@@ -1139,7 +1141,7 @@ void			write_word_index( ostream&, off_t* );
 		cout << me << ": writing index..." << flush;
 
 	long const num_stop_words = stop_words->size();
-	long const num_files = file_info::list_.size();
+	long const num_files = file_info::num_files();
 	long const num_meta_names = meta_names.size();
 	off_t *const word_offset = new off_t[ num_unique_words ];
 	off_t *const stop_word_offset = num_stop_words ?
