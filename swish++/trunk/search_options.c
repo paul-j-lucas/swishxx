@@ -42,13 +42,14 @@ static option_stream::spec const opt_spec[] = {
 	"window",		1, 'w',
 #ifndef	SEARCH_DAEMON_OPTIONS_ONLY
 	//
-	// Once running as a daemon, 'search' no longer accepts the following
-	// options.
+	// Once running as a daemon, 'search' no longer accepts any of the
+	// remaining options.
 	//
 	"config-file",		1, 'c',
 	"index-file",		1, 'i',
 #ifdef	SEARCH_DAEMON
 	"daemon-type",		1, 'b',
+	"no-background",	0, 'B',
 	"pid-file",		1, 'P',
 	"socket-timeout",	1, 'o',
 	"thread-timeout",	1, 'O',
