@@ -35,7 +35,6 @@
 
 // local
 #include "auto_vec.h"
-#include "bcd.h"
 #include "classic_formatter.h"
 #include "config.h"
 #include "exit_codes.h"
