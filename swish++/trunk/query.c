@@ -431,6 +431,7 @@ static bool	parse_optional_relop( token_stream&, token::type& );
 		args.query.put_back( t2 );
 	}
 	args.query.put_back( t );
+	args.meta_id = No_Meta_ID;
 
 parsed_meta_id:
 	return parse_primary( args );
