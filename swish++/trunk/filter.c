@@ -163,7 +163,7 @@ using namespace std;
 
 			case 'e': {	// filename extension
 				string ext = file_name;
-				ext.erase( 0, ext.find( '.' ) );
+				ext.erase( 0, ext.rfind( '.' ) );
 				command_.replace( pos, 2, ext );
 				continue;
 			}
