@@ -33,13 +33,13 @@
 #
 ###############################################################################
 
-#FREE_BSD=	-DFreeBSD
-LINUX=		-DLinux
-#SOLARIS=	-DSolaris
-#WIN32=		-DWIN32
+#FREE_BSD:=	-DFreeBSD
+LINUX:=		-DLinux
+#SOLARIS:=	-DSolaris
+#WIN32:=		-DWIN32
 
 # Leave the following line alone!
-OS=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
+OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 
 ###############################################################################
 #
@@ -47,9 +47,9 @@ OS=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 #
 ###############################################################################
 
-MOD_HTML=	-DMOD_HTML
-MOD_MAIL=	-DMOD_MAIL
-MOD_LIST=	$(MOD_HTML) $(MOD_MAIL)
+MOD_HTML:=	-DMOD_HTML
+MOD_MAIL:=	-DMOD_MAIL
+MOD_LIST:=	$(MOD_HTML) $(MOD_MAIL)
 #		The indexing modules you want built into index(1).
 
 ifndef WIN32
@@ -57,7 +57,7 @@ ifndef WIN32
 #		Windows.  The only way it will ever be is if somebody
 #		volunteers to port the socket and multithreading code.
 
-SEARCH_DAEMON=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
+SEARCH_DAEMON:=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 #		These definitions will build search(1) with the ability to run
 #		in the background as a multi-threaded daemon process.  Comment
 #		this out if you have no need for this feature.  Currently, the
@@ -75,15 +75,15 @@ SEARCH_DAEMON=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 ifdef SEARCH_DAEMON
 
 ifdef FREE_BSD
-PTHREAD_LIB=	-pthread
+PTHREAD_LIB:=	-pthread
 else
-PTHREAD_LIB=	-lpthread
+PTHREAD_LIB:=	-lpthread
 endif
 #		Library to link against for POSIX threads if building with the
 #		search daemon ability.
 
 ifdef SOLARIS
-SOCKET_LIB=	-lsocket -lnsl
+SOCKET_LIB:=	-lsocket -lnsl
 #		Library to link against for sockets if building with the search
 #		daemon ability.
 endif
@@ -97,20 +97,20 @@ endif # WIN32
 #
 ###############################################################################
 
-RM=		rm -fr
+RM:=		rm -fr
 #		The command to remove files recursively and ignore errors;
 #		usually "rm -fr" for Unix or "erase" for Windows.
 
-PERL=		/usr/local/bin/perl
+PERL:=		/usr/local/bin/perl
 #		The full path to the Perl 5 executable; usually "/bin/perl" or
 #		"/usr/local/bin/perl" for Unix or "\Perl\bin\perl" for
 #		Windows.  You need this only if you intend on using
 #		httpindex(1) or searchc(1).
 
-SHELL=		/bin/sh
+SHELL:=		/bin/sh
 #		The shell to spawn for subshells; usually "/bin/sh".
 
-STRIP=		strip
+STRIP:=		strip
 #		The command to strip symbolic information from executables;
 #		usually "strip".  You can leave this defined even if your OS
 #		doesn't have it or any equivalent since any errors from this
@@ -122,50 +122,30 @@ STRIP=		strip
 #
 ###############################################################################
 
-CC=		g++
+CC:=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
-#GCC_WARNINGS=	-W -Wcast-align -Wcast-qual -Winline -Wpointer-arith -Wshadow -Wswitch -Wtraditional -Wuninitialized -Wunused
-#		Warning flags specific to gcc/g++.  Unless you are modifying
-#		the source code, you should leave this commented out.
-
 ifdef WIN32
-OPTIM=		-O2
+OPTIM:=		-O2
 else
-OPTIM=		-O3
+OPTIM:=		-O3
 endif
-#		The optimization level.  Under Windows, -O3 causes a segfault
-#		due to an optimizer bug, presumeably.
+#		The optimization level.  Many compilers allow a digit after the
+#		O to specify the level of optimization; if so, set yours to the
+#		highest number your compiler allows (without eliciting bugs in
+#		its optimizer as with g++ under cynwin under Windows).  If
+#		SWISH++ doesn't work correctly with optimization on, but it
+#		works just fine with it off, then there is a bug in your
+#		compiler's optimizer.
 
-CCFLAGS=	$(GCC_WARNINGS) $(MOD_LIST) $(SEARCH_DAEMON) $(OS) $(OPTIM)
-#		Additional flags for the C++ compiler:
-#
-#		-g	Include symbol-table information in object file.  (You
-#			normally wouldn't want to do this unless you are
-#			either helping me to debug a problem found on your
-#			system or you are changing SWISH++ yourself.)
-#
-#		-O	Turn optimization on.  Some compilers allow a digit
-#			after the O for optimization level; if so, set yours
-#			to the highest number your compiler allows (without
-#			eliciting bugs in its optimizer).  If SWISH++ doesn't
-#			work correctly with optimization on, but it works just
-#			fine with it off, then there is a bug in your
-#			compiler's optimizer.
-#
-#		-pedantic
-#			Makes g++ warn about anything that isn't strict ANSI
-#			standard C++.
-#
-#		-pg	Turn profiling on.  (You normally wouldn't want to do
-#			this unless you are changing SWISH++ and want to try
-#			to performance-tune your changes.)  This option may be
-#			g++-specific.  If you are not using g++, consult your
-#			C++ compiler's documentation.
+CCFLAGS:=	$(MOD_LIST) $(SEARCH_DAEMON) $(OS) $(OPTIM)
+#		Flags for the C++ compiler.
 
-CCLINK=		#-liberty
-#		Flags for the linker:
-#		-liberty	May be required under Windows for getopt(3C).
+ifeq ($(CC),g++)
+#CCFLAGS+=	-W -Wcast-align -Wcast-qual -Wpointer-arith -Wswitch -Wtraditional -Wuninitialized -Wunused #-Winline -Wshadow
+endif
+#		Warning flags specific to g++.  Unless you are modifying the
+#		source code, you should leave this commented out.
 
 ###############################################################################
 #
@@ -173,34 +153,34 @@ CCLINK=		#-liberty
 #
 ###############################################################################
 
-INSTALL=	$(ROOT)/install-sh
+INSTALL:=	$(ROOT)/install-sh
 #		Install command; usually "$(ROOT)/install-sh".
 
-I_ROOT=		/usr/local/packages/swish++
+I_ROOT:=	/usr/local
 #		The top-level directory of where SWISH++ will be installed.
 
-I_BIN=		$(I_ROOT)/bin
+I_BIN:=		$(I_ROOT)/bin
 #		Where executables are installed; usually "$(I_ROOT)/bin".
 
-I_LIB=		$(I_ROOT)/lib
+I_LIB:=		$(I_ROOT)/lib
 #		Where libraries are installed; usually "$(I_ROOT)/lib".
 
-I_MAN=		$(I_ROOT)/man
+I_MAN:=		$(I_ROOT)/man
 #		Where manual pages are installed; usually "$(I_ROOT)/man".
 
-I_OWNER=	-o bin
+I_OWNER:=	-o bin
 #		The owner of the installed files.
 
-I_GROUP=	-g bin
+I_GROUP:=	-g bin
 #		The group of the installed files.
 
-I_MODE=		-m 644
+I_MODE:=	-m 644
 #		File permissions for regular files (non executables).
 
-I_XMODE=	-m 755
+I_XMODE:=	-m 755
 #		File permissions for eXecutables and directories.
 
-MKDIR=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
+MKDIR:=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 #		Command used to create a directory.
 
 ########## You shouldn't have to change anything below this line. #############
