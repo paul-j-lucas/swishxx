@@ -38,6 +38,55 @@ using namespace std;
 //
 // SYNOPSIS
 //
+	static void escape_filename( string &s )
+//
+// DESCRIPTION
+//
+//	Escape all characters in a filename for passing to a shell.
+//
+// PARAMETERS
+//
+//	s	The string containing the filename to escape.  It is modified
+//		in-place.
+//
+//*****************************************************************************
+{
+	register string::size_type pos = 0;
+	while (
+		(pos = s.find_first_of( ShellFilenameEscapeChars, pos ))
+			!= string::npos
+	) {
+		s.insert( pos, 1, '\\' );
+		pos += 2;
+	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	static void unescape_filename( string &s )
+//
+// DESCRIPTION
+//
+//	Unescape all '\' characters in a filename for not passing to a shell.
+//
+// PARAMETERS
+//
+//	s	The string containing the filename to unescape.  It is modified
+//		in-place.
+//
+//*****************************************************************************
+{
+	register string::size_type pos = 0;
+	while ( (pos = s.find( '\\', pos )) != string::npos )
+		s.erase( pos++, 1 );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	char const* filter::exec() const
 //
 // DESCRIPTION
@@ -98,13 +147,13 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	static char const file_name_delim_chars[] = " \t&<>|";
-
+	string esc_file_name( file_name );
+	escape_filename( esc_file_name );
 	//
 	// Determine the base name of the file in case we need it for 'b' or
 	// 'B' substitutions.
 	//
-	char const *const base_name = pjl_basename( file_name );
+	char const *const base_name = pjl_basename( esc_file_name.c_str() );
 
 	//
 	// For this kind of string manipulation, the C++ string class is much
@@ -166,7 +215,7 @@ using namespace std;
 			}
 
 			case 'e': {	// filename extension
-				string ext = file_name;
+				string ext = esc_file_name;
 				ext.erase( 0, ext.rfind( '.' ) );
 				command_.replace( pos, 2, ext );
 				pos += ext.length();
@@ -174,7 +223,7 @@ using namespace std;
 			}
 
 			case 'E': {	// second-to-last filename extension
-				string ext = file_name;
+				string ext = esc_file_name;
 				string::size_type const x = ext.rfind( '.' );
 				if ( x != string::npos ) {
 					ext.erase( x );
@@ -186,12 +235,12 @@ using namespace std;
 			}
 
 			case 'f':	// entire filename
-				command_.replace( pos, 2, file_name );
-				pos += ::strlen( file_name );
+				command_.replace( pos, 2, esc_file_name );
+				pos += esc_file_name.length();
 				break;
 
 			case 'F': {	// filename minus last extension
-				string no_ext = file_name;
+				string no_ext = esc_file_name;
 				no_ext.erase( no_ext.rfind( '.' ) );
 				command_.replace( pos, 2, no_ext );
 				pos += no_ext.length();
@@ -211,9 +260,27 @@ using namespace std;
 			<< report_error;
 	}
 
-	target_file_name_ = string(
-		command_, target_pos,
-		command_.find_first_of( file_name_delim_chars, target_pos )
-	);
+	//
+	// Find the first character that delimits the target file name (that is
+	// not escaped).
+	//
+	pos = target_pos;
+	while ( 
+		(pos = command_.find_first_of( ShellFilenameDelimChars, pos ))
+			!= string::npos
+	)
+		if ( command_[ pos - 1 ] == '\\' )
+			++pos;
+		else
+			break;
+
+	target_file_name_ = string( command_, target_pos, pos );
+	//
+	// Having shell meta-characters and whitespace automatically escaped
+	// was good for executing the filter(s), but it's not good for actually
+	// opening the file since no shell is involved.  Therefore, we must now
+	// unescape the final file-name.
+	//
+	unescape_filename( target_file_name_ );
 	return target_file_name_.c_str();
 }
