@@ -68,8 +68,8 @@
 	// Elements that have required end tags simply list their single end
 	// tag.  Yes, it's easy, given a start tag, to know what it's end tag
 	// is (the same tag, but with a leading '/'); however, the code in
-	// parse_html_tag() in html.c is made simpler by explicitly giving the
-	// end tag here rather than having to construct a temporary string
+	// parse_html_tag() in mod_html.c is made simpler by explicitly giving
+	// the end tag here rather than having to construct a temporary string
 	// prepending a '/' to the tag.
 	//
 	static char const *const end_tag_table[] = {

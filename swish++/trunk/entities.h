@@ -48,7 +48,7 @@
 // SEE ALSO
 //
 //	entites.c	char_entity_table[], instance()
-//	html.c		entity_to_ascii()
+//	mod_html.c	entity_to_ascii()
 //
 //*****************************************************************************
 {
