@@ -54,8 +54,8 @@
 #include "IncludeFile.h"
 #include "IncludeMeta.h"
 #include "Incremental.h"
-#include "IndexFile.h"
 #include "indexer.h"
+#include "IndexFile.h"
 #include "index_segment.h"
 #include "itoa.h"
 #include "meta_map.h"
@@ -72,6 +72,7 @@
 #include "WordFilesMax.h"
 #include "word_info.h"
 #include "WordPercentMax.h"
+#include "WordThreshold.h"
 #include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -108,6 +109,7 @@ Verbosity		verbosity;		// how much to print
 word_map		words;			// the index being generated
 WordFilesMax		word_file_max;
 WordPercentMax		word_percent_max;
+WordThreshold		word_threshold;
 
 static void		load_old_index( char const *index_file_name );
 static void		merge_indicies( ostream& );
@@ -242,6 +244,7 @@ static void		write_word_index( ostream&, off_t* );
 		"temp-dir",		1, 'T',
 		"verbosity",		1, 'v',
 		"version",		0, 'V',
+		"word-threshold",	1, 'W',
 		0
 	};
 
@@ -265,6 +268,7 @@ static void		write_word_index( ostream&, off_t* );
 	char const*	verbosity_arg = 0;
 	char const*	word_file_max_arg = 0;
 	char const*	word_percent_max_arg = 0;
+	char const*	word_threshold_arg = 0;
 
 	option_stream::spec *const
 		all_options = indexer::all_mods_options( opt_spec );
@@ -375,6 +379,10 @@ static void		write_word_index( ostream&, off_t* );
 				cout << "SWISH++ " << version << endl;
 				::exit( Exit_Success );
 
+			case 'W': // Word threshold.
+				word_threshold_arg = opt.arg();
+				break;
+
 			default: // Any indexing module claim the option?
 				if ( !indexer::any_mod_claims_option( opt ) )
 					cerr << usage;
@@ -416,6 +424,8 @@ static void		write_word_index( ostream&, off_t* );
 		word_file_max = word_file_max_arg;
 	if ( word_percent_max_arg )
 		word_percent_max = word_percent_max_arg;
+	if ( word_threshold_arg )
+		word_threshold = word_threshold_arg;
 
 	indexer::all_mods_post_options();
 
@@ -1364,29 +1374,30 @@ ostream& usage( ostream &err ) {
 	err << "usage: " << me << " [options] dir ... file ...\n"
 	"options: (unambiguous abbreviations may be used for long options)\n"
 	"========\n"
-	"-?     | --help            : Print this help message\n"
-	"-A     | --no-assoc-meta   : Don't associate meta names [default: do]\n"
-	"-c f   | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"-e m:p | --pattern m:p     : Module and file pattern to index [default: none]\n"
-	"-E p   | --no-pattern p    : File pattern not to index [default: none]\n"
-	"-f n   | --word-files n    : Word/file maximum [default: infinity]\n"
-	"-F n   | --files-reserve n : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
-	"-g n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
-	"-i f   | --index-file f    : Name of index file to use [default: " << IndexFile_Default << "]\n"
-	"-I     | --incremental     : Add files/words to index [default: replace]\n"
+	"-?     | --help             : Print this help message\n"
+	"-A     | --no-assoc-meta    : Don't associate meta names [default: do]\n"
+	"-c f   | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+	"-e m:p | --pattern m:p      : Module and file pattern to index [default: none]\n"
+	"-E p   | --no-pattern p     : File pattern not to index [default: none]\n"
+	"-f n   | --word-files n     : Word/file maximum [default: infinity]\n"
+	"-F n   | --files-reserve n  : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
+	"-g n   | --files-grow n     : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
+	"-i f   | --index-file f     : Name of index file to use [default: " << IndexFile_Default << "]\n"
+	"-I     | --incremental      : Add files/words to index [default: replace]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-	"-l     | --follow-links    : Follow symbolic links [default: don't]\n"
+	"-l     | --follow-links     : Follow symbolic links [default: don't]\n"
 #endif
-	"-m m   | --meta m          : Meta name to index [default: all]\n"
-	"-M m   | --no-meta m       : Meta name not to index [default: none]\n"
-	"-p n   | --word-percent n  : Word/file percentage [default: 100]\n"
-	"-r     | --no-recurse      : Don't index subdirectories [default: do]\n"
-	"-s f   | --stop-file f     : Stop-word file to use instead of built-in default\n"
-	"-S     | --dump-stop       : Dump built-in stop-words, exit\n"
-	"-t n   | --title-lines n   : Lines to look for titles [default: " << TitleLines_Default << "]\n"
-	"-T d   | --temp-dir d      : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
-	"-v n   | --verbosity n     : Verbosity level [0-4; default: 0]\n"
-	"-V     | --version         : Print version number, exit\n";
+	"-m m   | --meta m           : Meta name to index [default: all]\n"
+	"-M m   | --no-meta m        : Meta name not to index [default: none]\n"
+	"-p n   | --word-percent n   : Word/file percentage [default: 100]\n"
+	"-r     | --no-recurse       : Don't index subdirectories [default: do]\n"
+	"-s f   | --stop-file f      : Stop-word file to use instead of built-in default\n"
+	"-S     | --dump-stop        : Dump built-in stop-words, exit\n"
+	"-t n   | --title-lines n    : Lines to look for titles [default: " << TitleLines_Default << "]\n"
+	"-T d   | --temp-dir d       : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
+	"-v n   | --verbosity n      : Verbosity level [0-4; default: 0]\n"
+	"-V     | --version          : Print version number, exit\n"
+	"-W n   | --word-threshold n : Words to make partial indicies [default: " << WordThreshold_Default << "]\n";
 	indexer::all_mods_usage( err );
 	::exit( Exit_Usage );
 	return err;			// just to make the compiler happy
