@@ -87,9 +87,6 @@ using namespace std;
 AssociateMeta		associate_meta;
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
-#ifdef	mod_html
-ExcludeClass		exclude_class_names;	// class names not to index
-#endif
 ExcludeMeta		exclude_meta_names;	// meta names not to index
 IncludeMeta		include_meta_names;	// meta names to index
 FilesGrow		files_grow;
