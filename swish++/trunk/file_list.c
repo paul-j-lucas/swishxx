@@ -19,13 +19,12 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cctype>
-
 // local
 #include "enc_int.h"
 #include "file_list.h"
 #include "word_markers.h"
+
+file_list::byte const file_list::const_iterator::end_value = 0;
 
 //*****************************************************************************
 //
@@ -102,21 +101,28 @@
 //
 //*****************************************************************************
 {
-	if ( c_ == reinterpret_cast<byte const*>( this ) || !c_ ) {
+	if ( !c_ || c_ == &end_value ) {
 		//
-		// If c_'s value is the "just hit end" flag or "already at end"
-		// (null), set to the "already at end" value (null).
+		// If c_'s value is the "already at end" value (null), or the
+		// "just hit end" value, set to the "already at end" value.
 		//
 		c_ = 0;			
 		return *this;
 	}
 
-	v_.index_ = dec_int( c_ );
-	v_.occurrences_ = dec_int( c_ );
-	v_.rank_ = dec_int( c_ );
+	v_.index_	= dec_int( c_ );
+	v_.occurrences_	= dec_int( c_ );
+	v_.rank_	= dec_int( c_ );
 
 	if ( !v_.meta_ids_.empty() )
-		v_.meta_ids_.erase( v_.meta_ids_.begin(), v_.meta_ids_.end() );
+		v_.meta_ids_.clear();
+
+#ifdef	FEATURE_word_pos
+	if ( v_.pos_deltas_.empty() )
+		v_.pos_deltas_.reserve( v_.occurrences_ );
+	else
+		v_.pos_deltas_.clear();
+#endif
 
 	while ( true ) {
 		//
@@ -125,12 +131,10 @@
 		switch ( *c_++ ) {
 			case Stop_Marker:
 				//
-				// Reached end of file list: set iterator to a
-				// "just hit end" value.  Use "this" since
-				// it's a value guaranteed not to be in the
-				// buffer and also portable.
+				// Reached the end of file list: set iterator
+				// to the "just hit end" value.
 				//
-				c_ = reinterpret_cast<byte const*>( this );
+				c_ = &end_value;
 				// no break;
 
 			case Word_Entry_Continues_Marker:
@@ -140,7 +144,12 @@
 				while ( *c_ != Stop_Marker )
 					v_.meta_ids_.insert( dec_int( c_ ) );
 				break;
-
+#ifdef	FEATURE_word_pos
+			case Word_Pos_List_Marker:
+				while ( *c_ != Stop_Marker )
+					v_.pos_deltas_.push_back( dec_int(c_) );
+				break;
+#endif
 			default:
 				// Encountered a list marker we don't know
 				// about: we are decoding a possibly future
