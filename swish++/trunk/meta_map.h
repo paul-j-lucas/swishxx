@@ -28,12 +28,23 @@
 // local
 #include "less.h"
 
+//*****************************************************************************
 //
-// Note that the declaration of std::map has a default "Compare" template
-// parameter of "less< key_type >" and, since we've included less.h above that
-// defines "less< char const* >", C-style string comparisons work properly.
+// SYNOPSIS
 //
-typedef std::map< char const*, int > meta_map;
+	typedef std::map< char const*, int > meta_map;
+//
+// DESCRIPTION
+//
+//	A meta_map is used to map a META name to its unique integer ID.
+//
+//	Note that the declaration of std::map has a default "Compare"
+//	template parameter of "less< key_type >" and, since we've included
+//	less.h above that defines "less< char const* >", C-style string
+//	comparisons work properly.
+//
+//
+//*****************************************************************************
 
 extern meta_map	meta_names;
 
