@@ -21,12 +21,15 @@
 
 // standard
 #include <fcntl.h>				/* for open(2), O_RDONLY, ... */
+#ifndef	WIN32
 #include <sys/mman.h>				/* for mmap(2) */
+#endif
 #include <sys/stat.h>				/* for stat(2) */
 #include <unistd.h>				/* for close(2) */
 
 // local
-#include "file_vector.h"
+#include "fake_ansi.h"
+#include "file_vector.h"			/* for *_CAST */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -49,10 +52,19 @@ using namespace std;
 //
 //*****************************************************************************
 {
+#ifdef	WIN32
+	if ( addr_ )
+		::UnmapViewOfFile( addr_ );
+	if ( map_ )
+		::CloseHandle( map_ );
+	if ( fd_ )
+		::CloseHandle( fd_ );
+#else
 	if ( addr_ )
 		::munmap( STATIC_CAST( char* )( addr_ ), size_ );
 	if ( fd_ )
 		::close( fd_ );
+#endif
 	init();
 }
 
@@ -70,6 +82,9 @@ using namespace std;
 {
 	size_ = 0;
 	fd_ = 0;
+#ifdef	WIN32
+	map_ = 0;
+#endif
 	addr_ = 0;
 	error_ = 0;
 }
@@ -95,6 +110,42 @@ using namespace std;
 //*****************************************************************************
 {
 	close();
+
+#ifdef	WIN32
+
+	fd_ = ::CreateFile( path,
+		mode & ios::out ? GENERIC_WRITE : GENERIC_READ,
+		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
+	);
+	if ( fd_ == INVALID_HANDLE_VALUE ) {
+		fd_ = 0;
+		error_ = 1;
+		return false;
+	}
+
+	if ( ( size_ = ::GetFileSize( fd_, 0 ) ) == 0xFFFFFFFF ) {
+		error_ = 2;
+		return false;
+	}
+
+	map_ = ::CreateFileMapping( fd_, NULL,
+		mode & ios::out ? PAGE_READWRITE : PAGE_READONLY,
+		0, 0, NULL
+	);
+	if ( !map_ ) {
+		error_ = 3;
+		return false;
+	}
+
+	addr_ = ::MapViewOfFile( map_,
+		mode & ios::out ? FILE_MAP_WRITE : FILE_MAP_READ,
+		0, 0, 0
+	);
+	if ( !addr_ ) {
+		error_ = 4;
+		return false;
+	}
+#else
 	struct stat stat_buf;
 	if ( ::stat( path, &stat_buf ) == -1 ) {
 		error_ = 1;
@@ -125,5 +176,8 @@ using namespace std;
 	}
 
 	size_ = stat_buf.st_size;
+
+#endif	/* WIN32 */
+
 	return true;
 }

@@ -27,12 +27,31 @@
 #include <iterator>
 #include <sys/types.h>				/* for off_t */
 
-// local
-#include "fake_ansi.h"
+#ifdef	WIN32
+#include <windows32/base.h>
+#include <windows32/defines.h>	
+#include <windows.h>
+#endif
 
-class file_vector_base {
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	class file_vector_base
+//
+// DESCRIPTION
+//
+//	A file_vector_base is the base class for file_vector<T> that factors
+//	out all type-independent code.
+//
+//*****************************************************************************
+{
 public:
+#ifdef	WIN32
+	typedef DWORD size_type;
+#else
 	typedef off_t size_type;
+#endif
 	typedef ptrdiff_t difference_type;
 
 	file_vector_base()			{ init(); }
@@ -54,7 +73,11 @@ protected:
 	void*		base() const		{ return addr_; }
 private:
 	size_type	size_;
+#ifdef	WIN32
+	HANDLE		fd_, map_;
+#else
 	int		fd_;			// Unix file descriptor
+#endif
 	void		*addr_;
 	int		error_;
 	void		init();
