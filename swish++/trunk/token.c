@@ -26,6 +26,7 @@
 
 // local
 #include "config.h"
+#include "iso8859-1.h"
 #include "platform.h"
 #include "token.h"
 #include "util.h"
@@ -75,7 +76,7 @@ using namespace std;
 	char c;
 
 	while ( tin.get( c ) ) {
-		c = iso8859_to_ascii( c );
+		c = iso8859_1_to_ascii( c );
 
 		if ( is_word_char( c ) ) {
 			if ( !in_word ) {

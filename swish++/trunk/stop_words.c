@@ -26,6 +26,7 @@
 #include "config.h"
 #include "exit_codes.h"
 #include "index_segment.h"
+#include "iso8859-1.h"
 #include "mmap_file.h"
 #include "platform.h"
 #include "stop_words.h"
@@ -402,7 +403,7 @@ stop_word_set*		stop_words;		// pointer to global set
 	while ( true ) {
 		if ( c != file.end() ) {
 			register char const ch = tolower(
-				iso8859_to_ascii( *c++ )
+				iso8859_1_to_ascii( *c++ )
 			);
 
 			////////// Collect a word /////////////////////////////
