@@ -142,20 +142,22 @@
 
 #ifdef	EXTRACT
 	//
-	// Check to see if the .txt file already exists; if so, skip it.
+	// Check to see if the extracted file already exists; if so, skip it.
 	//
-	char file_name_txt[ NAME_MAX + 1 ];
-	::strcpy( file_name_txt, file_name );
-	::strcat( file_name_txt, ".txt" );
-	if ( file_exists( file_name_txt ) ) {
+	char file_name_extracted[ NAME_MAX + 1 ];
+	::strcpy( file_name_extracted, file_name );
+	::strcat( file_name_extracted, extract_extension );
+	if ( file_exists( file_name_extracted ) ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: .txt file already exists)\n";
+			cout	<< " (skipped: " << extract_extension
+				<< " file already exists)\n";
 		return;
 	}
-	ofstream txt( file_name_txt );
-	if ( !txt ) {
+	ofstream extracted_file( file_name_extracted );
+	if ( !extracted_file ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: can not create .txt file)\n";
+			cout	<< " (skipped: can not create "
+				<< extract_extension << " file)\n";
 		return;
 	}
 #endif
@@ -215,6 +217,6 @@
 	////////// Extract the file ///////////////////////////////////////////
 
 	++num_extracted_files;
-	extract_words( file.begin(), file.end(), txt );
+	extract_words( file.begin(), file.end(), extracted_file );
 #endif
 }
