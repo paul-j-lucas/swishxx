@@ -23,7 +23,6 @@
 #define TempDirectory_H
 
 // local
-#include "config.h"
 #include "conf_string.h"
 #include "fake_ansi.h"			/* for std */
 
@@ -44,8 +43,10 @@
 {
 public:
 	TempDirectory() :
-		conf<std::string>( "TempDirectory", TempDirectory_Default ) { }
+		conf<std::string>( "TempDirectory", default_value() ) { }
 	CONF_STRING_ASSIGN_OPS( TempDirectory )
+private:
+	static char const* default_value();
 };
 
 #endif	/* TempDirectory_H */
