@@ -198,11 +198,11 @@ void	usage();
 				config_file_name_arg = ::optarg;
 				break;
 
-			case 'd': // Dump query word indices to standard out.
+			case 'd': // Dump query word indices.
 				dump_word_index_opt = true;
 				break;
 
-			case 'D': // Dump entire word index to standard out.
+			case 'D': // Dump entire word index.
 				dump_entire_index_opt = true;
 				break;
 
@@ -324,7 +324,10 @@ void	usage();
 			ostream_iterator< char const* >( cout, "\n" )
 		);
 
-	if ( dump_entire_index_opt || dump_meta_names_opt || dump_stop_words_opt )
+	if (	dump_entire_index_opt ||
+		dump_meta_names_opt ||
+		dump_stop_words_opt
+	)
 		::exit( Exit_Success );
 
 	////////// Perform the query //////////////////////////////////////////
@@ -679,9 +682,9 @@ void	usage();
 				Meta_ID_Not_Found;
 			goto no_put_back;
 		}
-		t2.put_back();				// put back '='
+		t2.put_back();
 	}
-	t.put_back();					// put back name
+	t.put_back();
 
 no_put_back:
 	return parse_primary( query, result, ignore, meta_id );
@@ -896,7 +899,7 @@ no_put_back:
 		file_list list( found.first++ );
 		FOR_EACH( file_list, list, file )
 			if (	meta_id == No_Meta_ID ||
-				file->meta_ids_.find( meta_id )
+				file->meta_ids_.contains( meta_id )
 			)
 				result[ file->index_ ] += file->rank_;
 	}
@@ -915,15 +918,15 @@ void usage() {
 	" options:\n"
 	" --------\n"
 	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"  -d              : Dump query word indices to standard out and exit\n"
-	"  -D              : Dump entire word index to standard out and exit\n"
+	"  -d              : Dump query word indices and exit\n"
+	"  -D              : Dump entire word index and exit\n"
 	"  -i index_file   : Name of index file to use [default: " << IndexFile_Default << "]\n"
 	"  -m max_results  : Maximum number of results [default: " << ResultsMax_Default << "]\n"
-	"  -M              : Dump meta-name index to standard out and exit\n"
+	"  -M              : Dump meta-name index and exit\n"
 	"  -R              : Print result-count only [default: no]\n"
 	"  -r skip_results : Number of initial results to skip [default: 0]\n"
 	"  -s              : Stem words prior to search [default: no]\n"
-	"  -S              : Dump stop-word index to standard out and exit\n"
+	"  -S              : Dump stop-word index and exit\n"
 	"  -V              : Print version number and exit\n"
 	"  -w size[,match] : Dump size window of words around query words [default: 0]\n";
 	::exit( Exit_Usage );
