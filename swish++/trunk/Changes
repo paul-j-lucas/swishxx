@@ -25,6 +25,11 @@ NEW FEATURES
 
   (This feature shall be known as feature MAN.)
 
+* For index, a new -A or --no-assoc-meta option and AssociateMeta configuration
+  variable have been added.
+
+  (This feature shall be known as feature AMN.)
+
 * There is a new %E (second-to-last filename extenstion) substitution.
 
   (This feature shall be known as feature 22L.)
@@ -97,6 +102,10 @@ BUG FIXES
 
 CHANGES, file-by-file
 ---------------------
+
+* AssociateMeta.h
+
+	1. Added this file for feature AMN.
 
 * auto_vec.h
 
@@ -226,6 +235,7 @@ CHANGES, file-by-file
 	G. s/cerr << warning/warning()/
 	H. Added PJL namespace.
 	I. s/isspace/is_space/
+	J. Added "associatemeta" for feature AMN.
 
 * conf_var.h
 
@@ -444,6 +454,8 @@ CHANGES, file-by-file
 	F. In write_file_index(), made use of new file_info member functions.
 	G. Removed all WIN32 special cases.
 	H. Added PJL namespace.
+	I. Added associate_meta global variable for feature AMN.
+	J. Added "no-assoc-meta" and 'A' command-line options for feature AMN.
 
 * index.h
 
@@ -507,7 +519,9 @@ CHANGES, file-by-file
 	3. Removed -h, --html-pattern, and HTMLFile.
 	4. Reworked description of -m and --meta.
 	5. Added references for feature MAIL.
-	5. Added references for feature MAN.
+	6. Added references for feature MAN.
+	7. Added -A, --no-assoc-meta, and AssociateMeta for feature AMN.
+	8. Added mention of and reference for Ruby elements for feature RUBY.
 
 * man/man1/search.1
 
@@ -540,6 +554,9 @@ CHANGES, file-by-file
 	8. Added ResultSeparator for feature SRS.
 	9. Added more IP address detail for SocketAddress.
 	A. Added "# WRONG!" comment to filter example.
+	B. Added "AssociateMeta" for feature AMN.
+	C. Added missing FollowLinks.
+	D. Added "Man" module for feature MAN.
 
 * mmap_file.c
 
@@ -566,6 +583,7 @@ CHANGES, file-by-file
 	8. s/isdigit/is_digit/
 	9. s/isalpha/is_alpha/
 	A. s/isspace/is_space/
+	B. Reworked meta names are handled for feature AMN.
 
 * mod_html.h
 
@@ -766,6 +784,7 @@ CHANGES, file-by-file
 	7. Added IncludeMeta values for mail/news.
 	8. Added ResultSeparator variable for feature SRS.
 	9. Changed @ in FilterFile lines for feaure SM2.
+	A. Added "AssociateMeta" for feature AMN.
 
 * swish++.conf.4
 
