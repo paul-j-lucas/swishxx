@@ -38,6 +38,7 @@ I_SRCS:=	bcd.c \
 		conf_var.c \
 		conf_bool.c \
 		conf_int.c \
+		conf_percent.c \
 		conf_set.c \
 		conf_string.c \
 		directory.c \
@@ -45,7 +46,6 @@ I_SRCS:=	bcd.c \
 		file_info.c \
 		file_list.c \
 		filter.c \
-		FilesGrow.c \
 		FilterFile.c \
 		IncludeFile.c \
 		IncludeMeta.c \
