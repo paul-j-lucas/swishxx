@@ -2,6 +2,95 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The weighting of multiple "and" terms has been fixed.  Previously, the query:
+
+	mouse and computer and keyboard
+
+  was parsed and treated as:
+
+	(mouse and computer) and keyboard
+	  25%         25%           50%
+
+  The problem was that the last term always got 50% of the weighting and the
+  rest got 50% divided by the number of terms minus 1.
+
+  In order to weight all the terms equally, the "and" results for each term are
+  now saved in a list and then and'ed together at the end.
+
+  (This bug fix shall be known as bug fix MAW.)
+
+* The index(1) manual page didn't explicitly state that words are converted to
+  lower case prior to indexing.
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_var.c
+
+	1. Changed from abort() to internal_error.
+
+* exit_codes.h
+
+	1. Added: Exit_Internal_Error
+
+* filter.c
+* indexer.c
+* option_stream.c
+* thread_pool.c
+
+	1. Changed from abort() to internal_error.
+
+* man/man1/index.1
+
+	1. Added paragraph at the end of the "Word Determination" subsection
+	   addressing conversion to lower case prior to indexing.
+
+* query.c
+
+	1. Changed from abort() to internal_error.
+	2. Moved declarations for get_meta_id(), parse_meta(), parse_primary(),
+	   and parse_optional_relop() here from query.h.
+	3. In parse_meta() and parse_primary(), got rid of unused default value.
+	4. Changed what what parse_query() to parse_query2().
+	5. Added a new parse_query().
+	6. Added and_results_type argument to parsing functions for bug fix MAW.
+	7. In parse_query2(), deferred and'ing of results for bug fix MAW.
+	8. Added perform_and() function for bug fix MAW.
+
+* query.h
+
+	1. Moved declarations for get_meta_id(), parse_meta(), parse_primary(),
+	   and parse_optional_relop() to query.c.
+	2. Added: stop_word_set
+	3. s/set< string >/stop_word_set/
+	4. For parse_query(), got rid of unneeded bool& and int arguments.
+	5. s/search_results_type/search_results/
+	6. s/find_results_type/find_results/
+
+* search.c
+
+	1. s/set< string >/stop_word_set/
+	2. In search(), got rid of unused "ignore" variable.
+	3. s/search_results_type/search_results/
+	4. s/find_results_type/find_results/
+
+* util.h
+
+	1. Added internal_error and report_error().
+
+* version.h
+
+	1. Upped version.
+
+
+*******************************************************************************
 5.2
 *******************************************************************************
 
