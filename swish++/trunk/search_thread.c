@@ -142,8 +142,8 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		// helps alleviate denial-of-service attacks (if that's what's
 		// going on).
 		//
-		// Note: this is not implemented in in Linux 2.2.x kernels so
-		// the normal four-packet sequence is done instead.
+		// Note: this is not implemented in Linux 2.2.x kernels so the
+		// normal four-packet sequence is done instead.
 		//
 		linger li;
 		li.l_onoff  = 1;
