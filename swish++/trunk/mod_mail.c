@@ -46,8 +46,11 @@
 using namespace std;
 #endif
 
-struct header_value {
-	char const *header;
+struct key_value {
+	//
+	// A simple struct for containing a key and a value.
+	//
+	char const *key;
 	char const *value_begin, *value_end;
 };
 
@@ -65,7 +68,7 @@ bool			header_cmp(
 bool			parse_header(
 				file_vector::const_iterator &pos,
 				file_vector::const_iterator end,
-				header_value *hv
+				key_value*
 			);
 
 //*****************************************************************************
@@ -179,7 +182,7 @@ bool			parse_header(
 //
 // SEE ALSO
 //
-//	David H. Croker.  "RFC 822: Standard for the Format of ARPA Internet
+//	David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
 //	Text Messages," Department of Electrical Engineering, University of
 //	Delaware, August 1982.
 //
@@ -376,9 +379,14 @@ bool			parse_header(
 //
 // SEE ALSO
 //
-//	David H. Croker.  "RFC 822: Standard for the Format of ARPA Internet
+//	David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
 //	Text Messages," Department of Electrical Engineering, University of
 //	Delaware, August 1982.
+//
+//	Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
+//	Internet Mail Extensions (MIME) Part One: Format of Internet Message
+//	Bodies," RFC 822 Extensions Working Group of the Internet Engineering
+//	Task Force, November 1996.
 //
 //*****************************************************************************
 {
@@ -418,9 +426,9 @@ bool			parse_header(
 	//
 	message_type type( Text_Plain, Seven_Bit );
 
-	header_value hv;
-	while ( parse_header( c, end, &hv ) ) {
-		header_map::const_iterator const i = h_map.find( hv.header );
+	key_value kv;
+	while ( parse_header( c, end, &kv ) ) {
+		header_map::const_iterator const i = h_map.find( kv.key );
 		if ( i == h_map.end() ) {
 			//
 			// We're not interested in any header not specifically
@@ -432,30 +440,24 @@ bool			parse_header(
 		switch ( i->second ) {
 
 			case Index_Header: {
-				int const meta_id = find_meta( hv.header );
+				int const meta_id = find_meta( kv.key );
 				if ( meta_id == No_Meta_ID )
 					break;
 				//
 				// Index the words in the value of the header
 				// marking them as being associated with the
-				// name of header.
+				// name of the header.
 				//
 				encoded_char_range::const_iterator e(
-					hv.value_begin, hv.value_end, Seven_Bit
+					kv.value_begin, kv.value_end, Seven_Bit
 				);
 				indexer::index_words( e, meta_id );
-				/*
-				indexer::index_words(
-					hv.value_begin, hv.value_end,
-					Seven_Bit, meta_id
-				);
-				*/
 				break;
 			}
 
 			case Content_Transfer_Encoding: {
 				char const *const v = to_lower(
-					hv.value_begin, hv.value_end
+					kv.value_begin, kv.value_end
 				);
 				if ( ::strstr( v, "quoted-printable" ) )
 					type.second = Quoted_Printable;
@@ -468,7 +470,7 @@ bool			parse_header(
 
 			case Content_Type: {
 				char const *const v = to_lower(
-					hv.value_begin, hv.value_end
+					kv.value_begin, kv.value_end
 				);
 				//
 				// See if it's the text/"something"
@@ -481,16 +483,20 @@ bool			parse_header(
 					type.first = Text_Enriched;
 					break;
 				}
-				if ( ::strstr( v, "message/rfc822" ) ) {
-					type.first = Message_RFC822;
-					break;
-				}
 #ifdef	MOD_HTML
 				if ( ::strstr( v, "text/html" ) ) {
 					type.first = Text_HTML;
 					break;
 				}
 #endif
+				if ( ::strstr( v, "vcard" ) ) {
+					type.first = Text_vCard;
+					break;
+				}
+				if ( ::strstr( v, "message/rfc822" ) ) {
+					type.first = Message_RFC822;
+					break;
+				}
 				//
 				// See if it's a multipart/"something," i.e.,
 				// alternative, mixed, or parallel.  If not, we
@@ -515,7 +521,7 @@ bool			parse_header(
 				// value.
 				//
 				string boundary(
-					hv.value_begin + (b-v), hv.value_end
+					kv.value_begin + (b-v), kv.value_end
 				);
 				if ( boundary[0] == '"' )
 					boundary.erase( 0, 1 );
@@ -611,18 +617,25 @@ bool			parse_header(
 // SYNOPSIS
 //
 	void mail_indexer::index_vcard(
-		register encoded_char_range::const_iterator &c
+		register file_vector::const_iterator &c,
+		file_vector::const_iterator end
 	)
 //
 // DESCRIPTION
 //
-//	Index the words in a vCard attachment.
+//	Index the words in a vCard attachment.  The vCard "types" are made meta
+//	names.
 //
 // PARAMETERS
 //
 //	c	The iterator to use.
 //
-//	end	The ...
+//	end	The iterator marking the end of the vCard.
+//
+// CAVEAT
+//
+//	Nested vCards via the AGENT type are not handled properly, i.e., the
+//	nested vCards are not treated as a vCards.
 //
 // SEE ALSO
 //
@@ -632,44 +645,52 @@ bool			parse_header(
 //
 //*****************************************************************************
 {
-	// m!^adr(?:;\w+(?:=.+)?)*:(.+)$!im;
-	// m!^label(?:;\w+(?:=.+)?)*:(.+)$!im;
+	typedef map< char const*, char const* > type_map;
 
-	/*
-		BEGIN:vCard
-		VERSION:3.0
-		FN:Paul J. Lucas
-		ORG:Internet Pictures Corporation
-		ADR;TYPE=WORK,PARCEL:;;163 Everett Street
-		 ;Palo Alto;CA
-		X-WHATEVER:FOOBAR
-		END:vCard
-	*/
+	static type_map t_map;
+	if ( t_map.empty() ) {
+		//
+		// These are the types we're interested in.  Any type not
+		// listed here is ignored.  Non-null values on the right hand
+		// side are better (IMHO) meta names that the original vCard
+		// type names.  Null values mean to use the original type
+		// names.
+		//
+		t_map[ "adr" ]		= "address";
+		t_map[ "categories" ]	= 0;
+		t_map[ "class" ]	= 0;
+		t_map[ "label" ]	= "address";
+		t_map[ "fn" ]		= "name";
+		t_map[ "nickname" ]	= 0;
+		t_map[ "note" ]		= 0;
+		t_map[ "org" ]		= 0;
+		t_map[ "role" ]		= 0;
+		t_map[ "title" ]	= 0;
+	}
 
-	// handle folder values
+	key_value kv;
+	while ( parse_header( c, end, &kv ) ) {
+		type_map::const_iterator const i = t_map.find( kv.key );
+		if ( i == t_map.end() ) {
+			//
+			// We're not interested in any type not specifically
+			// accounted for above.
+			//
+			continue;
+		}
 
-/*
-	int meta_id;
-
-	if ( (meta_id = find_meta( "fn" )) != No_Meta_ID )
-		indexer::index_words( pos, end, encoding, meta_id );
-*/
-
-	// m!^email;(?:type=)?internet,pref:(.+)$!
-
-	// m!^email;(?:type=)?internet:(.+)$!
-
-	// m!^categories:(.+)!i
-	// m!^class:(.+)!i
-	// m!^fn:(.+)!i
-	// m!^nickname:(.+)!i
-	// m!^note:(.+)!i
-	// m!^org:(.+)!i
-	// m!^role:(.+)!i
-	// m!^title:(.+)!i
-
-	// m!^tel;(?:type=)?.*work.*:(.+)$!
-
+		int const meta_id = find_meta( i->second ? i->second : kv.key );
+		if ( meta_id == No_Meta_ID )
+			continue;
+		//
+		// Index the words in the value of the type marking them as
+		// being associated with the name of the type.
+		//
+		encoded_char_range::const_iterator e(
+			kv.value_begin, kv.value_end, Eight_Bit
+		);
+		indexer::index_words( e, meta_id );
+	}
 }
 
 //*****************************************************************************
@@ -694,6 +715,15 @@ bool			parse_header(
 //*****************************************************************************
 {
 	message_type const type( index_headers( c.pos(), c.end_pos() ) );
+	if ( type.second == Binary ) {
+		//
+		// We can't index binary so just skip over it by setting the
+		// pos to end.
+		//
+		c.pos( c.end_pos() );
+		return;
+	}
+
 	//
 	// Create a new iterator having the same range but the Content-
 	// Transfer-Encoding given in the headers.
@@ -705,9 +735,7 @@ bool			parse_header(
 	switch ( type.first ) {
 
 		case Text_Plain:
-		case Message_RFC822:
-			if ( type.second != Binary )
-				indexer::index_words( c2 );
+			indexer::index_words( c2 );
 			break;
 
 		case Text_Enriched:
@@ -722,14 +750,22 @@ bool			parse_header(
 		}
 #endif
 		case Text_vCard:
-			index_vcard( c2 );
+			index_vcard( c2.pos(), c2.end_pos() );
+			break;
+
+		case Message_RFC822:
+			index_words( c2 );
 			break;
 
 		case Multipart:
-			index_multipart( c.pos(), c.end_pos() );
+			index_multipart( c2.pos(), c2.end_pos() );
 			boundary_stack_.pop_back();
 			return;
 	}
+
+	//
+	// Propagate the position back to the original iterator.
+	//
 	c.pos( c2.pos() );
 }
 
@@ -756,24 +792,29 @@ bool			parse_header(
 	bool parse_header(
 		register file_vector::const_iterator &c,
 		register file_vector::const_iterator end,
-		header_value *hv
+		key_value *kv
 	)
 //
 // DESCRIPTION
 //
-//	This function parses a single header and its value.
+//	This function parses a single header and its value.  It properly
+//	handles values that are folded across multiple lines.
 //
 // PARAMETERS
 //
 //	c	The iterator to use.  It must be positioned at the first
 //		character in a header.  It is left after the last character in
-//		the value.
+//		the value, or, if there are no more headers, after the blank
+//		line marking the end of the headers.
 //
-//	end	The iterator marking the end of the file.
+//	end	The iterator marking the end of the range.
+//
+//	kv	A pointer to the key_value to be modified only if a header is
+//		parsed.
 //
 // SEE ALSO
 //
-//	David H. Croker.  "RFC 822: Standard for the Format of ARPA Internet
+//	David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
 //	Text Messages," Department of Electrical Engineering, University of
 //	Delaware, August 1982.
 //
@@ -786,6 +827,7 @@ bool			parse_header(
 	file_vector::const_iterator nl = find_newline( c, end );
 	if ( nl == end )
 		return false;
+
 	//
 	// Parse a header by looking for the terminating ':'.
 	//
@@ -801,7 +843,7 @@ bool			parse_header(
 	//
 	if ( ++c == end )			// skip past the ':'
 		return false;
-	hv->value_begin = c;
+	kv->value_begin = c;
 	while ( 1 ) {
 		if ( (c = skip_newline( nl, end )) == end )
 			break;
@@ -821,8 +863,10 @@ bool			parse_header(
 				//
 				// The entire next line is whitespace: consider
 				// it the end of all the headers and therefore
-				// also the end of this value.
+				// also the end of this value.  Also skip the
+				// blank line.
 				//
+				c = skip_newline( c, end );
 				goto last_header;
 			}
 		} while ( ++c != end && isspace( *c ) );
@@ -838,13 +882,11 @@ bool			parse_header(
 last_header:
 	did_last_header = true;
 more_headers:
-	hv->value_end = nl;
-
+	kv->value_end = nl;
 	//
 	// Canonicalize the name of the header to lower case.
 	//
-	hv->header = to_lower( header_begin, header_end );
-
+	kv->key = to_lower( header_begin, header_end );
 	return true;
 }
 
