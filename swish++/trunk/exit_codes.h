@@ -62,6 +62,8 @@ enum {
 	Exit_No_Change_Dir	= 63,
 	Exit_No_Create_Thread	= 64,
 	Exit_No_Detach_Thread	= 65,
+	Exit_No_Init_Condition	= 66,
+	Exit_No_Init_Mutex	= 67,
 #endif
 
 	Exit_End_Enum_Marker
