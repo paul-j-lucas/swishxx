@@ -50,7 +50,6 @@ ExcludeClass			exclude_class_names;
 
 static bool is_html_comment( encoded_char_range::const_iterator &pos );
 static bool skip_html_tag( encoded_char_range::const_iterator &pos );
-static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 //*****************************************************************************
 //
@@ -377,7 +376,7 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		// Is the HTML or XHTML tag a TITLE tag?
 		//
 		bool const found_title_tag =
-			tag_cmp( c, title_tag[ tag_index ] );
+			move_if_match( c, title_tag[ tag_index ], true );
 		skip_html_tag( c );			// skip until '>'
 		if ( !found_title_tag )			// wrong tag
 			continue;
@@ -523,7 +522,7 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 //*****************************************************************************
 {
-	if ( tag_cmp( c, "!--" ) ) {
+	if ( move_if_match( c, "!--" ) ) {
 		while ( !c.at_end() )
 			if ( *c++ == '-' && !c.at_end() && *c == '-' ) {
 				encoded_char_range::const_iterator const d = c;
@@ -789,9 +788,9 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for an ALT attribute //////////////////////////////////
 
-	if (	tag_cmp( name, "area" ) ||
-		tag_cmp( name, "img" ) ||
-		tag_cmp( name, "input" )
+	if (	move_if_match( name, "area", true ) ||
+		move_if_match( name, "img", true ) ||
+		move_if_match( name, "input", true )
 	) {
 		encoded_char_range alt_att = name;
 		if ( find_attribute( alt_att, "alt" ) )
@@ -801,7 +800,7 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Parse a META element ///////////////////////////////////////
 
-	if ( tag_cmp( name, "meta" ) ) {
+	if ( move_if_match( name, "meta", true ) ) {
 		encoded_char_range name_att    = name;
 		encoded_char_range content_att = name;
 		if (	find_attribute( name_att, "name" ) &&
@@ -833,7 +832,7 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for a STANDBY attribute ///////////////////////////////
 
-	if ( tag_cmp( name, "object" ) ) {
+	if ( move_if_match( name, "object", true ) ) {
 		encoded_char_range standby_att = name;
 		if ( find_attribute( standby_att, "standby" ) )
 			index_words( standby_att );
@@ -842,7 +841,7 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for a SUMMARY attribute ///////////////////////////////
 
-	if ( tag_cmp( name, "table" ) ) {
+	if ( move_if_match( name, "table", true ) ) {
 		encoded_char_range summary_att = name;
 		if ( find_attribute( summary_att, "summary" ) )
 			index_words( summary_att );
@@ -957,44 +956,6 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	}
 
 	return false;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	bool tag_cmp(
-		encoded_char_range::const_iterator &c,
-		register char const *tag
-	)
-//
-// DESCRIPTION
-//
-//	Compares the tag name starting at the given iterator to the given
-//	string.  Case is irrelevant.
-//
-// PARAMETERS
-//
-//	c	The iterator to use.  It is presumed to be positioned at the
-//		first character after the '<'.  If the tag name matches, it is
-//		repositioned at the first character past the name; otherwise,
-//		it is not touched.
-//
-//	tag	The string to compare against; it must be in lower case.
-//
-// RETURN VALUE
-//
-//	Returns true only if the tag matches.
-//
-//*****************************************************************************
-{
-	encoded_char_range::const_iterator d = c;
-	while ( *tag && !d.at_end() && *tag == to_lower( *d ) )
-		++tag, ++d;
-	if ( *tag )
-		return false;
-	c = d;
-	return true;
 }
 
 //*****************************************************************************

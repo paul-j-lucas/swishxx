@@ -47,21 +47,16 @@
 #include "TitleLines.h"
 #include "util.h"
 #include "Verbosity.h"
+#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
 using namespace std;
 #endif
 
+FilterAttachment		attachment_filters;
 mail_indexer::stack_type	mail_indexer::boundary_stack_;
 bool				mail_indexer::did_last_header;
-
-static bool			header_cmp(
-					char const *&pos, char const *end,
-					char const *tag
-				);
-
-FilterAttachment		attachment_filters;
 
 //*****************************************************************************
 //
@@ -195,7 +190,7 @@ FilterAttachment		attachment_filters;
 		char const *const nl = find_newline( c, file.end() );
 		if ( nl == file.end() )
 			break;
-		if ( header_cmp( c, nl, "subject:" ) )
+		if ( move_if_match( c, nl, "subject:", true ) )
 			return tidy_title( c, nl );	// found the Subject
 
 		c = skip_newline( nl, file.end() );
@@ -206,46 +201,6 @@ FilterAttachment		attachment_filters;
 	// found.
 	//
 	return 0;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	bool header_cmp(
-		char const *&c, register char const *end,
-		register char const *header
-	)
-//
-// DESCRIPTION
-//
-//	Compares the header name starting at the given iterator to the given
-//	string.  Case is irrelevant.
-//
-// PARAMETERS
-//
-//	c	The pointer presumed to be positioned at the first character
-//		after the '<'.  If the tag name matches, it is repositioned at
-//		the first character past the name; otherwise, it is not
-//		touched.
-//
-//	end	The pointer to the end of the file.
-//
-//	header	The string to compare against; it must be in lower case.
-//
-// RETURN VALUE
-//
-//	Returns true only if the header matches.
-//
-//*****************************************************************************
-{
-	register char const *d = c;
-	while ( *header && d != end && *header == to_lower( *d ) )
-		++header, ++d;
-	if ( *header )
-		return false;
-	c = d;
-	return true;
 }
 
 //*****************************************************************************

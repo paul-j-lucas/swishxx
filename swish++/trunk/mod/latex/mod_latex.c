@@ -41,44 +41,6 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	bool command_cmp(
-		encoded_char_range::const_iterator &c,
-		register char const *command
-	)
-//
-// DESCRIPTION
-//
-//	Compares the command name starting at the given iterator to the given
-//	string.  Case is irrelevant.
-//
-// PARAMETERS
-//
-//	c		The iterator to use.  It is presumed to be positioned
-//			at the first character after the '\'.  If the command
-//			name matches, it is repositioned at the first character
-//			past the name; otherwise, it is not touched.
-//
-//	command		The string to compare against; it must be in lower case.
-//
-// RETURN VALUE
-//
-//	Returns true only if the comand matches.
-//
-//*****************************************************************************
-{
-	encoded_char_range::const_iterator d = c;
-	while ( *command && !d.at_end() && *command == *d )
-		++command, ++d;
-	if ( *command )
-		return false;
-	c = d;
-	return true;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	bool find_left( encoded_char_range::const_iterator &c, char left )
 //
 // DESCRIPTION
@@ -185,7 +147,7 @@ using namespace std;
 		//
 		// Did we find \title{ yet?
 		//
-		if ( *c++ != '\\' || !command_cmp( c, "title" ) )
+		if ( *c++ != '\\' || !move_if_match( c, "title" ) )
 			continue;
 		if ( c.at_end() )
 			return 0;

@@ -41,7 +41,6 @@ using namespace std;
 #endif
 
 static bool is_man_comment( char const *&pos, char const *end );
-static bool macro_cmp( char const *&pos, char const *end, char const *macro );
 static void parse_backslash( char const *&pos, char const *end );
 
 //*****************************************************************************
@@ -99,11 +98,11 @@ static void parse_backslash( char const *&pos, char const *end );
 		//
 		// Is the macro ".SH NAME"?
 		//
-		if ( !macro_cmp( c, file.end(), "SH" ) )
+		if ( !move_if_match( c, file.end(), "SH" ) )
 			continue;
 		while ( c != file.end() && is_space( *c ) )
 			++c;
-		if ( !macro_cmp( c, file.end(), "NAME" ) )
+		if ( !move_if_match( c, file.end(), "NAME" ) )
 			continue;
 
 		//
@@ -257,50 +256,11 @@ next_c:
 //
 //*****************************************************************************
 {
-	if ( macro_cmp( c, end, "\\\"" ) ) {
+	if ( move_if_match( c, end, "\\\"" ) ) {
 		c = skip_newline( find_newline( c, end ), end );
 		return true;
 	}
 	return false;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	bool macro_cmp(
-		char const *&c, char const *end, register char const *macro
-	)
-//
-// DESCRIPTION
-//
-//	Compares the macro name starting at the given iterator to the given
-//	string.
-//
-// PARAMETERS
-//
-//	c	The iterator to use.  It is presumed to be positioned at the
-//		first character after the '.'.  If the macro name matches, it
-//		is repositioned at the first character past the name;
-//		otherwise, it is not touched.
-//
-//	end	The iterator marking the end of the file.
-//
-//	macro	The string to compare against; it must be in lower case.
-//
-// RETURN VALUE
-//
-//	Returns true only if the macro matches.
-//
-//*****************************************************************************
-{
-	register char const *d = c;
-	while ( *macro && d != end && *macro == *d )
-		++macro, ++d;
-	if ( *macro )			// didn't match before null
-		return false;
-	c = d;
-	return true;
 }
 
 //*****************************************************************************
@@ -411,7 +371,7 @@ next_c:
 //
 //*****************************************************************************
 {
-	if ( c == end || !macro_cmp( ++c, end, "SH" ) )
+	if ( c == end || !move_if_match( ++c, end, "SH" ) )
 		return;
 	char const *const nl = find_newline( c, end );
 	if ( !nl )
@@ -471,7 +431,7 @@ next_c:
 		// Is the macro ".SH"?  If so, back up the iterator before the
 		// '.' so the indexing will stop at the right place.
 		//
-		if ( macro_cmp( c, end, "SH" ) ) {
+		if ( move_if_match( c, end, "SH" ) ) {
 			c -= 4;			// 3 for ".SH" + 1 before that
 			break;
 		}
