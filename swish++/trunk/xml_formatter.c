@@ -34,12 +34,16 @@
 using namespace std;
 #endif
 
-#define	SWISHPP_URI "http://homepage.mac.com/pauljlucas/software/swish"
+#define	SWISH_PATH	"/pauljlucas/software/swish"
+#define	SWISH_NS_URI	"http://www.pauljlucas.org" SWISH_PATH
+#define	SWISH_PHYS_URI	"http://homepage.mac.com" SWISH_PATH
+#define	XSI_URI		"http://www.w3.org/2001/XMLSchema-instance"
 
-#define	SEARCH_RESULTS_DTD	"SearchResults.dtd"
-#define	SEARCH_RESULTS_NS_URI	SWISHPP_URI "/SearchResults"
-#define	SEARCH_RESULTS_XSD	"SearchResults.xsd"
-#define	XML_SCHEMA_INSTANCE_URI	"http://www.w3.org/2001/XMLSchema-instance"
+#define	SEARCH_RESULTS		"SearchResults"
+#define	SEARCH_RESULTS_DTD	SEARCH_RESULTS ".dtd"
+#define	SEARCH_RESULTS_NS_URI	SWISH_NS_URI   "/" SEARCH_RESULTS
+#define	SEARCH_RESULTS_PHYS_URI	SWISH_PHYS_URI "/" SEARCH_RESULTS
+#define	SEARCH_RESULTS_XSD	SEARCH_RESULTS ".xsd"
 
 extern index_segment directories;
 
@@ -100,11 +104,11 @@ extern index_segment directories;
 {
 	out_ <<	"<?xml version=\"1.0\" encoding=\"us-ascii\"?>\n"
 		"<!DOCTYPE SearchResults SYSTEM\n"
-		" \"" SWISHPP_URI "/" SEARCH_RESULTS_DTD "\">\n"
+		" \"" SWISH_PHYS_URI "/" SEARCH_RESULTS_DTD "\">\n"
 		"<SearchResults\n"
 		" xmlns=\"" SEARCH_RESULTS_NS_URI "\"\n"
-		" xmlns:xsi=\"" XML_SCHEMA_INSTANCE_URI "\"\n"
-		" xsi:schemaLocation=\"" SEARCH_RESULTS_NS_URI
+		" xmlns:xsi=\"" XSI_URI "\"\n"
+		" xsi:schemaLocation=\"" SEARCH_RESULTS_PHYS_URI
 		" " SEARCH_RESULTS_XSD "\">\n";
 
 	if ( !stop_words.empty() ) {
