@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "September 6, 2001" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "September 23, 2001" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -91,8 +91,14 @@ except that the argument
 be one of a set of pre-determined values.
 Case is irrelevant.
 Variables of this type are:
+.B ResultsFormat
+and
 .BR SearchDaemon .
-.P
+.B ResultsFormat
+must be either:
+\f(CWclassic\f1
+or
+\f(CWXML\f1.
 .B SearchDaemon
 must be one of:
 \f(CWnone\f1,
