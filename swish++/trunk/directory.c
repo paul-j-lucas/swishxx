@@ -101,7 +101,7 @@ FollowLinks	follow_symbolic_links;
 		if ( *dir_ent->d_name == '.' )		// skip dot files
 			continue;
 		string const path( ( dir_string + '/' ) + dir_ent->d_name );
-		if ( recurse_subdirectories && is_directory( path ) )
+		if ( is_directory( path ) && recurse_subdirectories )
 			dir_queue.push( path );
 		else
 			do_file( path.c_str() );
