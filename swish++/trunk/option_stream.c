@@ -312,10 +312,16 @@ bad_spec:
 	::abort();
 }
 
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
+
 //*****************************************************************************
 
 /*#define TEST_OPTION_STREAM /**/
 #ifdef	TEST_OPTION_STREAM
+
+using namespace PJL;
 
 int main( int argc, char *argv[] ) {
 	static option_stream::spec const spec[] = {
@@ -352,7 +358,3 @@ int main( int argc, char *argv[] ) {
 }
 
 #endif	/* TEST_OPTION_STREAM */
-
-#ifndef	PJL_NO_NAMESPACES
-}
-#endif
