@@ -532,14 +532,13 @@ could_not_filter:
 				//
 				boundary_stack_.push_back( boundary );
 				type.content_type_ = Multipart;
-				continue;
+			} else {
+				//
+				// It's not a Content-Type we know anything
+				// about, so it's not indexable.
+				//
+				type.content_type_ = Not_Indexable;
 			}
-
-			//
-			// It's not a Content-Type we know anything about, so
-			// it's not indexable.
-			//
-			type.content_type_ = Not_Indexable;
 		}
 
 		////////// Index the value of the header //////////////////////
