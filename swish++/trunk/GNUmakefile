@@ -39,6 +39,7 @@ endif
 
 DEBUGFLAGS:=
 #		Various debug flags; add to DEBUGFLAGS for debugging.
+#		-DDEBUG_eval_query
 #		-DDEBUG_id3v2
 #		-DDEBUG_is_ok_word
 #		-DDEBUG_parse_query
@@ -122,6 +123,7 @@ S_SOURCES:=	enc_int.c \
 		file_list.c \
 		iso8859-1.c \
 		option_stream.c \
+		query_node.c \
 		query.c \
 		ResultsFormat.c \
 		results_formatter.c \
@@ -130,6 +132,7 @@ S_SOURCES:=	enc_int.c \
 		token.c \
 		stem_word.c \
 		util.c \
+		word_info.c \
 		word_util.c \
 		search.c
 ifdef SEARCH_DAEMON
