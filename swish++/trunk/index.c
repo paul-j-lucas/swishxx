@@ -430,11 +430,6 @@ static void		write_word_index( ostream&, off_t* );
 
 	indexer::all_mods_post_options();
 
-	temp_file_name_prefix = temp_directory;
-	if ( *temp_file_name_prefix.rbegin() != '/' )
-		temp_file_name_prefix += '/';
-	temp_file_name_prefix += string( itoa( ::getpid() ) ) + string( "." );
-
 	/////////// Dump stuff if requested ///////////////////////////////////
 
 	if ( dump_stop_words_opt ) {
@@ -444,6 +439,11 @@ static void		write_word_index( ostream&, off_t* );
 		);
 		::exit( Exit_Success );
 	}
+
+	temp_file_name_prefix = temp_directory;
+	if ( *temp_file_name_prefix.rbegin() != '/' )
+		temp_file_name_prefix += '/';
+	temp_file_name_prefix += string( itoa( ::getpid() ) ) + string( "." );
 
 	/////////// Index specified directories and files /////////////////////
 
