@@ -49,7 +49,8 @@ OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 
 MOD_HTML:=	-DMOD_HTML
 MOD_MAIL:=	-DMOD_MAIL
-MOD_LIST:=	$(MOD_HTML) $(MOD_MAIL)
+MOD_MAN:=	-DMOD_MAN
+MOD_LIST:=	$(MOD_HTML) $(MOD_MAIL) $(MOD_MAN)
 #		The indexing modules you want built into index(1).
 
 ifndef WIN32
@@ -140,6 +141,9 @@ endif
 
 CCFLAGS:=	$(MOD_LIST) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
+ifeq ($(CC),g++)
+CCFLAGS+=	-fno-exceptions
+endif
 
 ifeq ($(CC),g++)
 #CCFLAGS+=	-W -Wcast-align -Wcast-qual -Wpointer-arith -Wswitch -Wtraditional -Wuninitialized -Wunused #-Winline -Wshadow
