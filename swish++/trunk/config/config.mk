@@ -30,6 +30,11 @@
 #
 ###############################################################################
 
+MOD_HTML=	-DMOD_HTML
+MOD_MAIL=	-DMOD_MAIL
+MOD_LIST=	$(MOD_HTML) $(MOD_MAIL)
+#		The indexing modules you want built into index(1).
+
 #WIN32=		-DWIN32
 #		If uncommented, build SWISH++ for Windows.
 
@@ -103,7 +108,7 @@ CC=		g++
 #		Warning flags specific to gcc/g++.  Unless you are modifying
 #		the source code, you should leave this commented out.
 
-CCFLAGS=	$(GCC_WARNINGS) $(SEARCH_DAEMON) $(WIN32) -O3
+CCFLAGS=	$(GCC_WARNINGS) $(MOD_LIST) $(SEARCH_DAEMON) $(WIN32) -O3
 #		Additional flags for the C++ compiler:
 #
 #		-g	Include symbol-table information in object file.  (You
