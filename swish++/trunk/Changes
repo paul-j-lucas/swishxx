@@ -3,6 +3,92 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.10
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Some XHTML 2.0 elements have been added to the HTML module.
+
+  (This feature shall be know as feature XHTML2.)
+
+* Theoretically improved indexing performace by adding calls to madvise(2).
+
+  (This feature shall be know as feature MADV.)
+
+
+BUG FIXES
+---------
+
+* Specifying filename patterns for extract(1) was broken.
+
+  (This bug fix shall be know as bug fix EFP.)
+
+* extract(1) was broken altogether since 6/16/2000.  Apparantly, very few
+  people use it since nobody pointed it out.
+
+  (This bug fix shall be know as bug fix ETB.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added -D_BSD_SOURCE to LINUX definition.
+	2. Added MAC_OS_X as a separate OS.
+
+* config/src/madvise.c
+
+	1. New file for feature MADV.
+
+* conf_var.c
+
+	1. In parse_file(), added call to mmap_file::behavior().
+
+* do_file.c
+
+	1. In do_file(), added call to mmap_file::behavior() for feature MADV.
+	2. In do_file(), added "out = &extracted_file;" for bug fix ETB.
+
+* extract.c
+
+	1. In main(), s/.insert( pat )/.insert( pat, 0 )/ for bug fix EFP.
+
+* ExtractFile.c
+
+	1. s/insert( new_strdup( s ) )/insert( new_strdup( s ), 0 )/
+	   for bug fix EFP.
+
+* ExtractFile.h
+
+	1. Made derived from conf_var and pattern_map for bug fix EFP.
+
+* mmap_file.c
+* mmap_file.h
+
+	1. Added behavior() for feature MADV.
+
+* mod/html/elements.c
+
+	1. Added the h, line, name, nl, quote, and section elements for feature
+	   XHTML2.
+
+* search.c
+
+	1. In main(), added call to mmap_file::behavior().
+
+* stop_words.c
+
+	1. Added call to mmap_file::behavior().
+
+* version.h
+
+	1. Upped version to "5.10".
+
+
+*******************************************************************************
 5.9.6
 *******************************************************************************
 
