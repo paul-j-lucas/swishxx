@@ -270,7 +270,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	/////////// Load index file ///////////////////////////////////////////
 
 	mmap_file const the_index( index_file_name );
-	the_index.behavior( mmap_file::random );
+	the_index.behavior( mmap_file::bt_random );
 	if ( !the_index ) {
 		error()	<< "could not read index from \"" << index_file_name
 			<< '"' << error_string( the_index.error() );
