@@ -29,7 +29,9 @@
 
 // local
 #include "auto_vec.h"
+#include "charsets/charsets.h"
 #include "encoded_char.h"
+#include "encodings/encodings.h"
 #include "fake_ansi.h"			/* for std */
 #include "filter.h"
 #include "indexer.h"
@@ -109,12 +111,13 @@ private:
 		// message including whether or not it ought to be filtered.
 		//
 		content_type				content_type_;
-		encoded_char_range::decoder_type	decoder_;
+		encoded_char_range::charset_type	charset_;
+		encoded_char_range::encoding_type	encoding_;
 		mutable filter*				filter_;
 
 		message_type();
 		message_type( message_type const& );
-		~message_type()			{ delete filter_; }
+		~message_type()				{ delete filter_; }
 	};
 
 	struct key_value {
@@ -155,12 +158,16 @@ inline mail_indexer::message_type::message_type() :
 	//	This default is assumed if no Content-Type header field is
 	//	specified.
 	//
-	content_type_( Text_Plain ), decoder_( Seven_Bit ), filter_( 0 )
+	content_type_( Text_Plain ),
+	charset_( US_ASCII ), encoding_( Seven_Bit ),
+	filter_( 0 )
 {
+	// do nothing else
 }
 
 inline mail_indexer::message_type::message_type( message_type const &mt ) :
-	content_type_( mt.content_type_ ), decoder_( mt.decoder_ ),
+	content_type_( mt.content_type_ ),
+	charset_( mt.charset_ ), encoding_( mt.encoding_ ),
 	filter_( mt.filter_ )
 {
 	// On copy, null the pointer to the filter in the source message_type
