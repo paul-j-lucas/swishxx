@@ -26,6 +26,7 @@
 #include "config.h"
 #include "exit_codes.h"
 #include "file_vector.h"
+#include "index_segment.h"
 #include "stop_words.h"
 #include "util.h"
 #include "word_util.h"
@@ -46,7 +47,14 @@ stop_word_set*		stop_words;		// pointer to global set
 //
 // DESCRIPTION
 //
-//	Construct (initialize) a stop_word_set.
+//	Construct (initialize) a stop_word_set either from the built-in list of
+//	stop-words or from a list given in a file.
+//
+// PARAMETERS
+//
+//	file_name	The name of the file containing a list of stop-words.
+//			If it's either a null pointer or the string it points
+//			to is a null string, then the built-in list is used.
 //
 //*****************************************************************************
 {
@@ -338,8 +346,7 @@ stop_word_set*		stop_words;		// pointer to global set
 		"what", "whatever",
 		"when", "whence", "whenever",
 		"where", "whereafter", "whereas", "whereby",
-		"wherein", "whereupon",
-		"wherever",
+		"wherein", "whereupon", "wherever",
 		"whether",
 		"which",
 		"while",
@@ -432,4 +439,25 @@ stop_word_set*		stop_words;		// pointer to global set
 		word_buf[ word_len ] = '\0';
 		insert( ::strdup( word_buf ) );
 	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	stop_word_set::stop_word_set( file_vector const &index_file )
+//
+// DESCRIPTION
+//
+//	Construct (initialize) a stop_word_set from an existing index file.
+//
+// PARAMETERS
+//
+//	index_file	The index file to read the stop-words from.
+//
+//*****************************************************************************
+{
+	index_segment stop_words( index_file, index_segment::stop_word_index );
+	FOR_EACH( index_segment, stop_words, stop_word )
+		insert( ::strdup( *stop_word ) );
 }
