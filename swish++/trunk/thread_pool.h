@@ -31,8 +31,6 @@
 
 #ifndef	PJL_NO_NAMESPACES
 namespace PJL {
-#else
-#define	PJL /* nothing */
 #endif
 
 extern "C" void*	thread_main( void* );
@@ -115,7 +113,9 @@ public:
 			void*	p;
 		};
 	protected:
-		thread( thread_pool& );
+		typedef void* (*start_function_type)( void* );
+
+		thread( thread_pool&, start_function_type = thread_main );
 
 		virtual thread*	create( thread_pool& ) const = 0;
 		virtual void	main( argument_type ) = 0;

@@ -237,12 +237,20 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	thread_pool::thread::thread( thread_pool &p )
+	thread_pool::thread::thread(
+		thread_pool &p, start_function_type start_func
+	)
 //
 // DESCRIPTION
 //
 //	Construct (initialize) a thread by creating a POSIX thread and passing
 //	it a pointer to ourselves.
+//
+// PARAMETERS
+//
+//	p		The thread_pool to which this thread belongs.
+//
+//	start_func	The function that is called upon thread creation.
 //
 //*****************************************************************************
 	: pool_( p ), destructing_( false )
@@ -251,7 +259,7 @@ extern char const*	me;
 	cerr << "thread::thread()" << endl;
 #	endif
 
-	int const result = ::pthread_create( &thread_, 0, thread_main, this );
+	int const result = ::pthread_create( &thread_, 0, start_func, this );
 	if ( result ) {
 		error()	<< "could not create thread: "
 			<< ::strerror( result ) << endl;
