@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "December 22, 2002" "SWISH++"
+.TH \f3index\f1 1 "December 23, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -338,6 +338,8 @@ Since audio files contain mostly binary information,
 only the ID3 tag text fields are indexed.
 ID3 tag versions 1.x and 2.x (through 2.4) are supported
 (except for encrypted frames).
+If a file contains both 1.x and 2.x tags,
+only the 2.x tag is indexed.
 The processing done for files containing an ID3 tag is:
 .TP 4
 1.
