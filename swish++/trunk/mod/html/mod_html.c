@@ -168,8 +168,10 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look up character entity reference /////////////////////////
 
-	if ( !is_num )
-		return char_entity_map::instance()[ entity_buf ];
+	if ( !is_num ) {
+		static char_entity_map const &ch = char_entity_map::instance();
+		return ch[ entity_buf ];
+	}
 
 	////////// Parse a numeric character reference ////////////////////////
 
@@ -717,7 +719,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 		////////// Look-up the HTML element ///////////////////////////
 
-		element_map const &elements = element_map::instance();
+		static element_map const &elements = element_map::instance();
 		element_map::const_iterator const e = elements.find( tag_buf );
 		if ( e != elements.end() ) {
 			//
@@ -903,7 +905,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //*****************************************************************************
 {
 	if ( dump_html_elements_opt_ ) {
-		element_map const &elements = element_map::instance();
+		static element_map const &elements = element_map::instance();
 		::copy( elements.begin(), elements.end(),
 			ostream_iterator< element_map::value_type >( cout,"\n" )
 		);
