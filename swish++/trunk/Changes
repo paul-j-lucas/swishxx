@@ -36,6 +36,8 @@ OTHER CHANGES
 * Added a makedepend.pl script to make dependencies when g++ is not being used,
   e.g. CC on Solaris.
 
+* Made lots of other changes to get SWISH++ to compile using Sun's CC.
+
 
 CHANGES, file-by-file
 ---------------------
