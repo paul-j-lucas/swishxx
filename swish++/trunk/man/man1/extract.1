@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3extract\fP 1 "June 15, 2000" "SWISH++"
+.TH \f3extract\fP 1 "October 15, 2000" "SWISH++"
 .SH NAME
 extract \- SWISH++ text extractor
 .SH SYNOPSIS
@@ -231,12 +231,12 @@ A configuration file is not required:
 if none is specified and the default does not exist, none is used;
 however, if one is specified and it does not exist, then this is an error.
 .TP
-.BI \-e p
+.BI \-e p [, p ...]
 .br
 .ns
 .TP
-.BI \-\-pattern= p
-A filename pattern,
+.BI \-\-pattern= p [, p ...]
+A filename pattern or patterns,
 .IR p ,
 of files to extract text from.
 Case is significant.
@@ -246,12 +246,12 @@ or
 .B \-\-pattern
 options may be specified.
 .TP
-.BI \-E p
+.BI \-E p [, p ...]
 .br
 .ns
 .TP
-.BI \-\-no-pattern= p
-A filename pattern,
+.BI \-\-no-pattern= p [, p ...]
+A filename pattern or patterns,
 .IR p ,
 of files
 .I not
@@ -497,4 +497,4 @@ International Standards Organization.
 1993.
 .SH AUTHOR
 Paul J. Lucas
-.RI < pjl@best.com >
+.RI < pauljlucas@mac.com >
