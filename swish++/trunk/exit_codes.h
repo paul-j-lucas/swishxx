@@ -38,8 +38,8 @@ enum {
 	Exit_No_Read_Stopwords	= 30,
 
 	// unique to search
-	Exit_Malformed_Query	= 50,
-	Exit_No_Read_Index	= 51,
+	Exit_No_Read_Index	= 50,
+	Exit_Malformed_Query	= 51,
 };
 
 #endif	/* exit_codes_H */
