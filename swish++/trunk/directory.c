@@ -29,14 +29,16 @@
 
 // local
 #include "directory.h"
-#include "fake_ansi.h"
+#include "RecurseSubdirs.h"
+#include "util.h"
+#include "Verbosity.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
 #endif
 
-extern bool	recurse_subdirectories;
-extern int	verbosity;
+extern RecurseSubdirs	recurse_subdirectories;
+extern Verbosity	verbosity;
 
 extern void	do_file( char const *file_name );
 		// Note that there are two do_file() functions: one each in
@@ -44,8 +46,9 @@ extern void	do_file( char const *file_name );
 		// calls whichever one it's linked into an executable with,
 		// either "extract" or "index" respectively.
 
-bool		follow_symbolic_links;
-struct stat	stat_buf;			// someplace to do a stat(2) in
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+FollowLinks	follow_symbolic_links;
+#endif
 
 //*****************************************************************************
 //
@@ -75,8 +78,10 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 	static dir_queue_type dir_queue;
 	static int recursion;
 
+#ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( dir_name ) && !follow_symbolic_links )
 		return;
+#endif
 
 	DIR *const dir_p = ::opendir( dir_name );
 	if ( !dir_p )					// can't open: skip
@@ -95,7 +100,7 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 	while ( dir_ent = ::readdir( dir_p ) ) {
 		if ( *dir_ent->d_name == '.' )		// skip dot files
 			continue;
-		string const path( dir_string + '/' + dir_ent->d_name );
+		string const path( ( dir_string + '/' ) + dir_ent->d_name );
 		if ( recurse_subdirectories && is_directory( path ) )
 			dir_queue.push( path );
 		else

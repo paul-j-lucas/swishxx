@@ -23,8 +23,9 @@
 #include "config.h"
 #include "fake_ansi.h"				/* for std, *_CAST */
 #include "file_info.h"
+#include "FilesReserve.h"
 
-extern int		num_files_reserve;
+extern FilesReserve	num_files_reserve;
 file_info::set_type	file_info::set_;
 
 //*****************************************************************************
