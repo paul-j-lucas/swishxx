@@ -27,7 +27,6 @@
 #include "config.h"
 #include "conf_var.h"
 #include "fake_ansi.h"
-#include "file_vector.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -37,36 +36,6 @@ using namespace std;
 extern char const*	me;
 
 struct stat	stat_buf;			// someplace to do a stat(2) in
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void get_index_info(
-		file_vector const &file, int i,
-		long *n, off_t const **offset
-	)
-//
-// DESCRIPTION
-//
-//	Get the ith number/offset pair from an index file.
-//
-// SEE ALSO
-//
-//	index.c		write_full_index() -- format of index file
-//
-//*****************************************************************************
-{
-	file_vector::const_iterator c = file.begin();
-	long const *p = REINTERPRET_CAST( long const* )( c );
-	*n = p[ 0 ];
-	while ( i-- > 0 ) {
-		c += sizeof( *n ) + *n * sizeof( off_t );
-		p = REINTERPRET_CAST( long const* )( c );
-		*n = p[ 0 ];
-	}
-	*offset = REINTERPRET_CAST( off_t const* )( &p[ 1 ] );
-}
 
 //*****************************************************************************
 //
@@ -93,10 +62,7 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //*****************************************************************************
 {
 	static char_buffer_pool<128,5> buf;
-	register char *p = buf.next();
-
-	while ( *p++ = to_lower( *s++ ) ) ;
-
+	for ( register char *p = buf.next(); *p++ = to_lower( *s++ ); ) ;
 	return buf.current();
 }
 
@@ -124,13 +90,10 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //*****************************************************************************
 {
 	char *const buf = new char[ ::strlen( s ) + 1 ];
-	register char *p = buf;
-
-	while ( *p++ = to_lower( *s++ ) ) ;
-
+	for ( register char *p = buf; *p++ = to_lower( *s++ ); ) ;
 	return buf;
 }
-#endif
+#endif	/* SEARCH_DAEMON */
 
 //*****************************************************************************
 //
