@@ -10,6 +10,11 @@
 #include <ctype.h>
 #include "fnmatch.h"		/* changed to use "" rather than <> -- pjl */
 
+#include "platform.h"		/* need this stuff to handle namespaces */
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
+
 #define	EOS	'\0'
 
 static const char *rangematch(const char *pattern, char test, int nocase);
