@@ -231,19 +231,6 @@ private:
 
 //*****************************************************************************
 //
-//	Miscellaneous encoded_char_range inline functions.
-//
-//*****************************************************************************
-
-inline encoded_char_range::const_iterator encoded_char_range::begin() const {
-	return const_iterator( this, begin_ );
-}
-inline encoded_char_range::const_iterator encoded_char_range::end() const {
-	return const_iterator( this, end_ );
-}
-
-//*****************************************************************************
-//
 // SYNOPSIS
 //
 	inline encoded_char_range::const_iterator::const_iterator(
@@ -299,6 +286,86 @@ inline encoded_char_range::const_iterator encoded_char_range::end() const {
 	  , decoded_( false )
 #endif
 {
+}
+
+#ifdef MOD_MAIL
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline encoded_char_range::value_type
+	encoded_char_range::const_iterator::decode_quoted_printable(
+		file_vector::const_iterator &c,
+		file_vector::const_iterator end
+	)
+//
+// DESCRIPTION
+//
+//	Check to see if the character at the current position is an '=': if
+//	not, the character is an ordinary character; if so, the character is a
+//	quoted-printable encoded character and needs to be decoded.
+//
+//	The reason for this function is to serve an inlined front-end so as to
+//	call the more expensive out-of-lined only if the character really needs
+//	to be decoded.
+//
+// PARAMETERS
+//
+//	c	An iterator marking the position of the character to be
+//		decoded.
+//
+//	end	An iterator marking the end of the text.
+//
+// RETURN VALUE
+//
+//	Returns the decoded character.
+//
+//*****************************************************************************
+{
+	if ( *c != '=' )
+		return *c++;
+	return ++c != end ? decode_quoted_printable_aux( c, end ) : ' ';
+}
+#endif
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline void encoded_char_range::const_iterator::decode() const
+//
+// DESCRIPTION
+//
+//	Decode the character at the iterator's currend position according to
+//	the character range's content-transfer-encoding.
+//
+// RETURN VALUE
+//
+//	Returns the decoded character.
+//
+//*****************************************************************************
+{
+#ifdef MOD_MAIL
+	//
+	// Remember the current position to allow the decoders to advance
+	// through the encoded text.  This allows the delta to be computed so
+	// the iterator can be incremented later.
+	//
+	file_vector::const_iterator c = pos_;
+	switch ( encoding_ ) {
+		case Base64:
+			ch_ = decode_base64( begin_, c, end_ );
+			break;
+		case Quoted_Printable:
+			ch_ = decode_quoted_printable( c, end_ );
+			break;
+		default:
+			ch_ = *c++;
+	}
+	delta_ = c - pos_;
+#else
+	ch_ = *pos_;
+#endif
 }
 
 //*****************************************************************************
@@ -398,86 +465,6 @@ inline encoded_char_range::const_iterator encoded_char_range::end() const {
 
 //*****************************************************************************
 //
-// SYNOPSIS
-//
-	inline void encoded_char_range::const_iterator::decode() const
-//
-// DESCRIPTION
-//
-//	Decode the character at the iterator's currend position according to
-//	the character range's content-transfer-encoding.
-//
-// RETURN VALUE
-//
-//	Returns the decoded character.
-//
-//*****************************************************************************
-{
-#ifdef MOD_MAIL
-	//
-	// Remember the current position to allow the decoders to advance
-	// through the encoded text.  This allows the delta to be computed so
-	// the iterator can be incremented later.
-	//
-	file_vector::const_iterator c = pos_;
-	switch ( encoding_ ) {
-		case Base64:
-			ch_ = decode_base64( begin_, c, end_ );
-			break;
-		case Quoted_Printable:
-			ch_ = decode_quoted_printable( c, end_ );
-			break;
-		default:
-			ch_ = *c++;
-	}
-	delta_ = c - pos_;
-#else
-	ch_ = *pos_;
-#endif
-}
-
-#ifdef MOD_MAIL
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline encoded_char_range::value_type
-	encoded_char_range::const_iterator::decode_quoted_printable(
-		file_vector::const_iterator &c,
-		file_vector::const_iterator end
-	)
-//
-// DESCRIPTION
-//
-//	Check to see if the character at the current position is an '=': if
-//	not, the character is an ordinary character; if so, the character is a
-//	quoted-printable encoded character and needs to be decoded.
-//
-//	The reason for this function is to serve an inlined front-end so as to
-//	call the more expensive out-of-lined only if the character really needs
-//	to be decoded.
-//
-// PARAMETERS
-//
-//	c	An iterator marking the position of the character to be
-//		decoded.
-//
-//	end	An iterator marking the end of the text.
-//
-// RETURN VALUE
-//
-//	Returns the decoded character.
-//
-//*****************************************************************************
-{
-	if ( *c != '=' )
-		return *c++;
-	return ++c != end ? decode_quoted_printable_aux( c, end ) : ' ';
-}
-#endif
-
-//*****************************************************************************
-//
 //	Equality operators.
 //
 //*****************************************************************************
@@ -522,6 +509,19 @@ inline bool operator!=(
 	encoded_char_range::const_iterator const &e
 ) {
 	return e != f;
+}
+
+//*****************************************************************************
+//
+//	Miscellaneous encoded_char_range inline functions.
+//
+//*****************************************************************************
+
+inline encoded_char_range::const_iterator encoded_char_range::begin() const {
+	return const_iterator( this, begin_ );
+}
+inline encoded_char_range::const_iterator encoded_char_range::end() const {
+	return const_iterator( this, end_ );
 }
 
 //*****************************************************************************
