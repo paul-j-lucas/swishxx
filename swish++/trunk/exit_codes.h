@@ -37,19 +37,21 @@ enum {
 	// common between index and extract
 	Exit_No_Read_Stopwords	= 30,
 
+	// common between index and search
+	Exit_No_Read_Index	= 40,
+
 	// unique to search
-	Exit_No_Read_Index	= 50,
-	Exit_Malformed_Query	= 51,
+	Exit_Malformed_Query	= 50,
 #ifdef	SEARCH_DAEMON
-	Exit_No_Socket		= 52,
-	Exit_No_Unlink		= 53,
-	Exit_No_Bind		= 54,
-	Exit_No_Listen		= 55,
-	Exit_No_Accept		= 56,
-	Exit_No_Fork		= 57,
-	Exit_No_Change_Dir	= 58,
-	Exit_No_Create_Thread	= 59,
-	Exit_No_Detach_Thread	= 60,
+	Exit_No_Socket		= 51,
+	Exit_No_Unlink		= 52,
+	Exit_No_Bind		= 53,
+	Exit_No_Listen		= 54,
+	Exit_No_Accept		= 55,
+	Exit_No_Fork		= 56,
+	Exit_No_Change_Dir	= 57,
+	Exit_No_Create_Thread	= 58,
+	Exit_No_Detach_Thread	= 59,
 #endif
 };
 
