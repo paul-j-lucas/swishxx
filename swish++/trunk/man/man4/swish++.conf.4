@@ -354,6 +354,9 @@ variable line in a configuration file would be:
 .cS
 FilterAttachment application/pdf    pdftotext %f @%F.txt
 .cE
+MIME types
+.I must
+be specified entirely in lower case.
 Patterns can be useful for MIME types.
 For example:
 .cS
@@ -380,7 +383,9 @@ is one of:
 .B FilterAttachment
 variable lines can override the handling of the built-in MIME types.
 .PP
-Unlike file filters, attachment filters must convert directly to plain text
+Unlike file filters, attachment filters
+.I must
+convert directly to plain text
 and can not be ``chained'' together.
 (This restriction exists because there is no way to know
 what any intermediate MIME types would be to apply more filters.)
