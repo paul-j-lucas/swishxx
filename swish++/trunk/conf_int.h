@@ -90,6 +90,6 @@ private:
 	T& operator=( char const *s ) {		\
 		conf<int>::operator=( s );	\
 		return *this;			\
-	}					\
+	}
 
 #endif	/* conf_int_H */

@@ -72,6 +72,6 @@ private:
 	T& operator=( char const *s ) {		\
 		conf<bool>::operator=( s );	\
 		return *this;			\
-	}					\
+	}
 
 #endif	/* conf_bool_H */
