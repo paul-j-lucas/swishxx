@@ -66,6 +66,10 @@ CHANGES, file-by-file
 	1. Changed description of filter substitutions to match feature
 	   BBS.
 
+* swish++.conf
+
+	1. Changed all '@E' to '@F' corresponding to filter.c item #3.
+
 * version.h
 
 	1. Updated version to "4.7".
