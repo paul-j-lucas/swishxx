@@ -66,6 +66,9 @@ protected:
 	virtual void		reset() = 0;
 	//			Reset value to default.
 
+	static void		reset_all();
+	//			Reset all configuration variables to defaults.
+
 	static std::ostream&	error  ( std::ostream& = std::cerr );
 	static std::ostream&	warning( std::ostream& = std::cerr );
 private:
@@ -83,7 +86,6 @@ private:
 	static map_type&	map_ref();
 	static std::ostream&	msg( std::ostream&, char const *label );
 	static void		parse_line( char *line, int line_no );
-	static void		reset_all();
 };
 
 ////////// Inlines ////////////////////////////////////////////////////////////
