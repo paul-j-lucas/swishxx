@@ -1,6 +1,73 @@
 SWISH++ Changes
 ===============
 
+
+*******************************************************************************
+5.5.3
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* A sample Procmail recipe has been included that can be used to split incoming
+  mail messages into individual files for indexing.
+
+  (This feature shall be known as feature SIM.)
+
+BUG FIXES
+---------
+
+* When running as a server, search(1) had a memory leak.
+
+  (This bug fix shall be know as bug fix SML.)
+
+* When running as a server, search(1) didn't make the sockets reusable.
+
+  (This bug fix shall be know as bug fix RSA.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* GNUmakefile
+
+	1. For INITD_DIR and LEVEL_DIR, redirected error output to /dev/null.
+
+* INSTALL.unix
+
+	1. Added mention of Procmail for feature SIM.
+
+* procmailrc
+
+	1. New file for feature SIM.
+
+* searchd.in
+
+	1. Added: KILL=`which kill`
+	2. Added "|| exit 1" in a few places.
+	3. Added "sleep 3" in restart case.
+
+* search.c
+
+	1. In search(), added "delete format" for bug fix SML.
+
+* search_daemon.c
+
+	1. Added BIND_SOCKET() for bug fix RSA.
+
+* searchmonitor.in
+
+	1. Added: KILL=`which kill`
+
+* version.h
+
+	1. Upped version to 5.5.3.
+
+* www_example/sample.html
+
+	1. Converted to XMTML.
+
+
 *******************************************************************************
 5.5.2
 *******************************************************************************
