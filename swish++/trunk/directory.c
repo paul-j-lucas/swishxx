@@ -36,9 +36,6 @@
 using namespace std;
 #endif
 
-extern RecurseSubdirs	recurse_subdirectories;
-extern Verbosity	verbosity;
-
 extern void	do_file( char const *file_name );
 
 #ifdef	WIN32
