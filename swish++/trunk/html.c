@@ -55,13 +55,18 @@ bool			find_attribute(
 				file_vector::const_iterator &end,
 				char const *attribute
 			);
-void			skip_html_comment(
+bool			is_html_comment(
 				file_vector::const_iterator &pos,
 				file_vector::const_iterator end
 			);
 bool			skip_html_tag(
 				file_vector::const_iterator &pos,
 				file_vector::const_iterator end
+			);
+bool			tag_cmp(
+				file_vector::const_iterator &pos,
+				file_vector::const_iterator end,
+				char const *tag
 			);
 
 //*****************************************************************************
@@ -296,81 +301,6 @@ bool			skip_html_tag(
 //
 // SYNOPSIS
 //
-	bool tag_cmp(
-		file_vector::const_iterator &c,
-		register file_vector::const_iterator end,
-		register char const *tag
-	)
-//
-// DESCRIPTION
-//
-//	Compares the tag name starting at the given iterator to the given
-//	string.  Case is irrelevant.
-//
-// PARAMETERS
-//
-//	c	The iterator to use.  It is presumed to be positioned at the
-//		first character after the '<'.  If the tag name matches, it is
-//		repositioned at the first character past the name; otherwise,
-//		it is not touched.
-//
-//	end	The iterator marking the end of the file.
-//
-//	tag	The string to compare against; it must be in lower case.
-//
-// RETURN VALUE
-//
-//	Returns true only if the tag matches.
-//
-//*****************************************************************************
-{
-	register file_vector::const_iterator d = c;
-	while ( *tag && d != end && *tag++ == to_lower( *d++ ) ) ;
-	return *tag ? false : c = d;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline bool is_html_comment(
-		file_vector::const_iterator &c,
-		file_vector::const_iterator end
-	)
-//
-// DESCRIPTION
-//
-//	Checks to see if the current HTML element is the start of a comment.
-//
-// PARAMETERS
-//
-//	c	The iterator to use.  It is presumed to be positioned at the
-//		first character after the '<'.  If the tag is the start of a
-//		comment, it is repositioned at the first character past the
-//		tag, i.e., past the "!--"; otherwise, it is not touched.
-//
-//	end	The iterator marking the end of the file.
-//
-// RETURN VALUE
-//
-//	Returns true only if the current element is the beginning of a comment.
-//
-// SEE ALSO
-//
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
-//	constructs used in HTML: Comments," HTML 4.0 Specification, section
-//	3.2.4, World Wide Web Consortium, April 1998.
-//		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.4
-//
-//*****************************************************************************
-{
-	return tag_cmp( c, end, "!--" );
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	char const* grep_title( file_vector const &file )
 //
 // DESCRIPTION
@@ -452,10 +382,8 @@ bool			skip_html_tag(
 		//
 		before = c++;
 
-		if ( is_html_comment( c, file.end() ) ) {
-			skip_html_comment( c, file.end() );
+		if ( is_html_comment( c, file.end() ) )
 			continue;
-		}
 
 		//
 		// Is the HTML tag a TITLE tag?
@@ -510,6 +438,66 @@ bool			skip_html_tag(
 	// found.
 	//
 	return 0;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool is_html_comment(
+		register file_vector::const_iterator &c,
+		register file_vector::const_iterator end
+	)
+//
+// DESCRIPTION
+//
+//	Checks to see if the current HTML element is the start of a comment. If
+//	so, skip it scanning for the closing "-->" character sequence.  The
+//	HTML specification permits whitespace between the "--" and the ">" (for
+//	some strange reason).  Unlike skipping an ordinary HTML tag, quotes are
+//	not significant and no attempt must be made either to "balance" them or
+//	to ignore what is in between them.
+//
+//	This function is more lenient than the HTML 4.0 specification in that
+//	it allows for a string of hyphens within a comment since this is common
+//	in practice; the specification considers this to be an error.
+//
+// PARAMETERS
+//
+//	c	The iterator to use.  It is presumed to be positioned at the
+//		first character after the '<'.  If the tag is the start of a
+//		comment, it is repositioned at the first character past the
+//		tag, i.e., past the "!--"; otherwise, it is not touched.
+//
+//	end	The iterator marking the end of the file.
+//
+// RETURN VALUE
+//
+//	Returns true only if the current element is the beginning of a comment.
+//
+// SEE ALSO
+//
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
+//	constructs used in HTML: Comments," HTML 4.0 Specification, section
+//	3.2.4, World Wide Web Consortium, April 1998.
+//		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.4
+//
+//*****************************************************************************
+{
+	if ( tag_cmp( c, end, "!--" ) ) {
+		while ( c != end ) {
+			if ( *c++ != '-' )
+				continue;
+			while ( c != end && *c == '-' )
+				++c;
+			while ( c != end && isspace( *c ) )
+				++c;
+			if ( c != end && *c++ == '>' )
+				break;
+		}
+		return true;
+	}
+	return false;
 }
 
 //*****************************************************************************
@@ -617,7 +605,7 @@ bool			skip_html_tag(
 		// want the tag name.)
 		//
 		register char *to = tag;
-		register char const *from = tag_begin;
+		register file_vector::const_iterator from = tag_begin;
 		while ( from != tag_end && !isspace( *from ) )
 			*to++ = to_lower( *from++ );
 		*to = '\0';
@@ -863,55 +851,6 @@ bool			skip_html_tag(
 //
 // SYNOPSIS
 //
-	void skip_html_comment(
-		register file_vector::const_iterator &c,
-		register file_vector::const_iterator end
-	)
-//
-// DESCRIPTION
-//
-//	Skip an HTML comment scanning for the closing "-->" character sequence.
-//	The HTML specification permits whitespace between the "--" and the ">"
-//	(for some strange reason).  Unlike skipping an ordinary HTML tag,
-//	quotes are not significant and no attempt must be made either to
-//	"balance" them or to ignore what is in between them.
-//
-//	This function is more lenient than the HTML 4.0 specification in that
-//	it allows for a string of hyphens within a comment since this is common
-//	in practice; the specification considers this to be an error.
-//
-// PARAMETERS
-//
-//	c	The iterator to use.  It is presumed to start at any position
-//		after the '<' and before the '>'; it is left after the '>'.
-//
-//	end	The iterator marking the end of the file.
-//
-// SEE ALSO
-//
-//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "On SGML and HTML: SGML
-//	constructs used in HTML: Comments," HTML 4.0 Specification, section
-//	3.2.4, World Wide Web Consortium, April 1998.
-//		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-3.2.4
-//
-//*****************************************************************************
-{
-	while ( c != end ) {
-		if ( *c++ != '-' )
-			continue;
-		while ( c != end && *c == '-' )
-			++c;
-		while ( c != end && isspace( *c ) )
-			++c;
-		if ( c != end && *c++ == '>' )
-			break;
-	}
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	bool skip_html_tag(
 		register file_vector::const_iterator &c,
 		register file_vector::const_iterator end
@@ -937,10 +876,8 @@ bool			skip_html_tag(
 //
 //*****************************************************************************
 {
-	if ( is_html_comment( c, end ) ) {
-		skip_html_comment( c, end );
+	if ( is_html_comment( c, end ) )
 		return true;
-	}
 
 	register char quote = '\0';
 	while ( c != end ) {
@@ -958,4 +895,41 @@ bool			skip_html_tag(
 	}
 
 	return false;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool tag_cmp(
+		file_vector::const_iterator &c,
+		register file_vector::const_iterator end,
+		register char const *tag
+	)
+//
+// DESCRIPTION
+//
+//	Compares the tag name starting at the given iterator to the given
+//	string.  Case is irrelevant.
+//
+// PARAMETERS
+//
+//	c	The iterator to use.  It is presumed to be positioned at the
+//		first character after the '<'.  If the tag name matches, it is
+//		repositioned at the first character past the name; otherwise,
+//		it is not touched.
+//
+//	end	The iterator marking the end of the file.
+//
+//	tag	The string to compare against; it must be in lower case.
+//
+// RETURN VALUE
+//
+//	Returns true only if the tag matches.
+//
+//*****************************************************************************
+{
+	register file_vector::const_iterator d = c;
+	while ( *tag && d != end && *tag++ == to_lower( *d++ ) ) ;
+	return *tag ? false : c = d;
 }
