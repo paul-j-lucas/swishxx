@@ -41,7 +41,9 @@ extern char const*	me;
 //
 // PARAMETERS
 //
-//	name	The name of the configuration variable.
+//	name		The name of the configuration variable.
+//
+//	default_value	The default value for the configuration variable.
 //
 //*****************************************************************************
 	conf_var( name ),
