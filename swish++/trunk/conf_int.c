@@ -62,8 +62,8 @@ extern char const*	me;
 //
 // DESCRIPTION
 //
-//	Assign a new value to the configuration variable, but only if its
-//	value is within the legal range; otherwise complain.
+//	Assign a new value to the configuration variable, but only if its value
+//	is within the legal range; otherwise complain.
 //
 // PARAMETERS
 //
@@ -92,17 +92,20 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	/* virtual */ void conf<int>::parse_value( char *line )
+	/* virtual */
+	void conf<int>::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
-//	Parse an integer value from a configuration file line.  If
-//	successful, assign the value to ourselves; otherwise complain.  The
-//	string "infinity" (regardless of case) is accepted as a legal value.
+//	Parse an integer value from a configuration file line.  If successful,
+//	assign the value to ourselves; otherwise complain.  The string
+//	"infinity" (regardless of case) is accepted as a legal value.
 //
 // PARAMETERS
 //
-//	line	The line to be parsed.
+//	var_name	The name of the configuration variable.
+//
+//	line		The line to be parsed.
 //
 //*****************************************************************************
 {
