@@ -118,7 +118,7 @@ int conf_var::current_config_file_line_no_ = 0;
 	static map_type m;
 	static bool init;
 	if ( !init ) {
-		init = true;		// must set this before init_modules()
+		init = true;		// must set this before init_mod_vars()
 		init_mod_vars();	// defined in init_mod_vars.c
 		static char const *const var_name_table[] = {
 			"associatemeta",
