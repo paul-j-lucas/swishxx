@@ -21,6 +21,10 @@ NEW FEATURES
 
   (This feature shall be known as feature MAIL.)
 
+* A filter module for manual page files has been added.
+
+  (This feature shall be known as feature MAN.)
+
 * There is a new %E (second-to-last filename extenstion) substitution.
 
   (This feature shall be known as feature 22L.)
@@ -121,6 +125,8 @@ CHANGES, file-by-file
 	8. Added OS variable.
 	9. Added OPTIM variable since -O3 in the cygwin environment
 	   causes a segfault due to an optimizer bug, presumeably.
+	A. Added: -DMOD_MAN for feature MAN.
+	B. If g++, added: -fno-exceptions to reduce code size.
 
 * config/src/mutable.c
 
@@ -206,11 +212,9 @@ CHANGES, file-by-file
 	8. In map_ref(), added "SocketAddress" for feature TCP.
 	9. In conf_var::conf_var(), added initialization of name_ for
 	   bug fix NVR.
-
 	A. In conf_var::conf_var():
 		s/map_ref()[ name_ ]/map_ref()[ to_lower( name_ ) ]/
 	   so the case for variable names is irrelevant.
-
 	B. In conf_var::map_ref(), made all variable names lower case.
 	C. In conf_var::parse_line(), added "to_lower( line )" so the
 	   case for variable names is irrelevant.
@@ -221,6 +225,7 @@ CHANGES, file-by-file
 	F. Added ResultSeparator variable for feature SRS.
 	G. s/cerr << warning/warning()/
 	H. Added PJL namespace.
+	I. s/isspace/is_space/
 
 * conf_var.h
 
@@ -290,6 +295,7 @@ CHANGES, file-by-file
 	2. Reworked -e and -E options to allow multiple,
 	   comma-separated patterns just like for index(1).
 	3. Added PJL namespace.
+	4. In extract_words(), removed "buf" and now using "word" exclusively.
 
 * ExtractFile.c
 * ExtractFile.h
@@ -381,6 +387,7 @@ CHANGES, file-by-file
 	8. Removed WIN32 special case for platform.h.
 	9. s/=/:=/
 	A. Reworded C++ compiler section.
+	B. Added MOD_MAN sources for feature MAN.
 
 * html.c
 * html.h
@@ -500,6 +507,7 @@ CHANGES, file-by-file
 	3. Removed -h, --html-pattern, and HTMLFile.
 	4. Reworked description of -m and --meta.
 	5. Added references for feature MAIL.
+	5. Added references for feature MAN.
 
 * man/man1/search.1
 
@@ -553,6 +561,11 @@ CHANGES, file-by-file
 	3. Moved configuration variable extern declarations to .h files.
 	4. In parse_html_tag(), s/tag/name/
 	5. Added PJL namespace.
+	6. Removed "buf" and now using "word" by itself.
+	7. s/isxdigit/is_xdigit/
+	8. s/isdigit/is_digit/
+	9. s/isalpha/is_alpha/
+	A. s/isspace/is_space/
 
 * mod_html.h
 
@@ -569,6 +582,11 @@ CHANGES, file-by-file
 * mod_mail.h
 
 	1. Added for feature MAIL.
+
+* mod_man.c
+* mod_man.h
+
+	1. Added for feature MAN.
 
 * my_set.h
 
@@ -602,7 +620,7 @@ CHANGES, file-by-file
 
 	1. Added new feature descriptions.
 	2. s!www.best.com/~pjl!homepage.mac.com/pauljlucas!
-	3. Added mention of Christop Conrad.
+	3. Added mention of Christoph Conrad.
 
 * RecurseSubdirs.h
 
@@ -687,6 +705,7 @@ CHANGES, file-by-file
 
 	1. s/fake_ansi.h/platform.h/
 	2. Added PJL namespace.
+	3. s/isspace/is_space/
 
 * search_thread.h
 
@@ -729,6 +748,8 @@ CHANGES, file-by-file
 
 	1. Added "shall", "you'll", "you're".
 	2. Added PJL namespace.
+	3. s/word_buf/word/
+	4. s/word_len/len/
 
 * stop_words.c
 
@@ -813,6 +834,8 @@ CHANGES, file-by-file
 	   it's now used by code not in the search daemon for bug fix BOB.
 	4. Added: to_lower_r(char const*, char const*) for bug fix BOB.
 	5. s/file_vector::const_iterator/char const */
+	6. Added: is_alnum(), is_alpha(), is_digit(), is_punct(), is_space(),
+	   is_upper(), and is_xdigit().
 
 * Verbosity.h
 
@@ -851,9 +874,16 @@ CHANGES, file-by-file
 
 	1. s/ostream/std::ostream/
 
+* word_util.c
+
+	1. s/isdigit/is_digit/
+	2. s/ispunct/is_punct/
+	3. s/isupper/is_upper/
+
 * word_util.h
 
-	s/STATIC_CAST(...)/static_cast<...>/
+	1. s/STATIC_CAST(...)/static_cast<...>/
+	2. s/isalnum/is_alnum/
 
 * www_example/search.cgi
 
