@@ -118,6 +118,15 @@ int conf_var::current_config_file_line_no_ = 0;
 		m[ "Verbosity"		] = 0;
 		m[ "WordFilesMax"	] = 0;
 		m[ "WordPercentMax"	] = 0;
+#ifdef	SEARCH_DAEMON
+		m[ "SearchDaemon"	] = 0;
+		m[ "SocketFile"		] = 0;
+		m[ "SocketQueueSize"	] = 0;
+		m[ "SocketTimeout"	] = 0;
+		m[ "ThreadsMax"		] = 0;
+		m[ "ThreadsMin"		] = 0;
+		m[ "ThreadTimeout"	] = 0;
+#endif
 	}
 	return m;
 }
