@@ -57,10 +57,11 @@ int conf_var::current_config_file_line_no_ = 0;
 //	var_name	The name of the variable.
 //
 //*****************************************************************************
+	: name_( var_name )
 {
-	conf_var *&var = map_ref()[ var_name ];
+	conf_var *&var = map_ref()[ name_ ];
 	if ( var ) {
-		cerr	<< "conf_var::conf_var(): \"" << var_name
+		cerr	<< "conf_var::conf_var(): \"" << name_
 			<< "\" registered more than once" << endl;
 		::abort();
 	}
