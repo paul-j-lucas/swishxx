@@ -149,7 +149,7 @@ CCFLAGS+=	-fno-exceptions
 endif
 
 ifeq ($(findstring g++,$(CC)),g++)
-#CCFLAGS+=	-W -Wcast-align -Wcast-qual -Wpointer-arith -Wswitch -Wtraditional -Wuninitialized -Wunused #-Winline -Wshadow
+#CCFLAGS+=	-fmessage-length=0 -W -Wcast-align -Wcast-qual -Wnon-virtual-dtor -Wpointer-arith -Wreorder -Wswitch -Wtraditional -Wuninitialized -Wunreachable-code -Wunused #-Winline -Wshadow
 endif
 #		Warning flags specific to g++.  Unless you are modifying the
 #		source code, you should leave this commented out.
