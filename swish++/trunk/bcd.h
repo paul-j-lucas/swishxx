@@ -26,6 +26,7 @@
 #include <iostream>
 
 // local
+#include "fake_ansi.h"			/* for std */
 #include "omanip.h"
 
 std::ostream&	bcd( std::ostream&, unsigned );

@@ -23,11 +23,12 @@
 #define conf_int_H
 
 // system
-#include <climits>				/* for INT_MAX */
+#include <climits>			/* for INT_MAX */
 #include <string>
 
 // local
 #include "conf_var.h"
+#include "fake_ansi.h"			/* for std */
 
 //*****************************************************************************
 //

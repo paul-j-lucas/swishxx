@@ -50,6 +50,7 @@ int const		PATH_MAX = 1024;
 
 // local
 #include "config.h"
+#include "fake_ansi.h"			/* for std */
 #include "platform.h"			/* for PJL_NO_SYMBOLIC_LINKS */
 
 extern char const*	me;

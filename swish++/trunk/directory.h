@@ -26,6 +26,7 @@
 #include <vector>
 
 // local
+#include "fake_ansi.h"			/* for std */
 #include "platform.h"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 #include "FollowLinks.h"

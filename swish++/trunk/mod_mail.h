@@ -29,6 +29,7 @@
 
 // local
 #include "auto_vec.h"
+#include "fake_ansi.h"			/* for std */
 #include "indexer.h"
 
 //*****************************************************************************

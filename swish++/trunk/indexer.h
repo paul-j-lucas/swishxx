@@ -27,6 +27,7 @@
 
 // local
 #include "encoded_char.h"
+#include "fake_ansi.h"			/* for std */
 #include "mmap_file.h"
 #include "util.h"
 #include "word_util.h"

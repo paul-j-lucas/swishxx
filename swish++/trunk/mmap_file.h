@@ -45,6 +45,7 @@
 namespace PJL {
 #else
 #define	PJL /* nothing */
+#include "fake_ansi.h"			/* for std */
 #endif
 
 //*****************************************************************************

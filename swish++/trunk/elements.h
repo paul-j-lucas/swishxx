@@ -29,6 +29,7 @@
 #include <map>
 
 // local
+#include "fake_ansi.h"			/* for explicit, std */
 #include "my_set.h"
 
 class element_map;
