@@ -115,7 +115,9 @@ int conf_var::current_config_file_line_no_ = 0;
 {
 	static map_type m;
 	if ( m.empty() ) {
+#ifdef	MOD_HTML
 		m[ "ExcludeClass"	] = 0;
+#endif
 		m[ "ExcludeFile"	] = 0;
 		m[ "ExcludeMeta"	] = 0;
 		m[ "ExtractExtension"	] = 0;
@@ -124,7 +126,6 @@ int conf_var::current_config_file_line_no_ = 0;
 		m[ "FilesReserve"	] = 0;
 		m[ "FilterFile"		] = 0;
 		m[ "FollowLinks"	] = 0;
-		m[ "HTMLFile"		] = 0;
 		m[ "IncludeFile"	] = 0;
 		m[ "IncludeMeta"	] = 0;
 		m[ "Incremental"	] = 0;
