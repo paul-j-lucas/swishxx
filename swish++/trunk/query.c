@@ -177,7 +177,7 @@ void	perform_and( search_results&, and_results_type& );
 //		meta_name:	word
 //
 //		primary:	'(' query ')'
-//			|	'not' primary
+//			|	'not' meta
 //			|	word
 //			|	word*
 //
@@ -515,7 +515,7 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> '('\n";
 #			endif
-			if ( !parse_query2(
+			if ( !parse_meta(
 				query, results, stop_words_found, and_results,
 				ignore, meta_id
 			) )
