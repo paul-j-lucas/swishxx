@@ -42,10 +42,6 @@
 #include "DirectoriesGrow.h"
 #include "DirectoriesReserve.h"
 #include "directory.h"
-#ifdef	MOD_HTML
-#include "elements.h"
-#include "ExcludeClass.h"
-#endif
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -54,9 +50,6 @@
 #include "FilesGrow.h"
 #include "FilesReserve.h"
 #include "FilterFile.h"
-#ifdef	MOD_HTML
-#include "mod_html.h"
-#endif
 #include "IncludeFile.h"
 #include "IncludeMeta.h"
 #include "Incremental.h"
@@ -66,6 +59,11 @@
 #include "itoa.h"
 #include "meta_map.h"
 #include "mmap_file.h"
+#ifdef	mod_html
+#include "mod/html/elements.h"
+#include "mod/html/ExcludeClass.h"
+#include "mod/html/mod_html.h"
+#endif
 #include "option_stream.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
@@ -90,7 +88,7 @@ AssociateMeta		associate_meta;
 DirectoriesGrow		directories_grow;
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
-#ifdef	MOD_HTML
+#ifdef	mod_html
 ExcludeClass		exclude_class_names;	// class names not to index
 #endif
 ExcludeMeta		exclude_meta_names;	// meta names not to index
@@ -211,7 +209,7 @@ void			write_word_index( ostream&, off_t* );
 		"help",			0, '?',
 		"no-assoc-meta",	0, 'A',
 		"config",		1, 'c',
-#ifdef	MOD_HTML
+#ifdef	mod_html
 		"no-class",		1, 'C',
 #endif
 		"dirs-reserve",		1, 'D',
@@ -221,7 +219,7 @@ void			write_word_index( ostream&, off_t* );
 		"files-reserve",	1, 'F',
 		"files-grow",		1, 'g',
 		"dirs-grow",		1, 'G',
-#ifdef	MOD_HTML
+#ifdef	mod_html
 		"dump-html",		0, 'H',
 #endif
 		"index-file",		1, 'i',
@@ -245,7 +243,7 @@ void			write_word_index( ostream&, off_t* );
 	char const*	config_file_name_arg = ConfigFile_Default;
 	char const*	directories_grow_arg = 0;
 	char const*	directories_reserve_arg = 0;
-#ifdef	MOD_HTML
+#ifdef	mod_html
 	bool		dump_html_elements_opt = false;
 #endif
 	bool		dump_stop_words_opt = false;
@@ -282,7 +280,7 @@ void			write_word_index( ostream&, off_t* );
 			case 'c': // Specify config. file.
 				config_file_name_arg = opt.arg();
 				break;
-#ifdef	MOD_HTML
+#ifdef	mod_html
 			case 'C': // Specify CLASS name(s) not to index.
 				exclude_class_names.insert(
 					to_lower( opt.arg() )
@@ -334,7 +332,7 @@ void			write_word_index( ostream&, off_t* );
 			case 'G': // Specify dirs to reserve space for growth.
 				directories_grow_arg = opt.arg();
 				break;
-#ifdef	MOD_HTML
+#ifdef	mod_html
 			case 'H': // Dump recognized HTML and XHTML elements.
 				dump_html_elements_opt = true;
 				break;
@@ -444,7 +442,7 @@ void			write_word_index( ostream&, off_t* );
 
 	/////////// Dump stuff if requested ///////////////////////////////////
 
-#ifdef	MOD_HTML
+#ifdef	mod_html
 	if ( dump_html_elements_opt ) {
 		element_map const &elements = element_map::instance();
 		::copy( elements.begin(), elements.end(),
@@ -1392,7 +1390,7 @@ ostream& usage( ostream &err ) {
 	"-?     | --help            : Print this help message\n"
 	"-A     | --no-assoc-meta   : Don't associate meta names [default: do]\n"
 	"-c f   | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-#ifdef	MOD_HTML
+#ifdef	mod_html
 	"-C c   | --no-class c      : Class name not to index [default: none]\n"
 #endif
 	"-D n   | --dirs-reserve n  : Reserve space for number of dirs [default: " << DirectoriesReserve_Default << "]\n"
@@ -1402,7 +1400,7 @@ ostream& usage( ostream &err ) {
 	"-F n   | --files-reserve n : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
 	"-g n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
 	"-G n   | --dirs-grow n     : Number or percentage to grow by [default: " << DirectoriesGrow_Default << "]\n"
-#ifdef	MOD_HTML
+#ifdef	mod_html
 	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n"
 #endif
 	"-i f   | --index-file f    : Name of index file to use [default: " << IndexFile_Default << "]\n"
