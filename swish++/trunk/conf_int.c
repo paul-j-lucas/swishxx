@@ -26,6 +26,9 @@
 // local
 #include "conf_int.h"
 #include "exit_codes.h"
+#ifdef	MULTI_THREADED
+#include "managed_ptr.h"
+#endif
 #include "util.h"
 
 extern char const*	me;
@@ -113,7 +116,12 @@ extern char const*	me;
 		cerr << error << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
-	if ( !::strcmp( to_lower( line ), "infinity" ) ) {
+#ifdef	MULTI_THREADED
+	managed_vec< char > const lower = to_lower_r( line );
+#else
+	char const *const lower = to_lower( line );
+#endif
+	if ( !::strcmp( lower, "infinity" ) ) {
 		operator=( INT_MAX );
 		return;
 	}
