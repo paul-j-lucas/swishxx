@@ -38,6 +38,7 @@
 #include "html.h"
 #include "less.h"
 #include "my_set.h"
+#include "stem_word.h"
 #include "token.h"
 #include "util.h"
 #include "version.h"
@@ -59,6 +60,7 @@ typedef pair< word_index::const_iterator, word_index::const_iterator >
 char const*	me;				// executable name
 file_index	files;
 word_index	words, stop_words, meta_names;
+bool		stem_words;
 string_set	stop_words_found;
 
 void	dump_single_word( char const *word );
@@ -126,8 +128,8 @@ void	usage();
 //
 //*****************************************************************************
 {
-	me = ::strrchr( argv[0], '/' );		// determine base name...
-	me = me ? me + 1 : argv[0];		// ...of executable
+	me = ::strrchr( argv[0], '/' );		// determine base name ...
+	me = me ? me + 1 : argv[0];		// ... of executable
 
 	/////////// Process command-line options //////////////////////////////
 
@@ -142,7 +144,7 @@ void	usage();
 	int skip_results = 0;
 
 	::opterr = 1;
-	char const opts[] = "dDi:m:Ms:SVw:";
+	char const opts[] = "dDi:m:Mr:sSVw:";
 	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
 		switch ( opt ) {
 
@@ -166,10 +168,14 @@ void	usage();
 				dump_meta_names = true;
 				break;
 
-			case 's': // Specify number of initial results to skip.
+			case 'r': // Specify number of initial results to skip.
 				skip_results = ::atoi( ::optarg );
 				if ( skip_results < 0 )
 					skip_results = 0;
+				break;
+
+			case 's': // Stem words.
+				stem_words = true;
 				break;
 
 			case 'S': // Dump stop-word list.
@@ -225,7 +231,7 @@ void	usage();
 			dump_single_word( *argv++ );
 		return 0;
 	}
-	if ( dump_entire_index ) {
+	if ( dump_entire_index )
 		FOR_EACH( word_index, words, w ) {
 			cout << *w << '\n';
 			file_list list( w );
@@ -234,17 +240,17 @@ void	usage();
 					<< files[ file->index_ ] << '\n';
 			cout << '\n';
 		}
-	}
-	if ( dump_stop_words ) {
+
+	if ( dump_stop_words )
 		copy( stop_words.begin(), stop_words.end(),
 			ostream_iterator< char const* >( cout, "\n" )
 		);
-	}
-	if ( dump_meta_names ) {
+
+	if ( dump_meta_names )
 		copy( meta_names.begin(), meta_names.end(),
 			ostream_iterator< char const* >( cout, "\n" )
 		);
-	}
+
 	if ( dump_entire_index || dump_meta_names || dump_stop_words )
 		return 0;
 
@@ -582,9 +588,9 @@ void	usage();
 //*****************************************************************************
 {
 	token t( query );
-	if ( t == token::word_token ) {
+	if ( t == token::word_token ) {			// meta name ...
 		token t2( query );
-		if ( t2 == token::equal_token ) {
+		if ( t2 == token::equal_token ) {	// ... followed by '='
 			less< char const* > const comparator;
 			find_result_type const found = ::equal_range(
 				meta_names.begin(), meta_names.end(),
@@ -597,9 +603,9 @@ void	usage();
 				meta_id_not_found;
 			goto no_put_back;
 		}
-		t2.put_back();
+		t2.put_back();				// put back '='
 	}
-	t.put_back();
+	t.put_back();					// put back name
 
 no_put_back:
 	return parse_primary( query, result, ignore, meta_id );
@@ -694,14 +700,22 @@ no_put_back:
 
 		case token::word_token: {
 			less< char const* > const comparator;
+			less_stem const stem_comparator;
 			//
 			// First check to see if the word wasn't indexed either
 			// because it's not an "OK" word according to the
 			// heuristics employed or because it's a stop-word.
 			//
-			if ( !is_ok_word( t.str() ) || ::binary_search(
-				stop_words.begin(), stop_words.end(),
-				t.lower_str(), comparator
+			if ( !is_ok_word( t.str() ) || ( stem_words ?
+				::binary_search(
+					stop_words.begin(), stop_words.end(),
+					t.lower_str(), stem_comparator
+				)
+			:
+				::binary_search(
+					stop_words.begin(), stop_words.end(),
+					t.lower_str(), comparator
+				)
 			) ) {
 				stop_words_found.insert( ::strdup( t.str() ) );
 #				ifdef DEBUG_parse_query
@@ -712,11 +726,19 @@ no_put_back:
 			//
 			// Look up the word.
 			//
-			found = ::equal_range( words.begin(), words.end(),
-				t.lower_str(), comparator
-			);
-			if ( found.first == words.end() ||
-				comparator( t.lower_str(), *found.first ) ) {
+			found = stem_words ?
+				::equal_range( words.begin(), words.end(),
+					t.lower_str(), stem_comparator
+				)
+			:
+				::equal_range( words.begin(), words.end(),
+					t.lower_str(), comparator
+				);
+			if ( found.first == words.end() || ( stem_words ?
+				stem_comparator( t.lower_str(), *found.first )
+			:
+				comparator( t.lower_str(), *found.first )
+			) ) {
 				//
 				// The following "return true" indicates that a
 				// word was parsed successfully, not that we
@@ -821,7 +843,8 @@ void usage() {
 	"  -i index_file   : Name of index file to use [default: " << Index_Filename_Default << "]\n"
 	"  -m max_results  : Maximum number of results [default: " << Results_Max_Default << "]\n"
 	"  -M              : Dump meta-name index to standard out and exit\n"
-	"  -s skip_results : Number of initial results to skip [default: 0]\n"
+	"  -r skip_results : Number of initial results to skip [default: 0]\n"
+	"  -s              : Stem words prior to search [default: no]\n"
 	"  -S              : Dump stop-word index to standard out and exit\n"
 	"  -V              : Print version number and exit\n"
 	"  -w size[,match] : Dump size window of words around query words [default: 0]\n";
