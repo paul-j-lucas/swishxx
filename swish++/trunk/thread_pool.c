@@ -22,12 +22,13 @@
 #ifdef	MULTI_THREADED
 
 // standard
-#include <cstdlib>
+#include <cstdlib>			/* for exit(2) */
 #include <ctime>
 #include <pthread.h>
 
 // local
 #include "exit_codes.h"
+#include "fake_ansi.h"
 #include "thread_pool.h"
 #include "util.h"
 
@@ -328,7 +329,7 @@ extern char const*	me;
 //
 //*****************************************************************************
 	: t_min_( min_threads ), t_max_( max_threads ),
-	  timeout_( timeout_ ), destructing_( false )
+	  destructing_( false ), timeout_( timeout )
 {
 	if (	::pthread_mutex_init( &t_busy_lock_, 0 ) ||
 		::pthread_mutex_init( &destructing_lock_, 0 ) ||
