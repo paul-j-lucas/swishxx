@@ -522,16 +522,15 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //*****************************************************************************
 {
 	if ( tag_cmp( c, "!--" ) ) {
-		while ( !c.at_end() ) {
-			if ( *c++ != '-' )
-				continue;
-			while ( !c.at_end() && *c == '-' )
-				++c;
-			while ( !c.at_end() && is_space( *c ) )
-				++c;
-			if ( !c.at_end() && *c++ == '>' )
-				break;
-		}
+		while ( !c.at_end() )
+			if ( *c++ == '-' && !c.at_end() && *c == '-' ) {
+				encoded_char_range::const_iterator const d = c;
+				while ( !(++c).at_end() && is_space( *c ) )
+					;
+				if ( c.at_end() || *c++ == '>' )
+					break;
+				c = d;
+			}
 		return true;
 	}
 	return false;
