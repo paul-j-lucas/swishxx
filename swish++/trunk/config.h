@@ -63,35 +63,46 @@ int const	Word_Max_Consec_Puncts		= 1;
 // upper case letters would be redundant.
 //
 char const	Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
-		// Characters that may be in a word.  Note that '&' is here so
-		// acronyms like "AT&T" are treated as one word.  Unlike
-		// SWISH-E, ';' does not need to be here to recognize and
-		// convert character entity references.
+//		Characters that may be in a word.  Note that '&' is here so
+//		acronyms like "AT&T" are treated as one word.  Unlike
+//		SWISH-E, ';' does not need to be here to recognize and
+//		convert character entity references.
 
 #define		OPTIMIZE_WORD_CHARS		1
-		// If you are using the default set of characters, that is the
-		// alphanumerics and "&'-_" characters, then having this macro
-		// set to 1 will optimize the is_word_char() function yielding
-		// about a 10% performance improvement; alternatively, you can
-		// also edit that function to keep the optimization if you are
-		// not using the default set of characters.  See util.h for
-		// details.
+//		If you are using the default set of characters, that is the
+//		alphanumerics and "&'-_" characters, then having this macro
+//		set to 1 will optimize the is_word_char() function yielding
+//		about a 10% performance improvement; alternatively, you can
+//		also edit that function to keep the optimization if you are
+//		not using the default set of characters.  See word_util.h for
+//		details.
 
 char const	Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
-		// Characters that may begin a word; should be a subset of the
-		// above.
+//		Characters that may begin a word; should be a subset of the
+//		above.
 
 #define		OPTIMIZE_WORD_BEGIN_CHARS	1
-		// Same deal as with OPTIMIZE_WORD_CHARS.
+//		Same deal as with OPTIMIZE_WORD_CHARS.
 
 char const	Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
-		// Characters that may end a word; usually the same as the
-		// above.
+//		Characters that may end a word; usually the same as the
+//		above.
 
 #define		OPTIMIZE_WORD_END_CHARS		1
-		// Same deal as with OPTIMIZE_WORD_CHARS.
+//		Same deal as with OPTIMIZE_WORD_CHARS.
 
-////////// HTML file parameters ///////////////////////////////////////////////
+////////// HTML parameters ////////////////////////////////////////////////////
+
+int const	Entity_Max_Size			= 7;
+//		The maximum size of an entity reference, e.g., "&eacute;" NOT
+//		counting the leading '&' or the trailing ';'.  You should have
+//		no reason to change this.
+
+int const	Tag_Name_Max_Size		= 11;
+//		The maximum size of an HTML tag name, e.g., "/BLOCKQUOTE".  You
+//		might need to increase this if you are indexing HTML documents
+//		that contain non-standard tags and at least one of them is
+//		longer than the above.
 
 int const	TitleLines_Default		= 12;
 //		Specifies the maximum number of lines into a file to look at
@@ -106,11 +117,6 @@ int const	Title_Max_Size			= 200;
 char const	ConfigFile_Default[]		= "swish++.conf";
 //		Default name of the configuration file; this can be
 //		overridden on the command line.
-
-int const	Entity_Max_Size			= 7;
-//		The maximum size of an entity reference, e.g., "&eacute;" NOT
-//		counting the leading '&' or the trailing ';'.  You should have
-//		no reason to change this.
 
 int const	FilesReserve_Default		= 1000;
 //		Default maximum number of files to reserve space for; see
@@ -142,6 +148,11 @@ char const	TempDirectory_Default[]		= "/tmp";
 //		for all users or override it either in a config. file or on
 //		the command line to use a directory on a real filesystem,
 //		i.e., one on a physical disk.  The directory must exist.
+
+int const	WordPercentMax_Default		= 100;
+//		Default maximum percentage of files a word may occur in before
+//		it is discarded as being too frequent; this can be overridden
+//		either in a config. file or on the command line.
 
 int const	Word_Threshold			= 250000;
 //		The word count past which partial indicies are generated and
