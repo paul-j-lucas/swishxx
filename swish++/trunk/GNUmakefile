@@ -125,7 +125,7 @@ E_SRCS:=	conf_var.c \
 E_OBJS:=	$(E_SRCS:.c=.o)
 E_LINK:=	$(CCLINK)
 
-PERL_TARGET:=	httpindex
+PERL_TARGET:=	httpindex splitmail
 ifndef WIN32
 PERL_TARGET+=	searchc
 endif
