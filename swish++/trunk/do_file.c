@@ -78,7 +78,7 @@
 	filter_list.reserve( 5 );
 
 	char const *ext;
-	while ( 1 ) {
+	while ( true ) {
 		//
 		// Check to see if the file name has an extension by looking
 		// for a '.' in it and making sure that it is not the last
