@@ -32,8 +32,10 @@
 //
 //	Construct (initialize) a char_entity_map.  Any entity that isn't listed
 //	below will convert to a space.  Note that is isn't necessary to convert
-//	"&lt;" and "&gt;" since such entities aren't indexed anyway (but
-//	"&amp;" is when part of an acronym like "AT&T").
+//	"&lt;" and "&gt;" since such entities aren't indexed anyway.  However,
+//	if is necessary to convert "&amp;" (so it can be part of an acronym
+//	like "AT&T") and "&apos;" (so it can be part of a contracted word like
+//	"can't").
 //
 // SEE ALSO
 //
@@ -46,7 +48,7 @@
 		char		char_equiv;
 	};
 	static char_entity const char_entity_table[] = {
-		"amp",    '&',
+		"amp",    '&', "apos",   '\'',		// apos is in XHTML
 		"Aacute", 'A', "aacute", 'a',
 		"Acirc",  'A', "acirc",  'a',
 		"AElig",  'A', "aelig",  'a',
@@ -71,13 +73,14 @@
 		"Oslash", 'O', "oslash", 'o',
 		"Otilde", 'O', "otilde", 'o',
 		"Ouml",   'O', "ouml",   'o',
+		"Scaron", 'S', "scaron", 's',		// in XHTML
 		"szlig",  's',
 		"Uacute", 'U', "uacute", 'u',
 		"Ucirc",  'U', "ucirc",  'u',
 		"Ugrave", 'U', "ugrave", 'u',
 		"Uuml",   'U', "uuml",   'u',
 		"Yacute", 'Y', "yacute", 'y',
-		"yuml",   'y',
+		"Yuml",   'Y', "yuml",   'y',
 
 		0
 	};
