@@ -31,6 +31,8 @@
 #	Uncomment whichever line represents your OS.  If your OS isn't listed
 #	here, just pick Linux and see if that works.
 #
+#	For Mac OS X, uncomment FREE_BSD.
+#
 ###############################################################################
 
 #FREE_BSD:=	-DFreeBSD
