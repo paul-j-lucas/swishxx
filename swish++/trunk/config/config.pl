@@ -47,7 +47,7 @@ while ( <STDIN> ) {
 	# expand \$other, i.e., a literal $.  (See also "Programming Perl," p.
 	# 69.)
 	#
-	# In oder not to expand \$other, change all \$ to <DOLLAR>, i.e., some
+	# In order not to expand \$other, change all \$ to <DOLLAR>, i.e., some
 	# character sequence not containing a $ and most likely not otherwise
 	# appearing in the string.  When done, change them back.
 	##
