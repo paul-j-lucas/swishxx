@@ -394,9 +394,9 @@ stop_word_set*		stop_words;		// pointer to global set
 		::exit( Exit_No_Read_Stopwords );
 	}
 
-	char word_buf[ Word_Hard_Max_Size + 1 ];
-	int word_len;
-	bool in_word = false;
+	char	word[ Word_Hard_Max_Size + 1 ];
+	int	len;
+	bool	in_word = false;
 
 	register mmap_file::const_iterator c = file.begin();
 	while ( true ) {
@@ -410,14 +410,14 @@ stop_word_set*		stop_words;		// pointer to global set
 			if ( is_word_char( ch ) ) {
 				if ( !in_word ) {
 					// start a new word
-					word_buf[ 0 ] = ch;
-					word_len = 1;
+					word[ 0 ] = ch;
+					len = 1;
 					in_word = true;
 					continue;
 				}
-				if ( word_len < Word_Hard_Max_Size ) {
+				if ( len < Word_Hard_Max_Size ) {
 					// continue same word
-					word_buf[ word_len++ ] = ch;
+					word[ len++ ] = ch;
 					continue;
 				}
 				in_word = false;	// too big: skip chars
@@ -437,11 +437,11 @@ stop_word_set*		stop_words;		// pointer to global set
 		////////// Got a word /////////////////////////////////////////
 
 		in_word = false;
-		if ( word_len < Word_Hard_Min_Size )
+		if ( len < Word_Hard_Min_Size )
 			continue;
 
-		word_buf[ word_len ] = '\0';
-		insert( ::strdup( word_buf ) );
+		word[ len ] = '\0';
+		insert( ::strdup( word ) );
 	}
 }
 
