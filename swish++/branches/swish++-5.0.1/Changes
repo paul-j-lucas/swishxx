@@ -2,6 +2,165 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.0.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* This releases fixes a lot of compile issues (mostly namespaces) with g++ 3.0.
+
+  (This bug fix shall be known as bug fix GCC3.)
+
+* The changes to fix the above have apparantly caused bugs in (at least) g++
+  2.95.3 to manifest themselves:
+
+	1. In some cases, the compiler "forgets" that operator<<(
+	   ostream&, string const& ) has been defined.  The hack
+	   workaround is to use operator<<( ostream&, char const* ) and
+	   use string::c_str().
+
+	2. The compiler "forgets" that stream manipulators have been defined.
+	   The workaround is not to use them.  :-(
+
+  (This fix shall be known as fix OOS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* bcd.h
+
+	1. Switched to using local omanip since depending on the
+	   underlying C++ implementation is not portable.  This was
+	   done for GCC3.
+
+* config/config-sh
+
+	1. Added PJL_GCC_295 since it's used in multiple places.  This was done
+	   for OOS.
+
+* config/config.mk
+
+	1. Made OPTIM = -O2 for g++ also since the optimizer under 3.0
+	   takes ridiculously long and uses most of the CPU and memory.
+	2. s/($(CC),g++)/($(findstring g++,$(CC)),g++)/
+
+* conf_var.h
+
+	1. s/cerr/std::cerr/ for OOS.
+
+* do_file.c
+
+	1. s/basename/pjl_basename/ due to name collision.
+
+* fake_ansi.h
+
+	1. Replaced __GNUC__, et al, with PJL_GCC_295 for OOS.
+
+* fdbuf.c
+* fdbuf.h
+
+	1. Added these files since the ability to attach an fstream to a Unix
+	   file descriptor has been removed from ANSI C++.  This was done for
+	   OOS.
+
+* filter.c
+
+	1. s/basename/pjl_basename/ due to name collision.
+
+* filter.h
+
+	1. s/std::unlink/::unlink/ for OOS.
+
+* GNUmakefile
+
+	1. Added fdbuf.c to S_SRCS for OOS.
+
+* index.c
+
+	1. Added my_write() since ostream::write() now apparantly requires a
+	   char* rather than a void* and I'm lazy about having to cast the
+	   pointers.  This was done for OOS.
+	2. s/o.write( /my_write( o, / for OOS.
+	3. Added #ifdef PJL_GCC_295 for fix OOS.
+
+* index_segment.h
+
+	1. s/random_access_iterator_tag/std::random_access_iterator_tag/ for
+	   OOS.
+
+* less.h
+
+	1. Added needed "namespace std { ... }" for OOS.
+
+* mmap_file.c
+
+	1. s/ios::open_mode/ios::openmode/ for OOS.
+
+* mmap_file.h
+
+	1. Added missing #include <fstream> for OOS.
+	2. s/ios::open_mode/std::ios::openmode/ for OOS.
+	3. s/reverse_bidirectional_iterator/std::reverse_bidirectional_iterator/
+	   for OOS.
+
+* omanip.h
+
+	1. Added this file to roll own ostream manipulator since depending on
+	   the underlying C++ implementation is not portable.  This was done
+	   for OOS.
+
+* option_stream.h
+
+	1. s/cerr/std::cerr/ for OOS.
+
+* pattern_map.h
+
+	1. Removed PJL_LOCAL_FNMATCH since it's not needed.
+	2. s/unary_function/std::unary_function/ for OOS.
+	3. s/std::fnmatch/::fnmatch/ for OOS.
+
+* search.c
+
+	1. s/#include <iomanip>/#include "omanip"/ for OOS.
+	2. Added #ifdef PJL_GCC_295 for fix OOS.
+
+* search.h
+
+	1. s/cerr/std::cerr/ for OOS.
+	2. s/cout/std::cout/ for OOS.
+
+* search_thread.c
+
+	1. Removed #include <fstream> for OOS.
+	2. Added #include "fdbuf.h" for OOS.
+	3. Switched to using fdbuf since the ability to attach an fstream to a
+	   Unix file descriptor has been removed from ANSI C++.
+
+* stem_word.h
+
+	1. s/less/std::less/
+
+* util.h
+
+	1. Added missing #include <iostream>
+	2. s/basename/pjl_basename/ due to name collision.
+	3. s/std::stat/::stat/ for OOS.
+	4. s/std::lstat/::lstat/ for OOS.
+	5. s/cerr/std::cerr/ for OOS.
+	6. s/endl/std::endl/ for OOS.
+
+* version.h
+
+	1. Updated version to "5.0.1".
+
+* word_info.c
+
+	1. Added missing "using namespace std;" for OOS.
+
+
+*******************************************************************************
 5.0
 *******************************************************************************
 
@@ -1899,7 +2058,7 @@ CHANGES, file-by-file
 
 	3. Made changes to daemon (daemon-type) for feature TCP.
 
-	4. Added stuff for TCP sockets. for feature TCP.
+	4. Added stuff for TCP sockets for feature TCP.
 
 	5. Updated exit status codes for feature TCP.
 
