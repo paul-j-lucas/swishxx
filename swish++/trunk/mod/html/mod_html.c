@@ -43,12 +43,64 @@ using namespace PJL;
 using namespace std;
 #endif
 
-ExcludeClass			exclude_class_names;
+bool				HTML_indexer::dump_html_elements_opt_ = false;
 HTML_indexer::stack_type	HTML_indexer::element_stack_;
+ExcludeClass			exclude_class_names;
 
 bool	is_html_comment( encoded_char_range::const_iterator &pos );
 bool	skip_html_tag( encoded_char_range::const_iterator &pos );
 bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	HTML_indexer::HTML_indexer()
+//
+// DESCRIPTION
+//
+//	Construct an HTML indexer.
+//
+//*****************************************************************************
+	: indexer( "HTML" )
+{
+	conf_var::register_var( "excludeclass" );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool HTML_indexer::claims_option( option_stream::option const &opt )
+//
+// DESCRIPTION
+//
+//	The main indexer got an option that isn't one of its own: see if it's
+//	one of this indexing module's options.
+//
+// PARAMETERS
+//
+//	opt	The prospective option to claim.
+//
+// RETURN VALUE
+//
+//	Returns true only if this indexing module claims the option.
+//
+//*****************************************************************************
+{
+	switch ( opt ) {
+		case 'C': // Specify CLASS name(s) not to index.
+			exclude_class_names.insert( to_lower( opt.arg() ) );
+			return true;
+
+		case 'H': // Dump recognized HTML and XHTML elements.
+			dump_html_elements_opt_ = true;
+			return true;
+
+		default:
+			return false;
+	}
+}
 
 //*****************************************************************************
 //
@@ -269,6 +321,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // SYNOPSIS
 //
+	/* virtual */
 	char const* HTML_indexer::find_title( mmap_file const &file ) const
 //
 // DESCRIPTION
@@ -830,6 +883,53 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // SYNOPSIS
 //
+	/* virtual */
+	option_stream::spec const* HTML_indexer::option_spec() const
+//
+// DESCRIPTION
+//
+//	Returns a pointer to a module-specific option specification.
+//
+// RETURN VALUE
+//
+//	See above.
+//
+//*****************************************************************************
+{
+	static option_stream::spec const opt_spec[] = {
+		"no-class",	1, 'C',
+		"dump-html",	0, 'H',
+		0
+	};
+	return opt_spec;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ void HTML_indexer::post_options()
+//
+// DESCRIPTION
+//
+//	After command-line options have been processed, see if the user
+//	requested that HTML elements be dumped.  If so, do it and exit.
+//
+//*****************************************************************************
+{
+	if ( dump_html_elements_opt_ ) {
+		element_map const &elements = element_map::instance();
+		::copy( elements.begin(), elements.end(),
+			ostream_iterator< element_map::value_type >( cout,"\n" )
+		);
+		::exit( Exit_Success );
+	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	bool skip_html_tag( register encoded_char_range::const_iterator &c )
 //
 // DESCRIPTION
@@ -908,6 +1008,28 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		return false;
 	c = d;
 	return true;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ void HTML_indexer::usage( ostream &o ) const
+//
+// DESCRIPTION
+//
+//	Write our indexing-module-specific usage options to a given ostream.
+//
+// PARAMETERS
+//
+//	o	The ostream to write the usage message to.
+//
+//*****************************************************************************
+{
+	o <<
+	"---------------------------- HTML options -------------------------------------\n"
+	"-C c   | --no-class c      : Class name not to index [default: none]\n"
+	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n";
 }
 
 #endif	/* mod_html */
