@@ -1,5 +1,5 @@
 /*
-**	pjl library
+**	PJL C++ Library
 **	fake_ansi.h -- Fake some ANSI C++ comittee resolutions
 **
 **	Copyright (C) 1998  Paul J. Lucas
