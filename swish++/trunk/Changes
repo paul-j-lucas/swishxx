@@ -3,6 +3,45 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.13.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Fixed occasional segmentation fault in the Manual page indexing module.
+
+  (This bug fix shall be know as big fix MMC1.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* BUGS
+
+	1. New file containing bug-reporting instructions.
+
+* INSTALL.win32
+
+	1. s!sources.redhat.com/cygwin!cygwin.com!
+	2. Removed mention of Windows 95 -- it's dead.
+	3. Added mention of Windows XP.
+
+* man/man4/swish++.index.4
+
+	1. Added (missing) mention of MP3 file titles.
+
+* mod/man/mod_man.c
+
+	1. In index_words(), s/while ( true )/while ( c != e.end_pos() )/
+	   for bug fix MMC1.
+
+* version.h
+
+	1. Changed to "5.13.3."
+
+
+*******************************************************************************
 5.13.2
 *******************************************************************************
 
