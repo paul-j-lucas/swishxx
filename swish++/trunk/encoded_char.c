@@ -27,7 +27,6 @@
 
 // local
 #include "encoded_char.h"
-#include "file_vector.h"
 #include "platform.h"
 #include "util.h"
 
@@ -41,9 +40,7 @@ using namespace std;
 //
 	/* static */ encoded_char_range::value_type
 	encoded_char_range::const_iterator::decode_base64(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator &c,
-		file_vector::const_iterator end
+		const_pointer begin, const_pointer &c, const_pointer end
 	)
 //
 // DESCRIPTION
@@ -53,7 +50,7 @@ using namespace std;
 //	Base64 encoding forces us to decode 3 characters at a time because they
 //	are encoded as a unit into 4 bytes.  This makes this code a major pain
 //	and slow because characters have to be able to be decoded with random
-//	access, i.e., wherever the iterator is positioned.
+//	access, i.e., wherever the pointer is positioned.
 //
 //	An approach other than the one implemented here would have been to
 //	decode the entire range into a buffer in one shot, but this could use a
@@ -68,12 +65,12 @@ using namespace std;
 //
 // PARAMETERS
 //
-//	begin	An iterator marking the beginning of the entire encoded range.
+//	begin	An pointer marking the beginning of the entire encoded range.
 //
-//	c	An iterator marking the position of the character to decode.
+//	c	An pointer marking the position of the character to decode.
 //		It is left after the decoded character.
 //
-//	end	An iterator marking the end of the entire encoded range.
+//	end	An pointer marking the end of the entire encoded range.
 //
 // RETURN VALUE
 //
@@ -97,19 +94,19 @@ using namespace std;
 	int const Bits_Per_Char = 6;	// by definition of Base64 encoding
 
 	static value_type buf[ 3 ];	// group-of-4 decodes to 3 chars
-	static file_vector::const_iterator prev_c;
+	static const_pointer prev_c;
 
 	//
-	// See if the iterator is less than a buffer's-worth away from the
-	// previous iterator: if so, simply return the already-decoded
+	// See if the pointer is less than a buffer's-worth away from the
+	// previous pointer: if so, simply return the already-decoded
 	// character.
 	//
 	difference_type delta = c - prev_c;
 	if ( delta >= 0 && delta < sizeof buf ) {
 		//
-		// We advance the iterator 1 position for the first 2
-		// characters but 2 positions for the 3rd since we have to skip
-		// over the 4th character used in the encoded versions of the
+		// We advance the pointer 1 position for the first 2 characters
+		// but 2 positions for the 3rd since we have to skip over the
+		// 4th character used in the encoded versions of the
 		// characters.
 		//
 return_decoded_char:
@@ -121,8 +118,8 @@ return_decoded_char:
 	//
 	// If we're positioned at a newline, skip over it.
 	//
-	register file_vector::const_iterator line_begin;
-	if ( (line_begin = skip_newline( c, end )) == end ) {
+	register const_pointer line_begin = skip_newline( c, end );
+	if ( line_begin == end ) {
 		c = end;
 		return ' ';
 	}
@@ -152,7 +149,7 @@ return_decoded_char:
 	//
 	delta = c - line_begin;
 	difference_type const delta4 = delta & ~3u;
-	file_vector::const_iterator const group = line_begin + delta4;
+	const_pointer const group = line_begin + delta4;
 
 	if ( group + 1 == end || group + 2 == end || group + 3 == end ) {
 		//
@@ -206,7 +203,7 @@ return_decoded_char:
 	//
 	// Pretend to have decoded a single character and that it took only a
 	// single byte to do it.  Additionally, remember the position of the
-	// iterator marking the beginning of the range of characters that have
+	// pointer marking the beginning of the range of characters that have
 	// been decoded.  If we subsequently are asked to decode a character in
 	// the range [i,i+3), we can simply return the character.
 	//
@@ -221,8 +218,7 @@ return_decoded_char:
 //
 	/* static */ encoded_char_range::value_type
 	encoded_char_range::const_iterator::decode_quoted_printable_aux(
-		file_vector::const_iterator &c,
-		file_vector::const_iterator end
+		const_pointer &c, const_pointer end
 	)
 //
 // DESCRIPTION
@@ -238,10 +234,10 @@ return_decoded_char:
 //
 // PARAMETERS
 //
-//	c	An iterator marking the position of the character to decode.
+//	c	An pointer marking the position of the character to decode.
 //		It is left after the decoded character.
 //
-//	end	An iterator marking the end of the entire encoded range.
+//	end	An pointer marking the end of the entire encoded range.
 //
 // RETURN VALUE
 //
