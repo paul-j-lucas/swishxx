@@ -32,11 +32,11 @@
 // local
 #include "config.h"
 #include "directory.h"
-#include "ExcludeExtension.h"
+#include "ExcludeFile.h"
 #include "exit_codes.h"
 #include "file_vector.h"
-#include "FilterExtension.h"
-#include "IncludeExtension.h"
+#include "FilterFile.h"
+#include "IncludeFile.h"
 #include "option_stream.h"
 #include "platform.h"
 #include "postscript.h"
@@ -52,9 +52,9 @@
 using namespace std;
 #endif
 
-ExcludeExtension	exclude_extensions;	// do not extract these
-IncludeExtension	include_extensions;	// do extract these
-FilterExtension		filters;
+ExcludeFile		exclude_patterns;	// do not extract these
+IncludeFile		include_patterns;	// do extract these
+FilterFile		filters;
 bool			in_postscript;
 char const*		me;			// executable name
 int			num_examined_files;
@@ -68,7 +68,7 @@ void			extract_words(
 				file_vector::const_iterator end,
 				ofstream&
 			);
-void			usage();
+ostream&		usage( ostream& = cerr );
 
 #define	EXTRACT
 #include "do_file.c"
@@ -114,8 +114,8 @@ void			usage();
 	static option_stream::spec const opt_spec[] = {
 		"help",		0, '?',
 		"config",	1, 'c',
-		"extension",	1, 'e',
-		"no-extension",	1, 'E',
+		"pattern",	1, 'e',
+		"no-pattern",	1, 'E',
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 		"follow-links",	1, 'l',
 #endif
@@ -142,18 +142,18 @@ void			usage();
 		switch ( opt ) {
 
 			case '?': // Print help.
-				usage();
+				cerr << usage;
 
 			case 'c': // Specify config. file.
 				config_file_name_arg = opt.arg();
 				break;
 
-			case 'e': // Specify filename extension to extract.
-				include_extensions.insert( opt.arg() );
+			case 'e': // Specify filename pattern to extract.
+				include_patterns.insert( opt.arg(), false );
 				break;
 
-			case 'E': // Specify filename extension not to extract.
-				exclude_extensions.insert( opt.arg() );
+			case 'E': // Specify filename pattern not to extract.
+				exclude_patterns.insert( opt.arg() );
 				break;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 			case 'l': // Follow symbolic links during extraction.
@@ -181,7 +181,7 @@ void			usage();
 				::exit( Exit_Success );
 
 			default: // Bad option.
-				usage();
+				cerr << usage;
 		}
 	argc -= opt_in.shift(), argv += opt_in.shift();
 
@@ -216,14 +216,13 @@ void			usage();
 
 	bool const using_stdin = *argv && (*argv)[0] == '-' && !(*argv)[1];
 	if ( !using_stdin &&
-		include_extensions.empty() && exclude_extensions.empty()
-	) {
-		error()	<< "extensions must be specified "
-			"when not using standard input " << endl;
-		usage();
-	}
+		include_patterns.empty() && exclude_patterns.empty()
+	)
+		error()	<< "filename patterns must be specified "
+			"when not using standard inputi\n" << usage;
+
 	if ( !argc )
-		usage();
+		cerr << usage;
 
 	////////// Extract text from specified files //////////////////////////
 
@@ -431,21 +430,22 @@ void			usage();
 //
 //*****************************************************************************
 
-void usage() {
-	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
+ostream& usage( ostream &o ) {
+	o << "usage: " << me << " [options] dir ... file ...\n"
 	"options: (unambiguous abbreviations may be used for long options)\n"
 	"========\n"
 	"-?   | --help             : Print this help message\n"
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"-e e | --extension e      : Extension to extract [default: none]\n"
-	"-E e | --no-extension e   : Extension not to extract [default: none]\n"
+	"-e p | --pattern p        : Filename pattern to extract [default: none]\n"
+	"-E p | --no-pattern p     : Filename pattern not to extract [default: none]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	"-l   | --follow-links     : Follow symbolic links [default: no]\n"
 #endif
 	"-r   | --no-recurse       : Don't extract subdirectories [default: do]\n"
 	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
-	"-S   | --dump-stop        : Dump stop-words and exit\n"
+	"-S   | --dump-stop        : Dump stop-words, exit\n"
 	"-v v | --verbosity v      : Verbosity level [0-4; default: 0]\n"
-	"-V   | --version          : Print version number and exit\n";
+	"-V   | --version          : Print version number, exit\n";
 	::exit( Exit_Usage );
+	return o;			// just to make the compiler happy
 }
