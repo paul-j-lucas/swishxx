@@ -980,7 +980,7 @@ static void		write_word_index( ostream&, off_t* );
 	if ( verbosity > 1 )
 		cout << '\n' << me << ": ranking index..." << flush;
 
-	TRANSFORM_EACH( word_map, words, w ) {
+	for ( word_map::iterator w = words.begin(); w != words.end(); ) {
 		word_info &info = w->second;
 
 		if ( is_too_frequent( w->first.c_str(), info.files_.size() ) ) {
@@ -989,9 +989,10 @@ static void		write_word_index( ostream&, off_t* );
 			// word.
 			//
 			stop_words->insert( new_strdup( w->first.c_str() ) );
-			words.erase( w );
+			words.erase( w++ );
 			continue;
 		}
+		++w;
 
 		//
 		// Compute the rank for this word in every file it's in.
