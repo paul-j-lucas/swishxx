@@ -685,7 +685,11 @@ not_indexable:  type.content_type_ = ct_not_indexable;
         case ct_multipart:
             index_multipart( c.pos(), c.end_pos() );
             boundary_stack.pop_back();
-            return;
+            break;
+
+        case ct_not_indexable:
+            // do nothing
+            break;
     }
 }
 
