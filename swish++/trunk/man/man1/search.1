@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "January 30, 2000" "SWISH++"
+.TH \f3search\fP 1 "February 12, 2000" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -309,6 +309,16 @@ Wildcards are not permitted.
 .B \-\-dump-index
 Dump the entire word index to standard output and exit.
 .TP
+.BI \-f n
+.br
+.ns
+.TP
+.BI \-\-word-files= n
+The maximum number of files,
+.IR n ,
+a word may occur in before it is discarded as being too frequent.
+(Default is infinity.)
+.TP
 .BI \-i f
 .br
 .ns
@@ -381,6 +391,17 @@ Used in conjunction with
 or
 .BR \-\-max-results ,
 results can be returned in ``pages.''
+.TP
+.BI \-p n
+.br
+.ns
+.TP
+.BI \-\-word-percent= n
+The maximum percentage,
+.IR n ,
+of files a word may occur in before it is discarded as being too frequent.
+(Default is 100.)
+If you want to keep all words regardless, specify 101.
 .TP
 .B \-s
 .br
@@ -510,6 +531,18 @@ Same as
 .B \-O
 or
 .B \-\-thread-timeout
+.TP
+.B WordFilesMax
+Same as
+.B \-f
+or
+.B \-\-word-files
+.TP
+.B WordPercentMax
+Same as
+.B \-p
+or
+.B \-\-word-percent
 .PD
 .RE
 .SH EXAMPLES
@@ -587,9 +620,9 @@ use Socket;
 
 $SocketFile = '/tmp/swish++.socket';
 socket( SEARCH, PF_UNIX, SOCK_STREAM, 0 ) or
-	die "$me: can not open socket: $!\\n";
+	die "can not open socket: $!\\n";
 connect( SEARCH, sockaddr_un( $SocketFile ) ) or
-	die "$me: can not connect to \\"$SocketFile\\": $!\\n";
+	die "can not connect to \\"$SocketFile\\": $!\\n";
 .cE
 Autoflush
 .B must
@@ -631,47 +664,47 @@ Error in configuration file.
 2
 Error in command-line options.
 .TP
-50
+40
 Unable to read index file.
 .TP
-51
+50
 Malformed query.
 .TP
-52
+51
 Could not open socket file.
 .TP
-53
+52
 Could not
 .BR unlink (2)
 socket file.
 .TP
-54
+53
 Could not
 .BR bind (3)
 to socket.
 .TP
-55
+54
 Could not
 .BR listen (3)
 to socket.
 .TP
-56
+55
 Could not
 .BR accept (3)
 a socket connection.
 .TP
-57
+56
 Could not
 .BR fork (2)
 child process.
 .TP
-58
+57
 Could not change directory to \f(CW/\f1.
 .TP
-59
+58
 Could not create thread.
 .TP
-60
+59
 Could not detach thread.
 .PD
 .RE
