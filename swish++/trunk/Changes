@@ -3,6 +3,30 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.9.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Under Windows, the printing of file names was slightly messed up.
+
+  (This bug fix shall be known as bug fix WDS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* directory.c
+
+	1. In do_check_add_file(), s!'/'!Dir_Sep_Char! for bug fix WDS.
+
+* version.h
+
+	1. Upped version to "5.9.3".
+
+
+*******************************************************************************
 5.9.2
 *******************************************************************************
 
