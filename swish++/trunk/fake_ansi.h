@@ -2,7 +2,7 @@
 **	PJL C++ Library
 **	fake_ansi.h -- Fake some ANSI C++ comittee resolutions
 **
-**	Copyright (C) 1998  Paul J. Lucas
+**	Copyright (C) 2001  Paul J. Lucas
 **
 **	This program is free software; you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -22,9 +22,13 @@
 #ifndef	fake_ansi_H
 #define	fake_ansi_H
 
+// standard
+#include <cstddef>			/* for ptrdiff_t */
+
+// local
 #include "platform.h"
 
-/* namespaces */
+////////// namespaces /////////////////////////////////////////////////////////
 
 #ifdef	PJL_NO_NAMESPACES
 #	define namespace		/* nothing */
@@ -32,7 +36,31 @@
 #	define std			/* nothing */
 #endif
 
-/* some new keywords */
+//
+// The HP STL headers are broken for g++ 2.95.3 and earlier because
+// stl_config.h incorrectly defines __STL_NO_NAMESPACES when it shouldn't
+// (causing __STL_USE_NAMESPACES to be undefined) and stl_iterator.h defines
+// "struct iterator" only when __STL_USE_NAMESPACES is defined.  Short of those
+// headers being fixed (supposedly in g++ 3.0), we defines std::iterator here
+// ourselves: the definition is copied/pasted from stl_iterator.h.
+//
+#if	 defined(__GNUC__) && __GNUC__ <= 2 && \
+	 defined(__STL_NO_NAMESPACES) && \
+	!defined(__STL_USE_NAMESPACES)
+namespace std {
+	template <class _Category, class _Tp, class _Distance = ptrdiff_t,
+		  class _Pointer = _Tp*, class _Reference = _Tp&>
+	struct iterator {
+		typedef _Category  iterator_category;
+		typedef _Tp        value_type;
+		typedef _Distance  difference_type;
+		typedef _Pointer   pointer;
+		typedef _Reference reference;
+	};
+}
+#endif
+
+////////// some new keywords //////////////////////////////////////////////////
 
 #ifdef	PJL_NO_EXPLICIT
 #	define explicit			/* nothing */
