@@ -86,6 +86,10 @@ BUG FIXES
 
   (This bug fix shall be known as bug fix BOB.)
 
+* Filename patterns didn't match if the wildcard wasn't first, e.g., foo*
+
+  (This bug fix shall be known as bug fix WWF.)
+
 
 CHANGES, file-by-file
 ---------------------
@@ -97,6 +101,7 @@ CHANGES, file-by-file
 	2. Added "explicit" to constructor.
 	3. Added: auto_vec<T>& operator=( T *p )
 	4. s/T *const p_/T *p_/
+	5. Added PJL namespace.
 
 * bcd.c
 
@@ -162,6 +167,7 @@ CHANGES, file-by-file
 	2. Added "using namespace std;" since it should have been there
 	   all along.
 	3. Switched to using auto_vec<char> and to_lower_r() for bug fix BOB.
+	4. Added PJL namespace.
 
 * conf_enum.c
 * conf_enum.h
@@ -172,6 +178,11 @@ CHANGES, file-by-file
 
 	1. Switched to using auto_vec<char> and to_lower_r() for bug fix BOB.
 	2. s/cerr << error/error()/
+	3. Added PJL namespace.
+
+* conf_set.h
+
+	1. Added PJL namespace.
 
 * conf_string.c
 
@@ -209,6 +220,7 @@ CHANGES, file-by-file
 	   under FreeBSD.)
 	F. Added ResultSeparator variable for feature SRS.
 	G. s/cerr << warning/warning()/
+	H. Added PJL namespace.
 
 * conf_var.h
 
@@ -227,9 +239,9 @@ CHANGES, file-by-file
 	3. Added ExtractFile::const_iterator for feature MOD.
 	4. s/name_set_.contains()/seen_file()/
 	5. s/file_info::current_file().num_words_/fi->num_words()/
-	6. Removed "filter_list.reserve( 5 )" so as not to waste time
-	   and thereby penalize the performance for files that are not
-	   filtered.
+	6. Removed "filter_list.reserve( 5 )" so as not to waste time and
+	   thereby penalize the performance for files that are not filtered.
+	7. Recalculated basename for bug fix WWF.
 
 * elements.c
 
@@ -238,6 +250,10 @@ CHANGES, file-by-file
 	3. Added ruby elements for feature RUBY.
 
 * elements.h
+
+	1. Added "#ifdef MOD_HTML" for feature MOD.
+	2. Added PJL namespace.
+
 * entities.h
 * entities.c
 
@@ -273,6 +289,7 @@ CHANGES, file-by-file
 	   doesn't use modules.
 	2. Reworked -e and -E options to allow multiple,
 	   comma-separated patterns just like for index(1).
+	3. Added PJL namespace.
 
 * ExtractFile.c
 * ExtractFile.h
@@ -302,6 +319,7 @@ CHANGES, file-by-file
 	2. Made all but list_ data members private.
 	3. Added public accessor functions for now-private data members.
 	4. Added inc_words() and seen_file().
+	5. Added PJL namespace.
 
 * file_list.c
 
@@ -333,6 +351,7 @@ CHANGES, file-by-file
 	4. Added code to increment pos past substituted text for bug fix FSR.
 	5. Added code for %E for feature 22L.
 	6. Changed handling of @ for feature SM2.
+	7. Made use of basename() added to util.h.
 
 * filter.h
 
@@ -360,6 +379,8 @@ CHANGES, file-by-file
 	6. s/ifndef WIN32/ifdef SEARCH_DAEMON/
 	7. Added fnmatch.c conditionally for WIN32 to E_SRCS.
 	8. Removed WIN32 special case for platform.h.
+	9. s/=/:=/
+	A. Reworded C++ compiler section.
 
 * html.c
 * html.h
@@ -382,6 +403,7 @@ CHANGES, file-by-file
 * IncludeMeta.c
 
 	1. Added this file for feature MAIL.
+	2. Added PJL namespace.
 
 * IncludeMeta.h
 
@@ -414,6 +436,7 @@ CHANGES, file-by-file
 	E. In rank(), s/num_words_/num_words()/
 	F. In write_file_index(), made use of new file_info member functions.
 	G. Removed all WIN32 special cases.
+	H. Added PJL namespace.
 
 * index.h
 
@@ -423,15 +446,18 @@ CHANGES, file-by-file
 * indexer.h
 
 	1. Added for feature MOD.
+	2. Added PJL namespace.
 
 * index_segment.c
 
 	1. Removed: #include "fake_ansi.h"
 	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+	3. Added PJL namespace.
 
 * index_segment.h
 
 	1. Made index_segment::const_iterator derived from std::iterator.
+	2. Added PJL namespace.
 
 * init_modules.c
 
@@ -446,6 +472,11 @@ CHANGES, file-by-file
 * itoa.c
 
 	1. s/fake_ansi.h/platform.h/
+	2. Added PJL namespace.
+
+* itoa.h
+
+	1. Added PJL namespace.
 
 * less.h
 
@@ -508,10 +539,12 @@ CHANGES, file-by-file
 	2. s/REINTERPRET_CAST( caddr_t )( -1 )/MAP_FAILED/
 	3. Removed all WIN32 code.
 	4. s/fake_ansi.h/platform.h/
+	5. Added PJL namespace.
 
 * mmap_file.h
 
 	1. Removed all WIN32 code.
+	2. Added PJL namespace.
 
 * mod_html.c
 
@@ -519,6 +552,7 @@ CHANGES, file-by-file
 	2. Reworked everything to use encoded_char_ranges.
 	3. Moved configuration variable extern declarations to .h files.
 	4. In parse_html_tag(), s/tag/name/
+	5. Added PJL namespace.
 
 * mod_html.h
 
@@ -529,16 +563,28 @@ CHANGES, file-by-file
 	   encoded_char_range or encoded_char_range::const_iterator
 	   argument so they could parse HTML that is encoded.
 	4. Moved configuration variable extern declarations to .h files.
+	5. Added PJL namespace.
 
 * mod_mail.c
 * mod_mail.h
 
 	1. Added for feature MAIL.
 
+* my_set.h
+
+	1. Added PJL namespace.
+
+* option_stream.c
+* option_stream.h
+
+	1. Added PJL namespace.
+
 * pattern_map.h
 
 	1. s/::find_if/std::find_if/
 	2. Added: #ifdef PJL_LOCAL_FNMATCH
+	3. Added "typename" to declaration of map_type.
+	4. s/value_type const&/argument_type/
 
 * PidFile.h
 
@@ -547,6 +593,10 @@ CHANGES, file-by-file
 * platform.h.win32
 
 	1. Removed since not longer needed under cygwin.
+
+* postscript.h
+
+	1. Added PJL namespace.
 
 * README
 
@@ -589,6 +639,7 @@ CHANGES, file-by-file
 	   s/' '/result_separator/ for feature SRS.
 	F. In search_options::search_options(), added 'R' case for feature SRS.
 	G. In usage(), added line for -R for feature SRS.
+	H. Added PJL namespace.
 
 * search.h
 
@@ -596,6 +647,7 @@ CHANGES, file-by-file
 	2. Added socket_address_arg for feature TCP.
 	3. s/ostream/std::ostream/ (it should have been that way all along).
 	4. Added result_separator_arg for feature SRS.
+	5. Added PJL namespace.
 
 * searchc.in
 
@@ -609,6 +661,7 @@ CHANGES, file-by-file
 	2. Added "#include <sys/time.h>" for bug fix BSD3.
 	3. In accept_failed(), added "#ifdef EPROTO" for bug fix BSD3.
 	4. Partitioned the code into smaller functions.
+	5. Added PJL namespace.
 
 * SearchDaemon.c
 
@@ -633,6 +686,11 @@ CHANGES, file-by-file
 * search_thread.c
 
 	1. s/fake_ansi.h/platform.h/
+	2. Added PJL namespace.
+
+* search_thread.h
+
+	1. Added PJL namespace.
 
 * SocketAddress.h
 * SocketAddress.c
@@ -670,6 +728,11 @@ CHANGES, file-by-file
 * stop_words.c
 
 	1. Added "shall", "you'll", "you're".
+	2. Added PJL namespace.
+
+* stop_words.c
+
+	1. Added PJL namespace.
 
 * swish++.conf
 
@@ -708,6 +771,11 @@ CHANGES, file-by-file
 	2. Added: #ifndef PJL_NO_NAMESPACES (it should have been there
 	   all along).
 	3. s/STATIC_CAST(...)/static_cast<...>/
+	4. Added PJL namespace.
+
+* thread_pool.c
+
+	1. Added PJL namespace.
 
 * ThreadsMax.h
 
@@ -757,6 +825,7 @@ CHANGES, file-by-file
 * word_info.h
 
 	1. s/html.h/indexer.h/ for feature MOD.
+	2. Added PJL namespace.
 
 * man/man3/WWW.3
 
@@ -771,6 +840,7 @@ CHANGES, file-by-file
 * util.h
 
 	1. Removed all WIN32 special cases.
+	2. Added: basename().
 
 * Win32-Makefile-index.v
 * Win32-Makefile-search.v
