@@ -30,6 +30,7 @@
 
 // local
 #include "elements.h"
+#include "encoded_char.h"
 #include "indexer.h"
 
 //*****************************************************************************
@@ -42,10 +43,23 @@
 //
 //	An HTML_indexer is-an indexer for indexing HTML or XHTML files.
 //
+// SEE ALSO
+//
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "HTML 4.0
+//	Specification," World Wide Web Consortium, April 1998.
+//		http://www.w3.org/TR/PR-html40/
+//
 //*****************************************************************************
 {
 public:
 	HTML_indexer() : indexer( "HTML" ) { }
+
+	virtual char const*	find_title( file_vector const& ) const;
+	virtual void		index_words(
+					encoded_char_range::const_iterator&,
+					int meta_id = No_Meta_ID
+				);
+	virtual void		new_file();
 private:
 	// The element_stack keeps track of all the HTML or XHTML elements we
 	// encounter until they are closed.  The first member of the pair is a
@@ -61,19 +75,9 @@ private:
 	//
 	typedef std::vector< std::pair< element_map::value_type const*, bool > >
 		stack_type;
-	static stack_type	element_stack_;
+	static stack_type element_stack_;
 
-	virtual char const*	find_title( file_vector const& ) const;
-	virtual void		index_words(
-					file_vector::const_iterator begin,
-					file_vector::const_iterator end,
-					int meta_id = No_Meta_ID
-				);
-	virtual void		new_file();
-	void			parse_html_tag(
-					file_vector::const_iterator &pos,
-					file_vector::const_iterator end
-				);
+	void	parse_html_tag( encoded_char_range::const_iterator& );
 };
 
 #endif	/* mod_html_H */
