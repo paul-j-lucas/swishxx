@@ -717,7 +717,7 @@ static void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	int r = int(
+	int const r = int(
 		( ::log( occurences_in_file ) + 10 ) * factor
 		/ file_info::ith_info( file_index )->num_words()
 	);
