@@ -18,6 +18,55 @@ day job.
 
 
 *******************************************************************************
+4.7
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added 'b' and 'B' substitutions for filters that are the base name and base
+  name minus the extension of a file name, respectively.  This is useful when
+  you need the temporary files created in a location other than where the
+  originals are, for example when the originals are on a filesystem that you
+  don't have write access to.
+
+  Note that, for consistency, the 'E' substitution has been renamed to 'F'.
+  This is therefore an incompatible change with previous versions of SWISH++.
+
+  (This feature shall be knows as feautre BBS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* filter.c
+
+	1. Added code to determine the base name of a file for feature
+	   BBS.
+
+	2. Added 'b' and 'B' cases for feature BBS.
+
+	3. Renamed 'E' case to 'F' case for consistency.
+
+* FilterFile.c
+
+	1. Added 'b' and 'B' substitutions as legal for feature BBS.
+
+	2. Changed 'E' substitution to 'F' for consistency.
+
+	3. Edit corresponding error message for feature BBS.
+
+* man/man4/swish++.conf.4
+
+	1. Changed description of filter substitutions to match feature
+	   BBS.
+
+* version.h
+
+	1. Updated version to "4.7".
+
+
+*******************************************************************************
 4.6.6
 *******************************************************************************
 
