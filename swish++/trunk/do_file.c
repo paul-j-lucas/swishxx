@@ -84,7 +84,7 @@
 	// the index.
 	//
 	off_t const orig_file_size = file_size();
-#endif
+#endif	/* INDEX */
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
@@ -97,7 +97,7 @@
 			cout << " (skipped: symbolic link)\n";
 		return;
 	}
-#endif
+#endif	/* PJL_NO_SYMBOLIC_LINKS */
 
 #ifdef	INDEX
 	//
@@ -109,7 +109,7 @@
 			cout << " (skipped: encountered before)\n";
 		return;
 	}
-#endif
+#endif	/* INDEX */
 
 	////////// Perform filter name substitution(s) ////////////////////////
 
@@ -194,7 +194,7 @@
 		}
 		out = &extracted_file;
 	}
-#endif
+#endif	/* EXTRACT */
 
 	//
 	// Execute the filter(s) on the file.
@@ -247,12 +247,12 @@
 
 	if ( words.size() >= Word_Threshold )
 		write_partial_index();
-#endif
+#endif	/* INDEX */
 
 #ifdef	EXTRACT
 	////////// Extract the file ///////////////////////////////////////////
 
 	++num_extracted_files;
 	extract_words( file.begin(), file.end(), *out );
-#endif
+#endif	/* EXTRACT */
 }
