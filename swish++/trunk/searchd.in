@@ -20,6 +20,8 @@
 #       along with this program; if not, write to the Free Software
 #       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
+# chkconfig: 35 99 99
+# description: SWISH++ search daemon.
 
 ##
 # What stuff is called and where it's located.
@@ -63,12 +65,12 @@ USR2=`$KILL -l USR2 2>&1`
 # Figure out how to do echo without a newline.  This is stolen from Perl's
 # Configure script.
 ##
-(echo "hi there\c"; echo) >.echotmp
-if grep c .echotmp >/dev/null 2>&1
+(echo "hi there\c"; echo) >/tmp/.echotmp
+if grep c /tmp/.echotmp >/dev/null 2>&1
 then c=''  ; n='-n'
 else c='\c'; n=''
 fi
-rm -f .echotmp
+rm -f /tmp/.echotmp
 
 ##
 # If we're on a Linux system, use it's start/stop functions that make the
