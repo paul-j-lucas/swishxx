@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "August 21, 2000" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "August 29, 2000" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -153,14 +153,20 @@ that are substituted at run-time:
 .RS 5
 .PD 0
 .TP 5
-.B E
-Filename with last extension deleted.
+.B b
+Basename of filename.
+.TP
+.B B
+Basename minus last extension.
 .TP
 .B e
 Extension of filename.
 .TP
 .B f
 Entire filename.
+.TP
+.B F
+Filename minus last extension.
 .RE
 .PD
 .PP
@@ -179,7 +185,7 @@ When
 .B index
 or
 .B extract
-encounteres a file having an extension for which a filter has been specified,
+encounters a file having an extension for which a filter has been specified,
 it performs the filename substitution(s) on it first
 to determine what the target filename would be.
 If the extension of
@@ -198,6 +204,13 @@ variable),
 then the filter(s) are executed to create it.
 (See the EXAMPLES.)
 .PP
+The
+.B b
+and
+.B B
+substititions can be used when the temporary files should be created
+in directories other than where the original files are, e.g., \f(CW/tmp\f1.
+.PP
 To use a literal \f(CW%\f1 or \f(CW@\f1, simply double it.
 .SH EXAMPLES
 .SS Filters
@@ -206,8 +219,8 @@ prior to indexing or extraction, the
 .B FilterFile
 variable lines in a configuration file would be:
 .cS
-FilterFile *.gz   gunzip -c %f > @E
-FilterFile *.Z    uncompress -c %f > @E
+FilterFile *.gz   gunzip -c %f > @F
+FilterFile *.Z    uncompress -c %f > @F
 .cE
 Given that, a filename such as \f(CWfoo.txt.gz\f1 would become \f(CWfoo.txt\f1.
 If files having \f(CWtxt\f1 extensions should be indexed, then it will be.
@@ -227,7 +240,7 @@ Here's an example to convert PDF to plain text for indexing using the
 .BR xpdf (1)
 package's \f(CWpdftotext\f1 command:
 .cS
-FilterFile *.pdf  pdftotext %f @E.txt
+FilterFile *.pdf  pdftotext %f @F.txt
 .cE
 Not that if used in conjunction with the uncompression filters above,
 then compressed PDF files will also be indexed, i.e.,
