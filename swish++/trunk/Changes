@@ -2,6 +2,62 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4.5
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* If AssociateMeta, IncludeFile, IncludeMeta, ExcludeFile, or ExcludeMeta were
+  not given in a configuration file, values given via the command line were
+  discarded.
+
+  (This bug fix shall be known as bug fix CRA.)
+
+* On some systems, the auto-builing of dependencies got into an infinite loop
+  since the "dep" directory's timestamp was updated for every dependency file
+  and thus everything that depended on it was always out of date.  Why this
+  doesn't happen on all systems isn't clear.
+
+  (This bug fix shall be known as bug fix DTS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Removed "dep" for bug fix DTS.
+
+* config/GNUmakefile
+
+	1. s/dep/.*.d/ for bug fix DTS.
+
+* conf_var.c
+
+	1. In parse_file(), removed call to reset_all() for bug fix CRA.
+
+* conf_var.h
+
+	1. Made reset_all() public.
+
+* GNUmakefile
+* mod.mk
+
+	1. Changed "dep/%.d" (back) to ".%.d" for bug fix DTS.
+	2. In distclean rule, s/dep/.*.d/ for bug fix DTS.
+
+* INSTALL.win32
+* INSTALL.unix
+
+	1. s/dep/.*.d/ for bug fix DTS.
+
+* version.h
+
+	1. Updated version to "5.4.5".
+
+
+*******************************************************************************
 5.4.4
 *******************************************************************************
 
