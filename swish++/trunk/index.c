@@ -23,13 +23,13 @@
 #include <cmath>			/* for log(3) */
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
-#include <ctime>
-#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <fstream>
 #include <iomanip>			/* for setfill(), setw() */
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <time.h>
+#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>		/* for RLIMIT_* */
 #include <sys/types.h>
 #include <unistd.h>			/* for unlink(2) */

@@ -22,12 +22,12 @@
 // standard
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
-#include <ctime>
 #include <fstream>
 #include <iomanip>			/* for setfill(), setw() */
 #include <iostream>
 #include <string>
 #include <sys/types.h>
+#include <time.h>
 
 // local
 #include "platform.h"

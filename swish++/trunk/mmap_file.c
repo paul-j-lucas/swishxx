@@ -22,7 +22,7 @@
 // standard
 #include <cerrno>
 #include <fcntl.h>			/* for open(2), O_RDONLY, etc */
-#include <ctime>			/* needed by sys/resource.h */
+#include <time.h>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>		/* for get/setrlimit(2) */
 #include <sys/stat.h>			/* for stat(2) */

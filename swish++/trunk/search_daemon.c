@@ -27,11 +27,11 @@
 #include <cerrno>
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
-#include <ctime>			/* needed by sys/resource.h */
-#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <fstream>
 #include <iostream>
 #include <signal.h>
+#include <time.h>			/* needed by sys/resource.h */
+#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>		/* for RLIMIT_* */
 #include <sys/socket.h>			/* for bind(3), socket(3), etc. */
 #include <sys/un.h>			/* for sockaddr_un */

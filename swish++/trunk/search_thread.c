@@ -26,10 +26,10 @@
 #include <cerrno>
 #include <climits>			/* for ARG_MAX */
 #include <cstring>
-#include <ctime>
 #include <fcntl.h>
 #include <iostream>
 #include <sys/socket.h>			/* for recv(3) */
+#include <time.h>
 #include <unistd.h>			/* for close(2) */
 
 //
