@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "February 15, 2000" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "April 21, 2001" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -118,10 +118,15 @@ and
 .SS String variables
 Variables of this type take one argument that is the remainder of the line
 minus leading and trailing whitespace.
+To preserve whitespace,
+surround the argument in either single or double quotes.
+The quotes themselves are stripped from the argument,
+but only if they match.
 Variables of this type are:
 .BR ExtractExtension ,
 .BR IndexFile ,
 .BR PidFile ,
+.BR ResultSeparator ,
 .BR SocketFile ,
 and
 .BR StopWordFile .
@@ -162,7 +167,7 @@ Module names are:
 and
 \f(CWMail\f1 (mail and news messages).
 .P
-A
+An
 .B IncludeMeta
 configuration file line is of the form:
 .cS
@@ -194,7 +199,10 @@ that is: an optional host and colon
 followed by a port number.
 The
 .I host
-may be one of a host name, an IP address, or the \f(CW*\f1 character
+may be one of a host name, an IPv4 address (in dot-decimal notation),
+an IPv6 address (in colon notation)
+if supported by the operating system,
+or the \f(CW*\f1 character
 meaning ``any IP address.''
 Omitting the
 .I host
@@ -301,7 +309,7 @@ line must
 .I not
 simply be:
 .cS
-gunzip @f
+gunzip @f				# WRONG!
 .cE
 because \f(CWgunzip\f1 will
 .I replace
