@@ -34,6 +34,9 @@ enum {
 	Exit_No_Write_Index	= 11,
 	Exit_No_Write_Temp	= 12,
 
+	// unique to extract
+	Exit_No_Such_File	= 20,
+
 	// common between index and extract
 	Exit_No_Read_Stopwords	= 30,
 
