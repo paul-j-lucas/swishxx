@@ -2,6 +2,159 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3.6
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Indexing files via standard input where the order of the directories
+  wasn't "monotonically increasing," didn't work: files ended up in the wrong
+  directory.
+
+  As a beneficial consequence, the -D and -G options and the DirectoriesGrow
+  and DirectoriesReserve variables are no longer needed.
+
+  (This bug fix shall be known as big fix ISI2.)
+
+* Destroying a thread_pool's threads didn't work properly in that the clean-up
+  function for all threads didn't get called.  (This didn't matter for SWISH++
+  since search(1) never destroys its thread_pool.)
+
+  (This bug fix shall be known as big fix TPD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added -D_XOPEN_SOURCE=500 for compiling search daemon under Linux
+	   for bug fix TPD.
+
+* config.h
+
+	1. Removed DirectoriesGrow_Default and DirectoriesReserve_Default as
+	   part of bug fix ISI2.
+
+* conf_var.c
+
+	1. In parse_file(), added reset_all().
+	2. In reset_all(), added check for null pointer.
+	3. Removed DirectoriesGrow and DirectoriesReserve as part of bug fix
+	   ISI2.
+
+* DirectoriesGrow.h
+* DirectoriesReserve.h
+
+	1. Removed these files as part of bug fix ISI2.
+
+* directory.c
+
+	1. Changed do_file() to take a second dir_index argument for bug fix
+	   ISI2.
+	2. Changed return type of check_add_directory() to return a directory
+	   index for bug fix ISI2.
+	3. In check_add_directory(), changed from using a set to a map where
+	   the value is the directory index for bug fix ISI2.
+	4. In do_check_add_file() and do_directory(), made it get and pass
+	   dir_index to do_file() for bug fix ISI2.
+	5. Removed directories_reserve as part of bug fix ISI2.
+
+* directory.h
+
+	1. s/dir_list/dir_set/
+
+* do_file.c
+
+	1. When compiled for index(1), made do_file() take a second argument of
+	   dir_index for bug fix ISI2.
+	2. Added dir_index to call to file_info() constructor for bug fix ISI2.
+
+* exit_codes.h
+
+	1. s/Exit_No_Init_Condition/Exit_No_Init_Thread_Condition/
+	2. s/Exit_No_Init_Mutex/Exit_No_Init_Thread_Mutex/
+
+* file_info.c
+
+	1. Made first constructor take dir_index argument for bug fix ISI2.
+	2. Removed second constructor for bug fix ISI2.
+	3. Integrated construct() into lone constructor.
+
+* file_info.h
+
+	1. Removed constructor not taking dir_index for bug fix ISI2.
+	2. Removed construct().
+
+* index.c
+
+	1. In load_old_index(), removed new_strdup()'s since file_info is now
+	   doing them for bug fix ISI2.
+	2. Removed DirectoriesGrow and DirectoriesReserve as part of bug fix
+	   ISI2.
+	3. Removed -D and -G options as part of bug fix ISI2.
+	4. In write_dir_index(), added code to order the directories for bug
+	   fix ISI2.
+
+* index_header.c
+
+	1. s/dir_list/dir_set/ for bug fix ISI2.
+
+* man/man1/httpindex.1
+
+	1. Added -e's to example.
+
+* man/man1/index.1
+
+	1. Removed -D, --dirs-reserve, -G, --dirs-grow, DirectoriesGrow, and
+	   DirectoriesReserve as part of bug fix ISI2.
+
+* man/man4/swish++.conf.4
+
+	1. Removed DirectoriesGrow and DirectoriesReserve as part of bug fix
+	   ISI2.
+
+* search_daemon.c
+
+	1. In set_signal_handlers(), removed SA_RESTART.
+
+* thread_pool.c
+
+	1. In thread_destroy(), added code to unlock q_lock for bug fix TPD.
+	2. In thread_destroy(), added code to decrement q_lock's reference
+	   count for bug fix TPD.
+	3. In thread_destroy(), added code to deallocate thread object storage
+	   for bug fix TPD.
+	4. In thread_main(), added code to increment q_lock's reference count
+	   for bug fix TPD.
+	5. s/Exit_No_Init_Condition/Exit_No_Init_Thread_Condition/
+	6. s/Exit_No_Init_Mutex/Exit_No_Init_Thread_Mutex/
+	7. In ~thread(), removed destructing_lock_ since I don't think it's
+	   needed.
+	8. In ~thread(), added optimization for a thread committing suicide.
+	9. Added q_lock::dec_ref() and q_lock::inc_ref() functions for bug fix
+	   TPD.
+	A. In thread_pool::thread_pool(), created q_lock with the
+	   PTHREAD_MUTEX_ERRORCHECK attribute for bug fix TPD.
+	B. In ~thread_pool(), removed destructing_lock_ since I don't think
+	   it's needed.
+	C. In ~thread_pool(), added code to decrement q_lock's reference count
+	   for bug fix TPD.
+
+* thread_pool.h
+
+	1. Overrode thread::operator delete() to do nothing for bug fix TPD.
+	2. Changed q_lock_ to a reference-counted object for bug fix TPD.
+	3. Made max/min threads and thread timeout settable after thread_pool
+	   creation.
+
+* version.h
+
+	1. Upped version to "5.3.6."
+
+
+*******************************************************************************
 5.3.5
 *******************************************************************************
 
