@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	search.1
 .\"
-.\"	Copyright (C) 1998  Paul J. Lucas
+.\"	Copyright (C) 2003  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -32,10 +32,10 @@
 .ft 1
 .RE
 .fi
-.sp
+.if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "July 25, 2003" "SWISH++"
+.TH \f3search\fP 1 "March 27, 2004" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -62,7 +62,7 @@ The formal grammar of a query is:
 .I meta
 .TP
 .IR meta :
-.I meta_name \f(CW=\fP primary
+.IR meta_name \ \f(CW=\fP\  primary
 .br
 .I primary
 .TP
@@ -70,16 +70,20 @@ The formal grammar of a query is:
 .I word
 .TP
 .IR primary :
-.I \f(CW(\fP query \f(CW)\fP
+.RI \f(CW(\fP query \f(CW)\fP
 .br
-.I \f(CWnot\fP meta
+.RI \f(CWnot\fP\  meta
 .br
 .I word
 .br
-.I word\f(CW*\fP
+.IR word \f(CW*\fP
 .TP
 .IR optional_relop :
 \f(CWand\fP
+.br
+\f(CWnear\fP
+.br
+\f(CWnot near\fP
 .br
 \f(CWor\fP
 .br
@@ -88,16 +92,32 @@ The formal grammar of a query is:
 .PP
 In practice, however, the query is the set of words sought after,
 possibly restricted to meta data,
-and possibly combined with the Boolean operators
+and possibly combined with the operators
 ``\f(CWand\fP,''
 ``\f(CWor\fP,''
+``\f(CWnear\fP,''
+``\f(CWnot\fP,''
 and
-``\f(CWnot\fP.''
+``\f(CWnot near\fP.''
 The asterisk (\f(CW*\fP) can be used as a wildcard character
 at the end of words.
+Note that an asterisk is a shell meta-character
+and as such must be escaped (backslashed)
+when passed to a shell.
+.PP
+Although syntactically legal, it is a semantic error to have
+``\f(CWnear\fP''
+just before
+``\f(CWnot\fP''
+since such queries are nonsensical,
+e.g.:
+.cS
+mouse near not computer
+.cE
 Queries are evaluated in left-to-right order, i.e.,
 ``\f(CWand\fP'' has the same precedence as ``\f(CWor\fP.''
-See the EXAMPLES.
+For more about query syntax,
+see the EXAMPLES.
 .SS Character Mapping and Word Determination
 The same character mapping and word determination heuristics used by
 .BR index (1)
@@ -201,7 +221,7 @@ For example:
     \f2\&...\fP
   </ResultList>
 </SearchResults>
-.cE
+.cE 0
 .SH RUNNING AS A DAEMON PROCESS
 .SS Description
 .B search
@@ -302,9 +322,9 @@ options or the
 variable.)
 .SS Restrictions
 A single daemon can search only a single index.
-To be able to search multiple indices concurrently,
+To search multiple indices concurrently,
 multiple daemons can be run,
-each searching its own index and using its own socket file.
+each searching its own index and using its own socket.
 An index
 .I "must not"
 be modified or deleted while a daemon is using it.
@@ -380,7 +400,6 @@ Run as a daemon process.
 The type,
 .IR t ,
 is one of:
-.PP
 .RS 20
 .TP 8
 \f(CWnone\f1
@@ -460,16 +479,6 @@ Wildcards are not permitted.
 .B \-\-dump-index
 Dump the entire word index to standard output and exit.
 .TP
-.BI \-f n
-.br
-.ns
-.TP
-.BI \-\-word-files= n
-The maximum number of files,
-.IR n ,
-a word may occur in before it is discarded as being too frequent.
-(Default is infinity.)
-.TP
 .BI \-F f
 .br
 .ns
@@ -517,6 +526,17 @@ to return.
 .TP
 .B \-\-dump-meta
 Dump the meta-name index to standard output and exit.
+.TP
+.BI \-n n
+.br
+.ns
+.TP
+.BI \-\-near= n
+The maximum number of words apart,
+.IR n ,
+two words can be to be considered ``near'' each other
+in queries using \f(CWnear\fP.
+(Default is 10.)
 .TP
 .BI \-o s
 .br
@@ -786,33 +806,31 @@ Same as
 .B \-p
 or
 .B \-\-word-percent
+.TP
+.B WordsNear
+Same as
+.B \-n
+or
+.B \-\-near
 .PD
 .RE
 .SH EXAMPLES
 .SS Simple Queries
 The query:
 .cS
-librar*
+computer mouse
 .cE
-will return all documents that contain
-``library,'' ``libraries,'' or ``librarian.''
-The query:
+is the same as and short for:
 .cS
-mouse and computer
+computer and mouse
 .cE
-will return only those documents
-regarding the kind of mice attached to a computer and not the rodents.
+(because ``\f(CWand\fP'' is implicit)
+and would return only those documents that contain both words.
 The query:
 .cS
 cat or kitten or feline
 .cE
-will return only those documents regarding cats.
-The query:
-.cS
-mouse or mice and not computer
-.cE
-will return only those documents regarding mice (the rodents)
-and not the kind attached to a computer. 
+would return only those documents regarding cats.
 The query:
 .cS
 mouse and computer or keyboard
@@ -821,39 +839,121 @@ is the same as:
 .cS
 (mouse and computer) or keyboard
 .cE
+(because queries are evaluated left-to-right)
 in that they will both return only those documents
 regarding either mice attached to a computer or any kind of keyboard.
 However, neither of those is the same as:
 .cS
 mouse and (computer or keyboard)
 .cE
-that will return only those documents regarding mice
+that would return only those documents regarding mice
+(including the rodents)
 and either a computer or a keyboard. 
+.SS Queries Using Wildcards
+The query:
+.cS
+comput*
+.cE
+would return only those documents that contain words beginning with ``comput''
+such as
+``computation,''
+``computational,''
+``computer,''
+``computerize,''
+``computing,'' and others.
+Wildcarded words can be used anywhere ordinary words can be.
+The query:
+.cS
+comput* (medicine or doctor*)
+.cE
+would return only those documents that contain something about
+computer use in medicine or by doctors.
+.SS Queries Using ``not''
+The query:
+.cS
+mouse or mice and not computer*
+.cE
+would return only those documents regarding mice (the rodents)
+and not the kind attached to a computer.
+.SS Queries Using ``near''
+Using ``\f(CWnear\fP'' is the same as using ``\f(CWand\fP''
+except that it not only requires both words to be in the documents,
+but that they be
+.I near
+each other, i.e.,
+it returns potentially fewer documents
+than the corresponding ``\f(CWand\fP'' query.
+The query:
+.cS
+computer near mouse
+.cE
+would return only those documents where both words are near each other.
+They query:
+.cS
+mouse near (computer or keyboard)
+.cE
+is the same as:
+.cS
+(mouse near computer) or (mouse near keyboard)
+.cE
+i.e., ``near'' gets
+.I distributed
+across parenthesized subqueries.
+.SS Queries Using ``not near''
+Using ``\f(CWnot near\fP'' is the same as using ``\f(CWand not\fP''
+except that it allows the right-hand side words to be in the documents,
+just 
+.I "not near"
+the left-hand side words, i.e.,
+it returns potentially more documents
+than the corresponding ``\f(CWand not\fP'' query.
+Of course the word(s) on the right-hand side
+need not be in the documents at all, i.e.,
+they would be considered ``infinitely far'' apart.
+The query:
+.cS
+mouse or mice not near computer*
+.cE
+would return only those documents regarding mice (the rodents)
+more effectively than the query:
+.cS
+mouse or mice and not computer*
+.cE
+because the latter would exclude documents about mice (the rodents)
+where computers just so happened to be mentioned in the same documents.
 .SS Queries Using Meta Data
 The query:
 .cS
-author = carroll
+author = hawking
 .cE
-will return only those documents
-whose author attribute contains ``carroll.''
+would return only those documents
+whose author attribute contains ``hawking.''
 The query:
 .cS
-author = stevenson treasure
+author = hawking radiation
 .cE
-will return only those documents
-whose author attribute contains ``stevenson'' and also regarding treasure.
+would return only those documents
+whose author attribute contains ``hawking'' and also regarding radiation
+regardless of author.
 The query:
 .cS
-author = (lewis carroll)
+author = (stephen hawking)
 .cE
-will return only those documents whose author is Lewis Carroll.
+would return only those documents whose author is Stephen Hawking.
 The query:
 .cS
-author = (lewis carroll) or wonderland
+author = (stephen Hawking) or (black near hole*)
 .cE
-will return only those documents whose author is Lewis Carroll
-or that contain the word ``wonderland'' anywhere in the document
+would return only those documents whose author is Stephen Hawking
+or that contain the word ``black'' near ``hole'' or ``holes''
 regardless of the author.
+Note that the second set of parentheses are necessary
+otherwise the query would have been the same as:
+.cS
+(author = (stephen hawking) or black) near hole*
+.cE
+that would have additionally required both ``stephen'' and ``hawking''
+to be near ``hole'' or ``holes.''
 .SS Sending Queries to a Search Daemon
 To send a query request to a search daemon using Perl,
 first open the socket and connect to the daemon
