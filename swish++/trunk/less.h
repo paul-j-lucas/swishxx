@@ -1,5 +1,5 @@
 /*
-**	SWISH++
+**	PJL C++ Library
 **	less.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
