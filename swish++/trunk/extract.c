@@ -122,9 +122,9 @@ ostream&		usage( ostream& = cerr );
 		"no-pattern",	1, 'E',
 		"filter",	0, 'f',
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-		"follow-links",	1, 'l',
+		"follow-links",	0, 'l',
 #endif
-		"no-recurse",	1, 'r',
+		"no-recurse",	0, 'r',
 		"stop-file",	1, 's',
 		"dump-stop",	0, 'S',
 		"verbose",	1, 'v',
