@@ -32,6 +32,20 @@
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
+namespace {
+#endif
+
+class base64_decoder : public encoded_char_range::decoder {
+public:
+	pointer	prev_c_;
+private:
+	virtual void reset() {
+		prev_c_ = 0;
+	}
+};
+
+#ifndef	PJL_NO_NAMESPACES
+}
 #endif
 
 //*****************************************************************************
@@ -95,14 +109,14 @@ using namespace std;
 	int const Bits_Per_Char = 6;	// by definition of Base64 encoding
 
 	static encoded_char_range::value_type buf[ 3 ];	// group-of-4 -> 3 chars
-	static encoded_char_range::pointer prev_c;
+	static base64_decoder decoder;
 
 	//
 	// See if the pointer is less than a buffer's-worth away from the
 	// previous pointer: if so, simply return the already-decoded
 	// character.
 	//
-	encoded_char_range::difference_type delta = c - prev_c;
+	encoded_char_range::difference_type delta = c - decoder.prev_c_;
 	if ( delta >= 0 && delta < sizeof buf ) {
 		//
 		// We advance the pointer 1 position for the first 2 characters
@@ -210,7 +224,7 @@ reached_end:	c = end;
 	// been decoded.  If we subsequently are asked to decode a character in
 	// the range [i,i+3), we can simply return the character.
 	//
-	prev_c = c;
+	decoder.prev_c_ = c;
 	delta -= delta4;
 	goto return_decoded_char;
 }
