@@ -150,10 +150,8 @@ bool			skip_html_tag(
 
 	////////// Look up character entity reference /////////////////////////
 
-	if ( !is_num ) {
-		static char_entity_map const char_entities;
-		return char_entities[ entity_buf ];
-	}
+	if ( !is_num )
+		return char_entity_map::instance()[ entity_buf ];
 
 	////////// Parse a numeric character reference ////////////////////////
 
@@ -381,6 +379,10 @@ bool			skip_html_tag(
 //	looking for <TITLE>...</TITLE> tags to extract the title.  Every
 //	non-space whitespace character in the title is converted to a space;
 //	leading and trailing spaces are removed.
+//
+//	If the length of the title exceeds Title_Max_Size, then the title is
+//	truncated and the last 3 characters of the truncated title are
+//	replaced with an elipsis ("...").
 //
 // PARAMETERS
 //
@@ -631,7 +633,9 @@ bool			skip_html_tag(
 #			ifdef DEBUG_parse_class
 			cerr << "---> stack not empty: find: " << tag << endl;
 #			endif
-			if ( element_stack.back().first->close_tags.find(tag) ){
+			if ( element_stack.back().first->
+				close_tags.contains( tag )
+			) {
 #				ifdef DEBUG_parse_class
 				cerr << "---> found it" << endl;
 #				endif
@@ -669,7 +673,7 @@ bool			skip_html_tag(
 			char *names = to_lower( class_begin, class_end );
 			register char const *name;
 			while ( name = ::strtok( names, whitespace ) ) {
-				if ( exclude_class_names.find( name ) ) {
+				if ( exclude_class_names.contains( name ) ) {
 					is_no_index_class = true;
 					break;
 				}
@@ -677,7 +681,7 @@ bool			skip_html_tag(
 			}
 		}
 
-		static element_map const elements;
+		element_map const &elements = element_map::instance();
 		element_map::const_iterator const e = elements.find( tag );
 		if ( e != elements.end() ) {
 			//
@@ -783,29 +787,37 @@ bool			skip_html_tag(
 			// is among the set of meta names to exclude or not
 			// among the set to include.
 			//
-			if ( exclude_meta_names.find( name ) ||
+			if ( exclude_meta_names.contains( name ) ||
 				!include_meta_names.empty() &&
-				!include_meta_names.find( name )
+				!include_meta_names.contains( name )
 			)
 				return;
+
+			//
+			// Look up the vlaue of the NAME attribute to get its
+			// associated unique integer ID.
+			//
+			meta_map::const_iterator const i
+				= meta_names.find( name );
+			int meta_id;
+			if ( i != meta_names.end() )
+				meta_id = i->second;
+			else {			// new meta name: add it
+				//
+				// Do this in two statements intentionally
+				// because C++ doesn't guarantee that the RHS
+				// of assignment is evaulated first.
+				//
+				meta_id = meta_names.size();
+				meta_names[ ::strdup( name ) ] = meta_id;
+			}
 
 			//
 			// Index the words in the value of the CONTENT
 			// attribute marking them as being associated with the
 			// value of NAME attribute.
 			//
-			index_words( content_begin, content_end, true,
-				//
-				// "insert" returns a pair<iterator,bool>: the
-				// iterator points either to an existing
-				// element or to the newly inserted element;
-				// that iterator's "second" is the numeric ID
-				// of the META NAME value.
-				//
-				meta_names.insert( meta_map::value_type(
-					::strdup( name ), meta_names.size()
-				) ).first->second
-			);
+			index_words( content_begin, content_end, true, meta_id);
 		}
 		return;
 	}
