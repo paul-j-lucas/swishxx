@@ -203,6 +203,8 @@ void	perform_and( search_results&, and_results_type& );
 //
 //	stop_words_found	The set of stop-words in the query.
 //
+//	and_results		The partial results to be and-ed together.
+//
 //	ignore			Set to true only if this (sub)query should be
 //				ignored.
 //
