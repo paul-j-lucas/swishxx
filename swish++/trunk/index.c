@@ -86,8 +86,6 @@
 using namespace std;
 #endif
 
-extern FilesReserve	files_reserve;		// defined in file_info.c
-
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
 #ifdef	MOD_HTML

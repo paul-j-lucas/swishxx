@@ -40,9 +40,6 @@
 using namespace std;
 #endif
 
-extern ExcludeClass		exclude_class_names;
-extern TitleLines		num_title_lines;
-
 HTML_indexer::stack_type	HTML_indexer::element_stack_;
 
 bool	is_html_comment( encoded_char_range::const_iterator &pos );

@@ -36,13 +36,11 @@
 using namespace std;
 #endif
 
-extern ExcludeMeta	exclude_meta_names;
-extern IncludeMeta	include_meta_names;
-extern long		num_indexed_words;
-extern long		num_total_words;
-extern word_map		words;
+extern long	num_indexed_words;
+extern long	num_total_words;
+extern word_map	words;
 
-int			indexer::suspend_indexing_count_ = 0;
+int		indexer::suspend_indexing_count_ = 0;
 
 //*****************************************************************************
 //
