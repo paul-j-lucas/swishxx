@@ -416,7 +416,7 @@ BEGIN {
 	$url_syntax{ http } =
 		"https?://$url_host$url_port$url_path$url_query";
 
-	$url_syntax{ e_mail } = '[a-zA-Z][-\w.]+@[-\w.]+[a-zA-Z]';
+	$url_syntax{ e_mail } = '[a-zA-Z][-\w.]+@(?:[-\w]+\.)+[a-zA-Z]{2,3}';
 	$url_syntax{ mailto } = "mailto:$url_syntax{ e_mail }";
 	$url_syntax{ news   } = 'news:[a-z][-\w.]*\w';
 
