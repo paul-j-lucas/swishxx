@@ -96,9 +96,9 @@ int const	Entity_Max_Size			= 6;
 //		counting the leading '&' or the trailing ';'.  You should have
 //		no reason to change this.
 
-int const	Tag_Name_Max_Size		= 11;
+int const	Tag_Name_Max_Size		= 10;
 //		The maximum size of an HTML or XHTML tag name, e.g.,
-//		"/BLOCKQUOTE".  You might need to increase this if you are
+//		"BLOCKQUOTE".  You might need to increase this if you are
 //		indexing HTML or XHTML documents that contain non-standard tags
 //		and at least one of them is longer than the above.
 
