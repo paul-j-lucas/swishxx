@@ -23,11 +23,13 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <map>
 #include <string>
 #include <strstream>
+#include <utility>
 #include <vector>
 
 // local
@@ -57,9 +59,75 @@ extern "C" {
 using namespace std;
 #endif
 
-typedef map< int, int > result_type;
-typedef pair< word_index::const_iterator, word_index::const_iterator >
-	find_result_type;
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	typedef pair< int, int > result_type;
+//
+// DESCRIPTION
+//
+//	A result_type is an individual search result where the first int is a
+//	file index and the second int is that file's rank.
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	typedef map< int, int > results_type;
+//
+// DESCRIPTION
+//
+//	A results_type contains a set of search results.
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	typedef pair< word_index::const_iterator, word_index::const_iterator >
+		find_result_type;
+//
+// DESCRIPTION
+//
+//	A find_result_type is-a pair of iterators marking the beginning and
+//	end of a range over which a given word matches.
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	struct sort_by_rank /* :
+		binary_function< result_type const&, result_type const&, bool >
+		*/
+//
+// DESCRIPTION
+//
+//	A sort_by_rank is-a binary_function used to sort search results by
+//	rank in descending order (highest rank first).
+//
+// BUGS
+//
+//	This struct should be derived from binary_function, but g++ 2.8 barfs
+//	on it.  It must be a compiler bug.
+//
+//*****************************************************************************
+{
+	bool operator()( result_type const &a, result_type const &b ) {
+		return a.second > b.second;
+	}
+};
+
+//*****************************************************************************
+//
+//	Global declarations
+//
+//*****************************************************************************
 
 char const*	me;				// executable name
 file_index	files;
@@ -70,42 +138,11 @@ string_set	stop_words_found;
 void	dump_single_word( char const *word );
 void	dump_word_window( char const *word, int window_size, int match );
 int	get_meta_id( word_index::const_iterator );
-bool	parse_meta( istream&, result_type&, bool &ignore, int = No_Meta_ID );
-bool	parse_primary( istream&, result_type&, bool &ignore, int = No_Meta_ID );
-bool	parse_query( istream&, result_type&, bool &ignore, int = No_Meta_ID );
+bool	parse_meta( istream&, results_type&, bool &ignore, int = No_Meta_ID );
+bool	parse_primary( istream&, results_type&, bool &ignore, int = No_Meta_ID);
+bool	parse_query( istream&, results_type&, bool &ignore, int = No_Meta_ID );
 bool	parse_optional_relop( istream&, token::type& );
 void	usage();
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	struct sort_by_rank /* :
-		binary_function<
-			result_type::value_type const&,
-			result_type::value_type const&,
-			bool
-		> */
-//
-// DESCRIPTION
-//
-//	A sort_by_rank is-a binary_function used to sort the search results
-//	by rank in descending order (highest rank first).
-//
-// BUGS
-//
-//	This struct should be derived from binary_function, but g++ 2.8 barfs
-//	on it.  It must be a compiler bug.
-//
-//*****************************************************************************
-{
-	bool operator()(
-		result_type::value_type const &a,
-		result_type::value_type const &b
-	) {
-		return a.second > b.second;
-	}
-};
 
 //*****************************************************************************
 //
@@ -301,7 +338,7 @@ void	usage();
 	}
 	istrstream query_stream( query.c_str() );
 
-	result_type results;
+	results_type results;
 	bool ignore;
 	if ( !( parse_query( query_stream, results, ignore ) &&
 		query_stream.eof()
@@ -325,14 +362,14 @@ void	usage();
 		::exit( Exit_Success );
 
 	// Copy the results to a vector to sort them by rank.
-	typedef vector< result_type::value_type > sorted_result_type;
-	sorted_result_type sorted;
+	typedef vector< result_type > sorted_results_type;
+	sorted_results_type sorted;
 	sorted.reserve( results.size() );
 	::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
 	::sort( sorted.begin(), sorted.end(), sort_by_rank() );
 	double const normalize = 100.0 / sorted[0].second;	// highest rank
 
-	for ( sorted_result_type::const_iterator
+	for ( sorted_results_type::const_iterator
 		i  = sorted.begin() + skip_results;
 		i != sorted.end() && max_results-- > 0;
 		++i
@@ -485,7 +522,7 @@ void	usage();
 // SYNOPSIS
 //
 	bool parse_query(
-		istream &query, result_type &result, bool &ignore, int meta_id
+		istream &query, results_type &result, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -550,7 +587,7 @@ void	usage();
 	//
 	token::type relop;
 	while ( parse_optional_relop( query, relop ) ) {
-		result_type result1;
+		results_type result1;
 		bool ignore1;
 		if ( !parse_meta( query, result1, ignore1, meta_id ) )
 			return false;
@@ -570,9 +607,9 @@ void	usage();
 #				ifdef DEBUG_parse_query
 				cerr << "---> performing and" << endl;
 #				endif
-				result_type result2;
-				FOR_EACH( result_type, result1, i ) {
-					result_type::const_iterator found =
+				results_type result2;
+				FOR_EACH( results_type, result1, i ) {
+					results_type::const_iterator found =
 						result.find( i->first );
 					if ( found != result.end() )
 						result2[ found->first ] = 
@@ -586,7 +623,7 @@ void	usage();
 #				ifdef DEBUG_parse_query
 				cerr << "---> performing or" << endl;
 #				endif
-				FOR_EACH( result_type, result1, i )
+				FOR_EACH( results_type, result1, i )
 					result[ i->first ] += i->second;
 				break;
 			}
@@ -600,7 +637,7 @@ void	usage();
 // SYNOPSIS
 //
 	bool parse_meta(
-		istream &query, result_type &result, bool &ignore, int meta_id
+		istream &query, results_type &result, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -633,7 +670,8 @@ void	usage();
 				t.lower_str(), comparator
 			);
 			meta_id = found.first != meta_names.end() &&
-				!comparator( t.lower_str(), *found.first ) ?
+				!comparator( t.lower_str(), *found.first )
+			?
 				get_meta_id( found.first )
 			:
 				Meta_ID_Not_Found;
@@ -705,7 +743,7 @@ no_put_back:
 // SYNOPSIS
 //
 	bool parse_primary(
-		istream &query, result_type &result, bool &ignore, int meta_id
+		istream &query, results_type &result, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -822,7 +860,7 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> begin not" << endl;
 #			endif
-			result_type temp;
+			results_type temp;
 			if ( !parse_primary( query, temp, ignore, meta_id ) )
 				return false;
 #			ifdef DEBUG_parse_query
