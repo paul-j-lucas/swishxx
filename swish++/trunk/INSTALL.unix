@@ -4,8 +4,9 @@ Prerequisites for building SWISH++ for Unix
 
 SWISH++ has the following software as prerequisites:
 
-1. A C++ compiler.  SWISH++ has been built using g++ 2.95.1 (earlier versions
-   will not work); other non-gcc compilers may work also.
+1. A C++ compiler.  SWISH++ has been built using g++ 2.95.3 (2.95.1 may work;
+   earlier versions will not) and g++ 3.0; other non-gcc, ANSI C++ compilers
+   may work also.
 
 2. A version of STL, the ANSI/ISO C++ Standard Template Library.  If you are
    using g++ or egcs, then you also need (the matching version of) libstd++.
