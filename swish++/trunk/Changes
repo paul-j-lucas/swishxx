@@ -2,6 +2,565 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.0
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* The indexing code has bee rearchitected to be modular allowing for new file
+  formats to be indexed directly (without filters).  Consequently, the indexing
+  of HTML files has been turned into a module.
+
+  The -e option and IncludeFile variable are now INCOMPATIBLE with previous
+  releases.  Read the updated documentation.
+
+  (This feature shall be known as feature MOD.)
+
+* A filter module for mail (and news) files has been added.
+
+  (This feature shall be known as feature MAIL.)
+
+* The search daemon can now answer queries via TCP sockets in addition to Unix
+  domain sockets.
+
+  (This feature shall be known as feature TCP.)
+
+
+BUG FIXES
+---------
+
+* The index(1) -T option was ignored.
+
+  (This bug fix shall be known as bug fix ITO.)
+
+* A configuration file that did not end in a newline would cause a segfault.
+  (I think: I never tried it, but it looked like a bug to me.)
+
+  (This bug fix shall be known as bug fix CNL.)
+
+* Configuration error messages output "(null)" (or seg-faulted) for the
+  variable name.  I don't see how the compiler didn't catch this since the
+  name_ data member is const and therefore must be initialized in the
+  constructor.
+
+  (This bug fix shall be known as bug fix NVR.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added MOD_* definitions for feature MOD.
+
+	2. Added MOD_LIST to CCFLAGS for feature MOD.
+
+* config/src/mutable.c
+
+	1. Removed this file since all C++ compilers should now support
+	   "mutable".
+
+* config.h
+
+	1. Added "#ifdef MOD_HTML" around HTML and XHTML options for
+	   feature MOD.
+
+	2. Moved Title_Max_Size and TitleLines_Default down to
+	   Miscellaneous section for feature MAIL.
+
+	3. Added SocketPort_Default for feature TCP.
+
+* conf_bool.h
+* conf_int.c
+* conf_int.h
+* conf_set.c
+* conf_set.h
+* conf_string.c
+* conf_string.h
+* ExcludeFile.h
+* FilesGrow.c
+* FilesGrow.h
+* FilterFile.c
+* FilterFile.h
+
+	1. Removed "var_name" parameter from parse_value().
+
+* conf_bool.c
+
+	1. Removed "var_name" parameter from parse_value().
+
+	2. Added "using namespace std;" since it should have been there
+	   all along.
+
+* conf_enum.c
+* conf_enum.h
+
+	1. Added for feature TCP.
+
+* conf_string.h
+
+	1. Added == and != operators.
+
+* conf_var.c
+
+	1. Removed HTMLFile for feature MOD.
+
+	2. Added "#ifdef MOD_HTML" around ExcludeClass for feature MOD.
+
+	3. Removed "var_name" parameter from parse_value().
+
+	4. Replaced alias_name() by constructor.
+
+	5. Added ExtractFile for feature MOD.
+
+	6. In parse_file(), redid the finding of a newline for bug fix CNL.
+
+	7. In parse_file(), made use of find_newline().
+
+	8. In map_ref(), added "SocketAddress" for feature TCP.
+
+	9. In conf_var::conf_var(), added initialization of name_ for
+	   bug fix NVR.
+
+* conf_var.h
+
+	1. Added default argument of "cerr" to error() and warning().
+
+* directory.c
+
+	1. Moved configuration variable extern declarations to .h
+	   files.
+
+* do_file.c
+
+	1. Added "#ifdef INDEX" around declaration of orig_file_size
+	   and orig_file_name.  (It should have been there all along.)
+
+	2. Reworked calling of the indexer for feature MOD.
+
+	3. Added ExtractFile::const_iterator for feature MOD.
+
+* elements.h
+* elements.c
+* entities.h
+* entities.c
+
+	1. Added "#ifdef MOD_HTML" for feature MOD.
+
+* encoded_char.c
+* encoded_char.h
+
+	1. Added for feature MAIL.
+
+* ExcludeClass.h
+
+	1. Added "extern ExcludeClass exclude_class_names;".
+
+* ExcludeFile.c
+
+	1. Added "using namespace std;".
+
+	2. Removed "var_name" parameter from parse_value().
+
+* ExcludeMeta.h
+
+	1. Added "extern ExcludeMeta exclude_meta_names;".
+
+* exit_codes.h
+
+	1. Created TCP and Unix versions of the search daemon exit
+	   codes.
+
+* extract.c
+
+	1. s/IncludeFile/ExtractFile/ for feature MOD since extraction
+	   doesn't use modules.
+
+	2. Reworked -e and -E options to allow multiple,
+	   comma-separated patterns just like for index(1).
+
+* ExtractFile.c
+* ExtractFile.h
+
+	1. Added for feature MOD.
+
+* fake_ansi.h
+
+	1. Got rid of faking "mutable" since all C++ compilers should
+	   now support this.
+
+* file_list.h
+
+	1. Removed: #include "fake_ansi.h".
+
+* FilesReserve.h
+
+	1. Added "extern FilesReserve files_reserve;".
+
+* GNUmakefile
+
+	1. Reorganized HTML sources for feature MOD.
+
+	2. Added MOD_MAIL sources for feature MAIL.
+
+	3. Added conf_enum.c, SearchDaemon.c, and SocketAddress.c for
+	   feature TCP.
+
+	4. Added IncludeMeta.c for feature MAIL.
+
+	5. Added splitmail target for feature MAIL.
+
+* html.c
+* html.h
+
+	1. Replaced by mod_html.c and mod_html.h, respectively, for
+	   feature MOD.
+
+* IncludeFile.h
+
+	1. Removed "var_name" parameter from parse_value().
+
+	2. Removed the alias for HTML_File for feature MOD.
+
+	3. s/pattern_map< bool >/pattern_map< indexer* >/ for feature MOD.
+
+* IncludeFile.c
+
+	1. Removed "var_name" parameter from parse_value().
+
+	2. Changed form of line to include indexer for feature MOD.
+
+	3. Added "using namespace std;".
+
+* IncludeMeta.c
+
+	1. Added this file for feature MAIL.
+
+* IncludeMeta.h
+
+	1. Added "extern IncludeMeta include_meta_names;".
+
+	2. Changed base class from conf_set to conf_var and map for
+	   feature MAIL.
+
+* index.c
+
+	1. Added "#ifdef MOD_HTML" for feature MOD.
+
+	2. Performed following substitutions for feature MOD.
+
+		s/html.h/mod_html.h/
+		s/index.h/indexer.h/
+
+	3. Changed the syntax for -e for feature MOD.
+
+	4. Removed the -h option for feature MOD.
+
+	5. Moved index_word() to indexer.c for feature MOD.
+
+	6. Allowed multiple patterns to be specified via -E option.
+
+	7. In main(), performed following substitution:
+
+		s/TempDirectory_Default/0/
+
+	   for bug fix ITO.
+
+	8. Updated the usage message for feature MOD.
+
+	9. Moved configuration variable extern declarations to .h
+	   files.
+
+	A. In main() for case 'm', performed following substitution:
+
+		s/include_meta_names.insert( to_lower( opt.arg() ) )
+		 /include_meta_names.parse_value( opt.arg() )/
+
+* index.h
+
+	1. Replaced by indexer.h for feature MOD.
+
+* indexer.c
+* indexer.h
+
+	1. Added for feature MOD.
+
+* init_modules.c
+
+	1. Added for features MOD and MAIL.
+
+* man/man1/extract.1
+
+	1. Added description for multiple patterns for -e, --pattern,
+	   -E, and --no-pattern options.
+
+	2. s/pjl@best.com/pauljlucas@mac.com/
+
+* man/man1/httpindex.1
+* man/man4/swish++.index.4
+
+	1. s/pjl@best.com/pauljlucas@mac.com/
+
+* man/man1/index.1
+
+	1. s/pjl@best.com/pauljlucas@mac.com/
+
+	2. Added description of modules and mod_mail for feature MAIL.
+
+	3. Removed -h, --html-pattern, and HTMLFile.
+
+	4. Reworked description of -m and --meta.
+
+	5. Added references for feature MAIL.
+
+* man/man1/splitmail.1
+
+	1. Added for feature MAIL.
+
+* man/man3/WWW.3
+
+	1. s/pjl@best.com/pauljlucas@mac.com/
+
+	2. Redid formatting of references.
+
+	3. Removed trim_whitespace(), url_decode(), and url_encode()
+	   since they are no longer used now that the search.cgi
+	   example uses CGI.pm
+
+* man/man4/swish++.conf.4
+
+	1. Added section for enumeration variables and SearchDaemon
+	   for feature TCP.
+
+	2. Changed IncludeFile from a set variable to an other
+	   variable for feature MOD.
+
+	3. Added SocketAddress for feature TCP.
+
+	4. Added section for IncludeMeta for feature MAIL.
+
+	5. s/pjl@best.com/pauljlucas@mac.com/
+
+* mod_html.c
+
+	1. Replaced html.c for feature MOD.
+
+	2. Reworked everything to use encoded_char_ranges.
+
+	3. Moved configuration variable extern declarations to .h
+	   files.
+
+* mod_html.h
+
+	1. Replaced html.h for feature MOD.
+
+	2. Made find_title(), index_words(), and new_file() public so
+	   they could be accessed from mod_mail.c.
+
+	3. Made index_words() and parse_html_tag() take an
+	   encoded_char_range::const_iterator& argument so they could
+	   parse HTML that is encoded.
+
+	4. Moved configuration variable extern declarations to .h
+	   files.
+
+* mod_mail.c
+* mod_mail.h
+
+	1. Added for feature MAIL.
+
+* PidFile.h
+
+	1. Added "extern PidFile pid_file_name;".
+
+* RecurseSubdirs.h
+
+	1. Added "extern RecurseSubdirs recurse_subdirs;".
+
+* search.c
+
+	1. s/html.h/indexer.h/ for feature MOD.
+
+	2. s/ostream/std::ostream/
+
+	3. Added #include "SocketAddress.h" for feature TCP.
+
+	4. s/am_daemon/daemon_type/ and s/daemon_opt/type_type_arg/ for
+	   feature TCP.
+
+	5. Made the daemon configuration variables global and
+	   become_daemon() take no arguments becuase the argument list
+	   was getting way too long.
+
+	6. In search_options::search_options(), added socket_address_arg
+	   for feature TCP.
+
+	7. In search_options::search_options(), added -a option for
+	   feature TCP.
+
+	8 In usage(), updated message for feature TCP.
+
+* search.h
+
+	1. s/bool daemon_opt/char const* daemon_opt_arg/ for feature
+	   TCP.
+
+	2. Added socket_address_arg for feature TCP.
+
+	3. s/ostream/std::ostream/ (it should have been that way all
+	   along).
+
+* searchc.in
+
+	1. Added stuff to connect via a TCP socket to the search daemon
+	   for feature TCP.
+
+	2. Updated Perl book references for 3rd ed.
+
+* search_daemon.c
+
+	1. Moved configuration variable extern declarations to .h
+	   files.
+
+* SearchDaemon.c
+
+	1. Added a bunch of #include's ane extern declarations since
+	   become_daemon() now uses globals rather than parameters.
+	   This was done for feature TCP.
+
+	2. Added accept_failed() function for feature TCP.
+
+	3. In become_daemon(), added code for TCP sockets for feature
+	   TCP.
+
+* SearchDaemon.h
+
+	1. Changed to be derived from conf_enum for feature TCP.
+
+* SearchDaemon.c
+
+	1. Added this file for feature TCP.
+
+* SocketAddress.h
+* SocketAddress.c
+
+	1. Added these files for feature TCP.
+
+* SocketFile.h
+
+	1. Added "extern SocketFile socket_file_name;".
+
+* socket_options.c
+
+	1. Added "socket-address" for feature TCP.
+
+	2. s/daemon/daemon-type/ and made it take an argument for
+	   feature TCP.
+
+* SocketQueueSize.h
+
+	1. Added "extern SocketQueueSize socket_queue_size;".
+
+* SocketTimeout.h
+
+	1. Added "extern SocketTimeout socket_timeout;".
+
+* splitmail.in
+
+	1. Added this utility for feature MAIL.
+
+* stem_word.c
+
+	1. Performed following substitution:
+
+		s/replace_suffix( char *word, rule_list* )
+		 /replace_suffix( char *word, rule_list const* )/
+
+	   It should have been that way all along.
+
+* stop_words.c
+
+	1. Added "shall."
+
+* swish++.conf
+
+	1. Added ExtractFile for feature MOD.
+
+	2. Removed HTMLFile for feature MOD.
+
+	3. Added module name to IncludeFile for feature MOD.
+
+	4. Changed SearchDaemon for feature TCP.
+
+	5. Added SocketAddress for feature TCP.
+
+	6. Added missing variables and sorted alphabetically properly.
+
+	7. Added IncludeMeta values for mail/news.
+
+* ThreadsMax.h
+
+	1. Added "extern ThreadsMax max_threads;".
+
+* ThreadsMin.h
+
+	1. Added "extern ThreadsMin min_threads;".
+
+* ThreadTimeout.h
+
+	1. Added "extern ThreadTimeout thread_timeout;".
+
+* TitleLines.h
+
+	1. Changed comments to reflect that TitleLines isn't used
+	   exclusively for HTML or XHTML files any more for feature
+	   MAIL.
+
+	2. Added "extern TitleLines num_title_lines;"
+
+* util.c
+
+	1. Moved "char_buffer_pool<128,5> buf" to file scope.
+
+* util.h
+
+	1. Added find_newline() and skip_newline().
+
+* Verbosity.h
+
+	1. Added "extern Verbosity verbosity;".
+
+* version.h
+
+	1. Updated version to "5.0".
+
+* word_info.h
+
+	1. s/html.h/indexer.h/ for feature MOD.
+
+* man/man3/WWW.3
+
+	1. Removed trim_whitespace(), url_decode(), and url_encode()
+	   since they are no longer used now that the search.cgi
+	   example uses CGI.pm
+
+* www_example/search.cgi
+
+	1. Updated Perl book references for 3rd ed.
+
+	2. s/the.index/swish++.index/
+
+	3. Added $SOCKET_ADDRESS for feature TCP.
+
+	4. Rewrote to use standard CGI.pm module.
+
+	5. Added code to do TCP sockets for feature TCP.
+
+	6. Fixed printing of file size in results.
+
+
+*******************************************************************************
 4.8
 *******************************************************************************
 
@@ -11,7 +570,7 @@ NEW FEATURES
 * The filename pattern matching (FNP) feature introduced in 4.5 has finally
   been ported to Windows.
 
-  (This feature shall be knowsn as feature WFNP.)
+  (This feature shall be known as feature WFNP.)
 
 
 BUG FIXES
@@ -976,6 +1535,18 @@ CHANGES, file-by-file
 * man/man1/search.1
 
 	1. Added description of feature PID.
+
+	2. Added -a, --socket-address for feature TCP.
+
+	3. Made changes to daemon (daemon-type) for feature TCP.
+
+	4. Added stuff for TCP sockets. for feature TCP.
+
+	5. Updated exit status codes for feature TCP.
+
+	6. s/pjl@best.com/pauljlucas@mac.com/
+
+	7. Updated Perl book references for 3rd ed.
 
 * man/man4/swish++.conf.4
 
