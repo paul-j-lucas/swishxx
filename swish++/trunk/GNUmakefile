@@ -20,10 +20,10 @@
 ##
 
 CPP_TARGET:=	index search extract
-OTHER_TARGET:=	httpindex searchc searchmonitor splitmail
-BIN_TARGET:=	$(CPP_TARGET) $(OTHER_TARGET)
-INITD_TARGET:=	searchd
-TARGET:=	$(BIN_TARGET) $(INITD_TARGET)
+BIN_TARGET:=	$(CPP_TARGET)
+SCRIPTS:=	$(patsubst %.in,%,$(wildcard scripts/*.in))
+INITD_TARGET:=	scripts/searchd
+TARGET:=	$(BIN_TARGET) $(SCRIPTS)
 
 .PHONY: all
 all: $(TARGET)
@@ -50,7 +50,7 @@ CFLAGS:=	$(CCFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
-SUBDIRS:=	config man mod/*
+SUBDIRS:=	config man mod/* scripts
 
 ifdef CHARSET_LIST
 SUBDIRS+=		charsets
@@ -207,6 +207,9 @@ $(ENCODING_LIB): FORCE
 $(MOD_LIBS): FORCE
 	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
 
+$(SCRIPTS): FORCE
+	@$(MAKE) -C $(dir $@)
+
 .PHONY: FORCE
 
 # Don't do the "include" if the goal contains the word "clean," i.e., either
@@ -230,6 +233,7 @@ install: install_bin install_lib install_man install_conf
 install_bin: $(BIN_TARGET) $(I_BIN)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(BIN_TARGET) $(I_BIN)
 	cd $(I_BIN) && $(STRIP) $(CPP_TARGET)
+	@$(MAKE) -C scripts $@
 
 install_lib: $(I_LIB)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(LIB_TARGET) $(I_LIB)
@@ -254,6 +258,7 @@ uninstall:
 	cd $(I_LIB) && $(RM) $(LIB_TARGET)
 	$(RM) $(INITD_DIR)/$(INITD_TARGET) $(LEVEL_DIR)/[SK]99$(INITD_TARGET)
 	@$(MAKE) -C man $@
+	@$(MAKE) -C scripts $@
 
 ##
 # Utility rules
