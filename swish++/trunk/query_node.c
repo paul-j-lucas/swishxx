@@ -157,15 +157,33 @@ query_node* query_node::visit( visitor const &v ) {
     //
     // Evaluate all the child nodes.
     //
+    search_results const empty_place_holder;
     typedef vector< search_results > child_results_type;
     child_results_type child_results;
     child_results.reserve( child_nodes_.size() );
     FOR_EACH( child_node_list, child_nodes_, child_node ) {
-        search_results temp;
-        (*child_node)->eval( temp );
-        if ( temp.empty() )
+        search_results results;
+        (*child_node)->eval( results );
+        if ( results.empty() ) {
+            //
+            // Since we're evaluating an "and", we can stop immediately if any
+            // of the child nodes return no results.
+            //
             return;
-        child_results.push_back( temp );
+        }
+        //
+        // Temporarily push an empty "place-holder" search_results onto the
+        // back of the vector to increase its size without copying the actual
+        // potentially large search_results.  Then simply swap it with the
+        // actual results in O(1) time.
+        //
+        // Yes, a vector of pointers to search_results could have been used
+        // instead, but then we'd have to make sure to delete all the
+        // search_results when done in two places: above at the "return" and
+        // below when this function "falls out the bottom."
+        //
+        child_results.push_back( empty_place_holder );
+        child_results.back().swap( results );
     }
 
     //
