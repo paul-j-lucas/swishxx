@@ -23,6 +23,7 @@
 #include <cstring>
 
 // local
+#include "auto_vec.h"
 #include "IncludeMeta.h"
 #include "exit_codes.h"
 #include "util.h"
@@ -47,16 +48,17 @@
 //
 //*****************************************************************************
 {
-	char *lower = to_lower( line );
+	auto_vec< char > const lower( to_lower_r( line ) );
+	char *p = lower;
 	for (	register char const *meta_name;
-		meta_name = ::strtok( lower, " \r\t" );
-		lower = 0
+		meta_name = ::strtok( p, " \r\t" );
+		p = 0
 	) {
 		//
 		// See if the meta name contains a reassignment: if so, chop it
 		// at the '='.
 		//
-		char *reassign = ::strchr( meta_name, '=' );
+		register char *reassign = ::strchr( meta_name, '=' );
 		if ( reassign ) {
 			*reassign = '\0';
 			if ( !*++reassign ) {
