@@ -32,23 +32,20 @@
 //
 // SYNOPSIS
 //
-	class SocketFile : public conf<string>
+	class SocketFile : public conf<std::string>
 //
 // DESCRIPTION
 //
-//	An SocketFile is-a conf<string> containing the name of the index file
-//	to use.
+//	A SocketFile is-a conf<string> containing the name of the Unix domain
+//	socket file to use when 'search' is running as a daemon.
 //
-//	This is the same as index's or search's -i command-line option.
+//	This is the same search's -u command-line option.
 //
 //*****************************************************************************
 {
 public:
-	SocketFile() : conf<string>( "SocketFile", SocketFile_Default ) { }
-	SocketFile& operator=( string const &s ) {
-		return operator=( s.c_str() );
-	}
-	SocketFile& operator=( char const *s );
+	SocketFile() : conf<std::string>( "SocketFile", SocketFile_Default ) { }
+	CONF_STRING_ASSIGN_OPS( SocketFile )
 };
 
 #endif	/* SocketFile_H */
