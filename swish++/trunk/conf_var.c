@@ -247,7 +247,7 @@ int conf_var::current_config_file_line_no_ = 0;
 		// Find the end of the line.
 		//
 		file_vector::const_iterator const
-			nl = skip_line( c, conf_file.end() );
+			nl = find_newline( c, conf_file.end() );
 		if ( nl == conf_file.end() )
 			break;
 
@@ -284,7 +284,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			parse_line( buf, line_no );
 		}
 next_line:
-		c = nl + 1;
+		c = skip_newline( nl, conf_file.end() );
 	}
 }
 
