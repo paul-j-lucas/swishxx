@@ -231,8 +231,12 @@ bool				header_cmp(
 //*****************************************************************************
 {
 	register char const *d = c;
-	while ( *header && d != end && *header++ == to_lower( *d++ ) ) ;
-	return *header ? false : c = d;
+	while ( *header && d != end && *header == to_lower( *d ) )
+		++header, ++d;
+	if ( *header )
+		return false;
+	c = d;
+	return true;
 }
 
 //*****************************************************************************
