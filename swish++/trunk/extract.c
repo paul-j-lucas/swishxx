@@ -294,7 +294,7 @@ ostream&		usage( ostream& = cerr );
 				continue;
 			}
 			if ( is_directory() )
-				do_directory( file_name );
+				do_directory( ::strdup( file_name ) );
 			else
 				do_file( file_name );
 		}
