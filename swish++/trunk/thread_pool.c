@@ -28,9 +28,13 @@
 
 // local
 #include "exit_codes.h"
-#include "fake_ansi.h"
+#include "platform.h"
 #include "thread_pool.h"
 #include "util.h"
+
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 extern char const*	me;
 
@@ -62,7 +66,7 @@ extern char const*	me;
 	cerr << "thread_destroy()" << endl;
 #	endif
 
-	thread_pool::thread *const t = STATIC_CAST( thread_pool::thread* )( p );
+	thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
 	if ( !t->destructing_ ) {
 		//
 		// The thread's destructor is not presently executing.  Set the
@@ -130,7 +134,7 @@ extern char const*	me;
 	pthread_cleanup_push( thread_destroy, p );
 
 	register thread_pool::thread *const
-		t = STATIC_CAST( thread_pool::thread* )( p );
+		t = static_cast<thread_pool::thread*>( p );
 
 	while ( true ) {
 
