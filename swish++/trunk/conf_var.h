@@ -25,6 +25,7 @@
 // standard
 #include <iostream>
 #include <map>
+#include <string>
 
 // local
 #include "fake_ansi.h"				/* for std */
@@ -52,6 +53,8 @@ protected:
 	conf_var( char const *var_name ) : name_( var_name ) {
 		alias_name( name_ );
 	}
+	virtual ~conf_var();
+
 	void		alias_name( char const *var_name );
 	static void	parse_line( char *line, int line_no );
 	void		parse_const_value( char const *line );
@@ -85,7 +88,7 @@ private:
 // We define this macro for convenience since operator=() is not inherited.
 //
 #define	CONF_VAR_ASSIGN_OPS(T)				\
-	T& operator=( string const &s ) {		\
+	T& operator=( std::string const &s ) {		\
 		parse_const_value( s.c_str() );		\
 		return *this;				\
 	}						\
@@ -94,16 +97,9 @@ private:
 		return *this;				\
 	}
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	template< class T > class conf;
-//
-// DESCRIPTION
 //
 //	This template declaration allows specializations for T later.
 //
-//*****************************************************************************
+template< class T > class conf;
 
 #endif	/* conf_var_H */
