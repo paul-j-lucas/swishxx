@@ -23,11 +23,12 @@
 #define	index_segment_H
 
 // standard
-#include <cstddef>				/* for ptrdiff_t */
+#include <cstddef>			/* for ptrdiff_t */
 #include <iterator>
-#include <sys/types.h>				/* for off_t */
+#include <sys/types.h>			/* for off_t */
 
 // local
+#include "fake_ansi.h"			/* for iterator */
 #include "mmap_file.h"
 
 //*****************************************************************************
@@ -86,7 +87,7 @@ public:
 	friend class const_iterator;
 
 	class const_iterator :
-		public random_access_iterator< value_type, difference_type > {
+		public std::iterator< random_access_iterator_tag, value_type > {
 	private:
 		index_segment const *index_;
 		size_type i_;
