@@ -30,6 +30,7 @@
 // local
 #include "auto_vec.h"
 #include "fake_ansi.h"			/* for std */
+#include "filter.h"
 #include "indexer.h"
 
 //*****************************************************************************
@@ -91,6 +92,8 @@ private:
 
 	enum content_type {
 		Not_Indexable,		// a type we don't know how to index
+		External_Filter,
+
 		Text_Plain,
 		Text_Enriched,
 #ifdef	MOD_HTML
@@ -101,8 +104,19 @@ private:
 		Multipart,
 	};
 
-	typedef	std::pair< content_type, content_transfer_encoding >
-		message_type;
+	struct message_type {
+		//
+		// A message_type contains information about the mail/news
+		// message including whether or not it ought to be filtered.
+		//
+		content_type			content_type_;
+		content_transfer_encoding	encoding_;
+		mutable filter*			filter_;
+
+		message_type();
+		message_type( message_type const& );
+		~message_type()			{ delete filter_; }
+	};
 
 	struct key_value {
 		PJL::auto_vec<char> key;
@@ -128,6 +142,39 @@ private:
 
 	static bool		did_last_header;
 };
+
+////////// Inlines ////////////////////////////////////////////////////////////
+
+inline mail_indexer::message_type::message_type() :
+	//
+	// We assume text/plain and 7-bit US-ASCII as stated in RFC 2045, sec.
+	// 5.2., "Content-Type Defaults":
+	//
+	//	Default RFC 822 messages without a MIME Content-Type header are
+	//	taken by this protocol to be plain text in the US-ASCII
+	//	character set, which can be explicitly specified as:
+	//
+	//		Content-type: text/plain; charset=us-ascii
+	//
+	//	This default is assumed if no Content-Type header field is
+	//	specified.
+	//
+	content_type_( Text_Plain ), encoding_( Seven_Bit ), filter_( 0 )
+{
+}
+
+inline mail_indexer::message_type::message_type( message_type const &mt ) :
+	content_type_( mt.content_type_ ), encoding_( mt.encoding_ ),
+	filter_( mt.filter_ )
+{
+	// On copy, null the pointer to the filter in the source message_type
+	// since the destructor will delete it and deleting it more than once
+	// would be bad.  We don't copy the filter since there isn't a need to:
+	// the last message_type object to get the filter will be the one to
+	// delete it.
+	//
+	mt.filter_ = 0;
+}
 
 #endif	/* mod_mail_H */
 
