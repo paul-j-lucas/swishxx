@@ -44,7 +44,8 @@ extern char const*	stem_word( char const *word );
 	// This constructor doesn't need to be defined, but g++ 2.8.0 complains
 	// if it isn't and you try to define a "const less_stem" object.
 
-	bool operator()( char const *a, char const *b ) const {
+	result_type
+	operator()( first_argument_type a, second_argument_type b ) const {
 		return std::strcmp( stem_word( a ), stem_word( b ) ) < 0;
 	}
 };

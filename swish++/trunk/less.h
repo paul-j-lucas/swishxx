@@ -54,7 +54,8 @@
 	// This default constructor doesn't need to be defined, but g++ 2.8.0
 	// complains if it isn't and you try to define a "const less" object.
 
-	bool operator()( char const *a, char const *b ) const {
+	result_type
+	operator()( first_argument_type a, second_argument_type b ) const {
 		return std::strcmp( a, b ) < 0;
 	}
 };
@@ -79,7 +80,9 @@
 //*****************************************************************************
 {
 	less_n< char const* >( int len ) : n_( len ) { }
-	bool operator()( char const *a, char const *b ) const {
+
+	result_type
+	operator()( first_argument_type a, second_argument_type b ) const {
 		return std::strncmp( a, b, n_ ) < 0;
 	}
 private:
