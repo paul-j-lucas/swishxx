@@ -45,64 +45,12 @@ WWW \- World Wide Web Package
 extract_description( \f2FILE\fP )
 extract_meta( \f2FILE\fP, \f2NAME\fP )
 hyperlink( \f2LIST\fP )
-trim_whitespace( \f2LIST\fP )
-url_decode( \f2LIST\fP )
-url_encode( \f2LIST\fP )
 .fi
 .ft 1
 .SH DESCRIPTION
-This package is a Perl interface to the World Wide Web,
-specifically, web servers,
-to parse HTML form data,
-extract descriptions of or meta information from files,
+This package provides a utility functions for the World Wide Web
+to extract descriptions of or meta information from files,
 and hyperlink text.
-.SH HTML FORMS
-.SS "Automatic Processing"
-Prior to the display of a page, all form data, if any,
-is processed automatically by this package
-and the results are deposited in the
-.cS
-%FORM
-.cE
-Perl hash (in the package \f(CWmain\f1).
-Both the
-.ft CW
-GET
-.ft 1
-method as well as both the
-.I application/x-www-form-urlencoded
-and
-.I multipart/form-data
-.ft CW
-PUT
-.ft 1
-methods are supported.
-For example, given the simple search form:
-.cS
-<FORM ACTION="search.cgi">
-<B>Search:</B>
-<INPUT TYPE=text NAME=search SIZE=30>
-<INPUT TYPE=submit VALUE="Search">
-</FORM>
-.cE
-the CGI script can refer to the value the user entered for the search field as
-\f(CW$FORM{~search~}\f1.
-.SS "File Upload"
-File uploads, as part of forms with \f(CWENCTYPE\f1 set to
-.I multipart/form-data
-are supported.
-For example, given the form:
-.cS
-<FORM METHOD=post ENCTYPE="multipart/form-data" ACTION="upload.cgi">
-<INPUT TYPE=file NAME="file_name" SIZE=35>
-<INPUT TYPE=submit VALUE="Upload">
-</FORM>
-.cE
-if the user selects the file \f(CW/home/pjl/resume.txt\f1,
-only the base name of the file, \f(CWresume.txt\f1,
-is placed into \f(CW$FORM{~file_name~}\f1
-and the file itself is uploaded to \f(CW/tmp/resume.txt\f1
-where the CGI script can do with it as it pleases.
 .SH SUBROUTINES
 The following Perl subroutines are defined and available:
 .IP "\f(CWextract_description( \f2FILE\fP )\f1"
@@ -166,28 +114,6 @@ Example:
 	Read all about it at
 	<A HREF="http://www.usatoday.com/">http://www.usatoday.com/</A>
 .cE
-.IP "\f(CWtrim_whitespace( \f2LIST\fP )\f1"
-Trims (removes) all whitespace (including newlines) from
-both the beginning and end of strings.
-Whitespace in the middle of strings (including multi-line strings)
-is not removed.
-.IP "\f(CWurl_decode( \f2LIST\fP )\f1"
-Decodes
-.I url-encoded
-strings replacing '\f(CW+\f1' with '\f(CW~\f1'
-and the sequence \f(CW%xx\f1
-with a single charcter having the ASCII code denoted by
-.I xx
-in hexadecimal.
-This subroutine is called automatically for all processed form data.
-.IP "\f(CWurl_encode( \f2LIST\fP )\f1"
-Encodes all ``unsafe'' characters in strings (according to RFC 1738).
-This subroutine is useful for encoding strings for use in the construction
-of URLs.
-Example:
-.cS
-	Is a + b = c? \f2becomes\f1 Is+a+%2B+b+%3D+c%3F
-.cE
 .SH SEE ALSO
 .BR perl (1)
 .PP
@@ -202,12 +128,6 @@ Tim Berners-Lee, Larry Masinter, and Mark McCahill.
 .IR "Request for Comments 1738" ,
 Network Working Group,
 1994.
-.PP
-Larry Masinter and Ernesto Nebel.
-``Form-based File Upload in HTML,''
-.IR "Request for Comments 1867" ,
-Network Working Group of the Internet Engineering Task Force,
-November 1995.
 .PP
 Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
 ``Notes on helping search engines index your Web site,''
