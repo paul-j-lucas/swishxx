@@ -44,9 +44,7 @@
 // in 2.96, but for earlier versions we define std::iterator here ourselves:
 // the definition is copied/pasted from stl_iterator.h.
 //
-#if	 defined(PJL_GCC_295) && \
-	 defined(__STL_NO_NAMESPACES) && \
-	!defined(__STL_USE_NAMESPACES)
+#ifdef	PJL_GCC_295
 namespace std {
 	template <class _Category, class _Tp, class _Distance = ptrdiff_t,
 		  class _Pointer = _Tp*, class _Reference = _Tp&>
