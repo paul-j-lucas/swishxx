@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "December 14, 1999" "SWISH++"
+.TH \f3search\fP 1 "January 30, 2000" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -642,31 +642,36 @@ Could not open socket file.
 .TP
 53
 Could not
-.BR bind (3)
-to socket.
+.BR unlink (2)
+socket file.
 .TP
 54
 Could not
-.BR listen (3)
+.BR bind (3)
 to socket.
 .TP
 55
 Could not
+.BR listen (3)
+to socket.
+.TP
+56
+Could not
 .BR accept (3)
 a socket connection.
 .TP
-56
+57
 Could not
 .BR fork (2)
 child process.
 .TP
-57
+58
 Could not change directory to \f(CW/\f1.
 .TP
-58
+59
 Could not create thread.
 .TP
-59
+60
 Could not detach thread.
 .PD
 .RE
@@ -703,6 +708,7 @@ default index file name
 .BR perlfunc (1),
 .BR exec (2),
 .BR fork (2),
+.BR unlink (2),
 .BR accept (3),
 .BR bind (3),
 .BR listen (3),
