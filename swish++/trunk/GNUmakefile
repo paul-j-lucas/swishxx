@@ -106,7 +106,7 @@ I_OBJECTS:=	$(I_SOURCES:.c=.o)
 ifndef HAVE_ZLIB
 ZLIB_LINK:=
 endif
-I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PTHREAD_LIB) \
+I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PTHREAD_LINK) \
 		-lm $(ZLIB_LINK)
 
 S_SOURCES:=	bcd.c \
@@ -171,7 +171,7 @@ ifdef WIN32
 E_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
 E_OBJECTS:=	$(E_SOURCES:.c=.o)
-E_LINK:=	
+E_LINK:=	$(PTHREAD_LINK)
 
 LIB_TARGET:=	WWW.pm
 
