@@ -178,7 +178,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // PARAMETERS
 //
-//	e		The iterator marking of where to look.  If the
+//	e		The iterator marking the range where to look.  If the
 //			attribute is found, this iterator is repositioned to be
 //			at the first character of the value; otherwise, it is
 //			not touched.
@@ -470,7 +470,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //	c	The iterator to use.  It is presumed to be positioned at the
 //		first character after the '<'.  If the tag is the start of a
 //		comment, it is repositioned at the first character past the
-//		tag, i.e., past the "!--"; otherwise, it is not touched.
+//		tag, i.e., past the '>'; otherwise, it is not touched.
 //
 // RETURN VALUE
 //
