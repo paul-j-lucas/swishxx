@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "November 29, 2002" "SWISH++"
+.TH \f3index\f1 1 "December 22, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -73,7 +73,7 @@ or
 option or the
 .B ExcludeFile
 variable.
-.PP
+.P
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to index is instead taken from standard input (one per line).
 In this case,
@@ -88,7 +88,7 @@ option or the
 variable), are indexed, i.e.,
 .B index
 assumes you know what you're doing when specifying filenames in this manner.
-.PP
+.P
 In any case, care must be taken not to specify files or subdirectories
 in directories that are also specified:
 since directories are recursively indexed by default (unless either the
@@ -111,13 +111,13 @@ are not indexed.
 (There is a default built-in set of a few hundred such words.)
 Additionally, several heuristics are used to determine which words
 should not be indexed.
-.PP
+.P
 First, a word is checked to see if it looks like an acronym.
 A word is considered an acronym only if it starts with a capital letter and
 is composed exclusively of capital letters, digits, and punctuation symbols,
 e.g., ``AT&T.''
 If a word looks like an acronym, it is indexed and no further checks are done.
-.PP
+.P
 Second, there are several other checks that are applied.
 A word is not indexed if it:
 .TP 4
@@ -201,9 +201,10 @@ Another way around this problem is to do periodic full indexing.
 .B index
 is written in a modular fashion
 where different types of files have different indexing modules.
-Currently, there are 6 modules:
+Currently, there are 7 modules:
 Text (plain text),
 HTML (HTML and XHTML),
+ID3 (ID3 tags found in MP3 files),
 LaTeX,
 Mail (RFC 822 and Usenet News),
 Manual (Unix manual pages in
@@ -322,7 +323,7 @@ are indexed.
 All other HTML or XHTML tags and comments
 (anything between \f(CW<\f1 and \f(CW>\f1 characters)
 are discarded.
-.PP
+.P
 In compliance with the HTML specification,
 any one of no quotes, single quotes, or double quotes may be used
 to contain attribute values and attributes can appear in any order.
@@ -331,6 +332,130 @@ The specification is vague as to whether whitespace surrounding the \f(CW=\f1
 is legal, but
 .B index
 allows it.
+.SS ID3 Module
+ID3 tags are used to store audio meta information for MP3 files (generally).
+Since audio files contain mostly binary information,
+only the ID3 tag text fields are indexed.
+ID3 tag versions 1.x and 2.x (through 2.4) are supported
+(except for encrypted frames).
+The processing done for files containing an ID3 tag is:
+.TP 4
+1.
+If a title field is found,
+then the value of the title is stored in the generated index file
+as the file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.TP
+2.
+Words that are the value of fields
+are indexed associated with the field name as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of the header
+are still indexed, but not associated with the header.)
+.IP ""
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+For ID3v1.x, the recommended fields to be indexed are:
+.BR album ,
+.BR artist ,
+.BR comments ,
+.BR genre ,
+and
+.BR title .
+.IP ""
+For ID3v2.2,
+the recommended text fields (with reassignments) to be indexed are:
+.BR com=comments ,
+.BR tal=album ,
+.BR tcm=composer ,
+.BR tco=genre ,
+.BR tcr=copyright ,
+.BR ten=encoder ,
+.BR txt=lyricist ,
+.BR tt1=content ,
+.BR tt2=title ,
+.BR tt3=subtitle ,
+.BR ipl=musicians ,
+.BR tot=original-title ,
+.BR tol=original-lyricist ,
+.BR toa=original-artist ,
+.BR tp1=artist ,
+.BR tp2=performers ,
+.BR tp3=conductor ,
+.BR tpb=publisher ,
+.BR txx=user ,
+.BR slt=lyrics ,
+and
+.BR ult=lyrics .
+.IP ""
+For ID3v2.4,
+the recommended text fields (with reassignments) to be indexed are:
+.BR comm=comments ,
+.BR talb=album ,
+.BR tcom=composer ,
+.BR tcon=genre ,
+.BR tcop=copyright ,
+.BR tenc=encoder ,
+.BR text=lyricist ,
+.BR tipl=people ,
+.BR tit1=content ,
+.BR tit2=title ,
+.BR tit3=subtitle ,
+.BR tmcl=musicians ,
+.BR tmoo=mood ,
+.BR toal=original-title ,
+.BR toly=original-lyricist ,
+.BR tope=original-artist ,
+.BR town=owner ,
+.BR tpe1=artist ,
+.BR tpe2=performers ,
+.BR tpe3=conductor ,
+.BR tpub=publisher ,
+.BR tsst=set-subtitle ,
+.BR txxx=user ,
+.BR user=terms ,
+.BR sylt=lyrics ,
+and
+.BR uslt=lyrics .
+.IP ""
+ID3v2.3 is the same as 2.4 except replace
+.B tmcl=musicians
+with
+.BR ipls=musicians .
+.IP ""
+All text fields (with reassignments) for all versions of ID3
+can (and should) be specified concurrently
+so it need not be known in advance which version(s) of ID3
+MP3 files are encoded with.
+.TP
+3.
+For ID3v2.x,
+text fields that are compressed are uncompressed prior to indexing.
+.TP
+4.
+For ID3v2.x,
+Unicode text that is encoded in either UTF-8 or UTF-16
+(either big- or little-endian)
+is decoded prior to indexing.
 .SS LaTeX Module
 Additional processing is done for LaTeX files.
 If a
@@ -350,8 +475,8 @@ If a
 .B Subject
 header is found within the first \f(CWTitleLines\f1 lines of the file
 (default is 12),
-then the value of the subject is stored in the generated index file as the
-file's title rather than the file's name.
+then the value of the subject is stored in the generated index file
+as the file's title rather than the file's name.
 (Every non-space whitespace character in the title is converted to a space;
 leading and trailing spaces are removed.)
 .TP
@@ -426,7 +551,7 @@ The recommended vCard types (with reassignments) to be indexed are:
 .BR role ,
 and
 .BR title .
-.PP
+.P
 Indexing mail and news files is most effective
 only when there is exactly one message per file.
 While Usenet news files are usually this way, mail files are not.
@@ -514,18 +639,18 @@ Either a `\f(CW-\f1' or ``\f(CW--\f1'' by itself explicitly ends the options;
 either short or long options may be used.
 Long option names may be abbreviated
 so long as the abbreviation is unambiguous.
-.PP
+.P
 For a short option that takes an argument,
 the argument is either taken to be the remaining characters of the same option,
 if any, or, if not, is taken from the next option unless said option begins
 with a `\f(CW-\f1'.
-.PP
+.P
 Short options that take no arguments can be grouped
 (but the last option in the group can take an argument), e.g.,
 \f(CW-lrv4\fP
 is equivalent to
 \f(CW-l -r -v4\fP.
-.PP
+.P
 For a long option that takes an argument,
 the argument is either taken to be the characters after a `\f(CW=\fP', if any,
 or, if not, is taken from the next option unless said option begins with
@@ -627,7 +752,7 @@ Reserve space for this number of files,
 .IR n ,
 to start.
 More space will be allocated as necessary,
-but with a slight performace penalty.
+but with a slight performance penalty.
 (Default is 1000.)
 .TP
 .BI \-g n
@@ -644,7 +769,7 @@ Just as with the
 .B \-F
 option,
 more space will be allocated as necessary,
-but with a slight performace penalty.
+but with a slight performance penalty.
 (Default is 100.)
 .TP
 .B \-H
@@ -826,7 +951,7 @@ The verbosity level,
 .IR n ,
 for printing additional information to standard output during indexing.
 The verbosity levels, 0-4, are:
-.PP
+.P
 .RS 20
 .PD 0
 .TP 4
@@ -873,7 +998,7 @@ than the compiled-in default.
 The following variables can be set in a configuration file.
 Variables and command-line options can be mixed,
 the latter taking priority.
-.PP
+.P
 .RS 5
 .PD 0
 .TP 20
@@ -1051,7 +1176,7 @@ Given a class name of, say, \f(CWno_index\f1, the above menu can be changed to:
 <SELECT NAME="menu" CLASS="no_index">
 .cE
 and then everything up to the \f(CW</SELECT>\f1 tag will not be indexed.
-.PP
+.P
 For an HTML element that has an optional end tag
 (such as the \f(CW<P>\f1 element),
 the text up to the tag that ends it will not be indexed,
@@ -1073,7 +1198,7 @@ the \f(CW<BLOCKQUOTE>\f1 tag implicitly ends the \f(CW<P>\f1 element
 (as do all block-level elements)
 so the only text that is not indexed above is:
 ``This was the poem that Alice read.''
-.PP
+.P
 For an HTML or XHTML element that does not have an end tag,
 only the text within the start tag will not be indexed.
 For example, in:
@@ -1087,7 +1212,7 @@ if the \f(CWCLASS\f1 attribute were not there.
 .BR swish++.conf (4).)
 .SH EXIT STATUS
 Exits with one of the values given below:
-.PP
+.P
 .RS 5
 .PD 0
 .TP 5
@@ -1181,125 +1306,137 @@ variable.
 .BR swish++.conf (4),
 .BR glob (7),
 .BR man (7).
-.PP
+.P
 Tim Berners-Lee.
 ``The text/enriched MIME Content-type,''
 .IR "Request for Comments 1563" ,
 Network Working Group of the Internet Engineering Task Force,
 January 1994.
-.PP
+.P
 David H. Crocker.
 ``Standard for the Format of ARPA Internet Text Messages,''
 .IR "Request for Comments 822" ,
 Department of Electrical Engineering,
 University of Delaware,
 August 1982.
-.PP
+.P
 Frank Dawson and Tim Howes.
 ``vCard MIME Directory Profile,''
 .IR "Request for Comments 2426" ,
 Network Working Group of the Internet Engineering Task Force,
 September 1998.
-.PP
+.P
 Ned Freed and Nathaniel S. Borenstein.
 ``Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,''
 .IR "Request for Comments 2045" ,
 RFC 822 Extensions Working Group of the Internet Engineering Task Force,
 November 1996.
-.PP
+.P
 David Goldsmith and Mark Davis.
 ``UTF-7, a mail-safe transformation format of Unicode,''
 .IR "Request for Comments 2152" ,
 Network Working Group of the Internet Engineering Task Force,
 May 1997.
-.PP
+.P
 International Standards Organization.
 .I ISO 8859-1: Information Processing
 .I -- 8-bit single-byte coded graphic character sets
 .I -- Part 1: Latin alphabet No. 1,
 1987.
-.PP
+.P
 \-\-.
 .I ISO 8879: Information Processing
 .I -- Text and Office Systems
 .I -- Standard Generalized Markup Language (SGML),
 1986.
-.PP
+.P
 \-\-.
 .I ISO/IEC 9945-2: Information Technology
 .I -- Portable Operating System Interface (POSIX)
 .I -- Part 2: Shell and Utilities,
 1993.
-.PP
+.P
 Leslie Lamport.
 .IR "LaTeX: A Document Preparation System, 2nd ed." ,
 Addison-Wesley, Reading, MA,
 1994.
-.PP
+.P
+Martin Nilsson.
+.IR "ID3 tag version 2.3.0" ,
+February 1999.
+.P
+\-\-.
+.IR "ID3 tag version 2.4.0 - Main Structure" ,
+November 2002.
+.P
+\-\-.
+.IR "ID3 tag version 2.4.0 - Native Frames" ,
+November 2002.
+.P
 Steven Pemberton, et al.
 .IR "XHTML 1.0: The Extensible HyperText Markup Language" ,
 World Wide Web Consortium,
 January 2000.
-.PP
+.P
 Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
 ``On SGML and HTML: SGML constructs used in HTML: Entities,''
 .I HTML 4.0 Specification, \(sc3.2.3,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``The global structure of an HTML document: The document head: The \f(CWtitle\f1 attribute,''
 .I HTML 4.0 Specification, \(sc7.4.3,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``The global structure of an HTML document: The document head: Meta data,''
 .I HTML 4.0 Specification, \(sc7.4.4,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``The global structure of an HTML document: The document body: Element identifiers: the \f(CWid\f1 and \f(CWclass\f1 attributes,''
 .I HTML 4.0 Specification, \(sc7.5.2,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``Tables: Elements for constructing tables: The \f(CWTABLE\f1 element,''
 .I HTML 4.0 Specification, \(sc11.2.1,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``Objects, Images, and Applets: Generic inclusion: the \f(CWOBJECT\f1 element,''
 .I HTML 4.0 Specification, \(sc13.3,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``Objects, Images, and Applets: How to specify alternate text,''
 .I HTML 4.0 Specification, \(sc13.8,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 \-\-.
 ``Index of Elements,''
 .I HTML 4.0 Specification,
 World Wide Web Consortium,
 April 1998.
-.PP
+.P
 Marcin Sawicki, et al.
 .IR "Ruby Annotation" ,
 World Wide Web Consortium,
 April 2001.
-.PP
+.P
 The Unicode Consortium.
 ``Encoding Forms,''
 .I The Unicode Standard 3.0, \(sc2.3,
 Addison-Wesley,
 2000.
-.PP
+.P
 Francois Yergeau.
 ``UTF-8, a transformation format of ISO 10646,''
 .IR "Request for Comments 2279" ,
