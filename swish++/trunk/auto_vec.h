@@ -22,6 +22,9 @@
 #ifndef	auto_vec_H
 #define	auto_vec_H
 
+// local
+#include "fake_ansi.h"			/* for explicit */
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -42,14 +45,20 @@
 //*****************************************************************************
 {
 public:
-	auto_vec( T *p ) : p_( p ) { }
+	explicit auto_vec( T *p = 0 ) : p_( p ) { }
 	~auto_vec() { delete[] p_; }
+
+	auto_vec<T>& operator=( T *p ) {
+		delete[] p_;
+		p_ = p;
+		return *this;
+	}
 
 	T& operator*() const			{ return *p_; }
 	T& operator[]( int i ) const		{ return p_[ i ]; }
 	   operator T*() const			{ return p_; }
 private:
-	T *const p_;
+	T *p_;
 
 	auto_vec( auto_vec<T> const& );		// forbid copy
 	auto_vec& operator=( auto_vec< T >& );	// forbid assignment
