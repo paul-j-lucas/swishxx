@@ -2,6 +2,131 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.0
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* 'search' now has the ability to run in the background as a multi-threaded
+  daemon process functioning as a search server.
+
+  (This feature will be known as feature MSD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added SEARCH_DAEMON, PTHREAD_LIB, and SOCKET_LIB variables
+	   for feature MSD.
+
+* config/Makefile
+
+	1. Added src/errno$(CCCEXT) dependency to $(TARGET) for feature
+	   MSD.
+
+	2. Added src/socklen$(CCCEXT) dependency to $(TARGET) for
+	   feature MSD.
+
+* config/config-sh
+
+	1. Performed following substitution:
+
+		s/trap "x=$?; rm -f *$CCOEXT $TARGET; exit $x" 0 1 2 15/
+		  trap "rm -f *$CCOEXT $TARGET; exit 1" 0 1 2 15
+
+	   since it wasn't saving the exit code and always exiting with 0
+	   (I don't know why.)  This was done for feature MSD.
+
+	2. Added code to handle the new ERROR case for feature MSD.
+
+* INSTALL.win32
+
+	1. Added reference to Makefile.win32.
+
+* Makefile
+
+	1. Added new objects and dependencies for feature MSD.
+
+	2. Added new DEBUG_threads flag for feature MSD.
+
+* Makefile.win32
+
+	1. Added this not including the objects and dependencies for
+	   feature MSD until somebody helps me port MSD to Windows.
+
+* man/man1/search.1
+
+	1. Added description of feature MSD.
+
+* man/man4/swish++.conf.4
+
+	1. Added new configuration file variables for feature MSD.
+
+* README
+
+	1. Added synopsis of feature MSD.
+
+* search.c
+
+	1. Added #include of headers for socket-related stuff for
+	   feature MSD.
+
+	2. Added global "am_daemon" variable for feature MSD.
+
+	3. Added a "set<string>&" parameter to parse_meta(),
+	   parse_primary(), and parse_query() functions to collect the
+	   stop words found for feature MSD.
+
+	4. In main(), moved command-line option processing code into
+	   new search_options object for feature MSD.
+
+	5. In main(), moved search-request code into new search()
+	   and service_request() functions for feature MSD.
+
+	6. Added new become_daemon() function for feature MSD.
+
+	7. Added "out" parameters to dump_single_word() and
+	   dump_word_window() functions for feature MSD.
+
+	8. In both dump_single_word() and dump_word_window(), made
+	   lower_word a managed_vec<char> if compiled as a search
+	   daemon.
+
+	9. In usage() added description for new options for feature MSD.
+
+* managed_ptr.h
+* SearchDaemon.h
+* search_thread.c
+* search_thread.h
+* SocketFile.h
+* SocketQueueSize.h
+* src/socklen.c
+* thread_pool.c
+* thread_pool.h
+* ThreadsMax.h
+* ThreadsMin.h
+
+	1. New files for feature MSD.
+
+* stem_word.c
+
+	1. In stem_word(), added mutex around access to cache for
+	   feature MSD.
+
+* util.c
+* util.h
+
+	1. Added to_lower_r() function for feature MSD.
+
+* version.h
+
+	1. Updated version to "4.0".
+
+
+*******************************************************************************
 3.1
 *******************************************************************************
 
