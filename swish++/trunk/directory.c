@@ -32,7 +32,6 @@
 #include <dirent.h>
 
 // local
-#include "DirectoriesReserve.h"
 #include "directory.h"
 #include "fake_ansi.h"			/* for std */
 #include "my_set.h"
@@ -46,7 +45,7 @@ using namespace PJL;
 using namespace std;
 #endif
 
-extern void		do_file( char const *file_name );
+extern void		do_file( char const *file_name, int dir_index );
 
 #ifdef	WIN32
 //
@@ -63,8 +62,7 @@ char const		Dir_Sep_Char = '/';
 #endif
 
 #ifdef	INDEX
-DirectoriesReserve	directories_reserve;
-dir_list_type		dir_list;
+dir_set_type		dir_set;
 #endif
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -77,7 +75,7 @@ FollowLinks		follow_symbolic_links;
 //
 // SYNOPSIS
 //
-	void check_add_directory( char const *dir_path )
+	int check_add_directory( char const *dir_path )
 //
 // DESCRIPTION
 //
@@ -89,14 +87,22 @@ FollowLinks		follow_symbolic_links;
 //	dir_path	The full path of a directory.  The string must point to
 //			storage that will last for the duration of the program.
 //
+// RETURN VALUE
+//
+//	Returns the index number of the directory.
+//
 //*****************************************************************************
 {
-	static char_ptr_set dir_set;
-	if ( dir_set.insert( dir_path ).second ) {
-		if ( dir_list.empty() )
-			dir_list.reserve( directories_reserve );
-		dir_list.push_back( dir_path );
+	pair< dir_set_type::iterator, bool > const
+		p = dir_set.insert( dir_set_type::value_type( dir_path, 0 ) );
+	if ( p.second ) {
+		//
+		// We really did insert a new directory: set the index to the
+		// actual value.
+		//
+		p.first->second = dir_set.size() - 1;
 	}
+	return p.first->second;
 }
 
 //*****************************************************************************
@@ -108,22 +114,25 @@ FollowLinks		follow_symbolic_links;
 // SYNOPSIS
 //
 //	In the cases where a file is indexed directly from either the command
-//	line or via standard input, its directory has to be added to dir_list.
+//	line or via standard input, its directory has to be added to dir_set.
 //
 //*****************************************************************************
 {
 	char *const dir_path = new_strdup( file_name );
 	char *const slash = ::strrchr( dir_path, '/' );
+	int dir_index;
 	//
 	// Check for the case of "./file": the directory "." doesn't need to be
 	// added since it's automatically added.
 	//
 	if ( slash && (slash > dir_path + 1 || *dir_path != '.' ) ) {
 		*slash = '\0';
-		check_add_directory( dir_path );
-	} else
+		dir_index = check_add_directory( dir_path );
+	} else {
 		delete[] dir_path;
-	do_file( file_name );
+		dir_index = 0;
+	}
+	do_file( file_name, dir_index );
 }
 #endif	/* INDEX */
 
@@ -186,7 +195,7 @@ FollowLinks		follow_symbolic_links;
 	}
 
 #ifdef	INDEX
-	check_add_directory( dir_path );
+	int const dir_index = check_add_directory( dir_path );
 #endif
 	//
 	// Have a buffer for the full path to a file in a directory.  For each
@@ -212,8 +221,11 @@ FollowLinks		follow_symbolic_links;
 			// only does plain files.  It's also desirable to call
 			// do_file() so we don't have to repeat the code to
 			// print verbose information for 'path'.
-			//
+#ifdef	INDEX
+			do_file( path, dir_index );
+#else
 			do_file( path );
+#endif
 		}
 	}
 
