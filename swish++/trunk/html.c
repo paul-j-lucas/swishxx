@@ -44,7 +44,7 @@
 using namespace std;
 #endif
 
-int			exclude_class_count;	// don't index words if > 0
+extern int		exclude_class_count;
 extern ExcludeClass	exclude_class_names;
 extern ExcludeMeta	exclude_meta_names;
 extern IncludeMeta	include_meta_names;
@@ -628,14 +628,8 @@ bool			tag_cmp(
 			stack_type;
 		static stack_type element_stack;
 
-		if ( is_new_file ) {
-			//
-			// We are just starting to index a new file; therefore,
-			// reset stuff.
-			//
+		if ( is_new_file )
 			element_stack.clear();
-			exclude_class_count = 0;
-		}
 
 		////////// Close open element(s) //////////////////////////////
 
