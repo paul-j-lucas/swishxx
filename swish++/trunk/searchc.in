@@ -22,6 +22,7 @@
 ##
 
 $ConfigFile_Default	= 'swish++.conf';
+$ResultsFormat_Default	= 'classic';
 $ResultsMax_Default	= 100;
 $SocketAddress_Default	= '1967';
 $SocketFile_Default	= '/tmp/search.socket';
@@ -143,10 +144,11 @@ sub usage {
 usage: $me [options] [query]
 options:
 ========
--a socket_addr  : Host and port of socket address [default: *:1967]
+-a socket_addr  : Host and port of socket address [default: *:$SocketAddress_Default]
 -c config_file  : Name of configuration file [default: $ConfigFile_Default]
 -d              : Dump query word indices and exit
 -D              : Dump entire word index and exit
+-F format       : Results format [default: $ResultsFormat_Default]
 -h              : Print this help message
 -m max_results  : Maximum number of results [default: $ResultsMax_Default]
 -M              : Dump meta-name index and exit
