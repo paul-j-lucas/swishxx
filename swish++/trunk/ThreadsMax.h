@@ -48,6 +48,8 @@ public:
 	CONF_INT_ASSIGN_OPS( ThreadsMax )
 };
 
+extern ThreadsMax max_threads;
+
 #endif	/* ThreadsMax_H */
 
 #endif	/* SEARCH_DAEMON */
