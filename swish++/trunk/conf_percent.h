@@ -57,7 +57,7 @@ private:
 };
 
 inline conf_percent::conf_percent( char const *name,
-	int default_value, int min = 0, int max
+	int default_value, int min, int max
 )
 	: conf<int>( name, default_value, min, max )
 {
