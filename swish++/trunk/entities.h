@@ -28,8 +28,6 @@
 // local
 #include "less.h"
 
-extern char const num_entities[ 256 ];
-
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -38,12 +36,12 @@ extern char const num_entities[ 256 ];
 //
 // DESCRIPTION
 //
-//	A char_entity_map is used to perform fast look-up of a character
-//	entity reference.  It uses char const* to point directly to the
-//	C-strings in the char_entity_table[] vector; no strings are copied.
+//	A char_entity_map is used to perform fast look-up of a character entity
+//	reference.  It uses char const* to point directly to the C-strings in
+//	the char_entity_table[] vector; no strings are copied.
 //
-//	The contructor is private, however, to ensure that only instance()
-//	can be called to initialize and access a single, static instance.
+//	The contructor is private, however, to ensure that only instance() can
+//	be called to initialize and access a single, static instance.
 //
 // SEE ALSO
 //
