@@ -221,12 +221,16 @@ static unsigned int	unsynchsafe( char const*&, int = 4 );
 //
 // SEE ALSO
 //
-//	Martin Nilsson.  "3.1. ID3v2 header," ID3 tag version 2.3.0, February
+//	Martin Nilsson.  "3.2. ID3v2 frames overview," ID3 tag version 2, March
+//	1998.
+//		http://www.id3.org/
+//
+//	---.  "3.3. ID3v2 frame overview," ID3 tag version 2.3.0, February
 //	1999.
 //		http://www.id3.org/
 //
-//	---.  "3.1. ID3v2 header," ID3 tag version 2.4.0 - Main Structure,
-//	November 2000.
+//	---.  "4. ID3v2 frame overview," ID3 tag version 2.4.0 - Main
+//	Structure, November 2000.
 //		http://www.id3.org/
 //
 //*****************************************************************************
@@ -434,8 +438,12 @@ static unsigned int	unsynchsafe( char const*&, int = 4 );
 //
 // SEE ALSO
 //
-//	Martin Nilsson.  "4.2. Text information frames," ID3 tag version 2.4.0
-//	- Native Frames, November 2000.
+//	Martin Nilsson.  "4.2.1. Text information frames - details," ID3 tag
+//	version 2.3.0, February 1999.
+//		http://www.id3.org/
+//
+//	---.  "4.2.3. TCON Content type," ID3 tag version 2.4.0 - Native
+//	Frames, November 2000.
 //		http://www.id3.org/
 //
 //*****************************************************************************

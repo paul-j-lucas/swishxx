@@ -40,8 +40,13 @@
 //
 // SEE ALSO
 //
-//	Martin Nilsson.  "ID3 tag version 2.4.0 - Main Structure," GROUP,
-//	November 2000.
+//	Martin Nilsson.  "ID3 tag version 2," March 1998.
+//
+//	---.  "ID3 tag version 2.3.0," February 1999.
+//
+//	---.  "ID3 tag version 2.4.0 - Main Structure," November 2000.
+//
+//	---.  "ID3 tag version 2.4.0 - Native Frames," November 2000.
 //
 //*****************************************************************************
 {
