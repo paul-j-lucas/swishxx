@@ -290,7 +290,7 @@ static ostream&		usage( ostream& = cerr );
 		//
 		char file_name[ PATH_MAX + 1 ];
 		while ( cin.getline( file_name, PATH_MAX ) ) {
-			if ( !file_exists( *argv ) ) {
+			if ( !file_exists( file_name ) ) {
 				if ( verbosity > 3 )
 					cout << "  " << file_name
 					     << " (skipped: does not exist)\n";
