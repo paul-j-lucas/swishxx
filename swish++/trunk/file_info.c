@@ -25,9 +25,13 @@
 // local
 #include "bcd.h"
 #include "config.h"
-#include "fake_ansi.h"			/* for std, *_CAST */
 #include "file_info.h"
 #include "FilesReserve.h"
+#include "platform.h"
+
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 file_info::list_type		file_info::list_;
 file_info::name_set_type	file_info::name_set_;
@@ -94,7 +98,7 @@ FilesReserve			files_reserve;
 //
 //*****************************************************************************
 {
-	unsigned char const *u = REINTERPRET_CAST(unsigned char const*)( p );
+	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
 	o << u;
 	while ( *u++ ) ;				// skip past filename
 	off_t const size = parse_bcd( u );
@@ -119,11 +123,11 @@ FilesReserve			files_reserve;
 //
 //*****************************************************************************
 {
-	unsigned char const *u = REINTERPRET_CAST(unsigned char const*)( p );
+	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
 	while ( *u++ ) ;				// skip past filename
 	off_t const size = parse_bcd( u );
 	int const num_words = parse_bcd( u );
 	return new file_info(
-		p, size, REINTERPRET_CAST(char const*)( u ), num_words
+		p, size, reinterpret_cast<char const*>( u ), num_words
 	);
 }
