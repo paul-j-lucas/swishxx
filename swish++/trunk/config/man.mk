@@ -19,7 +19,38 @@
 #	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
+NROFF=		nroff -man
+#		Command for formatting Unix manual pages for a terminal screen;
+#		usually "nroff -man".
+
+TROFF=		troff -man
+#		Command for formatting Unix manual pages for a phototypesetter;
+#		usually "troff -man".
+
+DPOST=		/usr/lib/lp/postscript/dpost
+ifneq ($(wildcard $(DPOST)*),)
+TO_PS=		$(DPOST)
+else
+TO_PS=		grops
+endif
+#		Command to convert troff output to PostScript; usually
+#		"/usr/lib/lp/postscript/dpost" for Solaris or "grops" for
+#		systems using groff.
+
+TO_TXT=		col -b
+#		Command to strip all non-text characters from nroff output to
+#		generate plain text versions of manual pages; usually
+#		"col -b".
+
 ########## You shouldn't have to change anything below this line. #############
+
+include	$(ROOT)/config/config.mk
+
+# $(SECT) is defined by the makefile including this
+PAGES:=		$(wildcard *.$(SECT))
+TARGET_TXT:=	$(PAGES:.$(SECT)=.txt)
+TARGET_PDF:=	$(PAGES:.$(SECT)=.pdf)
+TARGET_PS:=	$(PAGES:.$(SECT)=.ps)
 
 ##
 # Build rules
@@ -28,19 +59,26 @@
 .SUFFIXES:
 .SUFFIXES: .$(SECT) .pdf .ps .txt
 
-.$(SECT).txt:
-	$(TBL) $< | $(NROFF) $(NROFF_FLAGS) | $(TO_TXT) > $@
+%.txt : %.$(SECT)
+	$(NROFF) $< | $(TO_TXT) > $@
 
-.$(SECT).ps:
-	$(TBL) $< | $(TROFF) $(TROFF_FLAGS) | $(TO_PS) > $@
+%.ps : %.$(SECT)
+	$(TROFF) $< | $(TO_PS) > $@
 
-.ps.pdf:
-	$(DISTILL) $<
+# Use this function to try to locate Acrobat Distiller since it produces
+# better PDF than Ghostscript.
+pathsearch = $(firstword $(wildcard $(addsuffix /$(1),$(subst :, ,$(PATH)))))
 
-text:: $(TARGET_TXT)
+%.pdf : %.ps
+ifneq ($(call pathsearch,distill),)
+	distill $<
+else
+	gs -q -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=$@ $< -c quit
+endif
+
+text txt:: $(TARGET_TXT)
 pdf:: $(TARGET_PDF)
-ps:: $(TARGET_PS)
-
+ps :: $(TARGET_PS)
 all:: text pdf ps
 
 ##
