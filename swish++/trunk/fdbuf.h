@@ -26,8 +26,13 @@
 #include <iostream>
 #include <streambuf.h>
 
+// local
+#include "fake_ansi.h"			/* for explicit, std */
+
 #ifndef	PJL_NO_NAMESPACES
 namespace PJL {
+#else
+#define	PJL /* nothing */
 #endif
 
 //*****************************************************************************
