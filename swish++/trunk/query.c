@@ -634,8 +634,10 @@ no_put_back:
 				found = (*and_result)->find( result->first );
 			if ( found != (*and_result)->end() )
 				result->second += found->second;
-			else
+			else {
 				results.erase( result );
+				break;
+			}
 		}
 	}
 
