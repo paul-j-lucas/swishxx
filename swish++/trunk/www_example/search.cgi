@@ -8,7 +8,8 @@
 # SYNOPSIS
 #
 #	<FORM ACTION="search.cgi">
-#	<INPUT TYPE=text NAME=Search>
+#	<INPUT TYPE=text NAME=Search><BR>
+#	<INPUT TYPE=checkbox NAME=Stem><B>Stem words</B>
 #	<INPUT TYPE=submit VALUE="Search">
 #	</FORM>
 #
@@ -59,10 +60,21 @@ END
 $FORM{ Search } =~ s/[^\s&'()*\-=\w]/ /g;
 $FORM{ Search } =~ s/([&'()*])/\\$1/g;
 
-open( SEARCH, "$SWISH_BIN/search -i $INDEX_FILE $FORM{ Search } |" ) or die;
+##
+# Add in specified options.
+##
+push( @options, '-s' ) if $FORM{ Stem };
+
+@search_args = (
+	"-i $INDEX_FILE",
+	@options,
+	$FORM{ Search }
+);
+
+open( SEARCH, "$SWISH_BIN/search @search_args |" ) or die;
 while ( <SEARCH> ) {
-	if ( /^# ignored: (.+)$/ ) {
-		$ignored = $1;
+	if ( /^# ignored: / ) {
+		$ignored = $';
 		next;
 	}
 	##
