@@ -65,6 +65,7 @@
 #include "auto_vec.h"
 #include "PidFile.h"
 #include "SearchDaemon.h"
+#include "SocketAddress.h"
 #include "SocketFile.h"
 #include "SocketQueueSize.h"
 #include "SocketTimeout.h"
@@ -119,20 +120,24 @@ typedef	pair< index_segment::const_iterator, index_segment::const_iterator >
 //
 //*****************************************************************************
 
-char const*	me;				// executable name
-#ifdef	SEARCH_DAEMON
-SearchDaemon	am_daemon;
-#endif
 index_segment	files, meta_names, stop_words, words;
 ResultsMax	max_results;
+char const*	me;				// executable name
 StemWords	stem_words;
 WordFilesMax	word_file_max;
 WordPercentMax	word_percent_max;
-
 #ifdef	SEARCH_DAEMON
-void		become_daemon(
-			char const*, char const*, int, int, int, int, int
-		);
+SearchDaemon	daemon_type;
+ThreadsMax	max_threads;
+ThreadsMin	min_threads;
+PidFile		pid_file_name;
+SocketAddress	socket_address;
+SocketFile	socket_file_name;
+SocketQueueSize	socket_queue_size;
+SocketTimeout	socket_timeout;
+ThreadTimeout	thread_timeout;
+
+void		become_daemon();
 #endif
 void		dump_single_word( char const*, ostream& = cout );
 void		dump_word_window( char const*, int, int, ostream& = cout );
@@ -196,23 +201,17 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	IndexFile	index_file_name;
 
-#ifdef	SEARCH_DAEMON
-	ThreadsMax	max_threads;
-	ThreadsMin	min_threads;
-	PidFile		pid_file_name;
-	SocketFile	socket_file_name;
-	SocketQueueSize	socket_queue_size;
-	SocketTimeout	socket_timeout;
-	ThreadTimeout	thread_timeout;
-#endif
-
 	search_options opt( &argc, &argv, opt_spec );
 	if ( !opt )
 		::exit( Exit_Usage );
 
+	// If there were no arguments, see if that's OK given the options.
 	if ( !( argc ||
 #ifdef	SEARCH_DAEMON
-		opt.daemon_opt ||
+		opt.daemon_type_arg &&
+		// If the daemon type was specified and it's not the default
+		// value of "none", ...
+		::strcmp( opt.daemon_type_arg, daemon_type ) ||
 #endif
 		opt.dump_entire_index_opt ||
 		opt.dump_meta_names_opt ||
@@ -240,14 +239,16 @@ inline omanip< char const* > index_file_info( int index ) {
 		word_percent_max = opt.word_percent_max_arg;
 
 #ifdef	SEARCH_DAEMON
-	if ( opt.daemon_opt )
-		am_daemon = true;
+	if ( opt.daemon_type_arg )
+		daemon_type = opt.daemon_type_arg;
 	if ( opt.max_threads_arg )
 		max_threads = opt.max_threads_arg;
 	if ( opt.min_threads_arg )
 		min_threads = opt.min_threads_arg;
 	if ( opt.pid_file_name_arg )
 		pid_file_name = opt.pid_file_name_arg;
+	if ( opt.socket_address_arg )
+		socket_address = opt.socket_address_arg;
 	if ( opt.socket_file_name_arg )
 		socket_file_name = opt.socket_file_name_arg;
 	if ( opt.socket_queue_size_arg )
@@ -274,14 +275,9 @@ inline omanip< char const* > index_file_info( int index ) {
 #ifdef	SEARCH_DAEMON
 	////////// Become a daemon ////////////////////////////////////////////
 
-	if ( am_daemon )			// function does not return
-		become_daemon(
-			pid_file_name,
-			socket_file_name, socket_queue_size, socket_timeout,
-			min_threads, max_threads, thread_timeout
-		);
-#endif	/* SEARCH_DAEMON */
-
+	if ( daemon_type != "none" )
+		become_daemon();	// function does not return
+#endif
 	////////// Perform the query //////////////////////////////////////////
 
 	service_request( argv, opt );
@@ -916,7 +912,7 @@ no_put_back:
 	) ) {
 		err << error << "malformed query" << endl;
 #ifdef	SEARCH_DAEMON
-		if ( am_daemon )
+		if ( daemon_type != "none" )
 			return;
 #endif
 		::exit( Exit_Malformed_Query );
@@ -999,10 +995,11 @@ no_put_back:
 	word_file_max_arg		= 0;
 	word_percent_max_arg		= 0;
 #ifdef	SEARCH_DAEMON
-	daemon_opt			= false;
+	daemon_type_arg			= 0;
 	max_threads_arg			= 0;
 	min_threads_arg			= 0;
 	pid_file_name_arg		= 0;
+	socket_address_arg		= 0;
 	socket_file_name_arg		= 0;
 	socket_queue_size_arg		= 0;
 	socket_timeout_arg		= 0;
@@ -1013,8 +1010,12 @@ no_put_back:
 		switch ( opt ) {
 
 #ifdef	SEARCH_DAEMON
+			case 'a': // Specify TCP socket address.
+				socket_address_arg = opt.arg();
+				break;
+
 			case 'b': // Run in background as a daemon.
-				daemon_opt = true;
+				daemon_type_arg = opt.arg();
 				break;
 #endif
 			case 'c': // Specify config. file.
@@ -1096,7 +1097,7 @@ no_put_back:
 			case 'V': // Display version and exit.
 				err << "SWISH++ " << version << endl;
 #ifdef	SEARCH_DAEMON
-				if ( !am_daemon )
+				if ( daemon_type == "none" )
 #endif
 					::exit( Exit_Success );
 #ifdef	SEARCH_DAEMON
@@ -1224,7 +1225,8 @@ ostream& usage( ostream &err ) {
 	"========\n"
 	"-?   | --help             : Print this help message\n"
 #ifdef SEARCH_DAEMON
-	"-b   | --daemon           : Run in the background as a daemon [default: no]\n"
+	"-a a | --socket-address a : Socket address [default: *:" << SocketPort_Default << "]\n"
+	"-b t | --daemon-type t    : Daemon type to run as [default: none]\n"
 #endif
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"-d   | --dump-words       : Dump query word indices, exit\n"
