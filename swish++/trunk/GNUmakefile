@@ -59,6 +59,9 @@ I_SRCS:=	bcd.c \
 		word_info.c \
 		word_util.c \
 		index.c
+#ifdef WIN32
+I_SRCS+=	fnmatch.c		# see the comment in pattern_map.h
+#endif
 I_OBJS:=	$(I_SRCS:.c=.o)
 I_LINK:=	$(CCLINK) -lm
 
@@ -78,6 +81,9 @@ S_SRCS:=	bcd.c \
 		word_util.c \
 		search.c
 ifndef WIN32
+##
+# See the comment in config/config.mk regarding the search daemon ability.
+##
 S_SRCS+=	thread_pool.c \
 		search_thread.c \
 		search_daemon.c
@@ -139,12 +145,15 @@ else
 endif
 
 dep/%.d : %.c platform.h dep
-	$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
+	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
 
 dep:
 	$(MKDIR) $@
 
+# Don't do the "include" if the goal contains the word "clean," i.e., either
+# the "clean" or "distclean" goal.
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
+# Also, don't do the "include" if the goal is the "dist" goal.
 ifneq ($(MAKECMDGOALS),dist)
 include	 $(I_SRCS:%.c=dep/%.d) $(E_SRCS:%.c=dep/%.d) $(S_SRCS:%.c=dep/%.d)
 endif
