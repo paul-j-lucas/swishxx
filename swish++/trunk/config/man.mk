@@ -28,7 +28,7 @@ TROFF=		troff -man
 #		usually "troff -man".
 
 DPOST=		/usr/lib/lp/postscript/dpost
-ifneq ($(wildcard $(DPOST)*),)
+ifneq ($(wildcard $(DPOST)),)
 TO_PS=		$(DPOST)
 else
 TO_PS=		grops
@@ -76,31 +76,31 @@ else
 	gs -q -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=$@ $< -c quit
 endif
 
-text txt:: $(TARGET_TXT)
-pdf:: $(TARGET_PDF)
-ps :: $(TARGET_PS)
-all:: text pdf ps
+text txt: $(TARGET_TXT)
+pdf: $(TARGET_PDF)
+ps : $(TARGET_PS)
+all: text pdf ps
 
 ##
 # Install rules
 ##
 
-install:: $(I_MAN)/man$(SECT)
+install: $(I_MAN)/man$(SECT)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(PAGES) $?
 
 $(I_MAN)/man$(SECT):
 	$(MKDIR) $@
 
-deinstall::
+uninstall:
 	cd $(I_MAN)/man$(SECT) && $(RM) $(PAGES)
 
 ##
 # Utility rules
 ##
 
-clean distclean::
+clean distclean:
 	$(RM) $(TARGET_TXT) $(TARGET_PDF) $(TARGET_PS)
 
-dist::
+dist:
 	$(MAKE) text pdf
 	$(RM) $(TARGET_PS)
