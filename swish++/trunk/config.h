@@ -190,17 +190,21 @@ int const	ResultsMax_Default		= 100;
 //		Default maximum number of search results; this can be
 //		overridden either in a config. file or on the command line.
 
+#ifdef	WIN32
+char const	TempDirectory_Default[]		= "/temp";
+#else
 #error		You have not set TempDirectory_Default for your system.
 #error		Comment out these lines after you have set it.
 
 char const	TempDirectory_Default[]		= "/tmp";
+#endif
 //		Default directory to use for temporary files during indexing.
 //		If your OS mounts swap space via /tmp (e.g., Solaris), as
 //		indexing progresses and more files get created in /tmp, you
 //		will have less swap space, indexing will get slower, and you
 //		may run out of memory.  If this is the case, you can either
 //		change this default here for all users (preferred) or override
-//		it either in a config.  file or on the command line to use a
+//		it either in a config. file or on the command line to use a
 //		directory on a real filesystem, i.e., one on a physical disk,
 //		e.g., /var/tmp on some OSs.  The directory must exist.
 
