@@ -56,7 +56,7 @@ public:
 
 	virtual char const*	find_title( file_vector const& ) const;
 	virtual void		index_words(
-					encoded_char_range::const_iterator&,
+					encoded_char_range const&,
 					int meta_id = No_Meta_ID
 				);
 	virtual void		new_file();
