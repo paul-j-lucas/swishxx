@@ -43,6 +43,7 @@ using namespace PJL;
 using namespace std;
 #endif
 
+ExcludeClass			exclude_class_names;
 HTML_indexer::stack_type	HTML_indexer::element_stack_;
 
 bool	is_html_comment( encoded_char_range::const_iterator &pos );
