@@ -119,7 +119,7 @@ FollowLinks		follow_symbolic_links;
 //*****************************************************************************
 {
 	char *const dir_path = new_strdup( file_name );
-	char *const slash = ::strrchr( dir_path, '/' );
+	char *const slash = ::strrchr( dir_path, Dir_Sep_Char );
 	int dir_index;
 	//
 	// Check for the case of "./file": the directory "." doesn't need to be
