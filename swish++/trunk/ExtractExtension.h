@@ -30,11 +30,11 @@
 //
 // SYNOPSIS
 //
-	class ExtractExtension : public conf<string>
+	class ExtractExtension : public conf<std::string>
 //
 // DESCRIPTION
 //
-//	An ExtractExtension is-a conf<string> containing the extension to
+//	An ExtractExtension is-a conf<std::string> containing the extension to
 //	append to filenames during extraction.
 //
 //	This is the same as extract's -x command-line option.
@@ -42,8 +42,9 @@
 //*****************************************************************************
 {
 public:
-	ExtractExtension() :
-		conf<string>( "ExtractExtension", ExtractExtension_Default ) { }
+	ExtractExtension() : conf<std::string>(
+		"ExtractExtension", ExtractExtension_Default
+	) { }
 	CONF_STRING_ASSIGN_OPS( ExtractExtension )
 };
 

@@ -30,19 +30,19 @@
 //
 // SYNOPSIS
 //
-	class IndexFile : public conf<string>
+	class IndexFile : public conf<std::string>
 //
 // DESCRIPTION
 //
-//	An IndexFile is-a conf<string> containing the name of the index file to
-//	use.
+//	An IndexFile is-a conf<std::string> containing the name of the index
+//	file to use.
 //
 //	This is the same as index's or search's -i command-line option.
 //
 //*****************************************************************************
 {
 public:
-	IndexFile() : conf<string>( "IndexFile", IndexFile_Default ) { }
+	IndexFile() : conf<std::string>( "IndexFile", IndexFile_Default ) { }
 	CONF_STRING_ASSIGN_OPS( IndexFile )
 };
 

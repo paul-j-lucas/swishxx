@@ -36,8 +36,8 @@
 //
 // DESCRIPTION
 //
-//	A SocketFile is-a conf<string> containing the name of the Unix domain
-//	socket file to use when 'search' is running as a daemon.
+//	A SocketFile is-a conf<std::string> containing the name of the Unix
+//	domain socket file to use when 'search' is running as a daemon.
 //
 //	This is the same search's -u command-line option.
 //

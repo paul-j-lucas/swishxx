@@ -35,8 +35,8 @@
 //
 // DESCRIPTION
 //
-//	A PidFile is-a conf<string> containing the name of the file to record
-//	the search daemon's process ID.
+//	A PidFile is-a conf<std::string> containing the name of the file to
+//	record the search daemon's process ID.
 //
 //	This is the same as search's -P command-line option.
 //

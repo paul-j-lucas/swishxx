@@ -36,8 +36,8 @@
 //
 // DESCRIPTION
 //
-//	A conf<string> is-a conf_var for containing a configuration variable
-//	string value.
+//	A conf<std::string> is-a conf_var for containing a configuration
+//	variable string value.
 //
 //*****************************************************************************
 {

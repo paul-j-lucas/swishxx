@@ -30,12 +30,12 @@
 //
 // SYNOPSIS
 //
-	class TempDirectory : public conf<string>
+	class TempDirectory : public conf<std::string>
 //
 // DESCRIPTION
 //
-//	A TempDirectory is-a conf<string> containing the name of the directory
-//	to use for temporary files during indexing.
+//	A TempDirectory is-a conf<std::string> containing the name of the
+//	directory to use for temporary files during indexing.
 //
 //	This is the same as index's -T command-line option.
 //
@@ -43,7 +43,7 @@
 {
 public:
 	TempDirectory() :
-		conf<string>( "TempDirectory", TempDirectory_Default ) { }
+		conf<std::string>( "TempDirectory", TempDirectory_Default ) { }
 	CONF_STRING_ASSIGN_OPS( TempDirectory )
 };
 

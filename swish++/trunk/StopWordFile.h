@@ -33,7 +33,7 @@
 //
 // DESCRIPTION
 //
-//	A StopWordFile is-a conf<string> containing the name of the file
+//	A StopWordFile is-a conf<std::string> containing the name of the file
 //	containing the stop-words to use instead of the compiled-in set.
 //
 //	This is the same as either index's or extract's -s command-line option.
