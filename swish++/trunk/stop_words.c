@@ -274,6 +274,7 @@ stop_word_set*		stop_words;		// pointer to global set
 		"seem", "seemed", "seeming", "seems",
 		"seven", "seventeen", "seventy",
 		"several",
+		"shall",
 		"she",
 		"should", "shouldn", "shouldn't",
 		"since",
