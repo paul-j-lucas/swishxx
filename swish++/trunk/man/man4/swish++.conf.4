@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "February 5, 2002" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "November 29, 2002" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -172,8 +172,13 @@ Variables of this type are:
 .BR TitleLines ,
 .BR Verbosity ,
 .BR WordFilesMax ,
+.BR WordPercentMax ,
 and
-.BR WordPercentMax .
+.BR WordThreshold .
+.PP
+For
+.BR WordThreshold ,
+only the super-user can specify a value larger than the compiled-in default.
 .SS Percentage variables
 Variables of this type are like integer variables
 except that if an optional trailing percent sign (\f(CW%\f1) is present,
