@@ -46,6 +46,7 @@ extern unsigned long	num_total_words;
 extern word_map		words;
 
 int			indexer::suspend_indexing_count_ = 0;
+indexer*		indexer::text_indexer_ = 0;
 
 //*****************************************************************************
 //
@@ -490,6 +491,7 @@ int			indexer::suspend_indexing_count_ = 0;
 		init = true;		// must set this before init_modules()
 		init_modules();		// defined in init_modules.c
 		static indexer text( "text" );
+		text_indexer_ = &text;
 	}
 	return m;
 }
