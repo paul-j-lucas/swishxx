@@ -31,7 +31,7 @@ all: $(TARGET)
 ROOT:=		.
 include		$(ROOT)/config/config.mk
 
-DEBUGFLAGS:=	
+DEBUGFLAGS:=
 #		Various debug flags; add to DEBUGFLAGS for debugging.
 #		-DDEBUG_is_ok_word
 #		-DDEBUG_parse_query
@@ -68,6 +68,7 @@ I_SOURCES:=	bcd.c \
 		itoa.c \
 		option_stream.c \
 		stop_words.c \
+		TempDirectory.c \
 		util.c \
 		word_info.c \
 		word_util.c \
