@@ -60,8 +60,8 @@ private:
 	// the const out.
 	//
 
-	string		command_;
-	string		target_file_;
+	std::string	command_;
+	std::string	target_file_;
 };
 
 #endif	/* filter_H */
