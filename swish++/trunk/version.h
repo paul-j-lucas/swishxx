@@ -22,7 +22,7 @@
 #ifndef	version_H
 #define	version_H
 
-char const	version[] = "6.0.3";
+char const	version[] = "6.0.4";
 
 #endif	/* version_H */
 /* vim:set noet sw=8 ts=8: */
