@@ -149,7 +149,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	}
 
 	return	n < sizeof( iso8859_map ) / sizeof( iso8859_map[0] ) ?
-		iso8859_map[ n ] : ' ';
+		iso8859_to_ascii( n ) : ' ';
 }
 
 //*****************************************************************************
@@ -286,7 +286,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 //	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "The global structure of
 //	an HTML document: The document head: The TITLE element," HTML 4.0
-//	Specification, section 7.4.2, orld Wide Web Consortium, April 1998.
+//	Specification, section 7.4.2, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/intro/sgmltut.html#h-7.4.2
 //
 //*****************************************************************************
