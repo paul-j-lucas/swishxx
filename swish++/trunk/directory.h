@@ -30,7 +30,6 @@
 extern FollowLinks follow_symbolic_links;
 #endif
 
-
 void	do_directory( char const *path );
 
 #endif	/* directory_H */
