@@ -323,7 +323,7 @@ next_line:
 	::strtok( line, " \r\t" );		// just the variable name
 	map_type::const_iterator const i = map_ref().find( to_lower( line ) );
 	if ( i == map_ref().end() ) {
-		cerr << warning << '"' << line << "\" unrecognized; ignored\n";
+		warning() << '"' << line << "\" unrecognized; ignored\n";
 		return;
 	}
 	if ( i->second ) {
