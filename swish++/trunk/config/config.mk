@@ -217,11 +217,8 @@ MKDIR:=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 
 # $(ROOT) is defined by the Makefile including this.
 
-dep/%.d : %.c $(ROOT)/platform.h dep
+.%.d : %.c $(ROOT)/platform.h
 	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
-
-dep:
-	$(MKDIR) $@
 
 ifneq ($(TARGET),$(ROOT)/platform.h)
 $(ROOT)/platform.h:
