@@ -41,11 +41,11 @@ using namespace PJL;
 using namespace std;
 #endif
 
-extern long	num_indexed_words;
-extern long	num_total_words;
-extern word_map	words;
+extern unsigned long	num_indexed_words;
+extern unsigned long	num_total_words;
+extern word_map		words;
 
-int		indexer::suspend_indexing_count_ = 0;
+int			indexer::suspend_indexing_count_ = 0;
 
 //*****************************************************************************
 //

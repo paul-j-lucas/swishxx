@@ -92,9 +92,9 @@ meta_map		meta_names;
 static int		num_examined_files;
 static int		num_temp_files;
 TitleLines		num_title_lines;
-long			num_total_words;	// over all files indexed
-long			num_indexed_words;	// over all files indexed
-static long		num_unique_words;	// over all files indexed
+unsigned long		num_total_words;	// over all files indexed
+unsigned long		num_indexed_words;	// over all files indexed
+static unsigned long	num_unique_words;	// over all files indexed
 static vector<string>	partial_index_file_names;
 RecurseSubdirs		recurse_subdirectories;
 string			temp_file_name_prefix;
