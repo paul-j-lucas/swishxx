@@ -132,7 +132,7 @@ platform.h:
 ifdef WIN32
 	cp $@.win32 $@
 else
-	@cd config && $(MAKE)
+	@$(MAKE) -C config
 endif
 
 .%.d : %.c platform.h
@@ -141,7 +141,7 @@ endif
 include	 $(I_SRCS:%.c=.%.d) $(E_SRCS:%.c=.%.d) $(S_SRCS:%.c=.%.d)
 
 ps pdf::
-	@cd man && $(MAKE) $@
+	@$(MAKE) -C man $@
 
 ##
 # Install rules
@@ -158,7 +158,7 @@ install_lib: $(I_LIB)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) $(LIB_TARGET) $(I_LIB)
 
 install_man::
-	@cd man && $(MAKE) install
+	@$(MAKE) -C man install
 
 $(I_BIN) $(I_LIB):
 	$(MKDIR) $@
@@ -166,7 +166,7 @@ $(I_BIN) $(I_LIB):
 uninstall::
 	cd $(I_BIN) && $(RM) $(BUILD_TARGET)
 	cd $(I_LIB) && $(RM) $(LIB_TARGET)
-	@cd man && $(MAKE) $@
+	@$(MAKE) -C man $@
 
 ##
 # Utility rules
@@ -174,8 +174,8 @@ uninstall::
 
 clean::
 	$(RM) *.o .*.d core swish++.index
-	@cd man && $(MAKE) $@
+	@$(MAKE) -C man $@
 
 dist distclean:: clean
 	$(RM) $(BUILD_TARGET) platform.h
-	@cd man && $(MAKE) $@
+	@$(MAKE) -C man $@
