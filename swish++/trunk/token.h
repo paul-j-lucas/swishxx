@@ -27,7 +27,7 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"				/* for explicit, std */
+#include "fake_ansi.h"			/* for explicit, std */
 
 class token_stream;
 
@@ -88,7 +88,7 @@ private:
 //*****************************************************************************
 {
 public:
-	token_stream( char const *s ) : istrstream( s ), top_( -1 ) { }
+	token_stream( char const *s ) : std::istrstream( s ), top_( -1 ) { }
 	void	put_back( token const &t ) { stack_[ ++top_ ] = t; }
 private:
 	// Our query parser needs at most 2 look-ahead tokens.
