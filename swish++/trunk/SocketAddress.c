@@ -99,9 +99,9 @@ using namespace std;
 	if ( colon ) {
 		*colon = '\0';
 		convert_host( line );
-		port_ = atoi( colon + 1 );
+		port_ = ::atoi( colon + 1 );
 	} else
-		port_ = atoi( line );
+		port_ = ::atoi( line );
 
 	if ( !port_ )
 		::exit( Exit_Config_File );
