@@ -84,6 +84,11 @@ CHANGES, file-by-file
 	1. Added extern declaration.
 	2. Added: #include "fake_ansi.h"
 
+* fake_ansi.h
+
+	1. Removed __STL_NO_NAMESPACES and __STL_USE_NAMESPACES.  This stopped
+	   working and I can't figure out why.
+
 * FilesGrow.c
 
 	1. This functionality was replaced by conf_percent.c for feature DIR1.
