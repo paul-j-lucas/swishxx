@@ -83,8 +83,8 @@ static bool         did_last_header;
 //
 //*****************************************************************************
 {
-        boundary_stack.clear();
-        did_last_header = false;
+    boundary_stack.clear();
+    did_last_header = false;
 }
 
 //*****************************************************************************
@@ -411,7 +411,7 @@ could_not_filter:
             // certain MIME types.
             //
             if ( FilterAttachment::const_pointer const
-                f = attachment_filters[ mime_type ]
+                 f = attachment_filters[ mime_type ]
             ) {
                 type.content_type_ = ct_external_filter;
                 //
