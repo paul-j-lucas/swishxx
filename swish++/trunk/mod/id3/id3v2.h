@@ -81,7 +81,7 @@
 {
 	enum Sizes {
 		Version_2_2_Size	=  6,
-		Version_2_3_Size	= 10,
+		Version_2_3_Size	= 10,	// also 2.4.0
 	};
 
 	enum Flags {
@@ -109,8 +109,8 @@
 	int		meta_id_;
 	char const*	content_begin_;
 	char const*	content_end_;
-	char		unsynchronized_buf_[ 1024 ];
-	char		uncompressed_buf_[ 1024 ];
+	char		unsynchronized_buf_[ 4096 ];
+	char		uncompressed_buf_[ 4096 ];
 
 	static parser	find_parser( char const* );
 	header_result	parse_header( char const*&, id3v2_header const& );
