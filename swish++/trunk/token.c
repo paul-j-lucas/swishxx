@@ -40,7 +40,7 @@ using namespace std;
 //
 // SNYOPSIS
 //
-	token_stream& operator>>( token_stream &tin, token &t )
+	token_stream& operator>>( token_stream &ts, token &t )
 //
 // DESCRIPTION
 //
@@ -48,7 +48,7 @@ using namespace std;
 //
 // PARAMETERS
 //
-//	tin	The token stream to extract the token from.
+//	ts	The token stream to extract the token from.
 //
 //	t	The newly extracted token.
 //
@@ -63,19 +63,19 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	token *const put_back = tin.put_back();
+	token *const put_back = ts.put_back();
 	if ( put_back ) {
 		//
 		// If there was a token previously put back, use it.
 		//
 		t = *put_back;
-		return tin;
+		return ts;
 	}
 	t.type_ = token::no_token;
 	bool in_word = false;
 	char c;
 
-	while ( tin.get( c ) ) {
+	while ( ts.get( c ) ) {
 		c = iso8859_1_to_ascii( c );
 
 		if ( is_word_char( c ) ) {
@@ -92,7 +92,7 @@ using namespace std;
 				continue;
 			}
 			in_word = false;		// too big: skip chars
-			while ( tin.get( c ) && is_word_char( c ) ) ;
+			while ( ts.get( c ) && is_word_char( c ) ) ;
 			continue;
 		}
 
@@ -100,20 +100,20 @@ using namespace std;
 			if ( c == '*' )
 				t.type_ = token::word_star_token;
 			else
-				tin.putback( c );
+				ts.putback( c );
 			break;
 		}
 
 		switch ( c ) {
 			case '(':
 				t.type_ = token::lparen_token;
-				return tin;
+				return ts;
 			case ')':
 				t.type_ = token::rparen_token;
-				return tin;
+				return ts;
 			case '=':
 				t.type_ = token::equal_token;
-				return tin;
+				return ts;
 		}
 	}
 
@@ -124,7 +124,7 @@ using namespace std;
 			t.lower_buf_, static_cast<char (*)(char)>( to_lower )
 		);
 		if ( t.type_ )
-			return tin;
+			return ts;
 
 		//
 		// Check to see if the word is an operator.  For only 3
@@ -140,5 +140,5 @@ using namespace std;
 			t.type_ = token::word_token;
 	}
 
-	return tin;
+	return ts;
 }
