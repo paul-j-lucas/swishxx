@@ -20,12 +20,9 @@
 */
 
 // standard
-#include <cctype>
 #include <cstring>
 
 // local
-#include "config.h"
-#include "conf_var.h"
 #include "platform.h"
 #include "util.h"
 
