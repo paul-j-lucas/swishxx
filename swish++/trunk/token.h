@@ -23,11 +23,13 @@
 #define	token_H
 
 // standard
-#include <iostream>
+#include <strstream>
 
 // local
 #include "config.h"
 #include "fake_ansi.h"				/* for explicit */
+
+class token_stream;
 
 //*****************************************************************************
 //
@@ -37,7 +39,7 @@
 //
 // DESCRIPTION
 //
-//	This class is used to contain a parsed token from an input stream.
+//	This class is used to contain a token parsed from a token_stream.
 //
 //*****************************************************************************
 {
@@ -55,21 +57,46 @@ public:
 	};
 
 	token() : type_( no_token )		{ }
-	explicit token( std::istream &in )	{ in >> *this; }
+	explicit token( token_stream &in )	{ in >> *this; }
 
 	operator	type() const		{ return type_; }
 	int		length() const		{ return len_; }
 	char const*	str() const		{ return buf_; }
 	char const*	lower_str() const	{ return lower_buf_; }
-	void		put_back()		{ hold( this ); }
 
-	friend std::istream& operator>>( std::istream&, token& );
+	friend token_stream& operator>>( token_stream&, token& );
 private:
 	type		type_;
 	char		buf_[ Word_Hard_Max_Size + 1 ];
 	char		lower_buf_[ Word_Hard_Max_Size + 1 ];
 	int		len_;
-	static token*	hold( token* = 0 );
+};
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	class token_stream : public std::istrstream
+//
+// DESCRIPTION
+//
+//	A token_stream is-an istrstream that has the additional ability to put
+//	back previously parsed tokens used as look-ahead.  Note that it puts
+//	back whole, already-parsed tokens rather than characters so they don't
+//	have to be parsed again.
+//
+//*****************************************************************************
+{
+public:
+	token_stream( char const *s ) : istrstream( s ), top_( -1 ) { }
+	void	put_back( token const &t ) { stack_[ ++top_ ] = t; }
+private:
+	// Our query parser needs at most 2 look-ahead tokens.
+	token	stack_[ 2 ];
+	int	top_;
+
+	token*	put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
+	friend token_stream& operator>>( token_stream&, token& );
 };
 
 #endif	/* token_H */
