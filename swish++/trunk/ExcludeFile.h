@@ -41,7 +41,7 @@
 //
 // NOTE
 //
-//	The bool template parameter is not used here.  It's simplet to reuse
+//	The bool template parameter is not used here.  It's simply to reuse
 //	the code for pattern_map as-is.
 //
 //*****************************************************************************
