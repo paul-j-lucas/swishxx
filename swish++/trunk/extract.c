@@ -308,12 +308,12 @@ void		usage();
 		return false;
 	}
 	static postscript_comment_set const postscript_comments;
-	if ( postscript_comments.find( word ) ) {
+	if ( postscript_comments.contains( word ) ) {
 		in_postscript = true;
 		return false;
 	}
 	static postscript_operator_set const postscript_operators;
-	if ( postscript_operators.find( word ) )
+	if ( postscript_operators.contains( word ) )
 		return false;
 
 	////////// Strip chars not in Word_Begin_Chars/Word_End_Chars /////////
@@ -345,7 +345,7 @@ void		usage();
 
 	////////// Stop-word checks ///////////////////////////////////////////
 
-	if ( !is_ok_word( word ) || stop_words->find( to_lower( word ) ) )
+	if ( !is_ok_word( word ) || stop_words->contains( to_lower( word ) ) )
 		return false;
 
 	out << word << '\n';
@@ -435,7 +435,7 @@ void usage() {
 #endif
 	"  -r              : Do not recursively extract subdirectories [default: do]\n"
 	"  -s stop_file    : Stop-word file to use instead of compiled-in default\n"
-	"  -S              : Dump default stop-words and exit\n"
+	"  -S              : Dump stop-words and exit\n"
 	"  -v verbosity    : Verbosity level [0-4; default: 0]\n"
 	"  -V              : Print version number and exit\n";
 	::exit( Exit_Usage );
