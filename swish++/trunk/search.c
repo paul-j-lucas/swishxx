@@ -206,25 +206,9 @@ inline omanip< char const* > index_file_info( int index ) {
 	if ( !opt )
 		::exit( Exit_Usage );
 
-	// If there were no arguments, see if that's OK given the options.
-	if ( !( argc ||
-#ifdef	SEARCH_DAEMON
-		opt.daemon_type_arg &&
-		// If the daemon type was specified and it's not the default
-		// value of "none", ...
-		::strcmp( opt.daemon_type_arg, daemon_type ) ||
-#endif
-		opt.dump_entire_index_opt ||
-		opt.dump_meta_names_opt ||
-		opt.dump_stop_words_opt
-	) ) {
-		cerr << usage;
-		::exit( Exit_Usage );
-	}
-
 	//
 	// First, parse the config. file (if any); then override variables
-	// specified on the command line with options.
+	// with command-line options.
 	//
 	conf_var::parse_file( opt.config_file_name_arg );
 
@@ -238,7 +222,6 @@ inline omanip< char const* > index_file_info( int index ) {
 		word_file_max = opt.word_file_max_arg;
 	if ( opt.word_percent_max_arg )
 		word_percent_max = opt.word_percent_max_arg;
-
 #ifdef	SEARCH_DAEMON
 	if ( opt.daemon_type_arg )
 		daemon_type = opt.daemon_type_arg;
@@ -260,6 +243,23 @@ inline omanip< char const* > index_file_info( int index ) {
 		thread_timeout = opt.thread_timeout_arg;
 #endif	/* SEARCH_DAEMON */
 
+	//
+	// If there were no arguments, see if that's OK given the config. file
+	// variables and command-line options.
+	//
+	bool const dump_something =
+		opt.dump_entire_index_opt ||
+		opt.dump_meta_names_opt ||
+		opt.dump_stop_words_opt;
+	if ( !( argc || dump_something
+#ifdef	SEARCH_DAEMON
+		|| daemon_type != "none"
+#endif
+	) ) {
+		cerr << usage;
+		::exit( Exit_Usage );
+	}
+
 	/////////// Load index file ///////////////////////////////////////////
 
 	file_vector the_index( index_file_name );
@@ -276,7 +276,7 @@ inline omanip< char const* > index_file_info( int index ) {
 #ifdef	SEARCH_DAEMON
 	////////// Become a daemon ////////////////////////////////////////////
 
-	if ( daemon_type != "none" )
+	if ( !dump_something && daemon_type != "none" )
 		become_daemon();	// function does not return
 #endif
 	////////// Perform the query //////////////////////////////////////////
@@ -430,7 +430,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-	unsigned char const *p = REINTERPRET_CAST(unsigned char const*)( *i );
+	unsigned char const *p = reinterpret_cast<unsigned char const*>( *i );
 	while ( *p++ ) ;			// skip past word
 	return parse_bcd( p );
 }
