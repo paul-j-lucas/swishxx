@@ -30,17 +30,19 @@
 #include <sys/types.h>
 
 // local
+#include "platform.h"
 #include "config.h"
-#include "directory.h"
 #include "ExcludeFile.h"
 #include "exit_codes.h"
 #include "ExtractExtension.h"
 #include "ExtractFile.h"
 #include "ExtractFilter.h"
 #include "FilterFile.h"
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+#include "FollowLinks.h"
+#endif
 #include "mmap_file.h"
 #include "option_stream.h"
-#include "platform.h"
 #include "postscript.h"
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
@@ -77,6 +79,7 @@ ostream&		usage( ostream& = cerr );
 
 #define	EXTRACT
 #include "do_file.c"
+#include "directory.c"
 
 //*****************************************************************************
 //
