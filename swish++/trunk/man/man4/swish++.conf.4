@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "May 9, 2001" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "June 30, 2001" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -106,6 +106,9 @@ A special string of \f(CWinfinity\f1 is taken to mean
 ``the largest possible integer value.''
 Case is irrelevant.
 Variables of this type are:
+.BR DirectoriesReserve ,
+.BR FilesReserve ,
+.BR ResultsMax ,
 .BR ResultsMax ,
 .BR SocketQueueSize ,
 .BR SocketTimeout ,
@@ -117,6 +120,14 @@ Variables of this type are:
 .BR WordFilesMax ,
 and
 .BR WordPercentMax .
+.SS Percentage variables
+Variables of this type are like integer variables
+except that if an optional trailing percent sign (\f(CW%\f1) is present,
+the value is taken to be a percentage rather than an absolute number.
+Variables of this type are:
+.B DirectoriesGrow
+and
+.BR FilesGrow .
 .SS String variables
 Variables of this type take one argument that is the remainder of the line
 minus leading and trailing whitespace.
@@ -144,7 +155,6 @@ and
 Variables of this type are:
 .BR IncludeFile ,
 .BR IncludeMeta ,
-.BR FilesGrow ,
 .B FilterFile
 (see FILTERS below),
 and
@@ -185,12 +195,6 @@ adr=address
 says to include and index the words associated with the meta name \f(CWadr\f1,
 but to store the name as \f(CWaddress\f1 in the generated index file
 so that queries would use \f(CWaddress\f1 rather than \f(CWadr\f1.
-.P
-The
-.B FilesGrow
-variable is just like an integer variable
-except that it may contain a trailing percent sign \f(CW%\f1
-to indicate a percentage rather than an absolute number.
 .P
 A
 .B SocketAddress
