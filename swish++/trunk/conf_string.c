@@ -20,7 +20,6 @@
 */
 
 // standard
-#include <cstring>
 #include <iostream>
 
 // local
@@ -33,11 +32,11 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	conf<char const*>::conf( char const *name, char const *default_value ) :
+	conf<string>::conf( char const *name, char const *default_value ) :
 //
 // DESCRIPTION
 //
-//	Construct a conf<char const*> setting its name and default value.
+//	Construct a conf<string> setting its name and default value.
 //
 // PARAMETERS
 //
@@ -57,7 +56,8 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	/* virtual */ void conf<char const*>::parse_value( char *line )
+	/* virtual */
+	void conf<string>::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
@@ -65,7 +65,9 @@ extern char const*	me;
 //
 // PARAMETERS
 //
-//	line	The line of text to be parsed.
+//	var_name	The name of the configuration variable.
+//
+//	line		The line of text to be parsed.
 //
 //*****************************************************************************
 {
@@ -73,5 +75,5 @@ extern char const*	me;
 		cerr << error << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
-	value_ = ::strdup( line );
+	value_ = line;
 }
