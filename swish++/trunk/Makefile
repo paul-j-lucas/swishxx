@@ -74,7 +74,6 @@ S_OBJS=		bcd$(CCOEXT) \
 		thread_pool$(CCOEXT) \
 		search_thread$(CCOEXT) \
 		search_daemon$(CCOEXT) \
-		SocketFile$(CCOEXT) \
 		token$(CCOEXT) \
 		stem_word$(CCOEXT) \
 		util$(CCOEXT) \
@@ -385,6 +384,7 @@ search$(CCOEXT): \
 	less$(CCHEXT) \
 	managed_ptr$(CCHEXT) \
 	my_set$(CCHEXT) \
+	PidFile$(CCHEXT) \
 	$(PLATFORM_H) \
 	ResultsMax$(CCHEXT) \
 		conf_int$(CCHEXT) \
@@ -423,14 +423,6 @@ search_thread$(CCOEXT): \
 	search_thread$(CCHEXT) \
 		thread_pool$(CCHEXT) \
 	util$(CCHEXT)
-
-SocketFile$(CCOEXT): \
-	exit_codes$(CCHEXT) \
-	SocketFile$(CCHEXT) \
-		config$(CCHEXT) \
-		conf_string$(CCHEXT) \
-			conf_var$(CCHEXT) \
-				fake_ansi$(CCHEXT)
 
 stem_word$(CCOEXT): \
 	stem_word$(CCHEXT) \
