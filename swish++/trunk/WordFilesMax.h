@@ -36,7 +36,7 @@
 //
 // DESCRIPTION
 //
-//	An WordFilesMax is-a conf<int> containing the maximum number of files a
+//	A WordFilesMax is-a conf<int> containing the maximum number of files a
 //	word may occur in before it is discarded as being too frequent.
 //
 //	This is the same as index's -f command-line option.
@@ -48,6 +48,6 @@ public:
 	CONF_INT_ASSIGN_OPS( WordFilesMax )
 };
 
-extern WordFilesMax word_file_max;
+extern WordFilesMax word_files_max;
 
 #endif	/* WordFilesMax_H */
