@@ -61,7 +61,14 @@ MOD_LIST:=	html latex mail man rtf
 #		similarly, if you want to be able to index RTF attachments,
 #		then you also need to build-in "rtf".
 
-# Leave the following line alone!
+ifeq ($(findstring mail,$(MOD_LIST)),mail)
+DECODER_LIST:=	base64 quoted_printable
+#		The indexing decoders you want built into index(1) when
+#		MOD_LIST contains mail.
+endif
+
+# Leave the following lines alone!
+DECODER_DEFS:=	$(foreach decoder,$(DECODER_LIST),-DDECODE_$(decoder))
 MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-DMOD_$(mod))
 
 ifndef WIN32
@@ -145,7 +152,7 @@ STRIP:=		strip
 #
 ###############################################################################
 
-CC:=		g++
+CC:=		/usr/local/bin/g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
 #DEBUG:=		true
@@ -171,7 +178,7 @@ OPTIM+=		-fomit-frame-pointer
 endif
 endif # DEBUG
 
-CCFLAGS:=	-I. $(MOD_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
+CCFLAGS:=	-I. $(DECODER_DEFS) $(MOD_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
 
 ifeq ($(findstring g++,$(CC)),g++)
