@@ -225,8 +225,8 @@
 
 	////////// Index the file /////////////////////////////////////////////
 
-	indexer *const i = found_pattern ?	// use text indexer if not found
-		include_pattern->second : indexer::text_indexer();
+	static indexer *const text = indexer::find_indexer( "text" );
+	indexer *const i = found_pattern ? include_pattern->second : text;
 	new file_info( orig_file_name, orig_file_size, i->find_title( file ) );
 	i->index_file( file );
 
