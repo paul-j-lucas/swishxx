@@ -18,6 +18,40 @@ day job.
 
 
 *******************************************************************************
+4.6.6
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Fixed segmentation fault when parsing HTML files that contain tags longer
+  than Tag_Name_Max_Size characters.
+
+  (This bug fix shall be known as bug fix HTL.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* html.c
+
+	1. In parse_html_tag(), added tag buffer overflow check for bug
+	   fix HTL.
+
+* man/man4/swish++.conf.4
+
+	1. Added (missing) mention of "HTMLFile".
+
+* man/man4/swish++.index.4
+
+	1. Fixed typo: s/numm/null/
+
+* version.h
+
+	1. Updated version to "4.6.6".
+
+
+*******************************************************************************
 4.6.5
 *******************************************************************************
 
