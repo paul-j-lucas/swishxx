@@ -34,6 +34,7 @@
 #include "directory.h"
 #include "ExcludeFile.h"
 #include "exit_codes.h"
+#include "ExtractExtension.h"
 #include "file_vector.h"
 #include "FilterFile.h"
 #include "IncludeFile.h"
@@ -53,6 +54,7 @@ using namespace std;
 #endif
 
 ExcludeFile		exclude_patterns;	// do not extract these
+ExtractExtension	extract_extension;
 IncludeFile		include_patterns;	// do extract these
 FilterFile		filters;
 bool			in_postscript;
@@ -124,11 +126,13 @@ ostream&		usage( ostream& = cerr );
 		"dump-stop",	0, 'S',
 		"verbose",	1, 'v',
 		"version",	0, 'V',
+		"extension",	1, 'x',
 		0
 	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_stop_words_opt = false;
+	char const*	extract_extension_arg = 0;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
 #endif
@@ -180,6 +184,10 @@ ostream&		usage( ostream& = cerr );
 				cout << "SWISH++ " << version << endl;
 				::exit( Exit_Success );
 
+			case 'x': // Specify filename extension to append.
+				extract_extension_arg = opt.arg();
+				break;
+
 			default: // Bad option.
 				cerr << usage;
 		}
@@ -191,6 +199,11 @@ ostream&		usage( ostream& = cerr );
 	//
 	conf_var::parse_file( config_file_name_arg );
 
+	if ( extract_extension_arg )
+		extract_extension = extract_extension_arg;
+	if ( *extract_extension != '.' )
+		extract_extension =
+			string( "." ) + (char const*)extract_extension;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( follow_symbolic_links_opt )
 		follow_symbolic_links = true;
@@ -445,7 +458,8 @@ ostream& usage( ostream &o ) {
 	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
 	"-S   | --dump-stop        : Dump stop-words, exit\n"
 	"-v v | --verbosity v      : Verbosity level [0-4; default: 0]\n"
-	"-V   | --version          : Print version number, exit\n";
+	"-V   | --version          : Print version number, exit\n"
+	"-x   | --extension        : Extension to append to filename [default: txt]\n";
 	::exit( Exit_Usage );
 	return o;			// just to make the compiler happy
 }
