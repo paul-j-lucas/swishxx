@@ -84,6 +84,7 @@ using namespace std;
 
 extern FilesReserve	files_reserve;
 
+int			exclude_class_count;	// don't index words if > 0
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
 ExcludeClass		exclude_class_names;	// class names not to index
@@ -511,7 +512,6 @@ void			write_word_index( ostream&, off_t* );
 	if ( len < Word_Hard_Min_Size )
 		return;
 
-	extern int exclude_class_count;
 	if ( exclude_class_count > 0 ) {
 		//
 		// The word is within an HTML or XHTML element's begin/end tags
@@ -587,7 +587,7 @@ void			write_word_index( ostream&, off_t* );
 	void index_words(
 		file_vector::const_iterator c,
 		register file_vector::const_iterator end,
-		bool is_html, int meta_id
+		bool is_html, int meta_id, bool is_new_file
 	)
 //
 // DESCRIPTION
@@ -609,19 +609,17 @@ void			write_word_index( ostream&, off_t* );
 //	meta_id		The numeric ID of the META NAME the words index are to
 //			to be associated with.
 //
+//	is_new_file	If true, we are just starting to index a new file.
+//
 //*****************************************************************************
 {
-	//
-	// We have to keep track of when we just started indexing a new file to
-	// know when to tell parse_html_tag() to reset its data structures and
-	// variables.
-	//
-	static bool new_file = true;
-
 	char buf[ Word_Hard_Max_Size + 1 ];
 	register char *word;
 	int len;
 	bool in_word = false;
+
+	if ( is_new_file )
+		exclude_class_count = 0;
 
 	while ( c != end ) {
 		register file_vector::value_type ch = *c++;
@@ -672,12 +670,12 @@ void			write_word_index( ostream&, off_t* );
 			// value of a META element's CONTENT attribute, then
 			// parse the HTML or XHTML tag.
 			//
-			parse_html_tag( c, end, new_file );
+			parse_html_tag( c, end, is_new_file );
 			//
-			// Clear the new_file flag so that parse_html_tag()
+			// Clear the is_new_file flag so that parse_html_tag()
 			// will maintain its data between calls.
 			//
-			new_file = false;
+			is_new_file = false;
 		}
 	}
 	if ( in_word ) {
@@ -687,14 +685,6 @@ void			write_word_index( ostream&, off_t* );
 		//
 		index_word( word, len, meta_id );
 	}
-
-	//
-	// Reset the new_file flag since the next time we get called, it will
-	// be for a new file.  However, if we got called recursively from
-	// within parse_html_tag(), this will incorrectly reset the flag.  The
-	// thing that corrects for this is the "new_file = false" above.
-	//
-	new_file = true;
 }
 
 //*****************************************************************************
