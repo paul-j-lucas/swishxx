@@ -20,25 +20,23 @@
 */
 
 // standard
-#include <algorithm>
-#include <climits>
-#include <cmath>				/* for log(3) */
-#include <cstdlib>
+#include <cmath>			/* for log(3) */
+#include <cstdlib>			/* for exit(2) */
 #include <cstring>
 #include <ctime>
 #include <fstream>
-#include <iomanip>
+#include <iomanip>			/* for setfill(), setw() */
 #include <iostream>
 #include <iterator>
 #ifdef	WIN32
-#include <process.h>				/* for getpid(2) */
+#include <process.h>			/* for getpid(2) */
 #endif
 #include <string>
 #ifndef	WIN32
-#include <sys/resource.h>
+#include <sys/resource.h>		/* for RLIMIT_* */
 #endif
 #include <sys/types.h>
-#include <unistd.h>
+#include <unistd.h>			/* for unlink(2) */
 #include <vector>
 
 // local
@@ -52,14 +50,17 @@
 #include "exit_codes.h"
 #include "file_info.h"
 #include "file_list.h"
+#include "FilesGrow.h"
 #include "FilesReserve.h"
 #include "file_vector.h"
 #include "FilterExtension.h"
 #include "html.h"
 #include "IncludeExtension.h"
 #include "IncludeMeta.h"
+#include "Incremental.h"
 #include "IndexFile.h"
 #include "index.h"
+#include "index_segment.h"
 #include "itoa.h"
 #include "meta_map.h"
 #include "option_stream.h"
@@ -73,7 +74,6 @@
 #include "Verbosity.h"
 #include "version.h"
 #include "WordFilesMax.h"
-#include "word_index.h"
 #include "word_info.h"
 #include "WordPercentMax.h"
 #include "word_util.h"
@@ -82,40 +82,45 @@
 using namespace std;
 #endif
 
-ExcludeExtension exclude_extensions;		// do not index these
-IncludeExtension include_extensions;		// do index these
-int		exclude_class_count;		// don't index words if > 0
-ExcludeClass	exclude_class_names;		// class names not to index
-ExcludeMeta	exclude_meta_names;		// meta names not to index
-IncludeMeta	include_meta_names;		// meta names to index
-FilesReserve	files_reserve;
-FilterExtension	filters;
-char const*	me;				// executable name
-meta_map	meta_names;
-TitleLines	num_title_lines;
-long		num_total_words;		// over all files indexed
-long		num_indexed_words;		// over all files indexed
-long		num_unique_words;		// over all files indexed
-int		num_examined_files;
-int		num_temp_files;
-RecurseSubdirs	recurse_subdirectories;
-string		temp_file_prefix;
-Verbosity	verbosity;			// how much to print
-word_map	words;				// the index being generated
-WordFilesMax	word_file_max;
-WordPercentMax	word_percent_max;
+extern FilesReserve	files_reserve;
 
-void		index_word( char *word, int len, int meta_id );
-void		merge_indicies( ostream& );
-void		rank_full_index();
-extern "C" void	remove_temp_files();
-ostream&	usage( ostream& = cerr );
-void		write_file_index( ostream&, off_t* );
-void		write_full_index( ostream& );
-void		write_meta_name_index( ostream&, off_t* );
-void		write_partial_index();
-void		write_stop_word_index( ostream&, off_t* );
-void		write_word_index( ostream&, off_t* );
+ExcludeExtension	exclude_extensions;	// do not index these
+IncludeExtension	include_extensions;	// do index these
+int			exclude_class_count;	// don't index words if > 0
+ExcludeClass		exclude_class_names;	// class names not to index
+ExcludeMeta		exclude_meta_names;	// meta names not to index
+IncludeMeta		include_meta_names;	// meta names to index
+FilesGrow		files_grow;
+FilterExtension		filters;
+Incremental		incremental;
+char const*		me;			// executable name
+meta_map		meta_names;
+int			num_examined_files;
+int			num_temp_files;
+TitleLines		num_title_lines;
+long			num_total_words;	// over all files indexed
+long			num_indexed_words;	// over all files indexed
+long			num_unique_words;	// over all files indexed
+vector<string>		partial_index_file_names;
+RecurseSubdirs		recurse_subdirectories;
+string			temp_file_name_prefix;
+Verbosity		verbosity;		// how much to print
+word_map		words;			// the index being generated
+WordFilesMax		word_file_max;
+WordPercentMax		word_percent_max;
+
+void			index_word( char *word, int len, int meta_id );
+void			load_old_index( char const *index_file_name );
+void			merge_indicies( ostream& );
+void			rank_full_index();
+extern "C" void		remove_temp_files();
+ostream&		usage( ostream& = cerr );
+void			write_file_index( ostream&, off_t* );
+void			write_full_index( ostream& );
+void			write_meta_name_index( ostream&, off_t* );
+void			write_partial_index();
+void			write_stop_word_index( ostream&, off_t* );
+void			write_word_index( ostream&, off_t* );
 
 #define	INDEX
 #include "do_file.c"
@@ -179,10 +184,12 @@ void		write_word_index( ostream&, off_t* );
 		"extension",		1, 'e',
 		"no-extension",		1, 'E',
 		"file-max",		1, 'f',
-		"file-reserve",		1, 'F',
+		"files-reserve",	1, 'F',
+		"files-grow",		1, 'G',
 		"html-extension",	1, 'h',
 		"dump-html",		0, 'H',
 		"index-file",		1, 'i',
+		"incremental",		0, 'I',
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 		"follow-links",		0, 'l',
 #endif
@@ -202,10 +209,12 @@ void		write_word_index( ostream&, off_t* );
 	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_elements_opt = false;
 	bool		dump_stop_words_opt = false;
+	char const*	files_grow_arg = 0;
 	char const*	files_reserve_arg = 0;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
 #endif
+	bool		incremental_opt = false;
 	IndexFile	index_file_name;
 	char const*	index_file_name_arg = 0;
 	char const*	num_title_lines_arg = 0;
@@ -251,6 +260,10 @@ void		write_word_index( ostream&, off_t* );
 				files_reserve_arg = opt.arg();
 				break;
 
+			case 'G': // Specify files to reserve space for growth.
+				files_grow_arg = opt.arg();
+				break;
+
 			case 'h': // Specify HTML extension(s) to index.
 				include_extensions.insert( opt.arg(), true );
 				break;
@@ -261,6 +274,10 @@ void		write_word_index( ostream&, off_t* );
 
 			case 'i': // Specify index file overriding the default.
 				index_file_name_arg = opt.arg();
+				break;
+
+			case 'I': // specify incremental indexing.
+				incremental_opt = true;
 				break;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 			case 'l': // Follow symbolic links during indexing.
@@ -322,12 +339,16 @@ void		write_word_index( ostream&, off_t* );
 	//
 	conf_var::parse_file( config_file_name_arg );
 
+	if ( files_grow_arg )
+		files_grow = files_grow_arg;
 	if ( files_reserve_arg )
 		files_reserve = files_reserve_arg;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( follow_symbolic_links_opt )
 		follow_symbolic_links = true;
 #endif
+	if ( incremental_opt )
+		incremental = true;
 	if ( index_file_name_arg )
 		index_file_name = index_file_name_arg;
 	if ( num_title_lines_arg )
@@ -345,10 +366,10 @@ void		write_word_index( ostream&, off_t* );
 	if ( word_percent_max_arg )
 		word_percent_max = word_percent_max_arg;
 
-	temp_file_prefix = temp_directory;
-	if ( *temp_file_prefix.rbegin() != '/' )
-		temp_file_prefix += '/';
-	temp_file_prefix += string( itoa( ::getpid() ) ) + string( "." );
+	temp_file_name_prefix = temp_directory;
+	if ( *temp_file_name_prefix.rbegin() != '/' )
+		temp_file_name_prefix += '/';
+	temp_file_name_prefix += string( itoa( ::getpid() ) ) + string( "." );
 
 	/////////// Dump stuff if requested ///////////////////////////////////
 
@@ -360,8 +381,8 @@ void		write_word_index( ostream&, off_t* );
 		::exit( Exit_Success );
 	}
 
-	stop_words = new stop_word_set( stop_word_file_name );
 	if ( dump_stop_words_opt ) {
+		stop_words = new stop_word_set();
 		::copy( stop_words->begin(), stop_words->end(),
 			ostream_iterator< char const* >( cout, "\n" )
 		);
@@ -379,6 +400,12 @@ void		write_word_index( ostream&, off_t* );
 
 	if ( !argc )
 		cerr << usage;
+
+	if ( incremental ) {
+		load_old_index( index_file_name );
+		index_file_name += ".new";
+	} else
+		stop_words = new stop_word_set( stop_word_file_name );
 
 	ofstream out( index_file_name, ios::out | ios::binary );
 	if ( !out ) {
@@ -424,19 +451,19 @@ void		write_word_index( ostream&, off_t* );
 		}
 	}
 
-	if ( num_temp_files ) {
+	if ( partial_index_file_names.empty() ) {
+		rank_full_index();
+		write_full_index( out );
+	} else {
 		if ( words.size() ) {
 			//
-			// If we created any partial indicies, write the
+			// Since we created any partial indicies, write any
 			// remaining words to their own partial index so the
 			// merge code doesn't have a special case.
 			//
 			write_partial_index();
 		}
 		merge_indicies( out );
-	} else {
-		rank_full_index();
-		write_full_index( out );
 	}
 
 	out.close();
@@ -449,7 +476,7 @@ void		write_word_index( ostream&, off_t* );
 			<< setw(2) << (time % 60)
 			<< " (min:sec) elapsed time\n  "
 			<< num_examined_files << " files, "
-			<< file_info::set_.size() << " indexed\n  "
+			<< file_info::list_.size() << " indexed\n  "
 			<< num_total_words << " words, "
 			<< num_indexed_words << " indexed, "
 			<< num_unique_words << " unique\n\n"
@@ -487,9 +514,9 @@ void		write_word_index( ostream&, off_t* );
 
 	if ( exclude_class_count ) {
 		//
-		// Word is within an HTML element's begin/end tags whose begin
-		// tag's CLASS attribute value is among the set of class names
-		// not to index.
+		// The word is within an HTML element's begin/end tags whose
+		// begin tag's CLASS attribute value is among the set of class
+		// names not to index, so do nothing.
 		//
 		return;
 	}
@@ -558,7 +585,7 @@ void		write_word_index( ostream&, off_t* );
 // SYNOPSIS
 //
 	void index_words(
-		register file_vector::const_iterator c,
+		file_vector::const_iterator c,
 		register file_vector::const_iterator end,
 		bool is_html, int meta_id
 	)
@@ -584,7 +611,13 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
+	//
+	// We have to keep track of when we just started indexing a new file to
+	// know when to tell parse_html_tag() to clear its internal HTML
+	// element stack.
+	//
 	static bool new_file = true;
+
 	char buf[ Word_Hard_Max_Size + 1 ];
 	register char *word;
 	int len;
@@ -592,9 +625,14 @@ void		write_word_index( ostream&, off_t* );
 
 	while ( c != end ) {
 		register char ch = *c++;
-
-		ch = ( is_html && ch == '&' ) ?
-			convert_entity( c, end ) : iso8859_to_ascii( ch );
+		//
+		// If we're indexing an HTML file and the character is an '&'
+		// (the start of a entity reference), convert the entity
+		// reference to ASCII; otherwise, convert the ISO 8859
+		// character to ASCII.
+		//
+		ch = is_html && ch == '&' ?
+			entity_to_ascii( c, end ) : iso8859_to_ascii( ch );
 
 		////////// Collect a word /////////////////////////////////////
 
@@ -618,38 +656,44 @@ void		write_word_index( ostream&, off_t* );
 		}
 
 		if ( in_word ) {
+			//
+			// We ran into a non-word character, so index the word
+			// up to, but not including, it.
+			//
 			in_word = false;
 			index_word( word, len, meta_id );
 		}
 
 		if ( is_html && ch == '<' && meta_id == No_Meta_ID ) {
+			//
+			// If we're indexing an HTML file, and the character is
+			// a '<' (the start of an HTML tag), and we're not in
+			// the midst of indexing the value of a META element's
+			// CONTENT attribute, then parse the HTML tag.
+			//
 			parse_html_tag( c, end, new_file );
+			//
+			// Clear the new_file flag so that parse_html_tag()
+			// will maintain its internal stack of HTML elements.
+			//
 			new_file = false;
 		}
 	}
-	if ( in_word )
+	if ( in_word ) {
+		//
+		// We ran into 'end' while still accumulating characters into a
+		// word, so just index what we've got.
+		//
 		index_word( word, len, meta_id );
+	}
 
+	//
+	// Reset the new_file flag since the next time we get called, it will
+	// be for a new file.  However, if we got called recursively from
+	// within parse_html_tag(), this will incorrectly reset the flag.  The
+	// thing that corrects for this is the "new_file = false" above.
+	//
 	new_file = true;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline int word_file_percentage( int file_count )
-//
-// DESCRIPTION
-//
-//	Compute the percentage of the number of files a word occurs in.
-//
-// RETURN VALUE
-//
-//	Returns said percentage.
-//
-//*****************************************************************************
-{
-	return file_count * 100 / file_info::set_.size();
 }
 
 //*****************************************************************************
@@ -682,7 +726,7 @@ void		write_word_index( ostream&, off_t* );
 				<< flush;
 		return true;
 	}
-	int const wfp = word_file_percentage( file_count );
+	int const wfp = file_count * 100 / file_info::list_.size();
 	if ( wfp >= word_percent_max ) {
 		if ( verbosity > 2 )
 			cout	<< "\n  \"" << word
@@ -690,6 +734,56 @@ void		write_word_index( ostream&, off_t* );
 		return true;
 	}
 	return false;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void load_old_index( char const *index_file_name )
+//
+// DESCRIPTION
+//
+//	Load the stop-word, file, and meta-name indicies from an existing index
+//	file.
+//
+// PARAMETERS
+//
+//	index_file_name		The name of the index file to load.
+//
+//*****************************************************************************
+{
+	file_vector index_file( index_file_name );
+	if ( !index_file ) {
+		cerr	<< error << "could not read index from \""
+			<< index_file_name << '"' << endl;
+		::exit( Exit_No_Read_Index );
+	}
+
+	stop_words = new stop_word_set( index_file );
+
+	index_segment old_files( index_file, index_segment::file_index );
+	if ( files_reserve <= old_files.size() ) {
+		//
+		// Add the FilesGrow configuration variable to the FilesReserve
+		// configuration variable to allow room for growth.
+		//
+		files_reserve = files_grow( old_files.size() );
+	}
+	FOR_EACH( index_segment, old_files, fi )
+		file_info::parse( *fi );
+
+	index_segment old_meta_names(
+		index_file, index_segment::meta_name_index
+	);
+	FOR_EACH( index_segment, old_meta_names, meta_name ) {
+		unsigned char const *p =
+			REINTERPRET_CAST(unsigned char const*)( *meta_name );
+		while ( *p++ ) ;		// skip past meta name
+		meta_names[ ::strdup( *meta_name ) ] = parse_bcd( p );
+	}
+
+	partial_index_file_names.push_back( index_file_name );
 }
 
 //*****************************************************************************
@@ -721,7 +815,7 @@ void		write_word_index( ostream&, off_t* );
 //
 // RETURN VALUE
 //
-//	Returns the rank.
+//	Returns a rank greater than zero.
 //
 // SEE ALSO
 //
@@ -733,7 +827,7 @@ void		write_word_index( ostream&, off_t* );
 {
 	int r = int(
 		( ::log( occurences_in_file ) + 10 ) * factor
-		/ file_info::set_[ file_index ]->num_words_
+		/ file_info::list_[ file_index ]->num_words_
 	);
 	return r > 0 ? r : 1;
 }
@@ -756,23 +850,27 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	vector< file_vector > index( num_temp_files );
-	vector< word_index > words( num_temp_files );
-	vector< word_index::const_iterator > word( num_temp_files );
+	vector< file_vector > index( partial_index_file_names.size() );
+	vector< index_segment > words( partial_index_file_names.size() );
+	vector< index_segment::const_iterator >
+		word( partial_index_file_names.size() );
 	register int i, j;
 
 	////////// Reopen all the partial indicies ////////////////////////////
 
 	::atexit( &remove_temp_files );
-	for ( i = 0; i < num_temp_files; ++i ) {
-		string const temp_file = temp_file_prefix + itoa( i );
-		index[ i ].open( temp_file.c_str() );
+	i = 0;
+	FOR_EACH( vector<string>, partial_index_file_names, file_name ) {
+		index[ i ].open( file_name->c_str() );
 		if ( !index[ i ] ) {
 			error()	<< "can not reopen temp. file \""
-				<< temp_file << '"' << endl;
+				<< *file_name << '"' << endl;
 			::exit( Exit_No_Open_Temp );
 		}
-		words[ i ].set_index_file( index[ i ] );
+		words[ i ].set_index_file(
+			index[ i ], index_segment::word_index
+		);
+		++i;
 	}
 
 	////////// Must determine the number of unique words first ////////////
@@ -780,7 +878,7 @@ void		write_word_index( ostream&, off_t* );
 	if ( verbosity > 1 )
 		cout << me << ": determining unique words..." << flush;
 
-	for ( i = 0; i < num_temp_files; ++i ) {
+	for ( i = 0; i < partial_index_file_names.size(); ++i ) {
 		// Start off assuming that all the words are unique.
 		num_unique_words += words[ i ].size();
 		word[ i ] = words[ i ].begin();
@@ -789,7 +887,7 @@ void		write_word_index( ostream&, off_t* );
 
 		// Find at least two non-exhausted indicies noting the first.
 		register int n = 0;
-		for ( j = 0; j < num_temp_files; ++j )
+		for ( j = 0; j < partial_index_file_names.size(); ++j )
 			if ( word[ j ] != words[ j ].end() )
 				if ( !n++ )
 					i = j;
@@ -799,7 +897,7 @@ void		write_word_index( ostream&, off_t* );
 			break;
 
 		// Find the lexographically least word.
-		for ( j = i + 1; j < num_temp_files; ++j )
+		for ( j = i + 1; j < partial_index_file_names.size(); ++j )
 			if ( word[ j ] != words[ j ].end() )
 				if ( ::strcmp( *word[ j ], *word[ i ] ) < 0 )
 					i = j;
@@ -808,17 +906,25 @@ void		write_word_index( ostream&, off_t* );
 		int file_count = list.size();
 
 		// See if there are any duplicates and eliminate them.
-		for ( j = i + 1; j < num_temp_files; ++j )
+		for ( j = i + 1; j < partial_index_file_names.size(); ++j )
 			if ( word[ j ] != words[ j ].end() )
 				if ( !::strcmp( *word[ j ], *word[ i ] ) ) {
+					//
+					// The two words are the same: add the
+					// second word's file count to that of
+					// the first.
+					//
 					--num_unique_words;
 					file_list const list( word[ j ] );
 					file_count += list.size();
 					++word[ j ];
 				}
 
-		// Remove the word if it occurs too frequently.
 		if ( is_too_frequent( *word[ i ], file_count ) ) {
+			//
+			// The word occurs too frequently: consider it a stop
+			// word.
+			//
 			stop_words->insert( *word[ i ] );
 			--num_unique_words;
 		}
@@ -828,7 +934,7 @@ void		write_word_index( ostream&, off_t* );
 
 	////////// Write index file header ////////////////////////////////////
 
-	long const num_files = file_info::set_.size();
+	long const num_files = file_info::list_.size();
 	long const num_stop_words = stop_words->size();
 	long const num_meta_names = meta_names.size();
 	off_t *const word_offset = new off_t[ num_unique_words ];
@@ -865,8 +971,8 @@ void		write_word_index( ostream&, off_t* );
 	if ( verbosity > 1 )
 		cout << '\n' << me << ": merging partial indicies..." << flush;
 
-	for ( i = 0; i < num_temp_files; ++i )		// reset all iterators
-		word[ i ] = words[ i ].begin();
+	for ( i = 0; i < partial_index_file_names.size(); ++i )
+		word[ i ] = words[ i ].begin();		// reset all iterators
 	int word_index = 0;
 	while ( true ) {
 
@@ -874,7 +980,7 @@ void		write_word_index( ostream&, off_t* );
 
 		// Find at least two non-exhausted indicies noting the first.
 		register int n = 0;
-		for ( j = 0; j < num_temp_files; ++j ) {
+		for ( j = 0; j < partial_index_file_names.size(); ++j ) {
 			for ( ; word[ j ] != words[ j ].end(); ++word[ j ] )
 				if ( !stop_words->contains( *word[ j ] ) )
 					break;
@@ -888,7 +994,7 @@ void		write_word_index( ostream&, off_t* );
 			break;
 
 		// Find the lexographically least word.
-		for ( j = i + 1; j < num_temp_files; ++j )
+		for ( j = i + 1; j < partial_index_file_names.size(); ++j )
 			if ( word[ j ] != words[ j ].end() )
 				if ( ::strcmp( *word[ j ], *word[ i ] ) < 0 )
 					i = j;
@@ -896,10 +1002,10 @@ void		write_word_index( ostream&, off_t* );
 		word_offset[ word_index++ ] = o.tellp();
 		o << *word[ i ] << '\0';
 
-		////////// Determine total occurrences in all indicies ////////
+		////////// Calc. total occurrences in all indicies ////////////
 
 		int total_occurrences = 0;
-		for ( j = i; j < num_temp_files; ++j ) {
+		for ( j = i; j < partial_index_file_names.size(); ++j ) {
 			if ( word[ j ] == words[ j ].end() )
 				continue;
 			if ( ::strcmp( *word[ j ], *word[ i ] ) )
@@ -908,12 +1014,11 @@ void		write_word_index( ostream&, off_t* );
 			FOR_EACH( file_list, list, file )
 				total_occurrences += file->occurrences_;
 		}
+		double const factor = 10000.0 / total_occurrences;
 
 		////////// Copy all index info and compute ranks //////////////
 
-		double const factor = 10000.0 / total_occurrences;
-
-		for ( j = i; j < num_temp_files; ++j ) {
+		for ( j = i; j < partial_index_file_names.size(); ++j ) {
 			if ( word[ j ] == words[ j ].end() )
 				continue;
 			if ( ::strcmp( *word[ j ], *word[ i ] ) )
@@ -923,7 +1028,7 @@ void		write_word_index( ostream&, off_t* );
 				o << bcd( file->index_ );
 				if ( !file->meta_ids_.empty() )
 					file->write_meta_ids( o );
-				o << bcd( rank(
+				o << bcd( file->occurrences_ ) << bcd( rank(
 					file->index_, file->occurrences_, factor
 				) );
 			}
@@ -937,36 +1042,37 @@ void		write_word_index( ostream&, off_t* );
 
 	////////// Copy remaining words from last non-exhausted index /////////
 
-	for ( j = 0; j < num_temp_files; ++j )
-		if ( word[ j ] != words[ j ].end() )
-			break;
-
-	for ( ; word[ j ] != words[ j ].end(); ++word[ j ] ) {
-		if ( stop_words->contains( *word[ j ] ) )
+	for ( j = 0; j < partial_index_file_names.size(); ++j ) {
+		if ( word[ j ] == words[ j ].end() )
 			continue;
 
-		////////// Determine total occurrences in all indicies ////////
+		for ( ; word[ j ] != words[ j ].end(); ++word[ j ] ) {
+			if ( stop_words->contains( *word[ j ] ) )
+				continue;
 
-		int total_occurrences = 0;
-		file_list const list( word[ j ] );
-		FOR_EACH( file_list, list, file )
-			total_occurrences += file->occurrences_;
-		double const factor = 10000.0 / total_occurrences;
+			word_offset[ word_index++ ] = o.tellp();
+			o << *word[ j ] << '\0';
 
-		////////// Copy all index info and compute ranks //////////////
+			////////// Calc. total occurrences in all indicies ////
 
-		word_offset[ word_index++ ] = o.tellp();
-		o << *word[ j ] << '\0';
+			int total_occurrences = 0;
+			file_list const list( word[ j ] );
+			FOR_EACH( file_list, list, file )
+				total_occurrences += file->occurrences_;
+			double const factor = 10000.0 / total_occurrences;
 
-		FOR_EACH( file_list, list, file ) {
-			o << bcd( file->index_ );
-			if ( !file->meta_ids_.empty() )
-				file->write_meta_ids( o );
-			o << bcd(
-				rank( file->index_, file->occurrences_, factor )
-			);
+			////////// Copy all index info and compute ranks //////
+
+			FOR_EACH( file_list, list, file ) {
+				o << bcd( file->index_ );
+				if ( !file->meta_ids_.empty() )
+					file->write_meta_ids( o );
+				o << bcd( file->occurrences_ ) << bcd( rank(
+					file->index_, file->occurrences_, factor
+				) );
+			}
+			o << '\xFF';
 		}
-		o << '\xFF';
 	}
 
 	write_stop_word_index( o, stop_word_offset );
@@ -1024,10 +1130,11 @@ void		write_word_index( ostream&, off_t* );
 	TRANSFORM_EACH( word_map, words, w ) {
 		word_info &info = w->second;
 
-		//
-		// Remove the word if it occurs too frequently.
-		//
 		if ( is_too_frequent( w->first.c_str(), info.files_.size() ) ) {
+			//
+			// The word occurs too frequently: consider it a stop
+			// word.
+			//
 			stop_words->insert( ::strdup( w->first.c_str() ) );
 			words.erase( w );
 			continue;
@@ -1037,7 +1144,7 @@ void		write_word_index( ostream&, off_t* );
 		// Compute the rank for this word in every file it's in.
 		//
 		double const factor = 10000.0 / info.occurrences_;
-		TRANSFORM_EACH( word_info::file_set, info.files_, file )
+		TRANSFORM_EACH( word_info::file_list, info.files_, file )
 			file->rank_ = rank(
 				file->index_, file->occurrences_, factor
 			);
@@ -1067,8 +1174,8 @@ void		write_word_index( ostream&, off_t* );
 //*****************************************************************************
 {
 	for ( int i = 0; i < num_temp_files; ++i ) {
-		string const temp_file = temp_file_prefix + itoa( i );
-		::unlink( temp_file.c_str() );
+		string const temp_file_name = temp_file_name_prefix + itoa( i );
+		::unlink( temp_file_name.c_str() );
 	}
 }
 
@@ -1076,7 +1183,7 @@ void		write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-	void write_file_index( ostream &o, off_t *offset )
+	void write_file_index( ostream &o, register off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1092,9 +1199,10 @@ void		write_word_index( ostream&, off_t* );
 //*****************************************************************************
 {
 	register int file_index = 0;
-	FOR_EACH( file_info::set_type, file_info::set_, fi ) {
+	FOR_EACH( file_info::list_type, file_info::list_, fi ) {
 		offset[ file_index++ ] = o.tellp();
-		o << **fi << '\0';
+		o	<< (*fi)->file_name_ << '\0' << bcd( (*fi)->size_ )
+			<< bcd( (*fi)->num_words_ ) << (*fi)->title_ << '\0';
 	}
 }
 
@@ -1102,7 +1210,7 @@ void		write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-	void write_meta_name_index( ostream &o, off_t *offset )
+	void write_meta_name_index( ostream &o, register off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1155,12 +1263,13 @@ void		write_word_index( ostream&, off_t* );
 //		word\0{data}...\xFF
 //
 //	that is: a null-terminated word followed by one or more data entries
-//	followed by a null byte where a data entry is:
+//	followed by an \xFF byte where a data entry is:
 //
-//		file_index[\xEE{meta_id}...\xEE]rank
+//		I[\xEE{M}...\xEE]OR
 //
-//	that is: a file-index followed by zero or more meta-IDs (surrounded by
-//	\xEE bytes) followed by a rank followed by a \xFF byte.  The integers
+//	that is: a file-index (I) followed by zero or more meta-IDs (M)
+//	surrounded by \xEE bytes followed by the number of occurrences in the
+//	file (O) followed by a rank (R) followed by an \xFF byte.  The integers
 //	are in BCD (binary coded decimal) not raw binary.  A BCD integer that
 //	has an odd number of digits is terminated by a low-order nybble with
 //	the value \xA; an integer that has an even number of digits is
@@ -1177,19 +1286,16 @@ void		write_word_index( ostream&, off_t* );
 //
 //		word\0
 //
-//	where the word is terminated by a null character.
+//	where the word is terminated by a null byte.
 //
 //	The file index is a list of file information.  Each entry is of the
 //	form:
 //
-//		path_name file_size file_title\0
+//		path_name\0{S}{W}file_title\0
 //
-//	where the parts are separated by a single space and are teminated by a
-//	null character.  (Any spaces after the second one are part of the
-//	title.)  For example:
-//
-//		/path/my.html 1234 Some Title
-//
+//	that is: a null-terminated pathname followed by the file's size in
+//	bytes (S) followed by the number of words in the file (W) followed by
+//	the file's null-terminated title.  The integers are in BCD format.
 //	Each file_offset points to the first character in a path name.
 //
 //	The meta-name index is a list of all the meta names (in alphabetical
@@ -1197,10 +1303,10 @@ void		write_word_index( ostream&, off_t* );
 //	followed by its numeric ID that is simply a unique integer to identify
 //	it.  Each entry is of the form:
 //
-//		meta-name\0ID
+//		meta_name\0{I}
 //
-//	where the meta-name is terminated by a null character and the ID is in
-//	BCD as decribed above.
+//	that is: a null-terminated meta-name followed by the ID (I) in BCD
+//	format.
 //
 // PARAMETERS
 //
@@ -1215,7 +1321,7 @@ void		write_word_index( ostream&, off_t* );
 		cout << me << ": writing index..." << flush;
 
 	long const num_stop_words = stop_words->size();
-	long const num_files = file_info::set_.size();
+	long const num_files = file_info::list_.size();
 	long const num_meta_names = meta_names.size();
 	off_t *const word_offset = new off_t[ num_unique_words ];
 	off_t *const stop_word_offset = num_stop_words ?
@@ -1294,18 +1400,19 @@ void		write_word_index( ostream&, off_t* );
 //		off_t	word_offset[ num_words ];
 //			(word index)
 //
-//	The partial word index is in the same format as the complete index
-//	except that "rank" is "occurrences."
+//	The partial word index is in the same format as the complete index.
 //
 //*****************************************************************************
 {
-	string const temp_file = temp_file_prefix + itoa( num_temp_files++ );
-	ofstream o( temp_file.c_str(), ios::out | ios::binary );
+	string const temp_file_name =
+		temp_file_name_prefix + itoa( num_temp_files++ );
+	ofstream o( temp_file_name.c_str(), ios::out | ios::binary );
 	if ( !o ) {
 		error()	<< "can not write temp. file \""
-			<< temp_file << '"' << endl;
+			<< temp_file_name << '"' << endl;
 		::exit( Exit_No_Write_Temp );
 	}
+	partial_index_file_names.push_back( temp_file_name );
 
 	if ( verbosity > 1 )
 		cout << '\n' << me << ": writing partial index..." << flush;
@@ -1335,7 +1442,7 @@ void		write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-	void write_stop_word_index( ostream &o, off_t *offset )
+	void write_stop_word_index( ostream &o, register off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1361,7 +1468,7 @@ void		write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-	void write_word_index( ostream &o, off_t *offset )
+	void write_word_index( ostream &o, register off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1382,11 +1489,11 @@ void		write_word_index( ostream&, off_t* );
 		o << w->first << '\0';
 
 		word_info const &info = w->second;
-		FOR_EACH( word_info::file_set, info.files_, file ) {
+		FOR_EACH( word_info::file_list, info.files_, file ) {
 			o << bcd( file->index_ );
 			if ( !file->meta_ids_.empty() )
 				file->write_meta_ids( o );
-			o << bcd( file->occurrences_ );
+			o << bcd( file->occurrences_ ) << bcd( file->rank_ );
 		}
 
 		o << '\xFF';
@@ -1410,9 +1517,11 @@ ostream& usage( ostream &o ) {
 	"-E e | --no-extension e   : Extension not to index [default: none]\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
 	"-F n | --files-reserve n  : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
+	"-G n | --files-grow n     : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
 	"-h e | --html-extension e : HTML extension to index [default: none]\n"
 	"-H   | --dump-html        : Dump built-in recognized HTML elements and exit\n"
 	"-i f | --index-file f     : Name of index file to use [default: " << IndexFile_Default << "]\n"
+	"-I   | --incremental      : Add files to index [default: replace]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	"-l   | --follow-links     : Follow symbolic links [default: no]\n"
 #endif
@@ -1421,7 +1530,7 @@ ostream& usage( ostream &o ) {
 	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
 	"-r   | --no-recurse       : Don't index subdirectories [default: do]\n"
 	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
-	"-S   | --dump-stop        : Dump stop-words and exit\n"
+	"-S   | --dump-stop        : Dump built-in stop-words and exit\n"
 	"-t n | --title-lines n    : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
 	"-T d | --temp-dir d       : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
 	"-v n | --verbosity n      : Verbosity level [0-4; default: 0]\n"
