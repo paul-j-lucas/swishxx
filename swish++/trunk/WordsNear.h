@@ -19,6 +19,8 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#ifdef	FEATURE_word_pos
+
 #ifndef WordsNear_H
 #define WordsNear_H
 
@@ -53,4 +55,6 @@ public:
 extern WordsNear words_near;
 
 #endif	/* WordsNear_H */
+
+#endif	/* FEATURE_word_pos */
 /* vim:set noet sw=8 ts=8: */
