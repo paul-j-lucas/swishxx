@@ -277,9 +277,12 @@ inline std::ostream& error( std::ostream &o = std::cerr ) {
 	return o << me << ": error: ";
 }
 
-inline std::ostream&
-error_string( std::ostream &o = std::cerr, int err_code = errno ) {
+inline std::ostream& error_string( std::ostream &o, int err_code ) {
 	return o << ": " << std::strerror( err_code ) << std::endl;
+}
+
+inline std::ostream& error_string( std::ostream &o = std::cerr ) {
+	return error_string( o, errno );
 }
 
 inline PJL::omanip<int> error_string( int err_code ) {
