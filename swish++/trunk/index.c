@@ -681,14 +681,12 @@ void			write_word_index( ostream&, off_t* );
 		while ( *u++ ) ;		// skip past filename
 		size_t const size = parse_bcd( u );
 		int const num_words = parse_bcd( u );
-		char const *const
-			title = new_strdup( reinterpret_cast<char const*>( u ));
+		char const *const title = reinterpret_cast<char const*>( u );
 
 		string const dir_str( old_dirs[ dir_index ] );
 		string const path( dir_str + '/' + file_name );
-		char const *const path_name = new_strdup( path.c_str() );
 
-		new file_info( path_name, dir_index, size, title, num_words );
+		new file_info( path.c_str(), dir_index, size, title, num_words);
 	}
 
 	////////// Load old meta names ////////////////////////////////////////
