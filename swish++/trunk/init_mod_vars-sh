@@ -69,7 +69,7 @@ cat <<!
 for header in mod/*/mod_*.h
 do
 	VARS_FILE=`dirname $header`/vars
-	[ -e $VARS_FILE ] || continue
+	[ -f $VARS_FILE ] || continue
 	cat $VARS_FILE | while read var_name
 	do cat <<!
 #ifdef	`basename $header | sed 's/\.h$//'`

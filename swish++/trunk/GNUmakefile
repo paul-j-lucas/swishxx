@@ -207,7 +207,7 @@ uninstall:
 ##
 
 MAKE_SUBDIRS=	for dir in man mod/*; \
-		do [ -e $$dir/*akefile ] && $(MAKE) -C $$dir $1; \
+		do [ -f $$dir/*akefile ] && $(MAKE) -C $$dir $1; \
 		done
 
 clean:
