@@ -163,7 +163,11 @@
 
 		($rank,$path,$size,$title) = split( / /, $_, 4 );
 
-	16. Generously commented source code
+	16. XML results format
+	    Alternatively, SWISH++ can output search results in XML for
+	    increased interoperability with other XML applications.
+
+	17. Generously commented source code
 	    The source code is clearly written with lots of comments
 	    including references to other works in case you want to
 	    modify it under the terms of the GNU general public
@@ -196,4 +200,4 @@
 
 	Copyright (C) 1998-2001 by Paul J. Lucas <pauljlucas@mac.com>
 	SWISH++ is available under the GNU General Public License.
-	This file last updated: April 16, 2001
+	This file last updated: September 26, 2001
