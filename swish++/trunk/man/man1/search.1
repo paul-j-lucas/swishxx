@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "September 26, 2001" "SWISH++"
+.TH \f3search\fP 1 "November 9, 2001" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -49,7 +49,7 @@ search \- SWISH++ searcher
 is the SWISH++ searcher.
 It searches a previously generated index for the words specified in a query.
 In addition to running from the command-line,
-it can run in the background as a daemon process
+it can run as a daemon process
 functioning as a ``search server.''
 .SH QUERY INPUT
 .SS Query Syntax
@@ -198,8 +198,9 @@ For example:
 </SearchResults>
 .cE
 .SH RUNNING AS A DAEMON PROCESS
+.SS Description
 .B search
-can alternatively run in the background as a daemon process
+can alternatively run as a daemon process
 (via either the
 .B \-b
 or
@@ -226,7 +227,6 @@ options or the
 variable),
 or both.
 Unix domain sockets are preferred for both performance and security.
-.PP
 For search-intensive applications,
 such as a search engine on a heavily used web site,
 this can yield a large performance improvement
@@ -236,6 +236,10 @@ since the start-up cost
 and initialization)
 is paid only once.
 .PP
+If the process was started with root privileges,
+it will give them away immediately after initialization
+and before servicing any requests.
+.SS Clients and Requests
 Search clients connect to a daemon via a socket
 and send a query in the same manner as on the command line
 (including the first word being ``\f(CWsearch\f1'').
@@ -244,15 +248,7 @@ The only exception is that shell meta-characters
 be escaped (backslashed) since no shell is involved.
 Search results are returned via the same socket.
 See the EXAMPLES.
-.PP
-A single daemon can search only a single index.
-To be able to search multiple indices concurrently,
-multiple daemons can be run,
-each searching its own index and using its own socket file.
-An index
-.I "must not"
-be modified or deleted while a daemon is using it.
-.PP
+.SS Multithreading
 A daemon can serve multiple query requests simultaneously
 since it is multi-threaded.
 When started,
@@ -299,6 +295,14 @@ or
 options or the
 .B ThreadTimeout
 variable.)
+.SS Restrictions
+A single daemon can search only a single index.
+To be able to search multiple indices concurrently,
+multiple daemons can be run,
+each searching its own index and using its own socket file.
+An index
+.I "must not"
+be modified or deleted while a daemon is using it.
 .SH OPTIONS
 Options begin with either a `\f(CW-\f1' for short options
 or a ``\f(CW--\f1'' for long options.
@@ -366,7 +370,7 @@ and colon also means ``any IP address.''
 .ns
 .TP
 .BI \-\-daemon-type= t
-Run in the background as a daemon process.
+Run as a daemon process.
 (Default is not to.)
 The type,
 .IR t ,
@@ -400,12 +404,28 @@ Listen on both.
 .RE
 .TP 20
 .B ""
-If executed from the command-line,
+By default,
+if executed from the command-line,
 .B search
 appears to return immediately;
-however, it has merely put itself into the background
-and detached from the terminal.
+however, it has merely
+detached from the terminal
+and
+put itself into the background.
 There is no need to follow the command with an `\f(CW&\f1'.
+.TP
+.B \-B
+.br
+.ns
+.TP
+.B \-\-no-background
+When running as a daemon process,
+do not detach from the terminal and run in the background.
+(Default does.)
+.IP ""
+The reason not to run in the background
+is so a wrapper script can see if the process dies for any reason
+and automatically restart it.
 .TP
 .BI \-c f
 .br
@@ -454,7 +474,17 @@ The format,
 .IR f ,
 search results are output in.
 The format is either \f(CWclassic\fP or \f(CWXML\f1.
-(Default is \f(CWclassic\fP.)
+(Default is \f(CWclassic\f1.)
+.TP
+.BI \-G s
+.br
+.ns
+.TP
+.BI \-\-group= s
+The group,
+.IR s ,
+to switch the process to after starting and only if started as root.
+(Default is \f(CWnobody\f1.)
 .TP
 .BI \-i f
 .br
@@ -596,6 +626,16 @@ Maximum number of threads to allow while running as a daemon.
 The name of the Unix domain socket file to use while running as a daemon.
 (Default is \f(CW/tmp/search.socket\f1.)
 .TP
+.BI \-U s
+.br
+.ns
+.TP
+.BI \-\-user= s
+The user,
+.IR s ,
+to switch the process to after starting and only if started as root.
+(Default is \f(CWnobody\f1.)
+.TP
 .B \-V
 .br
 .ns
@@ -628,6 +668,12 @@ the latter taking priority.
 .RS 5
 .PD 0
 .TP 20
+.B Group
+Same as
+.B \-G
+or
+.B \-\-group
+.TP
 .B IndexFile
 Same as
 .B \-i
@@ -657,6 +703,12 @@ Same as
 .B \-m
 or
 .B \-\-max-results
+.TP
+.B SearchBackground
+Same as
+.B \-B
+or
+.B \-\-no-background
 .TP
 .B SearchDaemon
 Same as
@@ -711,6 +763,12 @@ Same as
 .B \-O
 or
 .B \-\-thread-timeout
+.TP
+.B User
+Same as
+.B \-U
+or
+.B \-\-user
 .TP
 .B WordFilesMax
 Same as
