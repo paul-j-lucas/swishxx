@@ -161,7 +161,6 @@
 					"applet", "/applet",
 					"blockquote", "/blockquote",
 					"/body",
-					"bq", "/bq",
 					"br",
 					"caption", "/caption",
 					"center", "/center",
