@@ -44,8 +44,20 @@ Building SWISH++ for Microsoft Windows 95/98/NT/2000
    shouldn't compile it in since it requires more processing per character and
    will be slower for all files (not just mail and news files).
 
-3. Go back to the top-level directory and type "make".  If everything works
-   out, the software will be built.
+3. Go back to the top-level directory and type "make".  Note: lines of the
+   form:
+
+	GNUmakefile:169: dep/bcd.d: No such file or directory
+	GNUmakefile:169: dep/mmap_file.d: No such file or directory
+	GNUmakefile:169: dep/conf_var.d: No such file or directory
+	...
+
+   are EXPECTED and NORMAL.  Those files INTENTIONALLY are not distributed in
+   the tar file.  This causes "make" to build them.  This is a technique
+   recommended by the GNU Make authors themselves for generating dependency
+   files automatically.
+
+   If everything works out, the software will be built.
 
 
 ===============================================================================
