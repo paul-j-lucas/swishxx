@@ -142,11 +142,13 @@ public:
 		virtual thread*	create( thread_pool& ) const = 0;
 		virtual void	main( argument_type ) = 0;
 	private:
+		enum state { normal_state, expired_state, destructing_state };
+
 		pthread_t	thread_;		// our POSIX thread
 		pthread_mutex_t	run_lock_;
 		thread_pool&	pool_;			// to which we belong
 		q_lock*		q_lock_;
-		bool		destructing_;		// destructor called?
+		state		state_;
 
 		void		run() { ::pthread_mutex_unlock( &run_lock_ ); }
 		thread*		create_and_run() const {
