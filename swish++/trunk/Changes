@@ -3,6 +3,137 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.7
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* LaTeX files can not be indexed directly.
+
+  (This feature shall be known as feature LATEX.)
+
+* Document titles now have multiple whitespace characters squeezed into single
+  whitespace characters.
+
+  (This feature shall be known as feature STWS.)
+
+* index(1) will now use the value of the environment variable TMPDIR if it's
+  set as the default temporary directory.  However, the value is still
+  overriddedn by one of -T, --temp-dir, or TempDirectory if given.
+
+  (This feature shall be known as feature TMPDIR.)
+
+
+BUG FIXES
+---------
+
+* HTML comment parsing was broken in that it allowed "->" in addition to "-->"
+  to terminate a comment.
+
+  (This bug fix shall be known as bug fix HTC.)
+
+* Yet more bugs in the thread-pooling code.
+
+  (This bug fix shall be known as bug fix TPB.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added "latex" to MOD_LIST for feature LATEX.
+	2. Added I_ETC.
+
+* config.h
+
+	1. Changed value for SocketQueueSize_Default to 511.
+
+* GNUmakefile
+
+	1. Added TempDirectory.c for feature TMPDIR.
+	2. Changed installation of swish++.conf to $(I_ETC)
+
+* indexer.c
+
+	1. In tidy_title(), added code to squeeze multiple whitespace
+	   characters for feature STWS.
+
+* man/man1/index.1
+
+	1. Added TMPDIR for feature TMPDIR.
+
+* man/man1/search.1
+
+	1. Changed default value for -q to 511.
+	2. Added missing "encoding" to XML example.
+
+* man/man4/swish++.conf.4
+
+	1. Added missing TempDirectory.
+
+* mod/html/mod_html.c
+
+	1. In is_html_comment(), reworked code for bug fix HTC.
+	2. In entity_to_ascii(), added static reference to
+	   char_entity_map::instance().
+	3. In parse_html_tag() and post_options(), made "elements"
+	   reference static.
+
+* mod/latex/GNUmakefile
+* mod/latex/commands.c
+* mod/latex/commands.h
+* mod/latex/latex_config.h
+* mod/latex/mod_latex.c
+* mod/latex/mod_latex.h
+
+	1. New files for feature LATEX.
+
+* swish++.conf
+
+	1. Changed value for SocketQueueSize to 511.
+
+* TempDirectory.c
+
+	1. New file for feature TMPDIR.
+
+* TempDirectory.h
+
+	1. Added default_value() for feature TMPDIR.
+	2. Moved #include "config.h" to new .c file for feature TMPDIR.
+
+* thread_pool.c
+
+	1. s/thread_pool_thread_destroy/thread_pool_thread_cleanup/
+	2. Added: thread_pool_decrement_busy().
+	3. In thread_pool_thread_main(), changed code so that pool_.t_idle_ is
+	   always signalled when idle.
+	4. In thread_pool_thread_main(), added:
+	       pthread_cleanup_push( thread_pool_decrement_busy, t )
+	   to ensure that t->pool_.t_busy_ gets decremented even if the thread
+	   is killed.
+	5. In thread_pool_thread_main(), added DEFER_CANCEL/RESTORE_CANCEL
+	   around code that removes a task from the queue.
+	6. In ~thread(), added DEFER_CANCEL/RESTORE_CANCEL.
+	7. In thread_pool::thread_pool(), added t_busy_( 0 ) for bug fix TPB.
+	8. In thread_pool_thread_main(), made signaling of idle independent of
+	   the size of the thread pool.
+	9. Made new_task() take and return a bool argument and queue the task
+	   only if it will queue it.
+
+* thread_pool.h
+
+	1. s/thread_pool_thread_destroy/thread_pool_thread_cleanup/
+	2. Added: thread_pool_decrement_busy().
+	3. Made new_task() take and return a bool argument.
+
+* version.h
+
+	1. Upped version to to "5.7".
+
+
+*******************************************************************************
 5.6
 *******************************************************************************
 
