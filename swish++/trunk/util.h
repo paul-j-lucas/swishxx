@@ -133,6 +133,8 @@ inline bool	file_exists( std::string const &path ) {
 			return file_exists( path.c_str() );
 		}
 
+inline off_t	file_size() { return stat_buf.st_size; }
+
 inline bool	is_directory() {
 			return S_ISDIR( stat_buf.st_mode );
 		}
