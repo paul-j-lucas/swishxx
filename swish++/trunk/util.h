@@ -31,6 +31,7 @@
 #include <string>
 #include <ctime>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
+#include <sys/types.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>
 #include <sys/stat.h>
 #include <unistd.h>			/* for _exit(2), geteuid(2) */
