@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <iostream>
 #include <vector>
 
 // local
@@ -274,8 +275,8 @@ query_node* query_node::visit( visitor const &v ) {
 
                 ////////// Are words near each other? /////////////////////////
 
-                int pdi[2];                     // pos_deltas_[i] index
-                int pos[2];                     // absolute position for file[i]
+                int pdi[2];                 // pos_deltas_[i] index
+                int pos[2];                 // absolute position for file[i]
                 for ( int i = 0; i < 2; ++i ) {
                     pdi[i] = 0;
                     pos[i] = file[i]->pos_deltas_[0];
@@ -417,7 +418,7 @@ query_node* query_node::visit( visitor const &v ) {
 //
 //      Evaluate the search results for "not near".  This code is very similar
 //      to that for near_node::eval().  The difference is that the right-hand
-//      word can either be "nor near" the left-hand word -OR- not present in
+//      word can either be "not near" the left-hand word -OR- not present in
 //      the same file at all.
 //
 // PARAMETERS
@@ -437,34 +438,42 @@ query_node* query_node::visit( visitor const &v ) {
         file_list const list0( word0 );
         if ( is_too_frequent( list0.size() ) )
             continue;
+        if ( !node[1] ) {
+            //
+            // If the right-hand side node isn't a word_node (i.e., it's an
+            // empty_node), then this case degenerates into doing the same
+            // thing that word_node::eval() does.
+            //
+            FOR_EACH( file_list, list0, file )
+                if ( file->has_meta_id( node[0]->meta_id() ) )
+                    results[ file->index_ ] += file->rank_;
+            continue;
+        }
 
-        file_list::const_iterator file[2];
-        for ( file[0] = list0.begin(); file[0] != list0.end(); ++file[0] ) {
-            if ( !file[0]->has_meta_id( node[0]->meta_id() ) )
-                continue;
-            if ( node[1] ) {
-                FOR_EACH_IN_PAIR( index_segment, node[1]->range(), word1 ) {
-                    file_list const list1( word1 );
-                    for ( file[1]  = list1.begin();
-                        file[1] != list1.end(); ++file[1]
+        ////////// Must check for "near"-ness of right-hand side word /////////
+
+        FOR_EACH_IN_PAIR( index_segment, node[1]->range(), word1 ) {
+            file_list const list1( word1 );
+            file_list::const_iterator file[] = { list0.begin(), list1.begin() };
+            while ( file[0] != list0.end() ) {
+                if ( file[0]->has_meta_id( node[0]->meta_id() ) ) {
+                    //
+                    // Make file[1]'s index "catch up" to file[0]'s.
+                    //
+                    while ( file[1] != list1.end() &&
+                            file[1]->index_ < file[0]->index_ )
+                        ++file[1];
+
+                    ////////// Are words in the same file? ////////////////////
+
+                    if ( file[1] != list1.end() &&
+                        file[0]->index_ == file[1]->index_ &&
+                        file[1]->has_meta_id( node[1]->meta_id() )
                     ) {
-                        if ( file[1]->index_ > file[0]->index_ ) {
-                            //
-                            // The remaining files that the right-hand word is
-                            // in are all greater that the current file of the
-                            // left-hand word so there is no need to continue.
-                            //
-                            break;
-                        }
-                        if ( file[0]->index_ > file[1]->index_ ||
-                            !file[1]->has_meta_id( node[1]->meta_id() )
-                        )
-                            continue;
-
                         ////////// Are words near each other? /////////////////
 
-                        int pdi[2];             // pos_deltas_[i] index
-                        int pos[2];             // absolute position for file[i]
+                        int pdi[2];         // pos_deltas_[i] index
+                        int pos[2];         // absolute position for file[i]
                         for ( int i = 0; i < 2; ++i ) {
                             pdi[i] = 0;
                             pos[i] = file[i]->pos_deltas_[0];
@@ -477,7 +486,7 @@ query_node* query_node::visit( visitor const &v ) {
                             //
                             int const delta = pos[1] - pos[0];
                             if ( abs( delta ) <= words_near )
-                                goto near;
+                                goto found_near;
                             //
                             // Increment the ith file's pos_deltas_ index and
                             // add the next delta to the accumulated absolute
@@ -489,10 +498,12 @@ query_node* query_node::visit( visitor const &v ) {
                             pos[i] += file[i]->pos_deltas_[ pdi[i] ];
                         }
                     }
+                    results[ file[0]->index_ ] += file[0]->rank_;
                 }
+found_near:     ++file[0];
+                if ( file[1] != list1.end() )
+                    ++file[1];
             }
-            results[ file[0]->index_ ] += file[0]->rank_;
-near:       ;
         }
     }
 }
