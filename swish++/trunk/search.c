@@ -485,9 +485,12 @@ inline omanip< char const* > index_file_info( int index ) {
 			i != sorted.end() && max_results-- > 0 && out;
 			++i
 		) {
+			// cast gets rid of warning
+			int rank = static_cast<int>( i->second * normalize );
+			if ( !rank )
+				rank = 1;
 			format->result(
-				// cast gets rid of warning
-				static_cast<int>( i->second * normalize ),
+				rank,
 				file_info(
 					reinterpret_cast<unsigned char const*>(
 						files[ i->first ]
