@@ -177,8 +177,12 @@ public:
 	);
 	~thread_pool();
 
-	void		new_task( thread::argument_type );
-	//		Supply a new task to be worked upon by a thread.
+	bool		new_task( thread::argument_type, bool block = false );
+	//		Supply a new task to be worked upon by a thread.  If
+	//		all the threads are busy and no more can be created and
+	//		block = true, then the calling thread will block until
+	//		a thread becomes available.  If block = false, returns
+	//		false only if the task can not be queued.
 
 	void		max_threads( int n ) 		{ max_threads_ = n; }
 	void		min_threads( int n ) 		{ min_threads_ = n; }
