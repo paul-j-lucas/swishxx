@@ -25,7 +25,12 @@
 #include <iostream>
 
 // local
+#include "platform.h"
 #include "option_stream.h"
+
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 #define	ERROR	os.err_ << os.argv_[0] << ": error: option "
 

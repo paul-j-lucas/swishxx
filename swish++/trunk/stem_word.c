@@ -33,8 +33,13 @@
 #endif
 
 // local
+#include "platform.h"
 #include "stem_word.h"
 #include "word_util.h"
+
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
 
 struct rule_list {
 	int		id;
