@@ -133,6 +133,9 @@ int conf_var::current_config_file_line_no_ = 0;
 			"extractfilter",
 			"filesgrow",
 			"filesreserve",
+#ifdef	MOD_MAIL
+			"filterattachment",
+#endif
 			"filterfile",
 			"followlinks",
 			"includefile",
