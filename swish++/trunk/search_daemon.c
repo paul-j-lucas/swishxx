@@ -43,8 +43,10 @@
 
 // local
 #include "exit_codes.h"
+#include "Group.h"
 #include "PidFile.h"
 #include "platform.h"
+#include "SearchBackground.h"
 #include "SearchDaemon.h"
 #include "SocketAddress.h"
 #include "SocketFile.h"
@@ -54,6 +56,7 @@
 #include "ThreadsMin.h"
 #include "ThreadTimeout.h"
 #include "search_thread.h"
+#include "User.h"
 #include "util.h"			/* for max_out_limit() */
 
 #ifndef	PJL_NO_NAMESPACES
@@ -145,18 +148,34 @@ void	set_signal_handlers();
 	////////// Do miscellaneous daemon stuff //////////////////////////////
 
 #ifndef DEBUG_threads
-	detach_from_terminal();
+	if ( search_background )
+		detach_from_terminal();
 	//
 	// If requested, record our PID to a file.
 	//
 	if ( pid_file_name && *pid_file_name ) {
 		ofstream pid_file( pid_file_name );
 		if ( !pid_file ) {
-			cerr	<< error << '"' << pid_file_name << "\": "
+			error()	<< '"' << pid_file_name << "\": "
 				<< error_string;
 			::exit( Exit_No_Write_PID );
 		}
 		pid_file << ::getpid() << endl;
+	}
+
+	//
+	// If we're root and we've been requested to change our process
+	// user/group, do so.
+	//
+	if ( !group.change_to_gid() ) {
+		error() << "can't change group to \"" << group << "\": "
+			<< error_string;
+		::exit( Exit_No_Group );
+	}
+	if ( !user.change_to_uid() ) {
+		error() << "can't change user to \"" << user << "\": "
+			<< error_string;
+		::exit( Exit_No_Group );
 	}
 
 	//
@@ -179,7 +198,7 @@ void	set_signal_handlers();
 	//	filesystem, that filesystem can not be unmounted.
 	//
 	if ( ::chdir( "/" ) == -1 ) {
-		cerr << error << "chdir() failed" << error_string;
+		error() << "chdir() failed" << error_string;
 		::exit( Exit_No_Change_Dir );
 	}
 #endif	/* DEBUG_threads */
@@ -213,7 +232,7 @@ void	set_signal_handlers();
 		if ( num_fds == -1 ) {
 			if ( errno == EINTR )
 				continue;
-			cerr << error << "select() failed" << error_string;
+			error() << "select() failed" << error_string;
 			::exit( Exit_No_Select );
 		}
 
@@ -281,7 +300,7 @@ void	set_signal_handlers();
 {
 	pid_t const child_pid = ::fork();
 	if ( child_pid == -1 ) {
-		cerr << error << "fork() failed" << error_string;
+		error() << "fork() failed" << error_string;
 		::exit( Exit_No_Fork );
 	}
 	if ( child_pid > 0 )			// parent process ...
@@ -306,7 +325,7 @@ void	set_signal_handlers();
 {
 	int const fd = ::socket( AF_INET, SOCK_STREAM, 0 );
 	if ( fd == -1 ) {
-		cerr << error << "TCP socket() failed" << error_string;
+		error() << "TCP socket() failed" << error_string;
 		::exit( Exit_No_TCP_Socket );
 	}
 	struct sockaddr_in addr;
@@ -315,11 +334,11 @@ void	set_signal_handlers();
 	addr.sin_addr = socket_address.addr();
 	addr.sin_port = htons( socket_address.port() );
 	if ( ::bind( fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
-		cerr << error << "TCP bind() failed" << error_string;
+		error() << "TCP bind() failed" << error_string;
 		::exit( Exit_No_TCP_Bind );
 	}
 	if ( ::listen( fd, socket_queue_size ) == -1 ) {
-		cerr << error << "TCP listen() failed" << error_string;
+		error() << "TCP listen() failed" << error_string;
 		::exit( Exit_No_TCP_Listen );
 	}
 	return fd;
@@ -343,7 +362,7 @@ void	set_signal_handlers();
 {
 	int const fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 );
 	if ( fd == -1 ) {
-		cerr << error << "Unix socket() failed" << error_string;
+		error() << "Unix socket() failed" << error_string;
 		::exit( Exit_No_Unix_Socket );
 	}
 	struct sockaddr_un addr;
@@ -352,16 +371,16 @@ void	set_signal_handlers();
 	::strncpy( addr.sun_path, socket_file_name, sizeof( addr.sun_path )-1 );
 	// The socket file can not already exist prior to the bind().
 	if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
-		cerr	<< error << "can not delete \""
-			<< socket_file_name << '"' << error_string;
+		error()	<< "can not delete \"" << socket_file_name << '"'
+			<< error_string;
 		::exit( Exit_No_Unlink );
 	}
 	if ( ::bind( fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
-		cerr << error << "Unix bind() failed" << error_string;
+		error() << "Unix bind() failed" << error_string;
 		::exit( Exit_No_Unix_Bind );
 	}
 	if ( ::listen( fd, socket_queue_size ) == -1 ) {
-		cerr << error << "Unix listen() failed" << error_string;
+		error() << "Unix listen() failed" << error_string;
 		::exit( Exit_No_Unix_Listen );
 	}
 	return fd;
