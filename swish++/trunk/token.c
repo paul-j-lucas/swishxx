@@ -20,7 +20,7 @@
 */
 
 // standard
-#include <algorithm>
+#include <algorithm>			/* for transform() */
 #include <cctype>
 #include <cstring>
 

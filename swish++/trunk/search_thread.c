@@ -24,14 +24,14 @@
 // standard
 #include <cctype>
 #include <cerrno>
-#include <climits>				/* for ARG_MAX */
+#include <climits>			/* for ARG_MAX */
 #include <cstring>
 #include <ctime>
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
-#include <sys/socket.h>
-#include <unistd.h>				/* for close(2) */
+#include <sys/socket.h>			/* for recv(3) */
+#include <unistd.h>			/* for close(2) */
 
 //
 // We need to know the maximum number of command-line arguments so we can split
