@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "March 27, 2004" "SWISH++"
+.TH \f3search\fP 1 "March 29, 2004" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -932,9 +932,8 @@ The query:
 .cS
 author = hawking radiation
 .cE
-would return only those documents
-whose author attribute contains ``hawking'' and also regarding radiation
-regardless of author.
+would return only those documents regarding radiation
+whose author attribute contains ``hawking.''
 The query:
 .cS
 author = (stephen hawking)
@@ -942,7 +941,7 @@ author = (stephen hawking)
 would return only those documents whose author is Stephen Hawking.
 The query:
 .cS
-author = (stephen Hawking) or (black near hole*)
+author = (stephen hawking) or (black near hole*)
 .cE
 would return only those documents whose author is Stephen Hawking
 or that contain the word ``black'' near ``hole'' or ``holes''
