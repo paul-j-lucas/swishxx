@@ -22,6 +22,7 @@
 // standard
 #include <cctype>
 #include <cstring>
+#include <sys/resource.h>
 
 // local
 #include "config.h"
@@ -44,7 +45,7 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 // SYNOPSIS
 //
 	void get_index_info(
-		file_vector<char> const &file, int i,
+		file_vector const &file, int i,
 		long *n, off_t const **offset
 	)
 //
@@ -58,7 +59,7 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-	file_vector<char>::const_iterator c = file.begin();
+	file_vector::const_iterator c = file.begin();
 	long const *p = REINTERPRET_CAST( long const* )( c );
 	*n = p[ 0 ];
 	while ( i-- > 0 ) {
@@ -73,301 +74,27 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
-	bool is_ok_word( char const *word )
+	void max_out_limit( int resource )
 //
 // DESCRIPTION
 //
-//	Determine whether a given word should be indexed or not using several
-//	heuristics.
-//
-//	First, a word is checked to see if it looks like an acronym.  A word
-//	is considered an acronym only if it starts with a capital letter and
-//	is composed exclusively of capital letters, digits, and punctuation
-//	symbols, e.g., "AT&T."  If a word looks like an acronym, it is OK and
-//	no further checks are done.
-//
-//	Second, there are several other checks that are applied.  A word is
-//	not indexed if it:
-//
-//	1. Starts with a capital letter, is of mixed case, and contains more
-//	   than a third capital letters, e.g., "BizZARE."
-//
-//	2. Contains a capital letter other than the first, e.g, "weIrd."
-//
-//	3. Is less that Word_Min_Size characters and is not an acronym.
-//
-//	4. Contains less than Word_Min_Vowels.
-//
-//	5. Contains more than Word_Max_Consec_Same of the same character
-//	   consecutively (not including digits).
-//
-//	6. Contains more than Word_Max_Consec_Consonants consecutive
-//	   consonants.
-//
-//	7. Contains more than Word_Max_Consec_Vowels consecutive vowels.
-//
-//	8. Contains more than Word_Max_Consec_Puncts consecutive punctuation
-//	   characters.
+//	Set the limit for the given resource to its maximum value.
 //
 // PARAMETERS
 //
-//	word	The word to be checked.
-//
-// RETURN VALUE
-//
-//	Returns true only if the word should be indexed.
-//
-// EXAMPLES
-//
-//	AT&T	OK
-//	cccp	not OK -- no vowels
-//	CCCP	OK -- acronym
-//	eieio	not OK -- too many consec. vowels
-//
-//*****************************************************************************
-{
-	register char const *c;
-
-#	ifdef DEBUG_is_ok_word
-	cerr << '\t' << word << ' ';
-#	endif
-
-	////////// Survey the characters in the word //////////////////////////
-
-	int digits = 0;
-	int puncts = 0;
-	int uppers = 0;
-	int vowels = 0;
-	for ( c = word; *c; ++c ) {
-		if ( isdigit( *c ) ) {
-			++digits;
-			continue;
-		};
-		if ( ispunct( *c ) ) {
-			++puncts;
-			continue;
-		}
-		if ( isupper( *c ) )
-			++uppers;
-		if ( is_vowel( tolower( *c ) ) )
-			++vowels;
-	}
-	int const len = c - word;
-
-	if ( isupper( *word ) ) {		// starts with a capital letter
-		if ( uppers + digits + puncts == len ) {
-#			ifdef DEBUG_is_ok_word
-			cerr << "(potential acronym)" << endl;
-#			endif
-			return true;
-		}
-		if ( ( uppers + digits ) * 100 / len > 33 ) {
-#			ifdef DEBUG_is_ok_word
-			cerr << "(too many intermediate uppers)" << endl;
-#			endif
-			return false;
-		}
-	} else if ( uppers ) {			// contains a capital letter
-#		ifdef DEBUG_is_ok_word
-		cerr << "(intermediate uppers)" << endl;
-#		endif
-		return false;
-	}
-
-	if ( len < Word_Min_Size ) {
-#		ifdef DEBUG_is_ok_word
-		cerr << "(len < Word_Min_Size)" << endl;
-#		endif
-		return false;
-	}
-
-	if ( vowels < Word_Min_Vowels ) {
-#		ifdef DEBUG_is_ok_word
-		cerr << "(vowels < Word_Min_Vowels)" << endl;
-#		endif
-		return false;
-	}
-
-	////////// Perform consecutive-character checks ///////////////////////
-
-	int consec_consonants = 0;
-	int consec_vowels = 0;
-	int consec_same = 0;
-	int consec_puncts = 0;
-	register char last_c = '\0';
-
-	for ( c = word; *c; ++c ) {
-
-		if ( isdigit( *c ) ) {
-			consec_consonants = 0;
-			consec_vowels = 0;
-			consec_puncts = 0;
-			last_c = '\0';	// consec_same doesn't apply to digits
-			continue;
-		}
-
-		if ( ispunct( *c ) ) {
-			if ( ++consec_puncts > Word_Max_Consec_Puncts ) {
-#				ifdef DEBUG_is_ok_word
-				cerr << "(exceeded consec puncts)" << endl;
-#				endif
-				return false;
-			}
-			consec_consonants = 0;
-			consec_vowels = 0;
-			continue;
-		}
-
-		if ( *c == last_c ) {
-			if ( ++consec_same > Word_Max_Consec_Same ) {
-#				ifdef DEBUG_is_ok_word
-				cerr << "(exceeded consec same)" << endl;
-#				endif
-				return false;
-			}
-		} else {
-			consec_same = 0;
-			last_c = *c;
-		}
-
-		if ( is_vowel( tolower( *c ) ) ) {
-			if ( ++consec_vowels > Word_Max_Consec_Vowels ) {
-#				ifdef DEBUG_is_ok_word
-				cerr << "(exceeded consec vowels)" << endl;
-#				endif
-				return false;
-			}
-			consec_consonants = 0;
-			consec_puncts = 0;
-			continue;
-		}
-
-		if ( ++consec_consonants > Word_Max_Consec_Consonants ) {
-#			ifdef DEBUG_is_ok_word
-			cerr << "(exceeded consec consonants)" << endl;
-#			endif
-			return false;
-		}
-		consec_vowels = 0;
-		consec_puncts = 0;
-	}
-
-#	ifdef DEBUG_is_ok_word
-	cerr << endl;
-#	endif
-	return true;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	char const *ltoa( register long n )
-//
-// DESCRIPTION
-//
-//	Convert a long integer to a string.  The string returned is from an
-//	internal pool of string buffers.  The time you get into trouble is if
-//	you hang on to more then Num_Buffers strings.  This doesn't normally
-//	happen in practice, however.
-//
-// RETURN VALUE
-//
-//	A pointer to the string.
+//	resource	The ID for the resource as given in sys/resources.h.
 //
 // SEE ALSO
 //
-//	Brian W. Kernighan, Dennis M. Ritchie.  "The C Programming Language,
-//	2nd ed."  Addison-Wesley, Reading, MA.  pp. 63-64.
+//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+//	Addison-Wesley, Reading, MA, 1993. pp. 180-184.
 //
 //*****************************************************************************
 {
-	static char_buffer_pool<25,5> buf;
-	register char	*s = buf.next();
-	bool const	is_neg = n < 0;
-
-	if ( is_neg ) n = -n;
-	do {					// generate digits in reverse
-		*s++ = n % 10 + '0';
-	} while ( n /= 10 );
-	if ( is_neg ) *s++ = '-';
-	*s = '\0';
-
-	// now reverse the string
-	for ( register char *t = buf.current(); t < s; ++t ) {
-		char const tmp = *--s; *s = *t; *t = tmp;
-	}
-
-	return buf.current();
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void parse_config_file( char const *file_name )
-//
-// DESCRIPTION
-//
-//	Parse the lines in a configuration file setting variables accordingly.
-//
-// PARAMETERS
-//
-//	file_name	The name of the configuration file to parse.
-//
-//*****************************************************************************
-{
-	file_vector<char> conf_file( file_name );
-	if ( !conf_file ) {
-		if ( !::strcmp( file_name, ConfigFile_Default ) )
-			return;
-		ERROR	<< "could not read configuration from \""
-			<< file_name << '"' << endl;
-		::exit( Exit_Config_File );
-	}
-
-	register int line_no = 0;
-	register file_vector<char>::const_iterator
-		c = conf_file.begin(), nl = c;
-
-	while ( c != conf_file.end() && nl != conf_file.end() ) {
-		if ( !( nl = ::strchr( c, '\n' ) ) )
-			break;
-		++line_no;
-		//
-		// See if the line is entirely whitespace optionally followed
-		// by a comment starting with '#': if so, skip it.  If we don't
-		// end up skipping it, leading whitespace will have been
-		// skipped.
-		//
-		for ( ; c != nl; ++c ) {
-			if ( isspace( *c ) )
-				continue;
-			if ( *c == '#' )
-				goto next_line;
-			break;
-		}
-		if ( c != nl ) {
-			//
-			// The line has something on it worth parsing further:
-			// copy it (less leading and trailing whitespace) to a
-			// modifyable buffer and null-terminate it to make that
-			// task easier.
-			//
-			char buf[ 256 ];
-			ptrdiff_t len = nl - c;
-			::strncpy( buf, c, len );
-			while ( len > 0 )
-				if ( isspace( buf[ len - 1 ] ) )
-					--len;
-				else
-					break;
-			buf[ len ] = '\0';
-			conf_var::parse_line( buf, line_no );
-		}
-next_line:
-		c = nl + 1;
-	}
+	struct rlimit r;
+	::getrlimit( resource, &r );
+	r.rlim_cur = r.rlim_max;
+	::setrlimit( resource, &r );
 }
 
 //*****************************************************************************
