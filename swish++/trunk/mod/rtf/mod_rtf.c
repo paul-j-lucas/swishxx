@@ -73,7 +73,7 @@ using namespace std;
 
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		register char ch = iso8859_to_ascii( *c++ );
+		register char ch = *c++;
 
 		////////// Collect a word /////////////////////////////////////
 
