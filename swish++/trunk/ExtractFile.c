@@ -49,5 +49,5 @@ using namespace std;
 //*****************************************************************************
 {
 	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
-		insert( new_strdup( s ) );
+		insert( new_strdup( s ), 0 );
 }
