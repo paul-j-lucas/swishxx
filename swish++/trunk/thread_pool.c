@@ -235,17 +235,13 @@ namespace PJL {
 			bool no;
 			MUTEX_LOCK( &t->pool_.t_lock_, false );
 			no = t->pool_.threads_.size() <= t->pool_.min_threads_;
-			if ( no ) {
-				//
-				// There are no threads beyond those originally
-				// created: signal that we're idle ...
-				//
-				::pthread_cond_signal( &t->pool_.t_idle_ );
-			}
+			::pthread_cond_signal( &t->pool_.t_idle_ );
 			MUTEX_UNLOCK();
 			if ( no ) {
 				//
-				// ... and wait indefinitely for a task.
+				// There are no threads beyond those originally
+				// created: signal that we're idle and wait
+				// indefinitely for a task.
 				//
 				::pthread_cond_wait(
 					&t->pool_.q_not_empty_,
@@ -279,7 +275,6 @@ namespace PJL {
 			struct timespec future;
 			future.tv_sec = ::time( 0 ) + t->pool_.timeout_;
 			future.tv_nsec = 0;
-			::pthread_cond_signal( &t->pool_.t_idle_ );
 			result = ::pthread_cond_timedwait(
 				&t->pool_.q_not_empty_, &t->pool_.q_lock_,
 				&future
@@ -349,7 +344,7 @@ namespace PJL {
 //	start_func	The function that is called upon thread creation.
 //
 //*****************************************************************************
-	: pool_( p ), destructing_( false )
+	: destructing_( false ), pool_( p )
 {
 #	ifdef DEBUG_threads
 	cerr << "thread::thread(" << (long)this << ')' << endl;
@@ -460,7 +455,7 @@ namespace PJL {
 //
 //*****************************************************************************
 	: min_threads_( min_threads ), max_threads_( max_threads ),
-	  destructing_( false ), timeout_( timeout )
+	  t_busy_( 0 ), destructing_( false ), timeout_( timeout )
 {
 	if (	::pthread_mutex_init( &t_busy_lock_, 0 ) ||
 		::pthread_mutex_init( &q_lock_, 0 ) ||
@@ -504,7 +499,7 @@ namespace PJL {
 	//
 	destructing_ = true;
 
-	MUTEX_LOCK( &t_lock_, true );
+	MUTEX_LOCK( &t_lock_, false );
 	for ( thread_set::iterator
 		t = threads_.begin(); t != threads_.end(); ++t
 	)
@@ -523,7 +518,7 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-	void thread_pool::new_task( thread::argument_type arg )
+	bool thread_pool::new_task( thread::argument_type arg, bool block )
 //
 // DESCRIPTION
 //
@@ -533,22 +528,28 @@ namespace PJL {
 //
 //	arg	The argument to pass to thread_pool_thread_main().
 //
+//	block	If all the threads are busy and no more can be created and
+//		block = true, then the calling thread will block until a thread
+//		becomes available.
+//
+// RETURN VALUE
+//
+//	Returns false only if block = false and the task can noe be queued
+//	because all the threads are busy.
+//
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
 	cerr << "thread_pool::new_task()" << endl;
 #	endif
 
-	MUTEX_LOCK( &q_lock_, true );
-	queue_.push( arg );
-	::pthread_cond_signal( &q_not_empty_ );
-	MUTEX_UNLOCK();
+	bool all_are_busy, queue_task = true;
 
 	MUTEX_LOCK( &t_lock_, false );
-	bool all_are_busy;
 	MUTEX_LOCK( &t_busy_lock_, false );
 	all_are_busy = t_busy_ == threads_.size();
 	MUTEX_UNLOCK();
+
 	if ( all_are_busy ) {
 		if ( threads_.size() < max_threads_ ) {
 			//
@@ -563,7 +564,7 @@ namespace PJL {
 			DEFER_CANCEL();
 			threads_.insert( prototype->create_and_run() );
 			RESTORE_CANCEL();
-		} else {
+		} else if ( block ) {
 			//
 			// We've maxed out the number of threads we can make,
 			// so just wait until one becomes idle.
@@ -572,9 +573,19 @@ namespace PJL {
 			cerr << "waiting for idle thread" << endl;
 #			endif
 			::pthread_cond_wait( &t_idle_, &t_lock_ );
-		}
+		} else
+			queue_task = false;
 	}
 	MUTEX_UNLOCK(); // t_lock_
+
+	if ( queue_task ) {
+		MUTEX_LOCK( &q_lock_, true );
+		queue_.push( arg );
+		::pthread_cond_signal( &q_not_empty_ );
+		MUTEX_UNLOCK();
+	}
+
+	return queue_task;
 }
 
 #ifndef	PJL_NO_NAMESPACES
