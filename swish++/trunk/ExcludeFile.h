@@ -54,7 +54,7 @@ public:
 		pattern_map<bool>::insert( pattern, false );
 	}
 private:
-	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	parse_value( char *line );
 	virtual void	reset() { clear(); }
 };
 

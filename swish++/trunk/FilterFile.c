@@ -62,8 +62,7 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	/* virtual */
-	void FilterFile::parse_value( char const *var_name, char *line )
+	/* virtual */ void FilterFile::parse_value( char *line )
 //
 // DESCRIPTION
 //
@@ -79,9 +78,7 @@ using namespace std;
 //
 // PARAMETERS
 //
-//	var_name	The name of the configuration variable.
-//
-//	line		The line to be parsed.
+//	line	The line to be parsed.
 //
 //*****************************************************************************
 {

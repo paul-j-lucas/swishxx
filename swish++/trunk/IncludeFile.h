@@ -47,7 +47,7 @@ public:
 	IncludeFile() : conf_var( "IncludeFile" ) { }
 	CONF_VAR_ASSIGN_OPS( IncludeFile )
 private:
-	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	parse_value( char *line );
 	virtual void	reset() { clear(); }
 };
 

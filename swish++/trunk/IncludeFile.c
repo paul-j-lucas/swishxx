@@ -30,8 +30,7 @@
 //
 // SYNOPSIS
 //
-	/* virtual */
-	void IncludeFile::parse_value( char const*, char *line )
+	/* virtual */ void IncludeFile::parse_value( char *line )
 //
 // DESCRIPTION
 //
@@ -41,7 +40,7 @@
 //
 // PARAMETERS
 //
-//	line		The line of text to be parsed.
+//	line	The line of text to be parsed.
 //
 //*****************************************************************************
 {

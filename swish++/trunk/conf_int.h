@@ -69,7 +69,7 @@ protected:
 	conf<int>& operator=( int );
 	CONF_VAR_ASSIGN_OPS( conf<int> )
 
-	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	parse_value( char *line );
 private:
 	int const	default_value_, min_, max_;
 	int		value_;

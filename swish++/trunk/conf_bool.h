@@ -51,7 +51,7 @@ protected:
 	}
 	CONF_VAR_ASSIGN_OPS( conf<bool> )
 
-	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	parse_value( char *line );
 private:
 	bool const	default_value_;
 	bool		value_;

@@ -33,8 +33,7 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	/* virtual */
-	void FilesGrow::parse_value( char const *var_name, char *line )
+	/* virtual */ void FilesGrow::parse_value( char *line )
 //
 // DESCRIPTION
 //
@@ -43,12 +42,10 @@ using namespace std;
 //
 // PARAMETERS
 //
-//	var_name	The name of the configuration variable.
-//
-//	line		The line to be parsed.
+//	line	The line to be parsed.
 //
 //*****************************************************************************
 {
-	conf<int>::parse_value( var_name, line );
+	conf<int>::parse_value( line );
 	is_percentage_ = !!::strchr( line, '%' );
 }

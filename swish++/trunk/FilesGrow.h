@@ -52,9 +52,9 @@ public:
 		);
 	}
 protected:
-	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	parse_value( char *line );
 private:
-	bool	is_percentage_;
+	bool		is_percentage_;
 };
 
 #endif	/* FilesGrow_H */

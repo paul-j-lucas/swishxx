@@ -56,8 +56,7 @@ extern char const*	me;
 //
 // SYNOPSIS
 //
-	/* virtual */
-	void conf<string>::parse_value( char const *var_name, char *line )
+	/* virtual */ void conf<string>::parse_value( char *line )
 //
 // DESCRIPTION
 //
@@ -65,9 +64,7 @@ extern char const*	me;
 //
 // PARAMETERS
 //
-//	var_name	The name of the configuration variable.
-//
-//	line		The line of text to be parsed.
+//	line	The line of text to be parsed.
 //
 //*****************************************************************************
 {

@@ -43,7 +43,7 @@ protected:
 	conf_set( char const *name ) : conf_var( name ) { }
 	CONF_VAR_ASSIGN_OPS( conf_set )
 
-	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	parse_value( char *line );
 private:
 	virtual void	reset() { clear(); }
 };

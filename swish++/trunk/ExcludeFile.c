@@ -29,8 +29,7 @@
 //
 // SYNOPSIS
 //
-	/* virtual */
-	void ExcludeFile::parse_value( char const *var_name, char *line )
+	/* virtual */ void ExcludeFile::parse_value( char *line )
 //
 // DESCRIPTION
 //
@@ -39,9 +38,7 @@
 //
 // PARAMETERS
 //
-//	var_name	The name of the configuration variable.
-//
-//	line		The line of text to be parsed.
+//	line	The line of text to be parsed.
 //
 //*****************************************************************************
 {
