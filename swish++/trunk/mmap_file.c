@@ -93,7 +93,7 @@ using namespace std;
 	// don't bother.
 	//
 #ifndef	PJL_NO_MADVISE
-	if ( ::madvise( addr_, size_, behavior ) == -1 )
+	if ( ::madvise( static_cast<caddr_t>( addr_ ), size_, behavior ) == -1 )
 		return errno_ = errno;
 #endif
 #endif	/* MacOSX */
