@@ -5,6 +5,15 @@ SWISH++ Changes
 5.3.6
 *******************************************************************************
 
+NEW FEATURES
+------------
+
+* When compiling using g++, added additional compiler options to reduce code
+  size and slightly improve performance.
+
+  (This feature shall be known as feature GPPO.)
+
+
 BUG FIXES
 ---------
 
@@ -31,6 +40,13 @@ CHANGES, file-by-file
 
 	1. Added -D_XOPEN_SOURCE=500 for compiling search daemon under Linux
 	   for bug fix TPD.
+	2. Added DEBUG variable.
+	3. Added -fno-rtti to CCFLAGS for feature GPPO.
+	4. Added -fomit-frame-pointer to OPTIM for feature GPPO.
+
+* config/mod.mk
+
+	1. s/DEBUG/DEBUGFLAGS/
 
 * config.h
 
@@ -86,6 +102,11 @@ CHANGES, file-by-file
 
 	1. Removed constructor not taking dir_index for bug fix ISI2.
 	2. Removed construct().
+
+* GNUmakefile
+
+	1. Added DEBUGFLAGS.
+	2. For $(MOD_LIBS) rule, s/DEBUG/DEBUGFLAGS/
 
 * index.c
 
