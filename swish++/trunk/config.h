@@ -226,6 +226,13 @@ int const	Title_Max_Size			= 200;
 //		Maximum length of a file "title" (whatever that means for a
 //		given file format).
 
+#ifdef	FEATURE_word_pos
+int const	WordsNear_Default		= 10;
+//		The maximum number of words apart two words can be to be
+//		considered "near" each other; this can be overridden either in
+//		a config. file or on the command line.
+#endif
+
 int const	WordPercentMax_Default		= 100;
 //		Default maximum percentage of files a word may occur in before
 //		it is discarded as being too frequent; this can be overridden
@@ -247,3 +254,4 @@ int const	WordThreshold_Default		= 250000;
 //		config. file or on the command line.
 
 #endif	/* config_H */
+/* vim:set noet sw=8 ts=8: */
