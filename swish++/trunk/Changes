@@ -2,6 +2,134 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.1
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Generated index files are now approximately 24% smaller.
+
+  (This feature will be known as feature SIF.)
+
+
+BUG FIXES
+---------
+
+* When index(1) generated partial indicies, it never removed words that
+  occurred in more files than the allowable percentage.
+
+  (This bug fix will be known as bug fix PIR.)
+
+* The -T/--temp-dir options were left out of the option specification for
+  index(1) so you could never specify these options on the command line.
+
+  (This bug fix will be known as bug fix TDO.)
+
+* Added a call to setsid() for becomming a search daemon.  It should have been
+  there all along.
+
+  (This bug fix will be known as bug fix SID.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* bcd.c
+* bcd.h
+
+	1. Added these files for feature SIF.
+
+* config.h
+
+	1. Added #error directives to force people to read config.h and
+	   set important values for their system.
+
+* exit_codes.h
+
+	1. Added Exit_No_Unlink.
+
+* file_list.c
+
+	1. Rewrote file_list::calc_size() for bug fix PIR.  I was
+	   counting spaces.  Why?  I don't know.  There were never any
+	   spaces in the file list data.  As far as I can tell, this
+	   never worked.
+
+	2. Rewrote file_list::const_iterator::operator++() to parse
+	   index file word data in new format for feature SIF.
+
+* file_list.h
+
+	1. Performed following substitution:
+
+		s/ptr/ptr_/
+
+	2. Performed following substitution:
+
+		s/char const/unsigned char const/
+
+	   for feature SIF since we now have to deal with byte values
+	   greater than 0x7F.
+
+* index.c
+
+	1. In merge_indicies() and write_word_index(), changed the
+	   format in which the index file is written from ASCII to BCD
+	   for feature SIF.
+
+	2. It seems as though the merge_indicies() code was slightly
+	   broken.  While it appeared to merge properly, I don't think
+	   it ever threw out words that exceeded any thresholds.  I
+	   rewrote chunks of it for bug fix PIR.
+
+	3. Factored out some code into a new is_too_frequent() function.
+
+	4. In write_meta_name_index(), changed the ASCII numerical
+	   output to BCD for feature SIF.
+
+	5. In write_full_index(), changed the comment describing the
+	   format of the index file for feature SIF.
+
+	6. In main(), added -T/--temp-dir to option spec. for bug fix TDO.
+
+* Makefile
+* Makefile.win32
+
+	1. Added bcd.o target and dependencies for feature SIF.
+
+	2. Added word_info.o target and dependencies.
+
+* man/man1/index.1
+
+	1. Added Exit_No_Unlink to exit codes section.
+
+* man/man4/swish++.index.4
+
+	1. Changed the desription of the index file format for feature
+	   SIF.
+
+* search.c
+
+	1. In get_meta_id(), changed the parsing of the META ID from
+	   ASCII to BCD for feature SIF.
+
+	2. In become_daemon(), added call to setsid() for bug fix SID.
+
+* version.h
+
+	1. Updated version to "4.1".
+
+* word_info.c
+
+	1. Added this file to factor out the code for writing META IDs.
+
+* word_info.h
+
+	1. Added write_meta_ids() function declaration.
+
+
+*******************************************************************************
 4.0
 *******************************************************************************
 
