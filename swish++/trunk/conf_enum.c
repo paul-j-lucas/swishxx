@@ -23,6 +23,7 @@
 #include <iostream>
 
 // local
+#include "auto_vec.h"
 #include "conf_enum.h"
 #include "exit_codes.h"
 #include "util.h"
@@ -75,7 +76,7 @@ extern char const*	me;
 //
 //*****************************************************************************
 {
-	char *const lower = to_lower( line );
+	auto_vec< char > const lower( to_lower_r( line ) );
 	if ( *lower )
 		for ( char const *const *v = legal_values_; *v; ++v )
 			if ( !::strcmp( lower, *v ) ) {

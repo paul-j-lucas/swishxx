@@ -24,9 +24,7 @@
 #include <iostream>
 
 // local
-#ifdef	MULTI_THREADED
 #include "auto_vec.h"
-#endif
 #include "conf_int.h"
 #include "exit_codes.h"
 #include "util.h"
@@ -113,11 +111,7 @@ extern char const*	me;
 		cerr << error << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
-#ifdef	MULTI_THREADED
 	auto_vec< char > const lower( to_lower_r( line ) );
-#else
-	char const *const lower = to_lower( line );
-#endif
 	if ( !::strcmp( lower, "infinity" ) ) {
 		operator=( INT_MAX );
 		return;

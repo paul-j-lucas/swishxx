@@ -27,6 +27,7 @@
 #include <string>
 
 // local
+#include "auto_vec.h"
 #include "config.h"
 #include "IncludeMeta.h"
 #include "less.h"
@@ -394,8 +395,8 @@ bool				header_cmp(
 		// Deal with Content-Transfer-Encoding.
 		//
 		if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
-			char const *const v = to_lower(
-				kv.value_begin, kv.value_end
+			auto_vec< char > const v(
+				to_lower_r( kv.value_begin, kv.value_end )
 			);
 			if ( ::strstr( v, "quoted-printable" ) )
 				type.second = Quoted_Printable;
@@ -410,8 +411,8 @@ bool				header_cmp(
 		// Deal with Content-Type.
 		//
 		if ( !::strcmp( kv.key, "content-type" ) ) {
-			char const *const v = to_lower(
-				kv.value_begin, kv.value_end
+			auto_vec< char > const v(
+				to_lower_r( kv.value_begin, kv.value_end )
 			);
 			//
 			// See if it's the text/"something" or "message/rfc822".

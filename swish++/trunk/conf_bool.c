@@ -23,6 +23,7 @@
 #include <iostream>
 
 // local
+#include "auto_vec.h"
 #include "conf_bool.h"
 #include "exit_codes.h"
 #include "util.h"
@@ -74,8 +75,7 @@ extern char const*	me;
 //
 //*****************************************************************************
 {
-	char const *const lower = to_lower( line );
-
+	auto_vec< char > const lower( to_lower_r( line ) );
 	if ( *lower ) {
 		if (	!::strcmp( lower, "false" ) ||
 			!::strcmp( lower, "no" ) ||
