@@ -72,10 +72,6 @@ public:
 		while ( *ptr_++ ) ;		// skip past word
 	}
 
-	////////// member functions ///////////////////////////////////////////
-
-	size_type size() const { return size_ != -1 ? size_ : calc_size(); }
-
 	////////// iterators //////////////////////////////////////////////////
 
 	class const_iterator;
@@ -109,15 +105,22 @@ public:
 		// default assignment operator is OK
 	private:
 		const_iterator( byte const *p ) : c_( p ) {
-			if ( c_ ) operator++();
+			if ( c_ )
+				operator++();
 		}
+
 		byte const *c_;
 		value_type v_;
+
+		static byte const end_value;
 		friend class file_list;
 	};
 
-	const_iterator begin() const	{ return const_iterator( ptr_ ); }
-	const_iterator end() const	{ return const_iterator( 0 ); }
+	////////// member functions ///////////////////////////////////////////
+
+	const_iterator	begin() const	{ return const_iterator( ptr_ ); }
+	const_iterator	end() const	{ return const_iterator( 0 ); }
+	size_type	size() const;
 private:
 	byte const		*ptr_;
 	mutable size_type	size_;
@@ -125,4 +128,11 @@ private:
 	size_type calc_size() const;
 };
 
+////////// inlines ////////////////////////////////////////////////////////////
+
+inline file_list::size_type file_list::size() const {
+	return size_ != -1 ? size_ : calc_size();
+}
+
 #endif	/* file_list_H */
+/* vim:set noet sw=8 ts=8: */
