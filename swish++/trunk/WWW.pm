@@ -100,10 +100,10 @@ sub private_extract {
 
 		# Extract text from ALT attributes of tags and partial,
 		# trailing tag, if any.
-		$s =~ s/<[^>]+?ALT\s*=\s*(['"])([^>]+)\1[^>]*?>/$2/gi;
-		$s =~ s/<[^>]+?ALT\s*=\s*(['"])([^'"]+)\1?\s*$/$2/i;
+		$s =~ s/<[^>]+?ALT\s*=\s*(['"])([^>]*?)\1[^>]*?>/$2/gi;
+		$s =~ s/<[^>]+?ALT\s*=\s*(['"])([^'"]*)\1?\s*$/$2/i;
 
-		# Zap all remaning HTML tags and partial, trailing tag, if any.
+		# Zap all remaining HTML tags and partial, trailing tag, if any.
 		$s =~ s/<.*?>//g;
 		$s =~ s/<.*$//;
 
