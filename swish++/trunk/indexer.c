@@ -76,9 +76,9 @@ int		indexer::suspend_indexing_count_ = 0;
 // DESCRIPTION
 //
 //	Look up a meta name to get its associated unique integer ID; if the
-//	meta name didn't exist, add it.  However, if the name is either among
-//	the set of meta names to exclude or not among the set to include,
-//	forget it.
+//	meta name didn't exist, add it, or perhaps a reassigned name of it.
+//	However, if the name is either among the set of meta names to exclude
+//	or not among the set to include, forget it.
 //
 // PARAMETERS
 //
@@ -91,16 +91,20 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 //*****************************************************************************
 {
-	if ( exclude_meta_names.contains( meta_name ) ||
-		!include_meta_names.empty() &&
-		!include_meta_names.contains( meta_name )
+	if ( exclude_meta_names.contains( meta_name ) )
+		return No_Meta_ID;
+
+	IncludeMeta::const_iterator m;
+	if (	!include_meta_names.empty() &&
+		(m = include_meta_names.find( meta_name ))
+			== include_meta_names.end()
 	)
 		return No_Meta_ID;
 
 	//
 	// Look up the meta name to get its associated unique integer ID.
 	//
-	meta_map::const_iterator const i = meta_names.find( meta_name );
+	meta_map::const_iterator const i = meta_names.find( m->second );
 	int meta_id;
 	if ( i != meta_names.end() )
 		meta_id = i->second;
@@ -110,7 +114,7 @@ int		indexer::suspend_indexing_count_ = 0;
 		// guarantee that the RHS of assignment is evaluated first.
 		//
 		meta_id = meta_names.size();
-		meta_names[ ::strdup( meta_name ) ] = meta_id;
+		meta_names[ m->second ] = meta_id;
 	}
 	return meta_id;
 }
