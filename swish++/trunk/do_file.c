@@ -20,7 +20,8 @@
 */
 
 /*
-**	Note that this file is #include'd into index.c and extract.c.
+**	Note that this file is #include'd into index.c and extract.c because
+**	it generates different code depending on which one it's compiled into.
 */
 
 // standard
@@ -39,12 +40,9 @@
 //	symbolic links unless either the FollowLinks config. file variable or
 //	the -l command-line option was given.
 //
-//	For indexing, a file is considered to be an HTML file only if its
-//	extension is "htm", "html", or "shtml".
-//
 //	For extraction, the algorithm is loosely based on what the Unix
-//	strings(1) command does except it goes a bit further to discard
-//	things like Encapsulated PostScript and raw hex data.
+//	strings(1) command does except it goes a bit further to discard things
+//	like Encapsulated PostScript and raw hex data.
 //
 // PARAMETERS
 //
@@ -73,7 +71,6 @@
 		return;
 	}
 #endif
-
 	////////// Perform filter name substitution(s) ////////////////////////
 
 	typedef vector< filter > filter_list_type;
@@ -116,9 +113,14 @@
 			cout << " (skipped: extension excluded)" << '\n';
 		return;
 	}
-	if (	!include_extensions.empty() &&
-		!include_extensions.contains( ext )
-	) {
+	//
+	// We save a copy of the iterator so we can access it later to see if
+	// the extension is an HTML extension.
+	//
+	IncludeExtension::const_iterator const
+		inc_ext = include_extensions.find( ext );
+	bool const found_ext = inc_ext != include_extensions.end();
+	if ( exclude_extensions.empty() && !found_ext ){
 		if ( verbosity > 3 )
 			cout << " (skipped: extension not included)" << '\n';
 		return;
@@ -128,7 +130,7 @@
 	//
 	// Check to see if the .txt file already exists; if so, skip it.
 	//
-	char file_name_txt[ MAXNAMLEN ];
+	char file_name_txt[ NAME_MAX + 1 ];
 	::strcpy( file_name_txt, file_name );
 	::strcat( file_name_txt, ".txt" );
 	if ( file_exists( file_name_txt ) ) {
@@ -154,7 +156,7 @@
 			return;
 		}
 
-	file_vector<char> file( file_name );
+	file_vector file( file_name );
 	if ( !file ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: can not open)" << '\n';
@@ -174,8 +176,8 @@
 		return;
 	}
 
-	bool const is_html = is_html_ext( ext );
-	char const *title = is_html ? grep_title( file ) : 0;
+	bool const is_html_ext = found_ext ? inc_ext->second : false;
+	char const *title = is_html_ext ? grep_title( file ) : 0;
 	if ( !title ) {
 		//
 		// File either isn't HTML or it doesn't have a <TITLE> tag:
@@ -190,7 +192,7 @@
 	////////// Index the file /////////////////////////////////////////////
 
 	new file_info( file_name, file.size(), title );
-	index_words( file.begin(), file.end(), is_html );
+	index_words( file.begin(), file.end(), is_html_ext );
 
 	if ( verbosity > 2 )
 		cout	<< " (" << file_info::current_file().num_words_
