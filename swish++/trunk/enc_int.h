@@ -32,8 +32,8 @@
 int		dec_int( unsigned char const*& );
 std::ostream&	enc_int( std::ostream&, unsigned );
 
-inline PJL::omanip< unsigned > enc_int( unsigned n ) {
-	return PJL::omanip< unsigned >( enc_int, n );
+inline PJL::omanip<unsigned> enc_int( unsigned n ) {
+	return PJL::omanip<unsigned>( enc_int, n );
 }
 
 #endif	/* enc_int_H */
