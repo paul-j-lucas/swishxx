@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "August 29, 2000" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "December 2, 2000" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -77,12 +77,27 @@ Variables of this type are:
 .BR ExtractFilter ,
 .BR Incremental ,
 .BR RecurseSubdirs ,
-.BR SearchDaemon ,
 and
 .BR StemWords .
+.SS Enumeration variables
+Variables of this type are just like string variables (see below)
+except that the argument
+.I must
+be one of a set of pre-determined values.
+Case is irrelevant.
+Variables of this type are:
+.BR SearchDaemon .
+.P
+.B SearchDaemon
+must be one of:
+\f(CWnone\f1,
+\f(CWtcp\f1,
+\f(CWunix\f1,
+or
+\f(CWboth\f1.
 .SS Integer variables
 Variables of this type take one numeric argument.
-A special string of ``infinity'' is taken to mean
+A special string of \f(CWinfinity\f1 is taken to mean
 ``the largest possible integer value.''
 Case is irrelevant.
 Variables of this type are:
@@ -111,7 +126,6 @@ and
 Variables of this type take one or more arguments separated by whitespace.
 Variables of this type are:
 .BR ExcludeClass ,
-.BR IncludeFile ,
 .BR ExcludeFile ,
 .BR HTMLFile ,
 .BR IncludeMeta ,
@@ -119,15 +133,53 @@ and
 .BR ExcludeMeta .
 .SS Other variables
 Variables of this type are:
-.B FilesGrow
-and
+.BR SocketAddress ,
+.BR FilesGrow ,
 .B FilterFile
-(see FILTERS below).
+(see FILTERS below),
+and
+.BR IncludeFile .
+.P
+A
+.B SocketAddress
+configuration file line is of the form:
+.cS
+\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
+.cE
+that is: an optional host and colon
+followed by a port number.
+The
+.I host
+may be one of a host name, an IP address, or the \f(CW*\f1 character
+meaning ``any IP address.''
+Omitting the
+.I host
+and colon also means ``any IP address.''
+.P
 The
 .B FilesGrow
 variable is just like an integer variable
 except that it may contain a trailing percent sign \f(CW%\f1
 to indicate a percentage rather than an absolute number.
+.P
+A
+.B IncludeFile
+configuration file line is of the form:
+.cS
+\f2module_name\fP \f2pattern ...\fP
+.cE
+where
+.I "module_name"
+is the name of the module
+(case is irrelevant)
+to handle the indexing of the filename
+.IR pattern s
+that follow.
+Module names are:
+\f(CWtext\f1 (plain text),
+\f(CWHTML\f1 (HTML and XHTML),
+and
+\f(CWMail\f1 (mail and news messages).
 .SH FILTERS
 Via the
 .H FilterFile
@@ -138,7 +190,7 @@ A
 .B FilterFile
 configuration file line is of the form:
 .cS
-FilterFile \f2pattern command\fP
+\f2pattern command\fP
 .cE
 where
 .I pattern
@@ -264,4 +316,4 @@ International Standards Organization.
 1993.
 .SH AUTHOR
 Paul J. Lucas
-.RI < pjl@best.com >
+.RI < pauljlucas@mac.com >
