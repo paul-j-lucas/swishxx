@@ -27,13 +27,13 @@
 #include <string>
 
 // local
+#include "fake_ansi.h"			/* for std */
 #include "less.h"
 
 #ifndef	PJL_NO_NAMESPACES
 namespace PJL {
 #else
 #define	PJL /* nothing */
-#include "fake_ansi.h"			/* for std */
 #endif
 
 //*****************************************************************************

@@ -25,6 +25,9 @@
 // standard
 #include <iostream>
 
+// local
+#include "fake_ansi.h"			/* for std */
+
 #if 0
 extern char const* dtoa( double );
 
@@ -36,7 +39,6 @@ extern char const* dtoa( double );
 namespace PJL {
 #else
 #define	PJL /* nothing */
-#include "fake_ansi.h"			/* for std */
 #endif
 
 //*****************************************************************************

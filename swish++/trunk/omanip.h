@@ -25,11 +25,13 @@
 // standard
 #include <iostream>
 
+// local
+#include "fake_ansi.h"			/* for std */
+
 #ifndef	PJL_NO_NAMESPACES
 namespace PJL {
 #else
 #define	PJL /* nothing */
-#include "fake_ansi.h"			/* for std */
 #endif
 
 //*****************************************************************************
