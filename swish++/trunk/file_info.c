@@ -105,17 +105,11 @@ FilesReserve			files_reserve;
 //
 // DESCRIPTION
 //
-//	Construct a file_info.  If a title is given, use it; otherwise set the
-//	title to be (just) the file name (not the path name).
-//
-//	Additionally record its address in a list so the entire list can be
-//	iterated over later in the order encountered.  The first time through,
-//	reserve files_reserve slots for files.  If exceeded, the vector will
-//	automatically grow, but with a slight performance penalty.
+//	Construct a file_info from the raw data inside an index file.
 //
 // PARAMETERS
 //
-//	p	The full path name of the file.
+//	p	The pointer to the raw file_info data.
 //
 //*****************************************************************************
 	: dir_index_( parse_bcd( p ) ),
