@@ -59,7 +59,7 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // PARAMETERS
 //
-//	name	The name of the indexer module.
+//	mod_name	The name of the indexer module.
 //
 //*****************************************************************************
 {
@@ -102,7 +102,7 @@ int		indexer::suspend_indexing_count_ = 0;
 	if ( !include_meta_names.empty() ) {
 		//
 		// There were meta names explicitly given: see if the meta name
-		// is among them.  If not, forget it; if so, possible reassign
+		// is among them.  If not, forget it; if so, possibly reassign
 		// the name.
 		//
 		IncludeMeta::const_iterator const
@@ -131,8 +131,7 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
-	/* virtual */
-	char const* indexer::find_title( mmap_file const& ) const
+	/* virtual */ char const* indexer::find_title( mmap_file const& ) const
 //
 // DESCRIPTION
 //
