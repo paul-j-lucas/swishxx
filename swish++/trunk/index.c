@@ -1397,8 +1397,8 @@ void			write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 
-ostream& usage( ostream &o ) {
-	o << "usage: " << me << " [options] dir ... file ...\n"
+ostream& usage( ostream &err ) {
+	err << "usage: " << me << " [options] dir ... file ...\n"
 	"options: (unambiguous abbreviations may be used for long options)\n"
 	"========\n"
 	"-?     | --help            : Print this help message\n"
@@ -1433,5 +1433,5 @@ ostream& usage( ostream &o ) {
 	"-v n   | --verbosity n     : Verbosity level [0-4; default: 0]\n"
 	"-V     | --version         : Print version number, exit\n";
 	::exit( Exit_Usage );
-	return o;			// just to make the compiler happy
+	return err;			// just to make the compiler happy
 }
