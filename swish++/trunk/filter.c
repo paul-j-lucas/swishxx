@@ -98,13 +98,25 @@ using namespace std;
 //	file_name	The name of the file to be substituted into the
 //			command.
 //
+// RETURN VALUE
+//
+//	Returns the target file name.
+//
 //*****************************************************************************
 {
+	static char const file_name_delim_chars[] = " \t&<>|";
+
+	//
+	// Determine the base name of the file in case we need it for 'b' or
+	// 'B' substitutions.
+	//
+	char const *const slash = ::strrchr( file_name, '/' );
+	char const *const base_name = slash ? slash + 1 : file_name;
+
 	//
 	// For this kind of string manipulation, the C++ string class is much
 	// easier to use than the C str*() functions.
 	//
-	string ext, no_ext;
 	string::size_type target_pos = string::npos;
 
 	command_ = command_template_;
@@ -131,7 +143,11 @@ using namespace std;
 		if ( command_[ pos ] == '@' ) {
 			//
 			// We found the substitution that represents the target
-			// filename: make a note.
+			// filename: make a note.  Note that we don't have to
+			// check to see if we've already set target_pos
+			// (meaning there was more than one @ substitution)
+			// because that illegal situation would have been
+			// caught by FilterFile::parse_value().
 			//
 			target_pos = pos;
 		}
@@ -141,25 +157,56 @@ using namespace std;
 		//
 		switch ( command_[ pos + 1 ] ) {
 
-			case 'E': // filename minus last extension
-				if ( no_ext.empty() ) {
-					no_ext = file_name;
-					no_ext.erase( no_ext.rfind( '.' ) );
-				}
+			case 'b':	// basename of filename
+				command_.replace( pos, 2, base_name );
+				break;
+
+			case 'B': {	// basename minus last extension
+				string no_ext = base_name;
+				no_ext.erase( no_ext.rfind( '.' ) );
 				command_.replace( pos, 2, no_ext );
 				break;
+			}
 
-			case 'e': // filename extension
-				if ( ext.empty() ) {
-					ext = file_name;
-					ext.erase( 0, ext.find( '.' ) );
-				}
+			case 'e': {	// filename extension
+				string ext = file_name;
+				ext.erase( 0, ext.find( '.' ) );
 				command_.replace( pos, 2, ext );
-				break;
+				continue;
+			}
 
-			case 'f': // entire filename
+			case 'f':	// entire filename
 				command_.replace( pos, 2, file_name );
-				break;
+				continue;
+
+			case 'F': {	// filename minus last extension
+				string no_ext = file_name;
+				no_ext.erase( no_ext.rfind( '.' ) );
+				command_.replace( pos, 2, no_ext );
+				continue;
+			}
+		}
+
+		if ( pos == target_pos ) {
+			//
+			// We get here only for the 'b' or 'B' substitution
+			// cases.  In those cases, if the file name is the
+			// target, we have to "back up" target_pos to be the
+			// beginning of the entire file name.  For example,
+			// given this filter:
+			//
+			//	FilterFile *.gz gunzip -c %f > /tmp/@B
+			//	                               |<---|
+			//
+			// target_pos, which is at the position of the '@',
+			// needs to be backed up to the position of the first
+			// '/' as shown above, i.e., one character past a
+			// delimiter (or 0 if no delimiter is found).
+			//
+			string::size_type const pos = command_.find_last_of(
+				file_name_delim_chars, target_pos
+			);
+			target_pos = ( pos != string::npos ) ? pos + 1 : 0;
 		}
 	}
 
@@ -176,7 +223,7 @@ using namespace std;
 
 	target_file_name_ = string(
 		command_, target_pos,
-		command_.find_first_of( " &<>|", target_pos )
+		command_.find_first_of( file_name_delim_chars, target_pos )
 	);
 	return target_file_name_.c_str();
 }
