@@ -26,9 +26,10 @@
 #include <map>
 
 // local
+#include "encoded_char.h"
 #include "file_vector.h"
-#include "less.h"
 #include "util.h"
+#include "word_util.h"
 
 enum {
 	No_Meta_ID		= -1,
@@ -53,6 +54,10 @@ enum {
 //*****************************************************************************
 {
 public:
+	static indexer*		find_indexer( char const *mod_name );
+	//			Given a module name (case is irrelevant),
+	//			return its indexer.
+
 	virtual char const*	find_title( file_vector const& ) const;
 	//			By default, a file has no title, so the file's
 	//			base name becomes its title.  If a particular
@@ -60,17 +65,18 @@ public:
 	//			title, the derived indexer class should
 	//			override this function.
 
-	static indexer*		find( char const *mod_name );
-	//			Given a module name (case is irrelevant),
-	//			return its indexer.
-
 	void			index_file( file_vector const& );
 	//			This is the main entry point: this is called to
 	//			index the given file.
 
-	static indexer*		text_indexer();
-	//			Returns a pointer to the singleton instance of
-	//			the default plain text file indexer.
+	virtual void		index_words(
+					encoded_char_range::const_iterator&,
+					int meta_id = No_Meta_ID
+				);
+	//			Index words in a file between [begin,end) and
+	//			associate them with the given meta ID.  The
+	//			default indexes a run of plain text.  A derived
+	//			indexer will override this.
 protected:
 	indexer( char const *mod_name );
 
@@ -80,17 +86,7 @@ protected:
 	//			A derived indexer class that needs to do some
 	//			initialization should override this function.
 
-	virtual void		index_words(
-					file_vector::const_iterator begin,
-					file_vector::const_iterator end,
-					int meta_id = No_Meta_ID
-				);
-	//			Index words in a file between [begin,end) and
-	//			associate them with the given meta ID.  The
-	//			default indexes a run of plain text.  A derived
-	//			indexer will override this.
-
-	void			index_word( char*, int len, int = No_Meta_ID );
+	static void		index_word( char*, int len, int = No_Meta_ID );
 	//			Once a word has been parsed, this is the
 	//			function to be called from within index_words()
 	//			to index it, potentially.  This is not virtual
@@ -111,14 +107,12 @@ protected:
 	//			going through the motions of collecting word
 	//			statistics.  Suspend/resume calls may nest.
 
-	static char const*	tidy_title( char const *begin, char const *end);
+	static char const*	tidy_title(
+					file_vector::const_iterator begin,
+					file_vector::const_iterator end
+				);
 private:
-	// Note that the declaration of std::map has a default "Compare"
-	// template parameter of "less< key_type >" and, since we've included
-	// less.h above that defines "less< char const* >", C-style string
-	// comparisons work properly.
-	//
-	typedef std::map< char const*, indexer* > map_type;
+	typedef std::map< std::string, indexer* > map_type;
 
 	indexer( indexer const& );		// forbid initialization
 	indexer& operator=( indexer const& );	// forbid assignment
@@ -131,17 +125,18 @@ private:
 
 ////////// Inline functions ///////////////////////////////////////////////////
 
-inline indexer*	indexer::find( char const *mod_name ) {
-			return map_ref()[ to_lower( mod_name ) ];
-		}
+inline indexer* indexer::find_indexer( char const *mod_name ) {
+	return map_ref()[ to_lower( mod_name ) ];
+}
 
-inline void	indexer::index_file( file_vector const &file ) {
-			suspend_indexing_count_ = 0;
-			new_file();
-			index_words( file.begin(), file.end() );
-		}
+inline void indexer::index_file( file_vector const &file ) {
+	suspend_indexing_count_ = 0;
+	new_file();
+	encoded_char_range::const_iterator c( file.begin(), file.end() );
+	index_words( c );
+}
 
-inline void	indexer::suspend_indexing()	{ ++suspend_indexing_count_; }
-inline void	indexer::resume_indexing ()	{ --suspend_indexing_count_; }
+inline void indexer::suspend_indexing() { ++suspend_indexing_count_; }
+inline void indexer::resume_indexing () { --suspend_indexing_count_; }
 
 #endif	/* indexer_H */
