@@ -33,8 +33,8 @@
 #endif
 
 // local
-#include "fake_ansi.h"			/* for std */
 #include "mmap_file.h"
+#include "platform.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
