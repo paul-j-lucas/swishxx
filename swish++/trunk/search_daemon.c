@@ -22,6 +22,7 @@
 #ifdef	SEARCH_DAEMON
 
 // standard
+#include <algorithm>			/* for max() */
 #include <arpa/inet.h>			/* for Internet networking stuff */
 #include <cerrno>
 #include <cstdlib>			/* for exit(2) */
@@ -40,7 +41,16 @@
 
 // local
 #include "exit_codes.h"
+#include "PidFile.h"
 #include "platform.h"
+#include "SearchDaemon.h"
+#include "SocketAddress.h"
+#include "SocketFile.h"
+#include "SocketQueueSize.h"
+#include "SocketTimeout.h"
+#include "ThreadsMax.h"
+#include "ThreadsMin.h"
+#include "ThreadTimeout.h"
 #include "search_thread.h"
 #include "util.h"			/* for max_out_limit() */
 
@@ -48,16 +58,44 @@
 using namespace std;
 #endif
 
+extern SearchDaemon	daemon_type;
+extern ThreadsMax	max_threads;
+extern ThreadsMin	min_threads;
+extern PidFile		pid_file_name;
+extern SocketAddress	socket_address;
+extern SocketFile	socket_file_name;
+extern SocketQueueSize	socket_queue_size;
+extern SocketTimeout	socket_timeout;
+extern ThreadTimeout	thread_timeout;
+
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	void become_daemon(
-		char const *pid_file_name,
-		char const *socket_file_name,
-		int socket_queue_size, int socket_timeout,
-		int min_threads, int max_threads, int thread_timeout
-	)
+	void accept_failed()
+//
+// DESCRIPTION
+//
+//	A call to accept(2) failed.  If errno is among the expected and
+//	recoverable reasons for failure, simply return; otherwise die.
+//
+//*****************************************************************************
+{
+	switch ( errno ) {
+		case ECONNABORTED:	// POSIX.1g
+		case EINTR:
+		case EPROTO:		// SVR4
+			return;
+	}
+	cerr << error << "accept() failed" << error_string;
+	::exit( Exit_No_Accept );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void become_daemon()
 //
 // DESCRIPTION
 //
@@ -65,29 +103,6 @@ using namespace std;
 //	create a socket, detach from the terminal, record our PID, change to
 //	the root directory, and finally service requests.  This function never
 //	returns.
-//
-// PARAMETERS
-//
-//	pid_file_name		The full path to the file to record the
-//				daemon's process ID in.
-//
-//	socket_file_name	The full path to the file to use for the Unix
-//				domain socket.
-//
-//	socket_queue_size	Maximum number of queued connections for a
-//				socket.  (See the comment in config.h.)
-//
-//	socket_timeout		The number of seconds a client has to complete
-//				a search request.
-//
-//	min_threads		The minimum number of threads to maintain in
-//				the thread pool.
-//
-//	max_threads		The maximum number of threads to allow to exist
-//				in the thread pool.
-//
-//	thread_timeout		The number of seconds until an idle spare
-//				thread times out and destroys itself.
 //
 // SEE ALSO
 //
@@ -117,33 +132,65 @@ using namespace std;
 #elif	defined( RLIMIT_OFILE )			/* 4.3+BSD name for NOFILE */
 	max_out_limit( RLIMIT_OFILE );
 #endif
-	////////// Create a socket ////////////////////////////////////////////
+	////////// Create socket(s) ///////////////////////////////////////////
 
-	int const sock_fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 );
-	if ( sock_fd == -1 ) {
-		cerr << error << "socket() failed" << error_string;
-		::exit( Exit_No_Socket );
+	bool const is_tcp  = daemon_type == "tcp"  || daemon_type == "both";
+	int tcp_fd = -1;
+	struct sockaddr_in tcp_addr;
+
+	if ( is_tcp ) {
+		if ( (tcp_fd = ::socket( AF_INET, SOCK_STREAM, 0 )) == -1 ) {
+			cerr << error << "TCP socket() failed" << error_string;
+			::exit( Exit_No_TCP_Socket );
+		}
+		::memset( &tcp_addr, 0, sizeof tcp_addr );
+		tcp_addr.sin_family = AF_INET;
+		tcp_addr.sin_addr = socket_address.addr();
+		tcp_addr.sin_port = htons( socket_address.port() );
+		if ( ::bind(
+			tcp_fd, (struct sockaddr*)&tcp_addr, sizeof tcp_addr
+		) == -1 ) {
+			cerr << error << "TCP bind() failed" << error_string;
+			::exit( Exit_No_TCP_Bind );
+		}
+		if ( ::listen( tcp_fd, socket_queue_size ) == -1 ) {
+			cerr << error << "TCP listen() failed" << error_string;
+			::exit( Exit_No_TCP_Listen );
+		}
 	}
 
-	struct sockaddr_un addr;
-	::memset( &addr, 0, sizeof addr );
-	addr.sun_family = AF_LOCAL;
-	::strncpy( addr.sun_path, socket_file_name, sizeof( addr.sun_path )-1 );
-
-	// The socket file can not already exist prior to the bind().
-	if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
-		cerr	<< error << "can not delete \"" << socket_file_name
-			<< '"' << error_string;
-		::exit( Exit_No_Unlink );
+	bool const is_unix = daemon_type == "unix" || daemon_type == "both";
+	int unix_fd = -1;
+	struct sockaddr_un unix_addr;
+	if ( is_unix ) {
+		if ( (unix_fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 )) == -1 ) {
+			cerr << error << "Unix socket() failed" << error_string;
+			::exit( Exit_No_Unix_Socket );
+		}
+		::memset( &unix_addr, 0, sizeof unix_addr );
+		unix_addr.sun_family = AF_LOCAL;
+		::strncpy(
+			unix_addr.sun_path, socket_file_name,
+			sizeof( unix_addr.sun_path ) - 1
+		);
+		// The socket file can not already exist prior to the bind().
+		if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
+			cerr	<< error << "can not delete \""
+				<< socket_file_name << '"' << error_string;
+			::exit( Exit_No_Unlink );
+		}
+		if ( ::bind(
+			unix_fd, (struct sockaddr*)&unix_addr, sizeof unix_addr
+		) == -1 ) {
+			cerr << error << "Unix bind() failed" << error_string;
+			::exit( Exit_No_Unix_Bind );
+		}
+		if ( ::listen( unix_fd, socket_queue_size ) == -1 ) {
+			cerr << error << "Unix listen() failed" << error_string;
+			::exit( Exit_No_Unix_Listen );
+		}
 	}
-	if ( ::bind( sock_fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
-		cerr << error << "bind() failed" << error_string;
-		::exit( Exit_No_Bind );
-	}
-	if ( ::listen( sock_fd, socket_queue_size ) == -1 ) {
-		cerr << error << "listen() failed" << error_string;
-		::exit( Exit_No_Listen );
-	}
+	int const max_fd = max( tcp_fd, unix_fd ) + 1;
 
 #ifndef DEBUG_threads
 	////////// Detach from terminal ///////////////////////////////////////
@@ -212,27 +259,63 @@ using namespace std;
 		min_threads, max_threads, thread_timeout
 	);
 	while ( true ) {
-		struct sockaddr_un addr;
-		PJL_SOCKLEN_TYPE addr_len = sizeof addr;
 #		ifdef DEBUG_threads
 		cerr << "waiting for request" << endl;
 #		endif
-		int const accept_fd = ::accept(
-			sock_fd, (struct sockaddr*)&addr, &addr_len
-		);
-		if ( accept_fd == -1 ) {
-			switch ( errno )
-				case ECONNABORTED:	// POSIX.1g
-				case EINTR:
-				case EPROTO:		// SVR4
-					continue;
-			cerr << error << "accept() failed" << error_string;
-			::exit( Exit_No_Accept );
+
+		fd_set rset;
+		FD_ZERO( &rset );
+		if ( is_tcp )
+			FD_SET( tcp_fd, &rset );
+		if ( is_unix )
+			FD_SET( unix_fd, &rset );
+		//
+		// Sit around and wait until one of the socket file descriptors
+		// is "ready."  See: [Stevens 1998], pp. 150-154.
+		//
+		int const num_fds = ::select( max_fd, &rset, 0, 0, 0 );
+		if ( !num_fds )
+			continue;
+		if ( num_fds == -1 ) {
+			if ( errno == EINTR )
+				continue;
+			cerr << error << "select() failed" << error_string;
+			::exit( Exit_No_Select );
 		}
-#		ifdef DEBUG_threads
-		cerr << "dispatching request" << endl;
-#		endif
-		threads.new_task( accept_fd );
+
+		//
+		// Handle one or both requests.
+		//
+		if ( is_tcp && FD_ISSET( tcp_fd, &rset ) ) {
+			struct sockaddr_in addr;
+			PJL_SOCKLEN_TYPE len = sizeof addr;
+			int const accept_fd = ::accept(
+				tcp_fd, (struct sockaddr*)&addr, &len
+			);
+			if ( accept_fd == -1 )
+				accept_failed();
+			else {
+#				ifdef DEBUG_threads
+				cerr << "dispatching request" << endl;
+#				endif
+				threads.new_task( accept_fd );
+			}
+		}
+		if ( is_unix && FD_ISSET( unix_fd, &rset ) ) {
+			struct sockaddr_un addr;
+			PJL_SOCKLEN_TYPE len = sizeof addr;
+			int const accept_fd = ::accept(
+				unix_fd, (struct sockaddr*)&addr, &len
+			);
+			if ( accept_fd == -1 )
+				accept_failed();
+			else {
+#				ifdef DEBUG_threads
+				cerr << "dispatching request" << endl;
+#				endif
+				threads.new_task( accept_fd );
+			}
+		}
 	}
 }
 
