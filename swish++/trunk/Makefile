@@ -25,7 +25,7 @@ ROOT=		.
 include		$(ROOT)/config/config.mk
 
 CTARGET=	index search extract
-CFLAGS=		$(CCFLAGS) # -DDEBUG_parse_query -DDEBUG_is_ok_word
+CFLAGS=		$(CCFLAGS) # -DDEBUG_is_ok_word -DDEBUG_parse_query -DDEBUG_stem_word
 
 I_LINK=		-lm
 I_OBJS=		directory$(CCOEXT) \
@@ -46,6 +46,7 @@ S_OBJS=		file_vector$(CCOEXT) \
 		file_list$(CCOEXT) \
 		token$(CCOEXT) \
 		search$(CCOEXT) \
+		stem_word$(CCOEXT) \
 		util$(CCOEXT)
 
 E_LINK=
@@ -191,10 +192,18 @@ search$(CCOEXT): \
 	html$(CCHEXT) \
 	less$(CCHEXT) \
 	my_set$(CCHEXT) \
+	stem_word$(CCHEXT) \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
 	version$(CCHEXT) \
 	word_index$(CCHEXT)
+
+stem_word$(CCOEXT): \
+	util$(CCHEXT) \
+	config$(CCHEXT) \
+	file_vector$(CCHEXT) \
+		fake_ansi$(CCHEXT) \
+			$(PLATFORM_H)
 
 stop_words$(CCOEXT): \
 	config$(CCHEXT) \
