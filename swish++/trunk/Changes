@@ -2,6 +2,55 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* SIGPIPE wasn't handled at all so a search client that disconnected
+  unexpectedly could crash the server.  Now that this has been fixed, the
+  server also needs to check the state of the outgoing stream during writes for
+  an error: if an error occurs, assume the client disconnected from the socket
+  and stop sending output.
+
+  (This bug fix shall be known as bug fix PIPE.)
+
+* On Linux systems, multiple reads from the search daemon timed out sooner than
+  requested because Linux modifies the timeval struct passed to select() to
+  reflect the amount of time not slept.
+
+  (This bug fix shall be known as bug fix LMR.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* search.c
+
+	1. In main(), s/search_options opt/search_options const opt/
+	2. In dump_single_word(), dump_word_window(), several places in
+	   search() and service_request, added a check for the state of the
+	   "out" stream for bug fix PIPE.
+
+* search_daemon.c
+
+	1. Added set_signal_handlers() for bug fix PIPE.
+
+* search_thread.c
+
+	1. In search_thread::main():
+		s/search_options opt/search_options const opt/
+	2. In timed_read_line(), reworked the timeout such that the timeval
+	   struct is always initialized properly for every loop iteration for
+	   bug fix LMR.
+
+* version.h
+
+	1. Changed version to "5.3.3".
+
+
+*******************************************************************************
 5.3.2
 *******************************************************************************
 
