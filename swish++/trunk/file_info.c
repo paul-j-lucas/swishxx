@@ -23,9 +23,9 @@
 #include <cstring>
 
 // local
-#include "bcd.h"
 #include "config.h"
 #include "directory.h"
+#include "enc_int.h"
 #include "FilesReserve.h"
 #include "file_info.h"
 #include "platform.h"
@@ -112,14 +112,15 @@ FilesReserve			files_reserve;
 //	p	The pointer to the raw file_info data.
 //
 //*****************************************************************************
-	: dir_index_( parse_bcd( p ) ),
+	: dir_index_( dec_int( p ) ),
 	  file_name_( reinterpret_cast<char const*>( p ) ),
 	  size_(
-		  parse_bcd(
-			  p += ::strlen( reinterpret_cast<char const*>( p ) )
-		  )
+		  dec_int(
+			p += ::strlen( reinterpret_cast<char const*>( p ) ) + 1
+		)
 	  ),
-	  num_words_( parse_bcd( p ) ),
+	  num_words_( dec_int( p ) ),
 	  title_( reinterpret_cast<char const*>( p ) )
 {
+	// do nothing else
 }
