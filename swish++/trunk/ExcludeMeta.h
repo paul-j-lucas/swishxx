@@ -45,4 +45,6 @@ public:
 	CONF_SET_ASSIGN_OPS( ExcludeMeta )
 };
 
+extern ExcludeMeta exclude_meta_names;
+
 #endif	/* ExcludeMeta_H */
