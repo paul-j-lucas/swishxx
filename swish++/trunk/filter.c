@@ -151,8 +151,8 @@ using namespace std;
 	if ( target_pos == string::npos ) {
 		//
 		// This should never happen: the command template should have
-		// been checked by FilterExtension::parse_line() for the
-		// existence of an @.  If this happens, the programmer goofed.
+		// been checked by FilterFile::parse_line() for the existence
+		// of an @.  If this happens, the programmer goofed.
 		//
 		cerr	<< "filter::substitute(): target_pos == string::npos"
 			<< endl;
