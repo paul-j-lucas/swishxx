@@ -105,12 +105,17 @@ public:
 		const_iterator operator--(int) {
 			return const_iterator( index_, word_-- );
 		}
+		const_iterator& operator+=( int n ) {
+			return word_ += n, *this;
+		}
+		const_iterator& operator-=( int n ) {
+			return word_ -= n, *this;
+		}
 
 		friend bool
 		operator==( const_iterator const &i, const_iterator const &j ) {
 			return i.word_ == j.word_;
 		}
-
 		friend bool
 		operator!=( const_iterator const &i, const_iterator const &j ) {
 			return !( i == j );
@@ -120,7 +125,6 @@ public:
 		operator+( const_iterator const &i, int n ) {
 			return const_iterator( i.index_, i.word_ + n );
 		}
-
 		friend const_iterator
 		operator-( const_iterator const &i, int n ) {
 			return const_iterator( i.index_, i.word_ - n );
