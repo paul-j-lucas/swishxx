@@ -25,11 +25,42 @@
 // local
 #include "my_set.h"
 
-struct postscript_comment_set : string_set {
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	struct postscript_comment_set : string_set
+//
+// DESCRIPTION
+//
+//	A postscript_comment_set is-a string_set.  The only reason for having
+//	a derived class rather than a typedef is so that we can have a custom
+//	constructor that initializes itself.
+//
+//*****************************************************************************
+{
 	postscript_comment_set();
 };
 
-struct postscript_operator_set : string_set {
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	struct postscript_operator_set : string_set
+//
+// DESCRIPTION
+//
+//	A postscript_operator_set is-a string_set used to contain the entire
+//	set of Level 2 PostScript operators that are not also English words.
+//	The only reason for having a derived class rather than a typedef is
+//	so that we can have a custom constructor that initializes itself.
+//
+// SEE ALSO
+//
+//	extract.c
+//
+//*****************************************************************************
+{
 	postscript_operator_set();
 };
 

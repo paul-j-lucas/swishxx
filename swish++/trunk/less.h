@@ -69,8 +69,8 @@
 //
 // DESCRIPTION
 //
-//	This binary_function is a variant of less< char const* > that
-//	compares C-style strings but only for a certain maximum length.
+//	A less_n is-a less< char const* > that compares C-style strings, but
+//	only for a certain maximum length.
 //
 // SEE ALSO
 //
