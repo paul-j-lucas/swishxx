@@ -3,6 +3,78 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.12
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* WordThreshold may now be set either in a config. file or on the command line
+  (as opposed to being only a compiled-in constant.)  However, only the super-
+  user may specify a value larger than the default.
+
+  (This feature shall be know as feature SWT.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config.h
+
+	1.s/Word_Threshold/WordThreshold_Default/ for feature SWT.
+
+* conf_var.c
+
+	1. Added wordthreshold for feature SWT.
+
+* do_file.c
+
+	1. s/Word_Threshold/word_threshold/ for feature SWT.
+
+* exit_codes.h
+
+	1. Added Exit_Not_Root for feature SWT.
+
+* GNUmakefile
+
+	1. Added WordThreshold.c to I_SOURCES for feature SWT.
+
+* index.c
+
+	1. Added: #include "WordThreshold.h" for feature SWT.
+	2. Added word_threshold for feature SWT.
+	3. In main(), added "word-threshold" and -W options for feature SWT.
+	4. In usage(), added -W and --word-threshold options for feature SWT.
+
+* man/man1/index.1
+
+	1. Added -W, --word-threshold, end WordThreshold for feature SWT.
+	2. Added exit code 13 for feature SWT.
+
+* man/man4/swish++.conf.4
+
+	1. Added WordThreshold for feature SWT.
+
+* mod/html/html.c
+
+	1. Moved over line of ':' to be in-line with those in index.c
+	   for feature SWT.
+
+* swish++.conf
+
+	1. Added Word_Threshold for feature SWT.
+
+* WordThreshold.c
+* WordThreshold.h
+
+	1. New file for feature SWT.
+
+* version.h
+
+	1. Upped version to "5.12".
+
+
+*******************************************************************************
 5.11.1
 *******************************************************************************
 
