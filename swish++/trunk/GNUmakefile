@@ -40,28 +40,36 @@ I_SRCS:=	bcd.c \
 		conf_set.c \
 		conf_string.c \
 		directory.c \
-		elements.c \
-		entities.c \
 		ExcludeFile.c \
 		file_vector.c \
 		file_info.c \
+		file_list.c \
 		filter.c \
 		FilesGrow.c \
 		FilterFile.c \
 		IncludeFile.c \
+		indexer.c \
 		index_segment.c \
-		file_list.c \
+		init_modules.c \
 		itoa.c \
-		html.c \
 		option_stream.c \
 		stop_words.c \
 		util.c \
 		word_info.c \
 		word_util.c \
 		index.c
-#ifdef WIN32
+ifdef MOD_HTML
+I_SRCS+=	elements.c \
+		entities.c \
+		mod_html.c
+endif
+ifdef MOD_MAIL
+I_SRCS+=	encoded_char.c \
+		mod_mail.c
+endif
+ifdef WIN32
 I_SRCS+=	fnmatch.c		# see the comment in pattern_map.h
-#endif
+endif
 I_OBJS:=	$(I_SRCS:.c=.o)
 I_LINK:=	$(CCLINK) -lm
 
@@ -99,10 +107,10 @@ E_SRCS:=	conf_var.c \
 		directory.c \
 		entities.c \
 		ExcludeFile.c \
+		ExtractFile.c \
 		file_vector.c \
 		filter.c \
 		FilterFile.c \
-		IncludeFile.c \
 		index_segment.c \
 		option_stream.c \
 		postscript.c \
