@@ -1,0 +1,102 @@
+===============================================================================
+Prerequisites for building SWISH++ for Unix
+===============================================================================
+
+SWISH++ has the following software as prerequisites:
+
+1. A C++ compiler.  SWISH++ has been built using g++ 2.95.3 (versions earlier
+   than 2.95.1 are known NOT to work) and 3.3; other non-gcc, ANSI C++
+   compilers should work also.
+
+   NOTE: g++ 2.96 will NOT work.  Despite the fact that it was only ever a
+   development release, Redhat foolishly included it as part of their 7th
+   distribution.  If you have 2.96 installed, you MUST upgrade (or
+   downgrade) gcc.
+
+2. A version of STL, the ANSI/ISO C++ Standard Template Library.  If you are
+   using g++ or egcs, then you also need (the matching version of) libstd++.
+
+   If you are not using g++, then you need to have a port of STL that works
+   with your compiler.  Ports for various platforms are available from:
+
+	http://www.stlport.org/
+
+   For more about STL in general, see:
+
+	http://www.cs.rpi.edu/~musser/stl.html
+	http://www.sgi.com/Technology/STL/
+
+3. GNU make 3.79.1 or later.
+
+4. Perl 5 (or later), but only if you intend on using either httpindex,
+   splitmail, or WWW.pm.
+
+5. The GNU wget command, but only if you intend on using httpindex.
+
+All GNU software is freely available from:
+
+	ftp://prep.ai.mit.edu/pub/gnu/
+
+as well as many other mirror sites.
+
+
+===============================================================================
+Building SWISH++ for Unix
+===============================================================================
+
+1. Edit the "config.h" file to your liking.  This file controls how the
+   software runs.  You REALLY need to understand and properly set TempDirectory
+   and Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
+   it should only take minutes.  Once you understand them, comment out the
+   #error lines.  (The #error lines are there intentionally to force you to
+   edit the file.)
+
+2. Go to the "config" directory and edit the "config.mk" file as necessary.
+   This file controls how the software is compiled.
+
+3. Go back to the top-level directory and type "make".  If everything works
+   out, the software will be built.
+
+4. Type "make install".
+
+5. Optional: if you are going to run search(1) as a daemon and you want it
+   started automatically on system boot, you need to call searchmonitor from
+   your system's start-up scripts.
+
+   For SysV-like systems, e.g. Linux and Solaris, type "make install_sysv" and
+   then edit the variable definitions in the beginning of /etc/init.d/searchd
+   if necessary.
+
+   For other types of Unix systems, e.g., FreeBSD, add a call to searchmonitor
+   in /etc/rc.local like:
+
+   	/path/to/searchmonitor -c /path/to/swish++.conf -s /path/to/search &
+
+   In either case, also edit /etc/swish++.conf to your liking.
+
+   If you are running search(1) under Solaris and you expect that it will be
+   heavily used, read README.Solaris.
+
+6. Optional: if you want to use SWISH++ to index your incoming mail
+   automatically, you need to use Procmail to split messages into individual
+   files.  Included in this distribution (in the procmailrc file) is a sample
+   Procmail recipe for doing this.
+
+
+===============================================================================
+Notes
+===============================================================================
+
+1. Don't complain to me or bother asking me for help if you get either "No such
+   file or directory" for or errors in the standard C++ headers.  It means that
+   your C++ compiler and/or libraries are improperly installed.  I know nothing
+   about your OS or how your system is (mis)configured.  Complain to your
+   sysadmin: the person who botched the installation and whose job it is to fix
+   it.
+
+2. Don't bother asking me for precompiled binaries for a particular OS -- I
+   don't have them.
+
+3. Don't ask me questions like, "Can SWISH++ do this?"  The documentation
+   describing SWISH++ is complete.  If you read the documentation and what you
+   are looking for is not there, then SWISH++ doesn't do it.
