@@ -114,7 +114,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 			out	<< error << "more than " << ARG_MAX
 				<< " arguments" << endl;
 		else {
-			search_options opt( &argc, &argv, opt_spec, out );
+			search_options const opt( &argc, &argv, opt_spec, out );
 			if ( opt )
 				service_request( argv, opt, out, out );
 		}
@@ -230,16 +230,19 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 	// Therefore, what we do instead is to use select(2) to do the
 	// blocking, but with a time-out specified.
 	//
-	fd_set rset;
-	FD_ZERO( &rset );
-	FD_SET( fd, &rset );
-
-	struct timeval tv;
-	tv.tv_sec  = seconds;
-	tv.tv_usec = 0;
-
 	time_t const start_time = ::time( 0 );
-	while ( ::select( fd + 1, &rset, 0, 0, &tv ) > 0 ) {
+	int seconds_remaining = seconds;
+	while ( seconds_remaining > 0 ) {
+		fd_set rset;
+		FD_ZERO( &rset );
+		FD_SET( fd, &rset );
+
+		struct timeval tv;
+		tv.tv_sec  = seconds_remaining;
+		tv.tv_usec = 0;
+
+		if ( ::select( fd + 1, &rset, 0, 0, &tv ) < 1 )
+			break;
 		if ( !FD_ISSET( fd, &rset ) )	// shouldn't happen, but...
 			break;
 
@@ -259,7 +262,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		time_t const elapsed_time = ::time( 0 ) - start_time;
 		if ( elapsed_time > seconds )
 			break;
-		tv.tv_sec -= elapsed_time;
+		seconds_remaining -= elapsed_time;
 	}
 
 	return false;
