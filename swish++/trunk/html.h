@@ -30,16 +30,16 @@ enum {
 	Meta_ID_Not_Found	= -2,
 };
 
-char const*	grep_title( file_vector<char> const& );
+char const*	grep_title( file_vector const& );
 
 char		convert_entity(
-			file_vector<char>::const_iterator &pos,
-			file_vector<char>::const_iterator end
+			file_vector::const_iterator &pos,
+			file_vector::const_iterator end
 		);
 
 void		parse_html_tag(
-			file_vector<char>::const_iterator &pos,
-			file_vector<char>::const_iterator end,
+			file_vector::const_iterator &pos,
+			file_vector::const_iterator end,
 			bool is_new_file = false
 		);
 
