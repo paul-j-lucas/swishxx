@@ -439,16 +439,20 @@ next_c:
 
 	////////// Index what's in between. ///////////////////////////////////
 
-	int meta_id;
+	//
+	// Potentially index the words in the section where they are associated
+	// with the name of the section as a meta name.
+	//
+	int meta_id = No_Meta_ID;
 	if ( associate_meta ) {
 		//
-		// Potentially index the words in the section where they are
-		// associated with the name of the section as a meta name.
+		// Do not index the words in the section if either the name of
+		// the section (canonicalized to lower case) is among the set
+		// of meta names to exclude or not among the set to include.
 		//
 		if ( (meta_id = find_meta( word )) == No_Meta_ID )
 			return;
-	} else
-		meta_id = No_Meta_ID;
+	}
 	//
 	// Index the words in between the two .SH macros marking them as being
 	// associated with the value of the current section heading name.

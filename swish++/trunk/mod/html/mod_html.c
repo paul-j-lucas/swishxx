@@ -806,7 +806,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator &pos );
 		if (	find_attribute( name_att, "name" ) &&
 			find_attribute( content_att, "content" )
 		) {
-			int meta_id;
+			int meta_id = No_Meta_ID;
 			if ( associate_meta ) {
 				//
 				// Do not index the words in the value of the
@@ -818,8 +818,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator &pos );
 				meta_id = find_meta( to_lower( name_att ) );
 				if ( meta_id == No_Meta_ID )
 					return;
-			} else
-				meta_id = No_Meta_ID;
+			}
 			//
 			// Index the words in the value of the CONTENT
 			// attribute marking them as being associated with the

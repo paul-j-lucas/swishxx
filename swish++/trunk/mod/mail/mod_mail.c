@@ -443,21 +443,23 @@ could_not_filter:
 
 		////////// Index the value of the header //////////////////////
 
-		int meta_id;
+		//
+		// Potentially index the words in the value of the header where
+		// they are associated with the name of the header as a meta
+		// name.
+		//
+		int meta_id = No_Meta_ID;
 		if ( associate_meta ) {
 			//
-			// Potentially index the words in the value of the
-			// header where they are associated with the name of
-			// the header as a meta name.
+			// Do not index the words in the value of the header if
+			// either the name of the header (canonicalized to
+			// lower case) is among the set of meta names to
+			// exclude or not among the set to include.
 			//
 			if ( (meta_id = find_meta( kv.key )) == No_Meta_ID )
 				continue;
-		} else
-			meta_id = No_Meta_ID;
-
-		encoded_char_range const e(
-			kv.value_begin, kv.value_end, US_ASCII, Seven_Bit
-		);
+		}
+		encoded_char_range const e( kv.value_begin, kv.value_end );
 		indexer::index_words( e, meta_id );
 	}
 
