@@ -219,7 +219,7 @@ int		indexer::suspend_indexing_count_ = 0;
 
 	////////// Add the word ///////////////////////////////////////////////
 
-	++file_info::current_file().num_words_;
+	file_info::inc_words();
 	++num_indexed_words;
 
 	word_info &wi = words[ lower_word ];
@@ -252,8 +252,7 @@ int		indexer::suspend_indexing_count_ = 0;
 // SYNOPSIS
 //
 	/* virtual */ void indexer::index_words(
-		encoded_char_range::const_iterator &c,
-		int meta_id
+		encoded_char_range const &e, int meta_id
 	)
 //
 // DESCRIPTION
@@ -263,12 +262,7 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // PARAMETERS
 //
-//	pos		The iterator marking the beginning of the text to
-//			index.
-//
-//	end		The iterator marking the end of the text to index.
-//
-//	encoding	The Content-Transfer-Encoding of the text.
+//	e		The encoded text to index.
 //
 //	meta_id		The numeric ID of the META NAME the words index are to
 //			to be associated with.
@@ -280,6 +274,7 @@ int		indexer::suspend_indexing_count_ = 0;
 	bool		in_word = false;
 	int		len;
 
+	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
 		register file_vector::value_type ch = iso8859_to_ascii( *c++ );
 
@@ -381,8 +376,7 @@ int		indexer::suspend_indexing_count_ = 0;
 // SYNOPSIS
 //
 	/* static */ char const* indexer::tidy_title(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator end
+		char const *begin, char const *end
 	)
 //
 // DESCRIPTION
@@ -396,9 +390,9 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // PARAMETERS
 //
-//	begin	The iterator marking the beginning of the title.
+//	begin	The pointer to the beginning of the title.
 //
-//	end	The iterator marking the end of the title.
+//	end	The pointer to the end of the title.
 //
 // RETURN VALUE
 //
