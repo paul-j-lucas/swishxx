@@ -44,6 +44,7 @@ int const	MAXNAMLEN = 255;
 // local
 #include "config.h"
 #include "directory.h"
+#include "elements.h"
 #include "ExcludeClass.h"
 #include "ExcludeExtension.h"
 #include "ExcludeMeta.h"
@@ -150,6 +151,7 @@ void		write_word_index( ostream&, off_t* );
 	/////////// Process command-line options //////////////////////////////
 
 	char const*	config_file_name_arg = ConfigFile_Default;
+	bool		dump_elements_opt = false;
 	bool		dump_stop_words_opt = false;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
@@ -171,7 +173,7 @@ void		write_word_index( ostream&, off_t* );
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 		"l"
 #endif
-		"c:C:e:E:f:F:i:m:M:p:rs:St:T:v:V";
+		"c:C:e:E:f:F:Hi:m:M:p:rs:St:T:v:V";
 
 	::opterr = 1;
 	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
@@ -201,6 +203,10 @@ void		write_word_index( ostream&, off_t* );
 
 			case 'F': // Specify files to reserve space for.
 				num_files_reserve_arg = ::optarg;
+				break;
+
+			case 'H': // Dump recognized HTML elements.
+				dump_elements_opt = true;
 				break;
 
 			case 'i': // Specify index file overriding the default.
@@ -294,7 +300,15 @@ void		write_word_index( ostream&, off_t* );
 		temp_file_prefix += '/';
 	temp_file_prefix += string( itoa( ::getpid() ) ) + string( "." );
 
-	/////////// Deal with stop-words //////////////////////////////////////
+	/////////// Dump stuff if requested ///////////////////////////////////
+
+	if ( dump_elements_opt ) {
+		element_map const &elements = element_map::instance();
+		::copy( elements.begin(), elements.end(),
+			ostream_iterator< element_map::value_type >( cout,"\n" )
+		);
+		::exit( Exit_Success );
+	}
 
 	stop_words = new stop_word_set( stop_word_file_name );
 	if ( dump_stop_words_opt ) {
@@ -311,7 +325,7 @@ void		write_word_index( ostream&, off_t* );
 		include_extensions.empty() && exclude_extensions.empty()
 	) {
 		ERROR << "extensions must be specified "
-			"when not using standard input " << endl;
+			"when not using standard input" << endl;
 		usage();
 	}
 	if ( !argc )
@@ -334,8 +348,7 @@ void		write_word_index( ostream&, off_t* );
 		while ( cin.getline( file_name, MAXNAMLEN ) ) {
 			if ( !file_exists( file_name ) ) {
 				if ( verbosity > 3 )
-					cout	<< " (skipped: does not exist)"
-						<< endl;
+					cout << " (skipped: does not exist)\n";
 				continue;
 			}
 			if ( is_directory() )
@@ -350,8 +363,7 @@ void		write_word_index( ostream&, off_t* );
 		for ( ; *argv; ++argv ) {
 			if ( !file_exists( *argv ) ) {
 				if ( verbosity > 3 )
-					cout	<< " (skipped: does not exist)"
-						<< endl;
+					cout << " (skipped: does not exist)\n";
 				continue;
 			}
 			if ( is_directory() )
@@ -460,7 +472,7 @@ void		write_word_index( ostream&, off_t* );
 		return;
 
 	char const *const lower_word = to_lower( word );
-	if ( stop_words->find( lower_word ) )
+	if ( stop_words->contains( lower_word ) )
 		return;
 
 	////////// Add the word ///////////////////////////////////////////////
@@ -804,7 +816,7 @@ void		write_word_index( ostream&, off_t* );
 				i = j;
 		}
 
-		if ( stop_words->find( *word[ i ] ) )
+		if ( stop_words->contains( *word[ i ] ) )
 			continue;
 
 		word_offset[ word_index++ ] = o.tellp();
@@ -859,7 +871,7 @@ void		write_word_index( ostream&, off_t* );
 		if ( word[ j ] == words[ j ].end() )
 			continue;
 
-		if ( stop_words->find( *word[ i ] ) )
+		if ( stop_words->contains( *word[ i ] ) )
 			continue;
 
 		////////// Determine total occurrences in all indicies ////////
@@ -923,7 +935,7 @@ void		write_word_index( ostream&, off_t* );
 	delete[] meta_name_offset;
 
 	if ( verbosity > 1 )
-		cout << endl;
+		cout << '\n';
 }
 
 //*****************************************************************************
@@ -944,7 +956,7 @@ void		write_word_index( ostream&, off_t* );
 		return;
 
 	if ( verbosity > 1 )
-		cout <<	"\nRanking index..." << flush;
+		cout << '\n' << me << ": ranking index..." << flush;
 
 	TRANSFORM_EACH( word_map, words, w ) {
 		word_info &info = w->second;
@@ -989,7 +1001,7 @@ void		write_word_index( ostream&, off_t* );
 	}
 
 	if ( verbosity > 1 )
-		cout <<	endl;
+		cout <<	'\n';
 }
 
 //*****************************************************************************
@@ -1219,7 +1231,7 @@ void		write_word_index( ostream&, off_t* );
 	delete[] meta_name_offset;
 
 	if ( verbosity > 1 )
-		cout << endl;
+		cout << '\n';
 }
 
 //*****************************************************************************
@@ -1271,7 +1283,7 @@ void		write_word_index( ostream&, off_t* );
 	words.clear();
 
 	if ( verbosity > 1 )
-		cout << '\n' << endl;
+		cout << "\n\n";
 }
 
 //*****************************************************************************
@@ -1352,6 +1364,7 @@ void usage() {
 	"  -E ext          : Extension not to index [default: none]\n"
 	"  -f file_max     : Word/file maximum [default: infinity]\n"
 	"  -F file_reserve : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
+	"  -H              : Dump built-in set of recognized HTML elements and exit\n"
 	"  -i index_file   : Name of index file to use [default: " << IndexFile_Default << "]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	"  -l              : Follow symbolic links [default: no]\n"
@@ -1361,7 +1374,7 @@ void usage() {
 	"  -p percent_max  : Word/file percentage [default: 100]\n"
 	"  -r              : Do not recursively index subdirectories [default: do]\n"
 	"  -s stop_file    : Stop-word file to use instead of compiled-in default\n"
-	"  -S              : Dump default stop-words and exit\n"
+	"  -S              : Dump stop-words and exit\n"
 	"  -t title_lines  : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
 	"  -v verbosity    : Verbosity level [0-4; default: 0]\n"
 	"  -V              : Print version number and exit\n";
