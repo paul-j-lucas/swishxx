@@ -34,9 +34,9 @@
 //
 // DESCRIPTION
 //
-//	A FilesReserve is-a conf<int> containing the initial number of files
-//	to reserve space for; see file_info::operator new() in file_info.c
-//	for details.
+//	A FilesReserve is-a conf<int> containing the initial number of files to
+//	reserve space for; see file_info::operator new() in file_info.c for
+//	details.
 //
 //	This is the same as index's -F command-line option.
 //
@@ -44,15 +44,7 @@
 {
 public:
 	FilesReserve() : conf<int>( "FilesReserve", FilesReserve_Default ) { }
-
-	FilesReserve& operator=( int i ) {
-		conf<int>::operator=( i );
-		return *this;
-	}
-	FilesReserve& operator=( char const *s ) {
-		conf<int>::operator=( s );
-		return *this;
-	}
+	CONF_INT_ASSIGN_OPS( FilesReserve )
 };
 
 #endif	/* FilesReserve_H */

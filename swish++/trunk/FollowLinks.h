@@ -34,25 +34,15 @@
 // DESCRIPTION
 //
 //	A FollowLinks is-a conf<bool> containing the Boolean value indicating
-//	whether to follow symbolic links either during indexing or
-//	extraction.
+//	whether to follow symbolic links either during indexing or extraction.
 //
-//	This is the same as either index's or extract's -l command-line
-//	option.
+//	This is the same as either index's or extract's -l command-line option.
 //
 //*****************************************************************************
 {
 public:
 	FollowLinks() : conf<bool>( "FollowLinks", false ) { }
-
-	FollowLinks& operator=( bool b ) {
-		conf<bool>::operator=( b );
-		return *this;
-	}
-	FollowLinks& operator=( char const *s ) {
-		conf<bool>::operator=( s );
-		return *this;
-	}
+	CONF_BOOL_ASSIGN_OPS( FollowLinks )
 };
 
 #endif	/* FollowLinks_H */
