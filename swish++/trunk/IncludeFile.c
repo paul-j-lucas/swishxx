@@ -25,6 +25,8 @@
 // local
 #include "exit_codes.h"
 #include "IncludeFile.h"
+#include "platform.h"
+#include "util.h"			/* for error() */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
