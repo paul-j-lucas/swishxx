@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "June 28, 2001" "SWISH++"
+.TH \f3index\f1 1 "July 9, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -157,6 +157,11 @@ Via the
 .B FilterFile
 configuration file variable,
 files matching particular patterns can be filtered prior to indexing.
+Via the
+.B FilterAttachment
+configuration file variable,
+e-mail attachments whose MIME types match particular patterns
+can be filtered prior to indexing.
 (See FILTERS in
 .BR swish++.conf (4).)
 .SS Incremental Indexing
@@ -875,7 +880,7 @@ the latter taking priority.
 .PP
 .RS 5
 .PD 0
-.TP 18
+.TP 20
 .B AssociateMeta
 Same as
 .B \-A
@@ -890,9 +895,9 @@ or
 .TP
 .B DirectoriesGrow
 Same as
-.B \-D
+.B \-G
 or
-.b \-\-dirs-grow
+.B \-\-dirs-grow
 .TP
 .B DirectoriesReserve
 Same as
@@ -912,21 +917,25 @@ Same as
 or
 .B \-\-no-meta
 .TP
+.B FilesGrow
+Same as
+.B \-g
+or
+.B \-\-files-grow
+.TP
 .B FilesReserve
 Same as
 .B \-F
 or
 .B \-\-files-reserve
 .TP
-.B FilterFile
+.B FilterAttachment
 (See FILTERS in
 .BR swish++.conf (4).)
 .TP
-.B FilesGrow
-Same as
-.B \-g
-or
-.B \-\-files-grow
+.B FilterFile
+(See FILTERS in
+.BR swish++.conf (4).)
 .TP
 .B FollowLinks
 Same as
@@ -1022,6 +1031,7 @@ use double quotes:
 .cS
 index -v3 -e "html:*.*htm*" -e "text:*.txt" .
 .cE
+This is a problem with Windows, not SWISH++.
 (Double quotes will also work under Unix.)
 .SS Using \f(CWCLASS\fP Attributes to Index HTML Selectively
 In an HTML or XHTML document, there may be sections that should not be indexed.
