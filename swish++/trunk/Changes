@@ -15,6 +15,20 @@ NEW FEATURES
 
   (This feature shall be known as feature RTF.)
 
+* For search(1) running as a daemon, added code to reset the TCP connection for
+  bad requests.  The reason for doing this is so we don't potentially have a
+  socket lingering in TIME-WAIT from a client that was too dumb to give us a
+  valid request in the first place.  This helps alleviate denial-of-service
+  attacks (if that's what's going on).
+
+  This came about due to the way Solaris handles TIME-WAIT.  Read the new
+  README.Solaris file for details.
+
+  This change has no effect in in Linux 2.2.x kernels since sending a reset on
+  close by setting SO_LINGER wasn't implemented.
+
+  (This feature shall be known as feature RST.)
+
 
 BUG FIXES
 ---------
@@ -30,6 +44,7 @@ CHANGES, file-by-file
 * config/config.mk
 
 	1. Added "rtf" to MOD_LIST.
+	2. Added explanation about module dependencies.
 
 * Group.c
 * SocketAddress.c
@@ -38,7 +53,9 @@ CHANGES, file-by-file
 
 * INSTALL.unix
 
-	1. Added mention of README.Solaris file.
+	1. Added mention of README.Solaris file for feature RST.
+	2. s/www.objectspace.com/www.stlport.org/
+	3. Moved module wording in step 2 of building to config/config.mk.
 
 * man/man1/index.1
 
@@ -75,7 +92,16 @@ CHANGES, file-by-file
 
 * README.Solaris
 
-	1. New file.
+	1. New file for feature RST.
+
+* search.c
+
+	1. Made return-type of search() and service_request() bool for feature
+	   RST.
+
+* search.h
+
+	1. Made return-type of service_request() bool for feature RST.
 
 * searchc.in
 
