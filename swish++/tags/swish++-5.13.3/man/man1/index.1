@@ -1,0 +1,1453 @@
+.\"
+.\"	SWISH++
+.\"	index.1
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\"
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\"
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3index\f1 1 "December 23, 2002" "SWISH++"
+.SH NAME
+index \- SWISH++ indexer
+.SH SYNOPSIS
+.B index
+[
+.I options
+]
+.I directory...
+.I file...
+.SH DESCRIPTION
+.B index
+is the SWISH++ file indexer.
+It indexes the specified files
+and files in the specified directories;
+files in subdiretories of specified directories are also indexed by default
+(unless either the
+.B \-r
+or
+.B \-\-no-recurse
+option or the
+.B RecurseSubdirs
+variable is given).
+Files are indexed either only if their filename matches
+one of the patterns in the set specified with either the
+.B \-e
+or
+.B \-\-pattern
+option or the
+.B IncludeFile
+variable (unless standard input is used; see next paragraph)
+or is not in the set specified with either the
+.B \-E
+or
+.B \-\-no-pattern
+option or the
+.B ExcludeFile
+variable.
+.P
+If there is a single filename of `\f(CW-\f1', the list of directories and files
+to index is instead taken from standard input (one per line).
+In this case,
+filename patterns of files to index need not be specified explicitly:
+all files, regardless of whether they match a pattern
+(unless they are in the set not to index specified with either the
+.B \-E
+or
+.B \-\-no-pattern
+option or the
+.B ExcludeFile
+variable), are indexed, i.e.,
+.B index
+assumes you know what you're doing when specifying filenames in this manner.
+.P
+In any case, care must be taken not to specify files or subdirectories
+in directories that are also specified:
+since directories are recursively indexed by default (unless either the
+.B \-r
+or
+.B \-\-no-recurse
+option or the
+.B RecurseSubdirs
+variable is given),
+explicitly specifying a subdirectory or file in a directory that is also
+specified will result in those files being indexed more than once.
+.SS Character Mapping
+Characters in the ISO 8859-1 (Latin 1) character set
+are mapped to their closest ASCII equivalent
+before further examination and indexing.
+(Individual indexing modules may also do their own character mapping.)
+.SS Word Determination
+Stop words, words that occur too frequently or have no information content,
+are not indexed.
+(There is a default built-in set of a few hundred such words.)
+Additionally, several heuristics are used to determine which words
+should not be indexed.
+.P
+First, a word is checked to see if it looks like an acronym.
+A word is considered an acronym only if it starts with a capital letter and
+is composed exclusively of capital letters, digits, and punctuation symbols,
+e.g., ``AT&T.''
+If a word looks like an acronym, it is indexed and no further checks are done.
+.P
+Second, there are several other checks that are applied.
+A word is not indexed if it:
+.TP 4
+1.
+Is less than \f(CWWord_Min_Size\f1 letters.
+(Default is 4.)
+.TP
+2.
+Contains less than \f(CWWord_Min_Vowels\f1 vowels.
+(Default is 1.)
+.TP
+3.
+Contains more than \f(CWWord_Max_Consec_Same\f1 of the same character
+consecutively (not including digits).
+(Default is 2.)
+.TP
+4.
+Contains more than \f(CWWord_Max_Consec_Consonants\f1 consecutive consonants.
+(Default is 5.)
+.TP
+5.
+Contains more than \f(CWWord_Max_Consec_Vowels\f1 consecutive vowels.
+(Default is 4.)
+.TP
+6.
+Contains more than \f(CWWord_Max_Consec_Puncts\f1 consecutive punctuation
+characters.
+(Default is 1.)
+.SS Filters
+Via the
+.B FilterFile
+configuration file variable,
+files matching particular patterns can be filtered prior to indexing.
+Via the
+.B FilterAttachment
+configuration file variable,
+e-mail attachments whose MIME types match particular patterns
+can be filtered prior to indexing.
+(See FILTERS in
+.BR swish++.conf (4).)
+.SS Incremental Indexing
+In order to add words from new documents to an existing index,
+either the entire set of documents can be reindexed
+or the new documents alone can be incrementally indexed.
+In many cases, reindexing everything is sufficient since
+.B index
+is really fast.
+For a very large document set, however,
+this may use too many resources.
+.P
+However, there is a pitfall for incremental indexing:
+if any of the
+.BR \-f ,
+.BR \-\-word-files ,
+.BR \-p ,
+or
+.B \-\-word-percent
+options or
+.B WordFilesMax
+or
+.B WordPercentMax
+variables are used,
+then words that are too frequent are discarded.
+If new documents are added containing very few of those words,
+then they could no longer be too frequent.
+However, there is no way to get them back since they were discarded.
+.P
+The way around this problem is not to discard any words
+by specifying 101%.
+However, because no words are discarded,
+the size of the index file will be larger,
+perhaps significantly so.
+.P
+It is possible that, in practice, the loss of words may not be that important
+especially if new documents are very similar to old documents
+and that words that were too frequent in the old set
+would also be too frequent in new set.
+.P
+Another way around this problem is to do periodic full indexing.
+.SH INDEXING MODULES
+.B index
+is written in a modular fashion
+where different types of files have different indexing modules.
+Currently, there are 7 modules:
+Text (plain text),
+HTML (HTML and XHTML),
+ID3 (ID3 tags found in MP3 files),
+LaTeX,
+Mail (RFC 822 and Usenet News),
+Manual (Unix manual pages in
+.BR nroff (1)
+with
+.BR man (7)
+macros),
+and
+RTF (Rich Text Format).
+.SS Text Module
+This module simply indexes plain text files
+performing character mapping and word determination
+as has already been described.
+.SS HTML and XHTML Module
+Additional processing is done for HTML and XHTML files.
+The additional processing is:
+.TP 4
+1.
+Character and numeric
+(decimal and hexadecimal)
+entity references
+are converted to their ASCII character equivalents
+before further examination and indexing.
+For example, ``r&eacute;sum&#233;'' becomes ``resume'' before indexing.
+.TP
+2.
+If a matched set of \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 tags is found
+within the first \f(CWTitleLines\f1 lines of the file (default is 12),
+then the text between the tags is stored in the generated index file as the
+file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.TP
+3.
+If an HTML or XHTML element contains a \f(CWCLASS\f1 attribute
+whose value is among the set of class names specified
+as those not to index (via one or more of either the
+.B \-C
+or
+.B \-\-no-class
+option or the
+.B ExcludeClass
+variable),
+then all the text up to the tag that ends the element will not be indexed.
+.IP ""
+For an element that has an optional end tag, ``the tag that ends the element''
+is either the element's end tag or a tag of another element that implicitly
+ends it;
+for an element that does not have an end tag, ``the tag that ends the element''
+is the element's start tag.
+(See the EXAMPLES.)
+.IP ""
+All elements from the HTML 4.0 specification (including deprecated elements),
+Ruby elements,
+plus common, browser-specific elements are recognized;
+unrecognized elements are ignored.
+(See the
+.B \-H
+or
+.B \-\-dump-html
+option.)
+.TP
+4.
+If an HTML or XHTML element contains a \f(CWTITLE\f1 attribute,
+then the words specified as the value of the \f(CWTITLE\f1 attribute
+are indexed.
+.TP
+5.
+If an \f(CWAREA\f1, \f(CWIMG\f1, or \f(CWINPUT\f1 element
+contains an \f(CWALT\f1 attribute,
+then the words specified as the value of the \f(CWALT\f1 attribute
+are indexed.
+.TP
+6.
+If a \f(CWMETA\f1 element contains both a \f(CWNAME\f1 and \f(CWCONTENT\f1
+attribute, then the words specified
+as the value of the \f(CWCONTENT\f1 attribute
+are indexed associated with the meta name specified as the value of the
+\f(CWNAME\f1 attribute.
+.IP ""
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of the \f(CWCONTENT\f1 attribute
+are still indexed, but not associated with the meta name.)
+.IP ""
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.TP
+7.
+If a \f(CWTABLE\f1 element contains a \f(CWSUMMARY\f1 attribute,
+then the words specified as the value of the \f(CWSUMMARY\f1 attribute
+are indexed.
+.TP
+8.
+If an \f(CWOBJECT\f1 element contains a \f(CWSTANDBY\f1 attribute,
+then the words specified as the value of the \f(CWSTANDBY\f1 attribute
+are indexed.
+.TP
+9.
+All other HTML or XHTML tags and comments
+(anything between \f(CW<\f1 and \f(CW>\f1 characters)
+are discarded.
+.P
+In compliance with the HTML specification,
+any one of no quotes, single quotes, or double quotes may be used
+to contain attribute values and attributes can appear in any order.
+Values containing whitespace, however, must be quoted.
+The specification is vague as to whether whitespace surrounding the \f(CW=\f1
+is legal, but
+.B index
+allows it.
+.SS ID3 Module
+ID3 tags are used to store audio meta information for MP3 files (generally).
+Since audio files contain mostly binary information,
+only the ID3 tag text fields are indexed.
+ID3 tag versions 1.x and 2.x (through 2.4) are supported
+(except for encrypted frames).
+If a file contains both 1.x and 2.x tags,
+only the 2.x tag is indexed.
+The processing done for files containing an ID3 tag is:
+.TP 4
+1.
+If a title field is found,
+then the value of the title is stored in the generated index file
+as the file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.TP
+2.
+Words that are the value of fields
+are indexed associated with the field name as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of the header
+are still indexed, but not associated with the header.)
+.IP ""
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+For ID3v1.x, the recommended fields to be indexed are:
+.BR album ,
+.BR artist ,
+.BR comments ,
+.BR genre ,
+and
+.BR title .
+.IP ""
+For ID3v2.2,
+the recommended text fields (with reassignments) to be indexed are:
+.BR com=comments ,
+.BR tal=album ,
+.BR tcm=composer ,
+.BR tco=genre ,
+.BR tcr=copyright ,
+.BR ten=encoder ,
+.BR txt=lyricist ,
+.BR tt1=content ,
+.BR tt2=title ,
+.BR tt3=subtitle ,
+.BR ipl=musicians ,
+.BR tot=original-title ,
+.BR tol=original-lyricist ,
+.BR toa=original-artist ,
+.BR tp1=artist ,
+.BR tp2=performers ,
+.BR tp3=conductor ,
+.BR tpb=publisher ,
+.BR txx=user ,
+.BR slt=lyrics ,
+and
+.BR ult=lyrics .
+.IP ""
+For ID3v2.4,
+the recommended text fields (with reassignments) to be indexed are:
+.BR comm=comments ,
+.BR talb=album ,
+.BR tcom=composer ,
+.BR tcon=genre ,
+.BR tcop=copyright ,
+.BR tenc=encoder ,
+.BR text=lyricist ,
+.BR tipl=people ,
+.BR tit1=content ,
+.BR tit2=title ,
+.BR tit3=subtitle ,
+.BR tmcl=musicians ,
+.BR tmoo=mood ,
+.BR toal=original-title ,
+.BR toly=original-lyricist ,
+.BR tope=original-artist ,
+.BR town=owner ,
+.BR tpe1=artist ,
+.BR tpe2=performers ,
+.BR tpe3=conductor ,
+.BR tpub=publisher ,
+.BR tsst=set-subtitle ,
+.BR txxx=user ,
+.BR user=terms ,
+.BR sylt=lyrics ,
+and
+.BR uslt=lyrics .
+.IP ""
+ID3v2.3 is the same as 2.4 except replace
+.B tmcl=musicians
+with
+.BR ipls=musicians .
+.IP ""
+All text fields (with reassignments) for all versions of ID3
+can (and should) be specified concurrently
+so it need not be known in advance which version(s) of ID3
+MP3 files are encoded with.
+.TP
+3.
+For ID3v2.x,
+text fields that are compressed are uncompressed prior to indexing.
+.TP
+4.
+For ID3v2.x,
+Unicode text that is encoded in either UTF-8 or UTF-16
+(either big- or little-endian)
+is decoded prior to indexing.
+.SS LaTeX Module
+Additional processing is done for LaTeX files.
+If a
+.B \\\\title
+command is found within the first \f(CWTitleLines\f1 lines of the file
+(default is 12),
+then the value of the title is stored in the generated index file as the
+file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.SS Mail Module
+Additional processing is done for mail and news files.
+The additional processing is:
+.TP 4
+1.
+If a
+.B Subject
+header is found within the first \f(CWTitleLines\f1 lines of the file
+(default is 12),
+then the value of the subject is stored in the generated index file
+as the file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces are removed.)
+.TP
+2.
+Words that are the value of a header
+are indexed associated with the header name as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of the header
+are still indexed, but not associated with the header.)
+.IP ""
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+The recommended headers to be indexed are:
+.BR Bcc ,
+.BR Cc ,
+.BR Comments ,
+.BR Content-Description ,
+.BR From ,
+.BR Keywords ,
+.BR Newsgroups ,
+.BR Resent-To ,
+.BR Subject ,
+and
+.BR To .
+.TP
+3.
+MIME attachments are indexed.
+.TP
+4.
+Text that is in the text/enriched content type is converted to plain text
+prior to indexing.
+.TP
+5.
+Text that is encoded as either quoted-printable or base-64
+is decoded prior to indexing.
+.TP
+6.
+Unicode text that is encoded in either the UTF-7 or UTF-8 character set
+is decoded prior to indexing.
+.TP
+7.
+Text in vCards is indexed such that the values of types (fields)
+are associated with the types as meta names.
+.IP ""
+The recommended vCard types (with reassignments) to be indexed are:
+.BR adr=address ,
+.BR categories ,
+.BR class ,
+.BR label=address ,
+.BR fn=name ,
+.BR nickname ,
+.BR note ,
+.BR org ,
+.BR role ,
+and
+.BR title .
+.P
+Indexing mail and news files is most effective
+only when there is exactly one message per file.
+While Usenet news files are usually this way, mail files are not.
+Mail files, e.g., mailboxes, are usually comprised of multiple messages.
+Such files would need to be split up into files of individual messages
+prior to indexing since there's no point in indexing a single mailbox:
+every search result would return a rank of 100 for the same file.
+Therefore, the
+.BR splitmail (1)
+utility is included in the SWISH++ distribution.
+.SS Manual Module
+Additional processing is done for Unix manual page files.
+The additional processing is:
+.TP 4
+1.
+If a
+.B NAME
+section heading macro
+(\f(CW.SH\f1)
+is found within the first \f(CWTitleLines\f1 lines
+of the file (default is 12),
+then the contents of the next line are stored in the generated index file
+as the file's title rather than the file's name.
+(Every non-space whitespace character in the title is converted to a space;
+leading and trailing spaces
+as well as backslash sequences, such as \f(CW\\f2\f1,
+are removed.)
+.TP
+2.
+Words that are in a section are indexed associated with the name of the section
+as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words in a section are still indexed,
+but not associated with the section heading.)
+.IP ""
+Spaces in multi-word section headings are converted to dashes, e.g.,
+``see also'' becomes ``see-also'' as a meta name.
+(See also the
+.BR \-m ,
+.BR \-\-meta ,
+.BR \-M ,
+and
+.B \-\-no-meta
+options or the
+.B IncludeMeta
+or
+.B ExcludeMeta
+variables.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+The recommended sections to be indexed are:
+.BR AUTHOR ,
+.BR BUGS ,
+.BR CAVEATS ,
+.BR DESCRIPTION ,
+.BR DIAGNOSTICS ,
+.BR ENVIRONMENT ,
+.BR ERRORS ,
+.BR EXAMPLES ,
+.BR EXIT-STATUS ,
+.BR FILES ,
+.BR HISTORY ,
+.BR NAME ,
+.BR NOTES ,
+.BR OPTIONS ,
+.BR RETURN-VALUE ,
+.BR SEE-ALSO ,
+.BR SYNOPSIS ,
+and
+.BR WARNINGS .
+.SS RTF Module
+This module simply indexes rich text format files
+without all formatting commands.
+.SH OPTIONS
+Options begin with either a `\f(CW-\f1' for short options
+or a ``\f(CW--\f1'' for long options.
+Either a `\f(CW-\f1' or ``\f(CW--\f1'' by itself explicitly ends the options;
+either short or long options may be used.
+Long option names may be abbreviated
+so long as the abbreviation is unambiguous.
+.P
+For a short option that takes an argument,
+the argument is either taken to be the remaining characters of the same option,
+if any, or, if not, is taken from the next option unless said option begins
+with a `\f(CW-\f1'.
+.P
+Short options that take no arguments can be grouped
+(but the last option in the group can take an argument), e.g.,
+\f(CW-lrv4\fP
+is equivalent to
+\f(CW-l -r -v4\fP.
+.P
+For a long option that takes an argument,
+the argument is either taken to be the characters after a `\f(CW=\fP', if any,
+or, if not, is taken from the next option unless said option begins with
+a `\f(CW-\fP'.
+.TP 20
+.B \-?
+.br
+.ns
+.TP
+.B \-\-help
+Print the usage (``help'') message and exit.
+.TP
+.B \-A
+.br
+.ns
+.TP
+.B \-\-no-assoc-meta
+Do not associate words with meta names.
+.TP
+.BI \-c f
+.br
+.ns
+.TP
+.BI \-\-config-file= f
+The name of the configuration file,
+.IR f ,
+to use.
+(Default is \f(CWswish++.conf\f1 in the current directory.)
+A configuration file is not required:
+if none is specified and the default does not exist, none is used;
+however, if one is specified and it does not exist, then this is an error.
+.TP
+.BI \-C c
+.br
+.ns
+.TP
+.BI \-\-no-class= c
+For HTML or XHTML files only,
+a class name,
+.IR c ,
+of an HTML or XHTML element whose text is not to be indexed.
+Multiple
+.B \-C
+or
+.B \-\-no-class
+options may be specified.
+.TP
+.BI \-e m : p [, p ...]
+.br
+.ns
+.TP
+.BI \-\-pattern= m : p [, p ...]
+A module name,
+.IR m ,
+and a filename pattern (or set of patterns separated by commas),
+.IR p ,
+of files to index.
+Case is irrelevant for the module name,
+but significant for the patterns.
+Multiple
+.B \-e
+or
+.B \-\-pattern
+options may be specified.
+.TP
+.BI \-E p [, p ...]
+.br
+.ns
+.TP
+.BI \-\-no-pattern= p [, p ...]
+A filename pattern (or set of patterns separated by commas),
+.IR p ,
+of files
+.I not
+to index.
+Case is significant.
+Multiple
+.B \-E
+or
+.B \-\-no-pattern
+options may be specified.
+.TP
+.BI \-f n
+.br
+.ns
+.TP
+.BI \-\-word-files= n
+The maximum number of files,
+.IR n ,
+a word may occur in before it is discarded as being too frequent.
+(Default is infinity.)
+.TP
+.BI \-F n
+.br
+.ns
+.TP
+.BI \-\-files-reserve= n
+Reserve space for this number of files,
+.IR n ,
+to start.
+More space will be allocated as necessary,
+but with a slight performance penalty.
+(Default is 1000.)
+.TP
+.BI \-g n
+.br
+.ns
+.TP
+.BI \-\-files-grow= n
+Grow the space for the reserved number of files,
+.IR n ,
+when incrementally indexing.
+The number can either be an absolute number of files
+or a percentage (when followed by a percent sign \f(CW%\f1).
+Just as with the
+.B \-F
+option,
+more space will be allocated as necessary,
+but with a slight performance penalty.
+(Default is 100.)
+.TP
+.B \-H
+.br
+.ns
+.TP
+.B \-\-dump-html
+Dump the built-in set of recognized HTML and XHTML elements
+to standard output and exit.
+.TP
+.BI \-i f
+.br
+.ns
+.TP
+.BI \-\-index-file= f
+The name of the generated index file,
+.I f
+(for new indexes;
+default is \f(CWswish++.index\f1 in the current directory)
+or the old index file when doing incremental indexing.
+.TP
+.B \-I
+.br
+.ns
+.TP
+.B \-\-incremental
+Incrementally add the indexed files and words to an existing index.
+The existing index is not touched;
+instead, a new index is created having the same pathname of the existing index
+with ``\f(CW.new\f1'' appended.
+.TP
+.B \-l
+.br
+.ns
+.TP
+.B \-\-follow-links
+Follow symbolic links during indexing.
+(Default is not to follow them.)
+This option is not available under Microsoft Windows
+since it doesn't support symbolic links.
+.TP
+.BI \-m m [ =n ]
+.br
+.ns
+.TP
+.BI \-\-meta= m [ =n ]
+The value of a meta name,
+.IR m ,
+for which words are to be associated when indexed.
+Case is irrelevant.
+Multiple
+.B \-m
+or
+.B \-\-meta
+options may be specified.
+.IP ""
+A meta name can be reassigned when followed by a new name,
+.IR n ,
+meaning that the name
+.I n
+and not
+.I m
+is stored in the generated index file
+so that queries would use the new name rather than the original.
+.IP ""
+By default, words associated with all meta names are indexed.
+Specifying at least one meta name via this option changes that
+so that only the words associated with a member of the set of meta names
+explicitly specified via one or more
+.B \-m
+or
+.B \-\-meta
+options are indexed.
+.TP
+.BI \-M m
+.br
+.ns
+.TP
+.BI \-\-no-meta= m
+The value of a meta name,
+.IR m ,
+for which words are not to be indexed.
+Case is irrelevant.
+Multiple
+.B \-M
+or
+.B \-\-no-meta
+options may be specified.
+.TP
+.BI \-p n
+.br
+.ns
+.TP
+.BI \-\-word-percent= n
+The maximum percentage,
+.IR n ,
+of files a word may occur in before it is discarded as being too frequent.
+(Default is 100.)
+If you want to keep all words regardless, specify 101.
+.TP
+.B \-r
+.br
+.ns
+.TP
+.B \-\-no-recurse
+Do not recursively index the files in subdirectories,
+that is: when a directory is encountered,
+all the files in that directory are indexed
+(modulo the filename patterns specified via either the
+.BR \-e ,
+.BR \-\-pattern ,
+.BR \-E ,
+or
+.B \-\-no-pattern
+options or the
+.B IncludeFile
+or
+.B ExcludeFile
+variables) but subdirectories encountered are ignored
+and therefore the files contained in them are not indexed.
+This option is most useful when specifying the directories and files to index
+via standard input.
+(Default is to index the files in subdirectories recursively.)
+.TP
+.BI \-s f
+.br
+.ns
+.TP
+.BI \-\-stop-file= f
+The name of a file,
+.IR f ,
+containing the set of stop-words to use instead of the built-in set.
+Whitespace, including blank lines, and characters starting with \f(CW#\f1
+and continuing to the end of the line (comments) are ignored.
+.TP
+.B \-S
+.br
+.ns
+.TP
+.B \-\-dump-stop
+Dump the built-in set of stop-words to standard output and exit.
+.TP
+.BI \-t n
+.br
+.ns
+.TP
+.BI \-\-title-lines= n
+The maximum number of lines,
+.IR n ,
+into a file to look at for a file's title.
+(Default is 12.)
+Larger numbers slow indexing.
+.TP
+.BI \-T d
+.br
+.ns
+.TP
+.BI \-\-temp-dir= d
+The path of the directory,
+.IR d ,
+to use for temporary files.
+The directory must exist.
+(Default is \f(CW/tmp\f1 for Unix
+or \f(CW/temp\f1 for Windows.)
+.IP ""
+If your OS mounts swap space on \f(CW/tmp\f1,
+as indexing progresses and more files get created in \f(CW/tmp\f1,
+you will have less swap space, indexing will get slower,
+and you may run out of memory.
+If this is the case, you should specify a directory on a real filesystem, i.e.,
+one on a physical disk.
+.TP
+.BI \-v n
+.br
+.ns
+.TP
+.BI \-\-verbosity= n
+The verbosity level,
+.IR n ,
+for printing additional information to standard output during indexing.
+The verbosity levels, 0-4, are:
+.P
+.RS 20
+.PD 0
+.TP 4
+0
+No output is generated except for errors.
+(This is the default.)
+.TP
+1
+Only run statistics (elapsed time, number of files, word count) are printed.
+.TP
+2
+Directories are printed as indexing progresses.
+.TP
+3
+Directories and files are printed with a word-count for each file.
+.TP
+4
+Same as 3 but also prints all files that are not indexed and why.
+.RE
+.PD
+.RE
+.TP 20
+.B \-V
+.br
+.ns
+.TP
+.B \-\-version
+Print the version number of
+.B SWISH++
+to standard output and exit.
+.TP
+.BI \-W n
+.br
+.ns
+.TP
+.BI \-\-word-threshold= n
+The word count past which partial indicies are generated and merged
+since all the words are too big to fit into memory at the same time.
+If you index and your machine begins to swap like mad,
+lower this value.
+Only the super-user can specify a value larger
+than the compiled-in default.
+.SH CONFIGURATION FILE
+The following variables can be set in a configuration file.
+Variables and command-line options can be mixed,
+the latter taking priority.
+.P
+.RS 5
+.PD 0
+.TP 20
+.B AssociateMeta
+Same as
+.B \-A
+or
+.B \-\-no-assoc-meta
+.TP
+.B ExcludeClass
+Same as
+.B \-C
+or
+.B \-\-no-class
+.TP
+.B ExcludeFile
+Same as
+.B \-E
+or
+.B \-\-no-pattern
+.TP
+.B ExcludeMeta
+Same as
+.B \-M
+or
+.B \-\-no-meta
+.TP
+.B FilesGrow
+Same as
+.B \-g
+or
+.B \-\-files-grow
+.TP
+.B FilesReserve
+Same as
+.B \-F
+or
+.B \-\-files-reserve
+.TP
+.B FilterAttachment
+(See FILTERS in
+.BR swish++.conf (4).)
+.TP
+.B FilterFile
+(See FILTERS in
+.BR swish++.conf (4).)
+.TP
+.B FollowLinks
+Same as
+.B \-l
+or
+.B \-\-follow-links
+.TP
+.B IncludeFile
+Same as
+.B \-e
+or
+.B \-\-pattern
+.TP
+.B IncludeMeta
+Same as
+.B \-m
+or
+.B \-\-meta
+.TP
+.B Incremental
+Same as
+.B \-I
+or
+.B \-\-incremental
+.TP
+.B IndexFile
+Same as
+.B \-i
+or
+.B \-\-index-file
+.TP
+.B RecurseSubdirs
+Same as
+.B \-r
+or
+.B \-\-no-recurse
+.TP
+.B StopWordFile
+Same as
+.B \-s
+or
+.B \-\-stop-file
+.TP
+.B TempDirectory
+Same as
+.B \-T
+or
+.B \-\-temp-dir
+.TP
+.B TitleLines
+Same as
+.B \-t
+or
+.B \-\-title-lines
+.TP
+.B Verbosity
+Same as
+.B \-v
+or
+.B \-\-verbosity
+.TP
+.B WordFilesMax
+Same as
+.B \-f
+or
+.B \-\-word-files
+.TP
+.B WordPercentMax
+Same as
+.B \-p
+or
+.B \-\-word-percent
+.TP
+.B WordThreshold
+Same as
+.B \-W
+or
+.B \-\-word-threshold
+.PD
+.RE
+.SH EXAMPLES
+.SS Unix Command-Lines
+All these example assume you change your working directory
+to your web server's document root prior to indexing.
+.P
+To index all HTML and text files on a web server:
+.cS
+index -v3 -e 'html:*.*htm*' -e 'text:*.txt' .
+.cE
+To index all files not under directories named \f(CWCVS\f1:
+.cS
+find . -name CVS -prune -o -type f -a -print | index -e 'html:*.*htm*' -
+.cE
+.SS Windows Command-Lines
+When using the Windows command interpreter,
+single quotes around filename patterns don't work; you
+.I must
+use double quotes:
+.cS
+index -v3 -e "html:*.*htm*" -e "text:*.txt" .
+.cE
+This is a problem with Windows, not SWISH++.
+(Double quotes will also work under Unix.)
+.SS Using \f(CWCLASS\fP Attributes to Index HTML Selectively
+In an HTML or XHTML document, there may be sections that should not be indexed.
+For example, if every page of a web site contains a navigation menu such as:
+.cS
+<SELECT NAME="menu">
+  <OPTION>Home
+  <OPTION>Automotive
+  <OPTION>Clothing
+  <OPTION>Hardware
+</SELECT>
+.cE
+or a common header and footer, then, ordinarily,
+those words would be indexed for every page and therefore be discarded
+because they would be too frequent.
+However, via either the
+.B \-C
+or
+.B \-\-no-class
+option or the
+.B ExcludeClass
+variable, one or more class names can be specified
+and then HTML or XHTML elements belonging to one of those classes
+will not have the text up to the tag that ends them indexed.
+Given a class name of, say, \f(CWno_index\f1, the above menu can be changed to:
+.cS
+<SELECT NAME="menu" CLASS="no_index">
+.cE
+and then everything up to the \f(CW</SELECT>\f1 tag will not be indexed.
+.P
+For an HTML element that has an optional end tag
+(such as the \f(CW<P>\f1 element),
+the text up to the tag that ends it will not be indexed,
+which is either the element's own end tag
+or a tag of some other element that implicitly ends it.
+For example, in:
+.cS
+<P CLASS="no_index">
+This was the poem that Alice read:
+<BLOCKQUOTE>
+  <B>Jabberwocky</B><BR>
+  `Twas brillig, and the slithy toves<BR>
+  Did gyre and gimble in the wabe;<BR>
+  All mimsy were the borogoves,<BR>
+  And the mome raths outgrabe.
+</BLOCKQUOTE>
+.cE
+the \f(CW<BLOCKQUOTE>\f1 tag implicitly ends the \f(CW<P>\f1 element
+(as do all block-level elements)
+so the only text that is not indexed above is:
+``This was the poem that Alice read.''
+.P
+For an HTML or XHTML element that does not have an end tag,
+only the text within the start tag will not be indexed.
+For example, in:
+.cS
+<IMG SRC="home.gif" ALT="Home" CLASS="no_index">
+.cE
+the word ``Home'' will not be indexed even though it ordinarily would have been
+if the \f(CWCLASS\f1 attribute were not there.
+.SS Filters
+(See Filters under EXAMPLES in
+.BR swish++.conf (4).)
+.SH EXIT STATUS
+Exits with one of the values given below:
+.P
+.RS 5
+.PD 0
+.TP 5
+0
+Success.
+.TP
+1
+Error in configuration file.
+.TP
+2
+Error in command-line options.
+.TP
+10
+Unable to open temporary file.
+.TP
+11
+Unable to write index file.
+.TP
+12
+Unable to write temporary file.
+.TP
+13
+Root-only operation attempted.
+.TP
+30
+Unable to read stop-word file.
+.TP
+40
+Unable to read index file.
+.TP
+127
+Internal error.
+.PD
+.RE
+.SH CAVEATS
+.TP 4
+1.
+Generated index files are machine-dependent
+(size of data types and byte order).
+.TP
+2.
+The word-determination heuristics employed are heavily geared for English.
+Using SWISH++ as-is to index and search files in non-English languages
+is not recommended.
+.TP
+3.
+Unless otherwise noted above,
+the character encoding always used is ISO 8859-1 (Latin 1).
+Character encodings that are specified in HTML or XHTML files are ignored.
+.TP
+4.
+An e-mail message can have both an encoding and a non-ASCII or non-ISO-8859-1
+charset simultaneously, e.g., base64-encoded UTF-8.
+(In practice, this particular case should never happen
+since UTF-7 should be used instead; but you get the idea.)
+.IP ""
+However, handling both an encoding and such a charset simultaneously
+is problematic;
+hence, an e-mail message or attachment can have
+either an encoding or a non-ASCII or a non-ISO-8859-1 character set,
+but not both.
+If it does, the encoding takes precedence.
+.SH FILES
+.PD 0
+.TP 18
+\f(CWswish++.conf\f1
+default configuration file name
+.TP
+\f(CWswish++.index\f1
+default index file name
+.PD
+.SH ENVIRONMENT
+.TP 10
+\f(CWTMPDIR\f1
+If set,
+the default path of the directory to use for temporary files.
+The directory must exist.
+This is superseded by either the
+.B \-T
+or
+.B \-\-temp-dir
+option or the
+.B TempDirectory
+variable.
+.SH SEE ALSO
+.BR extract (1),
+.BR find (1),
+.BR nroff (1),
+.BR search (1),
+.BR splitmail (1),
+.BR swish++.conf (4),
+.BR glob (7),
+.BR man (7).
+.P
+Tim Berners-Lee.
+``The text/enriched MIME Content-type,''
+.IR "Request for Comments 1563" ,
+Network Working Group of the Internet Engineering Task Force,
+January 1994.
+.P
+David H. Crocker.
+``Standard for the Format of ARPA Internet Text Messages,''
+.IR "Request for Comments 822" ,
+Department of Electrical Engineering,
+University of Delaware,
+August 1982.
+.P
+Frank Dawson and Tim Howes.
+``vCard MIME Directory Profile,''
+.IR "Request for Comments 2426" ,
+Network Working Group of the Internet Engineering Task Force,
+September 1998.
+.P
+Ned Freed and Nathaniel S. Borenstein.
+``Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,''
+.IR "Request for Comments 2045" ,
+RFC 822 Extensions Working Group of the Internet Engineering Task Force,
+November 1996.
+.P
+David Goldsmith and Mark Davis.
+``UTF-7, a mail-safe transformation format of Unicode,''
+.IR "Request for Comments 2152" ,
+Network Working Group of the Internet Engineering Task Force,
+May 1997.
+.P
+International Standards Organization.
+.I ISO 8859-1: Information Processing
+.I -- 8-bit single-byte coded graphic character sets
+.I -- Part 1: Latin alphabet No. 1,
+1987.
+.P
+\-\-.
+.I ISO 8879: Information Processing
+.I -- Text and Office Systems
+.I -- Standard Generalized Markup Language (SGML),
+1986.
+.P
+\-\-.
+.I ISO/IEC 9945-2: Information Technology
+.I -- Portable Operating System Interface (POSIX)
+.I -- Part 2: Shell and Utilities,
+1993.
+.P
+Leslie Lamport.
+.IR "LaTeX: A Document Preparation System, 2nd ed." ,
+Addison-Wesley, Reading, MA,
+1994.
+.P
+Martin Nilsson.
+.IR "ID3 tag version 2" ,
+March 1998.
+.P
+\-\-.
+.IR "ID3 tag version 2.3.0" ,
+February 1999.
+.P
+\-\-.
+.IR "ID3 tag version 2.4.0 - Main Structure" ,
+November 2002.
+.P
+\-\-.
+.IR "ID3 tag version 2.4.0 - Native Frames" ,
+November 2002.
+.P
+Steven Pemberton, et al.
+.IR "XHTML 1.0: The Extensible HyperText Markup Language" ,
+World Wide Web Consortium,
+January 2000.
+.P
+Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
+``On SGML and HTML: SGML constructs used in HTML: Entities,''
+.I HTML 4.0 Specification, \(sc3.2.3,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``The global structure of an HTML document: The document head: The \f(CWtitle\f1 attribute,''
+.I HTML 4.0 Specification, \(sc7.4.3,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``The global structure of an HTML document: The document head: Meta data,''
+.I HTML 4.0 Specification, \(sc7.4.4,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``The global structure of an HTML document: The document body: Element identifiers: the \f(CWid\f1 and \f(CWclass\f1 attributes,''
+.I HTML 4.0 Specification, \(sc7.5.2,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``Tables: Elements for constructing tables: The \f(CWTABLE\f1 element,''
+.I HTML 4.0 Specification, \(sc11.2.1,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``Objects, Images, and Applets: Generic inclusion: the \f(CWOBJECT\f1 element,''
+.I HTML 4.0 Specification, \(sc13.3,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``Objects, Images, and Applets: How to specify alternate text,''
+.I HTML 4.0 Specification, \(sc13.8,
+World Wide Web Consortium,
+April 1998.
+.P
+\-\-.
+``Index of Elements,''
+.I HTML 4.0 Specification,
+World Wide Web Consortium,
+April 1998.
+.P
+Marcin Sawicki, et al.
+.IR "Ruby Annotation" ,
+World Wide Web Consortium,
+April 2001.
+.P
+The Unicode Consortium.
+``Encoding Forms,''
+.I The Unicode Standard 3.0, \(sc2.3,
+Addison-Wesley,
+2000.
+.P
+Francois Yergeau.
+``UTF-8, a transformation format of ISO 10646,''
+.IR "Request for Comments 2279" ,
+Network Working Group of the Internet Engineering Task Force,
+January 1998.
+.SH AUTHOR
+Paul J. Lucas
+.RI < pauljlucas@mac.com >
