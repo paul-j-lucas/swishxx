@@ -42,21 +42,16 @@ USAGE="usage: $ME [-c conf_file] [-s search_path]"
 ##
 # Parse command-line options.
 ##
-while getopts c:s: opt
+while getopts Bc:s: opt
 do
     case $opt in
+    B) NO_BACKGROUND=true ;;
     c) CONF_FILE="$OPTARG" ;;
     s) SEARCH="$OPTARG" ;;
     ?) echo $USAGE >&2; exit 1 ;;
     esac
 done
 shift `expr $OPTIND - 1`
-
-##
-# Check for existence of search.
-##
-[ -z "$SEARCH" ] && SEARCH="$SEARCH_DEFAULT"
-[ -f "$SEARCH" ] || { echo "$ME: $SEARCH not found" >&2; exit 2; }
 
 ##
 # Check for existence of configuration file.
@@ -75,11 +70,24 @@ else
 fi
 
 ##
+# Check for existence of search.
+##
+[ -z "$SEARCH" ] && SEARCH="$SEARCH_DEFAULT"
+[ -f "$SEARCH" ] || { echo "$ME: $SEARCH not found" >&2; exit 2; }
+
+##
 # Determine the numeric value for SIGUSR2 that we use to kill search.  By using
 # a user-generated signal, if search gets killed and it was killed by SIGUSR2,
 # then it MUST have been done by manual request.
 ##
 USR2=`kill -l USR2 2>&1`
+
+##
+# If we haven't already put ourselves into the background, call ourselves in
+# the background (the child process) and immediately exit (as the parent
+# process).  This is effectively how to fork(2) in shell.
+##
+[ -z "$NO_BACKGROUND" ] && { $0 -B -c "$CONF_FILE" -s "$SEARCH" & exit 0; }
 
 ##
 # Start search as a daemon and wait for it to exit.  If it exited because of a
