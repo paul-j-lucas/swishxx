@@ -115,7 +115,7 @@ is an integer from from 1 to 100.
 The
 .I path-name
 is relative to where the set of files was originally indexed.
-If the file is an HTML file, then
+If the file is an HTML or XHTML file, then
 .I file-title
 is its title;
 otherwise, it is its filename.
@@ -606,24 +606,24 @@ The query:
 .cS
 author = carroll
 .cE
-will return only those HTML documents
+will return only those HTML or XHTML documents
 whose author attribute contains ``carroll.''
 The query:
 .cS
 author = stevenson treasure
 .cE
-will return only those HTML documents
+will return only those HTML or XHTML documents
 whose author attribute contains ``stevenson'' and also regarding treasure.
 The query:
 .cS
 author = (lewis carroll)
 .cE
-will return only those HTML documents whose author is Lewis Carroll.
+will return only those HTML or XHTML documents whose author is Lewis Carroll.
 The query:
 .cS
 author = (lewis carroll) or wonderland
 .cE
-will return only those HTML documents whose author is Lewis Carroll
+will return only those HTML or XHTML documents whose author is Lewis Carroll
 or that contain the word ``wonderland'' anywhere in the document
 regardless of the author.
 .SS Sending Queries to a Search Daemon
