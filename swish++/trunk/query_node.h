@@ -301,6 +301,7 @@ private:
 
 ////////// inlines ////////////////////////////////////////////////////////////
 
+#ifdef	FEATURE_word_pos
 inline near_node* near_node::distributor::make_node(
 	pool_type &pool, query_node *left, query_node *right
 ) const {
@@ -308,6 +309,7 @@ inline near_node* near_node::distributor::make_node(
 		new not_near_node( pool, left, right ) :
 		new     near_node( pool, left, right ) ;
 }
+#endif
 
 #endif	/* query_node_H */
 /* vim:set noet sw=8 ts=8: */
