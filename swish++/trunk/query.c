@@ -604,8 +604,7 @@ no_put_back:
 //		(mouse and computer) and keyboard
 //		  25%         25%           50%
 //
-//	The problem is that the last term always gets 50% of the weighting and
-//	the rest get 50% divided by the number of terms minus 1.
+//	The problem is that the last term always gets 50% of the weighting.
 //
 //	In order to weight all the terms equally, the "and" results for each
 //	term are saved in a list and then and'ed together at the end.
