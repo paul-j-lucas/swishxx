@@ -1,30 +1,30 @@
-<HTML>
-<!-----------------------------------------------------------------------------
--
-- NAME
--
--	search.html
--
-- DESCRIPTION
--
--	This is a toy example HTML form to show how to interface SWISH++ to a
--	web-based search form.
--
-- SEE ALSO
--
--	search(1), www(3)
--
------------------------------------------------------------------------------->
-
+<HTML LANG="en-US">
 <HEAD>
-<TITLE>Sample Search Form</TITLE>
+<TITLE>Sample SWISH++ Search Form</TITLE>
+<META NAME="description" CONTENT="
+	This is a toy example HTML form to show how to interface SWISH++ to a
+	web-based search form.
+">
+<META NAME="Author" CONTENT="Paul J. Lucas">
 </HEAD>
-
 <BODY>
 
-<FORM METHOD=get ACTION="search.cgi">
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function require( the_field ) {
+	if ( the_field.value == "" ) {
+		alert( "The " + the_field.name + " field is required." );
+		the_field.focus();
+		return false;
+	}
+	return true;
+}
+// -->
+</SCRIPT>
+
+<FORM ACTION="search.cgi" onSubmit="return require( Search )">
 <B>Search:</B>
-<INPUT TYPE=text NAME=search SIZE=30>
+<INPUT TYPE=text NAME=Search SIZE=30>
 <INPUT TYPE=submit VALUE="Search">
 </FORM>
 
