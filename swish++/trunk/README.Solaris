@@ -24,7 +24,7 @@
 	state.
 
 	Under sustained heavy load, the server will run out of
-	ephemeral ports for sockets because they will be needed for new
+	resources for sockets because they will be needed for new
 	requests faster than they are coming out of TIME-WAIT.
 
 
@@ -43,8 +43,8 @@
 		ndd -set /dev/tcp tcp_smallest_anon_port 1024
 
 	The above two changes will buy the server more time before it
-	runs out of ephemeral ports, but under sustained heavy load, it
-	will still run out eventually.
+	runs out of socket resources, but under sustained heavy load,
+	it will still run out eventually.
 
 	The best thing to do is to ensure that any search(1) clients
 	you write call shutdown(2) after they have finished sending
