@@ -36,14 +36,17 @@
 
 //
 // POSIX.1 is, IMHO, brain-damaged in the way it makes you determine the
-// maximum file-name length, so we'll simply pick a sufficiently large
-// constant.  See also: W. Richard Stevens.  "Advanced Programming in the Unix
+// maximum path-name length, so we'll simply pick a sufficiently large constant
+// such as 1024.  In practice, this is the actual value used on many SVR4 as
+// well as 4.3+BSD systems.
+//
+// See also: W. Richard Stevens.  "Advanced Programming in the Unix
 // Environment," Addison-Wesley, Reading, MA, 1993.  pp. 34-42.
 //
-#ifdef	NAME_MAX
-#undef	NAME_MAX
+#ifdef	PATH_MAX
+#undef	PATH_MAX
 #endif
-int const	NAME_MAX = 255;
+int const		PATH_MAX = 1024;
 
 // local
 #include "config.h"
