@@ -28,7 +28,6 @@
 #include <cstring>
 #include <ctime>
 #include <fcntl.h>
-#include <fstream>
 #include <iostream>
 #include <sys/socket.h>			/* for recv(3) */
 #include <unistd.h>			/* for close(2) */
@@ -56,6 +55,7 @@
 #endif
 
 // local
+#include "fdbuf.h"
 #include "platform.h"
 #include "search.h"
 #include "search_thread.h"
@@ -102,10 +102,11 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		cerr << "query=" << buf << endl;
 #		endif
 
-		char*		argv_vec[ ARG_MAX ];
-		char**		argv = argv_vec;
-		int		argc = split_args( buf, argv, ARG_MAX );
-		ofstream	out( arg.i );
+		char*	argv_vec[ ARG_MAX ];
+		char**	argv = argv_vec;
+		int	argc = split_args( buf, argv, ARG_MAX );
+		fdbuf	buf( arg.i );
+		ostream	out( &buf );
 
 		if ( !argc )
 			out << usage;
