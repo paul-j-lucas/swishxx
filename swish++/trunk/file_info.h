@@ -23,11 +23,11 @@
 #define	file_info_H
 
 // standard
-#include <cstddef>				/* for size_t */
-#include <iostream>
+#include <cstddef>			/* for size_t */
 #include <vector>
 
 // local
+#include "fake_ansi.h"			/* for std */
 #include "my_set.h"
 
 //*****************************************************************************
@@ -50,34 +50,40 @@ public:
 	typedef PJL::char_ptr_set name_set_type;
 
 	file_info(
-		char const *file_name, size_t file_size, char const *title,
+		char const *path_name, size_t file_size, char const *title,
 		int num_words = 0
 	);
+	file_info(
+		char const *path_name, int dir_index, size_t file_size,
+		char const *title, int num_words
+	);
 
+	int			dir_index() const	{ return dir_index_; }
 	char const*		file_name() const	{ return file_name_; }
 	int			num_words() const	{ return num_words_; }
-	size_t			size() const		{ return size_; }
+	size_t			size() const    	{ return size_; }
 	char const*		title() const		{ return title_; }
 
-	static const_iterator	begin()			{ return list_.begin();}
-	static const_iterator	end()			{ return list_.end(); }
+	static const_iterator	begin()		{ return list_.begin();}
+	static const_iterator	end()		{ return list_.end(); }
 	static int		current_index()	{ return list_.size() - 1; }
-	static void		inc_words()	{ ++list_.back()->num_words_; }
-	static file_info*	ith_info( int i )	{ return list_[ i ]; }
-	static int		num_files()		{ return list_.size(); }
-	static std::ostream&	out( std::ostream&, char const* );
-	static file_info*	parse( char const* );
+	static void		inc_words() 	{ ++list_.back()->num_words_; }
+	static file_info*	ith_info( int i ) { return list_[ i ]; }
+	static int		num_files()	{ return list_.size(); }
 	static bool		seen_file( char const *file_name ) {
 					return name_set_.contains( file_name );
 				}
 private:
 	char const *const	file_name_;
+	int const		dir_index_;
 	int			num_words_;
 	size_t const		size_;
 	char const *const	title_;
 
 	static list_type	list_;
 	static name_set_type	name_set_;
+
+	void			construct();
 };
 
 #endif	/* file_info_H */
