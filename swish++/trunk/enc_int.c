@@ -70,15 +70,15 @@ using namespace std;
 //	Write an unsigned integer to the given ostream in an encoded format.
 //	The format uses a varying number of bytes.  For a given byte, only the
 //	lower 7 bits are used for data; the high bit, if set, is used to
-//	indicate whether the number continues into the next byte.  The encoded
-//	number is written to the given ostream starting with the most
+//	indicate whether the integer continues into the next byte.  The encoded
+//	integer is written to the given ostream starting with the most
 //	significant byte.
 //
 // PARAMETERS
 //
 //	o	The ostream to write to.
 //
-//	n	The number to be written.
+//	n	The integer to be written.
 //
 // RETURN VALUE
 //
@@ -88,7 +88,7 @@ using namespace std;
 {
 	unsigned char buf[ 20 ];
 	//
-	// Encode the number (in reverse because it's easier) just like atoi().
+	// Encode the integer (in reverse because it's easier) just like atoi().
 	//
 	register unsigned char *p = buf + sizeof buf;
 	do {
