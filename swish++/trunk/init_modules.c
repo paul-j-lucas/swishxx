@@ -20,6 +20,7 @@
 */
 
 // local
+#include "indexer.h"
 #ifdef	MOD_HTML
 #include "mod_html.h"
 #endif
@@ -28,10 +29,6 @@
 #endif
 #ifdef	MOD_MAN
 #include "mod_man.h"
-#endif
-
-#ifndef	PJL_NO_NAMESPACES
-using namespace std;
 #endif
 
 //*****************************************************************************
