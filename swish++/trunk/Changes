@@ -18,6 +18,40 @@ day job.
 
 
 *******************************************************************************
+4.6.4
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* File having path names longer than 255 characters weren't indexed.
+
+  (This bug fix shall be known as bug fix PATH.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* do_file.c
+* extract.c
+* index.c
+
+	1. Performed the following substitution for bug fix PATH:
+
+		s/NAME_MAX/PATH_MAX/
+
+* util.h
+
+	1. Performed the following substitution for bug fix PATH:
+
+		s/NAME_MAX = 255/PATH_MAX = 1024/
+
+* version.h
+
+	1. Updated version to "4.6.4".
+
+
+*******************************************************************************
 4.6.3
 *******************************************************************************
 
