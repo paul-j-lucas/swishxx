@@ -65,6 +65,9 @@ public:
 				meta_ids_.insert( meta_id );
 		}
 
+		// default "file( file const& )" is ok
+		// default "file& operator=( file const& )" is ok
+
 		void	write_meta_ids( std::ostream& ) const;
 	};
 
