@@ -33,6 +33,9 @@ static option_stream::spec const opt_spec[] = {
 	"format",		1, 'F',
 	"max-results",		1, 'm',
 	"dump-meta",		0, 'M',
+#ifdef	FEATURE_word_pos
+	"near",			1, 'n',
+#endif
 	"word-percent",		1, 'p',
 	"skip-results",		1, 'r',
 	"separator",		1, 'R',
