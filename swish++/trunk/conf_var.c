@@ -146,6 +146,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"verbosity",
 			"wordfilesmax",
 			"wordpercentmax",
+			"wordthreshold",
 #ifdef	SEARCH_DAEMON
 			"group",
 			"pidfile",
