@@ -8,12 +8,12 @@
 **	it under the terms of the GNU General Public License as published by
 **	the Free Software Foundation; either version 2 of the License, or
 **	(at your option) any later version.
-** 
+**
 **	This program is distributed in the hope that it will be useful,
 **	but WITHOUT ANY WARRANTY; without even the implied warranty of
 **	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **	GNU General Public License for more details.
-** 
+**
 **	You should have received a copy of the GNU General Public License
 **	along with this program; if not, write to the Free Software
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -23,12 +23,8 @@
 #define mmap_file_H
 
 // standard
-#include <cstddef>			/* for size_t */
+#include <cstddef>			/* for ptrdiff_t, size_t */
 #include <iterator>
-
-#ifdef	WIN32
-#include <windows.h>
-#endif
 
 //
 // Some C headers on some implementations define open/close as macros to remap
@@ -69,11 +65,7 @@
 public:
 	////////// typedefs ///////////////////////////////////////////////////
 
-#ifdef	WIN32
-	typedef DWORD size_type;
-#else
 	typedef size_t size_type;
-#endif
 	typedef ptrdiff_t difference_type;
 	typedef char value_type;
 	typedef value_type* pointer;
@@ -144,11 +136,7 @@ public:
 	}
 private:
 	size_type	size_;
-#ifdef	WIN32
-	HANDLE		fd_, map_;
-#else
 	int		fd_;			// Unix file descriptor
-#endif
 	void		*addr_;
 	int		errno_;
 	void		init();

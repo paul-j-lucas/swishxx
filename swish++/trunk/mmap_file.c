@@ -8,12 +8,12 @@
 **	it under the terms of the GNU General Public License as published by
 **	the Free Software Foundation; either version 2 of the License, or
 **	(at your option) any later version.
-** 
+**
 **	This program is distributed in the hope that it will be useful,
 **	but WITHOUT ANY WARRANTY; without even the implied warranty of
 **	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **	GNU General Public License for more details.
-** 
+**
 **	You should have received a copy of the GNU General Public License
 **	along with this program; if not, write to the Free Software
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -22,12 +22,10 @@
 // standard
 #include <cerrno>
 #include <fcntl.h>			/* for open(2), O_RDONLY, etc */
-#ifndef	WIN32
 #include <ctime>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/mman.h>			/* for mmap(2) */
 #include <sys/resource.h>		/* for get/setrlimit(2) */
-#endif
 #include <sys/stat.h>			/* for stat(2) */
 #include <unistd.h>			/* for close(2) */
 #if	defined( MULTI_THREADED ) && defined( RLIMIT_VMEM )
@@ -86,19 +84,10 @@ using namespace std;
 //
 //*****************************************************************************
 {
-#ifdef	WIN32
-	if ( addr_ )
-		::UnmapViewOfFile( addr_ );
-	if ( map_ )
-		::CloseHandle( map_ );
-	if ( fd_ )
-		::CloseHandle( fd_ );
-#else
 	if ( addr_ )
 		::munmap( static_cast<char*>( addr_ ), size_ );
 	if ( fd_ )
 		::close( fd_ );
-#endif
 	init();
 }
 
@@ -134,9 +123,6 @@ using namespace std;
 
 	size_ = 0;
 	fd_ = 0;
-#ifdef	WIN32
-	map_ = 0;
-#endif
 	addr_ = 0;
 	errno_ = 0;
 }
@@ -163,41 +149,6 @@ using namespace std;
 {
 	close();
 
-#ifdef	WIN32
-
-	fd_ = ::CreateFile( path,
-		mode & ios::out ? GENERIC_WRITE : GENERIC_READ,
-		0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if ( fd_ == INVALID_HANDLE_VALUE ) {
-		fd_ = 0;
-		errno_ = 1;
-		return false;
-	}
-
-	if ( ( size_ = ::GetFileSize( fd_, 0 ) ) == 0xFFFFFFFF ) {
-		errno_ = 2;
-		return false;
-	}
-
-	map_ = ::CreateFileMapping( fd_, NULL,
-		mode & ios::out ? PAGE_READWRITE : PAGE_READONLY,
-		0, 0, NULL
-	);
-	if ( !map_ ) {
-		errno_ = 3;
-		return false;
-	}
-
-	addr_ = ::MapViewOfFile( map_,
-		mode & ios::out ? FILE_MAP_WRITE : FILE_MAP_READ,
-		0, 0, 0
-	);
-	if ( !addr_ ) {
-		errno_ = 4;
-		return false;
-	}
-#else
 	struct stat stat_buf;
 	if ( ::stat( path, &stat_buf ) == -1 ) {
 		errno_ = errno;
@@ -238,8 +189,6 @@ using namespace std;
 		errno_ = errno;
 		return false;
 	}
-
-#endif	/* WIN32 */
 
 	return true;
 }

@@ -8,12 +8,12 @@
 **	it under the terms of the GNU General Public License as published by
 **	the Free Software Foundation; either version 2 of the License, or
 **	(at your option) any later version.
-** 
+**
 **	This program is distributed in the hope that it will be useful,
 **	but WITHOUT ANY WARRANTY; without even the implied warranty of
 **	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **	GNU General Public License for more details.
-** 
+**
 **	You should have received a copy of the GNU General Public License
 **	along with this program; if not, write to the Free Software
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -30,11 +30,9 @@
 #include <map>
 #include <set>
 #include <string>
-#ifndef	WIN32
 #include <ctime>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>		/* for RLIMIT_* */
-#endif
 #include <utility>			/* for pair<> */
 #include <vector>
 
@@ -554,7 +552,7 @@ inline omanip< char const* > index_file_info( int index ) {
 					search_results_type::const_iterator
 						found = result.find( i->first );
 					if ( found != result.end() )
-						result2[ found->first ] = 
+						result2[ found->first ] =
 						(found->second + i->second) / 2;
 				}
 				result.swap( result2 );
