@@ -268,7 +268,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 //
 // DESCRIPTION
 //
-//	Decode the character at the iterator's currend position according to
+//	Decode the character at the iterator's current position according to
 //	the character range's content-transfer-encoding.
 //
 // RETURN VALUE
