@@ -20,7 +20,6 @@
 */
 
 // standard
-#include <algorithm>			/* for transform() */
 #include <cctype>
 #include <cstring>
 
@@ -119,10 +118,7 @@ using namespace std;
 
 	if ( in_word ) {
 		t.buf_[ t.len_ ] = '\0';
-		::transform(
-			t.buf_, t.buf_ + t.len_ + 1,
-			t.lower_buf_, static_cast<char (*)(char)>( to_lower )
-		);
+		to_lower( t.lower_buf_, t.buf_ );
 		if ( t.type_ )
 			return ts;
 
