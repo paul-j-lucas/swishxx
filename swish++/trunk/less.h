@@ -34,7 +34,7 @@
 // SYNOPSIS
 //
 	template<> struct less< char const* > :
-		binary_function< char const*, char const*, bool >
+		std::binary_function< char const*, char const*, bool >
 //
 // DESCRIPTION
 //
