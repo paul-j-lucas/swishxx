@@ -69,7 +69,7 @@ using namespace std;
 
 	//
 	// Check a filter command's %@ substitutions to ensure they're valid,
-	// that there are at least two of them and that exactly one of them is
+	// that there are at least two of them, and that exactly one of them is
 	// a @ meaning the target filename.  Also ignore %% or @@ respresenting
 	// literal @ or %, respectively.
 	//
