@@ -39,7 +39,9 @@ Building SWISH++ for Microsoft Windows 95/98/NT
 	volunteers to port it.
 
 1. Edit the "config.h" file to your liking.  This file controls how the
-   software runs.
+   software runs.  You REALLY need to understand and properly set TempDirectory
+   and Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
+   it should only take minutes.
 
 2. Copy the file "platform.h.win32" to "platform.h".
 
