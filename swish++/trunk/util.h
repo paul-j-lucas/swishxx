@@ -24,16 +24,29 @@
 
 // standard
 #include <cctype>
+#include <cerrno>
+#include <climits>
 #include <cstring>
 #include <string>
 #include <sys/stat.h>
+
+//
+// POSIX.1 is, IMHO, brain-damaged in the way it makes you determine the
+// maximum file-name length, so we'll simply pick a sufficiently large
+// constant.  See also: W. Richard Stevens.  "Advanced Programming in the Unix
+// Environment," Addison-Wesley, Reading, MA, 1993.  pp. 34-42.
+//
+#ifdef	NAME_MAX
+#undef	NAME_MAX
+#endif
+int const	NAME_MAX = 255;
 
 // local
 #include "config.h"
 #include "file_vector.h"
 #include "platform.h"				/* for PJL_NO_SYMBOLIC_LINKS */
 
-extern struct stat	stat_buf;		// somplace to do a stat(2) in
+extern char const*	me;
 
 //*****************************************************************************
 //
@@ -70,163 +83,15 @@ private:
 
 //*****************************************************************************
 //
-// SYNOPSIS
-//
-	inline bool is_html_ext( char const *ext )
-//
-// DESCRIPTION
-//
-//	Checks the given filename extension to see if it is one used for HTML
-//	files: html, htm, or shtml.  Case is significant.
-//
-// PARAMETERS
-//
-//	ext	The filename extension to be checked.
-//
-// RETURN VALUE
-//
-//	Returns true only if the filename extension is one used for HTML
-//	files.
-//
-//*****************************************************************************
-{
-	int const i = ext[0] == 's';		// This is faster than calling
-	return	 ext[ i ] == 'h' &&		// strcmp() multiple times.
-		 ext[i+1] == 't' &&
-		 ext[i+2] == 'm' &&
-		(ext[i+3] == 'l' && !ext[i+4] ||
-		!ext[i+3] && !i);
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline bool is_vowel( char c )
-//
-// DESCRIPTION
-//
-//	Determine whether a character is a lower-case vowel [aeiou].
-//
-// PARAMETERS
-//
-//	c	The character to be checked.
-//
-// RETURN VALUE
-//
-//	Returns true only if the character is a vowel.
-//
-//*****************************************************************************
-{
-	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline bool is_word_char( char c )
-//
-// DESCRIPTION
-//
-//	Check whether a given character is a "word character," one that is
-//	valid to be in a word.
-//
-// PARAMETERS
-//
-//	c	The character to be checked.
-//
-// RETURN VALUE
-//
-//	Returns true only if the character is a "word character."
-//
-//*****************************************************************************
-{
-	return c > 0 &&
-#	if OPTIMIZE_WORD_CHARS
-	( isalnum( c ) ||
-		//
-		// If you change Word_Chars in config.h from the default set
-		// but would like to keep the optimization, edit the line below
-		// to compare 'c' against every non-alphanumeric character in
-		// your set of Word_Chars.
-		//
-		c == '&' || c == '\'' || c == '-' || c == '_'
-	);
-#	else
-	std::strchr( Word_Chars, tolower( c ) ) != 0;
-#	endif
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline bool is_word_begin_char( char c )
-//
-// DESCRIPTION
-//
-//	Check whether a given character is a "word beginning character," one
-//	that is valid to begin a word.
-//
-// PARAMETERS
-//
-//	c	The character to be checked.
-//
-// RETURN VALUE
-//
-//	Returns true only if the character is a "word beginning character."
-//
-//*****************************************************************************
-{
-#	if OPTIMIZE_WORD_BEGIN_CHARS
-	//
-	// If you change Word_Begin_Chars in config.h from the default set but
-	// would like to keep the optimization, edit the line below to compare
-	// 'c' against every character in your set of Word_Begin_Chars.
-	//
-	return isalnum( c );
-#	else
-	return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
-#	endif
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline bool is_word_end_char( char c )
-//
-// DESCRIPTION
-//
-//	Check whether a given character is a "word ending character," one
-//	that is valid to end a word.
-//
-// RETURN VALUE
-//
-//	Returns true only if the character is a "word ending character."
-//
-//*****************************************************************************
-{
-#	if OPTIMIZE_WORD_END_CHARS
-	//
-	// Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
-	//
-	return isalnum( c );
-#	else
-	return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
-#	endif
-}
-
-//*****************************************************************************
-//
 //	File test functions.  Those that do not take an argument operate on
 //	the last file stat'ed.
 //
 //*****************************************************************************
 
+extern struct stat	stat_buf;		// somplace to do a stat(2) in
+
 inline bool	file_exists( char const *path ) {
-			return ::stat( path, &stat_buf ) != -1;
+			return std::stat( path, &stat_buf ) != -1;
 		}
 inline bool	file_exists( std::string const &path ) {
 			return file_exists( path.c_str() );
@@ -243,7 +108,7 @@ inline bool	is_directory( std::string const &path ) {
 		}
 
 inline bool	is_plain_file() {
-			return S_ISREG( stat_buf.st_mode & S_IFMT );
+			return S_ISREG( stat_buf.st_mode );
 		}
 inline bool	is_plain_file( char const *path ) {
 			return file_exists( path ) && is_plain_file();
@@ -257,7 +122,7 @@ inline bool	is_symbolic_link() {
 			return S_ISLNK( stat_buf.st_mode & S_IFLNK );
 		}
 inline bool	is_symbolic_link( char const *path ) {
-			return	::lstat( path, &stat_buf ) != -1
+			return	std::lstat( path, &stat_buf ) != -1
 				&& is_symbolic_link();
 		}
 inline bool	is_symbolic_link( std::string const &path ) {
@@ -271,28 +136,30 @@ inline bool	is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
-#define	ERROR		cerr << me << ": error: "
+inline ostream&		error( ostream &o = cerr ) {
+				return o << me << ": error: ";
+			}
+inline ostream&		error_string( ostream &o = cerr ) {
+				return o << ": " << std::strerror( errno )
+					<< endl;
+			}
 
 extern void		get_index_info(
-				file_vector<char> const &file, int i,
+				file_vector const &file, int i,
 				long *n, off_t const **offset
 			);
 
-extern bool		is_ok_word( char const *word );
-
+void			max_out_limit( int resource );
 inline char*		new_strdup( char const *s ) {
-				return ::strcpy( new char[ ::strlen(s)+1 ], s );
+				return std::strcpy(
+					new char[ std::strlen( s ) + 1 ], s
+				);
 			}
-
-extern void		parse_config_file( char const *file_name );
 
 			// ensure function semantics: 'c' is expanded once
 inline char		to_lower( char c )	{ return tolower( c ); }
-extern char*		to_lower( char const *s );
+extern char*		to_lower( char const* );
 extern char*		to_lower( char const *begin, char const *end );
-
-extern char const*	ltoa( long );
-inline char const*	itoa( int n )		{ return ::ltoa( n ); }
 
 #define	FOR_EACH(T,C,I) \
 	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
