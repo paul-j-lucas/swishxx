@@ -43,8 +43,10 @@
 #include "bcd.h"
 #include "config.h"
 #include "directory.h"
+#ifdef	MOD_HTML
 #include "elements.h"
 #include "ExcludeClass.h"
+#endif
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -54,12 +56,14 @@
 #include "FilesReserve.h"
 #include "file_vector.h"
 #include "FilterFile.h"
-#include "html.h"
+#ifdef	MOD_HTML
+#include "mod_html.h"
+#endif
 #include "IncludeFile.h"
 #include "IncludeMeta.h"
 #include "Incremental.h"
 #include "IndexFile.h"
-#include "index.h"
+#include "indexer.h"
 #include "index_segment.h"
 #include "itoa.h"
 #include "meta_map.h"
@@ -82,12 +86,13 @@
 using namespace std;
 #endif
 
-extern FilesReserve	files_reserve;
+extern FilesReserve	files_reserve;		// defined in file_info.c
 
-int			exclude_class_count;	// don't index words if > 0
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
+#ifdef	MOD_HTML
 ExcludeClass		exclude_class_names;	// class names not to index
+#endif
 ExcludeMeta		exclude_meta_names;	// meta names not to index
 IncludeMeta		include_meta_names;	// meta names to index
 FilesGrow		files_grow;
@@ -109,7 +114,6 @@ word_map		words;			// the index being generated
 WordFilesMax		word_file_max;
 WordPercentMax		word_percent_max;
 
-void			index_word( char *word, int len, int meta_id );
 void			load_old_index( char const *index_file_name );
 void			merge_indicies( ostream& );
 void			rank_full_index();
@@ -180,14 +184,17 @@ void			write_word_index( ostream&, off_t* );
 	static option_stream::spec const opt_spec[] = {
 		"help",			0, '?',
 		"config",		1, 'c',
+#ifdef	MOD_HTML
 		"no-class",		1, 'C',
+#endif
 		"pattern",		1, 'e',
 		"no-pattern",		1, 'E',
 		"file-max",		1, 'f',
 		"files-reserve",	1, 'F',
 		"files-grow",		1, 'G',
-		"html-pattern",		1, 'h',
+#ifdef	MOD_HTML
 		"dump-html",		0, 'H',
+#endif
 		"index-file",		1, 'i',
 		"incremental",		0, 'I',
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -207,7 +214,9 @@ void			write_word_index( ostream&, off_t* );
 	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
-	bool		dump_elements_opt = false;
+#ifdef	MOD_HTML
+	bool		dump_html_elements_opt = false;
+#endif
 	bool		dump_stop_words_opt = false;
 	char const*	files_grow_arg = 0;
 	char const*	files_reserve_arg = 0;
@@ -237,16 +246,30 @@ void			write_word_index( ostream&, off_t* );
 			case 'c': // Specify config. file.
 				config_file_name_arg = opt.arg();
 				break;
-
+#ifdef	MOD_HTML
 			case 'C': // Specify CLASS name not to index.
 				exclude_class_names.insert(
 					to_lower( opt.arg() )
 				);
 				break;
-
-			case 'e': // Specify filename pattern(s) to index.
-				include_patterns.insert( opt.arg(), false );
+#endif
+			case 'e': { // Specify filename pattern(s) to index.
+				if ( !::strtok( opt.arg(), ":" ) ) {
+					error()	<< "no indexer module name"
+						<< endl;
+					::exit( Exit_Usage );
+				}
+				indexer *const i = indexer::find( opt.arg() );
+				if ( !i ) {
+					error()	<< '"' << opt.arg()
+						<< "\": no such indexing module"
+						<< endl;
+					::exit( Exit_Usage );
+				}
+				for ( char *pat; pat = ::strtok( 0, "," ); )
+					include_patterns.insert( pat, i );
 				break;
+			}
 
 			case 'E': // Specify filename pattern(s) not to index.
 				exclude_patterns.insert( opt.arg() );
@@ -263,15 +286,11 @@ void			write_word_index( ostream&, off_t* );
 			case 'G': // Specify files to reserve space for growth.
 				files_grow_arg = opt.arg();
 				break;
-
-			case 'h': // Specify HTML filename pattern(s) to index.
-				include_patterns.insert( opt.arg(), true );
+#ifdef	MOD_HTML
+			case 'H': // Dump recognized HTML and XHTML elements.
+				dump_html_elements_opt = true;
 				break;
-
-			case 'H': // Dump recognized HTML elements.
-				dump_elements_opt = true;
-				break;
-
+#endif
 			case 'i': // Specify index file overriding the default.
 				index_file_name_arg = opt.arg();
 				break;
@@ -373,14 +392,15 @@ void			write_word_index( ostream&, off_t* );
 
 	/////////// Dump stuff if requested ///////////////////////////////////
 
-	if ( dump_elements_opt ) {
+#ifdef	MOD_HTML
+	if ( dump_html_elements_opt ) {
 		element_map const &elements = element_map::instance();
 		::copy( elements.begin(), elements.end(),
 			ostream_iterator< element_map::value_type >( cout,"\n" )
 		);
 		::exit( Exit_Success );
 	}
-
+#endif
 	if ( dump_stop_words_opt ) {
 		stop_words = new stop_word_set();
 		::copy( stop_words->begin(), stop_words->end(),
@@ -483,207 +503,6 @@ void			write_word_index( ostream&, off_t* );
 	}
 
 	::exit( Exit_Success );
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void index_word( register char *word, register int len, int meta_id )
-//
-// DESCRIPTION
-//
-//	Potentially index the given word.
-//
-// PARAMETERS
-//
-//	word		The candidate word to be indexed.
-//
-//	len		The length of the word since it is not null-terminated.
-//
-//	meta_id		The numeric ID of the META NAME the word, if indexed,
-//			is to be associated with.
-//
-//*****************************************************************************
-{
-	++num_total_words;
-
-	if ( len < Word_Hard_Min_Size )
-		return;
-
-	if ( exclude_class_count > 0 ) {
-		//
-		// The word is within an HTML or XHTML element's begin/end tags
-		// whose begin tag's CLASS attribute value is among the set of
-		// class names not to index, so do nothing.
-		//
-		return;
-	}
-
-	////////// Strip chars not in Word_Begin_Chars/Word_End_Chars /////////
-
-	for ( register int i = len - 1; i >= 0; --i ) {
-		if ( is_word_end_char( word[ i ] ) )
-			break;
-		--len;
-	}
-	if ( len < Word_Hard_Min_Size )
-		return;
-
-	word[ len ] = '\0';
-
-	while ( *word ) {
-		if ( is_word_begin_char( *word ) )
-			break;
-		--len, ++word;
-	}
-	if ( len < Word_Hard_Min_Size )
-		return;
-
-	////////// Stop-word checks ///////////////////////////////////////////
-
-	if ( !is_ok_word( word ) )
-		return;
-
-	char const *const lower_word = to_lower( word );
-	if ( stop_words->contains( lower_word ) )
-		return;
-
-	////////// Add the word ///////////////////////////////////////////////
-
-	++file_info::current_file().num_words_;
-	++num_indexed_words;
-
-	word_info &wi = words[ lower_word ];
-	++wi.occurrences_;
-
-	if ( !wi.files_.empty() ) {
-		//
-		// We've seen this word before: determine whether we've seen it
-		// before in THIS file, and, if so, increment the number of
-		// occurrences and associate with the current meta name, if
-		// any.
-		//
-		word_info::file &last_file = wi.files_.back();
-		if ( last_file.index_ == file_info::current_index() ) {
-			++last_file.occurrences_;
-			if ( meta_id != No_Meta_ID )
-				last_file.meta_ids_.insert( meta_id );
-			return;
-		}
-	}
-
-	// First time word occurred in current file.
-	wi.files_.push_back(
-		word_info::file( file_info::current_index(), meta_id )
-	);
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void index_words(
-		file_vector::const_iterator c,
-		register file_vector::const_iterator end,
-		bool is_html, int meta_id, bool is_new_file
-	)
-//
-// DESCRIPTION
-//
-//	Index the words between the given iterators.
-//
-// PARAMETERS
-//
-//	c		The iterator marking the beginning of the text to
-//			index.
-//
-//	end		The iterator marking the end of the text to index.
-//
-//	is_html		If true, treat the text as HTML or XHTML: specifically,
-//			look for '<' (the start of an HTML or XHTML tag) and
-//			'&' (the start of an entity reference) characters and
-//			process them accordingly.
-//
-//	meta_id		The numeric ID of the META NAME the words index are to
-//			to be associated with.
-//
-//	is_new_file	If true, we are just starting to index a new file.
-//
-//*****************************************************************************
-{
-	char buf[ Word_Hard_Max_Size + 1 ];
-	register char *word;
-	int len;
-	bool in_word = false;
-
-	if ( is_new_file )
-		exclude_class_count = 0;
-
-	while ( c != end ) {
-		register file_vector::value_type ch = *c++;
-		//
-		// If we're indexing an HTML or XHTML file and the character is
-		// an '&' (the start of a entity reference), convert the entity
-		// reference to ASCII; otherwise, convert the ISO 8859
-		// character to ASCII.
-		//
-		ch = is_html && ch == '&' ?
-			entity_to_ascii( c, end ) : iso8859_to_ascii( ch );
-
-		////////// Collect a word /////////////////////////////////////
-
-		if ( is_word_char( ch ) ) {
-			if ( !in_word ) {
-				// start a new word
-				word = buf;
-				word[ 0 ] = ch;
-				len = 1;
-				in_word = true;
-				continue;
-			}
-			if ( len < Word_Hard_Max_Size ) {
-				// continue same word
-				word[ len++ ] = ch;
-				continue;
-			}
-			in_word = false;	// too big: skip chars
-			while ( c != end && is_word_char( *c++ ) ) ;
-			continue;
-		}
-
-		if ( in_word ) {
-			//
-			// We ran into a non-word character, so index the word
-			// up to, but not including, it.
-			//
-			in_word = false;
-			index_word( word, len, meta_id );
-		}
-
-		if ( is_html && ch == '<' && meta_id == No_Meta_ID ) {
-			//
-			// If we're indexing an HTML or XHTML file, and the
-			// character is a '<' (the start of an HTML or XHTML
-			// tag), and we're not in the midst of indexing the
-			// value of a META element's CONTENT attribute, then
-			// parse the HTML or XHTML tag.
-			//
-			parse_html_tag( c, end, is_new_file );
-			//
-			// Clear the is_new_file flag so that parse_html_tag()
-			// will maintain its data between calls.
-			//
-			is_new_file = false;
-		}
-	}
-	if ( in_word ) {
-		//
-		// We ran into 'end' while still accumulating characters into a
-		// word, so just index what we've got.
-		//
-		index_word( word, len, meta_id );
-	}
 }
 
 //*****************************************************************************
@@ -1502,14 +1321,17 @@ ostream& usage( ostream &o ) {
 	"========\n"
 	"-?   | --help             : Print this help message\n"
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+#ifdef	MOD_HTML
 	"-C c | --no-class c       : Class name not to index [default: none]\n"
+#endif
 	"-e p | --pattern p        : File pattern to index [default: none]\n"
 	"-E p | --no-pattern p     : File pattern not to index [default: none]\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
 	"-F n | --files-reserve n  : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
 	"-G n | --files-grow n     : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
-	"-h p | --html-pattern p   : HTML/XHTML file pattern to index [default: none]\n"
+#ifdef	MOD_HTML
 	"-H   | --dump-html        : Dump built-in recognized HTML/XHTML elements, exit\n"
+#endif
 	"-i f | --index-file f     : Name of index file to use [default: " << IndexFile_Default << "]\n"
 	"-I   | --incremental      : Add files to index [default: replace]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
