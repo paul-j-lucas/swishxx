@@ -26,6 +26,10 @@
 #include "exit_codes.h"
 #include "IncludeFile.h"
 
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS

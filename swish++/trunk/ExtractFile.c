@@ -25,6 +25,10 @@
 // local
 #include "ExtractFile.h"
 
+#ifndef PJL_NO_NAMESPACES
+using namespace std;
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS
