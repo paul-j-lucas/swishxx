@@ -58,16 +58,6 @@
 using namespace std;
 #endif
 
-extern SearchDaemon	daemon_type;
-extern ThreadsMax	max_threads;
-extern ThreadsMin	min_threads;
-extern PidFile		pid_file_name;
-extern SocketAddress	socket_address;
-extern SocketFile	socket_file_name;
-extern SocketQueueSize	socket_queue_size;
-extern SocketTimeout	socket_timeout;
-extern ThreadTimeout	thread_timeout;
-
 //*****************************************************************************
 //
 // SYNOPSIS
