@@ -250,7 +250,10 @@ inline ECR_CI::const_iterator(
 
 inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
 	encoded_char_range(
-		start_pos, ecr->end_, ecr->charset_, ecr->encoding_
+		start_pos, ecr->end_
+#ifdef	MOD_mail
+		, ecr->charset_, ecr->encoding_
+#endif
 	),
 	pos_( start_pos )
 #ifdef	MOD_mail
