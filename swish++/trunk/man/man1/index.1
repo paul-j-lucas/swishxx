@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "February 6, 2002" "SWISH++"
+.TH \f3index\f1 1 "May 31, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -104,6 +104,7 @@ specified will result in those files being indexed more than once.
 Characters in the ISO 8859-1 (Latin 1) character set
 are mapped to their closest ASCII equivalent
 before further examination and indexing.
+(Individual indexing modules may also do their own character mapping.)
 .SS Word Determination
 Stop words, words that occur too frequently or have no information content,
 are not indexed.
@@ -406,6 +407,10 @@ Text that is encoded as either quoted-printable or base-64
 is decoded prior to indexing.
 .TP
 6.
+Unicode text that is encoded in either the UTF-7 or UTF-8 character set
+is decoded prior to indexing.
+.TP
+7.
 Text in vCards is indexed such that the values of types (fields)
 are associated with the types as meta names.
 .IP ""
@@ -1103,13 +1108,27 @@ Generated index files are machine-dependent
 (size of data types and byte order).
 .TP
 2.
-The character encoding always used is ISO 8859-1 (Latin 1).
-Character encodings that are specified in files are ignored.
-.TP
-3.
 The word-determination heuristics employed are heavily geared for English.
 Using SWISH++ as-is to index and search files in non-English languages
 is not recommended.
+.TP
+3.
+Unless otherwise noted above,
+the character encoding always used is ISO 8859-1 (Latin 1).
+Character encodings that are specified in HTML or XHTML files are ignored.
+.TP
+4.
+An e-mail message can have both an encoding and a non-ASCII or non-ISO-8859-1
+charset simultaneously, e.g., base64-encoded UTF-8.
+(In practice, this particular case should never happen
+since UTF-7 should be used instead; but you get the idea.)
+.IP ""
+However, handling both an encoding and such a charset simultaneously
+is problematic;
+hence, an e-mail message or attachment can have
+either an encoding or a non-ASCII or a non-ISO-8859-1 character set,
+but not both.
+If it does, the encoding takes precedence.
 .SH FILES
 .PD 0
 .TP 18
@@ -1166,6 +1185,12 @@ Ned Freed and Nathaniel S. Borenstein.
 .IR "Request for Comments 2045" ,
 RFC 822 Extensions Working Group of the Internet Engineering Task Force,
 November 1996.
+.PP
+David Goldsmith and Mark Davis.
+``UTF-7, a mail-safe transformation format of Unicode,''
+.IR "Request for Comments 2152" ,
+Network Working Group of the Internet Engineering Task Force,
+May 1997.
 .PP
 International Standards Organization.
 .I ISO 8859-1: Information Processing
@@ -1247,6 +1272,18 @@ Marcin Sawicki, et al.
 .IR "Ruby Annotation" ,
 World Wide Web Consortium,
 April 2001.
+.PP
+The Unicode Consortium.
+``Encoding Forms,''
+.I The Unicode Standard 3.0, \(sc2.3,
+Addison-Wesley,
+2000.
+.PP
+Francois Yergeau.
+``UTF-8, a transformation format of ISO 10646,''
+.IR "Request for Comments 2279" ,
+Network Working Group of the Internet Engineering Task Force,
+January 1998.
 .SH AUTHOR
 Paul J. Lucas
 .RI < pauljlucas@mac.com >
