@@ -24,37 +24,27 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_percent.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class FilesGrow : public conf<int>
+	class FilesGrow : public conf_percent
 //
 // DESCRIPTION
 //
-//	A FilesGrow is-a conf<int> containing either the absolute number or
+//	A FilesGrow is-a conf_percent containing either the absolute number or
 //	percentage of files to grow reserved space for when incrementally
 //	indexing.
 //
-//	This is the same as index's -G command-line option.
+//	This is the same as index's -g command-line option.
 //
 //*****************************************************************************
 {
 public:
-	FilesGrow() : conf<int>( "FilesGrow", FilesGrow_Default, 1 ) { }
-	CONF_INT_ASSIGN_OPS( FilesGrow )
-
-	int operator()( int size ) {
-		return	size + (is_percentage_ ?
-			size * operator int() / 100 : operator int()
-		);
-	}
-protected:
-	virtual void	parse_value( char *line );
-private:
-	bool		is_percentage_;
+	FilesGrow() : conf_percent( "FilesGrow", FilesGrow_Default, 1 ) { }
+	CONF_PERCENT_ASSIGN_OPS( FilesGrow )
 };
 
 #endif	/* FilesGrow_H */
