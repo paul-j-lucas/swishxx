@@ -20,21 +20,23 @@
 */
 
 // standard
+#include <cstring>
 #include <iostream>
 #include <queue>
-#include <string>
 #include <sys/types.h>			/* needed by dirent.h */
 #include <dirent.h>
 
 // local
 #include "directory.h"
 #include "DirectoriesReserve.h"
+#include "my_set.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
 #include "util.h"
 #include "Verbosity.h"
 
 #ifndef	PJL_NO_NAMESPACES
+using namespace PJL;
 using namespace std;
 #endif
 
@@ -74,22 +76,16 @@ FollowLinks		follow_symbolic_links;
 //
 // PARAMETERS
 //
-//	dir_path	The full path of a directory.
+//	dir_path	The full path of a directory.  The string must point to
+//			storage that will last for the duration of the program.
 //
 //*****************************************************************************
 {
-	static char const *prev_dir_path = "";
-	//
-	// Because do_directory() traverses in breadth-first order, we are
-	// guaranteed to encounter a given directory exactly once.  This allows
-	// the check to see whether we've encountered a directory before to be
-	// a simple comparison with the previous directory.
-	//
-	if ( ::strcmp( dir_path, prev_dir_path ) ) {
+	static char_ptr_set dir_set;
+	if ( dir_set.insert( dir_path ).second ) {
 		if ( dir_list.empty() )
 			dir_list.reserve( directories_reserve );
 		dir_list.push_back( dir_path );
-		prev_dir_path = dir_path;
 	}
 }
 
@@ -113,11 +109,12 @@ FollowLinks		follow_symbolic_links;
 // PARAMETERS
 //
 //	dir_path	The full path of the directory of the files and
-//			subdirectories to index.
+//			subdirectories to index.  The string must point to
+//			storage that will last for the duration of the program.
 //
 //*****************************************************************************
 {
-	typedef queue< string > dir_queue_type;
+	typedef queue< char const* > dir_queue_type;
 	static dir_queue_type dir_queue;
 	static int recursion;
 
@@ -145,22 +142,29 @@ FollowLinks		follow_symbolic_links;
 		return;
 	}
 
-	check_add_directory( dir_path );
-
 	if ( verbosity > 1 ) {
 		if ( verbosity > 2 ) cout << ':';
 		cout << '\n';
 	}
 
-	string const dir_str( dir_path );
+	check_add_directory( dir_path );
+	//
+	// Have a buffer for the full path to a file in a directory.  For each
+	// file, simply strcpy() the file name into place one character past
+	// the '/'.
+	//
+	char path[ PATH_MAX + 1 ];
+	::strcpy( path, dir_path );
+	char *file = path + ::strlen( path );
+	*file++ = Dir_Sep_Char;
 
 	struct dirent const *dir_ent;
 	while ( dir_ent = ::readdir( dir_p ) ) {
 		if ( *dir_ent->d_name == '.' )		// skip dot files
 			continue;
-		string const path( dir_str + Dir_Sep_Char + dir_ent->d_name );
+		::strcpy( file, dir_ent->d_name );
 		if ( is_directory( path ) && recurse_subdirectories )
-			dir_queue.push( path );
+			dir_queue.push( ::strdup( path ) );
 		else {
 			// Note that do_file() is called in the case where
 			// 'path' is a directory and recurse_subdirectories is
@@ -169,7 +173,7 @@ FollowLinks		follow_symbolic_links;
 			// do_file() so we don't have to repeat the code to
 			// print verbose information for 'path'.
 			//
-			do_file( path.c_str() );
+			do_file( path );
 		}
 	}
 
@@ -180,10 +184,10 @@ FollowLinks		follow_symbolic_links;
 	////////// Do all subdirectories //////////////////////////////////////
 
 	while ( !dir_queue.empty() ) {
-		dir_queue_type::value_type const dir_path = dir_queue.front();
+		char const *const dir_path = dir_queue.front();
 		dir_queue.pop();
 		++recursion;
-		do_directory( dir_path.c_str() );
+		do_directory( dir_path );
 		--recursion;
 	}
 }
