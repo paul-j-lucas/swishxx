@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <cstring>			/* for strpbrk(3) */
 #include <string>
 
 // local
@@ -33,18 +34,21 @@
 using namespace std;
 #endif
 
+#define	SEARCH_RESULTS_DTD_URI \
+	"http://homepage.mac.com/pauljlucas/software/swish/SearchResults.dtd"
+
 extern index_segment directories;
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	string escape_lt( char const *s )
+	string escape( char const *s )
 //
 // DESCRIPTION
 //
-//	Escape all '<' characters in a given string by replacing them with
-//	"&lt;".
+//	Escape all '&' and '<' characters in a given string by replacing them
+//	with "&amp;" or "&lt;", respectively.
 //
 // PARAMETERS
 //
@@ -52,17 +56,23 @@ extern index_segment directories;
 //
 // RETURN VALUE
 //
-//	Returns a new string having all '<'s replaced with "&lt;".
+//	Returns a new string.
+//
+// SEE ALSO
+//
+//	Tim Bray, et al.  "Character Data and Markup," Extensible Markup
+//	Language (XML) 1.0, section 2.4, February 10, 1998.
 //
 //*****************************************************************************
 {
 	string result = s;
-	for ( register string::size_type
-		pos = 0;
-		(pos = result.find( '<', pos )) != string::npos;
-		pos += 4
-	)
-		result.replace( pos, 1, "&lt;" );
+	register string::size_type i;
+
+	for ( i = 0; (i = result.find( '&', i )) != string::npos; i += 5 )
+		result.replace( i, 1, "&amp;" );
+	for ( i = 0; (i = result.find( '<', i )) != string::npos; i += 4 )
+		result.replace( i, 1, "&lt;" );
+
 	return result;
 }
 
@@ -84,11 +94,11 @@ extern index_segment directories;
 //
 //*****************************************************************************
 {
-	out_ <<	"<!DOCTYPE xxxx yyyy\n"
-		" \"http://homepage.mac.com/pauljlucas/software/swish/swish.dtd\">\n"
-		"<?xml version=\"1.0\" charset=\"us-ascii\"?>\n"
+	out_ <<	"<!DOCTYPE SearchResults SYSTEM\n"
+		" \"" SEARCH_RESULTS_DTD_URI "\">\n"
+		"<?xml version=\"1.0\" encoding=\"us-ascii\"?>\n"
 		"<SearchResults>\n";
-	// Print stop-words, if any.
+
 	if ( !stop_words.empty() ) {
 		out_ << "  <IgnoredList>\n";
 		FOR_EACH( stop_word_set, stop_words, word ) {
@@ -102,6 +112,7 @@ extern index_segment directories;
 		}
 		out_ << "  </IgnoredList>\n";
 	}
+
 	out_ << "  <ResultCount>" << results_ << "</ResultCount>\n";
 	if ( results_ )
 		out_ << "  <ResultList>\n";
@@ -133,8 +144,8 @@ extern index_segment directories;
 	     <<			"</Path>\n"
 		"      <Size>" << fi.size() << "</Size>\n"
 		"      <Title>";
-	if ( ::strchr( fi.title(), '<' ) )
-		out_ << escape_lt( fi.title() );
+	if ( ::strpbrk( fi.title(), "&<" ) )
+		out_ << escape( fi.title() );
 	else
 		out_ << fi.title();
 	out_ <<			"</Title>\n"
