@@ -76,7 +76,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( !line || !*line ) {
-		error() << '"' << name() << "\" has no value" << endl;
+		error() << '"' << name() << "\" has no value\n";
 		::exit( Exit_Config_File );
 	}
 
