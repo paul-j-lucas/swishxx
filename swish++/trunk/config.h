@@ -180,20 +180,27 @@ int const	ResultsMax_Default		= 100;
 //		Default maximum number of search results; this can be
 //		overridden either in a config. file or on the command line.
 
+#error		You have not set TempDirectory_Default for your system.
+#error		Delete these lines after you have set it.
+
 char const	TempDirectory_Default[]		= "/tmp";
 //		Default directory to use for temporary files during indexing.
 //		If your OS mounts swap space on /tmp, as indexing progresses
 //		and more files get created in /tmp, you will have less swap
 //		space, indexing will get slower, and you may run out of memory.
 //		If this is the case, you can either change this default here
-//		for all users or override it either in a config. file or on the
-//		command line to use a directory on a real filesystem, i.e., one
-//		on a physical disk.  The directory must exist.
+//		for all users (preferred) or override it either in a config.
+//		file or on the command line to use a directory on a real
+//		filesystem, i.e., one on a physical disk, e.g., /var/tmp on
+//		some OSs.  The directory must exist.
 
 int const	WordPercentMax_Default		= 100;
 //		Default maximum percentage of files a word may occur in before
 //		it is discarded as being too frequent; this can be overridden
 //		either in a config. file or on the command line.
+
+#error		You have not set Word_Threshold for your system.
+#error		Delete these lines after you have set it.
 
 int const	Word_Threshold			= 250000;
 //		The word count past which partial indicies are generated and
