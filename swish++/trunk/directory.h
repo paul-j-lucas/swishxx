@@ -22,59 +22,14 @@
 #ifndef directory_H
 #define directory_H
 
-// standard
-#include <sys/stat.h>
-#include <sys/types.h>
-
 // local
-#include "fake_ansi.h"
+#include "platform.h"
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+#include "FollowLinks.h"
 
-extern bool		follow_symbolic_links;
-extern struct stat	stat_buf;		// somplace to do a stat(2) in
+extern FollowLinks	follow_symbolic_links;
+#endif
 
-void		do_directory( char const *path );
-
-//
-// File test functions.  Those that do not take an argument operate on the last
-// file stat'ed.
-//
-inline bool	is_directory() {
-			return ( stat_buf.st_mode & S_IFMT ) == S_IFDIR;
-		}
-
-inline bool	is_directory( char const *path ) {
-			return	::stat( path, &stat_buf ) != -1
-				&& is_directory();
-		}
-
-inline bool	is_directory( string const &path ) {
-			return is_directory( path.c_str() );
-		}
-
-inline bool	is_plain_file() {
-			return ( stat_buf.st_mode & S_IFMT ) == S_IFREG;
-		}
-
-inline bool	is_plain_file( char const *path ) {
-			return	::stat( path, &stat_buf ) != -1
-				&& is_plain_file();
-		}
-
-inline bool	is_plain_file( string const &path ) {
-			return is_plain_file( path.c_str() );
-		}
-
-inline bool	is_symbolic_link() {
-			return ( stat_buf.st_mode & S_IFLNK ) == S_IFLNK;
-		}
-
-inline bool	is_symbolic_link( char const *path ) {
-			return	::lstat( path, &stat_buf ) != -1
-				&& is_symbolic_link();
-		}
-
-inline bool	is_symbolic_link( string const &path ) {
-			return is_symbolic_link( path.c_str() );
-		}
+void			do_directory( char const *path );
 
 #endif	/* directory_H */
