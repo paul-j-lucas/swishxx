@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.conf\f1 4 "September 23, 1999" "SWISH++"
+.TH \f3swish++.conf\f1 4 "February 13, 2000" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -74,6 +74,7 @@ or
 \f(CWyes\f1.
 Case is irrelevant.
 Variables of this type are:
+.BR Incremental ,
 .BR RecurseSubdirs ,
 .BR SearchDaemon ,
 and
@@ -114,8 +115,15 @@ and
 .BR ExcludeMeta .
 .SS Other variables
 Variables of this type are:
+.B FilesGrow
+and
 .B FilterExtension
 (see FILTERS below).
+The
+.B FilesGrow
+variable is just like an integer variable
+except that it may contain a trailing percent sign \f(CW%\f1
+to indicate a percentage rather than an absolute number.
 .SH FILTERS
 Via the
 .H FilterExtension
