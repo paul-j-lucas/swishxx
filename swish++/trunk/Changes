@@ -2,6 +2,32 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The "classic" results formatting was broken in that the result separator
+  wasn't output in all the places it should be.  How I didn't catch this isn't
+  clear.
+
+  (This bug fix shall be know as bug fix CFS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* classic_formatter.c
+
+	1. In result(), added missing "results_separator" for bug fix CFS.
+
+* version.h
+
+	1. Updated version to "5.4.2".
+
+
+*******************************************************************************
 5.4.1
 *******************************************************************************
 
