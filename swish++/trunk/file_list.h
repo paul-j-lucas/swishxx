@@ -27,7 +27,6 @@
 #include <iterator>
 
 // local
-#include "fake_ansi.h"				/* for mutable */
 #include "index_segment.h"
 #include "word_info.h"
 
