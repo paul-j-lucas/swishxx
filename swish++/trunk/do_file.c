@@ -50,12 +50,11 @@
 //
 //*****************************************************************************
 {
-	char const *const slash = ::strrchr( file_name, '/' );
-	char const *const base_name = slash ? slash + 1 : file_name;
+	char const *const orig_base_name = basename( file_name );
 
 	++num_examined_files;
 	if ( verbosity > 3 )			// print base name of file
-		cout << "  " << base_name << flush;
+		cout << "  " << orig_base_name << flush;
 
 	////////// Simple checks to see if we should process the file /////////
 
@@ -124,11 +123,12 @@
 		filter_list.push_back( *f );
 		file_name = filter_list.back().substitute( file_name );
 	}
+	char const *const base_name = basename( file_name );
 
 	//
 	// Skip the file if it matches one of the set of unacceptable patterns.
 	//
-	if ( exclude_patterns.matches( file_name ) ) {
+	if ( exclude_patterns.matches( base_name ) ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: file excluded)\n";
 		return;
@@ -142,7 +142,7 @@
 #else
 	ExtractFile::const_iterator const
 #endif
-		include_pattern = include_patterns.find( file_name );
+		include_pattern = include_patterns.find( base_name );
 	//
 	// Skip the file if the set of acceptable patterns doesn't contain the
 	// candidate, but only if there was at least one acceptable pattern
@@ -209,7 +209,7 @@
 	}
 
 	if ( verbosity == 3 )			// print base name of file
-		cout << "  " << base_name << flush;
+		cout << "  " << orig_base_name << flush;
 
 #ifdef	INDEX
 	if ( file.empty() ) {
