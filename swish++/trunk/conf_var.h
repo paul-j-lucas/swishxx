@@ -46,21 +46,23 @@
 //*****************************************************************************
 {
 public:
-	static void		parse_line( char *line, int line_no );
+	static void		parse_file( char const *file_name );
 	char const*		name() const { return name_; }
 protected:
 	conf_var( char const *var_name ) : name_( var_name ) {
-		map_ref()[ name_ ] = this;
+		alias_name( name_ );
 	}
-
-	void			parse_const_value( char const *line );
-	virtual void		parse_value( char *line ) = 0;
+	void		alias_name( char const *var_name );
+	static void	parse_line( char *line, int line_no );
+	void		parse_const_value( char const *line );
+	virtual void	parse_value( char const *var_name, char *line ) = 0;
+	virtual void	reset() = 0;
 
 	static std::ostream&	error( std::ostream &o ) {
-					return msg( cerr, "error" );
+					return msg( o, "error" );
 				}
-	static std::ostream&	warning() {
-					return msg( cerr, "warning" );
+	static std::ostream&	warning( std::ostream &o ) {
+					return msg( o, "warning" );
 				}
 private:
 	// Note that the declaration of std::map has a default "Compare"
@@ -73,9 +75,24 @@ private:
 	char const		*const name_;
 	static int		current_config_file_line_no_;
 
+	void			init( conf_var *alias = 0 );
 	static map_type&	map_ref();
 	static std::ostream&	msg( std::ostream&, char const *label );
+	static void		reset_all();
 };
+
+//
+// We define this macro for convenience since operator=() is not inherited.
+//
+#define	CONF_VAR_ASSIGN_OPS(T)				\
+	T& operator=( string const &s ) {		\
+		parse_const_value( s.c_str() );		\
+		return *this;				\
+	}						\
+	T& operator=( char const *s ) {			\
+		parse_const_value( s );			\
+		return *this;				\
+	}
 
 //*****************************************************************************
 //
