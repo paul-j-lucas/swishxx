@@ -123,7 +123,6 @@ STRIP:=		strip
 #
 ###############################################################################
 
-#CC:=		/usr/local/packages/gcc-3.0/bin/g++
 CC:=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
