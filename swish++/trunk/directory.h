@@ -23,11 +23,12 @@
 #define directory_H
 
 // standard
-#include <vector>
+#include <map>
 
-typedef std::vector< char const* > dir_list_type;
-extern dir_list_type dir_list;
+typedef std::map< char const*, int > dir_set_type;
+extern dir_set_type dir_set;
 //
-//	This contains the list of all directories in the order encountered.
+//	This contains a map of all directory paths and an int that gives its
+//	index (the directory number in the order encountered).
 
 #endif	/* directory_H */
