@@ -68,6 +68,9 @@ ifdef MOD_MAIL
 I_SRCS+=	encoded_char.c \
 		mod_mail.c
 endif
+ifdef MOD_MAN
+I_SRCS+=	mod_man.c
+endif
 ifdef WIN32
 I_SRCS+=	fnmatch.c		# see the comment in pattern_map.h
 endif
