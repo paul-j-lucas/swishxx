@@ -65,13 +65,13 @@ using namespace std;
         while ( c < frame_end ) {
             id3v2_frame frame;
             switch ( frame.parse_header( c, header ) ) {
-                case id3v2_frame::Success:
+                case id3v2_frame::hr_success:
                     if ( !::strcmp( frame.id_, "tit2" ) )
                         break;
                     // fall through
-                case id3v2_frame::Failure:
+                case id3v2_frame::hr_failure:
                     continue;
-                case id3v2_frame::End_of_Frames:
+                case id3v2_frame::hr_end_of_frames:
                     goto id3v1;
             }
             return tidy_title(
@@ -188,10 +188,10 @@ id3v1:  c = file.begin();
     while ( c < frame_end ) {
         id3v2_frame frame;
         switch ( frame.parse_header( c, header ) ) {
-            case id3v2_frame::End_of_Frames:
+            case id3v2_frame::hr_end_of_frames:
                 c = frame_end;
                 break;
-            case id3v2_frame::Success:
+            case id3v2_frame::hr_success:
                 id3v2_frame::parser const parser =
                     id3v2_frame::find_parser( frame.id_ );
                 if ( parser ) {

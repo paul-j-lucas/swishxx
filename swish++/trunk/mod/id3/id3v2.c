@@ -237,7 +237,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
     if ( c[0] ==  0  && c[1] ==  0  && c[2] ==  0 ||
          c[0] == '3' && c[1] == 'D' && c[2] == 'I'
     )
-        return End_of_Frames;
+        return hr_end_of_frames;
 
     ////////// Parse frame ID, size, and flags ////////////////////////////////
 
@@ -265,7 +265,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
         //
         // We currently don't support encrypted frames.
         //
-        return Failure;
+        return hr_failure;
     }
 
     ////////// Handle meta IDs ////////////////////////////////////////////////
@@ -278,7 +278,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
         // names to exclude or not among the set to include.
         //
         if ( (meta_id_ = indexer::find_meta( id_ )) == Meta_ID_None )
-            return Failure;
+            return hr_failure;
     }
 
     ////////// Handle unsynchronization ///////////////////////////////////////
@@ -309,7 +309,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
             reinterpret_cast<Bytef const*>( content_begin_ ), content_size
         );
         if ( result != Z_OK )
-            return Failure;
+            return hr_failure;
         content_begin_ = uncompressed_buf_;
         content_size = buf_len;
 #else
@@ -317,12 +317,12 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
         // Since we don't have zlib, we can't uncompress the frame to index it:
         // c'est la vie.
         //
-        return Failure;
+        return hr_failure;
 #endif  /* HAVE_ZLIB */
     }
 
     content_end_ = content_begin_ + content_size;
-    return Success;
+    return hr_success;
 }
 
 //*****************************************************************************
