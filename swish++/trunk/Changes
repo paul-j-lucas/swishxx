@@ -2,6 +2,170 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.3
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* 'search' as a new -P (or --pid-file) option and PidFile configuration
+  variable to specify a file to write its process ID when running as a daemon.
+
+  (This feature will be known as feature PID.)
+
+
+BUG FIXES
+---------
+
+* The FilesGrow feature was broken because I forgot a needed set of parentheses
+  to get the precedence right.  :-(
+
+  (This bug will will be know as FGP.)
+
+* For 'search', the description of the -p and --word-percent option in the
+  usage message wasn't printed unless it was compiled as a daemon (and these
+  options have nothing to do with it being a daemon).
+
+  (This bug fill will be known as bug fix WPO.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config.h
+
+	1. Performed following substitution:
+
+		s/swish++.socket/search.socket/
+
+* config/config.pl
+
+	1. Rewrote it so that it parses Makefiles directly rather than
+	   needing to be passed arguments.
+
+* config/Makefile
+
+	1. Condensed a few things.
+
+* conf_var.c
+
+	1. Added PidFile variable for feature PID.
+
+* exit_codes.h
+
+	1. Added Exit_No_Write_PID for feature PID.
+
+* FilesGrow.h
+
+	1. Added parentheses around ?: operator for bug fix FGP.
+
+* GNUmakefile
+
+	1. Added in place of Makefiles.
+
+* html.c
+
+	1. Made is_html_comment() automatically skip it.
+
+* index.c
+
+	1. In index_words(), performed following substitution:
+
+		s/char/file_vector::value_type/
+
+	   It should have been that way all along.
+
+* Makefile
+* Makefile.win32
+
+	1. Replaced by GNUmakefile.
+
+* man/man1/search.1
+
+	1. Added description of feature PID.
+
+* man/man4/swish++.conf.4
+
+	1. Added mention of PidFile.
+
+* PidFile.h
+
+	1. Added this file for feature PID.
+
+* search.c
+
+	1. Added #include "PidFile.h" for feature PID.
+
+	2. Added "char const*" argument to become_daemon() function
+	   declaration for feature PID.
+
+	3. In main(), added:
+	
+		PidFile pid_file_name;
+
+	   and code to override with a command-line option for feature
+	   PID.
+
+	5. In search_options::search_options(), added pid_file_name_arg
+	   and case for it for feature PID.
+
+	6. In usage(), added description of -P and --pid-file options
+	   for feature PID.
+
+	7. In usage(), fixed bug WPO.
+
+* searchc.in
+
+	1. Same as config.h item #1.
+
+* search_daemon.c
+
+	1. Added "#include <fstream>" for feature PID.
+
+	2. Removed "#ifndef WIN32" since the search daemon feature
+	   isn't supported for Windows anyway.
+
+	3. Added "pid_file_name" argument to become_daemon() for
+	   feature PID.
+
+	4. Added code to write the process ID for feature PID.
+
+* search.h
+
+	1. Added pid_file_name_arg to struct for feature PID.
+
+* search_options.c
+
+	1. Added "pid-file" option for feature PID.
+
+* SocketFile.c
+
+	1. Removed this file to remove absolute path name requirement.
+
+* StopWordFile.h
+
+	1. Performed following substitution:
+	
+		s/string/std::string/
+
+	   It should have been that way all along.
+
+* swish++.conf
+
+	1. Added PidFile for feature PID.
+
+	2. Same as config.h item #1.
+
+* version.h
+
+	1. Updated version to "4.2".
+
+* www_example/search.cgi
+
+	1. Same as config.h item #1.
+
+
+*******************************************************************************
 4.2
 *******************************************************************************
 
