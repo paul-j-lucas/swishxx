@@ -33,12 +33,14 @@
 #include "thread_pool.h"
 #include "util.h"
 
-extern char const *me;
+extern char const	*me;
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
 namespace PJL {
 #endif
+
+pthread_key_t		thread_pool::thread::thread_obj_key_;
 
 //
 // Macros to wrap critical sections.
@@ -114,19 +116,13 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-	void thread_pool_thread_cleanup( void *p )
+	extern "C" void thread_pool_thread_data_cleanup( void *p )
 //
 // DESCRIPTION
 //
-//	This is the clean-up function that gets called upon a thread's death.
-//	If the derived class author calls pthread_exit() directly, we must
-//	ensure that the thread destructor gets called.
-//
-// NOTE
-//
-//	This function is declared extern "C" since it is called via the C
-//	library function pthread_cleanup_push() and, because it's a C function,
-//	it expects C linkage.
+//	This is a thread-specific data "destructor" (in the POSIX thread sense,
+//	not in the C++ sense).  Its job is to destroy this POSIX thread's
+//	associated thread object.
 //
 // PARAMETERS
 //
@@ -136,26 +132,20 @@ namespace PJL {
 {
 	thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
 #	ifdef DEBUG_threads
-	cerr << "thread_pool_thread_cleanup(" << (long)t << ')' << endl;
+	cerr	<< "thread_pool_thread_data_cleanup(" << (unsigned long)t << ')'
+		<< endl;
 #	endif
-	if ( !t->destructing_ ) {
+	if ( t ) {
 		//
-		// The thread's destructor is not presently executing.  Change
-		// the thread's state so it will not call pthread_cancel() and
-		// then delete it.  Since thread::operator delete() is
-		// overridden to do nothing, "delete" only calls the destructor
-		// and no memory is deallocated.
+		// The thread object's destructor hasn't been run, i.e., this
+		// thread has been exited/killed directly somehow.  Therefore,
+		// destroy our associated thread object.  But set a flag in the
+		// thread object so its destructor won't try to exit/kill the
+		// thread again.
 		//
-		t->destructing_ = true;
+		t->in_cleanup_ = true;
 		delete t;
 	}
-
-	//
-	// Since no memory is deallocated by thread::operator delete(), call
-	// the global operator delete() to deallocate the storage for the
-	// object.
-	//
-	::operator delete( t );
 }
 
 //*****************************************************************************
@@ -200,16 +190,17 @@ namespace PJL {
 			<< ::strerror( result ) << endl;
 		::exit( Exit_No_Detach_Thread );
 	}
+	register thread_pool::thread *const t =
+		static_cast<thread_pool::thread*>( p );
 
 	//
-	// Add our clean-up function to this POSIX thread.  This will ensure
-	// that we get removed from our thread pool's set of threads even if
-	// the derived class author calls pthread_exit() directly.
+	// Put a copy of the pointer to the thread object into thread-specific
+	// data so it can serve as a flag whether to run the clean-up function
+	// thread_pool_thread_data_cleanup().
 	//
-	pthread_cleanup_push( thread_pool_thread_cleanup, p );
-
-	register thread_pool::thread *const
-		t = static_cast<thread_pool::thread*>( p );
+	static pthread_once_t thread_once = PTHREAD_ONCE_INIT;
+	::pthread_once( &thread_once, thread_pool_thread_once );
+	::pthread_setspecific( thread_pool::thread::thread_obj_key_, p );
 
 	//
 	// We need to wait for the "run" mutex to become unlocked before
@@ -220,6 +211,10 @@ namespace PJL {
 	//
 	MUTEX_LOCK( &t->run_lock_, false );
 	MUTEX_UNLOCK();
+	//
+	// It served its only purpose so destroy it.
+	//
+	::pthread_mutex_destroy( &t->run_lock_ );
 
 	while ( true ) {
 
@@ -315,13 +310,40 @@ namespace PJL {
 	}
 
 	//
-	// Although we never get here due to the infinite loop above, the
-	// Pthread standard requires that a pthread_cleanup_pop() appear at the
-	// end of the same scope a pthread_cleanup_push() appears in.
+	// We never get here due to the infinite loop above, but put a return
+	// statement here just to make the compiler happy.
 	//
-	pthread_cleanup_pop( false );
+	return 0;
+}
 
-	return 0;				// just make the compiler happy
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void thread_pool_thread_once()
+//
+// DESCRIPTION
+//
+//	Perform initialzation for all threads exactly once.  Currently, create
+//	a thread-specific data key.
+//
+// NOTE
+//
+//	This function is declared extern "C" since it is called via the C
+//	library function pthread_create() and, because it's a C function, it
+//	expects C linkage.
+//
+//*****************************************************************************
+{
+	int const result = ::pthread_key_create(
+		&thread_pool::thread::thread_obj_key_,
+		thread_pool_thread_data_cleanup
+	);
+	if ( result ) {
+		error()	<< "could not create thread key: "
+			<< ::strerror( result ) << endl;
+		::exit( Exit_No_Create_Thread_Key );
+	}
 }
 
 //*****************************************************************************
@@ -344,10 +366,10 @@ namespace PJL {
 //	start_func	The function that is called upon thread creation.
 //
 //*****************************************************************************
-	: destructing_( false ), pool_( p )
+	: in_cleanup_( false ), pool_( p )
 {
 #	ifdef DEBUG_threads
-	cerr << "thread::thread(" << (long)this << ')' << endl;
+	cerr << "thread::thread(" << (unsigned long)this << ')' << endl;
 #	endif
 
 	//
@@ -384,12 +406,10 @@ namespace PJL {
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
-	cerr << "thread::~thread(" << (long)this << ')' << endl;
+	cerr << "thread::~thread(" << (unsigned long)this << ')' << endl;
 #	endif
 
 	DEFER_CANCEL();
-	::pthread_mutex_destroy( &run_lock_ );
-
 	if ( !pool_.destructing_ ) {
 		//
 		// We are committing suicide.  But first, we have to delete the
@@ -405,15 +425,20 @@ namespace PJL {
 		// Therefore, we don't have to do anything.
 		//
 	}
-	RESTORE_CANCEL();
 
-	if ( !destructing_ ) {
+	if ( !in_cleanup_ ) {
 		//
-		// We're not being called via the clean-up function, so change
-		// state to prevent the clean-up function from calling us when
-		// it eventually runs.
+		// This destructor is not being called via the thread-specific
+		// data destructor thread_pool_thread_data_cleanup(): null-out
+		// the thread-specific data so thread_pool_thread_data_cleanup()
+		// won't be called when this thread terminates.
 		//
-		destructing_ = true;
+		::pthread_setspecific( thread_obj_key_, 0 );
+		//
+		// Since we're not being called via the thread-specific data
+		// destructor thread_pool_thread_data_cleanup(), kill our
+		// associated POSIX thread.
+		//
 		if ( ::pthread_equal( thread_, ::pthread_self() ) ) {
 			//
 			// This thread is committing suicide because there are
@@ -422,9 +447,15 @@ namespace PJL {
 			// case since it's cleaner than pthread_cancel().
 			//
 			::pthread_exit( 0 );
-		} else
+		} else {
+			//
+			// This destructor is actually running in a thread that
+			// is different from the one being terminated.
+			//
 			::pthread_cancel( thread_ );
+		}
 	}
+	RESTORE_CANCEL();
 }
 
 //*****************************************************************************
