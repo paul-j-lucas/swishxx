@@ -36,6 +36,7 @@
 #include <vector>
 
 // local
+#include "AssociateMeta.h"
 #include "bcd.h"
 #include "config.h"
 #include "directory.h"
@@ -83,6 +84,7 @@ using namespace PJL;
 using namespace std;
 #endif
 
+AssociateMeta		associate_meta;
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
 #ifdef	MOD_HTML
@@ -178,6 +180,7 @@ void			write_word_index( ostream&, off_t* );
 
 	static option_stream::spec const opt_spec[] = {
 		"help",			0, '?',
+		"no-assoc-meta",	0, 'A',
 		"config",		1, 'c',
 #ifdef	MOD_HTML
 		"no-class",		1, 'C',
@@ -221,6 +224,7 @@ void			write_word_index( ostream&, off_t* );
 	bool		incremental_opt = false;
 	IndexFile	index_file_name;
 	char const*	index_file_name_arg = 0;
+	bool		no_associate_meta_opt = false;
 	char const*	num_title_lines_arg = 0;
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
@@ -237,6 +241,10 @@ void			write_word_index( ostream&, off_t* );
 
 			case '?': // Print help.
 				cerr << usage;
+
+			case 'A': // Don't associate meta names.
+				no_associate_meta_opt = true;
+				break;
 
 			case 'c': // Specify config. file.
 				config_file_name_arg = opt.arg();
@@ -369,6 +377,8 @@ void			write_word_index( ostream&, off_t* );
 		incremental = true;
 	if ( index_file_name_arg )
 		index_file_name = index_file_name_arg;
+	if ( no_associate_meta_opt )
+		associate_meta = false;
 	if ( num_title_lines_arg )
 		num_title_lines = num_title_lines_arg;
 	if ( recurse_subdirectories_opt )
@@ -1319,6 +1329,7 @@ ostream& usage( ostream &o ) {
 	"options: (unambiguous abbreviations may be used for long options)\n"
 	"========\n"
 	"-?     | --help            : Print this help message\n"
+	"-A     | --no-assoc-meta   : Don't associate meta names [default: do]\n"
 	"-c f   | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 #ifdef	MOD_HTML
 	"-C c   | --no-class c      : Class name not to index [default: none]\n"
