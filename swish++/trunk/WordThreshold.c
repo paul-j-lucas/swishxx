@@ -21,7 +21,7 @@
 
 // standard
 #include <sys/types.h>			/* needed by FreeBSD systems */
-#include <unistd.h>
+#include <unistd.h>			/* for geteuid(2) */
 
 // local
 #include "exit_codes.h"
