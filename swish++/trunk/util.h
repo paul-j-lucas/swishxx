@@ -279,6 +279,8 @@ inline std::ostream&	error_string( std::ostream &o = std::cerr ) {
 			<< __FILE__ << "\", line " << __LINE__ \
 			<< ": internal error:\n"
 
+#define	NUM_ELEMENTS(a)	(sizeof (a) / sizeof( (a)[0] ))
+
 inline std::ostream&	report_error( std::ostream &o = std::cerr ) {
 				o << "please report this error\n";
 				::_exit( Exit_Internal_Error );
