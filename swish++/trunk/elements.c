@@ -102,7 +102,7 @@
 					"/table",
 					0,
 
-		"dd",		O,	"dd", "/dd", "/dl", 0,
+		"dd",		O,	"dd", "/dd", "/dl", "dt", "/dt", 0,
 		"del",		R,	"/del",
 		"dfn",		R,	"/dfn",
 		"dir",		R,	"/dir",			// deprecated
