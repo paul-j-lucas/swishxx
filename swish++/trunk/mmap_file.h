@@ -96,14 +96,8 @@ public:
 
 	typedef pointer iterator;
 	typedef const_pointer const_iterator;
-
-	typedef std::reverse_bidirectional_iterator<
-		iterator, value_type, reference, difference_type
-	> reverse_iterator;
-
-	typedef std::reverse_bidirectional_iterator<
-		const_iterator, value_type, const_reference, difference_type
-	> const_reverse_iterator;
+	typedef std::reverse_iterator< iterator > reverse_iterator;
+	typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
 
 	iterator	begin()		{ return (iterator)addr_; }
 	const_iterator	begin() const	{ return (const_iterator)addr_; }
