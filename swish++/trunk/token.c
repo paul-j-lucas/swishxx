@@ -26,7 +26,7 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"
+#include "platform.h"
 #include "token.h"
 #include "util.h"
 
@@ -34,11 +34,20 @@
 using namespace std;
 #endif
 
+//*****************************************************************************
 //
-// We needed somplace to store tokens that were put back but obviously can't
-// declare a token static data member inside token directly.
+// SNYOPSIS
 //
-token* token::hold( token *t ) {
+	/* static */ token* token::hold( token *t )
+//
+// DESCRIPTION
+//
+//	Put back and hold previosuly scanned tokens.  We need somplace to
+//	store tokens that were put back but obviously can't declare a token
+//	static data member inside token directly.
+//
+//*****************************************************************************
+{
 	// Our query parser needs at most 2 look-ahead tokens.
 	static token v[ 2 ];
 	static int top = -1;

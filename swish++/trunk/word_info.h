@@ -29,8 +29,8 @@
 #include <string>
 
 // local
-#include "fake_ansi.h"
-#include "html.h"				/* for no_meta_id */
+#include "fake_ansi.h"				/* for explicit, std */
+#include "html.h"				/* for No_Meta_ID */
 #include "my_set.h"
 
 //*****************************************************************************
@@ -60,7 +60,7 @@ public:
 		file() { }
 		explicit file( int i ) : index_( i ), occurrences_( 1 ) { }
 		file( int i, int mi ) : index_( i ), occurrences_( 1 ) {
-			if ( mi != no_meta_id )
+			if ( mi != No_Meta_ID )
 				meta_ids_.insert( mi );
 		}
 	};

@@ -35,18 +35,19 @@ MAKE=		make
 
 RM=		rm -fr
 #		The command to remove files recursively and ignore errors;
-#		usually "rm -fr".
+#		usually "rm -fr" for Unix or "erase" for Windows.
 
 PERL=		/usr/local/bin/perl
-#		The full path to the perl 5 executable; usually "/bin/perl" or
-#		"/usr/local/bin/perl".  You need this only if you intend on
-#		using httpindex(1).
+#		The full path to the Perl 5 executable; usually "/bin/perl" or
+#		"/usr/local/bin/perl" for Unix or "\Perl\bin\perl" for
+#		Windows.  You need this only if you intend on using
+#		httpindex(1).
 
 SHELL=		/bin/sh
 #		The shell to spawn for subshells; usually "/bin/sh".
 
 STRIP=		strip
-#		The command to strip symbolic informaiton from executables;
+#		The command to strip symbolic information from executables;
 #		usually "strip".  You can leave this defined even if your OS
 #		doesn't have it or any equivalent since any errors from this
 #		command are ignored in the Makefiles.
@@ -60,23 +61,44 @@ STRIP=		strip
 CC=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
-CCFLAGS=	-O3 #-g -pg
+CCFLAGS=	-O3 #-DWIN32 -g -pg
 #		Flags for C++ compiler:
-#		-g	Include symbol-table information in object file.
-#		-O	Turn optimization on.  Some implementations allow a
-#			digit after the O for optimization level.
-#		-pg	Turn profiling on.
+#
+#		-DWIN32	Compiling under Windows.
+#
+#		-g	Include symbol-table information in object file.  (You
+#			normally wouldn't want to do this unless you are
+#			either helping me to debug a problem found on your
+#			system or you are changing SWISH++ yourself.)
+#
+#		-O	Turn optimization on.  Some compilers allow a digit
+#			after the O for optimization level; if so, set yours
+#			to the highest number your compiler allows (without
+#			eliciting bugs in its optimizer).  If SWISH++ doesn't
+#			work correctly with optimization on, but it works just
+#			fine with it off, then there is a bug in your
+#			compiler's optimizer.
+#
+#		-pg	Turn profiling on.  (You normally wouldn't want to do
+#			this unless you are changing SWISH++ and want to try
+#			to performance-tune your changes.)  This option may be
+#			g++-specific.  If you are not using g++, consult your
+#			C++ compiler's documentation.
 
 CCHEXT=		.h
 #		C++ declaration file name extension; usually ".h", ".H", ".hh",
-#		or ".hpp".
+#		".hpp", or ".hxx".
 
 CCCEXT=		.c
 #		C++ definition file name extension; usually ".c", ".C", ".cc",
-#		or ".cpp".
+#		".cpp", or ".cxx".
 
 CCOEXT=		.o
-#		C++ object file name extension; usually ".o", ".obj".
+#		C++ object file name extension; usually ".o" or ".obj".
+
+CCLINK=		#-liberty
+#		Flags for the linker:
+#		-liberty	May be required under Windows for getopt(3C).
 
 CCLOPT=		-L
 #		Flag for locating libraries; usually "-L" but some systems,
@@ -98,10 +120,10 @@ I_BIN=		$(I_ROOT)/bin
 #		Where executables are installed; usually "$(I_ROOT)/bin".
 
 I_LIB=		$(I_ROOT)/lib
-#		Where libraries are installed; "$(I_ROOT)/lib".
+#		Where libraries are installed; usually "$(I_ROOT)/lib".
 
 I_MAN=		$(I_ROOT)/man
-#		Where manual pages are installed; "$(I_ROOT)/man".
+#		Where manual pages are installed; usually "$(I_ROOT)/man".
 
 I_OWNER=	-o bin
 #		The owner of the installed files.
@@ -113,22 +135,28 @@ I_MODE=		-m 644
 #		File permissions for regular files (non executables).
 
 I_XMODE=	-m 755
-#		File permissions for eXecutables.
+#		File permissions for eXecutables and directories.
 
 MKDIR=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 #		Command used to create a directory.
 
+
+########## You shouldn't have to change anything below this line. #############
+
+
 ###############################################################################
 #
-#	Manual page formatting
+#	Manual pages
+#
+#	This section is for me only who generates plain text and PDF versions
+#	of the manual pages from the original [nt]roff source.  You shouldn't
+#	need to change any of this unless you are changing SWISH++ and those
+#	changes require corresponding changes to the manual pages.
 #
 ###############################################################################
 
 DISTILL=	distill
 #		Command for converting PostScript to PDF; usually "distill".
-#		This is used by the developer only; you don't need this since
-#		PDF versions of the manual pages are included in the SWISH++
-#		distribution.
 
 NROFF=		nroff
 #		Command for formatting [nt]roff input for a terminal screen;
@@ -148,13 +176,15 @@ TROFF_FLAGS=	-man -Tpost
 #		Flags for troff to format manual pages; usually "-man -Tpost".
 
 TO_PS=		/usr/lib/lp/postscript/dpost
-#		Command to convert troff output to PostScript.
+#		Command to convert troff output to PostScript; usually
+#		"/usr/lib/lp/postscript/dpost" on Solaris.
 
 TO_TXT=		col -b
-#		Command to strip all non-text characters from nroff output;
-#		usually "col -b".
+#		Command to strip all non-text characters from nroff output to
+#		generate plain text versions of manual pages; usually
+#		"col -b".
 
-########## You shouldn't have to change anything below this line. #############
+###############################################################################
 
 # ROOT is defined by the Makefile including this.
 
@@ -162,4 +192,6 @@ CONFIG=		$(ROOT)/config
 MAN=		$(ROOT)/man
 
 PLATFORM_H=	platform$(CCHEXT)
-PLATFORM_H_TARGET=$(ROOT)/$(PLATFORM_H)
+
+.SUFFIXES:
+.SUFFIXES: $(CCCEXT) $(CCHEXT) $(CCOEXT)
