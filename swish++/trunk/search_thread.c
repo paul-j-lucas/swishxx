@@ -56,7 +56,7 @@
 #endif
 
 // local
-#include "fake_ansi.h"
+#include "platform.h"
 #include "search.h"
 #include "search_thread.h"
 #include "util.h"
