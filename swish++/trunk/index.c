@@ -116,7 +116,6 @@ WordPercentMax		word_percent_max;
 
 void			load_old_index( char const *index_file_name );
 void			merge_indicies( ostream& );
-void			parse_file_info( char const*, index_segment const& );
 void			rank_full_index();
 extern "C" void		remove_temp_files( void );
 ostream&		usage( ostream& = cerr );
@@ -645,7 +644,11 @@ void			write_word_index( ostream&, off_t* );
 		::exit( Exit_No_Read_Index );
 	}
 
+	////////// Load old stop words ////////////////////////////////////////
+
 	stop_words = new stop_word_set( index_file );
+
+	////////// Load old directories ///////////////////////////////////////
 
 	index_segment old_dirs( index_file, index_segment::dir_index );
 	if ( directories_reserve <= old_dirs.size() ) {
@@ -659,6 +662,8 @@ void			write_word_index( ostream&, off_t* );
 	FOR_EACH( index_segment, old_dirs, d )
 		check_add_directory( ::strdup( *d ) );
 
+	////////// Load old files /////////////////////////////////////////////
+
 	index_segment old_files( index_file, index_segment::file_index );
 	if ( files_reserve <= old_files.size() ) {
 		//
@@ -667,15 +672,32 @@ void			write_word_index( ostream&, off_t* );
 		//
 		files_reserve = files_grow( old_files.size() );
 	}
-	FOR_EACH( index_segment, old_files, f )
-		parse_file_info( *f, old_dirs );
+	FOR_EACH( index_segment, old_files, f ) {
+		unsigned char const*
+			u = reinterpret_cast<unsigned char const*>( *f );
+		int const dir_index = parse_bcd( u );
+		char const *const file_name = reinterpret_cast<char const*>(u);
+		while ( *u++ ) ;		// skip past filename
+		size_t const size = parse_bcd( u );
+		int const num_words = parse_bcd( u );
+		char const *const
+			title = ::strdup( reinterpret_cast<char const*>( u ));
+
+		string const dir_str( old_dirs[ dir_index ] );
+		string const path( dir_str + '/' + file_name );
+		char const *const path_name = ::strdup( path.c_str() );
+
+		new file_info( path_name, dir_index, size, title, num_words );
+	}
+
+	////////// Load old meta names ////////////////////////////////////////
 
 	index_segment old_meta_names(
 		index_file, index_segment::meta_name_index
 	);
 	FOR_EACH( index_segment, old_meta_names, m ) {
-		unsigned char const *p =
-			reinterpret_cast<unsigned char const*>( *m );
+		unsigned char const*
+			p = reinterpret_cast<unsigned char const*>( *m );
 		while ( *p++ ) ;		// skip past meta name
 		meta_names[ ::strdup( *m ) ] = parse_bcd( p );
 	}
@@ -962,38 +984,6 @@ void			write_word_index( ostream&, off_t* );
 
 	if ( verbosity > 1 )
 		cout << '\n';
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void parse_file_info( char const *p, index_segment const &directories )
-//
-// DESCRIPTION
-//
-//	Parse a file_info from an index file to reconstitute an instance.
-//
-// PARAMETERS
-//
-//	p	A pointer to the first character containing a file_info inside
-//		an index file.
-//
-//*****************************************************************************
-{
-	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
-	int const dir_index = parse_bcd( u );
-	char const *const file_name = reinterpret_cast<char const*>( u );
-	while ( *u++ ) ;				// skip past filename
-	size_t const size = parse_bcd( u );
-	int const num_words = parse_bcd( u );
-	char const *const title = reinterpret_cast<char const*>( u );
-
-	string const dir_str( directories[ dir_index ] );
-	string const path( dir_str + '/' + file_name );
-	char const *const path_name = ::strdup( path.c_str() );
-
-	new file_info( path_name, dir_index, size, title, num_words );
 }
 
 //*****************************************************************************
