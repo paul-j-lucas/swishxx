@@ -46,7 +46,24 @@
 //*****************************************************************************
 {
 public:
-	bool contains( key_type s ) const { return find( s ) != end(); }
+	bool contains( T const &s ) const { return find( s ) != end(); }
+};
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	template<> class my_set< char const* > : public std::set< char const* >
+//
+// DESCRIPTION
+//
+//	Specialize my_set for C-stle strings so as not to have a reference
+//	(implemented as a pointer) to a char const*.
+//
+//*****************************************************************************
+{
+public:
+	bool contains( char const *s ) const { return find( s ) != end(); }
 };
 
 typedef my_set< char const* >	char_ptr_set;
