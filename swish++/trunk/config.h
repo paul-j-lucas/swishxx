@@ -102,9 +102,6 @@ int const	Tag_Name_Max_Size		= 10;
 //		"BLOCKQUOTE".  You might need to increase this if you are
 //		indexing HTML or XHTML documents that contain non-standard tags
 //		and at least one of them is longer than the above.
-
-int const	Title_Max_Size			= 200;
-//		Maximum length of a title between <TITLE>...</TITLE>.
 #endif
 
 #ifdef	SEARCH_DAEMON
@@ -113,6 +110,10 @@ int const	Title_Max_Size			= 200;
 char const	SocketFile_Default[]		= "/tmp/search.socket";
 //		Default name of the Unix domain socket file; this can be
 //		overridden either in a config. file or on the command line.
+
+int const	SocketPort_Default		= 1967;
+//		Default port number of the TCP socket; this can be overridden
+//		either in a config. file or on the command line.
 
 int const	SocketQueueSize_Default		= 100;
 //		Maximum number of queued connections for a socket.  From
@@ -209,6 +210,10 @@ int const	TitleLines_Default		= 12;
 //		Specifies the maximum number of lines into a file for its
 //		"title" (whatever that means for a given file format); this can
 //		be overridden either in a config. file or on the command line.
+
+int const	Title_Max_Size			= 200;
+//		Maximum length of a file "title" (whatever that means for a
+//		given file format).
 
 int const	WordPercentMax_Default		= 100;
 //		Default maximum percentage of files a word may occur in before
