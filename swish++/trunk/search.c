@@ -408,7 +408,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 // SYNOPSIS
 //
-	void search( char const *query,
+	bool search( char const *query,
 		int skip_results, int max_results, char const *results_format,
 		ostream &out, ostream &err
 	)
@@ -443,7 +443,7 @@ inline omanip< char const* > index_file_info( int index ) {
 		err << error << "malformed query\n";
 #ifdef	SEARCH_DAEMON
 		if ( daemon_type != "none" )
-			return;
+			return false;
 #endif
 		::exit( Exit_Malformed_Query );
 	}
@@ -458,7 +458,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	format->pre( stop_words_found );
 	if ( !out )
-		return;
+		return false;
 	if ( skip_results < results.size() && max_results ) {
 		//
 		// Copy the results to a vector to sort them by rank.
@@ -495,11 +495,12 @@ inline omanip< char const* > index_file_info( int index ) {
 				)
 			);
 			if ( !out )
-				return;
+				return false;
 		}
 	}
 	format->post();
 	delete format;
+	return true;
 }
 
 //*****************************************************************************
@@ -711,7 +712,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 // SYNOPSIS
 //
-	void service_request(
+	bool service_request(
 		char *argv[], search_options const &opt,
 		ostream &out, ostream &err
 	)
@@ -742,12 +743,12 @@ inline omanip< char const* > index_file_info( int index ) {
 				opt.dump_window_size_arg, opt.dump_match_arg,
 				out
 			);
-		return;
+		return true;
 	}
 	if ( opt.dump_word_index_opt ) {
 		while ( *argv && out )
 			dump_single_word( *argv++, out );
-		return;
+		return true;
 	}
 	if ( opt.dump_entire_index_opt ) {
 		FOR_EACH( index_segment, words, word ) {
@@ -759,27 +760,27 @@ inline omanip< char const* > index_file_info( int index ) {
 					<< index_file_info( file->index_ )
 					<< '\n';
 				if ( !out )
-					return;
+					return false;
 			}
 			out << '\n';
 		}
-		return;
+		return true;
 	}
 	if ( opt.dump_stop_words_opt ) {
 		FOR_EACH( index_segment, stop_words, word ) {
 			out << *word << '\n';
 			if ( !out )
-				return;
+				return false;
 		}
-		return;
+		return true;
 	}
 	if ( opt.dump_meta_names_opt ) {
 		FOR_EACH( index_segment, meta_names, meta_name ) {
 			out << *meta_name << '\n';
 			if ( !out )
-				return;
+				return false;
 		}
-		return;
+		return false;
 	}
 
 	////////// Perform the query //////////////////////////////////////////
@@ -793,7 +794,7 @@ inline omanip< char const* > index_file_info( int index ) {
 		query += ' ';
 		query += *argv++;
 	}
-	search( query.c_str(),
+	return search( query.c_str(),
 		opt.skip_results_arg,
 		opt.max_results_arg ?
 			::atoi( opt.max_results_arg ) : max_results,
