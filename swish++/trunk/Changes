@@ -8,7 +8,7 @@ SWISH++ Changes
 NEW FEATURES
 ------------
 
-* Search results an now optionally be output in XML.
+* Search results can now optionally be output in XML.
 
   (This feature shall be known as feature XML.)
 
