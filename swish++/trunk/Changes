@@ -815,9 +815,12 @@ CHANGES, file-by-file
 	3. s/STATIC_CAST(...)/static_cast<...>/
 	4. Added PJL namespace.
 
-* thread_pool.c
+* thread_pool.h
 
 	1. Added PJL namespace.
+	2. s/queue/std::queue/
+	3. s/set/std::set/
+	4. Made ~thread() public.
 
 * ThreadsMax.h
 
