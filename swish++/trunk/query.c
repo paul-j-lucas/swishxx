@@ -43,6 +43,18 @@ using namespace std;
 
 extern index_segment	files, meta_names, stop_words, words;
 
+int	get_meta_id( index_segment::const_iterator );
+
+bool	parse_meta(
+		token_stream&, search_results_type&, std::set< std::string >&,
+		bool&, int = No_Meta_ID
+	);
+bool	parse_primary(
+		token_stream&, search_results_type&, std::set< std::string >&,
+		bool&, int = No_Meta_ID
+	);
+bool	parse_optional_relop( token_stream&, token::type& );
+
 //*****************************************************************************
 //
 // SYNOPSIS

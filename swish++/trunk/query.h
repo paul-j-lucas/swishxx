@@ -43,20 +43,9 @@ typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
 //	A find_result_type is-a pair of iterators marking the beginning and end
 //	of a range over which a given word matches.
 
-int	get_meta_id( index_segment::const_iterator );
-
-bool	parse_meta(
-		token_stream&, search_results_type&, std::set< std::string >&,
-		bool&, int = No_Meta_ID
-	);
-bool	parse_primary(
-		token_stream&, search_results_type&, std::set< std::string >&,
-		bool&, int = No_Meta_ID
-	);
 bool	parse_query(
 		token_stream&, search_results_type&, std::set< std::string >&,
 		bool&, int = No_Meta_ID
 	);
-bool	parse_optional_relop( token_stream&, token::type& );
 
 #endif	/* query_H */
