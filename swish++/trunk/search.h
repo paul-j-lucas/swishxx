@@ -91,7 +91,7 @@ private:
 	bool	bad_;
 };
 
-void		service_request(
+bool		service_request(
 			char *argv[],
 			search_options const&,
 			std::ostream& = std::cout, std::ostream& = std::cerr
