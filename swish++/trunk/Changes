@@ -26,6 +26,10 @@ NEW FEATURES
 
   (This feature shall be known as feature TCP.)
 
+* Added parsing of XHTML 1.1 ruby elements.
+
+  (This feature shall be known as feature RUBY.)
+
 
 BUG FIXES
 ---------
@@ -59,9 +63,24 @@ BUG FIXES
 
   (This bug fix shall be known as bug fix SOL2.)
 
+* Removed some more buffer-overflow bugs.
+
+  (This bug fix shall be known as bug fix BOB.)
+
 
 CHANGES, file-by-file
 ---------------------
+
+* auto_vec.h
+
+	1. Removed #ifdef SEARCH_DAEMON since it's now used by code not
+	   in the search daemon for bug fix BOB.
+
+	2. Added "explicit" to constructor.
+
+	3. Added: auto_vec<T>& operator=( T *p )
+
+	4. s/T *const p_/T *p_/
 
 * bcd.c
 
@@ -87,6 +106,9 @@ CHANGES, file-by-file
 	7. Wrapped thread and socket stuff inside "ifdef SEARCH_DAEMON".
 
 	8. Added OS variable.
+
+	9. Added OPTIM variable since -O3 in the cygwin environment
+	   causes a segfault due to an optimizer bug, presumeably.
 
 * config/src/mutable.c
 
@@ -136,10 +158,18 @@ CHANGES, file-by-file
 	2. Added "using namespace std;" since it should have been there
 	   all along.
 
+	3. Switched to using auto_vec<char> and to_lower_r() for bug
+	   fix BOB.
+
 * conf_enum.c
 * conf_enum.h
 
 	1. Added for feature TCP.
+
+* conf_int.c
+
+	1. Switched to using auto_vec<char> and to_lower_r() for bug
+	   fix BOB.
 
 * conf_string.h
 
@@ -201,11 +231,21 @@ CHANGES, file-by-file
 
 	3. Added ExtractFile::const_iterator for feature MOD.
 
+	4. s/name_set_.contains()/seen_file()/
+
+	5. s/file_info::current_file().num_words_/fi->num_words()/
+
+	6. Removed "filter_list.reserve( 5 )" so as not to waste time
+	   and thereby penalize the performance for files that are not
+	   filtered.
+
 * elements.c
 
 	1. Added "#ifdef MOD_HTML" for feature MOD.
 
 	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+
+	3. Added ruby elements for feature RUBY.
 
 * elements.h
 * entities.h
@@ -250,12 +290,6 @@ CHANGES, file-by-file
 
 	1. Added for feature MOD.
 
-* fake_ansi.c
-
-	1. s/fake_ansi.h/platform.h/
-
-	2. s/STATIC_CAST(...)/static_cast<...>/
-
 * fake_ansi.h
 
 	1. Got rid of faking "mutable" since all C++ compilers should
@@ -263,6 +297,8 @@ CHANGES, file-by-file
 
 	2. Removed new casts section since compilers should be
 	   implementing them by now.
+
+	3. Added hack to fix g++/STL/iterator bug.
 
 * file_info.c
 
@@ -272,6 +308,16 @@ CHANGES, file-by-file
 
 	3. Added: #ifndef PJL_NO_NAMESPACES (it should have been there
 	   all along).
+
+* file_info.h
+
+	1. s/ostream/std::ostream/
+
+	2. Made all but list_ data members private.
+
+	3. Added public accessor functions for now-private data members.
+
+	4. Added inc_words() and seen_file().
 
 * file_list.c
 
@@ -287,15 +333,34 @@ CHANGES, file-by-file
 
 	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
 
+	3. Removed pointer and reference type.
+
+	4. Made const_iterator derived from std::iterator.
+
 * file_vector.c
+* file_vector.h
+
+	1. Replaced by mmap_file.[ch]
+
+* mmap_file.c
 
 	1. Added "#include <sys/time.h>" for bug fix BSD3.
 
 	2. s/REINTERPRET_CAST( caddr_t )( -1 )/MAP_FAILED/
 
+	3. Removed all WIN32 code.
+
+* mmap_file.h
+
+	1. Removed all WIN32 code.
+
 * FilesReserve.h
 
 	1. Added "extern FilesReserve files_reserve;".
+
+* filter.c
+
+	1. Removed all WIN32 special cases.
 
 * GNUmakefile
 
@@ -311,6 +376,10 @@ CHANGES, file-by-file
 	5. Added splitmail target for feature MAIL.
 
 	6. s/ifndef WIN32/ifdef SEARCH_DAEMON/
+
+	7. Added fnmatch.c conditionally for WIN32 to E_SRCS.
+
+	8. Removed WIN32 special case for platform.h.
 
 * html.c
 * html.h
@@ -382,6 +451,15 @@ CHANGES, file-by-file
 
 	C. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
 
+	D. s/remove_temp_files()/remove_temp_files( void )/ for picky
+	   HP-UX compiler.
+
+	E. In rank(), s/num_words_/num_words()/
+
+	F. In write_file_index(), made use of new file_info member functions.
+
+	G. Removed all WIN32 special cases.
+
 * index.h
 
 	1. Replaced by indexer.h for feature MOD.
@@ -397,9 +475,21 @@ CHANGES, file-by-file
 
 	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
 
+* index_segment.h
+
+	1. Made index_segment::const_iterator derived from std::iterator.
+
 * init_modules.c
 
 	1. Added for features MOD and MAIL.
+
+* INSTALL.win32
+
+	1. Changed from mingw to cygwin.
+
+	2. Removed note about extract(1).
+
+	3. Changed build instructions to match Unix version.
 
 * itoa.c
 
@@ -472,6 +562,8 @@ CHANGES, file-by-file
 	3. Moved configuration variable extern declarations to .h
 	   files.
 
+	4. In parse_html_tag(), s/tag/name/
+
 * mod_html.h
 
 	1. Replaced html.h for feature MOD.
@@ -480,8 +572,8 @@ CHANGES, file-by-file
 	   they could be accessed from mod_mail.c.
 
 	3. Made index_words() and parse_html_tag() take an
-	   encoded_char_range::const_iterator& argument so they could
-	   parse HTML that is encoded.
+	   encoded_char_range or encoded_char_range::const_iterator
+	   argument so they could parse HTML that is encoded.
 
 	4. Moved configuration variable extern declarations to .h
 	   files.
@@ -494,6 +586,10 @@ CHANGES, file-by-file
 * PidFile.h
 
 	1. Added "extern PidFile pid_file_name;".
+
+* platform.h.win32
+
+	1. Removed since not longer needed under cygwin.
 
 * RecurseSubdirs.h
 
@@ -525,6 +621,11 @@ CHANGES, file-by-file
 	9. In main(), moved check of number of command-line arguments
 	   after conf_var::parse_file() and command-line override code
 	   for bug fix DCL.
+
+	A. Switched to using auto_vec<char> and to_lower_r() all the
+	   time for bug fix BOB.
+
+	B. Removed all WIN32 special cases.
 
 * search.h
 
@@ -661,17 +762,31 @@ CHANGES, file-by-file
 
 	2. Added "extern TitleLines num_title_lines;"
 
+* token.c
+
+	1. s/(cfc)/static_cast<char (*)(char)>/
+
 * util.c
 
 	1. Moved "char_buffer_pool<128,5> buf" to file scope.
 
 	2. s/fake_ansi.h/platform.h/
 
+	3. Added: to_lower_r(char const*, char const*) for bug fix BOB.
+
 * util.h
 
 	1. Added find_newline() and skip_newline().
 
 	2. Added "#include <sys/time.h>" for bug fix BSD3.
+
+	3. Removed #ifdef SEARCH_DAEMON around to_lower_r(char const*)
+	   since it's now used by code not in the search daemon for bug
+	   fix BOB.
+
+	4. Added: to_lower_r(char const*, char const*) for bug fix BOB.
+
+	5. s/file_vector::const_iterator/char const */
 
 * Verbosity.h
 
@@ -690,6 +805,23 @@ CHANGES, file-by-file
 	1. Removed trim_whitespace(), url_decode(), and url_encode()
 	   since they are no longer used now that the search.cgi
 	   example uses CGI.pm
+
+* option_stream.h
+
+	1. s/ostream/std::ostream/
+
+* util.h
+
+	1. Removed all WIN32 special cases.
+
+* Win32-Makefile-index.v
+* Win32-Makefile-search.v
+
+	1. Removed these since they are not needed under cygwin.
+
+* word_info.h
+
+	1. s/ostream/std::ostream/
 
 * word_util.h
 
