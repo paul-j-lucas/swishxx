@@ -960,6 +960,8 @@ void		write_word_index( ostream&, off_t* );
 					<< " files)" << flush;
 			goto remove;
 		}
+
+		{ // local scope so we can "goto" past initialization
 		int const wfp = word_file_percentage( file_count );
 		if ( wfp >= word_percent_max ) {
 			if ( verbosity > 2 )
@@ -968,14 +970,12 @@ void		write_word_index( ostream&, off_t* );
 					<< "%)" << flush;
 			goto remove;
 		}
+		}
 
 		//
 		// Compute the rank for this word in every file it's in.
-		// (Note: a local scope is introduced here since I'm not
-		// convinced that the 'goto' above can jump past the
-		// initialization of 'factor' below even though g++ 2.8.0
-		// allows it.)
-		{
+		//
+		{ // local scope so we can "goto" past initialization
 		double const factor = 10000.0 / info.occurrences_;
 		TRANSFORM_EACH( word_info::file_set, info.files_, file )
 			file->rank_ = rank(
