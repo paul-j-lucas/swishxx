@@ -30,16 +30,6 @@
 #include "util.h"			/* for to_lower() */
 #include "word_util.h"
 
-enum content_transfer_encoding {
-	Seven_Bit,
-	Eight_Bit,			// treated the same as Seven_Bit
-	Binary,				// we don't know what to do with this
-#ifdef mod_mail
-	Quoted_Printable,
-	Base64,
-#endif
-};
-
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -56,7 +46,7 @@ enum content_transfer_encoding {
 //
 //	However, doing this is a serious performance hit since it has to be
 //	done for every single character examined.  Hence, the code is #ifdef'd
-//	for mod_mail: if mod_mail isn't used, there's no need for any special
+//	for MOD_mail: if MOD_mail isn't used, there's no need for any special
 //	decoding.
 //
 //*****************************************************************************
@@ -65,14 +55,12 @@ public:
 	typedef ptrdiff_t difference_type;
 	typedef char value_type;
 	typedef value_type const* pointer;
+	typedef value_type (*decoder_type)( pointer, pointer&, pointer );
 
 	class const_iterator;
 	friend class const_iterator;
 
-	encoded_char_range(
-		pointer begin, pointer end,
-		content_transfer_encoding = Eight_Bit
-	);
+	encoded_char_range( pointer begin, pointer end, decoder_type = 0 );
 	encoded_char_range( const_iterator const &pos );
 	encoded_char_range(
 		const_iterator const &begin, const_iterator const &end
@@ -90,14 +78,19 @@ public:
 	void		end_pos( pointer p )		{ end_ = p; }
 	void		end_pos( const_iterator const& );
 
-	content_transfer_encoding	encoding() const { return encoding_; }
+	decoder_type	decoder() const			{ return decoder_; }
 protected:
 	encoded_char_range() { }
 
-	pointer				begin_;
-	pointer				end_;
-	content_transfer_encoding	encoding_;
+	pointer		begin_;
+	pointer		end_;
+	decoder_type	decoder_;
 };
+
+#ifdef MOD_mail
+// local
+#include "decoders/decoders.h"
+#endif
 
 //*****************************************************************************
 //
@@ -126,10 +119,7 @@ public:
 	typedef encoded_char_range::pointer pointer;
 
 	const_iterator() { }
-	const_iterator(
-		pointer begin, pointer end,
-		content_transfer_encoding = Eight_Bit
-	);
+	const_iterator( pointer begin, pointer end, decoder_type = 0 );
 
 	// default copy constructor is fine
 	// default assignment operator is fine
@@ -149,65 +139,54 @@ public:
 private:
 	mutable pointer	pos_;
 	mutable pointer	prev_;
-#ifdef mod_mail
+#ifdef MOD_mail
 	mutable value_type	ch_;
 	mutable bool		decoded_;
 	mutable int		delta_;
 #endif
 	const_iterator( encoded_char_range const*, pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
-
-#ifdef mod_mail
+#ifdef MOD_mail
 	void		decode() const;
-	static value_type decode_base64(
-		pointer begin, pointer &pos, pointer end
-	);
-	static value_type decode_quoted_printable(
-		pointer &pos, pointer end
-	);
-	static value_type decode_quoted_printable_aux(
-		pointer &pos, pointer end
-	);
 #endif
 };
 
 // I hate lots of typing.
-#define	ECR_CI encoded_char_range::const_iterator
+#define ECR	encoded_char_range
+#define	ECR_CI	ECR::const_iterator
 
 ////////// encoded_char_range inlines /////////////////////////////////////////
 
-inline encoded_char_range::encoded_char_range(
-	pointer begin, pointer end, content_transfer_encoding encoding
+inline ECR::ECR(
+	pointer begin, pointer end, decoder_type decoder
 ) :
-	begin_( begin ), end_( end ), encoding_( encoding )
+	begin_( begin ), end_( end ), decoder_( decoder )
 {
 }
 
-inline encoded_char_range::encoded_char_range( const_iterator const &i ) :
-	begin_( i.pos_ ), end_( i.end_ ), encoding_( i.encoding_ )
+inline ECR::ECR( const_iterator const &i ) :
+	begin_( i.pos_ ), end_( i.end_ ), decoder_( i.decoder_ )
 {
 }
 
-inline encoded_char_range::encoded_char_range(
-	const_iterator const &begin, const_iterator const &end
-) :
-	begin_( begin.pos_ ), end_( end.pos_ ), encoding_( begin.encoding_ )
+inline ECR::ECR( const_iterator const &begin, const_iterator const &end ) :
+	begin_( begin.pos_ ), end_( end.pos_ ), decoder_( begin.decoder_ )
 {
 }
 
-inline ECR_CI encoded_char_range::begin() const {
+inline ECR_CI ECR::begin() const {
 	return const_iterator( this, begin_ );
 }
 
-inline ECR_CI encoded_char_range::end() const {
+inline ECR_CI ECR::end() const {
 	return const_iterator( this, end_ );
 }
 
-inline void encoded_char_range::begin_pos( const_iterator const &i ) {
+inline void ECR::begin_pos( const_iterator const &i ) {
 	begin_ = i.pos_;
 }
 
-inline void encoded_char_range::end_pos( const_iterator const &i ) {
+inline void ECR::end_pos( const_iterator const &i ) {
 	end_ = i.pos_;
 }
 
@@ -216,8 +195,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 // SYNOPSIS
 //
 	inline ECR_CI::const_iterator(
-		pointer begin, pointer end,
-		content_transfer_encoding encoding = Eight_Bit
+		pointer begin, pointer end, decoder_type decoder = 0
 	)
 //
 // DESCRIPTION
@@ -230,11 +208,11 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //	end		An pointer marking the end of the range.
 //
-//	encoding	The Content-Transfer-Encoding of the text.
+//	decoder		The decoder for the text.
 //
 //*****************************************************************************
-	: encoded_char_range( begin, end, encoding ), pos_( begin )
-#ifdef mod_mail
+	: encoded_char_range( begin, end, decoder ), pos_( begin )
+#ifdef MOD_mail
 	  , decoded_( false )
 #endif
 {
@@ -244,9 +222,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 // SYNOPSIS
 //
-	inline ECR_CI::const_iterator(
-		encoded_char_range const *ecr, pointer start_pos
-	)
+	inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos )
 //
 // DESCRIPTION
 //
@@ -260,50 +236,15 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //			is to start.
 //
 //*****************************************************************************
-	: encoded_char_range( start_pos, ecr->end_, ecr->encoding_ ),
+	: encoded_char_range( start_pos, ecr->end_, ecr->decoder_ ),
 	  pos_( start_pos )
-#ifdef mod_mail
+#ifdef MOD_mail
 	  , decoded_( false )
 #endif
 {
 }
 
-#ifdef mod_mail
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline encoded_char_range::value_type ECR_CI::decode_quoted_printable(
-		pointer &c, pointer end
-	)
-//
-// DESCRIPTION
-//
-//	Check to see if the character at the current position is an '=': if
-//	not, the character is an ordinary character; if so, the character is a
-//	quoted-printable encoded character and needs to be decoded.
-//
-//	The reason for this function is to serve an inlined front-end so as to
-//	call the more expensive out-of-lined only if the character really needs
-//	to be decoded.
-//
-// PARAMETERS
-//
-//	c	An pointer marking the position of the character to be decoded.
-//
-//	end	An pointer marking the end of the text.
-//
-// RETURN VALUE
-//
-//	Returns the decoded character.
-//
-//*****************************************************************************
-{
-	if ( *c != '=' )
-		return *c++;
-	return ++c != end ? decode_quoted_printable_aux( c, end ) : ' ';
-}
-
+#ifdef MOD_mail
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -327,25 +268,16 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 	// the iterator can be incremented later.
 	//
 	pointer c = pos_;
-	switch ( encoding_ ) {
-		case Base64:
-			ch_ = decode_base64( begin_, c, end_ );
-			break;
-		case Quoted_Printable:
-			ch_ = decode_quoted_printable( c, end_ );
-			break;
-		default:
-			ch_ = *c++;
-	}
+	ch_ = decoder_ ? (*decoder_)( begin_, c, end_ ) : *c++;
 	delta_ = c - pos_;
 }
-#endif	/* mod_mail */
+#endif	/* MOD_mail */
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::value_type ECR_CI::operator*() const
+	inline ECR::value_type ECR_CI::operator*() const
 //
 // DESCRIPTION
 //
@@ -358,7 +290,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef mod_mail
+#ifdef MOD_mail
 	if ( !decoded_ ) {
 		decode();
 		decoded_ = true;
@@ -385,7 +317,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef mod_mail
+#ifdef MOD_mail
 	if ( decoded_ ) {
 		//
 		// The character at the current position has previously been
@@ -406,7 +338,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 	}
 #endif
 	prev_ = pos_;
-#ifdef mod_mail
+#ifdef MOD_mail
 	pos_ += delta_;
 #else
 	++pos_;
@@ -469,7 +401,7 @@ inline bool operator!=( ECR_CI::pointer p, ECR_CI const &e ) {
 //
 // SYNOPSIS
 //
-	inline char *to_lower( encoded_char_range const &range )
+	inline char *to_lower( ECR const &range )
 //
 // DESCRIPTION
 //
@@ -492,14 +424,13 @@ inline bool operator!=( ECR_CI::pointer p, ECR_CI const &e ) {
 {
 	extern char_buffer_pool<128,5> lower_buf;
 	register char *p = lower_buf.next();
-	for ( encoded_char_range::const_iterator
-		c = range.begin(); !c.at_end(); ++c
-	)
+	for ( ECR_CI c = range.begin(); !c.at_end(); ++c )
 		*p++ = to_lower( *c );
 	*p = '\0';
 	return lower_buf.current();
 }
 
 #undef	ECR_CI
+#undef	ECR
 
 #endif	/* encoded_char_H */
