@@ -29,6 +29,7 @@
 #include "ExcludeMeta.h"
 #include "IncludeMeta.h"
 #include "indexer.h"
+#include "iso8859-1.h"
 #include "meta_map.h"
 #include "platform.h"
 #include "stop_words.h"
@@ -236,13 +237,13 @@ indexer*                indexer::text_indexer_ = 0;
 //
 // RETURN VALUE
 //
-//      Returns the ID of the given meta name or No_Meta_ID if the meta name is
-//      either excluded or not included.
+//      Returns the ID of the given meta name or Meta_ID_None if the meta name
+//      is either excluded or not included.
 //
 //*****************************************************************************
 {
     if ( exclude_meta_names.contains( meta_name ) )
-        return No_Meta_ID;
+        return Meta_ID_None;
 
     if ( !include_meta_names.empty() ) {
         //
@@ -252,7 +253,7 @@ indexer*                indexer::text_indexer_ = 0;
         IncludeMeta::const_iterator const
             m = include_meta_names.find( meta_name );
         if ( m == include_meta_names.end() )
-            return No_Meta_ID;
+            return Meta_ID_None;
         meta_name = m->second;
     }
 
@@ -391,7 +392,7 @@ indexer*                indexer::text_indexer_ = 0;
 
 skip_push_back:
     word_info::file &last_file = wi.files_.back();
-    if ( meta_id != No_Meta_ID )
+    if ( meta_id != Meta_ID_None )
         last_file.meta_ids_.insert( meta_id );
 #ifdef  FEATURE_word_pos
     if ( store_word_positions )
@@ -414,7 +415,7 @@ skip_push_back:
 //
 // PARAMETERS
 //
-//      e       The encoded text to index.
+//      e           The encoded text to index.
 //
 //      meta_id     The numeric ID of the meta name the words index are to be
 //                  associated with.
@@ -427,7 +428,7 @@ skip_push_back:
 
     encoded_char_range::const_iterator c = e.begin();
     while ( !c.at_end() ) {
-        register char const ch = *c++;
+        register char const ch = iso8859_1_to_ascii( *c++ );
 
         ////////// Collect a word /////////////////////////////////////////////
 
@@ -445,7 +446,8 @@ skip_push_back:
                 continue;
             }
             in_word = false;                    // too big: skip chars
-            while ( !c.at_end() && is_word_char( *c++ ) ) ;
+            while ( !c.at_end() && is_word_char( iso8859_1_to_ascii( *c++ ) ) )
+                ;
             continue;
         }
 
@@ -546,9 +548,7 @@ skip_push_back:
 //
 // SYNOPSIS
 //
-        /* static */ char* indexer::tidy_title(
-            char const *begin, char const *end
-        )
+        char* indexer::tidy_title( char const *begin, char const *end )
 //
 // DESCRIPTION
 //
