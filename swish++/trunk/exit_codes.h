@@ -25,6 +25,7 @@
 // exit(3) status codes
 enum {
 	// common to all executables
+	Exit_Internal_Error	= 255,
 	Exit_Success		= 0,
 	Exit_Config_File	= 1,
 	Exit_Usage		= 2,
