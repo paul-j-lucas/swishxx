@@ -29,19 +29,22 @@
 //
 // SYNOPSIS
 //
-	/* virtual */ void conf_set::parse_value( char *line )
+	/* virtual */
+	void conf_set::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
-//	Parse the line of text by splitting it into words that are separated
-//	by whitespace.
+//	Parse the line of text by splitting it into words that are separated by
+//	whitespace.
 //
 // PARAMETERS
 //
-//	line	The line of text to be parsed.
+//	var_name	The name of the configuration variable.
+//
+//	line		The line of text to be parsed.
 //
 //*****************************************************************************
 {
 	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
-		insert( ::strdup( s ) );
+		insert( s );
 }
