@@ -69,7 +69,7 @@
 //*****************************************************************************
 {
 public:
-	typedef std::map< char const*, T > map_type;
+	typedef typename std::map< char const*, T > map_type;
 	typedef typename map_type::key_type key_type;
 	typedef typename map_type::value_type value_type;
 	typedef typename map_type::iterator iterator;
@@ -103,7 +103,7 @@ private:
 	public:
 		pattern_match( char const *file_name ) :
 			file_name_( file_name ) { }
-		result_type operator()( value_type const &map_node ) const {
+		result_type operator()( argument_type map_node ) const {
 #ifdef	PJL_LOCAL_FNMATCH
 			return !::fnmatch( map_node.first, file_name_, 0 );
 #else
