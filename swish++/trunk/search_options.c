@@ -54,6 +54,7 @@ static option_stream::spec const opt_spec[] = {
 	"min-threads",		1, 't',
 	"max-threads",		1, 'T',
 	"socket-file",		1, 'u',
+	"socket-port",		1, 'U',
 #endif	/* SEARCH_DAEMON */
 #endif	/* SEARCH_DAEMON_OPTIONS_ONLY */
 	0
