@@ -295,16 +295,16 @@ namespace PJL {
 		cerr << "thread_pool_thread_main(): got task" << endl;
 #		endif
 
-		MUTEX_LOCK( &t->pool_.t_busy_lock_, true );
-		++t->pool_.t_busy_;
-		MUTEX_UNLOCK();
-		pthread_cleanup_push( thread_pool_decrement_busy, t );
-
 		DEFER_CANCEL();
 		arg = t->pool_.queue_.front();
 		t->pool_.queue_.pop();
 		RESTORE_CANCEL();
 		MUTEX_UNLOCK(); // t->pool_.q_lock_
+
+		MUTEX_LOCK( &t->pool_.t_busy_lock_, true );
+		++t->pool_.t_busy_;
+		MUTEX_UNLOCK();
+		pthread_cleanup_push( thread_pool_decrement_busy, t );
 
 #		ifdef DEBUG_threads
 		cerr << "thread_pool_thread_main(): performing task" << endl;
