@@ -49,7 +49,7 @@
 		Flag_Unsynchronized	= 0x80,
 		Flag_Extended		= 0x40,
 		Flag_Experimental	= 0x20,
-		Flag_Footer_Present	= 0x10,
+		Flag_Footer_Present	= 0x10
 	};
 
 	enum Versions {
@@ -81,7 +81,7 @@
 {
 	enum Sizes {
 		Version_2_2_Size	=  6,
-		Version_2_3_Size	= 10,	// also 2.4.0
+		Version_2_3_Size	= 10	// also 2.4.0
 	};
 
 	enum Flags {
@@ -92,7 +92,7 @@
 		Flag_Compressed		= 0x0008,
 		Flag_Encrypted		= 0x0004,
 		Flag_Unsynchronized	= 0x0002,
-		Flag_Data_Length	= 0x0001,
+		Flag_Data_Length	= 0x0001
 	};
 
 	enum header_result {
