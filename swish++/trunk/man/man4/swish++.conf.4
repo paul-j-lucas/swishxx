@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "December 2, 2000" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "December 12, 2000" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -128,41 +128,19 @@ Variables of this type are:
 .BR ExcludeClass ,
 .BR ExcludeFile ,
 .BR ExtractFile ,
-.BR IncludeMeta ,
 and
 .BR ExcludeMeta .
 .SS Other variables
 Variables of this type are:
-.BR SocketAddress ,
+.BR IncludeFile ,
+.BR IncludeMeta ,
 .BR FilesGrow ,
 .B FilterFile
 (see FILTERS below),
 and
-.BR IncludeFile .
+.BR SocketAddress .
 .P
-A
-.B SocketAddress
-configuration file line is of the form:
-.cS
-\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
-.cE
-that is: an optional host and colon
-followed by a port number.
-The
-.I host
-may be one of a host name, an IP address, or the \f(CW*\f1 character
-meaning ``any IP address.''
-Omitting the
-.I host
-and colon also means ``any IP address.''
-.P
-The
-.B FilesGrow
-variable is just like an integer variable
-except that it may contain a trailing percent sign \f(CW%\f1
-to indicate a percentage rather than an absolute number.
-.P
-A
+An
 .B IncludeFile
 configuration file line is of the form:
 .cS
@@ -180,6 +158,44 @@ Module names are:
 \f(CWHTML\f1 (HTML and XHTML),
 and
 \f(CWMail\f1 (mail and news messages).
+.P
+A
+.B IncludeMeta
+configuration file line is of the form:
+.cS
+name\f3[\fP=\f2new_name\fP\f3]\fP \f2...\fP
+.cE
+It is like a set variable except arguments may optionally be followed
+by reassignments.
+For example, a value of:
+.cS
+adr=address
+.cE
+says to include and index the words associated with the meta name \f(CWadr\f1,
+but to store the name as \f(CWaddress\f1 in the generated index file
+so that queries would use \f(CWaddress\f1 rather than \f(CWadr\f1.
+.P
+The
+.B FilesGrow
+variable is just like an integer variable
+except that it may contain a trailing percent sign \f(CW%\f1
+to indicate a percentage rather than an absolute number.
+.P
+A
+.B SocketAddress
+configuration file line is of the form:
+.cS
+\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
+.cE
+that is: an optional host and colon
+followed by a port number.
+The
+.I host
+may be one of a host name, an IP address, or the \f(CW*\f1 character
+meaning ``any IP address.''
+Omitting the
+.I host
+and colon also means ``any IP address.''
 .SH FILTERS
 Via the
 .H FilterFile
