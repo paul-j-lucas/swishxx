@@ -26,6 +26,20 @@
 
 ###############################################################################
 #
+#	OS selection
+#
+#	Uncomment whichever line represents your OS.  If your OS isn't listed
+#	here, just pick Linux and see if that works.
+#
+###############################################################################
+
+#FREE_BSD=	-DFreeBSD
+LINUX=		-DLinux
+#SOLARIS=	-DSolaris
+#WIN32=		-DWIN32
+
+###############################################################################
+#
 #	SWISH++ stuff
 #
 ###############################################################################
@@ -34,9 +48,6 @@ MOD_HTML=	-DMOD_HTML
 MOD_MAIL=	-DMOD_MAIL
 MOD_LIST=	$(MOD_HTML) $(MOD_MAIL)
 #		The indexing modules you want built into index(1).
-
-#WIN32=		-DWIN32
-#		If uncommented, build SWISH++ for Windows.
 
 ifndef WIN32
 #		The search daemon ability is not currently supported for
@@ -58,14 +69,23 @@ SEARCH_DAEMON=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 #		operating systems, check your documentation.  (Start with
 #		error(3) and intro(2).)
 
+ifdef FREE_BSD
+PTHREAD_LIB=	-pthread
+else
 PTHREAD_LIB=	-lpthread
+endif
 #		Library to link against for POSIX threads if building with the
 #		search daemon ability.
 
+ifndef LINUX
 SOCKET_LIB=	-lsocket
-#		Library to link against for sockets if building with the search
-#		daemon ability.  Comment this out on Linux systems.
+ifdef SOLARIS
+SOCKET_LIB+=	-lnsl
 endif
+#		Library to link against for sockets if building with the search
+#		daemon ability.
+endif # LINUX
+endif # WIN32
 
 ###############################################################################
 #
