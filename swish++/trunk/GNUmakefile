@@ -19,10 +19,10 @@
 #	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-ROOT=		.
+ROOT:=		.
 include		$(ROOT)/config/config.mk
 
-CFLAGS=		$(CCFLAGS)
+CFLAGS:=	$(CCFLAGS)
 #		Various debug flags; add to CFLAGS for debugging.
 #		-DDEBUG_is_ok_word
 #		-DDEBUG_parse_query
