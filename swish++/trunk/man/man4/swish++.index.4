@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.index\f1 4 "July 3, 2001" "SWISH++"
+.TH \f3swish++.index\f1 4 "June 3, 2002" "SWISH++"
 .SH NAME
 swish++.index \- SWISH++ index file format
 .SH SYNOPSIS
@@ -116,7 +116,7 @@ entries followed by an \f(CWFF\f1 byte where a
 .I data
 entry is:
 .cS
-\f2I\fP\f3\s+2[\s-2\fPEE\f3\s+2{\s-2\fP\f2M\fP\f3\s+2}...\s-2\fPEE\f3\s+2]\s-2\fP\f2OR\fP
+\f3\s+2{\s-2\fP\f2I\fP\f3\s+2}[\s-2\fPEE\f3\s+2{\s-2\fP\f2M\fP\f3\s+2}...\s-2\fPEE\f3\s+2]{\s-2\fP\f2O\fP\f3\s+2}{\s-2\fP\f2R\fP\f3\s+2}\s-2\fP
 .cE
 that is: a file-index
 .RI ( I )
@@ -126,8 +126,7 @@ surrounded by \f(CW\\xEE\f1 bytes
 followed by the number of occurrences in the file
 .RI ( O )
 followed by a rank
-.RI ( R )
-followed by an \f(CW\\xFF\f1 byte.
+.RI ( R ).
 The
 .I file-index
 is an index into the \f(CWfile_offset\f1 table; the
@@ -159,7 +158,7 @@ Every file entry in the
 .I "file index"
 is of the form:
 .cS
-\f3\s+2{\s-2\f2D\f3\s+2}\s-2\f2file-name\fP0\f3\s+2{\s-2\f2S\f3\s+2}{\s-2\f2W\f3\s+2}\s-2\f2file-title\fP0
+\f3\s+2{\s-2\fP\f2D\fP\f3\s+2}\s-2\fP\f2file-name\fP0\f3\s+2{\s-2\fP\f2S\fP\f3\s+2}{\s-2\fP\f2W\fP\f3\s+2}\s-2\fP\f2file-title\fP0
 .cE
 that is: the file's directory index
 .RI ( D )
