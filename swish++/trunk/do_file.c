@@ -71,12 +71,14 @@
 		return;
 	}
 
+#ifdef	INDEX
 	//
 	// Record the size of the original (non-filtered) file here before we
 	// call is_symbolic_link() below.  This is the size that is stored in
 	// the index.
 	//
 	off_t const orig_file_size = file_size();
+#endif
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
@@ -108,7 +110,9 @@
 	typedef vector< filter > filter_list_type;
 	filter_list_type filter_list;
 	filter_list.reserve( 5 );		// more than this is insane
+#ifdef	INDEX
 	char const *const orig_file_name = file_name;
+#endif
 
 	while ( true ) {
 		//
@@ -136,14 +140,14 @@
 	// file is an HTML or XHTML file.
 	//
 	IncludeFile::const_iterator const
-		inc_file = include_patterns.find( file_name );
+		include_pattern = include_patterns.find( file_name );
 
 	//
 	// Skip the file if the set of acceptable patterns doesn't contain the
 	// candidate, but only if there was at least one acceptable pattern
 	// specified.
 	//
-	bool const found_pattern = inc_file != include_patterns.end();
+	bool const found_pattern = include_pattern != include_patterns.end();
 	if ( !include_patterns.empty() && !found_pattern ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: file not included)\n";
@@ -218,14 +222,10 @@
 
 	////////// Index the file /////////////////////////////////////////////
 
-	bool const is_html_pattern = found_pattern ? inc_file->second : false;
-	new file_info(
-		orig_file_name, orig_file_size,
-		is_html_pattern ? grep_title( file ) : 0
-	);
-	index_words( file.begin(), file.end(),
-		is_html_pattern, No_Meta_ID, true
-	);
+	indexer *const i = found_pattern ?	// use text indexer if not found
+		include_pattern->second : indexer::text_indexer();
+	new file_info( orig_file_name, orig_file_size, i->find_title( file ) );
+	i->index_file( file );
 
 	if ( verbosity > 2 )
 		cout	<< " (" << file_info::current_file().num_words_
