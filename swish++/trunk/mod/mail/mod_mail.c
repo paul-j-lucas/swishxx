@@ -594,9 +594,8 @@ could_not_filter:
 //
 // SYNOPSIS
 //
-	/* virtual */ void mail_indexer::index_words(
-		encoded_char_range const &e, int
-	)
+	/* virtual */
+	void mail_indexer::index_words( encoded_char_range const &e, int )
 //
 // DESCRIPTION
 //

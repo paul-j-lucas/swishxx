@@ -36,9 +36,8 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	/* virtual */ void rtf_indexer::index_words(
-		encoded_char_range const &e, int
-	)
+	/* virtual */
+	void rtf_indexer::index_words( encoded_char_range const &e, int )
 //
 // DESCRIPTION
 //
