@@ -22,14 +22,17 @@
 #ifdef	MOD_MAIL
 
 // standard
+#include <algorithm>			/* for copy() */
 #include <cctype>
 #include <cstring>
 #include <string>
+#include <unistd.h>			/* for unlink(2) */
 
 // local
 #include "AssociateMeta.h"
 #include "auto_vec.h"
 #include "config.h"
+#include "FilterAttachment.h"
 #include "IncludeMeta.h"
 #include "less.h"
 #include "meta_map.h"
@@ -40,6 +43,7 @@
 #include "platform.h"
 #include "TitleLines.h"
 #include "util.h"
+#include "Verbosity.h"
 #include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -54,6 +58,8 @@ bool				header_cmp(
 					char const *&pos, char const *end,
 					char const *tag
 				);
+
+FilterAttachment		attachment_filters;
 
 //*****************************************************************************
 //
@@ -243,6 +249,65 @@ bool				header_cmp(
 //
 // SYNOPSIS
 //
+	void index_via_filter( filter *f, encoded_char_range const &e )
+//
+// DESCRIPTION
+//
+//	Call an external filter program to convert the encoded character range
+//	into plain text that we know how to index.
+//
+// PARAMETERS
+//
+//	f	The filter to use.
+//
+//	e	The encoded character range to filter and index.
+//
+//*****************************************************************************
+{
+	extern string temp_file_name_prefix;
+	//
+	// Create a temporary file containing the decoded bytes of an
+	// attachment.
+	//
+	string const temp_file_name = temp_file_name_prefix + "att";
+	ofstream temp_file( temp_file_name.c_str(), ios::out | ios::binary );
+	if ( !temp_file ) {
+could_not_filter:
+		if ( verbosity > 3 )
+			cout << " (could not filter attachment)";
+		return;
+	}
+	::copy( e.begin(), e.end(),
+		ostream_iterator< encoded_char_range::value_type >( temp_file )
+	);
+	temp_file.close();
+
+	//
+	// Substitute the temporary file's name into the filter command,
+	// execute the filter creating a text file, and delete the temporary
+	// file containing the original attachment.
+	//
+	f->substitute( temp_file_name );
+	char const *const new_file_name = f->exec();
+	::unlink( temp_file_name.c_str() );
+
+	if ( new_file_name ) {
+		//
+		// The filter worked, so now index the post-filtered file that
+		// is assumed to be plain text.
+		//
+		static indexer *const text = indexer::find_indexer( "text" );
+		mmap_file const file( new_file_name );
+		if ( file && !file.empty() )
+			text->index_file( file );
+	} else
+		goto could_not_filter;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	void mail_indexer::index_enriched( encoded_char_range const &e )
 //
 // DESCRIPTION
@@ -273,7 +338,7 @@ bool				header_cmp(
 
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		register mmap_file::value_type ch = iso8859_to_ascii( *c++ );
+		register char ch = iso8859_to_ascii( *c++ );
 
 		////////// Collect a word /////////////////////////////////////
 
@@ -364,20 +429,7 @@ bool				header_cmp(
 //
 //*****************************************************************************
 {
-	//
-	// We assume text/plain and 7-bit US-ASCII as stated in RFC 2045, sec.
-	// 5.2., "Content-Type Defaults":
-	//
-	//	Default RFC 822 messages without a MIME Content-Type header are
-	//	taken by this protocol to be plain text in the US-ASCII
-	//	character set, which can be explicitly specified as:
-	//
-	//		Content-type: text/plain; charset=us-ascii
-	//
-	//	This default is assumed if no Content-Type header field is
-	//	specified.
-	//
-	message_type type( Text_Plain, Seven_Bit );
+	message_type type;
 
 	key_value kv;
 	while ( parse_header( c, end, &kv ) ) {
@@ -385,50 +437,80 @@ bool				header_cmp(
 		////////// Deal with Content-Transfer-Encoding ////////////////
 
 		if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
-			auto_vec< char > const v(
+			auto_vec< char > const value(
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
-			if ( ::strstr( v, "quoted-printable" ) )
-				type.second = Quoted_Printable;
-			else if ( ::strstr( v, "base64" ) )
-				type.second = Base64;
-			else if ( ::strstr( v, "binary" ) )
-				type.second = Binary;
+			if ( ::strstr( value, "quoted-printable" ) )
+				type.encoding_ = Quoted_Printable;
+			else if ( ::strstr( value, "base64" ) )
+				type.encoding_ = Base64;
+			else if ( ::strstr( value, "binary" ) )
+				type.encoding_ = Binary;
 			continue;
 		}
 
 		////////// Deal with Content-Type /////////////////////////////
 
 		if ( !::strcmp( kv.key, "content-type" ) ) {
-			auto_vec< char > const v(
+			auto_vec< char > const value(
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
 
 			//
+			// Extract the MIME type.
+			//
+			char const *s = value;
+			while ( *s && is_space( *s ) ) ++s;
+			if ( !*s )		// all whitespace: weird
+				continue;
+			string const mime_type( s, ::strcspn( s, "; \n\r\t" ) );
+
+			//
+			// See if there's a filter for the MIME type: if so,
+			// set up to use it.  Note that a filter can override
+			// our built-in handling of certain MIME types.
+			//
+			if ( FilterAttachment::const_pointer const
+				f = attachment_filters[ mime_type ]
+			) {
+				type.content_type_ = External_Filter;
+				//
+				// Just in case there were two Content-Type
+				// headers (weird, yes; but we have to be
+				// robust) and we previously set the filter,
+				// delete the old filter first so there won't
+				// be a memory leak.
+				//
+				delete type.filter_;
+				type.filter_ = new filter( *f );
+				continue;
+			}
+
+			//
 			// See if it's the text/"something" or "message/rfc822".
 			//
-			if ( ::strstr( v, "text/plain" ) )
-				type.first = Text_Plain;
-			else if ( ::strstr( v, "text/enriched" ) )
-				type.first = Text_Enriched;
+			if ( mime_type == "text/plain" )
+				type.content_type_ = Text_Plain;
+			else if ( mime_type == "text/enriched" )
+				type.content_type_ = Text_Enriched;
 #ifdef	MOD_HTML
-			else if ( ::strstr( v, "text/html" ) )
-				type.first = Text_HTML;
+			else if ( mime_type == "text/html" )
+				type.content_type_ = Text_HTML;
 #endif
-			else if ( ::strstr( v, "vcard" ) )
-				type.first = Text_vCard;
-			else if ( ::strstr( v, "message/rfc822" ) )
-				type.first = Message_RFC822;
+			else if ( ::strstr( value, "vcard" ) )
+				type.content_type_ = Text_vCard;
+			else if ( mime_type == "message/rfc822" )
+				type.content_type_ = Message_RFC822;
 
 			//
 			// See if it's multipart/"something", i.e., mixed,
 			// alternative, or parallel: we have to extract the
 			// boundary string.
 			//
-			else if ( ::strstr( v, "multipart/" ) ) {
-				char const *b = ::strstr( v, "boundary=" );
+			else if ( ::strstr( value, "multipart/" ) ) {
+				char const *b = ::strstr( value, "boundary=" );
 				if ( !b || !*(b += 9) ) {
-					type.first = Not_Indexable;
+					type.content_type_ = Not_Indexable;
 					continue;	// weird case
 				}
 				//
@@ -437,7 +519,8 @@ bool				header_cmp(
 				// value.
 				//
 				string boundary(
-					kv.value_begin + (b - v), kv.value_end
+					kv.value_begin + (b - value),
+					kv.value_end
 				);
 				if ( boundary[0] == '"' )
 					boundary.erase( 0, 1 );
@@ -447,15 +530,15 @@ bool				header_cmp(
 				// Push the boundary onto the stack.
 				//
 				boundary_stack_.push_back( boundary );
-				type.first = Multipart;
+				type.content_type_ = Multipart;
+				continue;
 			}
 
 			//
 			// It's not a Content-Type we know anything about, so
 			// it's not indexable.
 			//
-			else
-				type.first = Not_Indexable;
+			type.content_type_ = Not_Indexable;
 		}
 
 		////////// Index the value of the header //////////////////////
@@ -624,7 +707,8 @@ bool				header_cmp(
 {
 	encoded_char_range::const_iterator c = e.begin();
 	message_type const type( index_headers( c.pos(), c.end_pos() ) );
-	if ( type.first == Not_Indexable || type.second == Binary ) {
+
+	if ( type.content_type_ == Not_Indexable || type.encoding_ == Binary ) {
 		//
 		// The attachment is something we can't index so just skip over
 		// it.
@@ -633,12 +717,16 @@ bool				header_cmp(
 	}
 
 	//
-	// Create a new iterator having the same range but the Content-
-	// Transfer-Encoding given in the headers.
+	// Create a new encoded_char_range having the same range but the
+	// Content-Transfer-Encoding given in the headers.
 	//
-	encoded_char_range const e2( c.pos(), c.end_pos(), type.second );
+	encoded_char_range const e2( c.pos(), c.end_pos(), type.encoding_ );
 
-	switch ( type.first ) {
+	switch ( type.content_type_ ) {
+
+		case External_Filter:
+			index_via_filter( type.filter_, e2 );
+			break;
 
 		case Text_Plain:
 			indexer::index_words( e2 );
