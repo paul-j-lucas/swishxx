@@ -1,7 +1,7 @@
-#!/bin/sh
+#! /bin/sh
 ##
 #	SWISH++
-#	config.sh -- Configuration script
+#	config-sh -- Configuration script
 #
 #	Copyright (C) 1998  Paul J. Lucas
 #
@@ -47,7 +47,7 @@ trap "x=$?; rm -f *$CCOEXT $TARGET; exit $x" 0 1 2 15
 
 cat > $TARGET <<!
 /*
-**	PJL C++ Library
+**	SWISH++
 **	platform.h
 **
 **	This program is free software; you can redistribute it and/or modify
@@ -70,23 +70,27 @@ cat > $TARGET <<!
 **	compiler $CC on `date`.
 */
 
-#ifndef PJL_platform_H
-#define PJL_platform_H
+#ifndef platform_H
+#define platform_H
+
+#ifdef	WIN32
+#define	PJL_NO_SYMBOLIC_LINKS
+#endif
 
 !
 
-for f in src/*$CCCEXT
+for file in src/*$CCCEXT
 do
-	echo "$ME: checking for \"`grep TEST $f | cut -f3-`\"..."
-	$CC $CFLAGS $f >&- 2>&- ||
-		echo "#define `grep DEFINE $f | cut -f3-`" >> $TARGET
+	echo "$ME: checking for \"`grep TEST $file | cut -f3-`\"..."
+	$CC $CFLAGS $file >&- 2>&- ||
+		echo "#define `grep DEFINE $file | cut -f3-`" >> $TARGET
 done
 
 echo
 
 cat >> $TARGET <<!
 
-#endif	/* PJL_platform_H */
+#endif	/* platform_H */
 !
 
 trap "x=$?; rm -f *$CCOEXT; exit $x" 0 1 2 15
