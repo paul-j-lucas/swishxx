@@ -1,8 +1,8 @@
 /*
 **	SWISH++
-**	bcd.h
+**	enc_int.h
 **
-**	Copyright (C) 1998  Paul J. Lucas
+**	Copyright (C) 2003  Paul J. Lucas
 **
 **	This program is free software; you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef	bcd_H
-#define	bcd_H
+#ifndef	enc_int_H
+#define	enc_int_H
 
 // standard
 #include <iostream>
@@ -29,11 +29,11 @@
 #include "fake_ansi.h"			/* for std */
 #include "omanip.h"
 
-std::ostream&	bcd( std::ostream&, unsigned );
-int		parse_bcd( unsigned char const*& );
+int		dec_int( unsigned char const*& );
+std::ostream&	enc_int( std::ostream&, unsigned );
 
-inline PJL::omanip< unsigned > bcd( unsigned n ) {
-	return PJL::omanip< unsigned >( bcd, n );
+inline PJL::omanip< unsigned > enc_int( unsigned n ) {
+	return PJL::omanip< unsigned >( enc_int, n );
 }
 
-#endif	/* bcd_H */
+#endif	/* enc_int_H */
