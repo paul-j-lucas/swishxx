@@ -69,6 +69,8 @@ SEARCH_DAEMON=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 #		operating systems, check your documentation.  (Start with
 #		error(3) and intro(2).)
 
+ifdef SEARCH_DAEMON
+
 ifdef FREE_BSD
 PTHREAD_LIB=	-pthread
 else
@@ -85,6 +87,8 @@ endif
 #		Library to link against for sockets if building with the search
 #		daemon ability.
 endif # LINUX
+
+endif # SEARCH_DAEMON
 endif # WIN32
 
 ###############################################################################
