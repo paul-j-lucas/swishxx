@@ -64,7 +64,12 @@ using namespace std;
 		// See if the meta name contains a reassignment: if so, chop it
 		// at the '='.
 		//
-		register char *reassign = ::strchr( meta_name, '=' );
+		// The const_cast<>() is needed for Sun's (wrong!)
+		// implementation of strchr() returning char const*.  Its use
+		// is harmless for other compilers.
+		//
+		register char *reassign =
+			const_cast<char*>( ::strchr( meta_name, '=' ) );
 		if ( reassign ) {
 			*reassign = '\0';
 			if ( !*++reassign ) {
@@ -72,7 +77,7 @@ using namespace std;
 				::exit( Exit_Config_File );
 			}
 		}
-		char const *const m = new_strdup( meta_name );
+		char *const m = new_strdup( meta_name );
 		insert( value_type( m, reassign ? new_strdup( reassign ) : m ));
 	}
 }
