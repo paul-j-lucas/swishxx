@@ -64,20 +64,20 @@ public:
 	////////// constructors ///////////////////////////////////////////////
 
 	file_index() { }
-	file_index( file_vector<char> const &file ) { set_index_file( file ); }
+	file_index( file_vector const &file )	{ set_index_file( file ); }
 
 	////////// member functions ///////////////////////////////////////////
 
-	void		set_index_file( file_vector<char> const& );
+	void		set_index_file( file_vector const& );
 	size_type	size() const		{ return num_files_; }
 
 	const_reference operator[]( size_type i ) const {
 		return begin_ + offset_[ i ];
 	}
 private:
-	file_vector<char>::const_iterator	begin_;
-	size_type				num_files_;
-	off_t const				*offset_;
+	file_vector::const_iterator	begin_;
+	size_type			num_files_;
+	off_t const			*offset_;
 };
 
 #endif	/* file_index_H */

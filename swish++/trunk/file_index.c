@@ -27,7 +27,7 @@
 //
 // SYNOPSIS
 //
-	void file_index::set_index_file( file_vector<char> const &file )
+	void file_index::set_index_file( file_vector const &file )
 //
 // DESCRIPTION
 //
