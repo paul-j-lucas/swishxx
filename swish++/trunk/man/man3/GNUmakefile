@@ -1,6 +1,6 @@
 ##
 #	SWISH++
-#	man/man1/Makefile
+#	man/man3/GNUmakefile
 #
 #	Copyright (C) 1998  Paul J. Lucas
 #
@@ -22,5 +22,5 @@
 ########## You shouldn't have to change anything below this line. #############
 
 ROOT=	../..
-SECT=	1
+SECT=	3
 include	$(ROOT)/config/man.mk

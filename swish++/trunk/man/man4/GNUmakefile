@@ -1,6 +1,6 @@
 ##
 #	SWISH++
-#	man/Makefile
+#	man/man4/GNUmakefile
 #
 #	Copyright (C) 1998  Paul J. Lucas
 #
@@ -21,14 +21,6 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=		..
-include		$(ROOT)/config/config.mk
-
-##
-# Build rules
-##
-
-%:
-	@$(MAKE) -C man1 $@
-	@$(MAKE) -C man3 $@
-	@$(MAKE) -C man4 $@
+ROOT=	../..
+SECT=	4
+include	$(ROOT)/config/man.mk

@@ -1,6 +1,6 @@
 ##
 #	SWISH++
-#	man/man4/Makefile
+#	man/GNUmakefile
 #
 #	Copyright (C) 1998  Paul J. Lucas
 #
@@ -21,6 +21,14 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=	../..
-SECT=	4
-include	$(ROOT)/config/man.mk
+ROOT=		..
+include		$(ROOT)/config/config.mk
+
+SUBDIRS=	man*
+
+##
+# Build rules
+##
+
+all %:
+	@for dir in $(SUBDIRS); do $(MAKE) -C $$dir $@; done
