@@ -39,8 +39,10 @@
 //*****************************************************************************
 {
 public:
-	xml_formatter( std::ostream &o ) : results_formatter( o ) { }
-	virtual void pre( stop_word_set const&, int results ) const;
+	xml_formatter( std::ostream &o, int results ) :
+		results_formatter( o, results ) { }
+
+	virtual void pre( stop_word_set const& ) const;
 	virtual void result( int rank, file_info const& ) const;
 	virtual void post() const;
 };
