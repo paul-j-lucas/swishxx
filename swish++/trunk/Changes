@@ -2,6 +2,58 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3.4
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* File titles turned to garbage when indexing file incrementally.
+
+  (This bug fix shall be known as IIT.)
+
+* option_stream's test main() was incorrectly defined inside the PJL namespace.
+
+  (This bug fix shall be know as bug fix OSM.)
+
+* option_stream didn't report an error for an option that required an argument
+  when no argument was given when said option was the last thing on the commend
+  line.
+
+  (This bug fix shall be know as bug fix OSN.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* index.c
+
+	1. Merged parse_file_info() function into load_old_index().
+	2. In (what is now) load_old_index(), added a strdup() for the file's
+	   title for bug fix IIT.
+	3. In write_dir_index(), switched to using FOR_EACH().
+
+* option_stream.c
+
+	1. Got rid of option_stream::option::copy().
+	2. Moved the test main() outside of the PJL namespace for bug fix OSM.
+	3. s/c_/short_name_/, s/index_/argi_/.
+	4. Added was_short_option_ variable for bug fix OSN.
+	5. Replaced some duplicated option argument code with a goto.
+	6. Reworked argument processing for buf fix OSN.
+
+* option_stream.h
+
+	1. Got rid of option_stream::option::copy() and destructor.
+	2. Made copy constructor and assignment operator private.
+	3. Renamed the following: s/c/short_name/, s/index_/argi_/
+
+* version.h
+
+	1. Changed version to "5.3.4".
+
+
+*******************************************************************************
 5.3.3
 *******************************************************************************
 
