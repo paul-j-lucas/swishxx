@@ -46,11 +46,12 @@ I_OBJS=		bcd$(CCOEXT) \
 		file_vector$(CCOEXT) \
 		file_info$(CCOEXT) \
 		filter$(CCOEXT) \
+		FilesGrow$(CCOEXT) \
 		FilterExtension$(CCOEXT) \
 		IncludeExtension$(CCOEXT) \
-		itoa$(CCOEXT) \
-		word_index$(CCOEXT) \
+		index_segment$(CCOEXT) \
 		file_list$(CCOEXT) \
+		itoa$(CCOEXT) \
 		html$(CCOEXT) \
 		option_stream$(CCOEXT) \
 		stop_words$(CCOEXT) \
@@ -65,13 +66,14 @@ S_OBJS=		bcd$(CCOEXT) \
 		conf_bool$(CCOEXT) \
 		conf_int$(CCOEXT) \
 		conf_string$(CCOEXT) \
+		file_info$(CCOEXT) \
 		file_vector$(CCOEXT) \
-		file_index$(CCOEXT) \
-		word_index$(CCOEXT) \
+		index_segment$(CCOEXT) \
 		file_list$(CCOEXT) \
 		option_stream$(CCOEXT) \
 		thread_pool$(CCOEXT) \
 		search_thread$(CCOEXT) \
+		search_daemon$(CCOEXT) \
 		SocketFile$(CCOEXT) \
 		token$(CCOEXT) \
 		stem_word$(CCOEXT) \
@@ -91,6 +93,7 @@ E_OBJS=		conf_var$(CCOEXT) \
 		filter$(CCOEXT) \
 		FilterExtension$(CCOEXT) \
 		IncludeExtension$(CCOEXT) \
+		index_segment$(CCOEXT) \
 		option_stream$(CCOEXT) \
 		postscript$(CCOEXT) \
 		stop_words$(CCOEXT) \
@@ -141,6 +144,7 @@ conf_int$(CCOEXT): \
 				$(PLATFORM_H) \
 			less$(CCHEXT) \
 	exit_codes$(CCHEXT) \
+	managed_ptr$(CCHEXT) \
 	util$(CCHEXT)
 
 conf_set$(CCOEXT): \
@@ -226,18 +230,14 @@ extract$(CCOEXT): \
 	version$(CCHEXT) \
 	word_util$(CCHEXT)
 
-file_index$(CCOEXT): \
-	file_index$(CCHEXT) \
-		file_vector$(CCHEXT) \
-	util$(CCHEXT) \
-		config$(CCHEXT) \
-		$(PLATFORM_H)
-
 file_info$(CCOEXT): \
+	bcd$(CCHEXT) \
 	config$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
 	file_info$(CCHEXT) \
+		my_set$(CCHEXT) \
+			less$(CCHEXT) \
 	FilesReserve$(CCHEXT) \
 		conf_int$(CCHEXT) \
 			conf_var$(CCHEXT) \
@@ -248,7 +248,7 @@ file_list$(CCOEXT): \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
 	file_list$(CCHEXT) \
-		word_index$(CCHEXT) \
+		index_segment$(CCHEXT) \
 			file_vector$(CCHEXT) \
 		word_info$(CCHEXT) \
 			html$(CCHEXT) \
@@ -319,8 +319,9 @@ index$(CCOEXT): \
 	ExcludeExtension$(CCHEXT) \
 	ExcludeMeta$(CCHEXT) \
 	exit_codes$(CCHEXT) \
-	FilesReserve$(CCHEXT) \
+	FilesGrow$(CCHEXT) \
 		conf_int$(CCHEXT) \
+	FilesReserve$(CCHEXT) \
 	file_info$(CCHEXT) \
 	file_list$(CCHEXT) \
 		fake_ansi$(CCHEXT) \
@@ -330,9 +331,11 @@ index$(CCOEXT): \
 	html$(CCHEXT) \
 	IncludeExtension$(CCHEXT) \
 	IncludeMeta$(CCHEXT) \
+	Incremental$(CCHEXT) \
 	index$(CCHEXT) \
 	IndexFile$(CCHEXT) \
 		conf_string$(CCHEXT) \
+	index_segment$(CCHEXT) \
 	itoa$(CCHEXT) \
 	meta_map$(CCHEXT) \
 	option_stream$(CCHEXT) \
@@ -347,9 +350,12 @@ index$(CCOEXT): \
 	version$(CCHEXT) \
 	WordFilesMax$(CCHEXT) \
 	WordPercentMax$(CCHEXT) \
-	word_index$(CCHEXT) \
 	word_info$(CCHEXT) \
 	word_util$(CCHEXT)
+
+index_segment$(CCOEXT): \
+	index_segment$(CCHEXT) \
+		file_vector$(CCHEXT)
 
 itoa$(CCOEXT): \
 	fake_ansi$(CCHEXT) \
@@ -367,8 +373,7 @@ search$(CCOEXT): \
 	bcd$(CCHEXT) \
 	config$(CCHEXT) \
 	exit_codes$(CCHEXT) \
-	file_index$(CCHEXT) \
-		file_vector$(CCHEXT) \
+	file_info$(CCHEXT) \
 	file_list$(CCHEXT) \
 	file_vector$(CCHEXT) \
 	html$(CCHEXT) \
@@ -376,6 +381,7 @@ search$(CCOEXT): \
 		conf_string$(CCHEXT) \
 			conf_var$(CCHEXT) \
 				fake_ansi$(CCHEXT) \
+	index_segment$(CCHEXT) \
 	less$(CCHEXT) \
 	managed_ptr$(CCHEXT) \
 	my_set$(CCHEXT) \
@@ -386,7 +392,6 @@ search$(CCOEXT): \
 	SearchDaemon$(CCHEXT) \
 		conf_bool$(CCHEXT) \
 	search_options$(CCCEXT) \
-	search_thread$(CCHEXT) \
 	SocketFile$(CCHEXT) \
 	SocketQueueSize$(CCHEXT) \
 	SocketTimeout$(CCHEXT) \
@@ -399,8 +404,16 @@ search$(CCOEXT): \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
 	version$(CCHEXT) \
-	word_index$(CCHEXT) \
+	WordFilesMax$(CCHEXT) \
+	WordPercentMax$(CCHEXT) \
 	word_util$(CCHEXT)
+
+search_daemon$(CCOEXT): \
+	exit_codes$(CCHEXT) \
+	search_thread$(CCHEXT) \
+		thread_pool$(CCHEXT) \
+	$(PLATFORM_H) \
+	util$(CCHEXT)
 
 search_thread$(CCOEXT): \
 	fake_ansi$(CCHEXT) \
@@ -430,6 +443,7 @@ stop_words$(CCOEXT): \
 	config$(CCHEXT) \
 	exit_codes$(CCHEXT) \
 	file_vector$(CCHEXT) \
+	index_segment$(CCHEXT) \
 	stop_words$(CCHEXT) \
 		my_set$(CCHEXT) \
 			fake_ansi$(CCHEXT) \
@@ -440,9 +454,9 @@ stop_words$(CCOEXT): \
 
 thread_pool$(CCOEXT): \
 	thread_pool$(CCHEXT) \
-		fake_ansi$(CCHEXT) \
-			$(PLATFORM_H) \
 	exit_codes$(CCHEXT) \
+	fake_ansi$(CCHEXT) \
+		$(PLATFORM_H) \
 	util$(CCHEXT)
 
 token$(CCOEXT): \
@@ -459,14 +473,7 @@ util$(CCOEXT): \
 		less$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
-	file_vector$(CCHEXT) \
 	util$(CCHEXT)
-
-word_index$(CCOEXT): \
-	util$(CCHEXT) \
-		file_vector$(CCHEXT) \
-		$(PLATFORM_H) \
-	word_index$(CCHEXT)
 
 word_info$(CCOEXT): \
 	bcd$(CCHEXT) \
