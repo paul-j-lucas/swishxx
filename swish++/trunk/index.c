@@ -60,11 +60,6 @@
 #include "itoa.h"
 #include "meta_map.h"
 #include "mmap_file.h"
-#ifdef	mod_html
-#include "mod/html/elements.h"
-#include "mod/html/ExcludeClass.h"
-#include "mod/html/mod_html.h"
-#endif
 #include "option_stream.h"
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
@@ -236,9 +231,6 @@ void			write_word_index( ostream&, off_t* );
 	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
-#ifdef	mod_html
-	bool		dump_html_elements_opt = false;
-#endif
 	bool		dump_stop_words_opt = false;
 	char const*	files_grow_arg = 0;
 	char const*	files_reserve_arg = 0;
@@ -259,7 +251,9 @@ void			write_word_index( ostream&, off_t* );
 	char const*	word_file_max_arg = 0;
 	char const*	word_percent_max_arg = 0;
 
-	option_stream opt_in( argc, argv, opt_spec );
+	option_stream::spec *const
+		all_options = indexer::all_mods_options( opt_spec );
+	option_stream opt_in( argc, argv, all_options );
 	for ( option_stream::option opt; opt_in >> opt; )
 		switch ( opt ) {
 
@@ -273,13 +267,7 @@ void			write_word_index( ostream&, off_t* );
 			case 'c': // Specify config. file.
 				config_file_name_arg = opt.arg();
 				break;
-#ifdef	mod_html
-			case 'C': // Specify CLASS name(s) not to index.
-				exclude_class_names.insert(
-					to_lower( opt.arg() )
-				);
-				break;
-#endif
+
 			case 'e': { // Filename pattern(s) to index.
 				if ( !::strtok( opt.arg(), ":" ) ) {
 					error() << "no indexer module name\n";
@@ -317,11 +305,7 @@ void			write_word_index( ostream&, off_t* );
 			case 'g': // Specify files to reserve space for growth.
 				files_grow_arg = opt.arg();
 				break;
-#ifdef	mod_html
-			case 'H': // Dump recognized HTML and XHTML elements.
-				dump_html_elements_opt = true;
-				break;
-#endif
+
 			case 'i': // Specify index file overriding the default.
 				index_file_name_arg = opt.arg();
 				break;
@@ -376,9 +360,11 @@ void			write_word_index( ostream&, off_t* );
 				cout << "SWISH++ " << version << endl;
 				::exit( Exit_Success );
 
-			default: // Bad option.
-				cerr << usage;
+			default: // Any indexing module claim the option?
+				if ( !indexer::any_mod_claims_option( opt ) )
+					cerr << usage;
 		}
+	delete[] all_options;
 	argc -= opt_in.shift(), argv += opt_in.shift();
 
 	//
@@ -416,6 +402,8 @@ void			write_word_index( ostream&, off_t* );
 	if ( word_percent_max_arg )
 		word_percent_max = word_percent_max_arg;
 
+	indexer::all_mods_post_options();
+
 	temp_file_name_prefix = temp_directory;
 	if ( *temp_file_name_prefix.rbegin() != '/' )
 		temp_file_name_prefix += '/';
@@ -423,15 +411,6 @@ void			write_word_index( ostream&, off_t* );
 
 	/////////// Dump stuff if requested ///////////////////////////////////
 
-#ifdef	mod_html
-	if ( dump_html_elements_opt ) {
-		element_map const &elements = element_map::instance();
-		::copy( elements.begin(), elements.end(),
-			ostream_iterator< element_map::value_type >( cout,"\n" )
-		);
-		::exit( Exit_Success );
-	}
-#endif
 	if ( dump_stop_words_opt ) {
 		stop_words = new stop_word_set();
 		::copy( stop_words->begin(), stop_words->end(),
@@ -1372,21 +1351,15 @@ ostream& usage( ostream &err ) {
 	"-?     | --help            : Print this help message\n"
 	"-A     | --no-assoc-meta   : Don't associate meta names [default: do]\n"
 	"-c f   | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-#ifdef	mod_html
-	"-C c   | --no-class c      : Class name not to index [default: none]\n"
-#endif
 	"-e m:p | --pattern m:p     : Module and file pattern to index [default: none]\n"
 	"-E p   | --no-pattern p    : File pattern not to index [default: none]\n"
 	"-f n   | --word-files n    : Word/file maximum [default: infinity]\n"
 	"-F n   | --files-reserve n : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
 	"-g n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
-#ifdef	mod_html
-	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n"
-#endif
 	"-i f   | --index-file f    : Name of index file to use [default: " << IndexFile_Default << "]\n"
-	"-I     | --incremental     : Add files to index [default: replace]\n"
+	"-I     | --incremental     : Add files/words to index [default: replace]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-	"-l     | --follow-links    : Follow symbolic links [default: no]\n"
+	"-l     | --follow-links    : Follow symbolic links [default: don't]\n"
 #endif
 	"-m m   | --meta m          : Meta name to index [default: all]\n"
 	"-M m   | --no-meta m       : Meta name not to index [default: none]\n"
@@ -1398,6 +1371,7 @@ ostream& usage( ostream &err ) {
 	"-T d   | --temp-dir d      : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
 	"-v n   | --verbosity n     : Verbosity level [0-4; default: 0]\n"
 	"-V     | --version         : Print version number, exit\n";
+	indexer::all_mods_usage( err );
 	::exit( Exit_Usage );
 	return err;			// just to make the compiler happy
 }
