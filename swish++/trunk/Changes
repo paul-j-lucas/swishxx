@@ -63,6 +63,9 @@ CHANGES, file-by-file
 * man/man1/index.1
 
 	1. Added TMPDIR for feature TMPDIR.
+	2. Added LaTeX section for feature LATEX.
+	3. Added Leslie Lamport reference for feature LATEX.
+	4. s/SCCS/CVS/ since nobody uses SCCS any more.
 
 * man/man1/search.1
 
@@ -89,6 +92,10 @@ CHANGES, file-by-file
 * mod/latex/mod_latex.h
 
 	1. New files for feature LATEX.
+
+* README.Solaris
+
+	1. Removed "ephemeral ports" since that wasn't right.
 
 * swish++.conf
 
