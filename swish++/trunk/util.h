@@ -143,36 +143,6 @@ private:
 //
 // SYNOPSIS
 //
-	inline char const* skip_newline( char const *c, char const *end )
-//
-// DESCRIPTION
-//
-//	Skips the next newline (CR and/or LF) in a character sequence.
-//
-// PARAMETERS
-//
-//	c	The iterator positioned at either a CR or LF.
-//
-//	end	The iterator marking the end of the range.
-//
-// RETURN VALUE
-//
-//	Returns an iterator positioned either at a character after a newline if
-//	found, or untouched if not.
-//
-//*****************************************************************************
-{
-	if ( c != end && *c == '\r' )
-		++c;
-	if ( c != end && *c == '\n' )
-		++c;
-	return c;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	template< class T > void max_out_limit( T resource )
 //
 // DESCRIPTION
@@ -199,6 +169,36 @@ private:
 	::getrlimit( resource, &r );
 	r.rlim_cur = r.rlim_max;
 	::setrlimit( resource, &r );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline char const* skip_newline( char const *c, char const *end )
+//
+// DESCRIPTION
+//
+//	Skips the next newline (CR and/or LF) in a character sequence.
+//
+// PARAMETERS
+//
+//	c	The iterator positioned at either a CR or LF.
+//
+//	end	The iterator marking the end of the range.
+//
+// RETURN VALUE
+//
+//	Returns an iterator positioned either at a character after a newline if
+//	found, or untouched if not.
+//
+//*****************************************************************************
+{
+	if ( c != end && *c == '\r' )
+		++c;
+	if ( c != end && *c == '\n' )
+		++c;
+	return c;
 }
 
 //*****************************************************************************
