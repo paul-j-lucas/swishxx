@@ -278,9 +278,10 @@ index$(CCOEXT): \
 					fake_ansi$(CCHEXT) \
 					less$(CCHEXT) \
 	do_file$(CCCEXT) \
+	elements$(CCHEXT) \
+		my_set$(CCHEXT) \
 	ExcludeClass$(CCHEXT) \
 		conf_set$(CCHEXT) \
-			my_set$(CCHEXT) \
 	ExcludeExtension$(CCHEXT) \
 	ExcludeMeta$(CCHEXT) \
 	exit_codes$(CCHEXT) \
