@@ -26,6 +26,7 @@
 #include <iterator>
 
 // local
+#include "fake_ansi.h"			/* for iterator */
 #include "util.h"			/* for to_lower() */
 #include "word_util.h"
 
@@ -63,16 +64,13 @@ enum content_transfer_encoding {
 public:
 	typedef ptrdiff_t difference_type;
 	typedef char value_type;
-	typedef value_type* pointer;
-	typedef value_type const* const_pointer;
-	typedef value_type& reference;
-	typedef value_type const& const_reference;
+	typedef value_type const* pointer;
 
 	class const_iterator;
 	friend class const_iterator;
 
 	encoded_char_range(
-		const_pointer begin, const_pointer end,
+		pointer begin, pointer end,
 		content_transfer_encoding = Eight_Bit
 	);
 	encoded_char_range( const_iterator const &pos );
@@ -84,20 +82,20 @@ public:
 	// default assignment operator is fine
 
 	const_iterator	begin() const;
-	const_pointer	begin_pos() const		{ return begin_; }
-	void		begin_pos( const_pointer p )	{ begin_ = p; }
+	pointer		begin_pos() const		{ return begin_; }
+	void		begin_pos( pointer p )		{ begin_ = p; }
 	void		begin_pos( const_iterator const& );
 	const_iterator	end() const;
-	const_pointer	end_pos() const			{ return end_; }
-	void		end_pos( const_pointer p )	{ end_ = p; }
+	pointer		end_pos() const			{ return end_; }
+	void		end_pos( pointer p )		{ end_ = p; }
 	void		end_pos( const_iterator const& );
 
 	content_transfer_encoding	encoding() const { return encoding_; }
 protected:
 	encoded_char_range() { }
 
-	const_pointer			begin_;
-	const_pointer			end_;
+	pointer				begin_;
+	pointer				end_;
 	content_transfer_encoding	encoding_;
 };
 
@@ -107,7 +105,9 @@ protected:
 //
 	class encoded_char_range::const_iterator :
 		public encoded_char_range,
-		public forward_iterator< value_type, difference_type >
+		public std::iterator<
+			std::forward_iterator_tag, value_type const
+		>
 //
 // DESCRIPTION
 //
@@ -124,13 +124,10 @@ public:
 	typedef encoded_char_range::difference_type difference_type;
 	typedef encoded_char_range::value_type value_type;
 	typedef encoded_char_range::pointer pointer;
-	typedef encoded_char_range::const_pointer const_pointer;
-	typedef encoded_char_range::reference reference;
-	typedef encoded_char_range::const_reference const_reference;
 
 	const_iterator() { }
 	const_iterator(
-		const_pointer begin, const_pointer end,
+		pointer begin, pointer end,
 		content_transfer_encoding = Eight_Bit
 	);
 
@@ -143,33 +140,33 @@ public:
 
 	bool		at_end() const			{ return pos_ == end_; }
 
-	const_pointer	pos() const			{ return pos_; }
-	const_pointer&	pos()				{ return pos_; }
-	const_pointer	prev_pos() const		{ return prev_; }
+	pointer		pos() const			{ return pos_; }
+	pointer&	pos()				{ return pos_; }
+	pointer		prev_pos() const		{ return prev_; }
 
 	friend bool operator==( const_iterator const&, const_iterator const& );
-	friend bool operator==( const_iterator const&, const_pointer );
+	friend bool operator==( const_iterator const&, pointer );
 private:
-	mutable const_pointer	pos_;
-	mutable const_pointer	prev_;
+	mutable pointer	pos_;
+	mutable pointer	prev_;
 	mutable value_type	ch_;
 #ifdef MOD_MAIL
 	mutable bool		decoded_;
 	mutable int		delta_;
 #endif
-	const_iterator( encoded_char_range const*, const_pointer start_pos );
+	const_iterator( encoded_char_range const*, pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
 
 	void		decode() const;
 #ifdef MOD_MAIL
 	static value_type decode_base64(
-		const_pointer begin, const_pointer &pos, const_pointer end
+		pointer begin, pointer &pos, pointer end
 	);
 	static value_type decode_quoted_printable(
-		const_pointer &pos, const_pointer end
+		pointer &pos, pointer end
 	);
 	static value_type decode_quoted_printable_aux(
-		const_pointer &pos, const_pointer end
+		pointer &pos, pointer end
 	);
 #endif
 };
@@ -180,8 +177,7 @@ private:
 ////////// encoded_char_range inlines /////////////////////////////////////////
 
 inline encoded_char_range::encoded_char_range(
-	const_pointer begin, const_pointer end,
-	content_transfer_encoding encoding
+	pointer begin, pointer end, content_transfer_encoding encoding
 ) :
 	begin_( begin ), end_( end ), encoding_( encoding )
 {
@@ -220,7 +216,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 // SYNOPSIS
 //
 	inline ECR_CI::const_iterator(
-		const_pointer begin, const_pointer end,
+		pointer begin, pointer end,
 		content_transfer_encoding encoding = Eight_Bit
 	)
 //
@@ -249,7 +245,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 // SYNOPSIS
 //
 	inline ECR_CI::const_iterator(
-		encoded_char_range const *ecr, const_pointer start_pos
+		encoded_char_range const *ecr, pointer start_pos
 	)
 //
 // DESCRIPTION
@@ -278,7 +274,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 // SYNOPSIS
 //
 	inline encoded_char_range::value_type ECR_CI::decode_quoted_printable(
-		const_pointer &c, const_pointer end
+		pointer &c, pointer end
 	)
 //
 // DESCRIPTION
@@ -332,7 +328,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 	// through the encoded text.  This allows the delta to be computed so
 	// the iterator can be incremented later.
 	//
-	const_pointer c = pos_;
+	pointer c = pos_;
 	switch ( encoding_ ) {
 		case Base64:
 			ch_ = decode_base64( begin_, c, end_ );
@@ -451,11 +447,11 @@ inline bool operator==( ECR_CI const &e1, ECR_CI const &e2 ) {
 	return e1.pos_ == e2.pos_;
 }
 
-inline bool operator==( ECR_CI const &e, ECR_CI::const_pointer p ) {
+inline bool operator==( ECR_CI const &e, ECR_CI::pointer p ) {
 	return e.pos_ == p;
 }
 
-inline bool operator==( ECR_CI::const_pointer p, ECR_CI const &e ) {
+inline bool operator==( ECR_CI::pointer p, ECR_CI const &e ) {
 	return e == p;
 }
 
@@ -463,11 +459,11 @@ inline bool operator!=( ECR_CI const &e1, ECR_CI const &e2 ) {
 	return !( e1 == e2 );
 }
 
-inline bool operator!=( ECR_CI const &e, ECR_CI::const_pointer p ) {
+inline bool operator!=( ECR_CI const &e, ECR_CI::pointer p ) {
 	return !( e == p );
 }
 
-inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
+inline bool operator!=( ECR_CI::pointer p, ECR_CI const &e ) {
 	return e != p;
 }
 
