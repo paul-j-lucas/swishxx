@@ -54,6 +54,8 @@ public:
 	CONF_INT_ASSIGN_OPS( SocketQueueSize )
 };
 
+extern SocketQueueSize socket_queue_size;
+
 #endif	/* SocketQueueSize_H */
 
 #endif	/* SEARCH_DAEMON */
