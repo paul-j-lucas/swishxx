@@ -23,6 +23,7 @@
 #include <cerrno>
 #include <fcntl.h>			/* for open(2), O_RDONLY, etc */
 #ifndef	WIN32
+#include <ctime>			/* needed by sys/resource.h */
 #include <sys/mman.h>			/* for mmap(2) */
 #include <sys/resource.h>		/* for get/setrlimit(2) */
 #endif
@@ -217,7 +218,16 @@ using namespace std;
 	if ( mode & ios::out )	prot |= PROT_WRITE;
 
 	if ( !( size_ = stat_buf.st_size ) ) {
+#ifdef	ENODATA
 		errno_ = ENODATA;
+#else
+		//
+		// For BSD systems, we're forced to use something other than
+		// ENODATA since it's not available.  Unfortunately, there
+		// isn't something good to use: EINVAL is the least bad.
+		//
+		errno_ = EINVAL;
+#endif
 		return false;
 	}
 
