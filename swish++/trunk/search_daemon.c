@@ -59,6 +59,10 @@
 using namespace std;
 #endif
 
+void	detach_from_terminal();
+int	open_tcp_socket();
+int	open_unix_socket();
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -128,85 +132,17 @@ using namespace std;
 	////////// Create socket(s) ///////////////////////////////////////////
 
 	bool const is_tcp  = daemon_type == "tcp"  || daemon_type == "both";
-	int tcp_fd = -1;
-	struct sockaddr_in tcp_addr;
-
-	if ( is_tcp ) {
-		if ( (tcp_fd = ::socket( AF_INET, SOCK_STREAM, 0 )) == -1 ) {
-			cerr << error << "TCP socket() failed" << error_string;
-			::exit( Exit_No_TCP_Socket );
-		}
-		::memset( &tcp_addr, 0, sizeof tcp_addr );
-		tcp_addr.sin_family = AF_INET;
-		tcp_addr.sin_addr = socket_address.addr();
-		tcp_addr.sin_port = htons( socket_address.port() );
-		if ( ::bind(
-			tcp_fd, (struct sockaddr*)&tcp_addr, sizeof tcp_addr
-		) == -1 ) {
-			cerr << error << "TCP bind() failed" << error_string;
-			::exit( Exit_No_TCP_Bind );
-		}
-		if ( ::listen( tcp_fd, socket_queue_size ) == -1 ) {
-			cerr << error << "TCP listen() failed" << error_string;
-			::exit( Exit_No_TCP_Listen );
-		}
-	}
+	int const tcp_fd = is_tcp ? open_tcp_socket() : -1;
 
 	bool const is_unix = daemon_type == "unix" || daemon_type == "both";
-	int unix_fd = -1;
-	struct sockaddr_un unix_addr;
-	if ( is_unix ) {
-		if ( (unix_fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 )) == -1 ) {
-			cerr << error << "Unix socket() failed" << error_string;
-			::exit( Exit_No_Unix_Socket );
-		}
-		::memset( &unix_addr, 0, sizeof unix_addr );
-		unix_addr.sun_family = AF_LOCAL;
-		::strncpy(
-			unix_addr.sun_path, socket_file_name,
-			sizeof( unix_addr.sun_path ) - 1
-		);
-		// The socket file can not already exist prior to the bind().
-		if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
-			cerr	<< error << "can not delete \""
-				<< socket_file_name << '"' << error_string;
-			::exit( Exit_No_Unlink );
-		}
-		if ( ::bind(
-			unix_fd, (struct sockaddr*)&unix_addr, sizeof unix_addr
-		) == -1 ) {
-			cerr << error << "Unix bind() failed" << error_string;
-			::exit( Exit_No_Unix_Bind );
-		}
-		if ( ::listen( unix_fd, socket_queue_size ) == -1 ) {
-			cerr << error << "Unix listen() failed" << error_string;
-			::exit( Exit_No_Unix_Listen );
-		}
-	}
+	int const unix_fd = is_unix ? open_unix_socket() : -1;
+
 	int const max_fd = max( tcp_fd, unix_fd ) + 1;
 
-#ifndef DEBUG_threads
-	////////// Detach from terminal ///////////////////////////////////////
-	//
-	// From [Stevens 1993], p. 417, "Coding Rules":
-	//
-	//	The first thing to do is call fork and have the parent exit.
-	//	This does several things.  First, if the daemon was started as
-	//	a simple shell command, having the parent terminate makes the
-	//	shell think that the command is done.  Second, the child
-	//	inherits the process group ID of the parent but gets a new
-	//	process ID, so we're guaranteed that the child is not a process
-	//	group leader.  This is a prerequisite for the call to setsid
-	//	that is done next.
-	//
-	pid_t const child_pid = ::fork();
-	if ( child_pid == -1 ) {
-		cerr << error << "fork() failed" << error_string;
-		::exit( Exit_No_Fork );
-	}
-	if ( child_pid > 0 )			// parent process ...
-		::exit( Exit_Success );		// ... just exit as described
+	////////// Do miscellaneous daemon stuff //////////////////////////////
 
+#ifndef DEBUG_threads
+	detach_from_terminal();
 	//
 	// If requested, record our PID to a file.
 	//
@@ -221,7 +157,7 @@ using namespace std;
 	}
 
 	//
-	// Ibid.:
+	// From [Stevens 1993], p. 417, "Coding Rules":
 	//
 	//	Call setsid to create a new session.  The process (1) becomes a
 	//	session leader of a new session, (2) becomes the process group
@@ -310,6 +246,120 @@ using namespace std;
 			}
 		}
 	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void detach_from_terminal()
+//
+// DESCRIPTION
+//
+//	From [Stevens 1993], p. 417, "Coding Rules":
+//
+//		The first thing to do is call fork and have the parent exit.
+//		This does several things.  First, if the daemon was started as
+//		a simple shell command, having the parent terminate makes the
+//		shell think that the command is done.  Second, the child
+//		inherits the process group ID of the parent but gets a new
+//		process ID, so we're guaranteed that the child is not a process
+//		group leader.  This is a prerequisite for the call to setsid
+//		that is done next.
+//
+// SEE ALSO
+//
+//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+//	Addison-Wesley, Reading, MA, 1993.
+//
+//*****************************************************************************
+{
+	pid_t const child_pid = ::fork();
+	if ( child_pid == -1 ) {
+		cerr << error << "fork() failed" << error_string;
+		::exit( Exit_No_Fork );
+	}
+	if ( child_pid > 0 )			// parent process ...
+		::exit( Exit_Success );		// ... just exit as described
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	int open_tcp_socket()
+//
+// DESCRIPTION
+//
+//	Create, bind, and listen on a TCP socket.
+//
+// RETURN VALUE
+//
+//	Returns the associated Unix file descriptor.
+//
+//*****************************************************************************
+{
+	int const fd = ::socket( AF_INET, SOCK_STREAM, 0 );
+	if ( fd == -1 ) {
+		cerr << error << "TCP socket() failed" << error_string;
+		::exit( Exit_No_TCP_Socket );
+	}
+	struct sockaddr_in addr;
+	::memset( &addr, 0, sizeof addr );
+	addr.sin_family = AF_INET;
+	addr.sin_addr = socket_address.addr();
+	addr.sin_port = htons( socket_address.port() );
+	if ( ::bind( fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
+		cerr << error << "TCP bind() failed" << error_string;
+		::exit( Exit_No_TCP_Bind );
+	}
+	if ( ::listen( fd, socket_queue_size ) == -1 ) {
+		cerr << error << "TCP listen() failed" << error_string;
+		::exit( Exit_No_TCP_Listen );
+	}
+	return fd;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	int open_unix_socket()
+//
+// DESCRIPTION
+//
+//	Create, bind, and listen on a Unix domain socket.
+//
+// RETURN VALUE
+//
+//	Returns the associated Unix file descriptor.
+//
+//*****************************************************************************
+{
+	int const fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 );
+	if ( fd == -1 ) {
+		cerr << error << "Unix socket() failed" << error_string;
+		::exit( Exit_No_Unix_Socket );
+	}
+	struct sockaddr_un addr;
+	::memset( &addr, 0, sizeof addr );
+	addr.sun_family = AF_LOCAL;
+	::strncpy( addr.sun_path, socket_file_name, sizeof( addr.sun_path )-1 );
+	// The socket file can not already exist prior to the bind().
+	if ( ::unlink( socket_file_name ) == -1 && errno != ENOENT ) {
+		cerr	<< error << "can not delete \""
+			<< socket_file_name << '"' << error_string;
+		::exit( Exit_No_Unlink );
+	}
+	if ( ::bind( fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
+		cerr << error << "Unix bind() failed" << error_string;
+		::exit( Exit_No_Unix_Bind );
+	}
+	if ( ::listen( fd, socket_queue_size ) == -1 ) {
+		cerr << error << "Unix listen() failed" << error_string;
+		::exit( Exit_No_Unix_Listen );
+	}
+	return fd;
 }
 
 #endif	/* SEARCH_DAEMON */
