@@ -66,6 +66,19 @@ using namespace std;
 //	condition and the function has to return "something" and a space is
 //	innocuous.
 //
+// PARAMETERS
+//
+//	begin	An iterator marking the beginning of the entire encoded range.
+//
+//	c	An iterator marking the position of the character to decode.
+//		It is left after the decoded character.
+//
+//	end	An iterator marking the end of the entire encoded range.
+//
+// RETURN VALUE
+//
+//	Returns the decoded character or ' ' upon error.
+//
 // SEE ALSO
 //
 //	Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
@@ -91,7 +104,7 @@ using namespace std;
 	// previous iterator: if so, simply return the already-decoded
 	// character.
 	//
-	file_vector::difference_type delta = c - prev_c;
+	difference_type delta = c - prev_c;
 	if ( delta >= 0 && delta < sizeof buf ) {
 		//
 		// We advance the iterator 1 position for the first 2
@@ -99,14 +112,16 @@ using namespace std;
 		// over the 4th character used in the encoded versions of the
 		// characters.
 		//
-		c += 1 + (delta == 2);
+return_decoded_char:
+		if ( ++c != end && delta == 2 )
+			++c;
 		return buf[ delta ];
 	}
 
 	//
 	// If we're positioned at a newline, skip over it.
 	//
-	register file_vector::const_iterator line_begin = c;
+	register file_vector::const_iterator line_begin;
 	if ( (line_begin = skip_newline( c, end )) == end ) {
 		c = end;
 		return ' ';
@@ -136,8 +151,8 @@ using namespace std;
 	// Calculate where the start of the group-of-4 encoded characters is.
 	//
 	delta = c - line_begin;
-	file_vector::difference_type const delta4 = delta & ~3u;
-	file_vector::const_iterator  const group  = line_begin + delta4;
+	difference_type const delta4 = delta & ~3u;
+	file_vector::const_iterator const group = line_begin + delta4;
 
 	if ( group + 1 == end || group + 2 == end || group + 3 == end ) {
 		//
@@ -167,8 +182,7 @@ using namespace std;
 		//
 		// Find the character in the Base64 alphabet.
 		//
-		char const *const a = ::strchr( alphabet, c[i] );
-		if ( a )
+		if ( char const *const a = ::strchr( alphabet, group[i] ) )
 			value += (a - alphabet) << ((3 - i) * Bits_Per_Char);
 		else {
 			// From RFC 2045, section 6.8:
@@ -198,8 +212,7 @@ using namespace std;
 	//
 	prev_c = c;
 	delta -= delta4;
-	c += 1 + (delta == 2);
-	return buf[ delta ];
+	goto return_decoded_char;
 }
 
 //*****************************************************************************
@@ -222,6 +235,17 @@ using namespace std;
 //	Anywhere a space is returned it's because we've encountered an error
 //	condition and the function has to return "something" and a space is
 //	innocuous.
+//
+// PARAMETERS
+//
+//	c	An iterator marking the position of the character to decode.
+//		It is left after the decoded character.
+//
+//	end	An iterator marking the end of the entire encoded range.
+//
+// RETURN VALUE
+//
+//	Returns the decoded character or ' ' upon error.
 //
 // SEE ALSO
 //
