@@ -24,13 +24,13 @@
 
 // standard
 #include <algorithm>			/* for find_if() */
-#ifndef	WIN32
+#ifndef	__CYGWIN__
 #include <fnmatch.h>			/* for fnmatch(3) */
 #endif
 #include <map>
 
 // local
-#ifdef	WIN32
+#ifdef	__CYGWIN__
 //
 // The fnmatch() function, for whatever reason, isn't currently available in
 // the Unix-like environment being used to compile SWISH++ under Windows, so
@@ -80,7 +80,7 @@ public:
 	//
 	iterator find( char const *file_name ) {
 		//
-		// Using find_if() make this run in O(n) instead of O(lg n),
+		// Using find_if() makes this run in O(n) instead of O(lg n),
 		// but there's no choice because no ordering can be imposed on
 		// filename patterns, i.e., either a filename matches a pattern
 		// or it doesn't.  Continuing to use a map still allows O(lg n)
@@ -111,7 +111,11 @@ private:
 	public:
 		pattern_match( char const *file_name ) :
 			file_name_( file_name ) { }
+#ifdef	__SUNPRO_CC
+		bool operator()( value_type const &map_node ) const {
+#else
 		result_type operator()( argument_type map_node ) const {
+#endif
 			return !::fnmatch( map_node.first, file_name_, 0 );
 		}
 	private:
