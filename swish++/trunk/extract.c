@@ -37,8 +37,8 @@
 #include "ExtractExtension.h"
 #include "ExtractFile.h"
 #include "ExtractFilter.h"
-#include "file_vector.h"
 #include "FilterFile.h"
+#include "mmap_file.h"
 #include "option_stream.h"
 #include "platform.h"
 #include "postscript.h"
@@ -68,8 +68,8 @@ Verbosity		verbosity;		// how much to print
 
 bool			extract_word( char *word, int len, ostream& );
 void			extract_words(
-				file_vector::const_iterator begin,
-				file_vector::const_iterator end,
+				mmap_file::const_iterator begin,
+				mmap_file::const_iterator end,
 				ostream&
 			);
 ostream&		usage( ostream& = cerr );
@@ -417,8 +417,8 @@ ostream&		usage( ostream& = cerr );
 // SYNOPSIS
 //
 	void extract_words(
-		register file_vector::const_iterator c,
-		register file_vector::const_iterator end,
+		register mmap_file::const_iterator c,
+		register mmap_file::const_iterator end,
 		ostream &out
 	)
 //

@@ -1,6 +1,6 @@
 /*
 **	PJL C++ Library
-**	file_vector.c
+**	mmap_file.c
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -35,8 +35,8 @@
 #endif
 
 // local
-#include "file_vector.h"
-#include "platform.h"
+#include "fake_ansi.h"			/* for std */
+#include "mmap_file.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -73,16 +73,16 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	void file_vector::close()
+	void mmap_file::close()
 //
 // DESCRIPTION
 //
 //	Munmaps and closes a file previously opened and mmapped by
-//	file_vector::open().
+//	mmap_file::open().
 //
 // SEE ALSO
 //
-//	close(2), file_vector::open(3), munmap(2)
+//	close(2), mmap_file::open(3), munmap(2)
 //
 //*****************************************************************************
 {
@@ -106,11 +106,11 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	void file_vector::init()
+	void mmap_file::init()
 //
 // DESCRIPTION
 //
-//	Initialize an instance of file_vector.
+//	Initialize an instance of mmap_file.
 //
 //*****************************************************************************
 {
@@ -145,7 +145,7 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	bool file_vector::open( char const *path, ios::open_mode mode )
+	bool mmap_file::open( char const *path, ios::open_mode mode )
 //
 // DESCRIPTION
 //

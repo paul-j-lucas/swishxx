@@ -55,7 +55,6 @@
 #include "file_list.h"
 #include "FilesGrow.h"
 #include "FilesReserve.h"
-#include "file_vector.h"
 #include "FilterFile.h"
 #ifdef	MOD_HTML
 #include "mod_html.h"
@@ -68,6 +67,7 @@
 #include "index_segment.h"
 #include "itoa.h"
 #include "meta_map.h"
+#include "mmap_file.h"
 #include "option_stream.h"
 #include "platform.h"
 #include "RecurseSubdirs.h"
@@ -565,7 +565,7 @@ void			write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	file_vector index_file( index_file_name );
+	mmap_file const index_file( index_file_name );
 	if ( !index_file ) {
 		cerr	<< error << "could not read index from \""
 			<< index_file_name << '"' << endl;
@@ -662,7 +662,7 @@ void			write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	vector< file_vector > index( partial_index_file_names.size() );
+	vector< mmap_file > index( partial_index_file_names.size() );
 	vector< index_segment > words( partial_index_file_names.size() );
 	vector< index_segment::const_iterator >
 		word( partial_index_file_names.size() );

@@ -130,7 +130,7 @@ int		indexer::suspend_indexing_count_ = 0;
 // SYNOPSIS
 //
 	/* virtual */
-	char const* indexer::find_title( file_vector const& ) const
+	char const* indexer::find_title( mmap_file const& ) const
 //
 // DESCRIPTION
 //
@@ -276,7 +276,7 @@ int		indexer::suspend_indexing_count_ = 0;
 
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		register file_vector::value_type ch = iso8859_to_ascii( *c++ );
+		register mmap_file::value_type ch = iso8859_to_ascii( *c++ );
 
 		////////// Collect a word /////////////////////////////////////
 

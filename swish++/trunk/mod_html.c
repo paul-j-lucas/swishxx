@@ -265,7 +265,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // SYNOPSIS
 //
-	char const* HTML_indexer::find_title( file_vector const &file ) const
+	char const* HTML_indexer::find_title( mmap_file const &file ) const
 //
 // DESCRIPTION
 //
@@ -304,7 +304,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	// Mark the positions after the closing '>' of the start tag and before
 	// the opening '<' of the end tag.  What's in between is the title.
 	//
-	file_vector::const_iterator after, before;
+	mmap_file::const_iterator after, before;
 
 	encoded_char_range::const_iterator c( file.begin(), file.end() );
 	while ( !c.at_end() ) {

@@ -22,6 +22,7 @@ C_FLAGS	=	-O2\
 
 SRCS	=\
 	$(Src)/bcd.c\
+	$(Src)/mmap_file.c\
 	$(Src)/conf_bool.c\
 	$(Src)/conf_int.c\
 	$(Src)/conf_set.c\
@@ -32,7 +33,6 @@ SRCS	=\
 	$(Src)/entities.c\
 	$(Src)/file_info.c\
 	$(Src)/file_list.c\
-	$(Src)/file_vector.c\
 	$(Src)/FilesGrow.c\
 	$(Src)/filter.c\
 	$(Src)/html.c\
@@ -53,6 +53,7 @@ SRCS	=\
 
 EXOBJS	=\
 	$(oDir)/bcd.o\
+	$(oDir)/mmap_file.o\
 	$(oDir)/conf_bool.o\
 	$(oDir)/conf_int.o\
 	$(oDir)/conf_set.o\
@@ -63,7 +64,6 @@ EXOBJS	=\
 	$(oDir)/entities.o\
 	$(oDir)/file_info.o\
 	$(oDir)/file_list.o\
-	$(oDir)/file_vector.o\
 	$(oDir)/FilesGrow.o\
 	$(oDir)/filter.o\
 	$(oDir)/html.o\
@@ -116,11 +116,11 @@ $(oDir)/bcd.o: bcd.c fake_ansi.h platform.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/conf_bool.o: conf_bool.c conf_bool.h conf_var.h fake_ansi.h platform.h \
- less.h exit_codes.h util.h config.h file_vector.h
+ less.h exit_codes.h util.h config.h mmap_file.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/conf_int.o: conf_int.c conf_int.h conf_var.h fake_ansi.h platform.h \
- less.h exit_codes.h util.h config.h file_vector.h
+ less.h exit_codes.h util.h config.h mmap_file.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/conf_set.o: conf_set.c conf_set.h conf_var.h fake_ansi.h platform.h \
@@ -132,12 +132,12 @@ $(oDir)/conf_string.o: conf_string.c conf_string.h conf_var.h fake_ansi.h \
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/conf_var.o: conf_var.c config.h conf_var.h fake_ansi.h platform.h \
- less.h exit_codes.h file_vector.h util.h
+ less.h exit_codes.h mmap_file.h util.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/directory.o: directory.c directory.h platform.h RecurseSubdirs.h \
  conf_bool.h conf_var.h fake_ansi.h less.h util.h config.h \
- file_vector.h Verbosity.h conf_int.h
+ mmap_file.h Verbosity.h conf_int.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/elements.o: elements.c elements.h my_set.h fake_ansi.h platform.h \
@@ -152,10 +152,10 @@ $(oDir)/file_info.o: file_info.c bcd.h config.h fake_ansi.h platform.h \
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/file_list.o: file_list.c bcd.h fake_ansi.h platform.h file_list.h \
- index_segment.h file_vector.h word_info.h html.h my_set.h less.h
+ index_segment.h mmap_file.h word_info.h html.h my_set.h less.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
-$(oDir)/file_vector.o: file_vector.c fake_ansi.h platform.h file_vector.h
+$(oDir)/mmap_file.o: mmap_file.c fake_ansi.h platform.h mmap_file.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/FilesGrow.o: FilesGrow.c FilesGrow.h config.h conf_int.h conf_var.h \
@@ -167,14 +167,14 @@ $(oDir)/filter.o: filter.c config.h filter.h fake_ansi.h platform.h
 
 $(oDir)/html.o: html.c config.h elements.h my_set.h fake_ansi.h platform.h \
  less.h entities.h ExcludeClass.h conf_set.h conf_var.h ExcludeMeta.h \
- html.h file_vector.h IncludeMeta.h index.h meta_map.h TitleLines.h \
+ html.h mmap_file.h IncludeMeta.h index.h meta_map.h TitleLines.h \
  conf_int.h util.h word_util.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/index.o: index.c bcd.h config.h directory.h platform.h elements.h \
  my_set.h fake_ansi.h less.h ExcludeClass.h conf_set.h conf_var.h \
  ExcludeFile.h pattern_map.h fnmatch.h ExcludeMeta.h exit_codes.h \
- file_info.h file_list.h index_segment.h file_vector.h word_info.h \
+ file_info.h file_list.h index_segment.h mmap_file.h word_info.h \
  html.h FilesGrow.h conf_int.h FilesReserve.h FilterFile.h filter.h \
  IncludeFile.h IncludeMeta.h Incremental.h conf_bool.h IndexFile.h \
  conf_string.h index.h itoa.h meta_map.h option_stream.h \
@@ -184,10 +184,10 @@ $(oDir)/index.o: index.c bcd.h config.h directory.h platform.h elements.h \
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/index_segment.o: index_segment.c fake_ansi.h platform.h \
- index_segment.h file_vector.h
+ index_segment.h mmap_file.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
-$(oDir)/itoa.o: itoa.c fake_ansi.h platform.h util.h config.h file_vector.h
+$(oDir)/itoa.o: itoa.c fake_ansi.h platform.h util.h config.h mmap_file.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/option_stream.o: option_stream.c option_stream.h
@@ -201,24 +201,24 @@ $(oDir)/stem_word.o: stem_word.c stem_word.h less.h fake_ansi.h platform.h \
  word_util.h config.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
-$(oDir)/stop_words.o: stop_words.c config.h exit_codes.h file_vector.h \
+$(oDir)/stop_words.o: stop_words.c config.h exit_codes.h mmap_file.h \
  index_segment.h stop_words.h my_set.h fake_ansi.h platform.h less.h \
  util.h word_util.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/token.o: token.c config.h platform.h token.h fake_ansi.h util.h \
- file_vector.h word_util.h
+ mmap_file.h word_util.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/util.o: util.c config.h conf_var.h fake_ansi.h platform.h less.h \
- util.h file_vector.h
+ util.h mmap_file.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/word_util.o: word_util.c config.h word_util.h fake_ansi.h platform.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/word_info.o: word_info.c bcd.h word_info.h fake_ansi.h platform.h \
- html.h file_vector.h my_set.h less.h util.h config.h
+ html.h mmap_file.h my_set.h less.h util.h config.h
 	$(CC) $(C_FLAGS) $(incDirs) -c -o $@ $<
 
 $(oDir)/FilterFile.o: FilterFile.c exit_codes.h FilterFile.h conf_var.h \

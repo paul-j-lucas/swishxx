@@ -202,7 +202,7 @@
 	//
 	// We can (finally!) open the (possibly post-filtered) file.
 	//
-	file_vector file( file_name );
+	mmap_file const file( file_name );
 	if ( !file ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: can not open)\n";

@@ -29,7 +29,7 @@
 #include "config.h"
 #include "conf_var.h"
 #include "exit_codes.h"
-#include "file_vector.h"
+#include "mmap_file.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
@@ -232,7 +232,7 @@ int conf_var::current_config_file_line_no_ = 0;
 //
 //*****************************************************************************
 {
-	file_vector conf_file( file_name );
+	mmap_file const conf_file( file_name );
 	if ( !conf_file ) {
 		if ( !::strcmp( file_name, ConfigFile_Default ) ) {
 			//
@@ -248,13 +248,13 @@ int conf_var::current_config_file_line_no_ = 0;
 	}
 
 	register int line_no = 0;
-	register file_vector::const_iterator c = conf_file.begin();
+	register mmap_file::const_iterator c = conf_file.begin();
 
 	while ( c != conf_file.end() ) {
 		//
 		// Find the end of the line.
 		//
-		file_vector::const_iterator const
+		mmap_file::const_iterator const
 			nl = find_newline( c, conf_file.end() );
 		if ( nl == conf_file.end() )
 			break;

@@ -28,7 +28,7 @@
 #include <sys/types.h>				/* for off_t */
 
 // local
-#include "file_vector.h"
+#include "mmap_file.h"
 
 //*****************************************************************************
 //
@@ -67,13 +67,13 @@ public:
 	////////// constructors ///////////////////////////////////////////////
 
 	index_segment() { }
-	index_segment( file_vector const &file, segment_id id ) {
+	index_segment( mmap_file const &file, segment_id id ) {
 		set_index_file( file, id );
 	}
 
 	////////// member functions ///////////////////////////////////////////
 
-	void		set_index_file( file_vector const&, segment_id );
+	void		set_index_file( mmap_file const&, segment_id );
 	size_type	size() const		{ return num_entries_; }
 
 	const_reference operator[]( size_type i ) const {
@@ -148,7 +148,7 @@ public:
 		return const_iterator( this, num_entries_ );
 	}
 private:
-	file_vector::const_iterator	begin_;
+	mmap_file::const_iterator	begin_;
 	size_type			num_entries_;
 	off_t const			*offset_;
 };

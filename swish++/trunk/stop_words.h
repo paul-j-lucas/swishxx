@@ -23,7 +23,7 @@
 #define stop_words_H
 
 // local
-class file_vector;
+class mmap_file;
 #include "my_set.h"
 
 //*****************************************************************************
@@ -41,7 +41,7 @@ class file_vector;
 //*****************************************************************************
 {
 	stop_word_set( char const *file_name = 0 );
-	stop_word_set( file_vector const &index_file );
+	stop_word_set( mmap_file const &index_file );
 };
 
 extern stop_word_set*	stop_words;

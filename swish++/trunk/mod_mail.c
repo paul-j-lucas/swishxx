@@ -119,7 +119,7 @@ bool				header_cmp(
 //
 // SYNOPSIS
 //
-	char const* mail_indexer::find_title( file_vector const &file ) const
+	char const* mail_indexer::find_title( mmap_file const &file ) const
 //
 // DESCRIPTION
 //
@@ -166,7 +166,7 @@ bool				header_cmp(
 {
 	int lines = 0;
 
-	file_vector::const_iterator c = file.begin();
+	mmap_file::const_iterator c = file.begin();
 	while ( c != file.end() ) {
 		if ( is_newline( c, file.end() ) || ++lines > num_title_lines ){
 			//
@@ -268,7 +268,7 @@ bool				header_cmp(
 
 	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		register file_vector::value_type ch = iso8859_to_ascii( *c++ );
+		register mmap_file::value_type ch = iso8859_to_ascii( *c++ );
 
 		////////// Collect a word /////////////////////////////////////
 

@@ -54,7 +54,7 @@
 public:
 	HTML_indexer() : indexer( "HTML" ) { }
 
-	virtual char const*	find_title( file_vector const& ) const;
+	virtual char const*	find_title( mmap_file const& ) const;
 	virtual void		index_words(
 					encoded_char_range const&,
 					int meta_id = No_Meta_ID

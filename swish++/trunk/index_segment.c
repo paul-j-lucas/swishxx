@@ -27,7 +27,7 @@
 // SYNOPSIS
 //
 	void index_segment::set_index_file(
-		file_vector const &file, segment_id id
+		mmap_file const &file, segment_id id
 	)
 //
 // DESCRIPTION
@@ -47,7 +47,7 @@
 //
 //*****************************************************************************
 {
-	register file_vector::const_iterator c = begin_ = file.begin();
+	register mmap_file::const_iterator c = begin_ = file.begin();
 	register size_type const *p = reinterpret_cast<size_type const*>( c );
 	num_entries_ = p[ 0 ];
 	for ( int i = id; i > 0; --i ) {

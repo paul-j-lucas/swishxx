@@ -45,11 +45,11 @@
 #include "exit_codes.h"
 #include "file_info.h"
 #include "file_list.h"
-#include "file_vector.h"
 #include "indexer.h"
 #include "IndexFile.h"
 #include "index_segment.h"
 #include "less.h"
+#include "mmap_file.h"
 #include "my_set.h"
 #include "option_stream.h"
 #include "platform.h"
@@ -262,7 +262,7 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	/////////// Load index file ///////////////////////////////////////////
 
-	file_vector the_index( index_file_name );
+	mmap_file const the_index( index_file_name );
 	if ( !the_index ) {
 		cerr	<< error << "could not read index from \""
 			<< index_file_name << '"' << endl;

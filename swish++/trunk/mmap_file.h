@@ -1,6 +1,6 @@
 /*
 **	PJL C++ Library
-**	file_vector.h
+**	mmap_file.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,8 +19,8 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef file_vector_H
-#define file_vector_H
+#ifndef mmap_file_H
+#define mmap_file_H
 
 // standard
 #include <cstddef>			/* for size_t */
@@ -30,15 +30,29 @@
 #include <windows.h>
 #endif
 
+//
+// Some C headers on some implementations define open/close as macros to remap
+// them to functions that handle files larger than 2 GB.  This works fine in C,
+// but can break C++ where classes have open/close member functions.  Undefine
+// them and live with the consequence of not being able to deal with large
+// files on such (brain-damaged) implementations.
+//
+#ifdef	open
+#undef	open
+#endif
+#ifdef	close
+#undef	close
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSYS
 //
-	class file_vector
+	class mmap_file
 //
 // DESCRIPTION
 //
-//	A file_vector is an object that maps a file into memory (via the Unix
+//	An mmap_file is an object that maps a file into memory (via the Unix
 //	system call mmap(2)) allowing it to be accessed via iterators.
 //	Processing a file, especially files accessed randomly, is MUCH faster
 //	than standard I/O.
@@ -69,12 +83,12 @@ public:
 
 	////////// constructors & destructor //////////////////////////////////
 
-	file_vector()			{ init(); }
-	file_vector( char const *path, ios::open_mode mode = ios::in ) {
+	mmap_file()			{ init(); }
+	mmap_file( char const *path, ios::open_mode mode = ios::in ) {
 		init();
 		open( path, mode );
 	}
-	~file_vector()			{ close(); }
+	~mmap_file()			{ close(); }
 
 	////////// iterators //////////////////////////////////////////////////
 
@@ -140,4 +154,4 @@ private:
 	void		init();
 };
 
-#endif	/* file_vector_H */
+#endif	/* mmap_file_H */

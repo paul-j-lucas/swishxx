@@ -34,6 +34,7 @@ CFLAGS=		$(CCFLAGS)
 C_TARGET:=	index search extract
 
 I_SRCS:=	bcd.c \
+		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
 		conf_int.c \
@@ -41,7 +42,6 @@ I_SRCS:=	bcd.c \
 		conf_string.c \
 		directory.c \
 		ExcludeFile.c \
-		file_vector.c \
 		file_info.c \
 		file_list.c \
 		filter.c \
@@ -75,12 +75,12 @@ I_OBJS:=	$(I_SRCS:.c=.o)
 I_LINK:=	$(CCLINK) -lm
 
 S_SRCS:=	bcd.c \
+		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
 		conf_int.c \
 		conf_string.c \
 		file_info.c \
-		file_vector.c \
 		index_segment.c \
 		file_list.c \
 		option_stream.c \
@@ -103,7 +103,8 @@ endif
 S_OBJS:=	$(S_SRCS:.c=.o)
 S_LINK:=	$(CCLINK) $(SOCKET_LIB) $(PTHREAD_LIB)
 
-E_SRCS:=	conf_var.c \
+E_SRCS:=	mmap_file.c \
+		conf_var.c \
 		conf_bool.c \
 		conf_int.c \
 		conf_set.c \
@@ -112,7 +113,6 @@ E_SRCS:=	conf_var.c \
 		entities.c \
 		ExcludeFile.c \
 		ExtractFile.c \
-		file_vector.c \
 		filter.c \
 		FilterFile.c \
 		index_segment.c \

@@ -25,8 +25,8 @@
 // local
 #include "config.h"
 #include "exit_codes.h"
-#include "file_vector.h"
 #include "index_segment.h"
+#include "mmap_file.h"
 #include "stop_words.h"
 #include "util.h"
 #include "word_util.h"
@@ -385,7 +385,7 @@ stop_word_set*		stop_words;		// pointer to global set
 		return;
 	}
 
-	file_vector file( file_name );
+	mmap_file const file( file_name );
 	if ( !file ) {
 		error() << "could not open \"" << file_name << '"' << endl;
 		::exit( Exit_No_Read_Stopwords );
@@ -395,7 +395,7 @@ stop_word_set*		stop_words;		// pointer to global set
 	int word_len;
 	bool in_word = false;
 
-	register file_vector::const_iterator c = file.begin();
+	register mmap_file::const_iterator c = file.begin();
 	while ( true ) {
 		if ( c != file.end() ) {
 			register char const ch = tolower(
@@ -446,7 +446,7 @@ stop_word_set*		stop_words;		// pointer to global set
 //
 // SYNOPSIS
 //
-	stop_word_set::stop_word_set( file_vector const &index_file )
+	stop_word_set::stop_word_set( mmap_file const &index_file )
 //
 // DESCRIPTION
 //

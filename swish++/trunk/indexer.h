@@ -27,7 +27,7 @@
 
 // local
 #include "encoded_char.h"
-#include "file_vector.h"
+#include "mmap_file.h"
 #include "util.h"
 #include "word_util.h"
 
@@ -58,14 +58,14 @@ public:
 	//			Given a module name (case is irrelevant),
 	//			return its indexer.
 
-	virtual char const*	find_title( file_vector const& ) const;
+	virtual char const*	find_title( mmap_file const& ) const;
 	//			By default, a file has no title, so the file's
 	//			base name becomes its title.  If a particular
 	//			file type can have something better for a
 	//			title, the derived indexer class should
 	//			override this function.
 
-	void			index_file( file_vector const& );
+	void			index_file( mmap_file const& );
 	//			This is the main entry point: this is called to
 	//			index the given file.
 
@@ -126,7 +126,7 @@ inline indexer* indexer::find_indexer( char const *mod_name ) {
 	return map_ref()[ to_lower( mod_name ) ];
 }
 
-inline void indexer::index_file( file_vector const &file ) {
+inline void indexer::index_file( mmap_file const &file ) {
 	suspend_indexing_count_ = 0;
 	new_file();
 	encoded_char_range const e( file.begin(), file.end() );
