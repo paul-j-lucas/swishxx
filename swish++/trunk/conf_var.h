@@ -63,8 +63,7 @@ protected:
 	//		operator=().
 
 	virtual void	reset() = 0;
-	//		Reset value to default.  Derived classes must define
-	//		this.
+	//		Reset value to default.
 
 	static std::ostream&	error( std::ostream& = cerr);
 	static std::ostream&	warning( std::ostream& = cerr );
