@@ -426,13 +426,13 @@ static bool	parse_optional_relop( token_stream&, token::type& );
 				get_meta_id( range.first )
 			:
 				Meta_ID_Not_Found;
-			goto no_put_back;
+			goto parsed_meta_id;
 		}
 		args.query.put_back( t2 );
 	}
 	args.query.put_back( t );
 
-no_put_back:
+parsed_meta_id:
 	return parse_primary( args );
 }
 
