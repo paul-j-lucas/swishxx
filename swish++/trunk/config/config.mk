@@ -118,6 +118,10 @@ CCFLAGS=	$(GCC_WARNINGS) $(SEARCH_DAEMON) $(WIN32) -O3
 #			fine with it off, then there is a bug in your
 #			compiler's optimizer.
 #
+#		-pedantic
+#			Makes g++ warn about anything that isn't strict ANSI
+#			standard C++.
+#
 #		-pg	Turn profiling on.  (You normally wouldn't want to do
 #			this unless you are changing SWISH++ and want to try
 #			to performance-tune your changes.)  This option may be
