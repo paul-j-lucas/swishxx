@@ -39,7 +39,8 @@ namespace PJL {
 #endif
 
 extern "C" void*	thread_pool_thread_main( void* );
-extern "C" void		thread_pool_thread_destroy( void* );
+extern "C" void		thread_pool_thread_cleanup( void* );
+extern "C" void		thread_pool_decrement_busy( void* );
 
 //*****************************************************************************
 //
@@ -76,7 +77,8 @@ public:
 	class thread;
 	friend class	thread;
 	friend void*	thread_pool_thread_main( void* );
-	friend void	thread_pool_thread_destroy( void* );
+	friend void	thread_pool_thread_cleanup( void* );
+	friend void	thread_pool_decrement_busy( void* );
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -161,7 +163,8 @@ public:
 
 		friend class	thread_pool;
 		friend void*	thread_pool_thread_main( void* );
-		friend void	thread_pool_thread_destroy( void* );
+		friend void	thread_pool_thread_cleanup( void* );
+		friend void	thread_pool_decrement_busy( void* );
 
 		thread( thread const& );		// forbid copy
 		thread& operator=( thread const& );	// forbid assignment
