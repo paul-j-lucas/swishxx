@@ -31,12 +31,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#ifdef	WIN32
-int const	MAXNAMLEN = 255;
-#else
-#include <dirent.h>				/* for MAXNAMLEN */
-#endif
-
 // local
 #include "config.h"
 #include "directory.h"
@@ -45,6 +39,7 @@ int const	MAXNAMLEN = 255;
 #include "file_vector.h"
 #include "FilterExtension.h"
 #include "IncludeExtension.h"
+#include "option_stream.h"
 #include "platform.h"
 #include "postscript.h"
 #include "RecurseSubdirs.h"
@@ -53,11 +48,7 @@ int const	MAXNAMLEN = 255;
 #include "util.h"
 #include "Verbosity.h"
 #include "version.h"
-
-extern "C" {
-	extern char*	optarg;
-	extern int	optind, opterr;
-}
+#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -73,14 +64,16 @@ int		num_extracted_files;
 RecurseSubdirs	recurse_subdirectories;
 Verbosity	verbosity;			// how much to print
 
-void		do_file( char const *path );
 bool		extract_word( char *word, int len, ofstream& );
 void		extract_words(
-			file_vector<char>::const_iterator begin,
-			file_vector<char>::const_iterator end,
+			file_vector::const_iterator begin,
+			file_vector::const_iterator end,
 			ofstream&
 		);
 void		usage();
+
+#define	EXTRACT
+#include "do_file.c"
 
 //*****************************************************************************
 //
@@ -90,28 +83,51 @@ void		usage();
 //
 // DESCRIPTION
 //
-//	Parse the command line, initialize, call other functions ... the
-//	usual things that are done in main().
+//	Parse the command line, initialize, call other functions ... the usual
+//	things that are done in main().
 //
 // PARAMETERS
 //
 //	argc	The number of arguments.
 //
-//	argv	A vector of the arguments; argv[argc] is null.  Aside from
-//		the options below, the arguments are the names of the files
-//		and directories to be extracted.
+//	argv	A vector of the arguments; argv[argc] is null.  Aside from the
+//		options below, the arguments are the names of the files and
+//		directories to be extracted.
 //
 // SEE ALSO
 //
 //	Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//	Addison-Wesley, Reading, MA.  pp. 116-118.
+//	Addison-Wesley, Reading, MA, 1997.  pp. 116-118.
 //
 //*****************************************************************************
 {
 	me = ::strrchr( argv[0], '/' );		// determine base name...
 	me = me ? me + 1 : argv[0];		// ...of executable
 
+#ifdef	RLIMIT_CPU				/* SVR4, 4.2+BSD */
+	//
+	// Max-out the amount of CPU time we can run since extraction can take
+	// a while.
+	//
+	max_out_limit( RLIMIT_CPU );
+#endif
 	/////////// Process command-line options //////////////////////////////
+
+	static option_stream::spec const opt_spec[] = {
+		"help",		0, '?',
+		"config",	1, 'c',
+		"extension",	1, 'e',
+		"no-extension",	1, 'E',
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+		"follow-links",	1, 'l',
+#endif
+		"no-recurse",	1, 'r',
+		"stop-file",	1, 's',
+		"dump-stop",	0, 'S',
+		"verbose",	1, 'v',
+		"version",	0, 'V',
+		0
+	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_stop_words_opt = false;
@@ -123,26 +139,23 @@ void		usage();
 	char const*	stop_word_file_name_arg = 0;
 	char const*	verbosity_arg = 0;
 
-	char const opts[] =
-#ifndef	PJL_NO_SYMBOLIC_LINKS
-		"l"
-#endif
-		"c:e:E:rs:Sv:V";
-
-	::opterr = 1;
-	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
+	option_stream opt_in( argc, argv, opt_spec );
+	for ( option_stream::option opt; opt_in >> opt; )
 		switch ( opt ) {
 
+			case '?': // Print help.
+				usage();
+
 			case 'c': // Specify config. file.
-				config_file_name_arg = ::optarg;
+				config_file_name_arg = opt.arg();
 				break;
 
 			case 'e': // Specify filename extension to extract.
-				include_extensions.insert( ::optarg );
+				include_extensions.insert( opt.arg() );
 				break;
 
 			case 'E': // Specify filename extension not to extract.
-				exclude_extensions.insert( ::optarg );
+				exclude_extensions.insert( opt.arg() );
 				break;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 			case 'l': // Follow symbolic links during extraction.
@@ -154,7 +167,7 @@ void		usage();
 				break;
 
 			case 's': // Specify stop-word list.
-				stop_word_file_name_arg = ::optarg;
+				stop_word_file_name_arg = opt.arg();
 				break;
 
 			case 'S': // Dump stop-word list.
@@ -162,23 +175,23 @@ void		usage();
 				break;
 
 			case 'v': // Specify verbosity level.
-				verbosity_arg = ::optarg;
+				verbosity_arg = opt.arg();
 				break;
 
 			case 'V': // Display version and exit.
 				cout << "SWISH++ " << version << endl;
 				::exit( Exit_Success );
 
-			case '?': // Bad option.
+			default: // Bad option.
 				usage();
 		}
-	argc -= ::optind, argv += ::optind;
+	argc -= opt_in.shift(), argv += opt_in.shift();
 
 	//
 	// First, parse the config. file (if any); then override variables
 	// specified on the command line with options.
 	//
-	parse_config_file( config_file_name_arg );
+	conf_var::parse_file( config_file_name_arg );
 
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( follow_symbolic_links_opt )
@@ -207,7 +220,7 @@ void		usage();
 	if ( !using_stdin &&
 		include_extensions.empty() && exclude_extensions.empty()
 	) {
-		ERROR << "extensions must be specified "
+		error()	<< "extensions must be specified "
 			"when not using standard input " << endl;
 		usage();
 	}
@@ -222,8 +235,8 @@ void		usage();
 		//
 		// Read file/directory names from standard input.
 		//
-		char file_name[ MAXNAMLEN + 1 ];
-		while ( cin.getline( file_name, MAXNAMLEN ) ) {
+		char file_name[ NAME_MAX + 1 ];
+		while ( cin.getline( file_name, NAME_MAX ) ) {
 			if ( !file_exists( *argv ) ) {
 				if ( verbosity > 3 )
 					cout	<< " (skipped: does not exist)"
@@ -267,9 +280,6 @@ void		usage();
 
 	::exit( Exit_Success );
 }
-
-#define	EXTRACT
-#include "do_file.c"
 
 //*****************************************************************************
 //
@@ -357,8 +367,8 @@ void		usage();
 // SYNOPSIS
 //
 	void extract_words(
-		register file_vector<char>::const_iterator c,
-		register file_vector<char>::const_iterator end,
+		register file_vector::const_iterator c,
+		register file_vector::const_iterator end,
 		ofstream &out
 	)
 //
@@ -382,7 +392,7 @@ void		usage();
 	in_postscript = false;
 
 	while ( c != end ) {
-		register char ch = *c++;
+		register char const ch = iso8859_to_ascii( *c++ );
 
 		////////// Collect a word /////////////////////////////////////
 
@@ -425,18 +435,19 @@ void		usage();
 
 void usage() {
 	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
-	" options:\n"
-	" --------\n"
-	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"  -e ext          : Extension to extract [default: none]\n"
-	"  -E ext          : Extension not to extract [default: none]\n"
+	"options: (unambiguous abbreviations may be used for long options)\n"
+	"========\n"
+	"-?   | --help             : Print this help message\n"
+	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+	"-e e | --extension e      : Extension to extract [default: none]\n"
+	"-E e | --no-extension e   : Extension not to extract [default: none]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-	"  -l              : Follow symbolic links [default: no]\n"
+	"-l   | --follow-links     : Follow symbolic links [default: no]\n"
 #endif
-	"  -r              : Do not recursively extract subdirectories [default: do]\n"
-	"  -s stop_file    : Stop-word file to use instead of compiled-in default\n"
-	"  -S              : Dump stop-words and exit\n"
-	"  -v verbosity    : Verbosity level [0-4; default: 0]\n"
-	"  -V              : Print version number and exit\n";
+	"-r   | --no-recurse       : Don't extract subdirectories [default: do]\n"
+	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
+	"-S   | --dump-stop        : Dump stop-words and exit\n"
+	"-v v | --verbosity v      : Verbosity level [0-4; default: 0]\n"
+	"-V   | --version          : Print version number and exit\n";
 	::exit( Exit_Usage );
 }
