@@ -3,6 +3,237 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.8
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added ability to decode UTF-7 and UTF-8 mail/news messages.
+
+  (This feature shall be known as feature UTF.)
+
+* Changed the query grammar to allow "not meta" rather than just "not primary".
+  It should have been this way all along.  What this means is that, previously:
+
+	not foo = bar
+
+  wasn't legal even though it should have been.  Instead, you had to do:
+  
+  	not (foo = bar)
+
+  (It's not a bug because they query parser was doing exactly what it was
+  documented to do.)
+
+  (This feature shall be known as feature NMN.)
+
+
+BUG FIXES
+---------
+
+* A number of compilation problems with g++ 3.1 have been fixed.
+
+  (This bug fix shall be known as bug fix GCC31.)
+
+* It was reported that index(1) just hung during start-up under Solaris unless
+  it was linked with -lpthread.  This is odd since I've run index(1) just fine
+  under Solaris many times before.  Anyway, I've added -lpthread to the link
+  line.
+
+  (This bug fix shall be known as bug fix SOL_THR.)
+
+* The INSTALL.unix file didn't mention that the version of GNU make needs to
+  be at least 3.79.1.
+
+  (This bug fix shall be known as bug fix MAKE_VER.)
+
+* The top-level makefile didn't create the directory specified by $(I_ETC) if
+  it didn't already exist.
+
+  (This bug fix shall be known as bug fix I_ETC.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added CHARSET_LIST, CHARSET_DEFS, ENCODING_LIST, and ENCODING_DEFS
+	   for feature UTF.
+	2. Added CHARSET_DEFS and ENCODING_DEFS to CCFLAGS for feature UTF.
+
+* config/config-sh
+
+	1. Added PJL_GCC_2xx for bug fix GCC31.
+
+* conf_percent.h
+
+	1. In constructor, removed spurious "= 0" for bug fix GCC31.
+
+* charsets/charsets.h
+* charsets/GNUmakefile
+* charsets/README
+* charsets/unicode.h
+* charsets/utf7.c
+* charsets/utf8.c
+
+	1. New files.
+
+* do_file.c
+
+	1. Added call to encoded_char_range::decoder::reset_all()
+
+* encoded_char.c
+
+	1. Split out decoders into individual files.
+	2. Put decoder::decoder() here.
+
+* encoded_char.h
+
+	1. Added: #include <set>
+	2. Added: #include "iso8859-1.h"
+	3. s/decoder_type/encoding_type/
+	4. Added: encoded_char_range::charset_type for feature UTF.
+	5. Added charset_type to encoded_char_range and
+	   encoded_char_range::const_iterator constructors.
+	6. s/decoder_/encoding_/
+	7. Added encoded_char_range::charset_ for feature UTF.
+	8. Added encoded_char_range::decoder class.
+	9. In encoded_char_range::const_iterator::decode(), added code to call
+	   charset decoder for feature UTF.
+	A. In encoded_char_range::const_iterator::operator*(), added call to
+	   iso8859_1_to_ascii().
+
+* encodings/GNUmakefile
+* encodings/base64.c
+* encodings/encodings.h
+* encodings/quoted_printable.c
+* encodings/README
+
+	1. New files.
+
+* extract.c
+
+	1. In extract_words(), removed called to iso8859_to_ascii().
+
+* fdbuf.h
+
+	1. Added #ifdef PJL_GCC_2xx for streambuf vs. streambuf.h for bug fix
+	   GCC31.
+
+* GNUmakefile
+
+	1. Added $(I_ETC) as a target of the $(MKDIR) $@ line for bug fix I_ETC.
+	2. Added CHARSET_* and ENCODING_* variables for feature UTF.
+	3. Added CHARSET_LIB and ENCODING_LIB targets for feature UTF.
+	4. Added "charsets" and "encodings" to MAKE_SUBDIRS for feature UTF.
+	5. Added iso8859-1.c to I_SOURCES, S_SOURCES, and E_SOURCES.
+	6. Added $(CHARSET_LINK) and $(ENCODING_LINK) to I_LINK for feature UTF.
+	7. Added $(PTHREAD_LIB) to I_LINK for bug fix SOL_THR.
+	8. Added $(CHARSET_LIB) and $(ENCODING_LIB) to index for feature UTF.
+
+* indexer.c
+
+	1. In index_words(), removed called to iso8859_to_ascii().
+
+* init_modules-sh
+* init_mod_vars-sh
+
+	1. Added -e 's/mod_/MOD_/' to sed lines.
+
+* INSTALL.unix
+
+	1. Added mention of minimum GNU make version for bug fix MAKE_VER.
+
+* iso8859-1.c
+* iso8859-1.h
+
+	1. Moved from word_util.[ch]
+
+* man/man1/index.1
+
+	1. For the Mail module, added mention of UTF-7 and UTF-8 for feature
+	   UTF.
+	2. Added a caveat about an e-mail message having a simultaneous
+	   encoding and character set.
+	3. Added Unicode references.
+
+* man/man1/search.1
+
+	1. Changed query grammar for feature NMN.
+
+* mmap_file.h
+
+	1. Replaced deprecated declarations for reverse_iterator and
+	   const_reverse_iterator for bug fix GCC31.
+
+* mod/mail/mod_html.c
+
+	1. Added: #include "charsets/unicode.h"
+	2. In entity_to_ascii(), now using unicode_to_ascii().
+	3. In index_words(), removed call to iso8859_to_ascii().
+
+* mod/mail/mod_mail.c
+
+	1. Added: #include "encoded_char.h" for feature UTF.
+	2. Removed: #include "word_util.h"
+	3. Replaced decoder_ with charset_ and encoding_ for feature UTF.
+	4. In index_headers(), added code to extract the charset for
+	   feature UTF.
+	5. In index_multipart(), added call to
+	   encoded_char_range::decoder::reset_all().
+	6. s/while ( 1 )/while ( true )/
+
+* mod/mail/mod_mail.h
+
+	1. Added: #include "charsets/charsets.h"
+	2. Added: #include "encodings/encodings.h"
+	3. Replaced decoder_ with charset_ and encoding_
+
+* mod/rtc/mod_man.c
+* mod/rtc/mod_rtf.c
+
+	1. In index_words(), removed call to iso8859_to_ascii().
+
+* option_stream.c
+
+	1. Added #include <iterator> for bug fix GCC31.
+
+* query.c
+
+	1. In parse_query2(), s/parse_query2/parse_meta/ for feature NMN.
+
+* README
+
+	1. Added missing item mentioning ability to index LaTeX and RTF
+	   documents.
+	2. Moved "Index non-text files such as Microsoft Office documents" up
+	   one.
+	3. Added mention of UTF-7 and UTF-8 character sets for feature UTF.
+
+* stop_words.c
+* token.c
+
+	1. Added: #include "iso8859-1.h"
+	2. s/iso8859_to_ascii/iso8859_1_to_ascii/
+
+* token.h
+
+	1. Added #ifdef PJL_GCC_2xx for strstream vs. sstream for bug fix GCC31.
+	2. Added #ifdef PJL_GCC_2xx for istrstream vs. istringstream for bug
+	   fix GCC31.
+
+* version.h
+
+	1. Upped version to "5.8".
+
+* word_util.c
+* word_util.h
+
+	1. Moved iso8859 stuff to iso8859-1.[ch]
+
+
+*******************************************************************************
 5.7.1
 *******************************************************************************
 
