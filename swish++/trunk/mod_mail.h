@@ -40,12 +40,12 @@
 //
 //	A mail_indexer is-an indexer for indexing mail (and news) files.  The
 //	following message formats are handled: plain text, enriched text,
-//	quoted-printable, MIME, vCard.  Header names and vCard types are
+//	quoted-printable, HTML, MIME, vCard.  Header names and vCard types are
 //	treated as meta names.
 //
 // SEE ALSO
 //
-//	David H. Croker.  "RFC 822: Standard for the Format of ARPA Internet
+//	David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
 //	Text Messages," Department of Electrical Engineering, University of
 //	Delaware, August 1982.
 //
@@ -62,6 +62,9 @@
 //	Network Working Group of the Internet Engineering Task Force, January
 //	1994.
 //
+//	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "HTML 4.0
+//	Specification," World Wide Web Consortium, April 1998.
+//
 //*****************************************************************************
 {
 public:
@@ -69,10 +72,10 @@ public:
 
 	virtual char const*	find_title( file_vector const& ) const;
 	virtual void		index_words(
-					file_vector::const_iterator begin,
-					file_vector::const_iterator end,
+					encoded_char_range::const_iterator&,
 					int meta_id = No_Meta_ID
 				);
+	virtual void		new_file();
 private:
 	// The boundary stack keeps track of all the boundary strings for MIME
 	// messages since they can nest.
@@ -88,29 +91,19 @@ private:
 		Not_Indexable,		// a type we don't know how to index
 		Text_Plain,
 		Text_Enriched,
+#ifdef	MOD_HTML
+		Text_HTML,
+#endif
 		Text_vCard,
 		Message_RFC822,
 		Multipart,
 	};
 
-	enum content_transfer_encoding {
-		SevenBit,
-		EightBit,
-		Quoted_Printable,
-		Base64,
-		Binary,
-	};
-
 	typedef	std::pair< content_type, content_transfer_encoding >
 		message_type;
 
-	void			mail_indexer::index_base64(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end
-				);
 	void			mail_indexer::index_enriched(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end
+					encoded_char_range::const_iterator&
 				);
 	message_type		mail_indexer::index_headers(
 					file_vector::const_iterator &begin,
@@ -120,15 +113,10 @@ private:
 					file_vector::const_iterator &begin,
 					file_vector::const_iterator end
 				);
-	void			mail_indexer::index_quoted_printable(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end
-				);
 	void			mail_indexer::index_vcard(
 					file_vector::const_iterator &begin,
 					file_vector::const_iterator end
 				);
-	virtual void		new_file();
 
 	enum header_type {
 		//
