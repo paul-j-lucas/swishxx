@@ -87,3 +87,5 @@ sub substitute {
 	chown( $uid, $gid, $file_out );
 }
 find( \&substitute, $IN_FILE );
+
+# vim:set noet sw=8 ts=8:

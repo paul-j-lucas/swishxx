@@ -119,3 +119,5 @@ FOUND:		$dep_set{ $path } = 1;
 ##
 ( $OBJECT_FILE = $SOURCE_FILE ) =~ s/\.\w+$/\.o/;
 print "$OBJECT_FILE : ", join( ' ', keys %dep_set ), "\n";
+
+# vim:set noet sw=8 ts=8:

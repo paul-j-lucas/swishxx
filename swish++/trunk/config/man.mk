@@ -106,3 +106,5 @@ clean distclean:
 dist:
 	$(MAKE) text pdf
 	$(RM) $(TARGET_PS)
+
+# vim:set noet sw=8 ts=8:
