@@ -28,6 +28,7 @@
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
 #include <ctime>			/* needed by sys/resource.h */
+#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <fstream>
 #include <iostream>
 #include <sys/resource.h>		/* for RLIMIT_* */
@@ -74,7 +75,9 @@ using namespace std;
 	switch ( errno ) {
 		case ECONNABORTED:	// POSIX.1g
 		case EINTR:
+#ifdef	EPROTO
 		case EPROTO:		// SVR4
+#endif
 			return;
 	}
 	cerr << error << "accept() failed" << error_string;
