@@ -72,23 +72,29 @@
 
 	//
 	// Make sure we're at the first byte of the UTF-8 character; if not,
-	// "sync" by backing up to it.  Only the first byte has the bit pattern
-	// 11xxxxxx so it's easy to find.
+	// "sync" by skipping characters until we're at a first byte.  Only the
+	// first byte has the bit pattern 11xxxxxx so it's easy to find.
 	//
 	encoded_char_range::pointer const orig_c = c;
 	while ( (static_cast<unsigned char>( *c ) & 0xC0u) != 0xC0u ) {
-		if ( c == begin ) {
+		if ( c == end ) {
 			//
-			// We ran into "begin" before being able to sync: this
-			// is weird.  Set the position one past the original
-			// position to try to skip this weirdness and return
-			// something innocuous like a space since we have to
-			// return something.
+			// We ran into "end" before being able to sync: this
+			// is weird.  Return something innocuous like a space
+			// since we have to return something.
 			//
-			c = orig_c + 1;
 			return ' ';
 		}
-		--c;
+		++c;
+	}
+	if ( (static_cast<unsigned char>( *c ) & 0xFEu) == 0xFEu ) {
+		//
+		// The octets FE and FF are explicity forbidden: skip over the
+		// offending byte and return something innocuous like a space
+		// since we have to return something.
+		//
+		++c;
+		return ' ';
 	}
 
 	//
