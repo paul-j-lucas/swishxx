@@ -2,6 +2,101 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.2
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* E-mail attaches can not be filtered by external programs.
+
+  (This feature shall be know as feature AFP.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_filter.c
+* conf_filter.h
+
+	1. Replaced FilterFile.c and made generic for feature AFP.
+
+* conf_var.c
+
+	1. Added filterattachment for feature AFP.
+
+* do_file.c
+* extract.c
+
+	1. s/filters/file_filters/ for featuer AFP.
+
+* filter.h
+
+	1. Added: substitute( std::string const &file_name );
+
+* FilterAttachment.h
+
+	1. Added this file for feature AFP.
+
+* FilterFile.c
+
+	1. Replaced by conf_filter.c
+
+* FilterFile.h
+
+	1. Made FilterFile derived from conf_filter for feature AFP.
+	2. s/filters/file_filters/ for featuer AFP.
+
+* GNUmakefile
+
+	1. Added conf_filter.c for feature AFP.
+	2. Removed FilterFile.c for feature AFP.
+
+* index.c
+
+	1. s/filters/file_filters/ for featuer AFP.
+
+* man/man1/extract.1
+
+	1. Added FilterAttachment for feature AFP.
+
+* man/man1/index.1
+
+	1. Added mention of FilterAttachment for feature AFP.
+	2. s/-D/-G/
+
+* man/man4/swish++.conf.4
+
+	1. Added "Filter variables" section.
+	2. Added information on filtering attachments for feature AFP.
+	3. Added more references.
+
+* mod_mail.c
+
+	1. Added #include's for <algorithm>, <unistd.h>, "FilterAttachment.h",
+	   and "Verbosity.h" for feature AFP.
+	2. Added "attachment_filters" declaration for feature AFP.
+	3. Added index_via_filter() for feature AFP.
+	4. In index_headers(), added code for filters for feature AFP.
+	5. In index_words(), added case for External_Filter for feature AFP.
+
+* mod_mail.h
+
+	1. Added "External_Filter" for feature AFP.
+	2. Changed message_type from s pair<> to a struct for feature AFP.
+
+* swish++.conf
+
+	1. Added FilterAttachment section for feature AFP.
+	2. Added: FilterFile *.ps pstotext %f > @%F.txt
+	3. Added: FilterFile *.bz2 bunzip2 -c %f > @%F
+
+* version.h
+
+	1. Upped version.
+
+
+*******************************************************************************
 5.1
 *******************************************************************************
 
