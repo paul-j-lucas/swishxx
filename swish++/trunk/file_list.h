@@ -52,6 +52,7 @@
 //
 //*****************************************************************************
 {
+	typedef unsigned char byte;		// for convenience
 public:
 	////////// typedefs ///////////////////////////////////////////////////
 
@@ -65,7 +66,7 @@ public:
 	////////// constructors ///////////////////////////////////////////////
 
 	file_list( index_segment::const_iterator const &iter ) :
-		ptr_( reinterpret_cast<unsigned char const*>( *iter ) ),
+		ptr_( reinterpret_cast<byte const*>( *iter ) ),
 		size_( -1 )			// -1 = "haven't computed yet"
 	{
 		while ( *ptr_++ ) ;		// skip past word
@@ -105,10 +106,10 @@ public:
 		}
 
 	private:
-		const_iterator( unsigned char const *p ) : c_( p ) {
+		const_iterator( byte const *p ) : c_( p ) {
 			if ( c_ ) operator++();
 		}
-		unsigned char const *c_;
+		byte const *c_;
 		value_type v_;
 		friend class file_list;
 	};
@@ -116,7 +117,7 @@ public:
 	const_iterator begin() const	{ return const_iterator( ptr_ ); }
 	const_iterator end() const	{ return const_iterator( 0 ); }
 private:
-	unsigned char const	*ptr_;
+	byte const		*ptr_;
 	mutable size_type	size_;
 
 	size_type calc_size() const;
