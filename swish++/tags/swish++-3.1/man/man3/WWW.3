@@ -1,0 +1,247 @@
+.\"
+.\"	World Wide Web Package
+.\"	WWW.3
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\" 
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\" 
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.sp
+..
+.\" ---------------------------------------------------------------------------
+.tr ~
+.TH \f3WWW\f1 3 "April 26, 1999" "WWW"
+.SH NAME
+WWW \- World Wide Web Package
+.SH SYNOPSIS
+.ft CW
+.nf
+extract_description( \f2FILE\fP )
+extract_meta( \f2FILE\fP, \f2NAME\fP )
+hyperlink( \f2LIST\fP )
+trim_whitespace( \f2LIST\fP )
+url_decode( \f2LIST\fP )
+url_encode( \f2LIST\fP )
+.fi
+.ft 1
+.SH DESCRIPTION
+This package is a Perl interface to the World Wide Web,
+specifically, web servers,
+to parse HTML form data,
+extract descriptions of or meta information from files,
+and hyperlink text.
+.SH HTML FORMS
+.SS "Automatic Processing"
+Prior to the display of a page, all form data, if any,
+is processed automatically by this package
+and the results are deposited in the
+.cS
+%FORM
+.cE
+Perl hash (in the package \f(CWmain\f1).
+Both the
+.ft CW
+GET
+.ft 1
+method as well as both the
+.I application/x-www-form-urlencoded
+and
+.I multipart/form-data
+.ft CW
+PUT
+.ft 1
+methods are supported.
+For example, given the simple search form:
+.cS
+<FORM ACTION="search.cgi">
+<B>Search:</B>
+<INPUT TYPE=text NAME=search SIZE=30>
+<INPUT TYPE=submit VALUE="Search">
+</FORM>
+.cE
+the CGI script can refer to the value the user entered for the search field as
+\f(CW$FORM{~search~}\f1.
+.SS "File Upload"
+File uploads, as part of forms with \f(CWENCTYPE\f1 set to
+.I multipart/form-data
+are supported.
+For example, given the form:
+.cS
+<FORM METHOD=post ENCTYPE="multipart/form-data" ACTION="upload.cgi">
+<INPUT TYPE=file NAME="file_name" SIZE=35>
+<INPUT TYPE=submit VALUE="Upload">
+</FORM>
+.cE
+if the user selects the file \f(CW/home/pjl/resume.txt\f1,
+only the base name of the file, \f(CWresume.txt\f1,
+is placed into \f(CW$FORM{~file_name~}\f1
+and the file itself is uploaded to \f(CW/tmp/resume.txt\f1
+where the CGI script can do with it as it pleases.
+.SH SUBROUTINES
+The following Perl subroutines are defined and available:
+.IP "\f(CWextract_description( \f2FILE\fP )\f1"
+Extracts a description from an HTML or plain text file given by the
+.I FILE
+name;
+.I FILE
+should be an absolute path.
+The first \f(CW$description::chars\f1 (default: 2048) characters are read.
+If the file ends in one of the extensions
+\f(CWhtm\f1, \f(CWhtml\f1, or \f(CWshtml\f1,
+it is presumed to be an HTML file;
+if the file ends in \f(CWtxt\f1, it is presumed to be a plain text file.
+Other extensions are not recognized and no description is returned for them.
+.IP ""
+For HTML files, first,
+if a \f(CW<META NAME="description" CONTENT="\f1...\f(CW">\f1
+or a \f(CW<META NAME="DC.description" CONTENT="\f1...\f(CW">\f1
+(Dublin Core) element is found,
+then the words specified as the value of the \f(CWCONTENT\f1 attribute
+is returned as the description.
+.IP ""
+Otherwise, all HTML comments, text between
+\f(CW<SCRIPT>\f1, \f(CW<STYLE>\f1, and \f(CW<TITLE>\f1 tags,
+and all other HTML tags are stripped.
+If \f(CW<AREA\f1 ... \f(CWALT="\f1...\f(CW">\f1
+or \f(CW<IMG\f1 ... \f(CWALT="...">\f1 elements are found,
+then the words specified as the value of the \f(CWALT\f1 attributes
+are extracted.
+.IP  ""
+Finally, for either HTML or plain text files,
+at most \f(CW$description::words\fP (default: 50) are returned.
+.IP "\f(CWextract_meta( \f2FILE\fP, \f2NAME\fP )\f1"
+Extracts the value of the \f(CWCONTENT\f1 attribute from a \f(CWMETA\f1 element
+having the given \f(CWNAME\f1 attribute
+from an HTML file given by the
+.I FILE
+name;
+.I FILE
+should be an absolute path.
+The file must end in one of the extensions
+\f(CWhtm\f1, \f(CWhtml\f1, or \f(CWshtml\f1
+to be considered an HTML file.
+The first \f(CW$description::chars\f1 (default: 2048) characters are read.
+The characters are cached between consecutive calls using the same filename.
+.IP "\f(CWhyperlink( \f2LIST\fP )\f1"
+Adds hyperlinks to strings:
+that is strings that contain substrings that are valid URLs
+(according to RFC 1630)
+have the appropriate HTML tags ``wrapped'' around them so that they will be
+selectable when displayed in a browser.
+The \f(CWftp\f1, \f(CWgopher\f1, \f(CWhttp\f1, \f(CWhttps\f1, \f(CWmailto\f1,
+\f(CWnews\f1, \f(CWtelnet\f1, and \f(CWwais\f1 URLs are recognized.
+Example:
+.cS
+	Read all about it at
+	http://www.usatoday.com/
+
+\f1becomes:\fP
+
+	Read all about it at
+	<A HREF="http://www.usatoday.com/">http://www.usatoday.com/</A>
+.cE
+.IP "\f(CWtrim_whitespace( \f2LIST\fP )\f1"
+Trims (removes) all whitespace (including newlines) from
+both the beginning and end of strings.
+Whitespace in the middle of strings (including multi-line strings)
+is not removed.
+.IP "\f(CWurl_decode( \f2LIST\fP )\f1"
+Decodes
+.I url-encoded
+strings replacing '\f(CW+\f1' with '\f(CW~\f1'
+and the sequence \f(CW%xx\f1
+with a single charcter having the ASCII code denoted by
+.I xx
+in hexadecimal.
+This subroutine is called automatically for all processed form data.
+.IP "\f(CWurl_encode( \f2LIST\fP )\f1"
+Encodes all ``unsafe'' characters in strings (according to RFC 1738).
+This subroutine is useful for encoding strings for use in the construction
+of URLs.
+Example:
+.cS
+	Is a + b = c? \f2becomes\f1 Is+a+%2B+b+%3D+c%3F
+.cE
+.SH SEE ALSO
+.BR perl (1)
+.PP
+Tim Berners-Lee.
+``Universal Resource Identifiers in WWW,''
+.I Request for Comments 1630,
+Network Working Group of the Internet Engineering Task Force,
+June 1994.
+.RS
+http://info.internet.isi.edu/in-notes/rfc/files/rfc1630.txt
+.RE
+.PP
+Tim Berners-Lee, Larry Masinter, and Mark McCahill.
+.I Uniform Resource Locators (URL),
+Network Working Group, Request for Comments 1738, 1994.
+.RS 5
+http://ds.internic.net/rfc/rfc1738.txt
+.RE
+.PP
+Larry Masinter and Ernesto Nebel.
+``Form-based File Upload in HTML,''
+.I Request for Comments 1867,
+Network Working Group of the Internet Engineering Task Force,
+November 1995.
+.RS 5
+http://info.internet.isi.edu/in-notes/rfc/files/rfc1867.txt
+.RE
+.PP
+Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
+``Notes on helping search engines index your Web site,''
+.I HTML 4.0 Specification, Appendix B: Performance, Implementation, and Design Notes,
+World Wide Web Consortium, April 1998.
+.RS
+http://www.w3.org/TR/REC-html40/appendix/notes.html#recs
+.RE
+.PP
+\-\-.
+``Objects, Images, and Applets: How to specify alternate text,''
+.I HTML 4.0 Specification, section 13.8,
+World Wide Web Consortium, April 1998.
+.RS
+http://www.w3.org/TR/REC-html40/struct/objects.html#h-13.8
+.RE
+.PP
+Dublin Core Directorate.
+``The Dublin Core: A Simple Content Description Model for Electronic Resources.''
+.RS
+http://purl.oclc.org/dc/
+.RE
+.PP
+Larry Wall, Tom Christiansen, and Randal L. Schwartz.
+.I Programming Perl, 2nd ed.,
+O'Reilly & Associates, Inc., Sebastopol, CA,
+1996.
+.SH AUTHOR
+Paul J. Lucas
+.RI < pjl@best.com >
