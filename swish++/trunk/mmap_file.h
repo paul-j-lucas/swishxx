@@ -89,11 +89,11 @@ public:
 #ifdef	PJL_NO_MADVISE
 		normal,
 		random,
-		sequential,
+		sequential
 #else
 		normal		= MADV_NORMAL,
 		random		= MADV_RANDOM,
-		sequential	= MADV_SEQUENTIAL,
+		sequential	= MADV_SEQUENTIAL
 #endif
 	};
 
