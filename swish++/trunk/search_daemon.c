@@ -26,10 +26,9 @@
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
 #include <cerrno>
+#include <fstream>
 #include <iostream>
-#ifndef	WIN32
 #include <sys/resource.h>		/* for RLIMIT_* */
-#endif
 #include <sys/socket.h>			/* for bind(3), socket(3), etc. */
 #include <sys/un.h>			/* for sockaddr_un */
 #include <unistd.h>			/* for fork(2), setsid(2), unlink(2) */
@@ -53,6 +52,7 @@ using namespace std;
 // SYNOPSIS
 //
 	void become_daemon(
+		char const *pid_file_name,
 		char const *socket_file_name,
 		int socket_queue_size, int socket_timeout,
 		int min_threads, int max_threads, int thread_timeout
@@ -61,10 +61,14 @@ using namespace std;
 // DESCRIPTION
 //
 //	Do things needed to becomd a daemon process: increase resource limits,
-//	create a socket, detach from the terminal, change to the root
-//	directory, and finally service requests.  This function never returns.
+//	create a socket, detach from the terminal, record our PID, change to
+//	the root directory, and finally service requests.  This function never
+//	returns.
 //
 // PARAMETERS
+//
+//	pid_file_name		The full path to the file to record the
+//				daemon's process ID in.
 //
 //	socket_file_name	The full path to the file to use for the Unix
 //				domain socket.
@@ -161,6 +165,19 @@ using namespace std;
 	}
 	if ( child_pid > 0 )			// parent process ...
 		::exit( Exit_Success );		// ... just exit as described
+
+	//
+	// If requested, record our PID to a file.
+	//
+	if ( pid_file_name && *pid_file_name ) {
+		ofstream pid_file( pid_file_name );
+		if ( !pid_file ) {
+			cerr	<< error << '"' << pid_file_name << "\": "
+				<< error_string;
+			::exit( Exit_No_Write_PID );
+		}
+		pid_file << ::getpid() << endl;
+	}
 
 	//
 	// Ibid.:
