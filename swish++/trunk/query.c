@@ -642,7 +642,7 @@ no_put_back:
 	//
 	// Now that the and-results have been summed, divide each by the number
 	// of and-results, i.e., average them.  (It's +1 below because you have
-	// to include the "result" variable itself.)
+	// to include the "results" variable itself.)
 	//
 	int const num_ands = and_results.size() + 1;
 	TRANSFORM_EACH( search_results, results, result )
