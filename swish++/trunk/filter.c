@@ -109,7 +109,7 @@ using namespace std;
 		// this filter.  If this happens, the programmer goofed.
 		//
 		internal_error
-			<< "filter::exec(): command is empty\n" << report_error;
+			<< "filter::exec(): command is empty" << report_error;
 	}
 	int exit_code;
 	int attempt_count = 0;
@@ -256,7 +256,7 @@ using namespace std;
 		// of an @.  If this happens, the programmer goofed.
 		//
 		internal_error
-			<< "filter::substitute(): target_pos == string::npos\n"
+			<< "filter::substitute(): target_pos == string::npos"
 			<< report_error;
 	}
 
