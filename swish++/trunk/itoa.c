@@ -21,7 +21,7 @@
 
 // local
 #include "fake_ansi.h"
-#include "util.h"
+#include "util.h"			/* for char_buffer_pool<> */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
