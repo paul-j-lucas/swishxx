@@ -25,9 +25,9 @@ ROOT=		../..
 include		$(ROOT)/config/config.mk
 
 SECT=		4
-PAGES=		swish++.$(SECT)
-TARGET_TXT=	swish++.txt
-TARGET_PDF=	swish++.pdf
-TARGET_PS=	swish++.ps
+PAGES=		swish++.conf.$(SECT) swish++.index.$(SECT)
+TARGET_TXT=	swish++.conf.txt swish++.index.txt
+TARGET_PDF=	swish++.conf.pdf swish++.index.pdf
+TARGET_PS=	swish++.conf.ps swish++.index.ps
 
 include		$(ROOT)/config/man.mk
