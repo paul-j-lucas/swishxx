@@ -195,6 +195,15 @@ void			write_word_index( ostream&, off_t* );
 	//
 	max_out_limit( RLIMIT_DATA );
 #endif
+#ifdef	RLIMIT_NOFILE				/* SVR4 */
+	//
+	// Max-out the number of file descriptors we can have open to be able
+	// to merge as many partial indicies as possible.
+	//
+	max_out_limit( RLIMIT_NOFILE );
+#elif	defined( RLIMIT_OFILE )			/* 4.3+BSD name for NOFILE */
+	max_out_limit( RLIMIT_OFILE );
+#endif
 	/////////// Process command-line options //////////////////////////////
 
 	static option_stream::spec const opt_spec[] = {
