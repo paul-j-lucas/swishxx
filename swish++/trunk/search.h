@@ -68,6 +68,7 @@
 	char const*	word_percent_max_arg;
 #ifdef	SEARCH_DAEMON
 	char const*	daemon_type_arg;
+	char const*	group_arg;
 	int		max_threads_arg;
 	int		min_threads_arg;
 	char const*	pid_file_name_arg;
@@ -77,6 +78,7 @@
 	int		socket_queue_size_arg;
 	int		socket_timeout_arg;
 	int		thread_timeout_arg;
+	char const*	user_arg;
 #endif
 	search_options(
 		int *argc, char ***argv,
