@@ -66,11 +66,11 @@ void	parse_backslash( char const *&pos, char const *end );
 //*****************************************************************************
 {
 	int	lines = 0;
-	char	prev_c = '\0';
+	bool	newline = false;
 
 	mmap_file::const_iterator c = file.begin();
 	while ( c != file.end() ) {
-		if ( *c == '\n' && ++lines > num_title_lines ) {
+		if ( newline && ++lines > num_title_lines ) {
 			//
 			// Didn't find ".SH NAME" within first num_title_lines
 			// lines of file: forget it.
@@ -82,8 +82,8 @@ void	parse_backslash( char const *&pos, char const *end );
 		// Find the start of a macro, i.e., a line that begins with a
 		// '.' (dot).
 		//
-		if ( prev_c != '\n' || *c != '.' ) {	// not macro: forget it
-			prev_c = *c++;
+		if ( !newline || *c != '.' ) {		// not macro: forget it
+			newline = *c++ == '\n';
 			continue;
 		}
 
@@ -91,7 +91,7 @@ void	parse_backslash( char const *&pos, char const *end );
 		// Found a macro: is it a comment?  If so, skip it.
 		//
 		if ( is_man_comment( ++c, file.end() ) ) {
-			prev_c = '\n';
+			newline = true;
 			continue;
 		}
 
@@ -165,10 +165,11 @@ void	parse_backslash( char const *&pos, char const *end );
 	char	word[ Word_Hard_Max_Size + 1 ];
 	bool	in_word = false;
 	int	len;
+	bool	newline = false;
 
-	register char const *c = e.begin_pos();
-	while ( c != e.end_pos() ) {
-		register char const ch = iso8859_to_ascii( *c++ );
+	register char const* c = e.begin_pos();
+	while ( 1 ) {
+		register char const ch = iso8859_to_ascii( *c );
 
 		////////// Collect a word /////////////////////////////////////
 
@@ -178,16 +179,16 @@ void	parse_backslash( char const *&pos, char const *end );
 				word[ 0 ] = ch;
 				len = 1;
 				in_word = true;
-				continue;
+				goto next_c;
 			}
 			if ( len < Word_Hard_Max_Size ) {
 				// continue same word
 				word[ len++ ] = ch;
-				continue;
+				goto next_c;
 			}
 			in_word = false;	// too big: skip chars
-			while ( c != e.end_pos() && is_word_char( *c++ ) ) ;
-			continue;
+			while ( ++c != e.end_pos() && is_word_char( *c ) ) ;
+			goto next_c;
 		}
 
 		if ( ch == '\\' ) {
@@ -196,7 +197,7 @@ void	parse_backslash( char const *&pos, char const *end );
 			// as though it weren't even there.
 			//
 			parse_backslash( c, e.end_pos() );
-			continue;
+			goto next_c;
 		}
 
 		if ( in_word ) {
@@ -208,13 +209,17 @@ void	parse_backslash( char const *&pos, char const *end );
 			index_word( word, len, meta_id );
 		}
 
-		if ( ch == '.' && meta_id == No_Meta_ID ) {
+		if ( newline && ch == '.' && meta_id == No_Meta_ID ) {
 			//
-			// If the character is a '.' (the start of a macro),
-			// parse it.
+			// If we're at the first character on a line and the
+			// character is a '.' (the start of a macro), parse it.
 			//
 			parse_man_macro( c, e.end_pos() );
 		}
+next_c:
+		if ( c == e.end_pos() )
+			break;
+		newline = *c++ == '\n';
 	}
 	if ( in_word ) {
 		//
@@ -289,8 +294,9 @@ void	parse_backslash( char const *&pos, char const *end );
 //*****************************************************************************
 {
 	register char const *d = c;
-	while ( *macro && d != end && *macro++ == *d++ ) ;
-	if ( *macro )
+	while ( *macro && d != end && *macro == *d )
+		++macro, ++d;
+	if ( *macro )			// didn't match before null
 		return false;
 	c = d;
 	return true;
@@ -404,18 +410,26 @@ void	parse_backslash( char const *&pos, char const *end );
 //
 //*****************************************************************************
 {
-	if ( c == end || !macro_cmp( c, end, "SH" ) )
+	if ( c == end || !macro_cmp( ++c, end, "SH" ) )
 		return;
-	while ( ++c != end && is_space( *c ) ) ;
-	if ( c == end )
+	char const *const nl = find_newline( c, end );
+	if ( !nl )
 		return;
+	while ( c != nl && !is_word_char( *c ) ) {
+		//
+		// Skip non-word characters after the 'H' in "SH" and before
+		// the first word of the section heading.
+		//
+		++c;
+	}
+	char const *const begin = c;
 
 	////////// Parse the name of the section heading. /////////////////////
 
 	char	word[ Word_Hard_Max_Size + 1 ];
 	int	len = 0;
 
-	while ( c != end ) {
+	while ( c != nl ) {
 		register char ch = *c++;
 		if ( ch == ' ' )
 			ch = '-';
@@ -425,38 +439,39 @@ void	parse_backslash( char const *&pos, char const *end );
 			word[ len++ ] = tolower( ch );
 			continue;
 		}
-		while ( c != end && is_word_char( *c++ ) ) ;	// too big
+		while ( c != nl && is_word_char( *c++ ) ) ;	// too big
 		return;
 	}
 	if ( len < Word_Min_Size )
 		return;
+	if ( word[ len - 1 ] == '-' )
+		--len;
 	word[ len ] = '\0';
 
 	////////// Find the next .SH macro. ///////////////////////////////////
 
-	char const *const begin = c;
-	char prev_c = '\0';
+	bool newline = false;
 	while ( c != end ) {
-		if ( prev_c != '\n' || *c != '.' ) {	// not macro: forget it
-			prev_c = *c++;
+		if ( !newline || *c != '.' ) {	// not macro: forget it
+			newline = *c++ == '\n';
 			continue;
 		}
-		prev_c = *c++;
+		newline = *c++ == '\n';
 
 		//
 		// Found a macro: is it a comment?  If so, skip it.
 		//
 		if ( is_man_comment( c, end ) ) {
-			prev_c = '\n';
+			newline = true;
 			continue;
 		}
 
 		//
-		// Is the macro ".SH"?  If so, back up the iterator to the '.'
-		// so the indexing will stop at the right place.
+		// Is the macro ".SH"?  If so, back up the iterator before the
+		// '.' so the indexing will stop at the right place.
 		//
 		if ( macro_cmp( c, end, "SH" ) ) {
-			c -= 3;
+			c -= 4;			// 3 for ".SH" + 1 before that
 			break;
 		}
 	}
