@@ -99,12 +99,12 @@ using namespace std;
 	}								\
 }
 
-void	detach_from_terminal();
-void	handle_accept( int fd );
-int	open_tcp_socket();
-int	open_unix_socket();
-void	reset_socket( int fd );
-void	set_signal_handlers();
+static void	detach_from_terminal();
+static void	handle_accept( int fd );
+static int	open_tcp_socket();
+static int	open_unix_socket();
+void		reset_socket( int fd );
+static void	set_signal_handlers();
 
 //*****************************************************************************
 //

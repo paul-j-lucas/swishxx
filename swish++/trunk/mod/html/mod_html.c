@@ -48,9 +48,9 @@ bool				HTML_indexer::dump_html_elements_opt_ = false;
 HTML_indexer::stack_type	HTML_indexer::element_stack_;
 ExcludeClass			exclude_class_names;
 
-bool	is_html_comment( encoded_char_range::const_iterator &pos );
-bool	skip_html_tag( encoded_char_range::const_iterator &pos );
-bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
+static bool is_html_comment( encoded_char_range::const_iterator &pos );
+static bool skip_html_tag( encoded_char_range::const_iterator &pos );
+static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 //*****************************************************************************
 //

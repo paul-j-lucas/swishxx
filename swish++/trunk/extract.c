@@ -62,20 +62,20 @@ ExtractFile		include_patterns;	// do extract these
 ExtractFilter		extract_as_filter;
 ExtractExtension	extract_extension;
 FilterFile		file_filters;
-bool			in_postscript;
+static bool		in_postscript;
 char const*		me;			// executable name
 int			num_examined_files;
 int			num_extracted_files;
 RecurseSubdirs		recurse_subdirectories;
 Verbosity		verbosity;		// how much to print
 
-bool			extract_word( char *word, int len, ostream& );
-void			extract_words(
+static bool		extract_word( char *word, int len, ostream& );
+static void		extract_words(
 				mmap_file::const_iterator begin,
 				mmap_file::const_iterator end,
 				ostream&
 			);
-ostream&		usage( ostream& = cerr );
+static ostream&		usage( ostream& = cerr );
 
 #define	EXTRACT
 #include "do_file.c"

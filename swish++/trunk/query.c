@@ -47,28 +47,26 @@ typedef	vector< search_results* > and_results_type;
 
 extern index_segment	files, meta_names, stop_words, words;
 
-int	get_meta_id( index_segment::const_iterator );
-
-bool	parse_meta(
-		token_stream&, search_results&, stop_word_set&,
-		and_results_type&, bool&, int
-	);
-bool	parse_primary(
-		token_stream&, search_results&, stop_word_set&,
-		and_results_type&, bool&, int
-	);
-bool	parse_query2(
-		token_stream&, search_results&, stop_word_set&,
-		and_results_type&, bool&, int
-	);
-bool	parse_optional_relop( token_stream&, token::type& );
-void	perform_and( search_results&, and_results_type& );
+static bool		parse_meta(
+				token_stream&, search_results&, stop_word_set&,
+				and_results_type&, bool&, int
+			);
+static bool		parse_primary(
+				token_stream&, search_results&, stop_word_set&,
+				and_results_type&, bool&, int
+			);
+static bool		parse_query2(
+				token_stream&, search_results&, stop_word_set&,
+				and_results_type&, bool&, int
+			);
+static bool		parse_optional_relop( token_stream&, token::type& );
+static void		perform_and( search_results&, and_results_type& );
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	int get_meta_id( index_segment::const_iterator i )
+	static int get_meta_id( index_segment::const_iterator i )
 //
 // DESCRIPTION
 //

@@ -140,9 +140,9 @@ User		user;
 
 void		become_daemon();
 #endif
-void		dump_single_word( char const*, ostream& = cout );
-void		dump_word_window( char const*, int, int, ostream& = cout );
-ostream&	write_file_info( ostream&, char const* );
+static void	dump_single_word( char const*, ostream& = cout );
+static void	dump_word_window( char const*, int, int, ostream& = cout );
+static ostream&	write_file_info( ostream&, char const* );
 
 inline omanip< char const* > index_file_info( int index ) {
 	return omanip< char const* >( write_file_info, files[ index ] );

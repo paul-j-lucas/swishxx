@@ -56,7 +56,7 @@ using namespace std;
 mail_indexer::stack_type	mail_indexer::boundary_stack_;
 bool				mail_indexer::did_last_header;
 
-bool				header_cmp(
+static bool			header_cmp(
 					char const *&pos, char const *end,
 					char const *tag
 				);
@@ -67,7 +67,7 @@ FilterAttachment		attachment_filters;
 //
 // SYNOPSIS
 //
-	bool boundary_cmp(
+	static bool boundary_cmp(
 		register char const *c, register char const *end,
 		register char const *boundary
 	)

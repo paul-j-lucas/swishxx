@@ -89,32 +89,32 @@ FilterFile		file_filters;
 Incremental		incremental;
 char const*		me;			// executable name
 meta_map		meta_names;
-int			num_examined_files;
-int			num_temp_files;
+static int		num_examined_files;
+static int		num_temp_files;
 TitleLines		num_title_lines;
 long			num_total_words;	// over all files indexed
 long			num_indexed_words;	// over all files indexed
-long			num_unique_words;	// over all files indexed
-vector<string>		partial_index_file_names;
+static long		num_unique_words;	// over all files indexed
+static vector<string>	partial_index_file_names;
 RecurseSubdirs		recurse_subdirectories;
-string			temp_file_name_prefix;
+static string		temp_file_name_prefix;
 Verbosity		verbosity;		// how much to print
 word_map		words;			// the index being generated
 WordFilesMax		word_file_max;
 WordPercentMax		word_percent_max;
 
-void			load_old_index( char const *index_file_name );
-void			merge_indicies( ostream& );
-void			rank_full_index();
+static void		load_old_index( char const *index_file_name );
+static void		merge_indicies( ostream& );
+static void		rank_full_index();
 extern "C" void		remove_temp_files( void );
-ostream&		usage( ostream& = cerr );
-void			write_dir_index( ostream&, off_t* );
-void			write_file_index( ostream&, off_t* );
-void			write_full_index( ostream& );
-void			write_meta_name_index( ostream&, off_t* );
-void			write_partial_index();
-void			write_stop_word_index( ostream&, off_t* );
-void			write_word_index( ostream&, off_t* );
+static ostream&		usage( ostream& = cerr );
+static void		write_dir_index( ostream&, off_t* );
+static void		write_file_index( ostream&, off_t* );
+static void		write_full_index( ostream& );
+static void		write_meta_name_index( ostream&, off_t* );
+static void		write_partial_index();
+static void		write_stop_word_index( ostream&, off_t* );
+static void		write_word_index( ostream&, off_t* );
 
 #define	INDEX
 #include "do_file.c"

@@ -40,9 +40,9 @@ using namespace PJL;
 using namespace std;
 #endif
 
-bool	is_man_comment( char const *&pos, char const *end );
-bool	macro_cmp( char const *&pos, char const *end, char const *macro );
-void	parse_backslash( char const *&pos, char const *end );
+static bool is_man_comment( char const *&pos, char const *end );
+static bool macro_cmp( char const *&pos, char const *end, char const *macro );
+static void parse_backslash( char const *&pos, char const *end );
 
 //*****************************************************************************
 //

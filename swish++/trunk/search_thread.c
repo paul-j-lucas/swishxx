@@ -68,9 +68,9 @@ using namespace std;
 
 unsigned search_thread::socket_timeout;
 
-void	reset_socket( int fd );
-int	split_args( char *s, char *argv[], int arg_max );
-bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
+extern void	reset_socket( int fd );
+static int	split_args( char *s, char *argv[], int arg_max );
+static bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 
 //*****************************************************************************
 //
