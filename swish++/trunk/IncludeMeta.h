@@ -45,4 +45,6 @@ public:
 	CONF_SET_ASSIGN_OPS( IncludeMeta )
 };
 
+extern IncludeMeta include_meta_names;
+
 #endif	/* IncludeMeta_H */
