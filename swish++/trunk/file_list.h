@@ -28,7 +28,7 @@
 #include <sys/types.h>				/* for off_t */
 
 // local
-#include "fake_ansi.h"
+#include "fake_ansi.h"				/* for mutable */
 #include "word_index.h"
 #include "word_info.h"
 

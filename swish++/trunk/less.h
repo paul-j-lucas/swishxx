@@ -27,7 +27,7 @@
 #include <functional>
 
 // local
-#include "fake_ansi.h"
+#include "fake_ansi.h"				/* for std */
 
 //*****************************************************************************
 //
@@ -51,8 +51,8 @@
 //*****************************************************************************
 {
 	less() { }
-	// This constructor doesn't need to be defined, but g++ 2.8.0 complains
-	// if it isn't and you try to define a "const less" object.
+	// This default constructor doesn't need to be defined, but g++ 2.8.0
+	// complains if it isn't and you try to define a "const less" object.
 
 	bool operator()( char const *a, char const *b ) const {
 		return std::strcmp( a, b ) < 0;

@@ -25,10 +25,21 @@
 // local
 #include "my_set.h"
 
-struct stop_word_set : string_set {
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	struct stop_word_set : string_set
+//
+// DESCRIPTION
+//
+//	A stop_word_set is-a string_set.  The only reason for having a
+//	derived class rather than a typedef is so that we can have a custom
+//	constructor that initializes itself.
+//
+//*****************************************************************************
+{
 	stop_word_set( char const *file_name = 0 );
-private:
-	static char const *const default_stop_word_table[];
 };
 
 extern stop_word_set*	stop_words;

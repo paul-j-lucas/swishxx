@@ -35,7 +35,7 @@ require WWW;
 
 $me = basename( $0 );
 
-$index_opts = 'f:F:i:p:s:t:';
+$index_opts = 'f:F:i:p:s:t:';		# options from index(1) we accept
 getopts( "${index_opts}dDv:" ) or die "$me: error in command-line options\n";
 die "$me: -d and -D are mutually exclusive\n" if $opt_d && $opt_D;
 

@@ -23,15 +23,14 @@
 #define	index_H
 
 // local
-#include "fake_ansi.h"
 #include "file_vector.h"
-#include "html.h"
+#include "html.h"				/* for No_Meta_ID */
 
 void		index_words(
 			file_vector<char>::const_iterator pos,
 			file_vector<char>::const_iterator end,
 			bool is_html,
-			int meta_id = no_meta_id
+			int meta_id = No_Meta_ID
 		);
 
 #endif	/* index_H */
