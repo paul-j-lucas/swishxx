@@ -3,6 +3,80 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.14
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* The searchd script now supports chkconfig.
+
+  (This feature shall be know as feature CHK.)
+
+
+BUG FIXES
+---------
+
+* Use of an iterator in the rank_full_index() function was improper.
+  Apparantly it doesn't matter under GCC/HP implementations of STL, but does
+  under the .NET implementation.
+
+  (This bug fix shall be known as bug fix INVIT.)
+
+* The is_xxxxx() functions in util.h were doing sign-extension during char-to-
+  int conversion (apparantly only) under the .NET compiler.  This has been
+  fixed by using a proper cast.
+
+  (This bug fix shall be known as bug fix CHCAST.)
+
+
+CLARIFICATIONS
+--------------
+
+* The undocumented behavior of index(1) skipping all files that started with
+  '.' has been changed to skip only the directory entires '.' and ".."; this
+  has also been documented.
+
+  (This clarification shall be know as clarification DOTS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* directory.c
+
+	1. In do_directory(), changed code for DOTS.
+
+* index.c
+
+	1. In rank_full_index(), fixed tha handling of the 'w' iterator for bug
+	   fix INVIT.
+
+* INSTALL.unix
+
+	1. Updated gcc information.
+
+* man/man1/index.1
+
+	1. For the ID3 module description, fixed references to "header": they
+	   should be "field."
+
+* searchd.in
+
+	1. Added chkconfig information for feature CHK.
+	2. s!.echotmp!/tmp/.echotmp!
+
+* util.h
+
+	1. Added static_cast<>()s to the is_xxxxx() functions for bug fix
+	   CHCAST.
+
+* version.h
+
+	1. Changed to "5.14."
+
+
+*******************************************************************************
 5.13.5
 *******************************************************************************
 
