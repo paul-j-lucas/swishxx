@@ -2,6 +2,32 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4.6
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* On systems (such as Solaris) where /bin/sh is still really Bourne shell (as
+  opposed to bash in disguise), -e tests don't work.
+
+  (This bug fix shall be known as bug fix DEF.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* GNUmakefile
+* init_mod_vars-sh
+
+	1. s/-e/-f/ for bug fix DEF.
+
+* version.h
+
+	1. Updated version to "5.4.6".
+
+
+*******************************************************************************
 5.4.5
 *******************************************************************************
 
