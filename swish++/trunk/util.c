@@ -35,7 +35,8 @@ using namespace std;
 
 extern char const*	me;
 
-struct stat	stat_buf;			// someplace to do a stat(2) in
+char_buffer_pool<128,5>	lower_buf;
+struct stat		stat_buf;	// someplace to do a stat(2) in
 
 //*****************************************************************************
 //
@@ -61,9 +62,8 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-	static char_buffer_pool<128,5> buf;
-	for ( register char *p = buf.next(); *p++ = to_lower( *s++ ); ) ;
-	return buf.current();
+	for ( register char *p = lower_buf.next(); *p++ = to_lower( *s++ ); ) ;
+	return lower_buf.current();
 }
 
 #ifdef	SEARCH_DAEMON
@@ -124,12 +124,11 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-	static char_buffer_pool<128,5> buf;
-	register char *p = buf.next();
+	register char *p = lower_buf.next();
 
 	while ( begin != end )
 		*p++ = to_lower( *begin++ );
 	*p = '\0';
 
-	return buf.current();
+	return lower_buf.current();
 }
