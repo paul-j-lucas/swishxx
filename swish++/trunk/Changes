@@ -56,6 +56,10 @@ CHANGES, file-by-file
 
 	1. New files for feature RTF.
 
+* swish++.conf
+
+	1. Added: IncludeFile RTF *.rtf
+
 * version.h
 
 	1. Upped version to to "5.6".
