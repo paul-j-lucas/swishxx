@@ -45,7 +45,7 @@
 #include "directory.h"
 #include "elements.h"
 #include "ExcludeClass.h"
-#include "ExcludeExtension.h"
+#include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
 #include "file_info.h"
@@ -53,9 +53,9 @@
 #include "FilesGrow.h"
 #include "FilesReserve.h"
 #include "file_vector.h"
-#include "FilterExtension.h"
+#include "FilterFile.h"
 #include "html.h"
-#include "IncludeExtension.h"
+#include "IncludeFile.h"
 #include "IncludeMeta.h"
 #include "Incremental.h"
 #include "IndexFile.h"
@@ -84,14 +84,13 @@ using namespace std;
 
 extern FilesReserve	files_reserve;
 
-ExcludeExtension	exclude_extensions;	// do not index these
-IncludeExtension	include_extensions;	// do index these
-int			exclude_class_count;	// don't index words if > 0
+ExcludeFile		exclude_patterns;	// do not index these
+IncludeFile		include_patterns;	// do index these
 ExcludeClass		exclude_class_names;	// class names not to index
 ExcludeMeta		exclude_meta_names;	// meta names not to index
 IncludeMeta		include_meta_names;	// meta names to index
 FilesGrow		files_grow;
-FilterExtension		filters;
+FilterFile		filters;
 Incremental		incremental;
 char const*		me;			// executable name
 meta_map		meta_names;
@@ -181,12 +180,12 @@ void			write_word_index( ostream&, off_t* );
 		"help",			0, '?',
 		"config",		1, 'c',
 		"no-class",		1, 'C',
-		"extension",		1, 'e',
-		"no-extension",		1, 'E',
+		"pattern",		1, 'e',
+		"no-pattern",		1, 'E',
 		"file-max",		1, 'f',
 		"files-reserve",	1, 'F',
 		"files-grow",		1, 'G',
-		"html-extension",	1, 'h',
+		"html-pattern",		1, 'h',
 		"dump-html",		0, 'H',
 		"index-file",		1, 'i',
 		"incremental",		0, 'I',
@@ -240,16 +239,16 @@ void			write_word_index( ostream&, off_t* );
 
 			case 'C': // Specify CLASS name not to index.
 				exclude_class_names.insert(
-					::strdup( to_lower( opt.arg() ) )
+					to_lower( opt.arg() )
 				);
 				break;
 
-			case 'e': // Specify filename extension(s) to index.
-				include_extensions.insert( opt.arg() );
+			case 'e': // Specify filename pattern(s) to index.
+				include_patterns.insert( opt.arg(), false );
 				break;
 
-			case 'E': // Specify filename extension(s) not to index.
-				exclude_extensions.insert( opt.arg() );
+			case 'E': // Specify filename pattern(s) not to index.
+				exclude_patterns.insert( opt.arg() );
 				break;
 
 			case 'f': // Specify the word/file file maximum.
@@ -264,8 +263,8 @@ void			write_word_index( ostream&, off_t* );
 				files_grow_arg = opt.arg();
 				break;
 
-			case 'h': // Specify HTML extension(s) to index.
-				include_extensions.insert( opt.arg(), true );
+			case 'h': // Specify HTML filename pattern(s) to index.
+				include_patterns.insert( opt.arg(), true );
 				break;
 
 			case 'H': // Dump recognized HTML elements.
@@ -286,13 +285,13 @@ void			write_word_index( ostream&, off_t* );
 #endif
 			case 'm': // Specify meta name(s) to index.
 				include_meta_names.insert(
-					::strdup( to_lower( opt.arg() ) )
+					to_lower( opt.arg() )
 				);
 				break;
 
 			case 'M': // Specify meta name(s) not to index.
 				exclude_meta_names.insert(
-					::strdup( to_lower( opt.arg() ) )
+					to_lower( opt.arg() )
 				);
 				break;
 
@@ -393,9 +392,9 @@ void			write_word_index( ostream&, off_t* );
 
 	bool const using_stdin = *argv && (*argv)[0] == '-' && !(*argv)[1];
 	if ( !using_stdin &&
-		include_extensions.empty() && exclude_extensions.empty()
+		include_patterns.empty() && exclude_patterns.empty()
 	)
-		error()	<< "extensions must be specified "
+		error()	<< "filename patterns must be specified "
 			"when not using standard input\n" << usage;
 
 	if ( !argc )
@@ -512,11 +511,12 @@ void			write_word_index( ostream&, off_t* );
 	if ( len < Word_Hard_Min_Size )
 		return;
 
-	if ( exclude_class_count ) {
+	extern int exclude_class_count;
+	if ( exclude_class_count > 0 ) {
 		//
-		// The word is within an HTML element's begin/end tags whose
-		// begin tag's CLASS attribute value is among the set of class
-		// names not to index, so do nothing.
+		// The word is within an HTML or XHTML element's begin/end tags
+		// whose begin tag's CLASS attribute value is among the set of
+		// class names not to index, so do nothing.
 		//
 		return;
 	}
@@ -601,10 +601,10 @@ void			write_word_index( ostream&, off_t* );
 //
 //	end		The iterator marking the end of the text to index.
 //
-//	is_html		If true, treat the text as HTML: specifically, look for
-//			'<' (the start of an HTML tag) and '&' (the start of
-//			an entity reference) characters and process them
-//			accordingly.
+//	is_html		If true, treat the text as HTML or XHTML: specifically,
+//			look for '<' (the start of an HTML or XHTML tag) and
+//			'&' (the start of an entity reference) characters and
+//			process them accordingly.
 //
 //	meta_id		The numeric ID of the META NAME the words index are to
 //			to be associated with.
@@ -613,8 +613,8 @@ void			write_word_index( ostream&, off_t* );
 {
 	//
 	// We have to keep track of when we just started indexing a new file to
-	// know when to tell parse_html_tag() to clear its internal HTML
-	// element stack.
+	// know when to tell parse_html_tag() to reset its data structures and
+	// variables.
 	//
 	static bool new_file = true;
 
@@ -626,8 +626,8 @@ void			write_word_index( ostream&, off_t* );
 	while ( c != end ) {
 		register file_vector::value_type ch = *c++;
 		//
-		// If we're indexing an HTML file and the character is an '&'
-		// (the start of a entity reference), convert the entity
+		// If we're indexing an HTML or XHTML file and the character is
+		// an '&' (the start of a entity reference), convert the entity
 		// reference to ASCII; otherwise, convert the ISO 8859
 		// character to ASCII.
 		//
@@ -666,15 +666,16 @@ void			write_word_index( ostream&, off_t* );
 
 		if ( is_html && ch == '<' && meta_id == No_Meta_ID ) {
 			//
-			// If we're indexing an HTML file, and the character is
-			// a '<' (the start of an HTML tag), and we're not in
-			// the midst of indexing the value of a META element's
-			// CONTENT attribute, then parse the HTML tag.
+			// If we're indexing an HTML or XHTML file, and the
+			// character is a '<' (the start of an HTML or XHTML
+			// tag), and we're not in the midst of indexing the
+			// value of a META element's CONTENT attribute, then
+			// parse the HTML or XHTML tag.
 			//
 			parse_html_tag( c, end, new_file );
 			//
 			// Clear the new_file flag so that parse_html_tag()
-			// will maintain its internal stack of HTML elements.
+			// will maintain its data between calls.
 			//
 			new_file = false;
 		}
@@ -780,7 +781,7 @@ void			write_word_index( ostream&, off_t* );
 		unsigned char const *p =
 			REINTERPRET_CAST(unsigned char const*)( *meta_name );
 		while ( *p++ ) ;		// skip past meta name
-		meta_names[ ::strdup( *meta_name ) ] = parse_bcd( p );
+		meta_names[ *meta_name ] = parse_bcd( p );
 	}
 
 	partial_index_file_names.push_back( index_file_name );
@@ -1513,13 +1514,13 @@ ostream& usage( ostream &o ) {
 	"-?   | --help             : Print this help message\n"
 	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"-C c | --no-class c       : Class name not to index [default: none]\n"
-	"-e e | --extension e      : Extension to index [default: none]\n"
-	"-E e | --no-extension e   : Extension not to index [default: none]\n"
+	"-e p | --pattern p        : File pattern to index [default: none]\n"
+	"-E p | --no-pattern p     : File pattern not to index [default: none]\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
 	"-F n | --files-reserve n  : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
 	"-G n | --files-grow n     : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
-	"-h e | --html-extension e : HTML extension to index [default: none]\n"
-	"-H   | --dump-html        : Dump built-in recognized HTML elements and exit\n"
+	"-h p | --html-pattern p   : HTML/XHTML file pattern to index [default: none]\n"
+	"-H   | --dump-html        : Dump built-in recognized HTML/XHTML elements, exit\n"
 	"-i f | --index-file f     : Name of index file to use [default: " << IndexFile_Default << "]\n"
 	"-I   | --incremental      : Add files to index [default: replace]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -1530,11 +1531,11 @@ ostream& usage( ostream &o ) {
 	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
 	"-r   | --no-recurse       : Don't index subdirectories [default: do]\n"
 	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
-	"-S   | --dump-stop        : Dump built-in stop-words and exit\n"
+	"-S   | --dump-stop        : Dump built-in stop-words, exit\n"
 	"-t n | --title-lines n    : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
 	"-T d | --temp-dir d       : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
 	"-v n | --verbosity n      : Verbosity level [0-4; default: 0]\n"
-	"-V   | --version          : Print version number and exit\n";
+	"-V   | --version          : Print version number, exit\n";
 	::exit( Exit_Usage );
 	return o;			// just to make the compiler happy
 }
