@@ -621,8 +621,13 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 		return;
 
 	encoded_char_range::const_iterator name = c;
-	if ( skip_html_tag( c ) || *name == '!' )
+	if ( skip_html_tag( c ) || *name == '!' || *name == '?' ) {
+		//
+		// Skip comments, type declarations, and XML processing
+		// instructions.
+		//
 		return;
+	}
 	name.end_pos( c.prev_pos() );
 	bool const is_end_tag = *name == '/';
 
