@@ -46,9 +46,6 @@ typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
 
 typedef	std::set< std::string > stop_word_set;
 
-bool	parse_query(
-		token_stream&, search_results_type&, stop_word_set&, bool&,
-		int = No_Meta_ID
-	);
+bool	parse_query( token_stream&, search_results_type&, stop_word_set& );
 
 #endif	/* query_H */
