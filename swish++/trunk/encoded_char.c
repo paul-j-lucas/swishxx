@@ -40,7 +40,7 @@ using namespace std;
 //
 	/* static */ encoded_char_range::value_type
 	encoded_char_range::const_iterator::decode_base64(
-		const_pointer begin, const_pointer &c, const_pointer end
+		pointer begin, pointer &c, pointer end
 	)
 //
 // DESCRIPTION
@@ -94,7 +94,7 @@ using namespace std;
 	int const Bits_Per_Char = 6;	// by definition of Base64 encoding
 
 	static value_type buf[ 3 ];	// group-of-4 decodes to 3 chars
-	static const_pointer prev_c;
+	static pointer prev_c;
 
 	//
 	// See if the pointer is less than a buffer's-worth away from the
@@ -118,7 +118,7 @@ return_decoded_char:
 	//
 	// If we're positioned at a newline, skip over it.
 	//
-	register const_pointer line_begin = skip_newline( c, end );
+	register pointer line_begin = skip_newline( c, end );
 	if ( line_begin == end ) {
 		c = end;
 		return ' ';
@@ -149,7 +149,7 @@ return_decoded_char:
 	//
 	delta = c - line_begin;
 	difference_type const delta4 = delta & ~3u;
-	const_pointer const group = line_begin + delta4;
+	pointer const group = line_begin + delta4;
 
 	if ( group + 1 == end || group + 2 == end || group + 3 == end ) {
 		//
@@ -218,7 +218,7 @@ return_decoded_char:
 //
 	/* static */ encoded_char_range::value_type
 	encoded_char_range::const_iterator::decode_quoted_printable_aux(
-		const_pointer &c, const_pointer end
+		pointer &c, pointer end
 	)
 //
 // DESCRIPTION
