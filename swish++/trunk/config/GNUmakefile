@@ -22,7 +22,7 @@
 ########## You shouldn't have to change anything below this line. #############
 
 ROOT=		..
-TARGET=		$(ROOT)/platform.h
+TARGET=		$(ROOT)/platform.h platform.mk
 
 .PNONY: all
 all: $(TARGET)
@@ -34,7 +34,7 @@ include 	$(ROOT)/config/config.mk
 ##
 
 $(TARGET): src/*.c
-	./config-sh $@ $(CC) $(CCFLAGS)
+	./config-sh $(TARGET) $(CC) $(CCFLAGS)
 
 ##
 # Utility rules
@@ -43,4 +43,4 @@ $(TARGET): src/*.c
 clean:
 
 distclean: clean
-	$(RM) $(TARGET) .*.d
+	$(RM) $(TARGET)
