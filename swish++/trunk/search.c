@@ -299,15 +299,16 @@ void	usage();
 		return 0;
 
 	// Copy the results to a vector to sort them by rank.
-	vector< result_type::value_type > v;
-	v.reserve( results.size() );
-	::copy( results.begin(), results.end(), ::back_inserter( v ) );
-	::sort( v.begin(), v.end(), sort_by_rank() );
-	double const normalize = 100.0 / v[0].second;	// highest rank
+	typedef vector< result_type::value_type > sorted_result_type;
+	sorted_result_type sorted;
+	sorted.reserve( results.size() );
+	::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
+	::sort( sorted.begin(), sorted.end(), sort_by_rank() );
+	double const normalize = 100.0 / sorted[0].second;	// highest rank
 
-	for ( vector< result_type::value_type >::const_iterator
-		i  = v.begin() + skip_results;
-		i != v.end() && max_results-- > 0;
+	for ( sorted_result_type::const_iterator
+		i  = sorted.begin() + skip_results;
+		i != sorted.end() && max_results-- > 0;
 		++i
 	)
 		cout	<< int( i->second * normalize )
