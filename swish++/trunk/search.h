@@ -64,8 +64,11 @@
 	char const*	result_separator_arg;
 	int		skip_results_arg;
 	bool		stem_words_opt;
-	char const*	word_file_max_arg;
+	char const*	word_files_max_arg;
 	char const*	word_percent_max_arg;
+#ifdef	FEATURE_word_pos
+	int		words_near_arg;
+#endif
 #ifdef	SEARCH_DAEMON
 	char const*	daemon_type_arg;
 	char const*	group_arg;
@@ -100,3 +103,4 @@ bool		service_request(
 std::ostream&	usage( std::ostream& );
 
 #endif	/* search_H */
+/* vim:set noet sw=8 ts=8: */
