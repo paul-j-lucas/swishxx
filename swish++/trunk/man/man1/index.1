@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "July 31, 1999" "SWISH++"
+.TH \f3index\f1 1 "August 7, 1999" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -175,6 +175,12 @@ ends it;
 for an element that does not have an end tag, ``the tag that ends the element''
 is the element's start tag.
 (See the EXAMPLES.)
+All elements from the HTML 4.0 specification (including deprecated elements),
+plus common, browser-specific elements are recognized;
+unrecognized elements are ignored.
+(See the
+.B \-H
+option.)
 .TP
 3.
 If an HTML element contains a \f(CWTITLE\f1 attribute,
@@ -282,6 +288,9 @@ More space will be allocated as necessary,
 but with a slight performace penalty.
 The default is 1000.
 .TP
+.B \-H
+Dump the built-in set of recognized HTML elements to standard output and exit.
+.TP
 .BI \-i index_file
 The name of the generated index file.
 The default is \f(CWswish++.index\f1 in the present working directory.
@@ -378,7 +387,8 @@ The verbosity levels, 0-4, are:
 .PD 0
 .TP 4
 0
-No output is generated (except for errors).
+No output is generated except for errors.
+This is the default.
 .TP
 1
 Only run statistics (elapsed time, number of files, word count) are printed.
@@ -682,6 +692,14 @@ http://www.w3.org/TR/REC-html40/struct/objects.html#adef-standby
 World Wide Web Consortium, April 1998.
 .RS
 http://www.w3.org/TR/REC-html40/struct/objects.html#h-13.8
+.RE
+.PP
+\-\-.
+``Index of Elements,''
+.I HTML 4.0 Specification,
+World Wide Web Consortium, April 1998.
+.RS
+http://www.w3.org/TR/REC-html40/index/elements.html
 .RE
 .SH AUTHOR
 Paul J. Lucas
