@@ -8,7 +8,7 @@
 # SYNOPSIS
 #
 #	<FORM ACTION="search.cgi">
-#	<INPUT TYPE=text NAME=search>
+#	<INPUT TYPE=text NAME=Search>
 #	<INPUT TYPE=submit VALUE="Search">
 #	</FORM>
 #
@@ -56,10 +56,10 @@ END
 ##
 # Zap dangerous characters before exposing to shell; escape rest.
 ##
-$FORM{ search } =~ s/[^\s&'()*\-=\w]/ /g;
-$FORM{ search } =~ s/([&'()*])/\\$1/g;
+$FORM{ Search } =~ s/[^\s&'()*\-=\w]/ /g;
+$FORM{ Search } =~ s/([&'()*])/\\$1/g;
 
-open( SEARCH, "$SWISH_BIN/search -i $INDEX_FILE $FORM{ search } |" ) or die;
+open( SEARCH, "$SWISH_BIN/search -i $INDEX_FILE $FORM{ Search } |" ) or die;
 while ( <SEARCH> ) {
 	if ( /^# ignored: (.+)$/ ) {
 		$ignored = $1;
