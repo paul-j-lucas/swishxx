@@ -113,7 +113,7 @@ int const	Title_Max_Size			= 200;
 #ifdef	SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
 
-char const	SocketFile_Default[]		= "/tmp/swish++.socket";
+char const	SocketFile_Default[]		= "/tmp/search.socket";
 //		Default name of the Unix domain socket file; this can be
 //		overridden either in a config. file or on the command line.
 
