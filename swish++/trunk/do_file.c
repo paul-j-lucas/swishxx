@@ -63,13 +63,13 @@
 
 	if ( !is_plain_file() ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: not plain file)" << endl;
+			cout << " (skipped: not plain file)" << '\n';
 		return;
 	}
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: symbolic link)" << endl;
+			cout << " (skipped: symbolic link)" << '\n';
 		return;
 	}
 #endif
@@ -92,7 +92,7 @@
 		ext = ::strrchr( file_name, '.' );
 		if ( !ext || !*++ext || ::strchr( ext, '/' ) ) {
 			if ( verbosity > 3 )
-				cout << " (skipped: no extension)" << endl;
+				cout << " (skipped: no extension)" << '\n';
 			return;
 		}
 
@@ -111,14 +111,16 @@
 	// Skip the file if either the set of unacceptable extensions contains
 	// the candidate or the set of acceptable extensions doesn't.
 	//
-	if ( exclude_extensions.find( ext ) ) {
+	if ( exclude_extensions.contains( ext ) ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: extension excluded)" << endl;
+			cout << " (skipped: extension excluded)" << '\n';
 		return;
 	}
-	if ( !include_extensions.empty() && !include_extensions.find( ext ) ) {
+	if (	!include_extensions.empty() &&
+		!include_extensions.contains( ext )
+	) {
 		if ( verbosity > 3 )
-			cout << " (skipped: extension not included)" << endl;
+			cout << " (skipped: extension not included)" << '\n';
 		return;
 	}
 
@@ -131,13 +133,13 @@
 	::strcat( file_name_txt, ".txt" );
 	if ( file_exists( file_name_txt ) ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: .txt file already exists)" << endl;
+			cout << " (skipped: .txt file already exists)" << '\n';
 		return;
 	}
 	ofstream txt( file_name_txt );
 	if ( !txt ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: can not create .txt file)" << endl;
+			cout << " (skipped: can not create .txt file)" << '\n';
 		return;
 	}
 #endif
@@ -148,14 +150,14 @@
 	FOR_EACH( filter_list_type, filter_list, f )
 		if ( !( file_name = f->exec() ) ) {
 			if ( verbosity > 3 )
-				cout << " (skipped: could not filter)" << endl;
+				cout << " (skipped: could not filter)" << '\n';
 			return;
 		}
 
 	file_vector<char> file( file_name );
 	if ( !file ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: can not open)" << endl;
+			cout << " (skipped: can not open)" << '\n';
 		return;
 	}
 
@@ -168,7 +170,7 @@
 		// Don't waste a file_info entry on it.
 		//
 		if ( verbosity > 2 )
-			cout << " (0 words)" << endl;
+			cout << " (0 words)" << '\n';
 		return;
 	}
 
@@ -192,7 +194,7 @@
 
 	if ( verbosity > 2 )
 		cout	<< " (" << file_info::current_file().num_words_
-			<< " words)" << endl;
+			<< " words)" << '\n';
 
 	if ( words.size() >= Word_Threshold )
 		write_partial_index();
