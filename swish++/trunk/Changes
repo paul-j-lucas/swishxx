@@ -1,6 +1,119 @@
 SWISH++ Changes
 ===============
 
+
+PROBLEMS
+--------
+
+NOTE: SWISH++ 4.5 and later currently will not compile under Windows because:
+
+1. The port of GNU make for it isn't self-contained in that it doesn't have
+   a Unix shell to do some of the "shell like" things that GNU make does.
+
+2. The libraries that come with Mingw32 don't include fnmatch().
+
+Robert Lebowitz <lebowitz@finaltouch.com>, the Win32 maintainer of SWISH++, is
+currently working on these problems, but there's no ETA since SWISH++ isn't his
+day job.
+
+
+*******************************************************************************
+4.6
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added the ability to specify the extension appended to files for extract(1).
+
+  (This feature will be known as feature SEE.)
+
+* Added the ability to run extract(1) as a filter.
+
+  (This feature will be known as feature EF.)
+
+
+BUG FIXES
+---------
+
+* extract(1) didn't print the file anme of files that didn't exist in its error
+  message.
+
+  (This bug fix will be known as bug fix DNE.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config.h
+
+	1. Added ExtractExtension_Default for feature SEE.
+
+* conf_var.c
+
+	1. In map_ref(), added ExtractExtension for feature SEE.
+
+	2. In map_ref(), added ExtractFilter for feature EF.
+
+* do_file.c
+
+	1. Changed to use user-specified extension for feature SEE.
+
+	2. Changed to have the ability write to standard output for
+	   feature EF.
+
+* exit_codes.h
+
+	1. Added Exit_No_Such_File for feature EF.
+
+* extract.c
+
+	1. Added global extract_extension variable for feature SEE.
+
+	2. In main(), added -x and --extension options for feature SEE.
+
+	3. In usage(), added description of -x and --extension options
+	   for feature SEE.
+
+	4. In extract_*() functions, changed ofstream argument to
+	   ostream for feature EF.
+
+	5. Added extract_as_filter global variable for feature EF.
+
+	6. In main() and usage(), added -f and --filter option for
+	   feature EF.
+
+	7. In main(), added code for the filter case for feature EF.
+
+	8. In main(), fixed bug DNE.
+
+* ExtractExtension.h
+
+	1. Added this file for feature SEE.
+
+* ExtractFilter.h
+
+	1. Added this file for feature EF.
+
+* man/man1/extract.1
+
+	1. Added description of -x and --extension options for feature
+	   SEE.
+
+	2. Added description of -f and --filter options for feature EF.
+
+* man/man4/swish++.conf.4
+* swish++.conf
+
+	1. Added ExtractExtension variable for feature SEE.
+
+	2. Added ExtractFilter variable for feature EF.
+
+* version.h
+
+	1. Updated version to "4.6".
+
+
 *******************************************************************************
 4.5
 *******************************************************************************
@@ -12,21 +125,6 @@ NEW FEATURES
   pattern rather than merely extension.
 
   (This feature will be known as feature FNP.)
-
-
-PROBLEMS
---------
-
-NOTE: SWISH++ 4.5 currently will not compile under Windows because:
-
-1. The port of GNU make for it isn't self-contained in that it doesn't have
-   a Unix shell to do some of the "shell like" things that GNU make does.
-
-2. The libraries that come with Mingw32 don't include fnmatch().
-
-Robert Lebowitz <lebowitz@finaltouch.com>, the Win32 maintainer of SWISH++, is
-currently working on these problems, but there's no ETA since SWISH++ isn't his
-day job.
 
 
 BUG FIXES
