@@ -126,8 +126,16 @@ public:
 		virtual void	main( argument_type ) = 0;
 	private:
 		pthread_t	thread_;		// our POSIX thread
+		pthread_mutex_t	run_lock_;
 		thread_pool	&pool_;			// to which we belong
 		bool		destructing_;		// destructor called?
+
+		void		run() { ::pthread_mutex_unlock( &run_lock_ ); }
+		thread*		create_and_run() const {
+					thread *const t = create( pool_ );
+					t->run();
+					return t;
+				}
 
 		friend class	thread_pool;
 		friend void*	thread_main( void* );
@@ -137,7 +145,7 @@ public:
 		thread& operator=( thread const& );	// forbid assignment
 	};
 
-	thread_pool( thread const *prototype,
+	thread_pool( thread *prototype,
 		int min_threads, int max_threads, int timeout
 	);
 	~thread_pool();
