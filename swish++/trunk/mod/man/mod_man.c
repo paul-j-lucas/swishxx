@@ -48,6 +48,7 @@ void	parse_backslash( char const *&pos, char const *end );
 //
 // SYNOPSIS
 //
+	/* virtual */
 	char const* man_indexer::find_title( mmap_file const &file ) const
 //
 // DESCRIPTION
