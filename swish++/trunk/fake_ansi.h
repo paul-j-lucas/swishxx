@@ -19,36 +19,10 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-/*
-**	Note: This file is also compilable with C to pick up the bool type.
-*/
-
 #ifndef	fake_ansi_H
 #define	fake_ansi_H
 
 #include "platform.h"
-
-/* new bool type */
-
-#if	defined(PJL_NO_BOOL) || !defined(__cplusplus)
-	typedef int		pjl_bool;
-	static pjl_bool const	pjl_false = 0;
-	static pjl_bool const	pjl_true  = 1;
-
-#	ifndef bool
-#		define bool	pjl_bool
-#	endif
-#	ifndef false
-#		define false	pjl_false
-#	endif
-#	ifndef true
-#		define true	pjl_true
-#	endif
-#endif	/* PJL_NO_BOOL */
-
-/****************** The rest of this file is only for C++. ******************/
-
-#ifdef	__cplusplus
 
 /* new cast operators */
 
@@ -62,7 +36,7 @@
 #	define STATIC_CAST(T)		static_cast<T>
 #	define DYNAMIC_CAST(T)		dynamic_cast<T>
 #	define REINTERPRET_CAST(T)	reinterpret_cast<T>
-#endif	/* PJL_NO_NEW_CASTS */
+#endif
 
 /* namespaces */
 
@@ -70,7 +44,7 @@
 #	define namespace		/* nothing */
 #	define using			/* nothing */
 #	define std			/* nothing */
-#endif	/* PJL_NO_NAMESPACES */
+#endif
 
 /* some new keywords */
 
@@ -81,7 +55,5 @@
 #ifdef	PJL_NO_MUTABLE
 #	define mutable			/* nothing */
 #endif
-
-#endif	/* __cplusplus */
 
 #endif	/* fake_ansi_H */
