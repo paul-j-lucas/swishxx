@@ -40,8 +40,6 @@
 #include "AssociateMeta.h"
 #include "bcd.h"
 #include "config.h"
-#include "DirectoriesGrow.h"
-#include "DirectoriesReserve.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -87,7 +85,6 @@ using namespace std;
 #endif
 
 AssociateMeta		associate_meta;
-DirectoriesGrow		directories_grow;
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
 #ifdef	mod_html
@@ -215,13 +212,11 @@ void			write_word_index( ostream&, off_t* );
 #ifdef	mod_html
 		"no-class",		1, 'C',
 #endif
-		"dirs-reserve",		1, 'D',
 		"pattern",		1, 'e',
 		"no-pattern",		1, 'E',
 		"file-max",		1, 'f',
 		"files-reserve",	1, 'F',
 		"files-grow",		1, 'g',
-		"dirs-grow",		1, 'G',
 #ifdef	mod_html
 		"dump-html",		0, 'H',
 #endif
@@ -244,8 +239,6 @@ void			write_word_index( ostream&, off_t* );
 	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
-	char const*	directories_grow_arg = 0;
-	char const*	directories_reserve_arg = 0;
 #ifdef	mod_html
 	bool		dump_html_elements_opt = false;
 #endif
@@ -290,10 +283,6 @@ void			write_word_index( ostream&, off_t* );
 				);
 				break;
 #endif
-			case 'D': // Specify directories to reserve space for.
-				directories_reserve_arg = opt.arg();
-				break;
-
 			case 'e': { // Filename pattern(s) to index.
 				if ( !::strtok( opt.arg(), ":" ) ) {
 					error() << "no indexer module name\n";
@@ -330,10 +319,6 @@ void			write_word_index( ostream&, off_t* );
 
 			case 'g': // Specify files to reserve space for growth.
 				files_grow_arg = opt.arg();
-				break;
-
-			case 'G': // Specify dirs to reserve space for growth.
-				directories_grow_arg = opt.arg();
 				break;
 #ifdef	mod_html
 			case 'H': // Dump recognized HTML and XHTML elements.
@@ -405,10 +390,6 @@ void			write_word_index( ostream&, off_t* );
 	//
 	conf_var::parse_file( config_file_name_arg );
 
-	if ( directories_grow_arg )
-		directories_grow = directories_grow_arg;
-	if ( directories_reserve_arg )
-		directories_reserve = directories_reserve_arg;
 	if ( files_grow_arg )
 		files_grow = files_grow_arg;
 	if ( files_reserve_arg )
@@ -652,14 +633,6 @@ void			write_word_index( ostream&, off_t* );
 	////////// Load old directories ///////////////////////////////////////
 
 	index_segment old_dirs( index_file, index_segment::dir_index );
-	if ( directories_reserve <= old_dirs.size() ) {
-		//
-		// Add the DirectoriesGrow configuration variable to the
-		// DirectoriesReserve configuration variable to allow room for
-		// growth.
-		//
-		directories_reserve = directories_grow( old_dirs.size() );
-	}
 	FOR_EACH( index_segment, old_dirs, d )
 		check_add_directory( new_strdup( *d ) );
 
@@ -1076,6 +1049,17 @@ void			write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
+	//
+	// First, order the directories by their index using a temporary
+	// vector.
+	//
+	typedef vector< char const* > dir_list_type;
+	dir_list_type dir_list( dir_set.size() );
+	FOR_EACH( dir_set_type, dir_set, dir )
+		dir_list[ dir->second ] = dir->first;
+	//
+	// Now write them out in order.
+	//
 	register int dir_index = 0;
 	FOR_EACH( dir_list_type, dir_list, dir ) {
 		offset[ dir_index++ ] = o.tellp();
@@ -1394,13 +1378,11 @@ ostream& usage( ostream &err ) {
 #ifdef	mod_html
 	"-C c   | --no-class c      : Class name not to index [default: none]\n"
 #endif
-	"-D n   | --dirs-reserve n  : Reserve space for number of dirs [default: " << DirectoriesReserve_Default << "]\n"
 	"-e m:p | --pattern m:p     : Module and file pattern to index [default: none]\n"
 	"-E p   | --no-pattern p    : File pattern not to index [default: none]\n"
 	"-f n   | --word-files n    : Word/file maximum [default: infinity]\n"
 	"-F n   | --files-reserve n : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
 	"-g n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
-	"-G n   | --dirs-grow n     : Number or percentage to grow by [default: " << DirectoriesGrow_Default << "]\n"
 #ifdef	mod_html
 	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n"
 #endif
