@@ -70,7 +70,7 @@
 	 5. Index non-text files such as Microsoft Office documents
 	    A separate text-extraction utility "extract" is included to
 	    assist in indexing non-text files. It is a essentially a
-	    more sophisticated version of the Unix strings (1) command,
+	    more sophisticated version of the Unix strings(1) command,
 	    but employs the same word-determination heuristics used for
 	    indexing.
 
@@ -98,7 +98,17 @@
 	    searches, not at the time of index generation.  This allows
 	    users to decide whether to perform stemming or not.
 
-	10. Easy-to-parse results format
+	10. Ability to run as a search server
+	    SWISH++'s search engine can run in the background as a
+	    multi-threaded daemon process to function as a search
+	    server accepting query requests and returning results via a
+	    Unix domain socket.  For search-intensive applications,
+	    such as a search engine on a heavily used web site, this
+	    can yield a large performace improvement since the start-up
+	    cost (fork(2), exec(2), and initialization) is paid only
+	    once.
+
+	11. Easy-to-parse results format
 	    SWISH++ outputs its search results in the form:
 
 		rank path_name file_size file_title
@@ -108,7 +118,7 @@
 
 		($rank,$path,$size,$title) = split( / /, $_, 4 );
 
-	11. Generously commented source code
+	12. Generously commented source code
 	    The source code is clearly written with lots of comments
 	    including references to other works in case you want to
 	    modify it under the terms of the GNU general public
