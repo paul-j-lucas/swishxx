@@ -72,12 +72,13 @@ extern "C" void		thread_destroy( void* );
 //
 //*****************************************************************************
 {
-	class thread;
 	class q_lock;
+public:
+	class thread;
 	friend class	thread;
 	friend void*	thread_main( void* );
 	friend void	thread_destroy( void* );
-public:
+
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	class thread {
