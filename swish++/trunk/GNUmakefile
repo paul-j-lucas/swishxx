@@ -22,7 +22,7 @@
 CPP_TARGET:=	index search extract
 BIN_TARGET:=	$(CPP_TARGET)
 SCRIPTS:=	$(patsubst %.in,%,$(wildcard scripts/*.in))
-INITD_TARGET:=	scripts/searchd
+INITD_TARGET:=	searchd
 TARGET:=	$(BIN_TARGET) $(SCRIPTS)
 
 .PHONY: all
@@ -31,10 +31,11 @@ all: $(TARGET)
 ROOT:=		.
 include		$(ROOT)/config/config.mk
 
-# Don't do the "include" if the goal contains the word "clean," i.e., either
-# the "clean" or "distclean" goal.
+# Don't do the "include" if the goal contains the word "clean" or "dist".
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
+ifneq ($(findstring dist,$(MAKECMDGOALS)),dist)
 -include	$(ROOT)/config/platform.mk
+endif
 endif
 
 DEBUGFLAGS:=
@@ -212,10 +213,14 @@ $(SCRIPTS): FORCE
 
 .PHONY: FORCE
 
-# Don't do the "include" if the goal contains the word "clean," i.e., either
-# the "clean" or "distclean" goal.
+# Don't do the "include" if the goal contains the word "clean", "dist", or
+# "uninstall".
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
+ifneq ($(findstring dist,$(MAKECMDGOALS)),dist)
+ifneq ($(findstring uninstall,$(MAKECMDGOALS)),uninstall)
 -include $(I_SOURCES:%.c=.%.d) $(E_SOURCES:%.c=.%.d) $(S_SOURCES:%.c=.%.d)
+endif
+endif
 endif
 
 ps pdf txt:
@@ -226,7 +231,7 @@ ps pdf txt:
 ##
 
 INITD_DIR:= $(firstword $(shell ls -d /etc/init.d /etc/rc.d/init.d 2>/dev/null))
-LEVEL_DIR:= $(firstword $(shell ls -d /etc/rc3.d /etc/rc.d/rc3.d 2>/dev/null))
+LEVEL_DIR=  $(firstword $(shell ls -d /etc/rc$1.d /etc/rc.d/rc$1.d 2>/dev/null))
 
 install: install_bin install_lib install_man install_conf
 
@@ -247,16 +252,28 @@ install_conf: $(I_ETC)
 $(I_BIN) $(I_ETC) $(I_LIB):
 	$(MKDIR) $@
 
-install_sysv: $(INITD_TARGET)
-	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $(INITD_TARGET) $(INITD_DIR)
-	$(RM) $(LEVEL_DIR)/[SK]99$(INITD_TARGET)
-	ln -s ../init.d/$(INITD_TARGET) $(LEVEL_DIR)/S99$(INITD_TARGET)
-	ln -s ../init.d/$(INITD_TARGET) $(LEVEL_DIR)/K99$(INITD_TARGET)
+install_sysv: scripts/$(INITD_TARGET)
+	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) $< $(INITD_DIR)
+	$(RM) $(call LEVEL_DIR,1)/K99$(INITD_TARGET)
+	$(RM) $(call LEVEL_DIR,2)/K99$(INITD_TARGET)
+	$(RM) $(call LEVEL_DIR,3)/S99$(INITD_TARGET)
+	$(RM) $(call LEVEL_DIR,5)/S99$(INITD_TARGET)
+	$(RM) $(call LEVEL_DIR,6)/K99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(call LEVEL_DIR,1)/K99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(call LEVEL_DIR,2)/K99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(call LEVEL_DIR,3)/S99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(call LEVEL_DIR,5)/S99$(INITD_TARGET)
+	ln -s ../init.d/$(INITD_TARGET) $(call LEVEL_DIR,6)/K99$(INITD_TARGET)
 
 uninstall:
 	cd $(I_BIN) && $(RM) $(BIN_TARGET)
 	cd $(I_LIB) && $(RM) $(LIB_TARGET)
-	$(RM) $(INITD_DIR)/$(INITD_TARGET) $(LEVEL_DIR)/[SK]99$(INITD_TARGET)
+	$(RM) $(INITD_DIR)/$(INITD_TARGET) \
+		$(call LEVEL_DIR,1)/K99$(INITD_TARGET) \
+		$(call LEVEL_DIR,2)/K99$(INITD_TARGET) \
+		$(call LEVEL_DIR,3)/S99$(INITD_TARGET) \
+		$(call LEVEL_DIR,5)/S99$(INITD_TARGET) \
+		$(call LEVEL_DIR,6)/K99$(INITD_TARGET)
 	@$(MAKE) -C man $@
 	@$(MAKE) -C scripts $@
 
@@ -275,5 +292,12 @@ clean:
 distclean: clean
 	$(RM) $(TARGET) .*.d init_modules.c
 	@$(call MAKE_SUBDIRS,$@)
+
+dist: distclean
+	@if [ -d CVS ]; then \
+	echo; echo "Won't 'make $@' in source tree!"; echo; exit 1; \
+	fi
+	find . -name .cvsignore -exec $(RM) {} \;
+	$(RM) SWISH++.xcode
 
 # vim:set noet sw=8 ts=8:
