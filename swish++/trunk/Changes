@@ -2,6 +2,193 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.5
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added the ability to index, not index, and filter files based on filename
+  pattern rather than merely extension.
+
+  (This feature will be known as feature FNP.)
+
+BUG FIXES
+---------
+
+* If an HTML file doing selective non-indexing via CLASS attributes wasn't
+  well-formed such that an HTML element having the CLASS attribute didn't end
+  properly, then all words in all subsequent files indexed would be discarded.
+
+  (This bug fix shall be known as bug fix ECC.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added -pedantic to CCFLAGS to make code cleaner.
+
+* config/config-sh
+
+	1. Changed &- to /dev/null because of a weird interaction with
+	   g++ -pedantic.
+
+* conf_var.c
+
+	1. Performed the following substitution for configuration
+	   variable names for feature FNP:
+
+		s/(.+)Extension/$1File/
+
+* do_file.c
+
+	1. Changed extension-based processing to pattern-based for
+	   feature FNP.
+
+	2. Added "true" argument to call of index_words() for bug fix
+	   ECC.
+
+* entities.c
+
+	1. Added "apos", "Scaron", "scaron", and "Yuml" for support of
+	   XHTML.
+
+* ExcludeExtension.h
+* IncludeExtension.c
+* IncludeExtension.h
+* FilterExtension.c
+* FilterExtension.h
+* ExcludeFile.h
+* IncludeFile.c
+* IncludeFile.h
+* FilterFile.c
+* FilterFile.h
+
+	1. Replaced *Extension files with *File equivalents for feature
+	   FNP.
+
+* exit_codes.h
+
+	1. Added Exit_End_Enum_Marker to make compile with the
+	   -pedantic option of g++.
+
+* extract.c
+
+	1. Same as conf_var.c item #1.
+
+	2. Performed following substitution for feature FNP:
+
+		s/extension/pattern/
+
+	3. Made usage() take an ostream& argument just so it parallels
+	   the way it's done in index.c.
+
+* GNUmakefile
+
+	1. Added/removed source files for feature FNP.
+
+	2. Added ".PHONY: all" so a "make -t" doesn't "touch all".
+
+* file_info.c
+
+	1. In file_info::out(), eliminated unused num_words variable.
+
+* html.h
+* index_segment.h
+* option_stream.h
+* token.h
+
+	1. Removed comma and end of enum list to make compile with the
+	   -pedantic option of g++.
+
+* html.c
+
+	1. Added mention of XHTML in comments.
+
+* index.c
+
+	1. Same as conf_var.c item #1.
+
+	2. Same as extract.c item #2.
+
+	3. In main() for the 'C', 'm', and 'M' command-line options
+	   cases, removed unnecessary strdup() since the variables are
+	   derived from conf_set that is-a string_set that uses
+	   std::string so the strings are copied anyway.
+
+	4. In load_old_index(), removed unnecessary strdup() for
+	   similar reason to item 3.
+
+	5. In index_word(), performed following substitution:
+
+		s/if ( exclude_class_count )/if ( exclude_class_count > 0 )/
+
+	   just because it seemed "more correct."
+
+	6. Corresponding change as index.h item #1.
+
+	7. In index_words(), removed "static bool new_file" variable
+	   for bug fix ECC.
+
+	8. In index_words(), added:
+
+		if ( is_new_file )
+			exclude_class_count = 0;
+
+	   for bug fix ECC.
+
+	9. In index_words(), removed last "new_file = true;" for bug
+	   fix ECC.
+
+* index.h
+
+	1. Added "is_new_file" argument for bug fix ECC.
+
+* man/man1/index.1
+* man/man1/extract.1
+* man/man4/swish++.conf.4
+
+	1. Modified description for feature FNP.
+
+* my_set.h
+
+	1. Performed following substitition:
+
+		s/key_type/T const &/
+
+	   to make it compile with the -pedantic option of g++.
+
+	2. Added specialization of my_set< char const* > (see the
+	   comment for why).
+
+* pattern_map.h
+
+	1. Added this file for feature FNP.
+
+* README
+
+	1. Changed "extension" to "patterns" for feature FNP.
+
+* stop_words.c
+
+	1. Added "mustn't" to the list of stop-words.
+
+* swish++.conf
+
+	1. Same as conf_var.c item #1.
+
+* version.h
+
+	1. Updated version to "4.5".
+
+* word_util.c
+
+	1. Added #include <iostream> if DEBUG_is_ok_word is defined.
+
+
+*******************************************************************************
 4.4
 *******************************************************************************
 
