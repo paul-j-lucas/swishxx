@@ -53,11 +53,15 @@ protected:
 		map_ref()[ name_ ] = this;
 	}
 
-	virtual void		parse_value( char *line ) = 0;
 	void			parse_const_value( char const *line );
+	virtual void		parse_value( char *line ) = 0;
 
-	static ostream&		error()	{ return msg( "error" ); }
-	static ostream&		warn()	{ return msg( "warning" ); }
+	static std::ostream&	error( std::ostream &o ) {
+					return msg( cerr, "error" );
+				}
+	static std::ostream&	warning() {
+					return msg( cerr, "warning" );
+				}
 private:
 	// Note that the declaration of std::map has a default "Compare"
 	// template parameter of "less< key_type >" and, since we've included
@@ -70,7 +74,7 @@ private:
 	static int		current_config_file_line_no_;
 
 	static map_type&	map_ref();
-	static ostream&		msg( char const *kind );
+	static std::ostream&	msg( std::ostream&, char const *label );
 };
 
 //*****************************************************************************
