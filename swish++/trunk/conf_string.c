@@ -70,7 +70,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( !line || !*line ) {
-		error()	<< '"' << name() << "\" has no value" << endl;
+		cerr << error << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
 	value_ = ::strdup( line );

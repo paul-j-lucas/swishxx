@@ -76,7 +76,7 @@ extern char const*	me;
 		return *this;
 	}
 
-	error()	<< '"' << name() << "\" value \""
+	cerr	<< error << '"' << name() << "\" value \""
 		<< new_value << "\" not in range [" << min_ << '-';
 
 	if ( max_ == INT_MAX )
@@ -107,7 +107,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( !line || !*line ) {
-		error() << '"' << name() << "\" has no value" << endl;
+		cerr << error << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
 	if ( !::strcmp( to_lower( line ), "infinity" ) ) {
@@ -120,6 +120,6 @@ extern char const*	me;
 		return;
 	}
 
-	error()	<< '"' << name() << "\" has a non-numeric value" << endl;
+	cerr << error << '"' << name() << "\" has a non-numeric value" << endl;
 	::exit( Exit_Config_File );
 }
