@@ -29,7 +29,7 @@
 #include <cstring>
 #include <iostream>
 #include <string>
-#include <ctime>			/* needed by sys/resource.h */
+#include <time.h>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/types.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>
@@ -321,8 +321,9 @@ inline bool	is_xdigit( char c ) {
 
 inline char	to_lower( char c ) { return tolower( c ); }
 extern char*	to_lower( char const* );
-extern char*	to_lower_r( char const* );
 extern char*	to_lower( char const *begin, char const *end );
+extern char*	to_lower( char *buf, char const* );
+extern char*	to_lower_r( char const* );
 extern char*	to_lower_r( char const *begin, char const *end );
 
 #define	FOR_EACH(T,C,I) \
