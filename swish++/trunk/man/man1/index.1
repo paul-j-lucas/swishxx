@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "November 16, 2002" "SWISH++"
+.TH \f3index\f1 1 "November 29, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -857,6 +857,18 @@ Same as 3 but also prints all files that are not indexed and why.
 Print the version number of
 .B SWISH++
 to standard output and exit.
+.TP
+.BI \-W n
+.br
+.ns
+.TP
+.BI \-\-word-threshold= n
+The word count past which partial indicies are generated and merged
+since all the words are too big to fit into memory at the same time.
+If you index and your machine begins to swap like mad,
+lower this value.
+Only the super-user can specify a value larger
+than the compiled-in default.
 .SH CONFIGURATION FILE
 The following variables can be set in a configuration file.
 Variables and command-line options can be mixed,
@@ -980,6 +992,12 @@ Same as
 .B \-p
 or
 .B \-\-word-percent
+.TP
+.B WordThreshold
+Same as
+.B \-W
+or
+.B \-\-word-threshold
 .PD
 .RE
 .SH EXAMPLES
@@ -1090,6 +1108,9 @@ Unable to write index file.
 .TP
 12
 Unable to write temporary file.
+.TP
+13
+Root-only operation attempted.
 .TP
 30
 Unable to read stop-word file.
