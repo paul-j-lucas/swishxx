@@ -48,6 +48,8 @@ public:
 	CONF_STRING_ASSIGN_OPS( SocketFile )
 };
 
+extern SocketFile socket_file_name;
+
 #endif	/* SocketFile_H */
 
 #endif	/* SEARCH_DAEMON */
