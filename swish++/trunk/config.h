@@ -159,6 +159,11 @@ char const	ConfigFile_Default[]		= "swish++.conf";
 //		Default name of the configuration file; this can be overridden
 //		on the command line.
 
+char const	ExtractExtension_Default[]	= "txt";
+//		Default extension to append to filenames during extraction.
+//		This can be overridden either in a config. file or on the
+//		command line.
+
 int const	FilesGrow_Default		= 100;
 //		Default number of files to grow reserved space for when
 //		incrementally indexing.  This can be overridden either in a
