@@ -20,9 +20,9 @@
 */
 
 // standard
-#include <cstdlib>				/* for abort(3C), system(3S) */
+#include <cstdlib>			/* for abort(3), system(3) */
 #include <cstring>
-#include <unistd.h>				/* for sleep(3C) */
+#include <unistd.h>			/* for sleep(3) */
 
 // local
 #include "config.h"
@@ -96,11 +96,11 @@ using namespace std;
 	// For this kind of string manipulation, the C++ string class is much
 	// easier to use than the C str*() functions.
 	//
-	string	ext, no_ext;
-	int	target_pos = -1;
+	string ext, no_ext;
+	string::size_type target_pos = string::npos;
 
 	command_ = command_template_;
-	register int pos;
+	register string::size_type pos;
 	while ( ( pos = command_.find_first_of( "%@" ) ) != string::npos ) {
 		if ( pos + 1 >= command_.length() )
 			break;
@@ -130,13 +130,14 @@ using namespace std;
 		}
 	}
 
-	if ( target_pos == -1 ) {
+	if ( target_pos == string::npos ) {
 		//
 		// This should never happen: the command template should have
 		// been checked by FilterExtension::parse_line() for the
 		// existence of an @.  If this happens, the programmer goofed.
 		//
-		cerr << "filter::substitute(): target_post == -1" << endl;
+		cerr	<< "filter::substitute(): target_pos == string::npos"
+			<< endl;
 		::abort();
 	}
 
