@@ -54,6 +54,8 @@ enum {
 	Exit_No_Create_Thread	= 59,
 	Exit_No_Detach_Thread	= 60,
 #endif
+
+	Exit_End_Enum_Marker
 };
 
 #endif	/* exit_codes_H */
