@@ -53,7 +53,7 @@
 //*****************************************************************************
 {
 public:
-	HTML_indexer() : indexer( "HTML" ) { }
+	HTML_indexer();
 
 	virtual char const*	find_title( PJL::mmap_file const& ) const;
 	virtual void		index_words(
@@ -78,7 +78,11 @@ private:
 		stack_type;
 	static stack_type element_stack_;
 
-	void	parse_html_tag( encoded_char_range::const_iterator& );
+	virtual bool	claims_option( PJL::option_stream::option const& );
+	void		parse_html_tag( encoded_char_range::const_iterator& );
+	virtual PJL::option_stream::spec const* option_spec() const;
+	virtual void	post_options();
+	virtual void	usage( std::ostream& ) const;
 };
 
 #endif	/* mod_html_H */
