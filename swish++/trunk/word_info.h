@@ -27,6 +27,9 @@
 #include <map>
 #include <set>
 #include <string>
+#ifdef	FEATURE_word_pos
+#include <vector>
+#endif
 
 // local
 #include "fake_ansi.h"			/* for explicit, std */
@@ -41,34 +44,37 @@
 //
 // DESCRIPTION
 //
-//	An instance of this class stores information for a word in the index
-//	being generated.
+//	A word_info stores information for a word in the index being generated.
 //
 //*****************************************************************************
 {
 public:
 	struct file {
+		//
+		// Every word occurs in one or more files.  An instance of this
+		// class stores information for each file a given word occurs
+		// in.
+		//
 		typedef PJL::my_set< short > meta_set;
-
 		meta_set	meta_ids_;	// meta name(s) associated with
+		bool		has_meta_id( int ) const;
+		void		write_meta_ids( std::ostream& ) const;
+
+#ifdef	FEATURE_word_pos
+		typedef std::vector< short > pos_delta_list;
+		pos_delta_list	pos_deltas_;
+		void		add_word_pos( int );
+		void		write_word_pos( std::ostream& ) const;
+#endif
 		int		index_;		// occurs in i-th file
 		int		occurrences_;	// in this file only
 		int		rank_;
 
-		file() { }
-		explicit file( int index ) :
-			index_( index ), occurrences_( 1 ), rank_( 0 ) { }
-		file( int index, int meta_id ) :
-			index_( index ), occurrences_( 1 ), rank_( 0 )
-		{
-			if ( meta_id != No_Meta_ID )
-				meta_ids_.insert( meta_id );
-		}
+		file();
+		explicit file( int index );
 
-		// default "file( file const& )" is ok
-		// default "file& operator=( file const& )" is ok
-
-		void	write_meta_ids( std::ostream& ) const;
+		// default copy constructor is OK
+		// default assignment operator is OK
 	};
 
 	typedef std::list< file > file_list;
@@ -81,4 +87,24 @@ public:
 
 typedef std::map< std::string, word_info > word_map;
 
+////////// inlines ////////////////////////////////////////////////////////////
+
+#ifdef	FEATURE_word_pos
+inline void word_info::file::add_word_pos( int absolute_pos ) {
+	if ( pos_deltas_.empty() )
+		pos_deltas_.push_back( absolute_pos );
+	else {
+		// Store deltas rather than absolute positions because integers
+		// are stored in a variable-length binary representation in the
+		// generated index file and smaller integers take less bytes.
+		// 
+		pos_deltas_.push_back( absolute_pos - pos_deltas_.back() );
+	}
+}
+#endif	/* FEATURE_word_pos */
+
+inline bool word_info::file::has_meta_id( int meta_id ) const {
+	return meta_id == No_Meta_ID || meta_ids_.contains( meta_id );
+}
 #endif	/* word_info_H */
+/* vim:set noet sw=8 ts=8: */
