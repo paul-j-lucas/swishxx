@@ -476,8 +476,16 @@ void			write_word_index( ostream&, off_t* );
 	if ( incremental ) {
 		load_old_index( index_file_name );
 		index_file_name += ".new";
-	} else
+	} else {
 		stop_words = new stop_word_set( stop_word_file_name );
+		//
+		// In the case where several files (and no directories) are
+		// indexed, there would be no directory; however, every file
+		// must be in a directory, so add the directory "." here and
+		// now to the list of directories.
+		//
+		check_add_directory( "." );
+	}
 
 	ofstream out( index_file_name, ios::out | ios::binary );
 	if ( !out ) {
@@ -638,17 +646,6 @@ void			write_word_index( ostream&, off_t* );
 
 	stop_words = new stop_word_set( index_file );
 
-	index_segment old_files( index_file, index_segment::file_index );
-	if ( files_reserve <= old_files.size() ) {
-		//
-		// Add the FilesGrow configuration variable to the FilesReserve
-		// configuration variable to allow room for growth.
-		//
-		files_reserve = files_grow( old_files.size() );
-	}
-	FOR_EACH( index_segment, old_files, fi )
-		file_info::parse( *fi );
-
 	index_segment old_dirs( index_file, index_segment::dir_index );
 	if ( directories_reserve <= old_dirs.size() ) {
 		//
@@ -660,6 +657,17 @@ void			write_word_index( ostream&, off_t* );
 	}
 	FOR_EACH( index_segment, old_dirs, di )
 		dir_list.push_back( *di );
+
+	index_segment old_files( index_file, index_segment::file_index );
+	if ( files_reserve <= old_files.size() ) {
+		//
+		// Add the FilesGrow configuration variable to the FilesReserve
+		// configuration variable to allow room for growth.
+		//
+		files_reserve = files_grow( old_files.size() );
+	}
+	FOR_EACH( index_segment, old_files, fi )
+		file_info::parse( *fi, old_dirs );
 
 	index_segment old_meta_names(
 		index_file, index_segment::meta_name_index
