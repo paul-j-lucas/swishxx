@@ -9,7 +9,7 @@ SWISH++ Changes
 NEW FEATURES
 ------------
 
-* Added XML schema informaion in seach results XML output.
+* Added XML schema information in seach results XML output.
 
   (This feature shall be known as feature XMLS.)
 
