@@ -19,91 +19,111 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// standard
+#include <cstring>
+
 // local
+#include "bcd.h"
 #include "config.h"
-#include "fake_ansi.h"				/* for std, *_CAST */
+#include "fake_ansi.h"			/* for std, *_CAST */
 #include "file_info.h"
 #include "FilesReserve.h"
 
-file_info::set_type	file_info::set_;
-extern FilesReserve	files_reserve;
+file_info::list_type		file_info::list_;
+file_info::name_set_type	file_info::name_set_;
+
+FilesReserve			files_reserve;
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
 	file_info::file_info(
-		char const *file_name, size_t size, char const *title
+		char const *file_name, size_t file_size, char const *title,
+		int num_words
 	)
 //
 // DESCRIPTION
 //
-//	Construct a file_info.  This is out-of-line since it's doubtful that a
-//	compiler will inline the initialization of all the data members.
+//	Construct a file_info.  If a title is given, use it; otherwise set the
+//	title to be (just) the file name (not the path name).
+//
+//	Additionally record its address in a list so the entire list can be
+//	iterated over later in the order encountered.  The first time through,
+//	reserve files_reserve slots for files.  If exceeded, the vector will
+//	automatically grow, but with a slight performance penalty.
 //
 //*****************************************************************************
 :
-	file_name_( file_name ), title_( title ), size_( size ), num_words_( 0 )
+	file_name_( ::strdup( file_name ) ),
+	title_( title ? ::strdup( title ) :
+		//
+		// Note that in the cases below, title_ will end up pointing
+		// within file_name_, i.e., they will share storage.
+		//
+		(title = ::strrchr( file_name_, '/' )) ? title + 1 : file_name_
+	),
+	size_( file_size ), num_words_( num_words )
 {
-	// do nothing else
+	if ( list_.empty() )
+		list_.reserve( files_reserve );
+	list_.push_back( this );
+	name_set_.insert( file_name_ );
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	void* file_info::operator new( size_t size )
+	/* static */ ostream& file_info::out( ostream &o, char const *p )
 //
 // DESCRIPTION
 //
-//	Allocate the memory as usual for an instance of file_info, but also
-//	record its address so the entire collection can be iterated over later.
-//	Also, the first time through, reserve files_reserve slots for files.
-//	If exceeded, the vector will automatically grow, but with a slight
-//	performance penalty.
-//
-// PARAMETERS
-//
-//	size	The size of the object to be allocated passed to us by the
-//		implementation.
-//
-// RETURN VALUE
-//
-//	The pointer to the raw memory for the object to be constructed in.
-//
-//*****************************************************************************
-{
-	if ( set_.empty() )
-		set_.reserve( files_reserve );
-	void *const p = std::operator new( size );
-	set_.push_back( STATIC_CAST( file_info* )( p ) );
-	return p;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	std::ostream& operator<<( std::ostream &o, file_info const &f )
-//
-// DESCRIPTION
-//
-//	Write the representation for a file_info to the given stream.
+//	Parse a file_info from an index file and write it to an ostream.
 //
 // PARAMETERS
 //
 //	o	The ostream to write to.
 //
+//	p	A pointer to the first character containing a file_info inside
+//		an index file.
+//
 // RETURN VALUE
 //
-//	Returns the given ostream as is standard practice.
-//
-// SEE ALSO
-//
-//	Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//	Addison-Wesley, Reading, MA, 1997.  p. 612.
+//	The passed-in ostream.
 //
 //*****************************************************************************
 {
-	return o << f.file_name_ << ' ' << f.size_ << ' ' << f.title_;
+	unsigned char const *u = REINTERPRET_CAST(unsigned char const*)( p );
+	o << u;
+	while ( *u++ ) ;				// skip past filename
+	off_t const size = parse_bcd( u );
+	int const num_words = parse_bcd( u );
+	return o << ' ' << size << ' ' << u;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */ file_info* file_info::parse( char const *p )
+//
+// DESCRIPTION
+//
+//	Parse a file_info from an index file to reconstitute an instance.
+//
+// PARAMETERS
+//
+//	p	A pointer to the first character containing a file_info inside
+//		an index file.
+//
+//*****************************************************************************
+{
+	unsigned char const *u = REINTERPRET_CAST(unsigned char const*)( p );
+	while ( *u++ ) ;				// skip past filename
+	off_t const size = parse_bcd( u );
+	int const num_words = parse_bcd( u );
+	return new file_info(
+		p, size, REINTERPRET_CAST(char const*)( u ), num_words
+	);
 }
