@@ -178,6 +178,10 @@ int conf_var::current_config_file_line_no_ = 0;
 {
 	o << me;
 	if ( current_config_file_line_no_ ) {
+		//
+		// This is set only by parse_line() during the parsing of a
+		// configuration file.
+		//
 		o << ": config file line " << current_config_file_line_no_;
 		current_config_file_line_no_ = 0;
 	}
@@ -220,8 +224,14 @@ int conf_var::current_config_file_line_no_ = 0;
 {
 	file_vector conf_file( file_name );
 	if ( !conf_file ) {
-		if ( !::strcmp( file_name, ConfigFile_Default ) )
+		if ( !::strcmp( file_name, ConfigFile_Default ) ) {
+			//
+			// The configuration file couldn't be opened; however,
+			// the file name is the default, so assume that none is
+			// being used and simply return.
+			//
 			return;
+		}
 		cerr	<< "could not read configuration from \""
 			<< file_name << '"' << endl;
 		::exit( Exit_Config_File );
@@ -231,8 +241,14 @@ int conf_var::current_config_file_line_no_ = 0;
 	register file_vector::const_iterator c = conf_file.begin(), nl = c;
 
 	while ( c != conf_file.end() && nl != conf_file.end() ) {
-		if ( !( nl = ::strchr( c, '\n' ) ) )
+		if ( !( nl = ::strchr( c, '\n' ) ) ) {
+			//
+			// We can't find a "line," i.e., a sequence of
+			// characters terminated by a newline, so stop.
+			//
 			break;
+		}
+
 		++line_no;
 		//
 		// See if the line is entirely whitespace optionally followed
