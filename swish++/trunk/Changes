@@ -21,6 +21,9 @@ BUG FIXES
 
   (This bug fix shall be known as bug fix MN2.)
 
+* The installation and removal of SYSV start/stop script symlinks was totally
+  wrong.
+
 
 CHANGES, file-by-file
 ---------------------
