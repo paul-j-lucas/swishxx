@@ -43,6 +43,47 @@
 {
 public:
 	operator char const*() const	{ return value_.c_str(); }
+
+	friend bool
+	operator==( conf<std::string> const &i, conf<std::string> const &j ) {
+		return i.value_ == j.value_;
+	}
+	friend bool
+	operator!=( conf<std::string> const &i, conf<std::string> const &j ) {
+		return !( i == j );
+	}
+
+	friend bool
+	operator==( conf<std::string> const &i, std::string const &s ) {
+		return i.value_ == s;
+	}
+	friend bool
+	operator!=( conf<std::string> const &i, std::string const &s ) {
+		return !( i == s );
+	}
+
+	friend bool
+	operator==( std::string const &s, conf<std::string> const &i ) {
+		return i == s;
+	}
+	friend bool
+	operator!=( std::string const &s, conf<std::string> const &i ) {
+		return i != s;
+	}
+
+	friend bool operator==( conf<std::string> const &i, char const *s ) {
+		return i.value_ == s;
+	}
+	friend bool operator!=( conf<std::string> const &i, char const *s ) {
+		return !( i == s );
+	}
+
+	friend bool operator==( char const *s, conf<std::string> const &i ) {
+		return i == s;
+	}
+	friend bool operator!=( char const *s, conf<std::string> const &i ) {
+		return i != s;
+	}
 protected:
 	conf( char const *name, char const *default_value = "" );
 	CONF_VAR_ASSIGN_OPS( conf<std::string> )
