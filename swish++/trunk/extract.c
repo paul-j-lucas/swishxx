@@ -437,11 +437,11 @@ ostream&		usage( ostream& = cerr );
 //
 //*****************************************************************************
 {
-	char buf[ Word_Hard_Max_Size + 1 ];
-	register char *word;
-	int len;
-	int num_words = 0;
-	bool in_word = false;
+	char	word[ Word_Hard_Max_Size + 1 ];
+	int	len;
+	int	num_words = 0;
+	bool	in_word = false;
+
 	in_postscript = false;
 
 	while ( c != end ) {
@@ -452,7 +452,6 @@ ostream&		usage( ostream& = cerr );
 		if ( is_word_char( ch ) || ch == '%' ) {
 			if ( !in_word ) {
 				// start a new word
-				word = buf;
 				word[ 0 ] = ch;
 				len = 1;
 				in_word = true;
