@@ -17,10 +17,9 @@ SWISH++ has the following software as prerequisites:
    using g++ or egcs, then you also need (the matching version of) libstd++.
 
    If you are not using g++, then you need to have a port of STL that works
-   with your compiler.  Ports for various platforms are available from
-   ObjectSpace, Inc. having a web page at:
+   with your compiler.  Ports for various platforms are available from:
 
-	http://www.objectspace.com/
+	http://www.stlport.org/
 
    For more about STL in general, see:
 
@@ -54,10 +53,10 @@ Building SWISH++ for Unix
 
 2. Go to the "config" directory and edit the "config.mk" file as necessary.
    This file controls how the software is compiled.  Among other things, decide
-   which indexing modules (MOD_*) you want compiled in.  In particular, decide
-   whether you need MOD_MAIL for indexing mail and news files.  If not, you
-   shouldn't compile it in since it requires more processing per character and
-   will be slower for all files (not just mail and news files).
+   which indexing modules (MOD_LIST) you want compiled in.  In particular,
+   decide whether you need "mail" for indexing mail and news files.  If not,
+   you shouldn't compile it in since it requires more processing per character
+   and will be slower for all files (not just mail and news files).
 
 3. Go back to the top-level directory and type "make".  Note: lines of the
    form:
