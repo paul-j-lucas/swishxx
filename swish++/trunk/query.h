@@ -35,7 +35,8 @@
 
 typedef	std::map< int, int > search_results_type;
 //
-//	A search_results_type contains a set of search results.
+//	A search_results_type contains a set of search results where the key
+//	int is a file index and the value int is that file's rank.
 
 typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
 	find_result_type;
@@ -43,9 +44,11 @@ typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
 //	A find_result_type is-a pair of iterators marking the beginning and end
 //	of a range over which a given word matches.
 
+typedef	std::set< std::string > stop_word_set;
+
 bool	parse_query(
-		token_stream&, search_results_type&, std::set< std::string >&,
-		bool&, int = No_Meta_ID
+		token_stream&, search_results_type&, stop_word_set&, bool&,
+		int = No_Meta_ID
 	);
 
 #endif	/* query_H */
