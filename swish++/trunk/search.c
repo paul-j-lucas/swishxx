@@ -133,18 +133,19 @@ void	usage();
 
 	/////////// Process command-line options //////////////////////////////
 
-	bool dump_entire_index = false;
-	bool dump_meta_names = false;
-	bool dump_stop_words = false;
-	bool dump_word_index = false;
-	int dump_window_size = 0;
-	int dump_match = 0;
-	char const *index_file_name = Index_Filename_Default;
-	int max_results = Results_Max_Default;
-	int skip_results = 0;
+	bool		dump_entire_index = false;
+	int		dump_match = 0;
+	bool		dump_meta_names = false;
+	bool		dump_stop_words = false;
+	int		dump_window_size = 0;
+	bool		dump_word_index = false;
+	char const*	index_file_name = Index_Filename_Default;
+	int		max_results = Results_Max_Default;
+	bool		print_result_count_only = false;
+	int		skip_results = 0;
 
 	::opterr = 1;
-	char const opts[] = "dDi:m:Mr:sSVw:";
+	char const opts[] = "dDi:m:Mr:RsSVw:";
 	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
 		switch ( opt ) {
 
@@ -172,6 +173,10 @@ void	usage();
 				skip_results = ::atoi( ::optarg );
 				if ( skip_results < 0 )
 					skip_results = 0;
+				break;
+
+			case 'R': // Print result-count only.
+				print_result_count_only = true;
 				break;
 
 			case 's': // Stem words.
@@ -285,6 +290,10 @@ void	usage();
 			cout << ' ' << *word;
 		cout << '\n';
 	}
+
+	cout << "# results: " << results.size() << '\n';
+	if ( print_result_count_only )
+		return 0;
 
 	if ( skip_results >= results.size() )
 		return 0;
@@ -843,6 +852,7 @@ void usage() {
 	"  -i index_file   : Name of index file to use [default: " << Index_Filename_Default << "]\n"
 	"  -m max_results  : Maximum number of results [default: " << Results_Max_Default << "]\n"
 	"  -M              : Dump meta-name index to standard out and exit\n"
+	"  -R              : Print result-count only [default: no]\n"
 	"  -r skip_results : Number of initial results to skip [default: 0]\n"
 	"  -s              : Stem words prior to search [default: no]\n"
 	"  -S              : Dump stop-word index to standard out and exit\n"
