@@ -40,6 +40,10 @@
 //	HTML 4.0 Specification, World Wide Web Consortium, April 1998.
 //		http://www.w3.org/TR/REC-html40/index/elements.html
 //
+//	Marcin Sawicki, et al.  "Ruby Annotation," World Wide Web Consortium,
+//	April 6, 2001.
+//		http://www.w3.org/TR/2001/PR-ruby-20010406/
+//
 //	Netscape Communications Corporation.  "HTML Tag Reference," January
 //	1998.
 //		http://developer.netscape.com/docs/manuals/htmlguid/index.htm
@@ -53,9 +57,9 @@
 	// below where each "row" has varying length.  It's kind of a hack, but
 	// it works.
 	//
-	static cpcc F = reinterpret_cast<char const*>( element::forbidden );
-	static cpcc O = reinterpret_cast<char const*>( element::optional  );
-	static cpcc R = reinterpret_cast<char const*>( element::required  );
+	cpcc F = reinterpret_cast< char const* >( element::forbidden );
+	cpcc O = reinterpret_cast< char const* >( element::optional  );
+	cpcc R = reinterpret_cast< char const* >( element::required  );
 
 	//
 	// Elements that have forbidden end tags (obviously) have no tags
@@ -213,6 +217,14 @@
 		"plaintext",	F,				// deprecated
 		"pre",		R,	"/pre",
 		"q",		R,	"/q",
+
+		"ruby",		R,	"/ruby",		// ruby elements
+		"rb",		R,	"/rb",
+		"rbc",		R,	"/rbc",
+		"rp",		R,	"/rp",
+		"rt",		R,	"/rt",
+		"rtc",		R,	"/rtc",
+
 		"s",		R,	"/s",			// deprecated
 		"samp",		R,	"/samp",
 		"script",	R,	"/script",
