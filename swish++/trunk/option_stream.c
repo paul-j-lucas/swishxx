@@ -30,6 +30,7 @@
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
+namespace PJL {
 #endif
 
 #define	ERROR	os.err_ << os.argv_[0] << ": error: option "
@@ -350,3 +351,7 @@ int main( int argc, char *argv[] ) {
 }
 
 #endif	/* TEST_OPTION_STREAM */
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif

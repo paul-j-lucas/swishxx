@@ -30,7 +30,7 @@
 //
 // SYNOPSIS
 //
-	class conf_set : public conf_var, public string_set
+	class conf_set : public conf_var, public PJL::string_set
 //
 // DESCRIPTION
 //

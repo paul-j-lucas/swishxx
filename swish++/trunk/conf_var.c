@@ -35,6 +35,7 @@
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
+using namespace PJL;
 #endif
 
 extern char const	*me;

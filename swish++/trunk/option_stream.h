@@ -32,6 +32,12 @@ extern char const* dtoa( double );
 #include "util.h"
 #endif
 
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#else
+#define	PJL /* nothing */
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -179,5 +185,9 @@ private:
 	char*		next_c_;
 	bool		end_;
 };
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* option_stream_H */
