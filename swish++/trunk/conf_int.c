@@ -92,7 +92,7 @@ extern char const*	me;
 	else
 		cerr << max_;
 
-	cerr << ']' << endl;
+	cerr << "]\n";
 	::exit( Exit_Config_File );
 }
 
@@ -115,7 +115,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( !line || !*line ) {
-		error() << '"' << name() << "\" has no value" << endl;
+		error() << '"' << name() << "\" has no value\n";
 		::exit( Exit_Config_File );
 	}
 	auto_vec< char > const lower( to_lower_r( line ) );
@@ -129,6 +129,6 @@ extern char const*	me;
 		return;
 	}
 
-	error() << '"' << name() << "\" has a non-numeric value" << endl;
+	error() << '"' << name() << "\" has a non-numeric value\n";
 	::exit( Exit_Config_File );
 }
