@@ -84,7 +84,7 @@ using namespace std;
 // DESCRIPTION
 //
 //	Substitute the filename (or parts thereof) into our command template
-//	wherever % or @ occurs.
+//	wherever % occurs.
 //
 // PARAMETERS
 //
@@ -143,6 +143,8 @@ using namespace std;
 			// caught by FilterFile::parse_value().
 			//
 			target_pos = pos;
+			command_.erase( pos, 1 );
+			continue;
 		}
 
 		//
@@ -152,12 +154,14 @@ using namespace std;
 
 			case 'b':	// basename of filename
 				command_.replace( pos, 2, base_name );
+				pos += ::strlen( base_name );
 				break;
 
 			case 'B': {	// basename minus last extension
 				string no_ext = base_name;
 				no_ext.erase( no_ext.rfind( '.' ) );
 				command_.replace( pos, 2, no_ext );
+				pos += no_ext.length();
 				break;
 			}
 
@@ -165,41 +169,34 @@ using namespace std;
 				string ext = file_name;
 				ext.erase( 0, ext.rfind( '.' ) );
 				command_.replace( pos, 2, ext );
-				continue;
+				pos += ext.length();
+				break;
+			}
+
+			case 'E': {	// second-to-last filename extension
+				string ext = file_name;
+				string::size_type const x = ext.rfind( '.' );
+				if ( x != string::npos ) {
+					ext.erase( x );
+					ext.erase( 0, ext.rfind( '.' ) );
+					command_.replace( pos, 2, ext );
+					pos += ext.length();
+				}
+				break;
 			}
 
 			case 'f':	// entire filename
 				command_.replace( pos, 2, file_name );
-				continue;
+				pos += ::strlen( file_name );
+				break;
 
 			case 'F': {	// filename minus last extension
 				string no_ext = file_name;
 				no_ext.erase( no_ext.rfind( '.' ) );
 				command_.replace( pos, 2, no_ext );
-				continue;
+				pos += no_ext.length();
+				break;
 			}
-		}
-
-		if ( pos == target_pos ) {
-			//
-			// We get here only for the 'b' or 'B' substitution
-			// cases.  In those cases, if the file name is the
-			// target, we have to "back up" target_pos to be the
-			// beginning of the entire file name.  For example,
-			// given this filter:
-			//
-			//	FilterFile *.gz gunzip -c %f > /tmp/@B
-			//	                               |<---|
-			//
-			// target_pos, which is at the position of the '@',
-			// needs to be backed up to the position of the first
-			// '/' as shown above, i.e., one character past a
-			// delimiter (or 0 if no delimiter is found).
-			//
-			string::size_type const pos = command_.find_last_of(
-				file_name_delim_chars, target_pos
-			);
-			target_pos = ( pos != string::npos ) ? pos + 1 : 0;
 		}
 	}
 
