@@ -1,0 +1,105 @@
+#! /bin/sh
+##
+#	SWISH++
+#	config-sh -- Configuration script
+#
+#	Copyright (C) 1998  Paul J. Lucas
+#
+#	This program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your option) any later version.
+# 
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+# 
+#	You should have received a copy of the GNU General Public License
+#	along with this program; if not, write to the Free Software
+#	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##
+
+##
+#	This code is Bourne Shell for maximal portability.
+##
+
+########### You shouldn't have to change anything below this line. ############
+
+ME=$0; ME=`expr $ME : '.*/\(.*\)'`
+USAGE="usage: $ME target compiler [ compiler-options ]"
+N=2
+
+[ $# -lt $N ] && { echo $USAGE >&2; exit 1; }
+
+TARGET=$1
+CC=$2
+shift $N
+CFLAGS="$* -c"
+
+echo
+echo "$ME: checking C++ compiler $CC"
+echo
+
+trap "rm -f *.o $TARGET; exit 1" 0 1 2 15
+
+cat > $TARGET <<!
+/*
+**	SWISH++
+**	platform.h
+**
+**	This program is free software; you can redistribute it and/or modify
+**	it under the terms of the GNU General Public License as published by
+**	the Free Software Foundation; either version 2 of the License, or
+**	(at your option) any later version.
+** 
+**	This program is distributed in the hope that it will be useful,
+**	but WITHOUT ANY WARRANTY; without even the implied warranty of
+**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**	GNU General Public License for more details.
+** 
+**	You should have received a copy of the GNU General Public License
+**	along with this program; if not, write to the Free Software
+**	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
+
+/*
+**	Note: This configuration file was automatically generated for the C++
+**	compiler $CC on `date`.
+*/
+
+#ifndef platform_H
+#define platform_H
+
+#ifdef	WIN32
+#define	PJL_NO_SYMBOLIC_LINKS
+#endif
+
+!
+
+for file in src/*.c
+do
+	echo "$ME: checking for \"`grep TEST $file | cut -f3-`\"..."
+	$CC $CFLAGS $file >&- 2>&- && continue
+
+	define=`grep DEFINE $file | cut -f3-`
+	if [ -n "$define" ]
+	then echo "#define $define" >> $TARGET; continue
+	fi
+
+	echo '----------------------------------------------------------------'
+	grep ERROR $file | cut -f3- | while read error
+	do echo $error
+	done
+	echo '----------------------------------------------------------------'
+	exit 1
+done
+
+echo
+
+cat >> $TARGET <<!
+
+#endif	/* platform_H */
+!
+
+trap "x=$?; rm -f *.o; exit $x" 0 1 2 15
