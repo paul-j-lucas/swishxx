@@ -22,6 +22,9 @@
 #ifndef	option_stream_H
 #define	option_stream_H
 
+// standard
+#include <iostream>
+
 #if 0
 extern char const* dtoa( double );
 
@@ -119,8 +122,7 @@ public:
 #endif
 	};
 
-	option_stream( int argc, char *argv[], spec const[] );
-	option_stream( int argc, char *argv[], spec const[], ostream &err_to );
+	option_stream( int argc, char *argv[], spec const[], ostream& = cerr );
 
 	int	shift() const		{ return index_; }
 	operator bool() const 		{ return !end_; }
@@ -136,8 +138,8 @@ public:
 		// of its argument.
 		//
 	public:
-		option( char c = '\0', char *arg = 0 ) :
-			c_( c ), arg_( arg ), am_copy_( false ) { }
+		option( char c = '\0', char *a = 0 ) :
+			c_( c ), arg_( a ), am_copy_( false ) { }
 		option( option const &o ) {
 			if ( &o != this ) copy( o );
 		}

@@ -20,7 +20,7 @@
 */
 
 // standard
-#include <algorithm>
+#include <algorithm>			/* for copy() */
 #include <cstring>
 #include <iostream>
 
@@ -56,34 +56,6 @@
 // SYNOPSIS
 //
 	option_stream::option_stream(
-		int argc, char *argv[], spec const specs[]
-	)
-//
-// DESCRIPTION
-//
-//	Construct (initialize) an option_stream.
-//
-// PARAMETERS
-//
-//	argc	The number of arguments.
-//
-//	argv	A vector of the arguments; argv[argc] is null.
-//
-//	specs	A vector of option specifications, i.e., the options that are
-//		allowed and their argument parameters.
-//
-//*****************************************************************************
-	: argc_( argc ), argv_( argv ), specs_( specs ), err_( cerr ),
-	  end_( false ), index_( 0 ), next_c_( 0 )
-{
-	// do nothing else
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	option_stream::option_stream(
 		int argc, char *argv[], spec const specs[], ostream &err
 	)
 //
@@ -104,7 +76,7 @@
 //
 //*****************************************************************************
 	: argc_( argc ), argv_( argv ), specs_( specs ), err_( err ),
-	  end_( false ), index_( 0 ), next_c_( 0 )
+	  index_( 0 ), next_c_( 0 ), end_( false )
 {
 	// do nothing else
 }
@@ -329,7 +301,7 @@ the_end:
 	os.end_ = true;
 	return os;
 bad_spec:
-	ERROR << "invalid option argument spec: " << found->arg_type << "\n";
+	ERROR << "invalid option argument spec: " << found->arg_type << '\n';
 	::abort();
 }
 
@@ -360,7 +332,7 @@ int main( int argc, char *argv[] ) {
 				cout << (opt.arg() ? opt.arg() : "(null)") << endl;
 				break;
 			default:
-				cout << "got weird=" << (int)(char)opt << endl;
+				cout << "got weird=" << (int)(char)opt << '\n';
 		}
 	}
 	cout << "shift=" << opt_in.shift() << '\n';
