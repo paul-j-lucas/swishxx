@@ -26,6 +26,7 @@
 #include <cstddef>			/* for ptrdiff_t, size_t */
 #include <fstream>			/* for openmode */
 #include <iterator>
+#include <sys/mman.h>			/* for mmap(2) */
 
 //
 // Some C headers on some implementations define open/close as macros to remap
@@ -83,6 +84,18 @@ public:
 	typedef value_type& reference;
 	typedef value_type const& const_reference;
 
+	enum behavior_type {
+#ifdef	PJL_NO_MADVISE
+		normal,
+		random,
+		sequential,
+#else
+		normal		= MADV_NORMAL,
+		random		= MADV_RANDOM,
+		sequential	= MADV_SEQUENTIAL,
+#endif
+	};
+
 	////////// constructors & destructor //////////////////////////////////
 
 	mmap_file()			{ init(); }
@@ -123,6 +136,7 @@ public:
 
 	reference	back()			{ return *( end() - 1 ); }
 	const_reference	back() const		{ return *( end() - 1 ); }
+	int		behavior( behavior_type ) const;
 	reference	front()			{ return *begin(); }
 	const_reference	front() const		{ return *begin(); }
 	bool		open(
@@ -145,7 +159,7 @@ private:
 	size_type	size_;
 	int		fd_;			// Unix file descriptor
 	void		*addr_;
-	int		errno_;
+	mutable int	errno_;
 	void		init();
 };
 

@@ -24,7 +24,6 @@
 #include <fcntl.h>			/* for open(2), O_RDONLY, etc */
 #include <ctime>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
-#include <sys/mman.h>			/* for mmap(2) */
 #include <sys/resource.h>		/* for get/setrlimit(2) */
 #include <sys/stat.h>			/* for stat(2) */
 #include <unistd.h>			/* for close(2) */
@@ -67,6 +66,33 @@ using namespace std;
 	::setrlimit( RLIMIT_VMEM, &r );
 }
 #endif	/* RLIMIT_VMEM */
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	int mmap_file::behavior( behavior_type behavior ) const
+//
+// DESCRIPTION
+//
+//	Give memory-paging strategy advise.
+//
+// PARAMETERS
+//
+//	behavior	The behavior to use.
+//
+// RETURN VALUE
+//
+//	Returns 0 only if successful; otherwise return errno.
+//
+//*****************************************************************************
+{
+#ifndef	PJL_NO_MADVISE
+	if ( ::madvise( addr_, size_, behavior ) == -1 )
+		return errno_ = errno;
+#endif
+	return 0;
+}
 
 //*****************************************************************************
 //
@@ -184,12 +210,12 @@ using namespace std;
 		return false;
 	}
 
-	addr_ = ::mmap( 0, stat_buf.st_size, prot, MAP_SHARED, fd_, 0 );
+	addr_ = ::mmap( 0, size_, prot, MAP_SHARED, fd_, 0 );
 	if ( addr_ == MAP_FAILED ) {
 		addr_ = 0;
 		errno_ = errno;
 		return false;
 	}
 
-	return true;
+	return behavior( normal ) == 0;
 }
