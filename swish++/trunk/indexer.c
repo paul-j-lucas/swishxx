@@ -569,7 +569,7 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 //	begin	The pointer to the beginning of the title.
 //
-//	end	The pointer to the end of the title.
+//	end	The pointer to one past the end of the title.
 //
 // RETURN VALUE
 //
