@@ -246,7 +246,6 @@ static void	set_signal_handlers();
 		//
 		// Handle one or both requests.
 		//
-		int accept_fd;
 		if ( is_tcp && FD_ISSET( tcp_fd, &rset ) ) {
 			struct sockaddr_in addr;
 			PJL_SOCKLEN_TYPE len = sizeof addr;
