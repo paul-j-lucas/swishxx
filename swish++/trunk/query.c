@@ -91,7 +91,7 @@ extern index_segment files, meta_names, stop_words, words;
 static bool parse_meta( parse_args& );
 static bool parse_primary( parse_args& );
 static bool parse_query2( parse_args& );
-static bool parse_optional_relop( token_stream&, token::type& );
+static bool parse_relop( token_stream&, token::type& );
 
 //*****************************************************************************
 //
@@ -173,7 +173,7 @@ static bool parse_optional_relop( token_stream&, token::type& );
 //
 //      results             The query results go here.
 //
-//      stop_words_found    The set of stop-words in the query.
+//      stop_words_found    The set of stop-words in the query, if any.
 //
 // RETURN RESULT
 //
@@ -222,7 +222,7 @@ static bool parse_optional_relop( token_stream&, token::type& );
 //      Parse a query via predictive top-down recursive decent.  The grammar
 //      for a query is:
 //
-//          query:      query optional_relop meta
+//          query:      query relop meta
 //                  |   meta
 //
 //          meta:       meta_name = primary
@@ -235,7 +235,7 @@ static bool parse_optional_relop( token_stream&, token::type& );
 //                  |   word
 //                  |   word*
 //
-//          optional_relop: 'and'
+//          relop:      'and'
 //                  |   'near'
 //                  |   'not' 'near'
 //                  |   'or'
@@ -247,7 +247,7 @@ static bool parse_optional_relop( token_stream&, token::type& );
 //
 //          query:      meta rest
 //
-//          rest:       optional_relop meta rest
+//          rest:       relop meta rest
 //                  |   (empty)
 //
 // PARAMETERS
@@ -273,7 +273,7 @@ static bool parse_optional_relop( token_stream&, token::type& );
     // followed by a "rest" in the grammar.
     //
     token::type relop;
-    while ( parse_optional_relop( args.query, relop ) ) {
+    while ( parse_relop( args.query, relop ) ) {
         parse_args args_rhs( args );
         if ( !parse_meta( args_rhs ) )
             return false;
@@ -382,7 +382,7 @@ static bool parse_optional_relop( token_stream&, token::type& );
     if ( t == token::tt_word ) {                // meta name ...
         token const t2( args.query );
         if ( t2 == token::tt_equal ) {          // ... followed by '='
-            less< char const* > const comparator;
+            less<char const*> const comparator;
             word_range const range = ::equal_range(
                 meta_names.begin(), meta_names.end(),
                 t.lower_str(), comparator
@@ -406,7 +406,7 @@ parsed_meta_id:
 //
 // SYNOPSIS
 //
-        bool parse_optional_relop( token_stream &query, token::type &relop )
+        bool parse_relop( token_stream &query, token::type &relop )
 //
 // DESCRIPTION
 //
