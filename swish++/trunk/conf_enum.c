@@ -52,13 +52,55 @@ extern char const*	me;
 //
 //	name		The name of the configuration variable.
 //
-//	legal_values	The set of leval values.
+//	legal_values	The set of legal values.
 //
 //*****************************************************************************
 	conf<std::string>( name, legal_values[0] ),
 	legal_values_( legal_values )
 {
 	// do nothing else
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool conf_enum::is_legal( char const *value, ostream &err ) const
+//
+// DESCRIPTION
+//
+//	Checks to see if a given value is legal, i.e., among the pre-determined
+//	set of legal values.
+//
+// PARAMETERS
+//
+//	value	The value to be checked.
+//
+//	err	The ostream to write an error message to, if any.
+//
+// RETURN VALUE
+//
+//	Returns true only if the value is legal.
+//
+//*****************************************************************************
+{
+	if ( *value ) {
+		auto_vec< char > const lower( to_lower_r( value ) );
+		for ( char const *const *v = legal_values_; *v; ++v )
+			if ( !::strcmp( lower, *v ) )
+				return true;
+	}
+	err << error << '"' << name() << "\" is not one of: ";
+	bool comma = false;
+	for ( char const *const *v = legal_values_; *v; ++v ) {
+		if ( comma )
+			err << ", ";
+		else
+			comma = true;
+		err << *v;
+	}
+	err << '\n';
+	return false;
 }
 
 //*****************************************************************************
@@ -78,23 +120,8 @@ extern char const*	me;
 //
 //*****************************************************************************
 {
+	if ( !is_legal( line ) )
+		::exit( Exit_Config_File );
 	auto_vec< char > const lower( to_lower_r( line ) );
-	if ( *lower )
-		for ( char const *const *v = legal_values_; *v; ++v )
-			if ( !::strcmp( lower, *v ) ) {
-				conf<string>::parse_value( lower );
-				return;
-			}
-
-	cerr << error << '"' << name() << "\" is not one of: ";
-	bool comma = false;
-	for ( char const *const *value = legal_values_; *value; ++value ) {
-		if ( comma )
-			cerr << ", ";
-		else
-			comma = true;
-		cerr << *value;
-	}
-	cerr << "\n";
-	::exit( Exit_Config_File );
+	conf<string>::parse_value( lower );
 }

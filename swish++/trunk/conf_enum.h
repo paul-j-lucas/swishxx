@@ -39,6 +39,8 @@
 //
 //*****************************************************************************
 {
+public:
+	bool	is_legal( char const*, std::ostream& = std::cerr ) const;
 protected:
 	conf_enum( char const *name, char const *const legal_values[] );
 	CONF_STRING_ASSIGN_OPS( conf_enum )
