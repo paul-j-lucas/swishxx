@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!--
+ !	SWISH++
+ !	SearchResults.xsd
+ !
+ !	Copyright (C) 2002  Paul J. Lucas
+ !
+ !	This program is free software; you can redistribute it and/or modify
+ !	it under the terms of the GNU General Public License as published by
+ !	the Free Software Foundation; either version 2 of the License, or
+ !	(at your option) any later version.
+ !
+ !	This program is distributed in the hope that it will be useful,
+ !	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ !	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ !	GNU General Public License for more details.
+ !
+ !	You should have received a copy of the GNU General Public License
+ !	along with this program; if not, write to the Free Software
+ !	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://homepage.mac.com/pauljlucas/software/swish/SearchResults"
+  elementFormDefault="qualified"
+  version="1.0">
+
+  <xsd:element name="SearchResults">
+    <xsd:complexType>
+      <xsd:sequence>
+
+        <xsd:element name="IgnoredList" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Ignored" maxOccurs="unbounded">
+                <xsd:simpleType>
+                  <xsd:restriction base="xsd:token">
+                    <xsd:pattern value="\S+"/>
+                  </xsd:restriction>
+                </xsd:simpleType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="ResultCount" type="xsd:nonNegativeInteger"/>
+
+        <xsd:element name="ResultList" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="File" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:all>
+                    <xsd:element name="Rank">
+                      <xsd:simpleType>
+                        <xsd:restriction base="xsd:positiveInteger">
+                          <xsd:maxInclusive value="100"/>
+                        </xsd:restriction>
+                      </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="Path" type="xsd:string"/>
+                    <xsd:element name="Size" type="xsd:positiveInteger"/>
+                    <xsd:element name="Title" type="xsd:token"/>
+                  </xsd:all>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
+<!-- vim:set et sw=2 ts=2: -->
