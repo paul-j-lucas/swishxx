@@ -284,8 +284,7 @@ MAKEDEPEND:=	$(PERL) $(ROOT)/config/makedepend.pl $(CFLAGS)
 endif
 
 .%.d : %.c $(ROOT)/platform.h
-	$(MAKEDEPEND) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@
-	[ -s $@ ] || $(RM) $@
+	$(SHELL) -ec '$(MAKEDEPEND) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
 
 ifneq ($(findstring platform,$(TARGET)),platform)
 $(ROOT)/platform.h $(ROOT)/config/platform.mk:
