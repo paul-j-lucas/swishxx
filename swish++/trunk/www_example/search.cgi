@@ -23,6 +23,9 @@
 #
 #	search(1), WWW(3)
 #
+#	Larry Wall, et al.  "Programming Perl," 2nd ed., O'Reilly and
+#	Associates, Inc., Sebestapol, CA, 1996, p. 73.
+#
 ###############################################################################
 
 use lib ( '/home/www/swish++/lib' );
@@ -39,6 +42,10 @@ $DOC_ROOT =	'/home/www/httpd/htdocs';
 
 $INDEX_FILE =	'/home/www/the.index';
 #		The full path to the index file to be searched through.
+
+#$SOCKET_FILE =	'/tmp/swish++.socket';
+#		The full path to the socket file.  Uncomment this only if you
+#		run 'search' as a daemon.
 
 print "Content-Type: text/html\n\n";
 
@@ -65,13 +72,41 @@ $FORM{ Search } =~ s/([&'()*])/\\$1/g;
 ##
 push( @options, '-s' ) if $FORM{ Stem };
 
-@search_args = (
-	"-i $INDEX_FILE",
-	@options,
-	$FORM{ Search }
-);
+##
+# Call 'search' either as a server or as a command.  In a real CGI, as opposed
+# to this toy example, you would have the code only for the case you are
+# actually doing.
+##
+if ( $SOCKET_FILE ) {
+	##
+	# Connect to the 'search' server via a Unix domain socket.  See [Wall],
+	# p. 353.
+	##
+	use Socket;
+	socket( SEARCH, PF_UNIX, SOCK_STREAM, 0 ) or die "socket: $!";
+	connect( SEARCH, sockaddr_un( $SOCKET_FILE ) ) or die "connect: $!";
 
-open( SEARCH, "$SWISH_BIN/search @search_args |" ) or die;
+	##
+	# We *MUST* set autoflush for the socket filehandle otherwise the
+	# server thread will hang since I/O buffering will wait for the buffer
+	# to fill that will never happen since queries are short.  See [Wall],
+	# p. 130, 211.
+	##
+	my $old_fh = select( SEARCH ); $| = 1; select( $old_fh );
+
+	##
+	# We also *MUST* print a trailing newline since the server reads an
+	# entire line of input (so therefore it looks and waits for a newline).
+	##
+	print SEARCH "search @options $FORM{ Search }\n";
+} else {
+	##
+	# Open a pipe from the 'search' command.
+	##
+	open( SEARCH, "$SWISH_BIN/search -i $INDEX_FILE @options $FORM{ Search } |" ) or
+		die;
+}
+
 while ( <SEARCH> ) {
 	if ( /^# ignored: / ) {
 		$ignored = $';
