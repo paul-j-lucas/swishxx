@@ -240,16 +240,17 @@ int conf_var::current_config_file_line_no_ = 0;
 	}
 
 	register int line_no = 0;
-	register file_vector::const_iterator c = conf_file.begin(), nl = c;
+	register file_vector::const_iterator c = conf_file.begin();
 
-	while ( c != conf_file.end() && nl != conf_file.end() ) {
-		if ( !( nl = ::strchr( c, '\n' ) ) ) {
-			//
-			// We can't find a "line," i.e., a sequence of
-			// characters terminated by a newline, so stop.
-			//
+	while ( c != conf_file.end() ) {
+		//
+		// Find the end of the line.
+		//
+		register file_vector::const_iterator nl = c + 1;
+		while ( nl != conf_file.end() && *nl != '\n' )
+			++nl;
+		if ( nl == conf_file.end() )
 			break;
-		}
 
 		++line_no;
 		//
