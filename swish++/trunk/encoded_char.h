@@ -32,8 +32,8 @@
 
 enum content_transfer_encoding {
 	Seven_Bit,
-	Eight_Bit,
-	Binary,
+	Eight_Bit,			// treated the same as Seven_Bit
+	Binary,				// we don't know what to do with this
 #ifdef MOD_MAIL
 	Quoted_Printable,
 	Base64,
