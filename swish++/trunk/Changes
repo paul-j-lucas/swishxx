@@ -3,6 +3,159 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.0.5
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Decoding of mail attachments didn't work right if the attachments contained
+  bytes whose value > 127.
+
+  (This bug fix shall be known as bug fix ATB.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_var.c
+* do_file.c
+* mmap_file.[ch]
+
+	1. s/normal/bt_normal/
+	2. s/random/bt_random/
+	3. s/sequential/bt_sequential/
+
+* charsets/utf7.c
+* encodings/base64.c
+
+	1. Removed call to iso8859_1_to_ascii() for bug fix ATB.
+
+* indexer.c
+
+	1. s/No_Meta_ID/Meta_ID_None/
+	2. Removed new_file().
+	3. Added call to iso8859_1_to_ascii() for bug fix ATB.
+
+* indexer.h
+
+	1. s/No_Meta_ID/Meta_ID_None/
+	2. Removed new_file().
+
+* index_segment.h
+* search.c
+
+	1. s/word_index/isi_word/
+	2. s/stop_word_index/isi_stop_word/
+	3. s/dir_index/isi_dir/
+	4. s/file_index/isi_file/
+	5. s/meta_name_index/isi_meta_name/
+
+* mod/html/elements.h
+
+	1. s/forbidden/et_forbidden/
+	2. s/optional/et_optional/
+	3. s/required/et_required/
+
+* mod/html/mod_html.c
+
+	1. s/No_Meta_ID/Meta_ID_None/
+	2. Moved element_stack_ here.
+	3. Reworked new_file().
+
+* mod/html/mod_html.h
+
+	1. s/No_Meta_ID/Meta_ID_None/
+	2. Moved element_stack_ to .c file.
+
+* mod/id3/id3v2.h
+
+	1. s/Failure/hr_failure/
+	2. s/Success/hr_success/
+	3. s/End_of_Frames/hr_end_of_frames/
+
+* mod/id3/id3v2.c
+* mod/id3/mod_id3.c
+* mod/id3/mod_id3.h
+
+	1. s/No_Meta_ID/Meta_ID_None/
+
+* mod/mail/mod_mail.c
+
+	1. s/No_Meta_ID/Meta_ID_None/
+	2. Moved stack_type, boundary_stack, and did_last_header here.
+	3. Renamed content_type enum values.
+	4. Reworked new_file().
+
+* mod/mail/mod_mail.h
+
+	1. s/No_Meta_ID/Meta_ID_None/
+	2. Moved stack_type, boundary_stack, and did_last_header to .c file.
+	3. Renamed content_type enum values.
+
+* mod/latex/mod_latex.c
+* mod/man/mod_man.c
+* mod/rtf/mod_rtf.c
+
+	1. Added call to iso8859_1_to_ascii() for bug fix ATB.
+	2. s/No_Meta_ID/Meta_ID_None/
+
+* query.c
+
+	1. s/no_token/tt_none/
+	2. s/and_token/tt_and/
+	3. s/equal_token/tt_equal/
+	4. s/lparen_token/tt_lparen/
+	5. s/near_token/tt_near/
+	6. s/not_near_token/tt_not_near/
+	7. s/not_token/tt_not/
+	8. s/or_token/tt_or/
+	9. s/rparen_token/tt_rparen/
+	A. s/word_star_token/tt_word_star/
+	B. s/word_token/tt_word/
+	C. s/No_Meta_ID/Meta_ID_None/
+
+* query_node.c
+* mod/man/mod_man.h
+* mod/rtf/mod_rtf.h
+
+	1. s/No_Meta_ID/Meta_ID_None/
+
+* stem_word.c
+
+	1. s/initial/st_initial/
+	2. s/vowel/st_vowel/
+	3. s/consonant/st_consonant/
+
+* stop_words.c
+
+	1. s/stop_word_index/isi_stop_word/
+
+* token.[ch]
+
+	1. s/no_token/tt_none/
+	2. s/and_token/tt_and/
+	3. s/equal_token/tt_equal/
+	4. s/lparen_token/tt_lparen/
+	5. s/near_token/tt_near/
+	6. s/not_near_token/tt_not_near/
+	7. s/not_token/tt_not/
+	8. s/or_token/tt_or/
+	9. s/rparen_token/tt_rparen/
+	A. s/word_star_token/tt_word_star/
+	B. s/word_token/tt_word/
+
+* word_info.h
+
+	1. s/No_Meta_ID/Meta_ID_None/
+
+
+* version.h
+
+	1. Upped version.
+
+
+*******************************************************************************
 6.0.4
 *******************************************************************************
 
