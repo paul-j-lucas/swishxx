@@ -38,8 +38,8 @@ namespace PJL {
 #define	PJL /* nothing */
 #endif
 
-extern "C" void*	thread_main( void* );
-extern "C" void		thread_destroy( void* );
+extern "C" void*	thread_pool_thread_main( void* );
+extern "C" void		thread_pool_thread_destroy( void* );
 
 //*****************************************************************************
 //
@@ -72,12 +72,11 @@ extern "C" void		thread_destroy( void* );
 //
 //*****************************************************************************
 {
-	class q_lock;
 public:
 	class thread;
 	friend class	thread;
-	friend void*	thread_main( void* );
-	friend void	thread_destroy( void* );
+	friend void*	thread_pool_thread_main( void* );
+	friend void	thread_pool_thread_destroy( void* );
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -124,6 +123,9 @@ public:
 			argument_type( void *a ) : p( a ) { }
 			long	i;
 			void*	p;
+		private:
+			argument_type() { }
+			friend void*	thread_pool_thread_main( void* );
 		};
 
 		void operator delete( void*, size_t ) { }
@@ -137,18 +139,18 @@ public:
 	protected:
 		typedef void* (*start_function_type)( void* );
 
-		thread( thread_pool&, start_function_type = thread_main );
+		thread(
+			thread_pool&,
+			start_function_type = thread_pool_thread_main
+		);
 
 		virtual thread*	create( thread_pool& ) const = 0;
 		virtual void	main( argument_type ) = 0;
 	private:
-		enum state { normal_state, expired_state, destructing_state };
-
+		bool		destructing_;		// destructor called?
 		pthread_t	thread_;		// our POSIX thread
 		pthread_mutex_t	run_lock_;
 		thread_pool&	pool_;			// to which we belong
-		q_lock*		q_lock_;
-		state		state_;
 
 		void		run() { ::pthread_mutex_unlock( &run_lock_ ); }
 		thread*		create_and_run() const {
@@ -158,8 +160,8 @@ public:
 				}
 
 		friend class	thread_pool;
-		friend void*	thread_main( void* );
-		friend void	thread_destroy( void* );
+		friend void*	thread_pool_thread_main( void* );
+		friend void	thread_pool_thread_destroy( void* );
 
 		thread( thread const& );		// forbid copy
 		thread& operator=( thread const& );	// forbid assignment
@@ -182,28 +184,6 @@ public:
 	//		do not occur immediately, however; rather, the pool
 	//		slowly adjusts as tasks are completed.
 private:
-	class q_lock {
-		//
-		// A q_lock is a reference-counted mutex used for the task
-		// queue that is shared by the thread_pool and all of its
-		// threads.  A reference count is needed because the mutex has
-		// to persist until all the POSIX thread clean-up functions run
-		// and that can be after the thread_pool object is destroyed
-		// (which is why q_lock can't be an ordinary data member like
-		// t_lock_ below).
-		//
-	public:
-		pthread_mutex_t mutex_;
-
-		q_lock()		{ count_ = 1; }
-		~q_lock()		{ ::pthread_mutex_destroy( &mutex_ ); }
-
-		q_lock*	inc_ref();
-		void	dec_ref();
-	private:
-		int	count_;
-	};
-
 	typedef std::set< thread* > thread_set;
 	typedef std::queue< thread::argument_type > task_queue_type;
 
@@ -216,7 +196,7 @@ private:
 	pthread_cond_t	t_idle_;			// a thread is idle
 
 	task_queue_type	queue_;
-	q_lock*		q_lock_;
+	pthread_mutex_t	q_lock_;
 	pthread_cond_t	q_not_empty_;			// a task is available
 
 	bool		destructing_;			// destructor called?
