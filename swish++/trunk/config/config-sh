@@ -43,7 +43,7 @@ echo
 echo "$ME: checking C++ compiler $CC"
 echo
 
-trap "x=$?; rm -f *$CCOEXT $TARGET; exit $x" 0 1 2 15
+trap "rm -f *$CCOEXT $TARGET; exit 1" 0 1 2 15
 
 cat > $TARGET <<!
 /*
@@ -82,8 +82,19 @@ cat > $TARGET <<!
 for file in src/*$CCCEXT
 do
 	echo "$ME: checking for \"`grep TEST $file | cut -f3-`\"..."
-	$CC $CFLAGS $file >&- 2>&- ||
-		echo "#define `grep DEFINE $file | cut -f3-`" >> $TARGET
+	$CC $CFLAGS $file >&- 2>&- && continue
+
+	define=`grep DEFINE $file | cut -f3-`
+	if [ -n "$define" ]
+	then echo "#define $define" >> $TARGET; continue
+	fi
+
+	echo '----------------------------------------------------------------'
+	grep ERROR $file | cut -f3- | while read error
+	do echo $error
+	done
+	echo '----------------------------------------------------------------'
+	exit 1
 done
 
 echo
