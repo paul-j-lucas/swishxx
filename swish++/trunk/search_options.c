@@ -50,6 +50,7 @@ static option_stream::spec const opt_spec[] = {
 #ifdef	SEARCH_DAEMON
 	"daemon-type",		1, 'b',
 	"no-background",	0, 'B',
+	"group",		1, 'G',
 	"pid-file",		1, 'P',
 	"socket-timeout",	1, 'o',
 	"thread-timeout",	1, 'O',
@@ -58,6 +59,7 @@ static option_stream::spec const opt_spec[] = {
 	"max-threads",		1, 'T',
 	"socket-address",	1, 'a',
 	"socket-file",		1, 'u',
+	"user",			1, 'U',
 #endif	/* SEARCH_DAEMON */
 #endif	/* SEARCH_DAEMON_OPTIONS_ONLY */
 	0
