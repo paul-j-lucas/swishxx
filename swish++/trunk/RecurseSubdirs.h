@@ -46,4 +46,6 @@ public:
 	CONF_BOOL_ASSIGN_OPS( RecurseSubdirs )
 };
 
+extern RecurseSubdirs recurse_subdirectories;
+
 #endif	/* RecurseSubdirs_H */
