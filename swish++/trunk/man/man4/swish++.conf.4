@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "November 29, 2002" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "March 25, 2004" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -83,8 +83,9 @@ Variables of this type are:
 .BR Incremental ,
 .BR RecurseSubdirs ,
 .BR SearchBackground ,
+.BR StemWords ,
 and
-.BR StemWords .
+.BR StoreWordPositions .
 .SS Enumeration variables
 Variables of this type are just like string variables (see below)
 except that the argument
@@ -173,6 +174,7 @@ Variables of this type are:
 .BR Verbosity ,
 .BR WordFilesMax ,
 .BR WordPercentMax ,
+.BR WordsNear ,
 and
 .BR WordThreshold .
 .PP
