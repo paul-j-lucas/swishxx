@@ -23,26 +23,32 @@
 #define file_vector_H
 
 // standard
-#include <iostream>
 #include <iterator>
 #include <sys/types.h>				/* for off_t */
 
 #ifdef	WIN32
-#include <windows32/base.h>
-#include <windows32/defines.h>	
 #include <windows.h>
 #endif
 
 //*****************************************************************************
 //
-// SYNOPSIS
+// SYNOPSYS
 //
-	class file_vector_base
+	class file_vector
 //
 // DESCRIPTION
 //
-//	A file_vector_base is the base class for file_vector<T> that factors
-//	out all type-independent code.
+//	A file_vector is an object that maps a file into memory (via the Unix
+//	system call mmap(2)) allowing it to be accessed via iterators.
+//	Processing a file, especially files accessed randomly, is MUCH faster
+//	than standard I/O.
+//
+// SEE ALSO
+//
+//	mmap(2)
+//
+//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+//	Addison-Wesley, Reading, MA, 1993.  pp. 407-413
 //
 //*****************************************************************************
 {
@@ -55,76 +61,20 @@ public:
 	typedef off_t size_type;
 #endif
 	typedef ptrdiff_t difference_type;
-
-	////////// constructors & destructor //////////////////////////////////
-
-	file_vector_base()			{ init(); }
-	file_vector_base( char const *path, ios::open_mode mode = ios::in ) {
-		init();
-		open( path, mode );
-	}
-	~file_vector_base()			{ close(); }
-
-	////////// member functions ///////////////////////////////////////////
-
-	bool		open( char const *path, ios::open_mode = ios::in );
-	void		close();
-	bool		empty() const		{ return !size_; }
-	int		error() const		{ return error_; }
-	size_type	max_size() const	{ return size_; }
-	size_type	size() const		{ return size_; }
-	operator	bool() const		{ return !error_; }
-
-protected:
-	void*		base() const		{ return addr_; }
-private:
-	size_type	size_;
-#ifdef	WIN32
-	HANDLE		fd_, map_;
-#else
-	int		fd_;			// Unix file descriptor
-#endif
-	void		*addr_;
-	int		error_;
-	void		init();
-};
-
-//*****************************************************************************
-//
-// SYNOPSYS
-//
-//	file_vector< T >
-//
-// DESCRIPTION
-//
-//	A file_vector is an object that maps a file into memory (via the Unix
-//	system call mmap(2)) allowing it to be accessed via iterators.
-//	Processing a file, especially files accessed randomly, is MUCH faster
-//	than standard I/O.  The type T is usually a character type, but could
-//	be a numeric type for reading vectors or matricies of, say, long or
-//	double.
-//
-// SEE ALSO
-//
-//	mmap(2)
-//
-//*****************************************************************************
-
-template< class T > class file_vector : public file_vector_base {
-public:
-	////////// typedefs ///////////////////////////////////////////////////
-
-	typedef T value_type;
+	typedef char value_type;
 	typedef value_type* pointer;
 	typedef value_type const* const_pointer;
 	typedef value_type& reference;
 	typedef value_type const& const_reference;
 
-	////////// constructors ///////////////////////////////////////////////
+	////////// constructors & destructor //////////////////////////////////
 
-	file_vector() { }
-	file_vector( char const *path, ios::open_mode mode = ios::in ) :
-		file_vector_base( path, mode ) { }
+	file_vector()			{ init(); }
+	file_vector( char const *path, ios::open_mode mode = ios::in ) {
+		init();
+		open( path, mode );
+	}
+	~file_vector()			{ close(); }
 
 	////////// iterators //////////////////////////////////////////////////
 
@@ -139,8 +89,8 @@ public:
 		const_iterator, value_type, const_reference, difference_type
 	> const_reverse_iterator;
 
-	iterator	begin()		{ return (iterator)base(); }
-	const_iterator	begin() const	{ return (const_iterator)base(); }
+	iterator	begin()		{ return (iterator)addr_; }
+	const_iterator	begin() const	{ return (const_iterator)addr_; }
 	iterator	end()		{ return begin() + size(); }
 	const_iterator	end() const	{ return begin() + size(); }
 
@@ -159,10 +109,18 @@ public:
 
 	////////// member functions ///////////////////////////////////////////
 
+	operator	bool() const		{ return !errno_; }
+
 	reference	back()			{ return *( end() - 1 ); }
 	const_reference	back() const		{ return *( end() - 1 ); }
 	reference	front()			{ return *begin(); }
 	const_reference	front() const		{ return *begin(); }
+	bool		open( char const *path, ios::open_mode = ios::in );
+	void		close();
+	bool		empty() const		{ return !size_; }
+	int		error() const		{ return errno_; }
+	size_type	max_size() const	{ return size_; }
+	size_type	size() const		{ return size_; }
 
 	reference operator[]( size_type i ) {
 		return *( begin() + i );
@@ -170,6 +128,16 @@ public:
 	const_reference operator[]( size_type i ) const {
 		return *( begin() + i );
 	}
+private:
+	size_type	size_;
+#ifdef	WIN32
+	HANDLE		fd_, map_;
+#else
+	int		fd_;			// Unix file descriptor
+#endif
+	void		*addr_;
+	int		errno_;
+	void		init();
 };
 
 #endif	/* file_vector_H */
