@@ -62,6 +62,8 @@ public:
 				);
 	virtual void		new_file();
 private:
+	static bool	dump_html_elements_opt_;
+	//
 	// The element_stack keeps track of all the HTML or XHTML elements we
 	// encounter until they are closed.  The first member of the pair is a
 	// pointer to the element_map's value_type or the key/value pair of the
