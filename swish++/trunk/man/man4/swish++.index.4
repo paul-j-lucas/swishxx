@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	swish++.index.4
 .\"
-.\"	Copyright (C) 1998  Paul J. Lucas
+.\"	Copyright (C) 1998-2003  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.index\f1 4 "December 26, 2002" "SWISH++"
+.TH \f3swish++.index\f1 4 "August 27, 2003" "SWISH++"
 .SH NAME
 swish++.index \- SWISH++ index file format
 .SH SYNOPSIS
@@ -81,58 +81,104 @@ finally,
 every \f(CWmeta_name_offset\f1 is an offset into the
 .I "mete-name index"
 pointing at the first character of a meta-name entry.
-.PP
+.P
 The index file is written as it is so that it can be mapped into memory via the
 .BR mmap (2)
 Unix system call enabling ``instantaneous'' access.
-.SS BCD Integers
-All integers in an index file are stored in BCD (binary coded decimal) format
-for compactness.
-A BCD integer that has an odd number of digits
-is terminated by a low-order nybble with the value \f(CW\\xA\f1;
-an integer that has an even number of digits
-is terminated by a a byte with the value \f(CW\\xAA\f1.
-(These values were chosen because they are invalid BCD.
-All other values \f(CW\\xA0\f1 through \f(CW\\xFE\f1
-are reserved for future use.)
-.PP
-For example, the integers 1\-9
-are stored as single bytes of \f(CW\\x1A\f1\-\f(CW\\x9A\f1, respectively;
-the integer 10 is stored as the two bytes of \f(CW\\x10AA\f1;
-the integer 1967 is stored as the three bytes of \f(CW\\x1967AA\f1.
-.PP
-Since most integer values in an index file are less than 10000,
-using BCD results in approximately a 25% storage reduction.
+.SS Encoded Integers
+All integers in an index file are stored in an encoded format for compactness.
+An integer is encoded to use a varying number of bytes.
+For a given byte, only the lower 7 bits are used for data;
+the high bit, if set, is used to indicate
+whether the integer continues into the next byte.
+The encoded integer is in big-endian byte order.
+For example, the integers 0\-127
+are encoded as single bytes of
+\f(CW\\x00\f1\-\f(CW\\x7F\f1, respectively;
+the integer 128 is encoded as the two bytes of \f(CW\\x8100\f1.
+.P
+Note that the byte \f(CW\\x80\fP
+will never be the first byte of an encoded integer
+(although it can be any other byte);
+therefore, it can be used as a
+.I marker
+to embed extra information into an encoded integer byte sequence.
+.SS Encoded Integer Lists
+Because the high bit of the last byte of an encoded integer is always clear,
+lists of encoded integers can be stored one right after the other
+with no separators.
+For example, the byte sequence \f(CW\\x010203\f1
+encodes the three separate integers 1, 2, and 3;
+the byte sequence \f(CW\\x81002A8101\f1
+encodes the three integers 128, 42, and 129.
 .SS Word Entries
 Every word entry in the
 .I "word index"
 is of the form:
 .cS
-\f2word\fP0\f3\s+2{\s-2\fP\f2data\fP\f3\s+2}...\s-2\fPFF
+\f2word\fP0\f3\s+2{\s-2\fP\f2data\fP\f3\s+2}...\s-2\fP
 .cE
 that is: a null-terminated word followed by one or more
 .I data
-entries followed by an \f(CWFF\f1 byte where a
+entries where a
 .I data
 entry is:
 .cS
-\f3\s+2{\s-2\fP\f2I\fP\f3\s+2}[\s-2\fPEE\f3\s+2{\s-2\fP\f2M\fP\f3\s+2}...\s-2\fPEE\f3\s+2]{\s-2\fP\f2O\fP\f3\s+2}{\s-2\fP\f2R\fP\f3\s+2}\s-2\fP
+\f3\s+2{\s-2\fP\f2F\fP\f3\s+2}{\s-2\fP\f2O\fP\f3\s+2}{\s-2\fP\f2R\fP\f3\s+2}[{\s-2\fP\f2list\fP\f3\s+2}...]{\s-2\fP\f2marker\fP\f3\s+2}\s-2\fP
 .cE
 that is: a file-index
-.RI ( I )
-followed by zero or more meta-IDs
-.RI ( M )
-surrounded by \f(CW\\xEE\f1 bytes
+.RI ( F )
 followed by the number of occurrences in the file
 .RI ( O )
 followed by a rank
-.RI ( R ).
+.RI ( R )
+followed by zero or more
+.I lists
+of integers followed by a
+.I marker
+byte.
 The
 .I file-index
-is an index into the \f(CWfile_offset\f1 table; the
-.IR meta-IDs ,
-if present,
-are unique integers identifying which meta name(s) a word is associated with
+is an index into the \f(CWfile_offset\f1 table;
+the
+.I marker
+byte is one of:
+.P
+.RS 5
+.PD 0
+.TP 4
+\f(CW00\f1
+Another
+.I data
+entry follows.
+.TP
+\f(CW80\f1
+No more
+.I data
+entries follow.
+.PD
+.RE
+.P
+A
+.I list
+is:
+.cS
+\f3\s+2{\s-2\fP\f2type\fP\f3\s+2}{\s-2\fP\f2I\fP\f3\s+2}...\s-2\fPx80
+.cE
+that is: a
+.I type
+followed by one or more integers
+.RI ( I )
+followed by an \f(CW\\x80\f1 byte
+where
+.I type
+defines the type of list, i.e., what the integers mean.
+Currently, there is only one type of list:
+.TP 4
+\f(CW01\fP
+Meta-ID list.
+Meta-IDs are unique integers
+identifying which meta name(s) a word is associated with
 in the meta-name index.
 .SS Stop-Word Entries
 Every stop-word entry in the
@@ -168,7 +214,7 @@ followed by the file's size in bytes
 followed by the number of words in the file
 .RI ( W )
 followed by the file's null-terminated title.
-.PP
+.P
 For an HTML or XHTML file,
 the title is what is between \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 pairs;
 for an MP3 file,
