@@ -1,0 +1,198 @@
+.\"
+.\"	SWISH++
+.\"	swish++.index.4
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\"
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\"
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3swish++.index\f1 4 "July 3, 2001" "SWISH++"
+.SH NAME
+swish++.index \- SWISH++ index file format
+.SH SYNOPSIS
+.nf
+.ft CW
+.ta 10
+long	num_words;
+off_t	word_offset[ num_words ];
+long	num_stop_words;
+off_t	stop_word_offset[ num_stop_words ];
+long	num_directories;
+off_t	directory_offset[ num_directories ];
+long	num_files;
+off_t	file_offset[ num_files ];
+long	num_meta_names;
+off_t	meta_name_offset[ num_meta_names ];
+.ft 2
+	word index
+	stop-word index
+	directory index
+	file index
+	meta-name index
+.ft 1
+.fi
+.SH DESCRIPTION
+The index file format used by SWISH++ is as shown above.
+Every \f(CWword_offset\f1 is an offset into the
+.I "word index"
+pointing at the first character of a word entry;
+similarly,
+every \f(CWstop_word_offset\f1 is an offset into the
+.I "stop-word index"
+pointing at the first character of a stop-word entry;
+similarly,
+every \f(CWdirectory_offset\f1 is an offset into the
+.I "directory index"
+pointing at the first character of a directory entry;
+similarly,
+every \f(CWfile_offset\f1 is an offset into the
+.I "file index"
+pointing at the first byte of a file entry;
+finally,
+every \f(CWmeta_name_offset\f1 is an offset into the
+.I "mete-name index"
+pointing at the first character of a meta-name entry.
+.PP
+The index file is written as it is so that it can be mapped into memory via the
+.BR mmap (2)
+Unix system call enabling ``instantaneous'' access.
+.SS BCD Integers
+All integers in an index file are stored in BCD (binary coded decimal) format
+for compactness.
+A BCD integer that has an odd number of digits
+is terminated by a low-order nybble with the value \f(CW\\xA\f1;
+an integer that has an even number of digits
+is terminated by a a byte with the value \f(CW\\xAA\f1.
+(These values were chosen because they are invalid BCD.
+All other values \f(CW\\xA0\f1 through \f(CW\\xFE\f1
+are reserved for future use.)
+.PP
+For example, the integers 1\-9
+are stored as single bytes of \f(CW\\x1A\f1\-\f(CW\\x9A\f1, respectively;
+the integer 10 is stored as the two bytes of \f(CW\\x10AA\f1;
+the integer 1967 is stored as the three bytes of \f(CW\\x1967AA\f1.
+.PP
+Since most integer values in an index file are less than 10000,
+using BCD results in approximately a 25% storage reduction.
+.SS Word Entries
+Every word entry in the
+.I "word index"
+is of the form:
+.cS
+\f2word\fP0\f3\s+2{\s-2\fP\f2data\fP\f3\s+2}...\s-2\fPFF
+.cE
+that is: a null-terminated word followed by one or more
+.I data
+entries followed by an \f(CWFF\f1 byte where a
+.I data
+entry is:
+.cS
+\f2I\fP\f3\s+2[\s-2\fPEE\f3\s+2{\s-2\fP\f2M\fP\f3\s+2}...\s-2\fPEE\f3\s+2]\s-2\fP\f2OR\fP
+.cE
+that is: a file-index
+.RI ( I )
+followed by zero or more meta-IDs
+.RI ( M )
+surrounded by \f(CW\\xEE\f1 bytes
+followed by the number of occurrences in the file
+.RI ( O )
+followed by a rank
+.RI ( R )
+followed by an \f(CW\\xFF\f1 byte.
+The
+.I file-index
+is an index into the \f(CWfile_offset\f1 table; the
+.IR meta-IDs ,
+if present,
+are unique integers identifying which meta name(s) a word is associated with
+in the meta-name index.
+.SS Stop-Word Entries
+Every stop-word entry in the
+.I "stop-word index"
+is of the form:
+.cS
+\f2stop-word\fP0
+.cE
+that is: every word is null-terminated.
+.SS Directory Entries
+Every directory entry in the
+.I "directory index"
+is of the form:
+.cS
+\f2directory-path\fP0
+.cE
+that is: a null-terminated full pathname of a directory
+(not including the trailing slash).
+The pathnames are relative to where the indexing was performed
+(unless absolute paths were used).
+.SS File Entries
+Every file entry in the
+.I "file index"
+is of the form:
+.cS
+\f3\s+2{\s-2\f2D\f3\s+2}\s-2\f2file-name\fP0\f3\s+2{\s-2\f2S\f3\s+2}{\s-2\f2W\f3\s+2}\s-2\f2file-title\fP0
+.cE
+that is: the file's directory index
+.RI ( D )
+followed by a null-terminated file name
+followed by the file's size in bytes
+.RI ( S )
+followed by the number of words in the file
+.RI ( W )
+followed by the file's null-terminated title.
+.PP
+For an HTML or XHTML file,
+the title is what is between \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 pairs.
+For a mail or news file,
+the title is the value of the \f(CWSubject\f1 header.
+For a Unix manual page file,
+the title is the contents of the first line within the \f(CWNAME\f1 section.
+If a file is not one of those types of files, or is but does not have a title,
+the title is simply the file (not path) name.
+.SS Meta-Name Entries
+Every meta-name entry in the
+.I "meta-name index"
+is of the form:
+.cS
+\f2meta-name\fP0\f3\s+2{\s-2\f2I\f3\s+2}\s-2\f(CW
+.cE
+that is: a null-terminated meta-name followed by the ID
+.RI ( I ).
+.SH CAVEATS
+Generated index files are machine-dependent
+(size of data types and byte-order).
+.SH SEE ALSO
+.BR index (1),
+.BR search (1)
+.SH AUTHOR
+Paul J. Lucas
+.RI < pauljlucas@mac.com >
