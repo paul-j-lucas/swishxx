@@ -169,7 +169,7 @@ void	parse_backslash( char const *&pos, char const *end );
 	bool	newline = false;
 
 	char const* c = e.begin_pos();
-	while ( 1 ) {
+	while ( true ) {
 		register char const ch = *c;
 
 		////////// Collect a word /////////////////////////////////////
