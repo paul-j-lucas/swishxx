@@ -138,8 +138,8 @@ public:
 
 	void		new_task( thread::argument_type );
 private:
-	typedef set< thread* > thread_set;
-	typedef queue< thread::argument_type > task_queue_type;
+	typedef std::set< thread* > thread_set;
+	typedef std::queue< thread::argument_type > task_queue_type;
 
 	int const	t_min_, t_max_;			// number of threads
 	thread_set	threads_;
