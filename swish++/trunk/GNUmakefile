@@ -65,6 +65,7 @@ I_SOURCES:=	bcd.c \
 		indexer.c \
 		index_segment.c \
 		init_modules.c \
+		init_mod_vars.c \
 		itoa.c \
 		option_stream.c \
 		stop_words.c \
@@ -86,6 +87,7 @@ S_SOURCES:=	bcd.c \
 		conf_int.c \
 		conf_string.c \
 		index_segment.c \
+		init_mod_vars.c \
 		file_info.c \
 		file_list.c \
 		option_stream.c \
@@ -124,6 +126,7 @@ E_SOURCES:=	mmap_file.c \
 		ExtractFile.c \
 		filter.c \
 		index_segment.c \
+		init_mod_vars.c \
 		option_stream.c \
 		postscript.c \
 		stop_words.c \
@@ -150,6 +153,9 @@ index: $(I_OBJECTS) $(MOD_LIBS)
 
 init_modules.c: mod/*/mod_*.h init_modules-sh
 	./init_modules-sh > $@ || $(RM) $@
+
+init_mod_vars.c: mod/*/vars init_mod_vars-sh
+	./init_mod_vars-sh > $@ || $(RM) $@
 
 search: $(S_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(S_LINK)
