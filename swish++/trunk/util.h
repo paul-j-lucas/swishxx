@@ -25,10 +25,15 @@
 // standard
 #include <cctype>
 #include <cstring>
+#include <string>
+#include <sys/stat.h>
 
 // local
 #include "config.h"
 #include "file_vector.h"
+#include "platform.h"				/* for PJL_NO_SYMBOLIC_LINKS */
+
+extern struct stat	stat_buf;		// somplace to do a stat(2) in
 
 //*****************************************************************************
 //
@@ -215,9 +220,60 @@ private:
 
 //*****************************************************************************
 //
+//	File test functions.  Those that do not take an argument operate on
+//	the last file stat'ed.
+//
+//*****************************************************************************
+
+inline bool	file_exists( char const *path ) {
+			return ::stat( path, &stat_buf ) != -1;
+		}
+inline bool	file_exists( string const &path ) {
+			return file_exists( path.c_str() );
+		}
+
+inline bool	is_directory() {
+			return ( stat_buf.st_mode & S_IFMT ) == S_IFDIR;
+		}
+inline bool	is_directory( char const *path ) {
+			return	::stat( path, &stat_buf ) != -1
+				&& is_directory();
+		}
+inline bool	is_directory( string const &path ) {
+			return is_directory( path.c_str() );
+		}
+
+inline bool	is_plain_file() {
+			return ( stat_buf.st_mode & S_IFMT ) == S_IFREG;
+		}
+inline bool	is_plain_file( char const *path ) {
+			return	::stat( path, &stat_buf ) != -1
+				&& is_plain_file();
+		}
+inline bool	is_plain_file( string const &path ) {
+			return is_plain_file( path.c_str() );
+		}
+
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+inline bool	is_symbolic_link() {
+			return ( stat_buf.st_mode & S_IFLNK ) == S_IFLNK;
+		}
+inline bool	is_symbolic_link( char const *path ) {
+			return	::lstat( path, &stat_buf ) != -1
+				&& is_symbolic_link();
+		}
+inline bool	is_symbolic_link( string const &path ) {
+			return is_symbolic_link( path.c_str() );
+		}
+#endif	/* PJL_NO_SYMBOLIC_LINKS */
+
+//*****************************************************************************
+//
 //	Miscelleneous.
 //
 //*****************************************************************************
+
+#define	ERROR		cerr << me << ": error: "
 
 extern void		get_index_info(
 				file_vector<char> const &file, int i,
@@ -225,6 +281,12 @@ extern void		get_index_info(
 			);
 
 extern bool		is_ok_word( char const *word );
+
+inline char*		new_strdup( char const *s ) {
+				return ::strcpy( new char[ ::strlen(s)+1 ], s );
+			}
+
+extern void		parse_config_file( char const *file_name );
 
 			// ensure function semantics: 'c' is expanded once
 inline char		to_lower( char c )	{ return tolower( c ); }
