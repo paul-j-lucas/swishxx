@@ -1,0 +1,275 @@
+.\"
+.\"	SWISH++
+.\"	search.1
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\" 
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\" 
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3search\fP 1 "May 29, 1998" "SWISH++"
+.SH NAME
+search \- SWISH++ searcher
+.SH SYNOPSIS
+.B search
+[
+.I options
+]
+.I query
+.SH DESCRIPTION
+.B search
+is the SWISH++ searcher.
+.SS Query Input
+The formal grammar of a query is:
+.ft 2
+.RS 5
+.TP 16
+query:
+query optional_relop meta
+.br
+meta
+.TP
+meta:
+meta_name \f(CW=\fP primary
+.br
+primary
+.TP
+meta_name:
+word
+.TP
+primary:
+\f(CW(\fP query \f(CW)\fP
+.br
+\f(CWnot\fP
+primary
+.br
+word
+.br
+word\f(CW*\fP
+.TP
+optional_relop:
+\f(CWand\fP
+.br
+\f(CWor\fP
+.br
+(empty)
+.RE
+.ft 1
+.PP
+In practice, however, the query is the set of words sought after,
+possibly restricted to meta data,
+and possibly combined with the Boolean operators
+``\f(CWand\fP,''
+``\f(CWor\fP,''
+and
+``\f(CWnot\fP.''
+The asterisk (\f(CW*\fP) can be used as a wildcard character
+at the end of words.
+Queries are evaluated in left-to-right order, i.e.,
+``\f(CWand\fP'' has the same precedence as ``\f(CWor\fP.''
+See the EXAMPLES.
+.SS Results Output
+The results are output in the format of:
+.cS
+.I rank path-name file-size file-title
+.cE
+where
+.I rank
+is an integer from from 1 to 100.
+The
+.I path-name
+is relative to where the set of files was originally indexed.
+If the file is an HTML file, then
+.I file-title
+is its title;
+otherwise, it is its filename.
+A results line can be parsed easily in Perl with:
+.cS
+($rank,$path,$size,$title) = split( / /, $_, 4 );
+.cE
+In addition to results lines, comment lines may also appear
+containing additional information about the query results.
+Comment lines are in the format of:
+.cS
+# \f2comment-key\fP: \f2comment-value\fP
+.cE
+The
+.I comment-keys
+are:
+.RS 5
+.TP 25
+\f3ignored\fP: \f2stop-words\fP
+The list of stop-words (separated by spaces) ignored in the query.
+.TP
+\f3not found\fP: \f2word\fP
+The word was not found in the index.
+.TP
+\f3results\fP: \f2result-count\fP
+The total number of results.
+.RE
+.SH OPTIONS
+.TP 16
+.BI \-d
+Dump the query word indices to standard output and exit.
+Wildcards are not permitted.
+.TP
+.B \-D
+Dump the entire word index to standard output and exit.
+.TP
+.BI \-i index-file
+The name of the index file to use.
+The default is \f(CWthe.index\fP in the present working directory.
+.TP
+.B \-M
+Dump the meta-name index to standard output and exit.
+.TP
+.BI \-m max-results
+The maximum number of results to return overriding the
+compiled-in default (which is usually 100).
+.TP
+.BI \-r skip-results
+The initial number of results to skip.
+The default is 0.
+Used in conjunction with
+.BR \-m ,
+results can be returned in ``pages.''
+.TP
+.B \-R
+Print the result-count only.
+.TP
+.B \-s
+Perform stemming (suffix stripping) on words during the search.
+Words that end in the wildcard character are not stemmed.
+.TP
+.B \-S
+Dump the stop-word index to standard output and exit.
+.TP
+.B \-V
+Print the version number of
+.B SWISH++
+to standard output and exit.
+.TP
+\f3\-w\fP\f2size\fP[,\f2match\fP]
+Dump a ``window'' of at most
+.I size
+lines around each query word matching
+.I match
+characters.
+Wildcards are not permitted.
+The default for
+.I match
+is 0.
+Every window ends with a blank line.
+.SH EXAMPLES
+The query:
+.cS
+librar*
+.cE
+will return all documents that contain
+``library,'' ``libraries,'' or ``librarian.''
+The query:
+.cS
+mouse and computer
+.cE
+will return only those documents
+regarding the kind of mice attached to a computer and not the rodents.
+The query:
+.cS
+cat or kitten or feline
+.cE
+will return only those documents regarding cats.
+The query:
+.cS
+mouse or mice and not computer
+.cE
+will return only those documents regarding mice (the rodents)
+and not the kind attached to a computer. 
+The query:
+.cS
+mouse and computer or keyboard
+.cE
+is the same as:
+.cS
+(mouse and computer) or keyboard
+.cE
+in that they will both return only those documents
+regarding either mice attached to a computer or any kind of keyboard.
+However, neither of those is the same as:
+.cS
+mouse and (computer or keyboard)
+.cE
+that will return only those documents regarding mice
+and either a computer or a keyboard. 
+.SS Examples Using Meta Data
+The query:
+.cS
+author = carroll
+.cE
+will return only those HTML documents
+whose author attribute contains ``carroll.''
+The query:
+.cS
+author = stevenson treasure
+.cE
+will return only those HTML documents
+whose author attribute contains ``stevenson'' and also regarding treasure.
+The query:
+.cS
+author = (lewis carroll)
+.cE
+will return only those HTML documents whose author is Lewis Carroll.
+The query:
+.cS
+author = (lewis carroll) or wonderland
+.cE
+will return only those HTML documents whose author is Lewis Carroll
+or that contain the word ``wonderland'' anywhere in the document
+regardless of the author.
+.SH EXIT STATUS
+Exits with a value of zero only if the query was properly formed;
+non-zero otherwise.
+.SH FILES
+.PD 0
+.TP 14
+\f(CWthe.index\fP
+default index file name
+.PD
+.SH SEE ALSO
+.BR index (1),
+.BR perlfunc (1)
+.PP
+M.F. Porter.
+``An Algorithm For Suffix Stripping,''
+.I Program,
+14(3), July 1980, pp. 130-137.
+.SH AUTHOR
+Paul J. Lucas
+.RI < pjl@best.com >
