@@ -57,9 +57,9 @@ FollowLinks	follow_symbolic_links;
 //	do_directory() on them.  It will not follow symbolic links unless the
 //	-l command-line option was given on the command line.
 //
-//	This function uses a queue and recurses only once so as not to have
-//	too many directories open concurrently.  This has the effect of
-//	indexing in a breadth-first order rather than depth-first.
+//	This function uses a queue and recurses only once so as not to have too
+//	many directories open concurrently.  This has the effect of indexing in
+//	a breadth-first order rather than depth-first.
 //
 // PARAMETERS
 //
