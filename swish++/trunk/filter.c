@@ -79,7 +79,7 @@ using namespace std;
 		::sleep( Fork_Sleep );
 #endif
 	}
-	return exit_code ? 0 : target_file_.c_str();
+	return exit_code ? 0 : target_file_name_.c_str();
 }
 
 //*****************************************************************************
@@ -91,7 +91,7 @@ using namespace std;
 // DESCRIPTION
 //
 //	Substitute the filename (or parts thereof) into our command template
-//	whereever % or @ occurs.
+//	wherever % or @ occurs.
 //
 // PARAMETERS
 //
@@ -110,8 +110,15 @@ using namespace std;
 	command_ = command_template_;
 	register string::size_type pos = 0;
 	while ( (pos = command_.find_first_of( "%@", pos )) != string::npos ) {
-		if ( pos + 1 >= command_.length() )
+		if ( pos + 1 >= command_.length() ) {
+			//
+			// The % or @ is the last character in the command so
+			// it can't be substituted.  This is weird, but be
+			// lenient by assuming the user knows what s/he's doing
+			// and simply stop rather than return an error.
+			//
 			break;
+		}
 		if ( command_[ pos ] == command_[ pos + 1 ] ) {
 			//
 			// We encountered either a %% or @@ to represent a
@@ -121,9 +128,17 @@ using namespace std;
 			command_.erase( pos++, 1 );
 			continue;
 		}
-		if ( command_[ pos ] == '@' )
+		if ( command_[ pos ] == '@' ) {
+			//
+			// We found the substitution that represents the target
+			// filename: make a note.
+			//
 			target_pos = pos;
+		}
 
+		//
+		// Perform a substitution.
+		//
 		switch ( command_[ pos + 1 ] ) {
 
 			case 'E': // filename minus last extension
@@ -159,9 +174,9 @@ using namespace std;
 		::abort();
 	}
 
-	target_file_ = string(
+	target_file_name_ = string(
 		command_, target_pos,
 		command_.find_first_of( " &<>|", target_pos )
 	);
-	return target_file_.c_str();
+	return target_file_name_.c_str();
 }
