@@ -30,25 +30,20 @@
 //
 // SYNOPSIS
 //
-	class IndexFile : public conf<char const*>
+	class IndexFile : public conf<string>
 //
 // DESCRIPTION
 //
-//	An IndexFile is-a conf<char const*> containing the name of the index
-//	file to use.
+//	An IndexFile is-a conf<string> containing the name of the index file to
+//	use.
 //
 //	This is the same as index's or search's -i command-line option.
 //
 //*****************************************************************************
 {
 public:
-	IndexFile() :
-		conf<char const*>( "IndexFile", IndexFile_Default ) { }
-
-	IndexFile& operator=( char const *s ) {
-		conf<char const*>::operator=( s );
-		return *this;
-	}
+	IndexFile() : conf<string>( "IndexFile", IndexFile_Default ) { }
+	CONF_STRING_ASSIGN_OPS( IndexFile )
 };
 
 #endif	/* IndexFile_H */
