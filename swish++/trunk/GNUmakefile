@@ -86,6 +86,7 @@ S_SRCS:=	bcd.c \
 		index_segment.c \
 		file_list.c \
 		option_stream.c \
+		query.c \
 		token.c \
 		stem_word.c \
 		util.c \
