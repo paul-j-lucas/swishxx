@@ -47,7 +47,11 @@ public:
 	explicit filter( char const *command ) : command_template_( command ) {}
 	~filter();
 
+	// default copy constructor is fine
+	// default assignment operator is fine
+
 	char const*	substitute( char const *file_name );
+	char const*	substitute( std::string const &file_name );
 	char const*	exec() const;
 private:
 	char const*	command_template_;
@@ -66,6 +70,10 @@ private:
 inline filter::~filter() {
 	if ( !target_file_name_.empty() )
 		::unlink( target_file_name_.c_str() );
+}
+
+inline char const* filter::substitute( std::string const &file_name ) {
+	return substitute( file_name.c_str() );
 }
 
 #endif	/* filter_H */
