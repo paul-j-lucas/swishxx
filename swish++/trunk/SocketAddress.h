@@ -62,7 +62,7 @@ private:
 	struct in_addr	addr_;
 	int		port_;
 
-	void		convert_address( char const *hostname_or_ip );
+	void		convert_host( char const *hostname_or_ip );
 	virtual void	parse_value( char *line );
 };
 
