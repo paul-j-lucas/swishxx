@@ -30,16 +30,15 @@ include 	$(ROOT)/config/config.mk
 # Build rules
 ##
 
-TARGET=		$(PLATFORM_H_TARGET)
+TARGET=		$(ROOT)/$(PLATFORM_H)
 
 all config:	$(TARGET)
 
-$(TARGET):	src/bool$(CCCEXT) \
-		src/explicit$(CCCEXT) \
+$(TARGET):	src/explicit$(CCCEXT) \
 		src/mutable$(CCCEXT) \
 		src/namespaces$(CCCEXT) \
 		src/new_casts$(CCCEXT)
-	./config.sh $(TARGET) $(CCCEXT) $(CCOEXT) $(CC) $(CCFLAGS)
+	./config-sh $(TARGET) $(CCCEXT) $(CCOEXT) $(CC) $(CCFLAGS)
 
 ##
 # Utility rules
