@@ -584,6 +584,7 @@ CHANGES, file-by-file
 	9. s/isalpha/is_alpha/
 	A. s/isspace/is_space/
 	B. Reworked meta names are handled for feature AMN.
+	C. In tag_cmp(), "fixed" increment and end-of-string test.
 
 * mod_html.h
 
