@@ -100,7 +100,7 @@ int const	SocketPort_Default		= 1967;
 //		Default port number of the TCP socket; this can be overridden
 //		either in a config. file or on the command line.
 
-int const	SocketQueueSize_Default		= 100;
+int const	SocketQueueSize_Default		= 511;
 //		Maximum number of queued connections for a socket.  From
 //		[Stevens 1998], p. 96:
 //
@@ -114,8 +114,16 @@ int const	SocketQueueSize_Default		= 100;
 //			servers must specify a much larger backlog, and newer
 //			kernels must support larger values.
 //
-//		This can be overridden either in a config. file or on the
-//		command line.
+//		Unfortunately, Stevens doesn't say what a good value is.  The
+//		default 511 value is taken from httpd.h in Apache:
+//
+//			It defaults to 511 instead of 512 because some systems
+//			store it as an 8-bit datatype; 512 truncated to 8-bits
+//			is 0, while 511 is 255 when truncated.
+//
+//		If it's good enough for Apache, it's good enough for us.  This
+//		can be overridden either in a config. file or on the command
+//		line.
 
 int const	SocketTimeout_Default		= 10; // seconds
 //		The number of seconds a client has to complete a search request
