@@ -135,7 +135,7 @@ else
 	@cd config && $(MAKE)
 endif
 
-.%.d : %.c
+.%.d : %.c platform.h
 	$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | sed "s/\([^:]*\):/\1 $@ : /g" > $@; [ -s $@ ] || $(RM) $@'
 
 include	 $(I_SRCS:%.c=.%.d) $(E_SRCS:%.c=.%.d) $(S_SRCS:%.c=.%.d)
@@ -173,7 +173,7 @@ uninstall::
 ##
 
 clean::
-	$(RM) *.[do] .*.d core swish++.index
+	$(RM) *.o .*.d core swish++.index
 	@cd man && $(MAKE) $@
 
 dist distclean:: clean
