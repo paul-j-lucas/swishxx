@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "December 2, 2000" "SWISH++"
+.TH \f3search\fP 1 "April 21, 2001" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -123,6 +123,14 @@ A results line can be parsed easily in Perl with:
 .cS
 ($rank,$path,$size,$title) = split( / /, $_, 4 );
 .cE
+(The separator character can be changed via the 
+.B \-R
+or
+.B \-\-separator
+options or the
+.B ResultSeparator
+variable.)
+.P
 Prior to results lines, comment lines may also appear
 containing additional information about the query results.
 Comment lines are in the format of:
@@ -145,26 +153,26 @@ The total number of results.
 .B search
 can alternatively run in the background as a daemon process
 (via either the
-.BR \-b
+.B \-b
 or
-.BR \-\-daemon-type
+.B \-\-daemon-type
 options or the
-.BR SearchDaemon
+.B SearchDaemon
 variable)
 functioning as a ``search server''
 by listening to a Unix domain socket
 (specified by either the
-.BR \-u
+.B \-u
 or
-.BR \-\-socket-file
+.B \-\-socket-file
 options or the
 .B SocketFile
 variable),
 a TCP socket
 (specified by either the
-.BR \-a
+.B \-a
 or
-.BR \-\-socket-address
+.B \-\-socket-address
 options or the
 .B SocketAddress
 variable),
@@ -276,11 +284,11 @@ a `\f(CW-\fP'.
 .B \-\-help
 Print the usage (``help'') message and exit.
 .TP
-.B \-a a
+.BI \-a a
 .br
 .ns
 .TP
-.B \-\-socket-address= a
+.BI \-\-socket-address= a
 When running as a daemon,
 the address,
 .IR a , 
@@ -305,11 +313,11 @@ Omitting the
 .I host
 and colon also means ``any IP address.''
 .TP
-.B \-b t
+.BI \-b t
 .br
 .ns
 .TP
-.B \-\-daemon-type= t
+.BI \-\-daemon-type= t
 Run in the background as a daemon process.
 (Default is not to.)
 The type,
@@ -482,6 +490,14 @@ or
 .BR \-\-max-results ,
 results can be returned in ``pages.''
 .TP
+.BI \-R s
+.br
+.ns
+.TP
+.BI \-\-separator= s
+The result separator string.
+(Default is " ".)
+.TP
 .B \-s
 .br
 .ns
@@ -562,6 +578,12 @@ Same as
 .B \-P
 or
 .B \-\-pid-file
+.TP
+.B ResultSeparator
+Same as
+.B \-R
+or
+.B \-\-separator
 .TP
 .B ResultsMax
 Same as
@@ -723,7 +745,7 @@ otherwise the server thread will hang
 since I/O buffering will wait for the buffer to fill
 that will never happen since queries are short:
 .cS
-my $old_fh = select( SEARCH ); $| = 1; select( $old_fh );
+select( (select( SEARCH ), $| = 1)[0] );
 .cE
 Next, send a query request
 (beginning with the word ``search'')
