@@ -218,7 +218,7 @@ private:
 //
 //*****************************************************************************
 
-extern struct stat	stat_buf;		// somplace to do a stat(2) in
+extern struct stat	stat_buf;		// someplace to do a stat(2) in
 
 inline bool	file_exists( char const *path ) {
 			return ::stat( path, &stat_buf ) != -1;
