@@ -35,8 +35,8 @@
 #
 ###############################################################################
 
-#FREE_BSD:=	-DFreeBSD
-LINUX:=		-DLinux
+FREE_BSD:=	-DFreeBSD
+#LINUX:=		-DLinux -D_BSD_SOURCE
 #SOLARIS:=	-DSolaris
 #WIN32:=		-DWIN32
 
