@@ -2,7 +2,7 @@
 ##
 #	install-sh
 #
-#	Copyright (C) 1998  Paul J. Lucas
+#	Copyright (C) 2000  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ MKDIR=mkdir
 
 ########## You shouldn't have to change anything below this line. #############
 
-ME=$0; ME=`expr $ME : '.*/\(.*\)'`
+ME=`basename $0`
 
 usage() {
 	echo "usage: $ME [-o owner] [-g group] [-m mode] file ... dir" >&2
@@ -144,5 +144,5 @@ else
 	}
 	$ECHO $CP $src $dst
 	$ECHO cd $dst
-	change $src
+	change `echo $src | xargs -n1 basename`
 fi
