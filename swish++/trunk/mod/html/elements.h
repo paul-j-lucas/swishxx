@@ -55,8 +55,8 @@ class element_map;
 public:
 	enum end_tag_value { forbidden, optional, required };
 
-	end_tag_value const	end_tag;
 	PJL::char_ptr_set	close_tags;
+	end_tag_value const	end_tag;
 private:
 	explicit element( end_tag_value v ) : end_tag( v ) { }
 	friend class element_map;
