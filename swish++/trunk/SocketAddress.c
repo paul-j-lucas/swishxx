@@ -22,6 +22,7 @@
 // standard
 #include <iostream>
 #include <netdb.h>			/* for gethostbyname(3), et al */
+#include <sys/types.h>			/* needed by FreeBSD systems */
 #include <netinet/in.h>
 #include <cstring>
 #include <cstdlib>			/* for atoi(3) */

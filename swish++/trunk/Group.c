@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <sys/types.h>			/* needed by FreeBSD systems */
 #include <grp.h>
 
 // local
