@@ -26,7 +26,6 @@
 #include <iterator>
 
 // local
-#include "file_vector.h"
 #include "util.h"			/* for to_lower() */
 #include "word_util.h"
 
@@ -62,23 +61,20 @@ enum content_transfer_encoding {
 //*****************************************************************************
 {
 public:
-	typedef file_vector::difference_type difference_type;
-	typedef file_vector::value_type value_type;
-	typedef file_vector::pointer pointer;
-	typedef file_vector::const_pointer const_pointer;
-	typedef file_vector::reference reference;
-	typedef file_vector::const_reference const_reference;
+	typedef ptrdiff_t difference_type;
+	typedef char value_type;
+	typedef value_type* pointer;
+	typedef value_type const* const_pointer;
+	typedef value_type& reference;
+	typedef value_type const& const_reference;
 
 	class const_iterator;
 	friend class const_iterator;
 
 	encoded_char_range(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator end,
+		const_pointer begin, const_pointer end,
 		content_transfer_encoding = Eight_Bit
 	);
-
-	encoded_char_range( const_iterator const& );
 
 	// default copy constructor is fine
 	// default assignment operator is fine
@@ -87,13 +83,13 @@ public:
 	const_iterator			end()   const;
 	content_transfer_encoding	encoding() const { return encoding_; }
 
-	void begin( file_vector::const_iterator i ) { begin_ = i; }
-	void end  ( file_vector::const_iterator i ) { end_   = i; }
+	void				begin( const_pointer p ) { begin_ = p; }
+	void				end  ( const_pointer p ) { end_   = p; }
 protected:
 	encoded_char_range() { }
 
-	file_vector::const_iterator	begin_;
-	file_vector::const_iterator	end_;
+	const_pointer			begin_;
+	const_pointer			end_;
 	content_transfer_encoding	encoding_;
 };
 
@@ -119,11 +115,14 @@ protected:
 public:
 	typedef encoded_char_range::difference_type difference_type;
 	typedef encoded_char_range::value_type value_type;
+	typedef encoded_char_range::pointer pointer;
+	typedef encoded_char_range::const_pointer const_pointer;
+	typedef encoded_char_range::reference reference;
+	typedef encoded_char_range::const_reference const_reference;
 
 	const_iterator() { }
 	const_iterator(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator end,
+		const_pointer begin, const_pointer end,
 		content_transfer_encoding encoding = Eight_Bit
 	);
 
@@ -134,60 +133,54 @@ public:
 	const_iterator&	operator++();
 	const_iterator	operator++(int);
 
-	bool at_end() const { return pos_ == end_; }
+	bool		at_end() const			{ return pos_ == end_; }
 
-	file_vector::const_iterator  begin_pos() const	{ return begin_; }
-	file_vector::const_iterator  pos()       const	{ return pos_; }
-	file_vector::const_iterator& pos()		{ return pos_; }
-	file_vector::const_iterator  end_pos()   const	{ return end_; }
-	file_vector::const_iterator  prev_pos()  const	{ return prev_; }
+	const_pointer	begin_pos() const		{ return begin_; }
+	const_pointer	pos()       const		{ return pos_; }
+	const_pointer&	pos()				{ return pos_; }
+	const_pointer	end_pos()   const		{ return end_; }
+	const_pointer	prev_pos()  const		{ return prev_; }
 
-	void pos    ( file_vector::const_iterator i )	{ pos_ = i; }
-	void end_pos( file_vector::const_iterator i )	{ end_ = i; }
+	void		pos    ( const_pointer i )	{ pos_ = i; }
+	void		end_pos( const_pointer i )	{ end_ = i; }
 
 	friend bool operator==( const_iterator const&, const_iterator const& );
 	friend bool operator==(
-		const_iterator const&, file_vector::const_iterator
+		const_iterator const&, const_pointer
 	);
 private:
-	mutable file_vector::const_iterator	pos_;
-	mutable file_vector::const_iterator	prev_;
-	mutable value_type			ch_;
+	mutable const_pointer	pos_;
+	mutable const_pointer	prev_;
+	mutable value_type	ch_;
 #ifdef MOD_MAIL
-	mutable bool				decoded_;
-	mutable int				delta_;
+	mutable bool		decoded_;
+	mutable int		delta_;
 #endif
-	const_iterator(
-		encoded_char_range const*,
-		file_vector::const_iterator start_pos
-	);
+	const_iterator( encoded_char_range const*, const_pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
 
 	void		decode() const;
 #ifdef MOD_MAIL
 	static value_type decode_base64(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator &pos,
-		file_vector::const_iterator end
+		const_pointer begin, const_pointer &pos, const_pointer end
 	);
 	static value_type decode_quoted_printable(
-		file_vector::const_iterator &pos,
-		file_vector::const_iterator end
+		const_pointer &pos, const_pointer end
 	);
 	static value_type decode_quoted_printable_aux(
-		file_vector::const_iterator &pos,
-		file_vector::const_iterator end
+		const_pointer &pos, const_pointer end
 	);
 #endif
 };
+
+#define	ECR_CI	encoded_char_range::const_iterator
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
 	inline encoded_char_range::encoded_char_range(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator end,
+		const_pointer begin, const_pointer end,
 		content_transfer_encoding encoding
 	)
 //
@@ -197,9 +190,9 @@ private:
 //
 // PARAMETERS
 //
-//	begin		An iterator marking the beginning of the range.
+//	begin		An pointer marking the beginning of the range.
 //
-//	end		An iterator marking the end of the range.
+//	end		An pointer marking the end of the range.
 //
 //	encoding	The Content-Transfer-Encoding of the text.
 //
@@ -212,31 +205,8 @@ private:
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::encoded_char_range(
-		encoded_char_range::const_iterator const &c
-	)
-//
-// DESCRIPTION
-//
-//	Construct an encoded_char_range from an iterator on an
-//	encoded_char_range.
-//
-// PARAMETERS
-//
-//	c	The iterator to take the information from.
-//
-//*****************************************************************************
-	: begin_( c.begin_ ), end_( c.end_ ), encoding_( c.encoding_ )
-{
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline encoded_char_range::const_iterator::const_iterator(
-		file_vector::const_iterator begin,
-		file_vector::const_iterator end,
+	inline ECR_CI::const_iterator(
+		const_pointer begin, const_pointer end,
 		content_transfer_encoding encoding = Eight_Bit
 	)
 //
@@ -246,9 +216,9 @@ private:
 //
 // PARAMETERS
 //
-//	begin		An iterator marking the beginning of the range.
+//	begin		An pointer marking the beginning of the range.
 //
-//	end		An iterator marking the end of the range.
+//	end		An pointer marking the end of the range.
 //
 //	encoding	The Content-Transfer-Encoding of the text.
 //
@@ -264,9 +234,8 @@ private:
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::const_iterator::const_iterator(
-		encoded_char_range const *ecr,
-		file_vector::const_iterator start_pos
+	inline ECR_CI::const_iterator(
+		encoded_char_range const *ecr, const_pointer start_pos
 	)
 //
 // DESCRIPTION
@@ -277,8 +246,8 @@ private:
 //
 //	ecr		The encoded_char_rage to iterate over.
 //
-//	start_pos	An iterator marking the position where the this
-//			iterator is to start.
+//	start_pos	A pointer marking the position where the this pointer
+//			is to start.
 //
 //*****************************************************************************
 	: encoded_char_range( start_pos, ecr->end_, ecr->encoding_ ),
@@ -294,10 +263,8 @@ private:
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::value_type
-	encoded_char_range::const_iterator::decode_quoted_printable(
-		file_vector::const_iterator &c,
-		file_vector::const_iterator end
+	inline encoded_char_range::value_type ECR_CI::decode_quoted_printable(
+		const_pointer &c, const_pointer end
 	)
 //
 // DESCRIPTION
@@ -312,10 +279,9 @@ private:
 //
 // PARAMETERS
 //
-//	c	An iterator marking the position of the character to be
-//		decoded.
+//	c	An pointer marking the position of the character to be decoded.
 //
-//	end	An iterator marking the end of the text.
+//	end	An pointer marking the end of the text.
 //
 // RETURN VALUE
 //
@@ -333,7 +299,7 @@ private:
 //
 // SYNOPSIS
 //
-	inline void encoded_char_range::const_iterator::decode() const
+	inline void ECR_CI::decode() const
 //
 // DESCRIPTION
 //
@@ -352,7 +318,7 @@ private:
 	// through the encoded text.  This allows the delta to be computed so
 	// the iterator can be incremented later.
 	//
-	file_vector::const_iterator c = pos_;
+	const_pointer c = pos_;
 	switch ( encoding_ ) {
 		case Base64:
 			ch_ = decode_base64( begin_, c, end_ );
@@ -373,8 +339,7 @@ private:
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::value_type
-	encoded_char_range::const_iterator::operator*() const
+	inline encoded_char_range::value_type ECR_CI::operator*() const
 //
 // DESCRIPTION
 //
@@ -400,8 +365,7 @@ private:
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::const_iterator&
-	encoded_char_range::const_iterator::operator++()
+	inline ECR_CI& ECR_CI::operator++()
 //
 // DESCRIPTION
 //
@@ -446,8 +410,7 @@ private:
 //
 // SYNOPSIS
 //
-	inline encoded_char_range::const_iterator
-	encoded_char_range::const_iterator::operator++(int)
+	inline ECR_CI ECR_CI::operator++(int)
 //
 // DESCRIPTION
 //
@@ -459,7 +422,7 @@ private:
 //
 //*****************************************************************************
 {
-	encoded_char_range::const_iterator const temp = *this;
+	ECR_CI const temp = *this;
 	operator++();
 	return temp;
 }
@@ -470,46 +433,28 @@ private:
 //
 //*****************************************************************************
 
-inline bool operator==(
-	encoded_char_range::const_iterator const &e1,
-	encoded_char_range::const_iterator const &e2
-) {
+inline bool operator==( ECR_CI const &e1, ECR_CI const &e2 ) {
 	return e1.pos_ == e2.pos_;
 }
 
-inline bool operator==(
-	encoded_char_range::const_iterator const &e,
-	file_vector::const_iterator f
-) {
-	return e.pos_ == f;
+inline bool operator==( ECR_CI const &e, ECR_CI::const_pointer p ) {
+	return e.pos_ == p;
 }
 
-inline bool operator==(
-	file_vector::const_iterator f,
-	encoded_char_range::const_iterator const &e
-) {
-	return e == f;
+inline bool operator==( ECR_CI::const_pointer p, ECR_CI const &e ) {
+	return e == p;
 }
 
-inline bool operator!=(
-	encoded_char_range::const_iterator const &e1,
-	encoded_char_range::const_iterator const &e2
-) {
+inline bool operator!=( ECR_CI const &e1, ECR_CI const &e2 ) {
 	return !( e1 == e2 );
 }
 
-inline bool operator!=(
-	encoded_char_range::const_iterator const &e,
-	file_vector::const_iterator f
-) {
-	return !( e == f );
+inline bool operator!=( ECR_CI const &e, ECR_CI::const_pointer p ) {
+	return !( e == p );
 }
 
-inline bool operator!=(
-	file_vector::const_iterator f,
-	encoded_char_range::const_iterator const &e
-) {
-	return e != f;
+inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
+	return e != p;
 }
 
 //*****************************************************************************
@@ -518,10 +463,10 @@ inline bool operator!=(
 //
 //*****************************************************************************
 
-inline encoded_char_range::const_iterator encoded_char_range::begin() const {
+inline ECR_CI encoded_char_range::begin() const {
 	return const_iterator( this, begin_ );
 }
-inline encoded_char_range::const_iterator encoded_char_range::end() const {
+inline ECR_CI encoded_char_range::end() const {
 	return const_iterator( this, end_ );
 }
 
@@ -529,7 +474,7 @@ inline encoded_char_range::const_iterator encoded_char_range::end() const {
 //
 // SYNOPSIS
 //
-	inline char *to_lower( encoded_char_range::const_iterator c )
+	inline char *to_lower( ECR_CI c )
 //
 // DESCRIPTION
 //
@@ -557,5 +502,7 @@ inline encoded_char_range::const_iterator encoded_char_range::end() const {
 	*p = '\0';
 	return lower_buf.current();
 }
+
+#undef	ECR_CI
 
 #endif	/* encoded_char_H */
