@@ -1,0 +1,438 @@
+.\"
+.\"	SWISH++
+.\"	swish++.conf.4
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\"
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\"
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.sp
+..
+.\" ---------------------------------------------------------------------------
+.TH "\f3swish++.conf\f1" 4 "September 6, 2001" "SWISH++"
+.SH NAME
+swish++.conf \- SWISH++ configuration file format
+.SH DESCRIPTION
+The configuration file format used by SWISH++ consists of three types of lines:
+blank lines, comments, and variable definitions.
+.SS Blank lines
+Blank lines, or lines consisting entirely of whitespace, are ignored.
+.SS Comments
+Comments start with the \f(CW#\f1 character
+and continue up to and including the end of the line.
+While leading whitespace is permitted,
+.BR "comments are treated as such only if they are on lines by themselves" .
+.SS Variable definitions
+Variable definition lines are of the form:
+.cS
+.ft 2
+variable_name argument(s)
+.cE
+where
+.I variable_name
+is a member of one of the types described in the remaining sections, and
+.I argument(s)
+are specific to every variable name.
+For
+.IR variable_name ,
+case is irrelevant.
+.SS Boolean variables
+Variables of this type take one argument that must be one of:
+\f(CWf\f1,
+\f(CWfalse\f1,
+\f(CWn\f1,
+\f(CWno\f1,
+\f(CWoff\f1,
+\f(CWon\f1,
+\f(CWt\f1,
+\f(CWtrue\f1,
+\f(CWy\f1,
+or
+\f(CWyes\f1.
+Case is irrelevant.
+Variables of this type are:
+.BR AssociateMeta ,
+.BR ExtractFilter ,
+.BR FollowLinks ,
+.BR Incremental ,
+.BR RecurseSubdirs ,
+and
+.BR StemWords .
+.SS Enumeration variables
+Variables of this type are just like string variables (see below)
+except that the argument
+.I must
+be one of a set of pre-determined values.
+Case is irrelevant.
+Variables of this type are:
+.BR SearchDaemon .
+.P
+.B SearchDaemon
+must be one of:
+\f(CWnone\f1,
+\f(CWtcp\f1,
+\f(CWunix\f1,
+or
+\f(CWboth\f1.
+.SS Filter variables
+Variables of this type are of the form:
+.cS
+\f2pattern command\fP
+.cE
+where
+.I pattern
+is a shell pattern (regular expression) and
+.I command
+is the command-line to execute the filter.
+.PP
+Within a command,
+there are a few \f(CW%\f1 substitutions
+that are done at run-time:
+.PP
+.RS 5
+.PD 0
+.TP 5
+.B b
+Basename of filename.
+.TP
+.B B
+Basename minus last extension.
+.TP
+.B e
+Extension of filename.
+.TP
+.B E
+Second-to-last extension of filename.
+.TP
+.B f
+Entire filename.
+.TP
+.B F
+Filename minus last extension.
+.RE
+.PD
+.PP
+That is: the \f(CW%\f1 and one character immediately after it
+are substituted as described in the above table.
+Substituted filenames are skipped past and not rescanned for more substitutions,
+but the remainder of the command is.
+To use a literal \f(CW%\f1 or \f(CW@\f1, simply double it.
+(For more on filter variables, see FILTERS below.)
+.PP
+Variables of this type are:
+.B FilterAttachment
+and
+.BR FilterFile .
+.SS Integer variables
+Variables of this type take one numeric argument.
+A special string of \f(CWinfinity\f1 is taken to mean
+``the largest possible integer value.''
+Case is irrelevant.
+Variables of this type are:
+.BR FilesReserve ,
+.BR ResultsMax ,
+.BR SocketQueueSize ,
+.BR SocketTimeout ,
+.BR ThreadsMax ,
+.BR ThreadsMin ,
+.BR ThreadTimeout ,
+.BR TitleLines ,
+.BR Verbosity ,
+.BR WordFilesMax ,
+and
+.BR WordPercentMax .
+.SS Percentage variables
+Variables of this type are like integer variables
+except that if an optional trailing percent sign (\f(CW%\f1) is present,
+the value is taken to be a percentage rather than an absolute number.
+Variables of this type are:
+.BR FilesGrow .
+.SS String variables
+Variables of this type take one argument that is the remainder of the line
+minus leading and trailing whitespace.
+To preserve whitespace,
+surround the argument in either single or double quotes.
+The quotes themselves are stripped from the argument,
+but only if they match.
+Variables of this type are:
+.BR ExtractExtension ,
+.BR IndexFile ,
+.BR PidFile ,
+.BR ResultSeparator ,
+.BR SocketFile ,
+and
+.BR StopWordFile .
+.SS Set variables
+Variables of this type take one or more arguments separated by whitespace.
+Variables of this type are:
+.BR ExcludeClass ,
+.BR ExcludeFile ,
+.BR ExtractFile ,
+and
+.BR ExcludeMeta .
+.SS Other variables
+Variables of this type are:
+.BR IncludeFile ,
+.BR IncludeMeta ,
+and
+.BR SocketAddress .
+.P
+An
+.B IncludeFile
+configuration file line is of the form:
+.cS
+\f2module_name\fP \f2pattern ...\fP
+.cE
+where
+.I "module_name"
+is the name of the module
+(case is irrelevant)
+to handle the indexing of the filename
+.IR pattern s
+that follow.
+Module names are:
+\f(CWtext\f1 (plain text),
+\f(CWHTML\f1 (HTML and XHTML),
+\f(CWMail\f1 (mail and news messages),
+and
+\f(CWMan\f1 (Unix manual pages).
+.P
+An
+.B IncludeMeta
+configuration file line is of the form:
+.cS
+name\f3[\fP=\f2new_name\fP\f3]\fP \f2...\fP
+.cE
+It is like a set variable except arguments may optionally be followed
+by reassignments.
+For example, a value of:
+.cS
+adr=address
+.cE
+says to include and index the words associated with the meta name \f(CWadr\f1,
+but to store the name as \f(CWaddress\f1 in the generated index file
+so that queries would use \f(CWaddress\f1 rather than \f(CWadr\f1.
+.P
+A
+.B SocketAddress
+configuration file line is of the form:
+.cS
+\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
+.cE
+that is: an optional host and colon
+followed by a port number.
+The
+.I host
+may be one of a host name, an IPv4 address (in dot-decimal notation),
+an IPv6 address (in colon notation)
+if supported by the operating system,
+or the \f(CW*\f1 character
+meaning ``any IP address.''
+Omitting the
+.I host
+and colon also means ``any IP address.''
+.SH FILTERS
+.SS Filtering files
+Via the
+.B FilterFile
+configuration file variable,
+files matching patterns can be filtered
+prior to indexing or extraction.
+For example,
+to uncompress \f(CWbzip2\f1'd, \f(CWgzip\f1'd, and \f(CWcompress\f1'd files
+prior to indexing or extraction, the
+.B FilterFile
+variable lines in a configuration file would be:
+.cS
+FilterFile *.bz2  bunzip2 -c %f > @%F
+FilterFile *.gz   gunzip -c %f > @%F
+FilterFile *.Z    uncompress -c %f > @%F
+.cE
+Given that, a filename such as \f(CWfoo.txt.gz\f1 would become \f(CWfoo.txt\f1.
+If files having \f(CWtxt\f1 extensions should be indexed, then it will be.
+Note that the command on the
+.B FilterFile
+line must
+.I not
+simply be:
+.cS
+gunzip @%f				# WRONG!
+.cE
+because \f(CWgunzip\f1 will
+.I replace
+the compressed file with the uncompressed one.
+.PP
+Here's an example to convert PDF to plain text for indexing using the
+.BR xpdf (1)
+package's \f(CWpdftotext\f1 command:
+.cS
+FilterFile *.pdf  pdftotext %f @%F.txt
+.cE
+A file can be filtered more than once prior to indexing or extraction, i.e.,
+filters can be ``chained'' together.
+For example, if the uncompression and PDF examples shown above
+are used together,
+compressed PDF files will also be indexed or extracted, i.e.,
+filenames ending with one of
+\f(CW.pdf.bz2\f1, \f(CW.pdf.gz\f1, or \f(CW.pdf.Z\f1
+double extensions.
+.PP
+Note, however, that just because a filename has an extension
+for which a filter has been specified does
+.I not
+mean that a file will be filtered
+and subsequently indexed or extracted.
+When
+.B index
+or
+.B extract
+encounters a file having an extension for which a filter has been specified,
+it performs the filename substitution(s) on it first
+to determine what the target filename would be.
+If the extension of
+.I that
+filename should be indexed or extracted
+(because it is among the set of extensions specified with either the
+.B \-e
+or
+.B \-\-pattern
+options or the
+.B IncludeFile
+variable
+or is not among the set specified with either the
+.B \-E
+or
+.B \-\-no-pattern
+options or the
+.B ExcludeFile
+variable),
+.I then
+the filter(s) are executed to create it.
+.SS Filtering attachments
+Via the
+.B FilterAttachment
+configuration file variable,
+e-mail attachments whose MIME types match particular patterns
+can be filtered and thus indexed.
+An attachment is written to a temporary file by itself
+(after having been base-64 decoded, if necessary)
+and a filter command is called on that file.
+.PP
+For example,
+to convert a PDF attachment to plain text so it can be indexed, the
+.B FilterAttachment
+variable line in a configuration file would be:
+.cS
+FilterAttachment application/pdf    pdftotext %f @%F.txt
+.cE
+MIME types
+.I must
+be specified entirely in lower case.
+Patterns can be useful for MIME types.
+For example:
+.cS
+FilterAttachment application/*word  extract -f %f > @%F.txt
+.cE
+can be used regardless of whether the MIME type is
+\f(CWapplication/msword\f1 (the official MIME type for Microsoft Word documents)
+or
+\f(CWapplication/vnd.ms-word\f1 (an older version).
+.PP
+The MIME types that are built into
+.BR index (1)
+are:
+\f(CWtext/plain\f1,
+\f(CWtext/enriched\f1,
+\f(CWtext/html\f1,
+\f(CWtext/*vcard\f1,
+\f(CWmessage/rfc822\f1,
+\f(CWmultipart/\f1\f2something\f1
+(where
+.I something
+is one of:
+\f(CWalternative\f1, \f(CWmixed\f1, or \f(CWparallel\f1).
+.B FilterAttachment
+variable lines can override the handling of the built-in MIME types.
+.PP
+Unlike file filters, attachment filters
+.I must
+convert directly to plain text
+and can not be ``chained'' together.
+(This restriction exists because there is no way to know
+what any intermediate MIME types would be to apply more filters.)
+.SH SEE ALSO
+.BR bzip (1),
+.BR compress (1),
+.BR extract (1),
+.BR gunzip (1),
+.BR gzip (1),
+.BR index (1),
+.BR pdftotext (1),
+.BR search (1),
+.BR uncompress (1),
+.BR glob (7)
+.PP
+Tim Berners-Lee.
+``The text/enriched MIME Content-type,''
+.IR "Request for Comments 1563" ,
+Network Working Group of the Internet Engineering Task Force,
+January 1994.
+.PP
+David H. Crocker.
+``Standard for the Format of ARPA Internet Text Messages,''
+.IR "Request for Comments 822" ,
+Department of Electrical Engineering,
+University of Delaware,
+August 1982.
+.PP
+Frank Dawson and Tim Howes.
+``vCard MIME Directory Profile,''
+.IR "Request for Comments 2426" ,
+Network Working Group of the Internet Engineering Task Force,
+September 1998.
+.PP
+Ned Freed and Nathaniel S. Borenstein.
+``Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,''
+.IR "Request for Comments 2045" ,
+RFC 822 Extensions Working Group of the Internet Engineering Task Force,
+November 1996.
+.PP
+International Standards Organization.
+``ISO/IEC 9945-2: Information Technology
+-- Portable Operating System Interface (POSIX)
+-- Part 2: Shell and Utilities,''
+1993.
+.PP
+Steven Pemberton, et al.
+.IR "XHTML 1.0: The Extensible HyperText Markup Language" ,
+World Wide Web Consortium,
+January 2000.
+.SH AUTHOR
+Paul J. Lucas
+.RI < pauljlucas@mac.com >
