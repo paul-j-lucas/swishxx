@@ -53,6 +53,7 @@ int const		PATH_MAX = 1024;
 // local
 #include "exit_codes.h"
 #include "fake_ansi.h"			/* for std */
+#include "omanip.h"
 #include "platform.h"			/* for PJL_NO_SYMBOLIC_LINKS */
 
 extern char const*	me;
@@ -268,33 +269,38 @@ inline bool	is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
-inline int		pjl_abs( int n ) { return n >= 0 ? n : -n; }
+inline int pjl_abs( int n ) {
+	return n >= 0 ? n : -n;
+}
 
-inline std::ostream&	error( std::ostream &o = std::cerr ) {
-				return o << me << ": error: ";
-			}
-inline std::ostream&	error_string( std::ostream &o = std::cerr ) {
-				return o << ": " << std::strerror( errno )
-					 << std::endl;
-			}
+inline std::ostream& error( std::ostream &o = std::cerr ) {
+	return o << me << ": error: ";
+}
 
-#define	internal_error	std::cerr << (me ? me : "SWISH++") << ", \"" \
-			<< __FILE__ << "\", line " << __LINE__ \
-			<< ": internal error: "
+inline std::ostream&
+error_string( std::ostream &o = std::cerr, int err_code = errno ) {
+	return o << ": " << std::strerror( err_code ) << std::endl;
+}
+
+inline PJL::omanip<int> error_string( int err_code ) {
+	return PJL::omanip<int>( error_string, err_code );
+}
+
+#define	internal_error \
+	std::cerr << (me ? me : "SWISH++") << ", \"" \
+	<< __FILE__ << "\", line " << __LINE__ << ": internal error: "
 
 #define	NUM_ELEMENTS(a)	(sizeof (a) / sizeof( (a)[0] ))
 
-inline std::ostream&	report_error( std::ostream &o = std::cerr ) {
-				o << "; please report this error" << std::endl;
-				::_exit( Exit_Internal_Error );
-				return o;	// just to make compiler happy
-			}
+inline std::ostream& report_error( std::ostream &o = std::cerr ) {
+	o << "; please report this error" << std::endl;
+	::_exit( Exit_Internal_Error );
+	return o;	// just to make compiler happy
+}
 
-inline char*		new_strdup( char const *s ) {
-				return std::strcpy(
-					new char[ std::strlen( s ) + 1 ], s
-				);
-			}
+inline char* new_strdup( char const *s ) {
+	return std::strcpy( new char[ std::strlen( s ) + 1 ], s );
+}
 
 		// ensure function semantics: 'c' is expanded once
 inline bool	is_alnum( char c ) {
