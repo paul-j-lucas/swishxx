@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "August 16, 2001" "SWISH++"
+.TH \f3search\fP 1 "September 26, 2001" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -51,7 +51,8 @@ It searches a previously generated index for the words specified in a query.
 In addition to running from the command-line,
 it can run in the background as a daemon process
 functioning as a ``search server.''
-.SS Query Input
+.SH QUERY INPUT
+.SS Query Syntax
 The formal grammar of a query is:
 .ft 2
 .RS 5
@@ -104,22 +105,34 @@ See the EXAMPLES.
 The same character mapping and word determination heuristics used by
 .BR index (1)
 are used on queries prior to searching.
-.SS Results Output
-The results are output in the format of:
-.cS
-.I rank path-name file-size file-title
-.cE
-where
+.SH RESULTS OUTPUT
+.SS Result Components
+The results are output either in ``classic'' or XML format.
+In either case, the components of the results are:
+
+.TP 12
 .I rank
-is an integer from from 1 to 100.
-The
+An integer from from 1 to 100.
+.TP
 .I path-name
-is relative to where the set of files was originally indexed.
-If the file is an HTML or XHTML file, then
+The relative path to where the file was originally indexed.
+.TP
+.I file-size
+The file's size in bytes.
+.TP
+.I file-title
+If the file is of a format that can have titles
+(HTML, XHTML, mail, or Unix manual pages)
+and the title was extracted, then
 .I file-title
 is its title;
 otherwise, it is its filename.
-A results line can be parsed easily in Perl with:
+.SS Classic Results Format
+The ``classic'' results format is plain text as:
+.cS
+.I rank path-name file-size file-title
+.cE
+It can be parsed easily in Perl with:
 .cS
 ($rank,$path,$size,$title) = split( / /, $_, 4 );
 .cE
@@ -139,7 +152,7 @@ Comment lines are in the format of:
 .cE
 The keys and values are:
 .RS 5
-.TP 25
+.TP 24
 \f3ignored\fP: \f2stop-words\fP
 The list of stop-words (separated by spaces) ignored in the query.
 .TP
@@ -149,7 +162,42 @@ The word was not found in the index.
 \f3results\fP: \f2result-count\fP
 The total number of results.
 .RE
-.SS Running as a Daemon Process
+.SS XML Results Format
+The XML results format is given by the DTD:
+.cS
+<!ELEMENT SearchResults (IgnoredList?, ResultCount, ResultList?)>
+<!ELEMENT IgnoredList (Ignored+)>
+<!ELEMENT Ignored (#PCDATA)>
+<!ELEMENT ResultCount (#PCDATA)>
+<!ELEMENT ResultList (File+)>
+<!ELEMENT File (Rank, Path, Size, Title)>
+<!ELEMENT Rank (#PCDATA)>
+<!ELEMENT Path (#PCDATA)>
+<!ELEMENT Size (#PCDATA)>                                                       <!ELEMENT Title (#PCDATA)>
+.cE
+For example:
+.cS
+<!DOCTYPE SearchResults SYSTEM
+ "http://homepage.mac.com/pauljlucas/software/swish/SearchResults.dtd">
+<?xml version="1.0"?>
+<SearchResults>
+  <IgnoredList>
+    <Ignored>\f2stop-word\fP</Ignored>
+    \f2\&...\fP
+  </IgnoredList>
+  <ResultCount>42</ResultCount>
+  <ResultList>
+    <File>
+      <Rank>\f2rank\fP</Rank>
+      <Path>\f2path-name\fP</Path>
+      <Size>\f2file-size\fP</Size>
+      <Title>\f2file-title\fP</Title>
+    </File>
+    \f2\&...\fP
+  </ResultList>
+</SearchResults>
+.cE
+.SH RUNNING AS A DAEMON PROCESS
 .B search
 can alternatively run in the background as a daemon process
 (via either the
@@ -397,6 +445,17 @@ The maximum number of files,
 a word may occur in before it is discarded as being too frequent.
 (Default is infinity.)
 .TP
+.BI \-F f
+.br
+.ns
+.TP
+.BI \-\-format= f
+The format,
+.IR f ,
+search results are output in.
+The format is either \f(CWclassic\fP or \f(CWXML\f1.
+(Default is \f(CWclassic\fP.)
+.TP
 .BI \-i f
 .br
 .ns
@@ -466,6 +525,7 @@ If you want to keep all words regardless, specify 101.
 The name of the file to record the process ID of
 .B search
 if running as a daemon.
+(Default is none.)
 .TP
 .BI \-q n
 .br
@@ -495,7 +555,7 @@ results can be returned in ``pages.''
 .ns
 .TP
 .BI \-\-separator= s
-The result separator string.
+The classic result separator string.
 (Default is " ".)
 .TP
 .B \-s
@@ -534,6 +594,7 @@ Maximum number of threads to allow while running as a daemon.
 .TP
 .BI \-\-socket-file= f
 The name of the Unix domain socket file to use while running as a daemon.
+(Default is \f(CW/tmp/search.socket\f1.)
 .TP
 .B \-V
 .br
@@ -584,6 +645,12 @@ Same as
 .B \-R
 or
 .B \-\-separator
+.TP
+.B ResultsFormat
+Same as
+.B \-F
+or
+.B \-\-format
 .TP
 .B ResultsMax
 Same as
@@ -704,24 +771,24 @@ The query:
 .cS
 author = carroll
 .cE
-will return only those HTML or XHTML documents
+will return only those documents
 whose author attribute contains ``carroll.''
 The query:
 .cS
 author = stevenson treasure
 .cE
-will return only those HTML or XHTML documents
+will return only those documents
 whose author attribute contains ``stevenson'' and also regarding treasure.
 The query:
 .cS
 author = (lewis carroll)
 .cE
-will return only those HTML or XHTML documents whose author is Lewis Carroll.
+will return only those documents whose author is Lewis Carroll.
 The query:
 .cS
 author = (lewis carroll) or wonderland
 .cE
-will return only those HTML or XHTML documents whose author is Lewis Carroll
+will return only those documents whose author is Lewis Carroll
 or that contain the word ``wonderland'' anywhere in the document
 regardless of the author.
 .SS Sending Queries to a Search Daemon
@@ -748,7 +815,8 @@ that will never happen since queries are short:
 select( (select( SEARCH ), $| = 1)[0] );
 .cE
 Next, send a query request
-(beginning with the word ``search'')
+(beginning with the word ``search''
+and any options just as with a command-line)
 to the daemon via the socket filehandle
 making sure to include a trailing newline
 since the server reads an entire line of input
@@ -862,7 +930,11 @@ because the Porter stemming algorithm used only stems English words.
 When run as a daemon using a TCP socket,
 there are no security restrictions on who may connect and search.
 The code to implement domain and IP address restrictions
-isn't worth it since the port is better blocked at the router anyway.
+isn't worth it since such things are better handled by routers.
+.TP
+3.
+XML output can currently only be obtained for actual search results
+and not word, index, meta-name, or stop-word dumps.
 .SH FILES
 .PD 0
 .TP 20
@@ -883,6 +955,10 @@ default index file name
 .BR listen (3),
 .BR select (3),
 .BR swish++.conf (4)
+.PP
+Tim Bray, et al.
+.IR "Extensible Markup Language (XML) 1.0" ,
+February 10, 1998.
 .PP
 Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
 .IR "Pthreads Programming" ,
