@@ -624,7 +624,7 @@ void			write_word_index( ostream&, off_t* );
 	bool in_word = false;
 
 	while ( c != end ) {
-		register char ch = *c++;
+		register file_vector::value_type ch = *c++;
 		//
 		// If we're indexing an HTML file and the character is an '&'
 		// (the start of a entity reference), convert the entity
