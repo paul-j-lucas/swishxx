@@ -375,7 +375,7 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
-	/* static */ char const* indexer::tidy_title(
+	/* static */ char* indexer::tidy_title(
 		char const *begin, char const *end
 	)
 //
@@ -401,11 +401,11 @@ int		indexer::suspend_indexing_count_ = 0;
 //*****************************************************************************
 {
 	// Remove leading spaces
-	while ( begin < end && isspace( *begin ) )
+	while ( begin < end && is_space( *begin ) )
 		++begin;
 
 	// Remove trailing spaces
-	while ( begin < --end && isspace( *end ) ) ;
+	while ( begin < --end && is_space( *end ) ) ;
 	++end;
 
 	static char title[ Title_Max_Size + 1 ];
@@ -421,7 +421,7 @@ int		indexer::suspend_indexing_count_ = 0;
 
 	// Normalize all whitespace chars to space chars.
 	for ( register char *p = title; *p; ++p )
-		if ( isspace( *p ) )
+		if ( is_space( *p ) )
 			*p = ' ';
 
 	return title;
