@@ -61,13 +61,13 @@
 
 	if ( !is_plain_file() ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: not plain file)" << '\n';
+			cout << " (skipped: not plain file)\n";
 		return;
 	}
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: symbolic link)" << '\n';
+			cout << " (skipped: symbolic link)\n";
 		return;
 	}
 #endif
@@ -89,7 +89,7 @@
 		ext = ::strrchr( file_name, '.' );
 		if ( !ext || !*++ext || ::strchr( ext, '/' ) ) {
 			if ( verbosity > 3 )
-				cout << " (skipped: no extension)" << '\n';
+				cout << " (skipped: no extension)\n";
 			return;
 		}
 
@@ -110,7 +110,7 @@
 	//
 	if ( exclude_extensions.contains( ext ) ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: extension excluded)" << '\n';
+			cout << " (skipped: extension excluded)\n";
 		return;
 	}
 	//
@@ -120,11 +120,23 @@
 	IncludeExtension::const_iterator const
 		inc_ext = include_extensions.find( ext );
 	bool const found_ext = inc_ext != include_extensions.end();
-	if ( exclude_extensions.empty() && !found_ext ){
+	if ( exclude_extensions.empty() && !found_ext ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: extension not included)" << '\n';
+			cout << " (skipped: extension not included)\n";
 		return;
 	}
+
+#ifdef	INDEX
+	//
+	// If incrementally indexing, it's possible that we've encountered the
+	// file before.
+	//
+	if ( incremental && file_info::name_set_.contains( file_name ) ) {
+		if ( verbosity > 3 )
+			cout << " (skipped: encountered before)\n";
+		return;
+	}
+#endif
 
 #ifdef	EXTRACT
 	//
@@ -135,13 +147,13 @@
 	::strcat( file_name_txt, ".txt" );
 	if ( file_exists( file_name_txt ) ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: .txt file already exists)" << '\n';
+			cout << " (skipped: .txt file already exists)\n";
 		return;
 	}
 	ofstream txt( file_name_txt );
 	if ( !txt ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: can not create .txt file)" << '\n';
+			cout << " (skipped: can not create .txt file)\n";
 		return;
 	}
 #endif
@@ -152,14 +164,14 @@
 	FOR_EACH( filter_list_type, filter_list, f )
 		if ( !( file_name = f->exec() ) ) {
 			if ( verbosity > 3 )
-				cout << " (skipped: could not filter)" << '\n';
+				cout << " (skipped: could not filter)\n";
 			return;
 		}
 
 	file_vector file( file_name );
 	if ( !file ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: can not open)" << '\n';
+			cout << " (skipped: can not open)\n";
 		return;
 	}
 
@@ -172,35 +184,26 @@
 		// Don't waste a file_info entry on it.
 		//
 		if ( verbosity > 2 )
-			cout << " (0 words)" << '\n';
+			cout << " (0 words)\n";
 		return;
-	}
-
-	bool const is_html_ext = found_ext ? inc_ext->second : false;
-	char const *title = is_html_ext ? grep_title( file ) : 0;
-	if ( !title ) {
-		//
-		// File either isn't HTML or it doesn't have a <TITLE> tag:
-		// simply use its file name as its title.
-		//
-		if ( title = ::strrchr( file_name, '/' ) )
-			++title;
-		else
-			title = file_name;
 	}
 
 	////////// Index the file /////////////////////////////////////////////
 
-	new file_info( file_name, file.size(), title );
+	bool const is_html_ext = found_ext ? inc_ext->second : false;
+	new file_info(
+		file_name, file.size(), is_html_ext ? grep_title( file ) : 0
+	);
 	index_words( file.begin(), file.end(), is_html_ext );
 
 	if ( verbosity > 2 )
 		cout	<< " (" << file_info::current_file().num_words_
-			<< " words)" << '\n';
+			<< " words)\n";
 
 	if ( words.size() >= Word_Threshold )
 		write_partial_index();
 #endif
+
 #ifdef	EXTRACT
 	////////// Extract the file ///////////////////////////////////////////
 
