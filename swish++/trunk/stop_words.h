@@ -29,11 +29,11 @@
 //
 // SYNOPSIS
 //
-	struct stop_word_set : string_set
+	struct stop_word_set : char_ptr_set
 //
 // DESCRIPTION
 //
-//	A stop_word_set is-a string_set.  The only reason for having a
+//	A stop_word_set is-a char_ptr_set.  The only reason for having a
 //	derived class rather than a typedef is so that we can have a custom
 //	constructor that initializes itself.
 //
