@@ -32,3 +32,5 @@ SUBDIRS:=	man*
 
 all %:
 	@for dir in $(SUBDIRS); do $(MAKE) -C $$dir $@; done
+
+# vim:set noet sw=8 ts=8:

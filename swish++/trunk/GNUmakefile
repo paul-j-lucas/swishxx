@@ -275,3 +275,5 @@ clean:
 distclean: clean
 	$(RM) $(TARGET) .*.d init_modules.c
 	@$(call MAKE_SUBDIRS,$@)
+
+# vim:set noet sw=8 ts=8:

@@ -24,3 +24,5 @@
 ROOT:=	../..
 SECT:=	8
 include	$(ROOT)/config/man.mk
+
+# vim:set noet sw=8 ts=8:
