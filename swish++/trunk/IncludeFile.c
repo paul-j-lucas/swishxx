@@ -49,7 +49,7 @@
 		error() << "no indexer module name" << endl;
 		::exit( Exit_Config_File );
 	}
-	indexer *const i = indexer::find( mod_name );
+	indexer *const i = indexer::find_indexer( mod_name );
 	if ( !i ) {
 		error() << '"' << mod_name << "\": no such indexing module"
 			<< endl;
