@@ -64,7 +64,8 @@ private:
 	typedef std::map< key_type, value_type > map_type;
 	map_type map_;
 
-	virtual void	parse_value( char *line );
+	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	reset() { map_.clear(); }
 };
 
 #endif	/* FilterExtension_H */
