@@ -52,3 +52,4 @@ public:
 extern ExtractExtension extract_extension;
 
 #endif	/* ExtractExtension_H */
+/* vim:set noet sw=8 ts=8: */

@@ -90,3 +90,4 @@ private:
 #endif	/* mod_html_H */
 
 #endif	/* mod_html */
+/* vim:set noet sw=8 ts=8: */

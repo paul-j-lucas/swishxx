@@ -85,3 +85,4 @@ private:
 #endif	/* latex_command_map_H */
 
 #endif	/* MOD_latex */
+/* vim:set noet sw=8 ts=8: */

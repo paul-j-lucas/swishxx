@@ -70,3 +70,4 @@ inline bool User::change_to_uid() const {
 }
 
 #endif	/* User_H */
+/* vim:set noet sw=8 ts=8: */

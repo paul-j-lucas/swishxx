@@ -80,3 +80,4 @@ private:
 #endif
 
 #endif	/* auto_vec_H */
+/* vim:set noet sw=8 ts=8: */

@@ -811,3 +811,4 @@ more_headers:
 }
 
 #endif	/* MOD_mail */
+/* vim:set noet sw=8 ts=8: */

@@ -80,3 +80,4 @@ typedef my_set< std::string >	string_set;
 #endif
 
 #endif	/* my_set_H */
+/* vim:set noet sw=8 ts=8: */

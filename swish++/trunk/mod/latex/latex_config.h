@@ -33,3 +33,4 @@ int const	Command_Name_Max_Size		= 13;
 #endif	/* latex_config_H */
 
 #endif	/* MOD_latex */
+/* vim:set noet sw=8 ts=8: */

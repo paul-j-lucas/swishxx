@@ -103,3 +103,4 @@ inline void fdbuf::attach( int fd ) {
 #endif
 
 #endif	/* fdbuf_H */
+/* vim:set noet sw=8 ts=8: */

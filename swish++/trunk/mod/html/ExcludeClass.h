@@ -52,3 +52,4 @@ extern ExcludeClass exclude_class_names;
 #endif	/* ExcludeClass_H */
 
 #endif	/* MOD_html */
+/* vim:set noet sw=8 ts=8: */

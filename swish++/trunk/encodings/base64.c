@@ -229,3 +229,4 @@ reached_end:	c = end;
 	goto return_decoded_char;
 }
 #endif	/* ENCODING_base64 */
+/* vim:set noet sw=8 ts=8: */

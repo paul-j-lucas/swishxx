@@ -77,3 +77,4 @@ inline char const* filter::substitute( std::string const &file_name ) {
 }
 
 #endif	/* filter_H */
+/* vim:set noet sw=8 ts=8: */

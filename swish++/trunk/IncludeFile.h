@@ -54,3 +54,4 @@ private:
 extern IncludeFile include_patterns;
 
 #endif	/* IncludeFile_H */
+/* vim:set noet sw=8 ts=8: */

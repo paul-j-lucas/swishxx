@@ -198,3 +198,4 @@ inline void indexer::suspend_indexing() { ++suspend_indexing_count_; }
 inline void indexer::resume_indexing () { --suspend_indexing_count_; }
 
 #endif	/* indexer_H */
+/* vim:set noet sw=8 ts=8: */

@@ -116,3 +116,4 @@ inline std::ostream& conf_var::warning( std::ostream &o ) {
 template< class T > class conf;
 
 #endif	/* conf_var_H */
+/* vim:set noet sw=8 ts=8: */

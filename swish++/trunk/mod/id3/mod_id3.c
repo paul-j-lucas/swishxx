@@ -236,3 +236,4 @@ id3v1:	c = file.begin();
 }
 
 #endif	/* MOD_id3 */
+/* vim:set noet sw=8 ts=8: */

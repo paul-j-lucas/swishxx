@@ -67,3 +67,4 @@ protected:
 };
 
 #endif	/* conf_filter_H */
+/* vim:set noet sw=8 ts=8: */

@@ -49,3 +49,4 @@ public:
 extern ResultSeparator result_separator;
 
 #endif	/* ResultSeparator_H */
+/* vim:set noet sw=8 ts=8: */

@@ -78,3 +78,4 @@ private:
 #endif	/* entities_H */
 
 #endif	/* MOD_html */
+/* vim:set noet sw=8 ts=8: */

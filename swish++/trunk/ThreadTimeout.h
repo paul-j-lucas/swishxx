@@ -54,3 +54,4 @@ extern ThreadTimeout thread_timeout;
 #endif	/* ThreadTimeout_H */
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

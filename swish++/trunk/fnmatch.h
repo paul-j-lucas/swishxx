@@ -37,3 +37,4 @@ int fnmatch( const char *pattern, const char *string, int flags );
 #endif
 
 #endif /* !__dj_include_fnmatch_h_ */
+/* vim:set noet sw=8 ts=8: */

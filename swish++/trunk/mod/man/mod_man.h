@@ -58,3 +58,4 @@ private:
 #endif	/* mod_man_H */
 
 #endif	/* MOD_man */
+/* vim:set noet sw=8 ts=8: */

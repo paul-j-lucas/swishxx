@@ -39,3 +39,4 @@ inline char const*	itoa( int n )		{ return PJL::ltoa( n ); }
 #endif
 
 #endif	/* itoa_H */
+/* vim:set noet sw=8 ts=8: */

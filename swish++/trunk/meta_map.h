@@ -50,3 +50,4 @@
 extern meta_map	meta_names;
 
 #endif	/* meta_map_H */
+/* vim:set noet sw=8 ts=8: */

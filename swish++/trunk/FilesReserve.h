@@ -49,3 +49,4 @@ public:
 extern FilesReserve files_reserve;
 
 #endif	/* FilesReserve_H */
+/* vim:set noet sw=8 ts=8: */

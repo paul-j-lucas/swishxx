@@ -150,3 +150,4 @@ using namespace std;
 	);
 }
 #endif	/* ENCODING_quoted_printable */
+/* vim:set noet sw=8 ts=8: */

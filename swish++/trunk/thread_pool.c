@@ -265,7 +265,7 @@ namespace PJL {
 				internal_error
 					<< "thread_pool_thread_main(): "
 					   "thread exists after "
-					   "alleged destruction\n"
+					   "alleged destruction"
 					<< report_error;
 			}
 			//

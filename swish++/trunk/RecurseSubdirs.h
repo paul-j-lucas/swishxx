@@ -49,3 +49,4 @@ public:
 extern RecurseSubdirs recurse_subdirectories;
 
 #endif	/* RecurseSubdirs_H */
+/* vim:set noet sw=8 ts=8: */

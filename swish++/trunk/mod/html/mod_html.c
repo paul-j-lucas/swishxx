@@ -980,3 +980,4 @@ static bool skip_html_tag( encoded_char_range::const_iterator &pos );
 }
 
 #endif	/* MOD_html */
+/* vim:set noet sw=8 ts=8: */

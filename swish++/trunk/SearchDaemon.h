@@ -54,3 +54,4 @@ extern SearchDaemon daemon_type;
 #endif	/* SearchDaemon_H */
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

@@ -47,3 +47,4 @@
 extern stop_word_set*	stop_words;
 
 #endif	/* stop_words_H */
+/* vim:set noet sw=8 ts=8: */

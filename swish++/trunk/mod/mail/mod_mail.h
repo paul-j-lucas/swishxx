@@ -178,3 +178,4 @@ inline mail_indexer::message_type::message_type( message_type const &mt ) :
 #endif	/* mod_mail_H */
 
 #endif	/* MOD_mail */
+/* vim:set noet sw=8 ts=8: */

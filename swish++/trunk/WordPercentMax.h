@@ -50,3 +50,4 @@ public:
 extern WordPercentMax word_percent_max;
 
 #endif	/* WordPercentMax_H */
+/* vim:set noet sw=8 ts=8: */

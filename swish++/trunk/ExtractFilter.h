@@ -49,3 +49,4 @@ public:
 extern ExtractFilter extract_as_filter;
 
 #endif	/* ExtractFilter_H */
+/* vim:set noet sw=8 ts=8: */

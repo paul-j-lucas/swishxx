@@ -14,3 +14,4 @@ void f() {
 	//
 	::madvise( 0, 0, MADV_NORMAL );
 }
+/* vim:set noet sw=8 ts=8: */

@@ -54,3 +54,4 @@ extern SocketFile socket_file_name;
 #endif	/* SocketFile_H */
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

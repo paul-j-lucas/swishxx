@@ -471,3 +471,4 @@ inline bool operator!=( ECR_CI::pointer p, ECR_CI const &e ) {
 #undef	ECR
 
 #endif	/* encoded_char_H */
+/* vim:set noet sw=8 ts=8: */

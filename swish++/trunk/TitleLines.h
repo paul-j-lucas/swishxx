@@ -49,3 +49,4 @@ public:
 extern TitleLines num_title_lines;
 
 #endif	/* TitleLines_H */
+/* vim:set noet sw=8 ts=8: */

@@ -16,3 +16,4 @@ namespace N {
 	//
 	template< class T > class PT;
 }
+/* vim:set noet sw=8 ts=8: */

@@ -52,3 +52,4 @@ private:
 extern ExtractFile include_patterns;
 
 #endif	/* ExtractFile_H */
+/* vim:set noet sw=8 ts=8: */

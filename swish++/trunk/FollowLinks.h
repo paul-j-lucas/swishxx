@@ -48,3 +48,4 @@ public:
 extern FollowLinks follow_symbolic_links;
 
 #endif	/* FollowLinks_H */
+/* vim:set noet sw=8 ts=8: */

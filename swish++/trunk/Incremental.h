@@ -48,3 +48,4 @@ public:
 extern Incremental incremental;
 
 #endif	/* Incremental_H */
+/* vim:set noet sw=8 ts=8: */

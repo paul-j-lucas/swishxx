@@ -73,3 +73,4 @@ extern SocketAddress socket_address;
 #endif	/* SocketAddress_H */
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

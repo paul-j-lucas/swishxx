@@ -57,3 +57,4 @@ private:
 extern IncludeMeta include_meta_names;
 
 #endif	/* IncludeMeta_H */
+/* vim:set noet sw=8 ts=8: */

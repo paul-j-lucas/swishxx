@@ -47,3 +47,4 @@ encoded_char_range::value_type encoding_quoted_printable(
 #endif
 
 #endif	/* encodings_H */
+/* vim:set noet sw=8 ts=8: */

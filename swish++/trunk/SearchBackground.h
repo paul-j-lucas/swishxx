@@ -49,3 +49,4 @@ public:
 extern SearchBackground search_background;
 
 #endif	/* SearchBackground_H */
+/* vim:set noet sw=8 ts=8: */

@@ -40,3 +40,4 @@ int const	Tag_Name_Max_Size		= 10;
 #endif	/* html_config_H */
 
 #endif	/* MOD_html */
+/* vim:set noet sw=8 ts=8: */

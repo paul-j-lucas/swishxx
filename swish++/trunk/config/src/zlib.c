@@ -12,3 +12,4 @@ void f() {
 	unsigned long dest_len;
 	uncompress( dest, &dest_len, src, sizeof src );
 }
+/* vim:set noet sw=8 ts=8: */

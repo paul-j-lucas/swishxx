@@ -63,3 +63,4 @@ typedef unsigned long ucs4;
 }
 
 #endif	/* unicode_H */
+/* vim:set noet sw=8 ts=8: */

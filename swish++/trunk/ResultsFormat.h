@@ -50,3 +50,4 @@ private:
 extern ResultsFormat results_format;
 
 #endif	/* ResultsFormat_H */
+/* vim:set noet sw=8 ts=8: */

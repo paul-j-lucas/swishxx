@@ -181,3 +181,4 @@ private:
 #endif
 
 #endif	/* option_stream_H */
+/* vim:set noet sw=8 ts=8: */

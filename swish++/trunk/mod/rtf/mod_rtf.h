@@ -63,3 +63,4 @@ public:
 #endif	/* mod_rtf_H */
 
 #endif	/* MOD_rtf */
+/* vim:set noet sw=8 ts=8: */

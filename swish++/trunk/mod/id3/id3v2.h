@@ -157,3 +157,4 @@ inline int id3v2_header::all_frames_size() {
 #endif	/* id3v2_h */
 
 #endif	/* MOD_id3 */
+/* vim:set noet sw=8 ts=8: */

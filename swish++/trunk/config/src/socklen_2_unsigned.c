@@ -16,3 +16,4 @@ void f() {
 	unsigned len;
 	::accept( 1, (struct sockaddr*)0, &len );
 }
+/* vim:set noet sw=8 ts=8: */

@@ -48,3 +48,4 @@ public:
 extern StemWords stem_words;
 
 #endif	/* StemWords_H */
+/* vim:set noet sw=8 ts=8: */

@@ -51,3 +51,4 @@ public:
 extern WordFilesMax word_files_max;
 
 #endif	/* WordFilesMax_H */
+/* vim:set noet sw=8 ts=8: */

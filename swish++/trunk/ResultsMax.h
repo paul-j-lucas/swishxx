@@ -49,3 +49,4 @@ public:
 extern ResultsMax max_results;
 
 #endif	/* ResultsMax_H */
+/* vim:set noet sw=8 ts=8: */

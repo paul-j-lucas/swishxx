@@ -217,3 +217,4 @@ private:
 #endif	/* thread_pool_H */
 
 #endif	/* MULTI_THREADED */
+/* vim:set noet sw=8 ts=8: */

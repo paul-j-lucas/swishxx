@@ -58,3 +58,4 @@ extern char const iso8859_1_map[ 256 ];
 }
 
 #endif	/* iso8859_1_H */
+/* vim:set noet sw=8 ts=8: */

@@ -306,3 +306,4 @@ return_decoded_char:
 }
 
 #endif	/* CHARSET_utf7 */
+/* vim:set noet sw=8 ts=8: */

@@ -120,3 +120,4 @@ private:
 };
 
 #endif	/* pattern_map_H */
+/* vim:set noet sw=8 ts=8: */

@@ -35,3 +35,4 @@ extern dir_set_type dir_set;
 //	index (the directory number in the order encountered).
 
 #endif	/* directory_H */
+/* vim:set noet sw=8 ts=8: */

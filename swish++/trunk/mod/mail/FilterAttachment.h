@@ -50,3 +50,4 @@ extern FilterAttachment attachment_filters;
 #endif	/* FilterAttachment_H */
 
 #endif	/* MOD_mail */
+/* vim:set noet sw=8 ts=8: */

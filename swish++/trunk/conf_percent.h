@@ -78,3 +78,4 @@ inline conf_percent::conf_percent( char const *name,
 	}					\
 
 #endif	/* conf_percent_H */
+/* vim:set noet sw=8 ts=8: */

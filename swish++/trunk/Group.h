@@ -73,3 +73,4 @@ inline bool Group::change_to_gid() const {
 }
 
 #endif	/* Group_H */
+/* vim:set noet sw=8 ts=8: */

@@ -103,3 +103,4 @@ extern id3v1_genre const id3v1_genre_table[ 126 ];
 #endif	/* id3v1_h */
 
 #endif	/* MOD_id3 */
+/* vim:set noet sw=8 ts=8: */

@@ -57,3 +57,4 @@ private:
 extern WordThreshold word_threshold;
 
 #endif	/* WordThreshold_H */
+/* vim:set noet sw=8 ts=8: */

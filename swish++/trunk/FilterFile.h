@@ -47,3 +47,4 @@ public:
 extern FilterFile file_filters;
 
 #endif	/* FilterFile_H */
+/* vim:set noet sw=8 ts=8: */

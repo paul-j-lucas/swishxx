@@ -60,3 +60,4 @@ encoded_char_range::value_type charset_utf16le(
 #endif
 
 #endif	/* charsets_H */
+/* vim:set noet sw=8 ts=8: */

@@ -37,3 +37,4 @@ inline PJL::omanip< unsigned > enc_int( unsigned n ) {
 }
 
 #endif	/* enc_int_H */
+/* vim:set noet sw=8 ts=8: */
