@@ -28,6 +28,7 @@
 #include "file_vector.h"
 #include "stop_words.h"
 #include "util.h"
+#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -376,9 +377,9 @@ stop_word_set*		stop_words;		// pointer to global set
 		return;
 	}
 
-	file_vector<char> file( file_name );
+	file_vector file( file_name );
 	if ( !file ) {
-		ERROR << "could not open \"" << file_name << '"' << endl;
+		error() << "could not open \"" << file_name << '"' << endl;
 		::exit( Exit_No_Read_Stopwords );
 	}
 
@@ -386,10 +387,12 @@ stop_word_set*		stop_words;		// pointer to global set
 	int word_len;
 	bool in_word = false;
 
-	register file_vector<char>::const_iterator c = file.begin();
+	register file_vector::const_iterator c = file.begin();
 	while ( 1 ) {
 		if ( c != file.end() ) {
-			register char ch = to_lower( *c++ );
+			register char const ch = tolower(
+				iso8859_to_ascii( *c++ )
+			);
 
 			////////// Collect a word /////////////////////////////
 
@@ -407,7 +410,7 @@ stop_word_set*		stop_words;		// pointer to global set
 					continue;
 				}
 				in_word = false;	// too big: skip chars
-				while ( c != file.end() && is_word_char( *c++ ) ) ;
+				while ( c != file.end() && is_word_char(*c++) );
 				continue;
 			}
 
