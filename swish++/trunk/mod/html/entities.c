@@ -35,7 +35,7 @@
 //	Construct (initialize) a char_entity_map.  Any entity that isn't listed
 //	below will convert to a space.  Note that is isn't necessary to convert
 //	"&lt;" and "&gt;" since such entities aren't indexed anyway.  However,
-//	if is necessary to convert "&amp;" (so it can be part of an acronym
+//	it is necessary to convert "&amp;" (so it can be part of an acronym
 //	like "AT&T") and "&apos;" (so it can be part of a contracted word like
 //	"can't").
 //
