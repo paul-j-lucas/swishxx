@@ -22,6 +22,10 @@ BUG FIXES
 
   (This bug fix shall be known as bug fix ECC.)
 
+* The --verbosity option in index(1) wasn't recognized.
+
+  (This bug fix shall be known as bug fix VLO.)
+
 
 CHANGES, file-by-file
 ---------------------
@@ -85,15 +89,24 @@ CHANGES, file-by-file
 	3. Made usage() take an ostream& argument just so it parallels
 	   the way it's done in index.c.
 
+* file_info.c
+
+	1. In file_info::out(), eliminated unused num_words variable.
+
+* file_list.c
+
+	1. Removed #include <sys/types.h> since it's apparantly not
+	   needed.
+
+* file_vector.h
+
+	1. Replaced off_t with size_t since mmap(2) uses size_t.
+
 * GNUmakefile
 
 	1. Added/removed source files for feature FNP.
 
 	2. Added ".PHONY: all" so a "make -t" doesn't "touch all".
-
-* file_info.c
-
-	1. In file_info::out(), eliminated unused num_words variable.
 
 * html.h
 * index_segment.h
@@ -141,6 +154,12 @@ CHANGES, file-by-file
 
 	9. In index_words(), removed last "new_file = true;" for bug
 	   fix ECC.
+
+	A. In main(), performed following substitution:
+
+		s/verbose/verbosity/
+
+	   for bug fix VLO.
 
 * index.h
 
