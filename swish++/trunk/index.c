@@ -36,12 +36,12 @@
 #include <vector>
 
 // local
+#include "platform.h"
 #include "AssociateMeta.h"
 #include "bcd.h"
 #include "config.h"
 #include "DirectoriesGrow.h"
 #include "DirectoriesReserve.h"
-#include "directory.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -50,6 +50,9 @@
 #include "FilesGrow.h"
 #include "FilesReserve.h"
 #include "FilterFile.h"
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+#include "FollowLinks.h"
+#endif
 #include "IncludeFile.h"
 #include "IncludeMeta.h"
 #include "Incremental.h"
@@ -65,7 +68,6 @@
 #include "mod/html/mod_html.h"
 #endif
 #include "option_stream.h"
-#include "platform.h"
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
 #include "stop_words.h"
@@ -127,6 +129,7 @@ void			write_word_index( ostream&, off_t* );
 
 #define	INDEX
 #include "do_file.c"
+#include "directory.c"
 
 //*****************************************************************************
 //
@@ -509,7 +512,7 @@ void			write_word_index( ostream&, off_t* );
 			if ( is_directory() )
 				do_directory( ::strdup( file_name ) );
 			else
-				do_file( file_name );
+				do_check_add_file( file_name );
 		}
 	} else {
 		//
@@ -525,7 +528,7 @@ void			write_word_index( ostream&, off_t* );
 			if ( is_directory() )
 				do_directory( *argv );
 			else
-				do_file( *argv );
+				do_check_add_file( *argv );
 		}
 	}
 
