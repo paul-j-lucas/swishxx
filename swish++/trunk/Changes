@@ -40,12 +40,20 @@ OTHER CHANGES
 CHANGES, file-by-file
 ---------------------
 
+* charsets/GNUmakefile
+
+	1. s/$(AR) rv/$(AR)/ for Sun's CC.
+	2. Added: $(TEMPLATE_REPOSITORY) for Sun's CC.
+
 * config/config.mk
 
 	1. Added FEATURE_LIST, FEATURE_DEFS, and word_pos for feature NS.
 	2. Now no longer doing -fno-rtti when the word_pos feature is being
 	   compiled in for feature NS.
 	3. Added MAKEDEPEND variable.
+	4. Reworked OS definition; eliminated $(OS).
+	5. Added AR definition.
+	6. Added TEMPLATE_REPOSITORY for Sun's CC.
 
 * config/makedepend.pl
 
@@ -64,6 +72,7 @@ CHANGES, file-by-file
 	   ShellFilenameEscapeChars clear that they are for FILE (not
 	   path) names.
 	2. Added WordsNear_Default for feature NS.
+	3. s/WIN32/__CYGWIN__/
 
 * conf_var.c
 
@@ -71,14 +80,35 @@ CHANGES, file-by-file
 	2. In conf_var::map_ref(), added storewordpositions and wordsnear
 	   for feature NS.
 
+* directory.c
+
+	1. s/WIN32/__CYGWIN__/
+
 * do_file.c
 
 	1. Added code to reset word_pos for feature NS.
+
+* encoded_char.h
+
+	1. On line 106:
+
+		s/value_type const/encoded_char_range::value_type const/
+
+	   to make Sun's CC happy.
+
+* encodings/GNUmakefile
+
+	1. s/$(AR) rv/$(AR)/ for Sun's CC.
+	2. Added: $(TEMPLATE_REPOSITORY) for Sun's CC.
 
 * exit_codes.h
 
 	1. Added Exit_No_Create_Thread_Key.
 	2. Added Exit_No_Word_Pos_Data for feature NS.
+
+* extract.c
+
+	1. s/ctime/time.h/ for Sun's CC.
 
 * file_list.c
 
@@ -102,6 +132,13 @@ CHANGES, file-by-file
 	2. Added query_node.c to S_SOURCES for feature NS.
 	3. s/include/-include/ to silence "no such file or directory"
 	   messages.
+	4. Added: $(TEMPLATE_REPOSITORY) for Sun's CC.
+
+* IncludeMeta.c
+
+	1. Added const_cast<char*>() around strchr() for Sun's broken
+	   CC strchr() declaration.
+	2. s/char const *const m/char *const m/ for Sun's CC compiler.
 
 * index.c
 
@@ -111,6 +148,7 @@ CHANGES, file-by-file
 	4. Added -P option for feature NS.
 	5. In merge_indicies() and write_word_index(), added call to
 	   write_word_pos() for feature NS.
+	6. s/ctime/time.h/ for Sun's CC.
 
 * indexer.c
 
@@ -151,9 +189,31 @@ CHANGES, file-by-file
 
 	1. Added Word-position list for feature NS.
 
+* mmap_file.c
+
+	1. s/MacOSX/__APPLE__/
+	2. s/ctime/time.h/ for Sun's CC.
+
 * mmap_file.h
 
 	1. Removed trailing ',' from behavior_type.
+	2. Added "#ifndef __SUNPRO_CC" for problem with Sun's CC compiler.
+
+* mod/mod_id3/mod_id3.h
+
+	1. Removed trailing ',' from enums.
+
+* mod/mod_mail/mod_mail.h
+
+	1. s/Multipart,/Multipart/
+	2. Added:
+			struct message_type;
+			friend struct message_type;
+
+* pattern_map.h
+
+	1. s/WIN32/__CYGWIN__/
+	2. Added #ifdef for Sun's CC compiler.
 
 * query.c
 
@@ -180,15 +240,28 @@ CHANGES, file-by-file
 	1. Added #include "WordsNear.h" for feature NS.
 	2. s/word_file_max_arg/word_files_max_arg/
 	3. Added -n option for feature NS.
+	4. s/ctime/time.h/ for Sun's CC.
+	5. Added #include "vector_adapter.h" for Sun's CC.
+	6. s/search_result_type/search_result/
+	7. In search(), added #ifdef __SUNPRO_CC since Sun's CC compiler
+	   and/or their STL implementation seems pretty broken.
 
 * search.h
 
 	1. s/word_file_max_arg/word_files_max_arg/
 	2. Added words_near_arg for feature NS.
 
+* search_daemon.c
+
+	1. s/ctime/time.h/ for Sun's CC.
+
 * search_options.c
 
 	1. Added "-n" for feature NS.
+
+* search_thread.c
+
+	1. s/ctime/time.h/ for Sun's CC.
 
 * simple_pool.h
 * StoreWordPositions.h
@@ -208,6 +281,8 @@ CHANGES, file-by-file
 	3. Added code to deal with thread-specific data.
 	4. Added thread_pool_thread_once().
 	5. s/destructing_/in_cleanup_/
+	6. s/ctime/time.h/ for Sun's CC.
+	7. s/start_function_type/thread_start_function_type/ for Sun's CC.
 
 * thread_pool.h
 
@@ -218,20 +293,33 @@ CHANGES, file-by-file
 	5. s/destructing_/in_cleanup_/
 	6. Removed thread_pool::thread::thread_.
 	7. Added thread_pool::thread::thread_obj_key_.
+	8. s/start_function_type/thread_start_function_type/ for Sun's CC.
 
 * token.c
 
 	1. Added "near" for feature NS.
+	2. Got rid of #include <algorithm> for Sun's CC.
+	3. s/transform/to_lower/ for Sun's CC.
 
 * token.h
 
 	1. Added near_token and not_near_token for feature NS.
 
+* util.c
+
+	1. Added: to_lower( char*, char const* )
+
 * util.h
 
-	1. Added: abs() for feature NS.
+	1. Added: pjl_abs() for feature NS.
 	2. Removed \n from internal_error.
 	3. Added FOR_EACH_IN_PAIR.
+	4. Added: to_lower( char*, char const* )
+	5. s/ctime/time.h/ for Sun's CC.
+
+* vector_adapter.h
+
+	1. New file for Sun's CC.
 
 * version.h
 
