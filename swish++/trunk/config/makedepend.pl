@@ -56,26 +56,42 @@ while ( defined( $_ = shift( @ARGV ) ) ) {
 }
 
 $#ARGV + 1 == 1 or usage();
+
 ( $SOURCE_FILE ) = @ARGV;
-map { s!/$!!; } @dirs;				# get rid of trailing /'s
 push( @files, $SOURCE_FILE );			# prime the pump
+
+map { s!/$!!; } @dirs;				# get rid of trailing /'s
+map { $dir_set{ $_ } = 1; } @dirs;
 
 ##
 # Process all files.
 ##
 while ( my $file = shift( @files ) ) {
 	##
+	# See if the current file contains a path in a subdirectory, e.g.:
+	#
+	#	#include "sub/dir/foo.h"
+	#
+	# If so, add the subdirectory to the list/set of directories.
+	##
+	my $file_dir = dirname( $file );
+	unless ( exists $dir_set{ $file_dir } ) {
+		$dir_set{ $file_dir } = 1;
+		push( @dirs, $file_dir );
+	}
+
+	##
 	# Look in all directories in @dirs for the current file.
 	##
-	my $dir;
+	my $found_dir;
 	for ( @dirs ) {
 		my $path = "$_/$file";
 		next unless open( SOURCE, $path );
-		$deps{ $path } = 1;
-		$dir = $_;
+		$dep_set{ $path } = 1;
+		$found_dir = $_;
 		last;
 	}
-	die "$ME: error: can not open $file\n" unless $dir;
+	die "$ME: error: can not open $file\n" unless $found_dir;
 
 	##
 	# Pluck files #include'd and add them to the list of files to process
@@ -83,7 +99,7 @@ while ( my $file = shift( @files ) ) {
 	##
 	while ( <SOURCE> ) {
 		next unless /^#\s*include\s+"([^"]+)"/;
-		push( @files, $1 ) unless exists $deps{ "$dir/$1" };
+		push( @files, $1 ) unless exists $dep_set{ "$found_dir/$1" };
 	}
 	close( SOURCE );
 }
@@ -92,4 +108,4 @@ while ( my $file = shift( @files ) ) {
 # Print the file and its dependencies.
 ##
 ( $OBJECT_FILE = $SOURCE_FILE ) =~ s/\.\w+$/\.o/;
-print "$OBJECT_FILE : ", join( ' ', keys %deps ), "\n";
+print "$OBJECT_FILE : ", join( ' ', keys %dep_set ), "\n";
