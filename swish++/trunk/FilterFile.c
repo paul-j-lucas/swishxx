@@ -48,8 +48,8 @@ using namespace std;
 #if 0	/* I'm not convinced that default filters are a good idea. */
 
 	static char const *const default_filter_table[] = {
-		"gz",	"gunzip -c %f > @E",
-		"Z",	"uncompress -c %f > @E",
+		"gz",	"gunzip -c %f > @F",
+		"Z",	"uncompress -c %f > @F",
 		0
 	};
 
@@ -121,13 +121,15 @@ using namespace std;
 				found_target = true;
 
 		switch ( s[1] ) {
+			case 'b':
+			case 'B':
 			case 'e':
-			case 'E':
 			case 'f':
+			case 'F':
 				++num_substitutions;
 				continue;
 		}
-		cerr << error << "non-[eEf%@] character after " << *s << endl;
+		cerr << error << "non-[bBefF%@] character after " << *s << endl;
 		::exit( Exit_Config_File );
 	}
 
