@@ -60,12 +60,23 @@
 	////////// Simple checks to see if we should process the file /////////
 
 	if ( !is_plain_file() ) {
+		//
+		// We're able to use the zero-argument form of is_plain_file()
+		// because the stat_buf is cached by the call to file_exists()
+		// in both index.c and extract.c just before the call to
+		// do_file().
+		//
 		if ( verbosity > 3 )
 			cout << " (skipped: not plain file)\n";
 		return;
 	}
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
+		//
+		// Despite the above comment for is_plain_file(), we have to
+		// use the one-argument form is is_symbolic_link() because we
+		// need to call lstat(2) rather than stat(2).
+		//
 		if ( verbosity > 3 )
 			cout << " (skipped: symbolic link)\n";
 		return;
@@ -77,27 +88,12 @@
 	filter_list_type filter_list;
 	filter_list.reserve( 5 );
 
-	char const *ext;
 	while ( true ) {
-		//
-		// Check to see if the file name has an extension by looking
-		// for a '.' in it and making sure that it is not the last
-		// character.  If the extension contains a '/', then it's
-		// really not an extension; rather, it's a file name like:
-		// "/a.bizarre/file".
-		//
-		ext = ::strrchr( file_name, '.' );
-		if ( !ext || !*++ext || ::strchr( ext, '/' ) ) {
-			if ( verbosity > 3 )
-				cout << " (skipped: no extension)\n";
-			return;
-		}
-
 		//
 		// Determine if the file needs to be filtered and, if so, set
 		// the filename to what it would become if it were filtered.
 		//
-		FilterExtension::const_pointer const f = filters[ ext ];
+		FilterFile::const_pointer const f = filters[ file_name ];
 		if ( !f )
 			break;
 		filter_list.push_back( *f );
@@ -105,31 +101,30 @@
 	}
 
 	//
-	// Skip the file if the set of unacceptable extensions contains the
-	// candidate.
+	// Skip the file if it matches one of the set of unacceptable patterns.
 	//
-	if ( exclude_extensions.contains( ext ) ) {
+	if ( exclude_patterns.matches( file_name ) ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: extension excluded)\n";
+			cout << " (skipped: file excluded)\n";
 		return;
 	}
 
 	//
-	// We save a copy of the iterator so we can access it later to see if
-	// the extension is an HTML extension.
+	// Save a copy of the iterator so we can access it later to see if the
+	// file is an HTML or XHTML file.
 	//
-	IncludeExtension::const_iterator const
-		inc_ext = include_extensions.find( ext );
+	IncludeFile::const_iterator const
+		inc_file = include_patterns.find( file_name );
 
 	//
-	// Skip the file if the set of acceptable extensions doesn't contain
-	// the candidate, but only if there was at least one acceptable
-	// extension specified.
+	// Skip the file if the set of acceptable patterns doesn't contain the
+	// candidate, but only if there was at least one acceptable pattern
+	// specified.
 	//
-	bool const found_ext = inc_ext != include_extensions.end();
-	if ( !include_extensions.empty() && !found_ext ) {
+	bool const found_pattern = inc_file != include_patterns.end();
+	if ( !include_patterns.empty() && !found_pattern ) {
 		if ( verbosity > 3 )
-			cout << " (skipped: extension not included)\n";
+			cout << " (skipped: file not included)\n";
 		return;
 	}
 
@@ -200,11 +195,11 @@
 
 	////////// Index the file /////////////////////////////////////////////
 
-	bool const is_html_ext = found_ext ? inc_ext->second : false;
+	bool const is_html_pattern = found_pattern ? inc_file->second : false;
 	new file_info(
-		file_name, file.size(), is_html_ext ? grep_title( file ) : 0
+		file_name, file.size(), is_html_pattern ? grep_title( file ) : 0
 	);
-	index_words( file.begin(), file.end(), is_html_ext );
+	index_words( file.begin(), file.end(), is_html_pattern );
 
 	if ( verbosity > 2 )
 		cout	<< " (" << file_info::current_file().num_words_
