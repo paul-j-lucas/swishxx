@@ -127,6 +127,23 @@ FilterAttachment		attachment_filters;
 //
 // SYNOPSIS
 //
+	mail_indexer::mail_indexer()
+//
+// DESCRIPTION
+//
+//	Construct a mail indexer.
+//
+//*****************************************************************************
+	: indexer( "mail" )
+{
+	conf_var::register_var( "filterattachment" );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */
 	char const* mail_indexer::find_title( mmap_file const &file ) const
 //
 // DESCRIPTION
