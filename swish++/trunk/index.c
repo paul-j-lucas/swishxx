@@ -64,6 +64,9 @@
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
 #include "stop_words.h"
+#ifdef	FEATURE_word_pos
+#include "StoreWordPositions.h"
+#endif
 #include "TempDirectory.h"
 #include "TitleLines.h"
 #include "util.h"
@@ -108,9 +111,14 @@ RecurseSubdirs		recurse_subdirectories;
 string			temp_file_name_prefix;
 Verbosity		verbosity;		// how much to print
 word_map		words;			// the index being generated
-WordFilesMax		word_file_max;
+WordFilesMax		word_files_max;
 WordPercentMax		word_percent_max;
 WordThreshold		word_threshold;
+
+#ifdef	FEATURE_word_pos
+StoreWordPositions	store_word_positions;
+int			word_pos;		// ith word in file
+#endif
 
 static void		load_old_index( char const *index_file_name );
 static void		merge_indicies( ostream& );
@@ -238,6 +246,9 @@ static void		write_word_index( ostream&, off_t* );
 		"meta",			1, 'm',
 		"no-meta",		1, 'M',
 		"percent-max",		1, 'p',
+#ifdef	FEATURE_word_pos
+		"no-pos-data",		0, 'P',
+#endif
 		"no-recurse",		0, 'r',
 		"stop-file",		1, 's',
 		"dump-stop",		0, 'S',
@@ -260,6 +271,7 @@ static void		write_word_index( ostream&, off_t* );
 	IndexFile	index_file_name;
 	char const*	index_file_name_arg = 0;
 	bool		no_associate_meta_opt = false;
+	bool		no_word_pos_opt = false;
 	char const*	num_title_lines_arg = 0;
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
@@ -267,7 +279,7 @@ static void		write_word_index( ostream&, off_t* );
 	TempDirectory	temp_directory;
 	char const*	temp_directory_arg = 0;
 	char const*	verbosity_arg = 0;
-	char const*	word_file_max_arg = 0;
+	char const*	word_files_max_arg = 0;
 	char const*	word_percent_max_arg = 0;
 	char const*	word_threshold_arg = 0;
 
@@ -315,7 +327,7 @@ static void		write_word_index( ostream&, off_t* );
 			}
 
 			case 'f': // Specify the word/file file maximum.
-				word_file_max_arg = opt.arg();
+				word_files_max_arg = opt.arg();
 				break;
 
 			case 'F': // Specify files to reserve space for.
@@ -351,7 +363,11 @@ static void		write_word_index( ostream&, off_t* );
 			case 'p': // Specify the word/file percentage.
 				word_percent_max_arg = opt.arg();
 				break;
-
+#ifdef	FEATURE_word_pos
+			case 'P': // Don't store word position data.
+				no_word_pos_opt = true;
+				break;
+#endif
 			case 'r': // Specify whether to index recursively.
 				recurse_subdirectories_opt = true;
 				break;
@@ -411,6 +427,10 @@ static void		write_word_index( ostream&, off_t* );
 		index_file_name = index_file_name_arg;
 	if ( no_associate_meta_opt )
 		associate_meta = false;
+#ifdef	FEATURE_word_pos
+	if ( no_word_pos_opt )
+		store_word_positions = false;
+#endif
 	if ( num_title_lines_arg )
 		num_title_lines = num_title_lines_arg;
 	if ( recurse_subdirectories_opt )
@@ -421,8 +441,8 @@ static void		write_word_index( ostream&, off_t* );
 		temp_directory = temp_directory_arg;
 	if ( verbosity_arg )
 		verbosity = verbosity_arg;
-	if ( word_file_max_arg )
-		word_file_max = word_file_max_arg;
+	if ( word_files_max_arg )
+		word_files_max = word_files_max_arg;
 	if ( word_percent_max_arg )
 		word_percent_max = word_percent_max_arg;
 	if ( word_threshold_arg )
@@ -587,7 +607,7 @@ static void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	if ( file_count > word_file_max ) {
+	if ( file_count > word_files_max ) {
 		if ( verbosity > 2 )
 			cout	<< "\n  \"" << word
 				<< "\" discarded (" << file_count << " files)"
@@ -907,6 +927,10 @@ static void		write_word_index( ostream&, off_t* );
 				     ) );
 				if ( !file->meta_ids_.empty() )
 					file->write_meta_ids( o );
+#ifdef	FEATURE_word_pos
+				if ( !file->pos_deltas_.empty() )
+					file->write_word_pos( o );
+#endif
 			}
 
 			if ( j != i ) ++word[ j ];
@@ -953,6 +977,10 @@ static void		write_word_index( ostream&, off_t* );
 				  ) );
 				if ( !file->meta_ids_.empty() )
 					file->write_meta_ids( o );
+#ifdef	FEATURE_word_pos
+				if ( !file->pos_deltas_.empty() )
+					file->write_word_pos( o );
+#endif
 			}
 			o << Stop_Marker;
 		}
@@ -1310,6 +1338,10 @@ static void		write_word_index( ostream&, off_t* );
 			  << enc_int( file->rank_ );
 			if ( !file->meta_ids_.empty() )
 				file->write_meta_ids( o );
+#ifdef	FEATURE_word_pos
+			if ( !file->pos_deltas_.empty() )
+				file->write_word_pos( o );
+#endif
 		}
 
 		o << Stop_Marker;
@@ -1342,6 +1374,9 @@ ostream& usage( ostream &err ) {
 	"-m m   | --meta m           : Meta name to index [default: all]\n"
 	"-M m   | --no-meta m        : Meta name not to index [default: none]\n"
 	"-p n   | --word-percent n   : Word/file percentage [default: 100]\n"
+#ifndef	FEATURE_word_pos
+	"-P     | --no-pos-data      : Don't store word position data [default: do]\n"
+#endif
 	"-r     | --no-recurse       : Don't index subdirectories [default: do]\n"
 	"-s f   | --stop-file f      : Stop-word file to use instead of built-in default\n"
 	"-S     | --dump-stop        : Dump built-in stop-words, exit\n"
