@@ -50,7 +50,16 @@ OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 ###############################################################################
 
 MOD_LIST:=	html mail man rtf
-#		The indexing modules you want built into index(1).
+#		The indexing modules you want built into index(1).  If you have
+#		no intention of indexing mail or news files, you should NOT
+#		build-in "mail" since it requires more processing per character
+#		and therefore will be slower for all files (not just mail and
+#		news files).
+#
+#		If you do want to index mail files and you want to be able to
+#		index HTML attachments, then you also need to build-in "html";
+#		similarly, if you want to be able to index RTF attachments,
+#		then you also need to build-in "rtf".
 
 # Leave the following line alone!
 MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-Dmod_$(mod))
@@ -136,7 +145,8 @@ STRIP:=		strip
 #
 ###############################################################################
 
-CC:=		g++
+#CC:=		g++
+CC:=		/usr/local/bin/g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
 #DEBUG:=		true
