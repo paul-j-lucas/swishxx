@@ -13,6 +13,22 @@ NEW FEATURES
 
   (This feature will be known as feature FNP.)
 
+
+PROBLEMS
+--------
+
+NOTE: SWISH++ 4.5 currently will not compile under Windows because:
+
+1. The port of GNU make for it isn't self-contained in that it doesn't have
+   a Unix shell to do some of the "shell like" things that GNU make does.
+
+2. The libraries that come with Mingw32 don't include fnmatch().
+
+Robert Lebowitz <lebowitz@finaltouch.com>, the Win32 maintainer of SWISH++, is
+currently working on these problems, but there's no ETA since SWISH++ isn't his
+day job.
+
+
 BUG FIXES
 ---------
 
@@ -107,6 +123,12 @@ CHANGES, file-by-file
 	1. Added/removed source files for feature FNP.
 
 	2. Added ".PHONY: all" so a "make -t" doesn't "touch all".
+
+	3. Changed from using .%.d to dep/%.d dependency files since
+	   Windows doesn't like filenames beginning with a dot.
+
+	4. Split dist and distclean targets since only distclean should
+	   remove the dependencies.
 
 * html.h
 * index_segment.h
