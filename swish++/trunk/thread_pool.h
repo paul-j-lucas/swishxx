@@ -93,6 +93,8 @@ public:
 		// itself.
 		//
 	public:
+		virtual ~thread();
+
 		union argument_type {
 			//
 			// Ideally, we'd like to allow thread::main() to take
@@ -114,7 +116,6 @@ public:
 		};
 	protected:
 		thread( thread_pool& );
-		virtual ~thread();
 
 		virtual thread*	create( thread_pool& ) const = 0;
 		virtual void	main( argument_type ) = 0;
