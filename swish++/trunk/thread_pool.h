@@ -35,8 +35,8 @@ namespace PJL {
 #define	PJL /* nothing */
 #endif
 
-extern "C" void	*thread_main( void* );
-extern "C" void	thread_destroy( void* );
+extern "C" void*	thread_main( void* );
+extern "C" void		thread_destroy( void* );
 
 //*****************************************************************************
 //
