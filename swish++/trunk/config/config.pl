@@ -44,10 +44,16 @@ while ( <STDIN> ) {
 	##
 	# Perform variable expansion on the RHS of the assignment allowing
 	# either $VAR or $(VAR), the latter for 'make' variables.  Do NOT
-	# expand \$other.  (See also "Programming Perl," p. 69.)
+	# expand \$other, i.e., a literal $.  (See also "Programming Perl," p.
+	# 69.)
+	#
+	# In oder not to expand \$other, change all \$ to <DOLLAR>, i.e., some
+	# character sequence not containing a $ and most likely not otherwise
+	# appearing in the string.  When done, change them back.
 	##
-	$v = "$`$kv{ $1 }$'" while $v =~ /\$\(?(\w+)\)?/ && $` !~ /\\$/;
-	$v =~ s/\\\$/\$/g;			# now un-backslash all \$
+	$v =~ s/\\\$/<DOLLAR>/g;
+	$v = "$`$kv{ $1 }$'" while $v =~ /\$\(?(\w+)\)?/;
+	$v =~ s/<DOLLAR>/\$/g;
 
 	$kv{ $k } = $v;
 }
