@@ -2,7 +2,7 @@
 #	SWISH++
 #	config/config.pl: Perl script configuration script
 #
-#	Copyright (C) 1998  Paul J. Lucas
+#	Copyright (C) 2000  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -21,23 +21,61 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-$SCRIPT = $ARGV[0];
-shift;
+use File::Basename;
+use File::Find;
 
-for ( @ARGV ) {
-	( $k, $v ) = split( /=/, $_, 2 );
+$ME = basename( $0 );				# basename of executable
+
+##
+# Check command-line arguments.
+##
+$#ARGV + 1 == 1 or die "usage: $ME file.in\n";
+( $IN_FILE ) = @ARGV;
+
+##
+# Populate a key/value variable substitution hash from standard input.
+##
+while ( <STDIN> ) {
+	next if /^\s*#/;			# skip comments
+	chop;
+	next unless /^\s*(\w+)\s*:?=\s*([^#]+)\s*/;# skip non-assignment lines
+	my( $k, $v ) = ( $1, $2 );		# got an assignment
+	$v =~ s/\s+$//;				# remove trailing whitespace
+	##
+	# Perform variable expansion on the RHS of the assignment allowing
+	# either $VAR or $(VAR), the latter for 'make' variables.  Do NOT
+	# expand \$other.  (See also "Programming Perl," p. 69.)
+	##
+	$v = "$`$kv{ $1 }$'" while $v =~ /\$\(?(\w+)\)?/ && $` !~ /\\$/;
+	$v =~ s/\\\$/\$/g;			# now un-backslash all \$
+
 	$kv{ $k } = $v;
 }
 
-chmod( 0644, $SCRIPT );
-open( SCRIPT_IN, "$SCRIPT.in" ) or die "$0: can't open $SCRIPT.in\n";
-open( SCRIPT_OUT, ">$SCRIPT" ) or die "$0: can't open $SCRIPT\n";
-
-while ( <SCRIPT_IN> ) {
-	s/%%$k%%/$v/g while ( $k, $v ) = each %kv;
-	print SCRIPT_OUT;
+##
+# Perform substitutions in file or files.
+##
+sub substitute {
+	return unless /\.in$/ && -T $_;
+	my $file_out = $_;
+	$file_out =~ s/\.in$//;
+	unless ( open( FILE_IN, $_ ) ) {
+		warn "$ME: can not read $_\n";
+		return;
+	}
+	unless ( open( FILE_OUT, ">$file_out" ) ) {
+		warn "$ME: can not write $file_out\n";
+		close( FILE_IN );
+		return;
+	}
+	my( $mode, $uid, $gid ) = (stat( _ ))[2,4,5];
+	while ( <FILE_IN> ) {
+		s/%%$k%%/$v/g while ( $k, $v ) = each %kv;
+		print FILE_OUT;
+	}
+	close( FILE_OUT );
+	close( FILE_IN );
+	chmod( "0$mode", $file_out );
+	chown( $uid, $gid, $file_out );
 }
-
-close SCRIPT_OUT;
-close SCRIPT_IN;
-chmod( 0444, $SCRIPT );
+find( \&substitute, $IN_FILE );
