@@ -80,7 +80,12 @@
 	   searched immediately, with no parsing of the data, also in
 	   O(lg n) time.
 
-	7. Easy-to-parse results format
+	7. Optional word stemming (suffix stripping)
+	   SWISH++ allows stemming to be performed at the time of
+	   searches, not at the time of index generation.  This allows
+	   users to decide whether to perform stemming or not.
+
+	8. Easy-to-parse results format
 	   SWISH++ outputs its search results in the form:
 
 		rank path_name file_size file_title
@@ -90,7 +95,7 @@
 
 		($rank,$path,$size,$title) = split( / /, $_, 4 );
 
-	8. Generously commented source code
+	9. Generously commented source code
 	   The source code is clearly written with lots of comments
 	   including references to other works.
 
@@ -116,12 +121,9 @@
 	   specific HTML tags (the SWISH-E -t option). I didn't have a
 	   need for this feature.
 
-	3. Stemming
-	   SWISH-E 1.3 introduced the ability to stem words. I don't
-	   like stemming because it usually returns far more results
-	   than you want. I prefer to allow users to decide exactly
-	   what to search for and stem when they want to by using *
-	   explicitly.
+	3. Document properties
+	   This functionality can be achieved by using the extract_meta()
+	   function in the included WWW Perl module.
 
 	4. Crash and burn on files
 	   SWISH++ will not crash while indexing any file. Period. If
@@ -131,4 +133,4 @@
 
 	Copyright (C) 1988 by Paul J. Lucas <pjl@best.com>
 	SWISH++ is available under the GNU General Public License.
-	This file last updated: December 29, 1998
+	This file last updated: May 20, 1999

@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "February 3, 1998" "SWISH++"
+.TH \f3search\fP 1 "May 19, 1998" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -145,19 +145,22 @@ Dump the entire word index to standard output and exit.
 The name of the index file to use.
 The default is \f(CWthe.index\fP in the present working directory.
 .TP
+.B \-M
+Dump the meta-name index to standard output and exit.
+.TP
 .BI \-m max-results
 The maximum number of results to return overriding the
 compiled-in default (which is usually 100).
 .TP
-.BI \-s skip-results
+.BI \-r skip-results
 The initial number of results to skip.
 The default is 0.
 Used in conjunction with
 .BR \-m ,
 results can be returned in ``pages.''
 .TP
-.B \-M
-Dump the meta-name index to standard output and exit.
+.B \-s
+Perform stemming (suffix stripping) on words during the search.
 .TP
 .B \-S
 Dump the stop-word index to standard output and exit.
@@ -255,6 +258,11 @@ default index file name
 .SH SEE ALSO
 .BR index (1),
 .BR perlfunc (1)
+.PP
+M.F. Porter.
+``An Algorithm For Suffix Stripping,''
+.I Program,
+14(3), July 1980, pp. 130-137.
 .SH AUTHOR
 Paul J. Lucas
 .RI < pjl@best.com >
