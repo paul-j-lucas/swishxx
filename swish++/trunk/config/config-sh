@@ -45,7 +45,7 @@ trap "rm -f *.o $TARGET; exit 1" 0 1 2 15
 cat > $TARGET <<!
 /*
 **	SWISH++
-**	platform.h
+**	`basename $TARGET`
 **
 **	This program is free software; you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
