@@ -1,5 +1,5 @@
 /*
-**	SWISH++
+**	PJL C++ Library
 **	itoa.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
@@ -22,7 +22,10 @@
 #ifndef	itoa_H
 #define	itoa_H
 
+//
+// Conversion from long and int to string: opposite of atol and atoi.
+//
 extern char const*	ltoa( long );
-inline char const*	itoa( int n )		{ return ltoa( n ); }
+inline char const*	itoa( int n )		{ return ::ltoa( n ); }
 
 #endif	/* itoa_H */
