@@ -47,11 +47,11 @@ int const	Word_Hex_Max_Size		= 4;
 
 // I don't think there is a word in English that has more than...
 
-int const	Word_Max_Consec_Consonants	= 5;
-//		...this many consecutive consonants
+int const	Word_Max_Consec_Consonants	= 7;
+//		...this many consecutive consonants (like "symphysis")
 
-int const	Word_Max_Consec_Vowels		= 4;
-//		...this many consecutive vowels (like "queue")
+int const	Word_Max_Consec_Vowels		= 5;
+//		...this many consecutive vowels (like "queueing")
 
 int const	Word_Max_Consec_Same		= 2;
 //		...this many of the same alphabetic character consecutively
