@@ -170,8 +170,8 @@ int const	FilesGrow_Default		= 100;
 
 int const	FilesReserve_Default		= 1000;
 //		Default maximum number of files to reserve space for; see
-//		file_info::operator new() in file_info.c for details.  This can
-//		be overridden either in a config. file or on the command line.
+//		file_info.c for details.  This can be overridden either in a
+//		config. file or on the command line.
 
 int const	Fork_Attempts			= 5;
 //		Number of times to try to fork before giving up.  This
