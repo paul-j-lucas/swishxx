@@ -176,10 +176,9 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // PARAMETERS
 //
-//	e		The iterator marking the range where to look.  If the
-//			attribute is found, this iterator is repositioned to be
-//			at the first character of the value; otherwise, it is
-//			not touched.
+//	e		The range spanning where to look.  If the attribute is
+//			found, this iterator is repositioned to be at the first
+//			character of the value; otherwise, it is not touched.
 //
 //	attribute	The name of the attribute to find; it must be in lower
 //			case.
@@ -251,8 +250,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 				break;		// stop at whitespace
 
 		if ( !*a ) {			// attribute name matched...
-			e.begin( new_begin );	// ...and got entire value  :)
-			e.end( c );
+			e.begin_pos( new_begin );
+			e.end_pos( c );		// ...and got entire value  :)
 			return true;
 		}
 		if ( c.at_end() )
@@ -583,7 +582,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	encoded_char_range::const_iterator name = c;
 	if ( skip_html_tag( c ) || *name == '!' )
 		return;
-	name.end( c.prev_pos() );
+	name.end_pos( c.prev_pos() );
 	bool const is_end_tag = *name == '/';
 
 	////////// Deal with elements of a class not to index /////////////////
