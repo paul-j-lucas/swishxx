@@ -179,11 +179,6 @@ inline std::ostream&	error_string( std::ostream &o = cerr ) {
 					<< endl;
 			}
 
-extern void		get_index_info(
-				file_vector const &file, int i,
-				long *n, off_t const **offset
-			);
-
 inline char*		new_strdup( char const *s ) {
 				return std::strcpy(
 					new char[ std::strlen( s ) + 1 ], s
