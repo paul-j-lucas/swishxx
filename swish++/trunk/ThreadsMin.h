@@ -48,6 +48,8 @@ public:
 	CONF_INT_ASSIGN_OPS( ThreadsMin )
 };
 
+extern ThreadsMin min_threads;
+
 #endif	/* ThreadsMin_H */
 
 #endif	/* SEARCH_DAEMON */
