@@ -174,19 +174,19 @@ void	usage();
 
 	/////////// Process command-line options //////////////////////////////
 
-	char const*	config_file_name_arg = Config_Filename_Default;
+	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_entire_index_opt = false;
-	int		dump_match = 0;
+	int		dump_match_arg = 0;
 	bool		dump_meta_names_opt = false;
 	bool		dump_stop_words_opt = false;
-	int		dump_window_size = 0;
+	int		dump_window_size_arg = 0;
 	bool		dump_word_index_opt = false;
 	IndexFile	index_file_name;
-	char*		index_file_name_arg = 0;
+	char const*	index_file_name_arg = 0;
 	ResultsMax	max_results;
-	char*		max_results_arg = 0;
+	char const*	max_results_arg = 0;
 	bool		print_result_count_only_opt = false;
-	int		skip_results = 0;
+	int		skip_results_arg = 0;
 	bool		stem_words_opt = false;
 
 	::opterr = 1;
@@ -219,9 +219,9 @@ void	usage();
 				break;
 
 			case 'r': // Specify number of initial results to skip.
-				skip_results = ::atoi( ::optarg );
-				if ( skip_results < 0 )
-					skip_results = 0;
+				skip_results_arg = ::atoi( ::optarg );
+				if ( skip_results_arg < 0 )
+					skip_results_arg = 0;
 				break;
 
 			case 'R': // Print result-count only.
@@ -241,14 +241,14 @@ void	usage();
 				::exit( Exit_Success );
 
 			case 'w': { // Dump words around query words.
-				dump_window_size = ::atoi( ::optarg );
-				if ( dump_window_size < 0 )
-					dump_window_size  = 0;
+				dump_window_size_arg = ::atoi( ::optarg );
+				if ( dump_window_size_arg < 0 )
+					dump_window_size_arg = 0;
 				char const *comma = ::strchr( ::optarg, ',' );
 				if ( comma &&
-					(dump_match = ::atoi( comma + 1 )) < 0
+					(dump_match_arg = ::atoi( comma+1 )) < 0
 				)
-					dump_match = 0;
+					dump_match_arg = 0;
 				break;
 			}
 
@@ -292,9 +292,11 @@ void	usage();
 
 	/////////// Dump stuff if requested ///////////////////////////////////
 
-	if ( dump_window_size ) {
+	if ( dump_window_size_arg ) {
 		while ( *argv )
-			dump_word_window( *argv++, dump_window_size, dump_match );
+			dump_word_window(
+				*argv++, dump_window_size_arg, dump_match_arg
+			);
 		::exit( Exit_Success );
 	}
 	if ( dump_word_index_opt ) {
@@ -358,7 +360,7 @@ void	usage();
 	}
 
 	cout << "# results: " << results.size() << '\n';
-	if ( print_result_count_only_opt || skip_results >= results.size() )
+	if ( print_result_count_only_opt || skip_results_arg >= results.size() )
 		::exit( Exit_Success );
 
 	// Copy the results to a vector to sort them by rank.
@@ -370,7 +372,7 @@ void	usage();
 	double const normalize = 100.0 / sorted[0].second;	// highest rank
 
 	for ( sorted_results_type::const_iterator
-		i  = sorted.begin() + skip_results;
+		i  = sorted.begin() + skip_results_arg;
 		i != sorted.end() && max_results-- > 0;
 		++i
 	)
@@ -912,11 +914,11 @@ void usage() {
 	cerr <<	"usage: " << me << " [options] query\n"
 	" options:\n"
 	" --------\n"
-	"  -c config_file  : Name of configuration file [default: " << Config_Filename_Default << "]\n"
+	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"  -d              : Dump query word indices to standard out and exit\n"
 	"  -D              : Dump entire word index to standard out and exit\n"
-	"  -i index_file   : Name of index file to use [default: " << Index_Filename_Default << "]\n"
-	"  -m max_results  : Maximum number of results [default: " << Results_Max_Default << "]\n"
+	"  -i index_file   : Name of index file to use [default: " << IndexFile_Default << "]\n"
+	"  -m max_results  : Maximum number of results [default: " << ResultsMax_Default << "]\n"
 	"  -M              : Dump meta-name index to standard out and exit\n"
 	"  -R              : Print result-count only [default: no]\n"
 	"  -r skip_results : Number of initial results to skip [default: 0]\n"

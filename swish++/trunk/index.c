@@ -149,23 +149,23 @@ void		write_word_index( ostream&, off_t* );
 
 	/////////// Process command-line options //////////////////////////////
 
-	char const*	config_file_name_arg = Config_Filename_Default;
+	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_stop_words_opt = false;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
 #endif
 	IndexFile	index_file_name;
-	char*		index_file_name_arg = 0;
-	char*		num_files_reserve_arg = 0;
-	char*		num_title_lines_arg = 0;
+	char const*	index_file_name_arg = 0;
+	char const*	num_files_reserve_arg = 0;
+	char const*	num_title_lines_arg = 0;
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
-	char*		stop_word_file_name_arg = 0;
+	char const*	stop_word_file_name_arg = 0;
 	TempDirectory	temp_directory;
-	char const*	temp_directory_arg = Temp_Directory_Default;
-	char*		verbosity_arg = 0;
-	char*		word_file_max_arg = 0;
-	char*		word_percent_max_arg = 0;
+	char const*	temp_directory_arg = TempDirectory_Default;
+	char const*	verbosity_arg = 0;
+	char const*	word_file_max_arg = 0;
+	char const*	word_percent_max_arg = 0;
 
 	char const opts[] =
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -1346,13 +1346,13 @@ void usage() {
 	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
 	" options:\n"
 	" --------\n"
-	"  -c config_file  : Name of configuration file [default: " << Config_Filename_Default << "]\n"
+	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"  -C class_name   : Class name not to index [default: none]\n"
 	"  -e ext          : Extension to index [default: none]\n"
 	"  -E ext          : Extension not to index [default: none]\n"
 	"  -f file_max     : Word/file maximum [default: infinity]\n"
-	"  -F file_reserve : Reserve space for number of files [default: " << Files_Reserve_Default << "]\n"
-	"  -i index_file   : Name of index file to use [default: " << Index_Filename_Default << "]\n"
+	"  -F file_reserve : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
+	"  -i index_file   : Name of index file to use [default: " << IndexFile_Default << "]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	"  -l              : Follow symbolic links [default: no]\n"
 #endif
@@ -1362,7 +1362,7 @@ void usage() {
 	"  -r              : Do not recursively index subdirectories [default: do]\n"
 	"  -s stop_file    : Stop-word file to use instead of compiled-in default\n"
 	"  -S              : Dump default stop-words and exit\n"
-	"  -t title_lines  : Lines to look for <TITLE> [default: " << Title_Lines_Default << "]\n"
+	"  -t title_lines  : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
 	"  -v verbosity    : Verbosity level [0-4; default: 0]\n"
 	"  -V              : Print version number and exit\n";
 	::exit( Exit_Usage );
