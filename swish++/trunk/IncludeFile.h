@@ -24,27 +24,27 @@
 
 // local
 #include "conf_var.h"
+#include "indexer.h"
 #include "pattern_map.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class IncludeFile : public conf_var, public pattern_map< bool >
+	class IncludeFile : public conf_var, public pattern_map< indexer* >
 //
 // DESCRIPTION
 //
 //	An IncludeFile is-a conf_var containing the set of filename patterns
-//	to include during either indexing or extraction.  Additionally, a
-//	pattern can be inserted marked as being one for HTML or XHTML files.
+//	to include during either indexing or extraction.  Additionally, each
+//	pattern is mapped to the indexer that indexes that kind of file.
 //
-//	This is the same as either index's or extract's -e and index's -h
-//	command-line option.
+//	This is the same as either index's or extract's -e command-line option.
 //
 //*****************************************************************************
 {
 public:
-	IncludeFile() : conf_var( "IncludeFile" ) { alias_name( "HTMLFile" ); }
+	IncludeFile() : conf_var( "IncludeFile" ) { }
 	CONF_VAR_ASSIGN_OPS( IncludeFile )
 private:
 	virtual void	parse_value( char const *var_name, char *line );
