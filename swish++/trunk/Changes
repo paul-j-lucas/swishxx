@@ -3,6 +3,56 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.6
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* The text/enriched attachment indexer that was part of the Mail module was
+  split off into its own RTF (Rich Text Format) module so stand-alone RTF files
+  can be indexed.
+
+  (This feature shall be known as feature RTF.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added "rtf" to MOD_LIST.
+
+* man/man1/index.1
+
+	1. Added description of RTF module.
+
+* mod/mail/mod_mail.c
+
+	1. Removed: #include "platform.h"
+	2. Added: #include "mod/rtf/mod_rtf.h"
+	3. Removed index_enriched().
+	4. In index_headers(), made "text/enriched" #ifdef'd on mod_rtf.
+	5. In index_words(), switched to using RTF module.
+
+* mod/mail/mod_mail.h
+
+	1. Fixed RFC attributions.
+	2. Made Text_Enriched #ifdef'd on mod_rtf.
+	3. Removed index_enriched().
+
+* mod/rtf/GNUmakefile
+* mod/rtf/mod_rtf.c
+* mod/rtf/mod_rtf.h
+
+	1. New files for feature RTF.
+
+* version.h
+
+	1. Upped version to to "5.6".
+
+
+*******************************************************************************
 5.5.3
 *******************************************************************************
 
