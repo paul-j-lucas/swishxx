@@ -364,5 +364,6 @@ next_line:
 {
 	map_type &m = map_ref();
 	TRANSFORM_EACH( map_type, m, i )
-		i->second->reset();
+		if ( i->second )
+			i->second->reset();
 }
