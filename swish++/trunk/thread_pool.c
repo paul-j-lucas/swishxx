@@ -131,7 +131,7 @@ extern char const*	me;
 	register thread_pool::thread *const
 		t = STATIC_CAST( thread_pool::thread* )( p );
 
-	while ( 1 ) {
+	while ( true ) {
 
 #		ifdef DEBUG_threads
 		cerr << "thread_main(): waiting for task" << endl;

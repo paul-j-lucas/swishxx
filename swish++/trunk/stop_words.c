@@ -388,7 +388,7 @@ stop_word_set*		stop_words;		// pointer to global set
 	bool in_word = false;
 
 	register file_vector::const_iterator c = file.begin();
-	while ( 1 ) {
+	while ( true ) {
 		if ( c != file.end() ) {
 			register char const ch = tolower(
 				iso8859_to_ascii( *c++ )
