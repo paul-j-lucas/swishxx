@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "May 9, 2001" "SWISH++"
+.TH \f3index\f1 1 "May 10, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -254,7 +254,9 @@ ends it;
 for an element that does not have an end tag, ``the tag that ends the element''
 is the element's start tag.
 (See the EXAMPLES.)
+.IP ""
 All elements from the HTML 4.0 specification (including deprecated elements),
+Ruby elements,
 plus common, browser-specific elements are recognized;
 unrecognized elements are ignored.
 (See the
@@ -280,6 +282,17 @@ attribute, then the words specified
 as the value of the \f(CWCONTENT\f1 attribute
 are indexed associated with the meta name specified as the value of the
 \f(CWNAME\f1 attribute.
+.IP ""
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of the \f(CWCONTENT\f1 attribute
+are still indexed, but not associated with the meta name.)
+.IP ""
 (See also the
 .BR \-m ,
 .BR \-\-meta ,
@@ -332,8 +345,18 @@ file's title rather than the file's name.
 leading and trailing spaces are removed.)
 .TP
 2.
-Text that is the value of a header
-is indexed associated with the header as a meta name.
+Words that are the value of a header
+are indexed associated with the header name as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words specified as the value of the header
+are still indexed, but not associated with the header.)
+.IP ""
 (See also the
 .BR \-m ,
 .BR \-\-meta ,
@@ -418,8 +441,18 @@ as well as backslash sequences, such as \f(CW\\f2\f1,
 are removed.)
 .TP
 2.
-Text that is in a section is indexed associated with the name of the section
+Words that are in a section are indexed associated with the name of the section
 as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words in a section are still indexed,
+but not associated with the section heading.)
+.IP ""
 Spaces in multi-word section headings are converted to dashes, e.g.,
 ``see also'' becomes ``see-also'' as a meta name.
 (See also the
@@ -484,6 +517,13 @@ a `\f(CW-\fP'.
 .TP
 .B \-\-help
 Print the usage (``help'') message and exit.
+.TP
+.B \-A
+.br
+.ns
+.TP
+.B \-\-no-assoc-meta
+Do not associate words with meta names.
 .TP
 .BI \-c f
 .br
@@ -805,6 +845,12 @@ the latter taking priority.
 .RS 5
 .PD 0
 .TP 18
+.B AssociateMeta
+Same as
+.B \-A
+or
+.B \-\-no-assoc-meta
+.TP
 .B ExcludeClass
 Same as
 .B \-C
@@ -1145,6 +1191,11 @@ April 1998.
 .I HTML 4.0 Specification,
 World Wide Web Consortium,
 April 1998.
+.PP
+Marcin Sawicki, et al.
+.IR "Ruby Annotation" ,
+World Wide Web Consortium,
+April 2001.
 .SH AUTHOR
 Paul J. Lucas
 .RI < pauljlucas@mac.com >
