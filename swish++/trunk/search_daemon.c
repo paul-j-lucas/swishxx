@@ -64,6 +64,41 @@ using namespace PJL;
 using namespace std;
 #endif
 
+//
+// Turn a socket file descriptor into a server socket.  See also: W. Richard
+// Stevens.  "Unix Network Programming, Vol 1, 2nd ed." Prentice-Hall, Upper
+// Saddle River, NJ, 1998.
+//
+// From [Stevens 1998], pp. 194-197, "SO_REUSEADDR and SO_REUSEPORT Socket
+// Options":
+//
+//	By default, when the listening server is restarted by calling socket,
+//	bind, and listen, the call to bind fails because the listening server
+//	is trying to bind a port that is part of an existing connection (the
+//	one being handled by the previously spawned child).  But if the server
+//	sets the SO_REUSEADDR socket option between calls to socket and bind,
+//	the latter function will succeed.  All TCP servers should specify this
+//	socket option to allow the server to be restarted in this situation.
+//
+// The reason this is done as a macro rather than a function is because if it
+// were a function, we'd have to pass an additional parameters to generate the
+// correct error messages and exit codes.  That's too much work.
+//
+#define	BIND_SOCKET(FD,ADR,TYPE) {					\
+	int const on = 1;						\
+	::setsockopt( FD, SOL_SOCKET, SO_REUSEADDR,			\
+		reinterpret_cast<char const*>( &on ), sizeof on		\
+	);								\
+	if ( ::bind( FD, (struct sockaddr*)&ADR, sizeof ADR ) == -1 ) {	\
+		error() << #TYPE " bind() failed" << error_string;	\
+		::exit( Exit_No_##TYPE##_Bind );			\
+	}								\
+	if ( ::listen( FD, socket_queue_size ) == -1 ) {		\
+		error() << #TYPE " listen() failed" << error_string;	\
+		::exit( Exit_No_##TYPE##_Listen );			\
+	}								\
+}
+
 void	detach_from_terminal();
 int	open_tcp_socket();
 int	open_unix_socket();
@@ -333,14 +368,7 @@ void	set_signal_handlers();
 	addr.sin_family = AF_INET;
 	addr.sin_addr = socket_address.addr();
 	addr.sin_port = htons( socket_address.port() );
-	if ( ::bind( fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
-		error() << "TCP bind() failed" << error_string;
-		::exit( Exit_No_TCP_Bind );
-	}
-	if ( ::listen( fd, socket_queue_size ) == -1 ) {
-		error() << "TCP listen() failed" << error_string;
-		::exit( Exit_No_TCP_Listen );
-	}
+	BIND_SOCKET(fd,addr,TCP);
 	return fd;
 }
 
@@ -375,14 +403,7 @@ void	set_signal_handlers();
 			<< error_string;
 		::exit( Exit_No_Unlink );
 	}
-	if ( ::bind( fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
-		error() << "Unix bind() failed" << error_string;
-		::exit( Exit_No_Unix_Bind );
-	}
-	if ( ::listen( fd, socket_queue_size ) == -1 ) {
-		error() << "Unix listen() failed" << error_string;
-		::exit( Exit_No_Unix_Listen );
-	}
+	BIND_SOCKET(fd,addr,Unix);
 	return fd;
 }
 
