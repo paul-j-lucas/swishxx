@@ -141,24 +141,35 @@
 #endif
 
 #ifdef	EXTRACT
-	//
-	// Check to see if the extracted file already exists; if so, skip it.
-	//
-	char file_name_extracted[ NAME_MAX + 1 ];
-	::strcpy( file_name_extracted, file_name );
-	::strcat( file_name_extracted, extract_extension );
-	if ( file_exists( file_name_extracted ) ) {
-		if ( verbosity > 3 )
-			cout	<< " (skipped: " << extract_extension
-				<< " file already exists)\n";
-		return;
-	}
-	ofstream extracted_file( file_name_extracted );
-	if ( !extracted_file ) {
-		if ( verbosity > 3 )
-			cout	<< " (skipped: can not create "
-				<< extract_extension << " file)\n";
-		return;
+	ostream *out;
+	ofstream extracted_file;
+	if ( extract_as_filter ) {
+		//
+		// We're running as a filter: write to standard ouput.
+		//
+		out = &cout;
+	} else {
+		//
+		// We're not running as a filter: check to see if the extracted
+		// file already exists; if so, skip extraction entirely.
+		//
+		char file_name_extracted[ NAME_MAX + 1 ];
+		::strcpy( file_name_extracted, file_name );
+		::strcat( file_name_extracted, extract_extension );
+		if ( file_exists( file_name_extracted ) ) {
+			if ( verbosity > 3 )
+				cout	<< " (skipped: " << extract_extension
+					<< " file already exists)\n";
+			return;
+		}
+
+		extracted_file.open( file_name_extracted );
+		if ( !extracted_file ) {
+			if ( verbosity > 3 )
+				cout	<< " (skipped: can not create "
+					<< extract_extension << " file)\n";
+			return;
+		}
 	}
 #endif
 
@@ -217,6 +228,6 @@
 	////////// Extract the file ///////////////////////////////////////////
 
 	++num_extracted_files;
-	extract_words( file.begin(), file.end(), extracted_file );
+	extract_words( file.begin(), file.end(), *out );
 #endif
 }
