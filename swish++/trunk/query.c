@@ -46,12 +46,12 @@ extern index_segment	files, meta_names, stop_words, words;
 int	get_meta_id( index_segment::const_iterator );
 
 bool	parse_meta(
-		token_stream&, search_results_type&, std::set< std::string >&,
-		bool&, int = No_Meta_ID
+		token_stream&, search_results_type&, stop_word_set&, bool&,
+		int = No_Meta_ID
 	);
 bool	parse_primary(
-		token_stream&, search_results_type&, std::set< std::string >&,
-		bool&, int = No_Meta_ID
+		token_stream&, search_results_type&, stop_word_set&, bool&,
+		int = No_Meta_ID
 	);
 bool	parse_optional_relop( token_stream&, token::type& );
 
@@ -112,7 +112,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //
 	bool parse_query(
 		token_stream &query, search_results_type &result,
-		set< string > &stop_words_found, bool &ignore, int meta_id
+		stop_word_set &stop_words_found, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -245,7 +245,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //
 	bool parse_meta(
 		token_stream &query, search_results_type &result,
-		set< string > &stop_words_found, bool &ignore, int meta_id
+		stop_word_set &stop_words_found, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -357,7 +357,7 @@ no_put_back:
 //
 	bool parse_primary(
 		token_stream &query, search_results_type &result,
-		set< string > &stop_words_found, bool &ignore, int meta_id
+		stop_word_set &stop_words_found, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION

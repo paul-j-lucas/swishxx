@@ -26,7 +26,6 @@
 #include <functional>			/* for binary_function<> */
 #include <iostream>
 #include <iterator>
-#include <set>
 #include <string>
 #include <ctime>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
@@ -409,7 +408,7 @@ inline omanip< char const* > index_file_info( int index ) {
 {
 	token_stream		query_stream( query );
 	search_results_type	results;
-	set< string >		stop_words_found;
+	stop_word_set		stop_words_found;
 	bool			ignore;
 
 	if ( !( parse_query( query_stream, results, stop_words_found, ignore )
@@ -428,7 +427,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	// Print stop-words, if any.
 	if ( !stop_words_found.empty() ) {
 		out << "# ignored:";
-		FOR_EACH( set< string >, stop_words_found, word )
+		FOR_EACH( stop_word_set, stop_words_found, word )
 #ifdef	PJL_GCC_295 /* see the comment in platform.h */
 			out << ' ' << word->c_str();
 #else
