@@ -36,8 +36,7 @@
 //	An ExcludeExtension is-a conf_set containing the set of filename
 //	extensions of files to exclude during either indexing or extraction.
 //
-//	This is the same as either index's or extract's -E command-line
-//	option.
+//	This is the same as either index's or extract's -E command-line option.
 //
 //*****************************************************************************
 {

@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <cstdlib>
 #include <cstring>
 
 // local
@@ -38,8 +39,8 @@ using namespace std;
 //
 // DESCRIPTION
 //
-//	Construct (initialize) a FilterExtension: load the extension map
-//	with default common filters.
+//	Construct (initialize) a FilterExtension: load the extension map with
+//	default common filters.
 //
 //*****************************************************************************
 	conf_var( "FilterExtension" )
@@ -61,12 +62,13 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	/* virtual */ void FilterExtension::parse_value( char *line )
+	/* virtual */
+	void FilterExtension::parse_value( char const *var_name, char *line )
 //
 // DESCRIPTION
 //
-//	Parse a FilterExtension configuration file line.  The format of such
-//	a line is:
+//	Parse a FilterExtension configuration file line.  The format of such a
+//	line is:
 //
 //		ext	command
 //
@@ -77,7 +79,9 @@ using namespace std;
 //
 // PARAMETERS
 //
-//	line	The line to be parsed.
+//	var_name	The name of the configuration variable.
+//
+//	line		The line to be parsed.
 //
 //*****************************************************************************
 {
