@@ -25,7 +25,7 @@
 */
 
 #ifdef	WRITE_HEADER
-	long const num_dirs           = dir_list.size();
+	long const num_dirs           = dir_set.size();
 	long const num_files          = file_info::num_files();
 	long const num_stop_words     = stop_words->size();
 	long const num_meta_names     = meta_names.size();
