@@ -76,6 +76,146 @@ int		indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
+	/* static */ PJL::option_stream::spec*
+	indexer::all_mods_options( option_stream::spec const *main_spec )
+//
+// DESCRIPTION
+//
+//	Build a combined option specification of the main indexing options plus
+//	any additional ones of indexing modules.
+//
+// PARAMETERS
+//
+//	main_spec	The option specification for the main part of index(1).
+//
+// RETURN VALUE
+//
+//	Returns a pointer to an array of option_stream::spec.  It should be
+//	deleted after use (with delete[]).
+//
+//*****************************************************************************
+{
+	option_stream::spec const *s;
+
+	////////// Count all options //////////////////////////////////////////
+
+	int option_count = 0;
+	for ( s = main_spec; s->long_name; ++s )
+		++option_count;
+	FOR_EACH( map_type, map_ref(), mod )
+		if ( s = mod->second->option_spec() )
+			while ( s->long_name )
+				++option_count, ++s;
+
+	////////// Make combined option_spec //////////////////////////////////
+
+	option_stream::spec *const
+		combined_spec = new option_stream::spec[ option_count + 1 ];
+	option_stream::spec *c = combined_spec;
+
+	for ( s = main_spec; s->long_name; ++s )
+		++option_count;
+	FOR_EACH( map_type, map_ref(), mod )
+		if ( s = mod->second->option_spec() )
+			while ( s->long_name )
+				*c++ = *s++;
+	c->long_name  = 0;
+	c->arg_type   = 0;
+	c->short_name = 0;
+	return combined_spec;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */ void indexer::all_mods_post_options()
+//
+// DESCRIPTION
+//
+//	This function is called to give all indexer modules a chance to do
+//	things just after command-line options have been processed.
+//
+//*****************************************************************************
+{
+	TRANSFORM_EACH( map_type, map_ref(), mod )
+		mod->second->post_options();
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */
+	bool indexer::any_mod_claims_option( option_stream::option const &opt )
+//
+// DESCRIPTION
+//
+//	This function is callled to see if any indexing module claims a given
+//	option.
+//
+// RETURN VALUE
+//
+//	Returns true only if any indexing module claims the option.
+//
+//*****************************************************************************
+{
+	TRANSFORM_EACH( map_type, map_ref(), mod )
+		if ( mod->second->claims_option( opt ) )
+			return true;
+	return false;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */ void indexer::all_mods_usage( ostream &o )
+//
+// DESCRIPTION
+//
+//	Write all indexing-module-specific usage options, if any, to a given
+//	ostream.
+//
+// PARAMETERS
+//
+//	o	The ostream to write the usage messages to.
+//
+//*****************************************************************************
+{
+	FOR_EACH( map_type, map_ref(), mod )
+		mod->second->usage( o );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */
+	bool indexer::claims_option( option_stream::option const& )
+//
+// DESCRIPTION
+//
+//	See if an indexing module claims an option.  The default doesn't.  A
+//	derived indexer that does should override this function.
+//
+// PARAMETERS
+//
+//	Not used.
+//
+// RETURN VALUE
+//
+//	Returns false.
+//
+//*****************************************************************************
+{
+	return false;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	/* static */ int indexer::find_meta( char const *meta_name )
 //
 // DESCRIPTION
@@ -178,8 +318,8 @@ int		indexer::suspend_indexing_count_ = 0;
 
 	if ( suspend_indexing_count_ > 0 ) {
 		//
-		// A derived indexer class has called suspend_indexing(), so
-		// do nothing more.
+		// A derived indexer class has called suspend_indexing(), so do
+		// nothing more.
 		//
 		// This facility is currently used by HTML_indexer to indicate
 		// that the word is within an HTML or XHTML element's begin/end
@@ -370,6 +510,43 @@ int		indexer::suspend_indexing_count_ = 0;
 	// do nothing
 }
 
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ option_stream::spec const* indexer::option_spec() const
+//
+// DESCRIPTION
+//
+//	Return a module-specific option specification.  The default returns
+//	none.  A derived indexer that has its own command-line options should
+//	override this function.
+//
+// RETURN VALUE
+//
+//	Returns null.
+//
+//*****************************************************************************
+{
+	return 0;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ void indexer::post_options()
+//
+// DESCRIPTION
+//
+//	The default does nothing after command-line options are processed.
+//
+//*****************************************************************************
+{
+	// do nothing
+}
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -424,4 +601,25 @@ int		indexer::suspend_indexing_count_ = 0;
 			*p = ' ';
 
 	return title;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* virtual */ void indexer::usage( ostream& ) const
+//
+// DESCRIPTION
+//
+//	Print a module-specific usage message.  The default prints nothing.  A
+//	derived indexer that has its own command-line options should override
+//	this function.
+//
+// PARAMETERS
+//
+//	Not used.
+//
+//*****************************************************************************
+{
+	// do nothing
 }
