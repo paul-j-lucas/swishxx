@@ -23,26 +23,27 @@
 #define ExtractFile_H
 
 // local
-#include "conf_set.h"
+#include "conf_var.h"
+#include "pattern_map.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class ExtractFile : public conf_set
+	class ExtractFile : public conf_var, public pattern_map< bool >
 //
 // DESCRIPTION
 //
 //	An ExtractFile is-a conf_var containing the set of filename patterns
-//	to include during extraction.
+//	to include during extraction.  The bool template parameter isn't used.
 //
 //	This is the same as extract's -e command-line option.
 //
 //*****************************************************************************
 {
 public:
-	ExtractFile() : conf_set( "ExtractFile" ) { }
-	CONF_SET_ASSIGN_OPS( ExtractFile )
+	ExtractFile() : conf_var( "ExtractFile" ) { }
+	CONF_VAR_ASSIGN_OPS( ExtractFile )
 private:
 	virtual void	parse_value( char *line );
 	virtual void	reset() { clear(); }
