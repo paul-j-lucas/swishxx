@@ -156,9 +156,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // SYNOPSIS
 //
-	bool find_attribute(
-		encoded_char_range::const_iterator &e, char const *attribute
-	)
+	bool find_attribute( encoded_char_range &e, char const *attribute )
 //
 // DESCRIPTION
 //
@@ -206,14 +204,15 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 //*****************************************************************************
 {
-	encoded_char_range::const_iterator c = e;
+	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
 		if ( !isalpha( *c ) ) {
 			++c;
 			continue;
 		}
 		//
-		// Found the start of a potentially matching attribute name.
+		// We just found the start of a potentially matching attribute
+		// name: now try to find its end.
 		//
 		register char const *a = attribute;
 		while ( !c.at_end() && to_lower( *c ) == *a )
@@ -243,7 +242,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		char const quote = ( *c == '"' || *c == '\'' ) ? *c : 0;
 		if ( quote && (++c).at_end() )
 			break;
-		file_vector::const_iterator const new_begin = c.pos();
+		encoded_char_range::const_pointer const new_begin = c.pos();
 		for ( ; !c.at_end(); ++c )
 			if ( quote ) {		// stop at matching quote only
 				if ( *c == quote )
@@ -252,8 +251,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 				break;		// stop at whitespace
 
 		if ( !*a ) {			// attribute name matched...
-			e.pos( new_begin );	// ...and got entire value  :)
-			e.end_pos( c.pos() );
+			e.begin( new_begin );	// ...and got entire value  :)
+			e.end( c );
 			return true;
 		}
 		if ( c.at_end() )
@@ -364,8 +363,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 // SYNOPSIS
 //
 	/* virtual */ void HTML_indexer::index_words(
-		encoded_char_range::const_iterator &c,
-		int meta_id
+		encoded_char_range const &e, int meta_id
 	)
 //
 // DESCRIPTION
@@ -375,8 +373,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // PARAMETERS
 //
-//	c		The iterator marking the beginning of the text to
-//			index.
+//	e		The encoded text to index.
 //
 //	meta_id		The numeric ID of the META NAME the words index are to
 //			to be associated with.
@@ -388,8 +385,9 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	bool		in_word = false;
 	int		len;
 
+	encoded_char_range::const_iterator c = e.begin();
 	while ( !c.at_end() ) {
-		register file_vector::value_type ch = *c++;
+		register char ch = *c++;
 		//
 		// If the character is an '&' (the start of a entity
 		// reference), convert the entity reference to ASCII;
@@ -585,7 +583,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	encoded_char_range::const_iterator name = c;
 	if ( skip_html_tag( c ) || *name == '!' )
 		return;
-	name.end_pos( c.prev_pos() );
+	name.end( c.prev_pos() );
 	bool const is_end_tag = *name == '/';
 
 	////////// Deal with elements of a class not to index /////////////////
@@ -661,7 +659,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 		bool is_no_index_class = false;
 
-		encoded_char_range::const_iterator class_att = name;
+		encoded_char_range class_att = name;
 		if ( find_attribute( class_att, "class" ) ) {
 			//
 			// CLASS attribute values can contain multiple classes
@@ -744,7 +742,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 
 	////////// Look for a TITLE attribute /////////////////////////////////
 
-	encoded_char_range::const_iterator title_att = name;
+	encoded_char_range title_att = name;
 	if ( find_attribute( title_att, "title" ) )
 		index_words( title_att );
 
@@ -754,7 +752,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 		tag_cmp( name, "img" ) ||
 		tag_cmp( name, "input" )
 	) {
-		encoded_char_range::const_iterator alt_att = name;
+		encoded_char_range alt_att = name;
 		if ( find_attribute( alt_att, "alt" ) )
 			index_words( alt_att );
 		return;
@@ -763,8 +761,8 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	////////// Parse a META element ///////////////////////////////////////
 
 	if ( tag_cmp( name, "meta" ) ) {
-		encoded_char_range::const_iterator name_att    = name;
-		encoded_char_range::const_iterator content_att = name;
+		encoded_char_range name_att    = name;
+		encoded_char_range content_att = name;
 		if (	find_attribute( name_att, "name" ) &&
 			find_attribute( content_att, "content" )
 		) {
@@ -797,7 +795,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	////////// Look for a STANDBY attribute ///////////////////////////////
 
 	if ( tag_cmp( name, "object" ) ) {
-		encoded_char_range::const_iterator standby_att = name;
+		encoded_char_range standby_att = name;
 		if ( find_attribute( standby_att, "standby" ) )
 			index_words( standby_att );
 		return;
@@ -806,7 +804,7 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 	////////// Look for a SUMMARY attribute ///////////////////////////////
 
 	if ( tag_cmp( name, "table" ) ) {
-		encoded_char_range::const_iterator summary_att = name;
+		encoded_char_range summary_att = name;
 		if ( find_attribute( summary_att, "summary" ) )
 			index_words( summary_att );
 		return;
