@@ -22,6 +22,9 @@
 #ifndef conf_string_H
 #define conf_string_H
 
+// standard
+#include <string>
+
 // local
 #include "conf_var.h"
 
@@ -29,28 +32,36 @@
 //
 // SYNOPSIS
 //
-	class conf<char const*> : public conf_var
+	template<> class conf<string> : public conf_var
 //
 // DESCRIPTION
 //
-//	A conf<char const*> is-a conf_var for containing a configuration
-//	variable string value.
+//	A conf<string> is-a conf_var for containing a configuration variable
+//	string value.
 //
 //*****************************************************************************
 {
 public:
-	operator char const*() const { return value_; }
+	operator char const*() const	{ return value_.c_str(); }
 protected:
 	conf( char const *name, char const *default_value = "" );
-	conf<char const*>& operator=( char const *s ) {
-		parse_const_value( s );
-		return *this;
-	}
+	CONF_VAR_ASSIGN_OPS( conf<string> )
 private:
-	char const*	const default_value_;
-	char const*	value_;
+	string const	default_value_;
+	string		value_;
 
-	virtual void	parse_value( char *line );
+	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	reset()		{ value_ = default_value_; }
 };
+
+#define	CONF_STRING_ASSIGN_OPS(T)		\
+	T& operator=( string const &s ) {	\
+		conf<string>::operator=( s );	\
+		return *this;			\
+	}					\
+	T& operator=( char const *s ) {		\
+		conf<string>::operator=( s );	\
+		return *this;			\
+	}
 
 #endif	/* conf_string_H */
