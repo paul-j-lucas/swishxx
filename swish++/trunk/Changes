@@ -46,9 +46,28 @@ BUG FIXES
 
   (This bug fix shall be known as bug fix NVR.)
 
+* Setting the SearchDaemon config. variable to Y didn't allow no command-line
+  arguments to be given.
+
+  (This bug fix shall be known as bug fix DCL.)
+
+* Several tweaks were made to make SWISH++ compiled under FreeBSD.
+
+  (This bug fix shall be known as bug fix BSD3.)
+
+* Added -lnsl for compiling the search daemon under Solaris.
+
+  (This bug fix shall be known as bug fix SOL2.)
+
 
 CHANGES, file-by-file
 ---------------------
+
+* bcd.c
+
+	1. s/fake_ansi.h/platform.h/
+
+	2. s/STATIC_CAST(...)/static_cast<...>/
 
 * config/config.mk
 
@@ -56,10 +75,32 @@ CHANGES, file-by-file
 
 	2. Added MOD_LIST to CCFLAGS for feature MOD.
 
+	3. Removed definition of MAKE.
+
+	4. Added separate "OS selection" section since there's now
+	   FreeBSD and Solaris also.
+
+	5. Added "PTHREAD_LIB= -pthread" for bug fix BSD.
+
+	6. Added "SOCKET_LIB+= -lnsl" for bug fix SOL2.
+
+	7. Wrapped thread and socket stuff inside "ifdef SEARCH_DAEMON".
+
 * config/src/mutable.c
 
 	1. Removed this file since all C++ compilers should now support
 	   "mutable".
+
+* config/src/new_casts.c
+
+	1. Removed this file since compilers should be implementing new
+	   casts by now.
+
+* config/src/socklen_1_socklen_t.c
+* config/src/socklen_2_int.c
+* config/src/socklen_2_unsigned.c
+
+	1. Added "#include <sys/types.h>" for bug fix BSD3.
 
 * config.h
 
@@ -123,6 +164,23 @@ CHANGES, file-by-file
 	9. In conf_var::conf_var(), added initialization of name_ for
 	   bug fix NVR.
 
+	A. In conf_var::conf_var():
+
+		s/map_ref()[ name_ ]/map_ref()[ to_lower( name_ ) ]/
+
+	   so the case for variable names is irrelevant.
+
+	B. In conf_var::map_ref(), made all variable names lower case.
+
+	C. In conf_var::parse_line(), added "to_lower( line )" so the
+	   case for variable names is irrelevant.
+
+	D. In conf_var::parse_line(): s/ in config. file//
+
+	E. In conf_var::map_ref(), changed to doing initialization via
+	   a table.  (This had the side-effect of making "search" work
+	   under FreeBSD.)
+
 * conf_var.h
 
 	1. Added default argument of "cerr" to error() and warning().
@@ -141,8 +199,13 @@ CHANGES, file-by-file
 
 	3. Added ExtractFile::const_iterator for feature MOD.
 
-* elements.h
 * elements.c
+
+	1. Added "#ifdef MOD_HTML" for feature MOD.
+
+	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+
+* elements.h
 * entities.h
 * entities.c
 
@@ -185,14 +248,48 @@ CHANGES, file-by-file
 
 	1. Added for feature MOD.
 
+* fake_ansi.c
+
+	1. s/fake_ansi.h/platform.h/
+
+	2. s/STATIC_CAST(...)/static_cast<...>/
+
 * fake_ansi.h
 
 	1. Got rid of faking "mutable" since all C++ compilers should
 	   now support this.
 
+	2. Removed new casts section since compilers should be
+	   implementing them by now.
+
+* file_info.c
+
+	1. s/fake_ansi.h/platform.h/
+
+	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+
+	3. Added: #ifndef PJL_NO_NAMESPACES (it should have been there
+	   all along).
+
+* file_list.c
+
+	1. Removed: #include "fake_ansi.h"
+
+	2. Removed PJL_NO_MUTABLE section.
+
+	3. s/THIS->//
+
 * file_list.h
 
 	1. Removed: #include "fake_ansi.h".
+
+	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+
+* file_vector.c
+
+	1. Added "#include <sys/time.h>" for bug fix BSD3.
+
+	2. s/REINTERPRET_CAST( caddr_t )( -1 )/MAP_FAILED/
 
 * FilesReserve.h
 
@@ -210,6 +307,8 @@ CHANGES, file-by-file
 	4. Added IncludeMeta.c for feature MAIL.
 
 	5. Added splitmail target for feature MAIL.
+
+	6. s/ifndef WIN32/ifdef SEARCH_DAEMON/
 
 * html.c
 * html.h
@@ -277,6 +376,10 @@ CHANGES, file-by-file
 		s/include_meta_names.insert( to_lower( opt.arg() ) )
 		 /include_meta_names.parse_value( opt.arg() )/
 
+	B. Added "#include <sys/time.h>" for bug fix BSD3.
+
+	C. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+
 * index.h
 
 	1. Replaced by indexer.h for feature MOD.
@@ -286,9 +389,23 @@ CHANGES, file-by-file
 
 	1. Added for feature MOD.
 
+* index_segment.c
+
+	1. Removed: #include "fake_ansi.h"
+
+	2. s/REINTERPRET_CAST(...)/reinterpret_cast<...>/
+
 * init_modules.c
 
 	1. Added for features MOD and MAIL.
+
+* itoa.c
+
+	1. s/fake_ansi.h/platform.h/
+
+* less.h
+
+	1. s/binary_function/std::binary_function/
 
 * man/man1/extract.1
 
@@ -342,6 +459,8 @@ CHANGES, file-by-file
 
 	5. s/pjl@best.com/pauljlucas@mac.com/
 
+	6. Added: "For variables_names, case is irrelevant."
+
 * mod_html.c
 
 	1. Replaced html.c for feature MOD.
@@ -382,24 +501,28 @@ CHANGES, file-by-file
 
 	1. s/html.h/indexer.h/ for feature MOD.
 
-	2. s/ostream/std::ostream/
+	2. Added #include "SocketAddress.h" for feature TCP.
 
-	3. Added #include "SocketAddress.h" for feature TCP.
-
-	4. s/am_daemon/daemon_type/ and s/daemon_opt/type_type_arg/ for
+	3. s/am_daemon/daemon_type/ and s/daemon_opt/type_type_arg/ for
 	   feature TCP.
 
-	5. Made the daemon configuration variables global and
+	4. Made the daemon configuration variables global and
 	   become_daemon() take no arguments becuase the argument list
 	   was getting way too long.
 
-	6. In search_options::search_options(), added socket_address_arg
+	5. In search_options::search_options(), added socket_address_arg
 	   for feature TCP.
 
-	7. In search_options::search_options(), added -a option for
+	6. In search_options::search_options(), added -a option for
 	   feature TCP.
 
-	8 In usage(), updated message for feature TCP.
+	7. In usage(), updated message for feature TCP.
+
+	8. Added "#include <sys/time.h>" for bug fix BSD3.
+
+	9. In main(), moved check of number of command-line arguments
+	   after conf_var::parse_file() and command-line override code
+	   for bug fix DCL.
 
 * search.h
 
@@ -423,6 +546,10 @@ CHANGES, file-by-file
 	1. Moved configuration variable extern declarations to .h
 	   files.
 
+	2. Added "#include <sys/time.h>" for bug fix BSD3.
+
+	3. In accept_failed(), added "#ifdef EPROTO" for bug fix BSD3.
+
 * SearchDaemon.c
 
 	1. Added a bunch of #include's ane extern declarations since
@@ -441,6 +568,10 @@ CHANGES, file-by-file
 * SearchDaemon.c
 
 	1. Added this file for feature TCP.
+
+* search_thread.c
+
+	1. s/fake_ansi.h/platform.h/
 
 * SocketAddress.h
 * SocketAddress.c
@@ -499,6 +630,15 @@ CHANGES, file-by-file
 
 	7. Added IncludeMeta values for mail/news.
 
+* thread_pool.c
+
+	1. s/fake_ansi.h/platform.h/
+
+	2. Added: #ifndef PJL_NO_NAMESPACES (it should have been there
+	   all along).
+
+	3. s/STATIC_CAST(...)/static_cast<...>/
+
 * ThreadsMax.h
 
 	1. Added "extern ThreadsMax max_threads;".
@@ -523,9 +663,13 @@ CHANGES, file-by-file
 
 	1. Moved "char_buffer_pool<128,5> buf" to file scope.
 
+	2. s/fake_ansi.h/platform.h/
+
 * util.h
 
 	1. Added find_newline() and skip_newline().
+
+	2. Added "#include <sys/time.h>" for bug fix BSD3.
 
 * Verbosity.h
 
@@ -544,6 +688,10 @@ CHANGES, file-by-file
 	1. Removed trim_whitespace(), url_decode(), and url_encode()
 	   since they are no longer used now that the search.cgi
 	   example uses CGI.pm
+
+* word_util.h
+
+	s/STATIC_CAST(...)/static_cast<...>/
 
 * www_example/search.cgi
 
@@ -1271,7 +1419,7 @@ BUG FIXES
 ---------
 
 * Added various #include lines and replacement for ENODATA to make it compile
-  on BSD systems.
+  on FreeBSD systems.
 
   (This bug fix will be known as bug fix BSD2.)
 
