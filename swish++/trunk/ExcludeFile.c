@@ -24,6 +24,7 @@
 
 // local
 #include "ExcludeFile.h"
+#include "platform.h"
 
 #ifndef PJL_NO_NAMESPACES
 using namespace std;

@@ -27,6 +27,7 @@
 #include "exit_codes.h"
 #include "index_segment.h"
 #include "mmap_file.h"
+#include "platform.h"
 #include "stop_words.h"
 #include "util.h"
 #include "word_util.h"

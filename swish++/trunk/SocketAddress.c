@@ -28,6 +28,7 @@
 
 // local
 #include "exit_codes.h"
+#include "platform.h"
 #include "SocketAddress.h"
 
 #ifndef	PJL_NO_NAMESPACES

@@ -30,6 +30,7 @@
 #include "IncludeMeta.h"
 #include "indexer.h"
 #include "meta_map.h"
+#include "platform.h"
 #include "stop_words.h"
 #include "util.h"
 #include "word_info.h"

@@ -28,6 +28,7 @@
 
 // local
 #include "directory.h"
+#include "platform.h"
 #include "RecurseSubdirs.h"
 #include "util.h"
 #include "Verbosity.h"

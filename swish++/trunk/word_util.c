@@ -27,6 +27,7 @@
 
 // local
 #include "config.h"
+#include "platform.h"
 #include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES

@@ -26,6 +26,7 @@
 #include "auto_vec.h"
 #include "conf_enum.h"
 #include "exit_codes.h"
+#include "platform.h"
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
