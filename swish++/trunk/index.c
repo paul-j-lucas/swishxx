@@ -230,7 +230,7 @@ void			write_word_index( ostream&, off_t* );
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
 	char const*	stop_word_file_name_arg = 0;
-	TempDirectory	temp_directory = TempDirectory_Default;
+	TempDirectory	temp_directory;
 	char const*	temp_directory_arg = 0;
 	char const*	verbosity_arg = 0;
 	char const*	word_file_max_arg = 0;
