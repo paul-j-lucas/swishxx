@@ -46,7 +46,7 @@
 //	binary_function(3), less(3), strcmp(3)
 //
 //	Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//	Addison-Wesley, Reading, MA.  p. 468.
+//	Addison-Wesley, Reading, MA, 1997.  p. 468.
 //
 //*****************************************************************************
 {

@@ -31,8 +31,8 @@
 // DESCRIPTION
 //
 //	Construct (initialize) a postscript_comment_set.  These comments are
-//	used to detect the start of encapsulated PostScript in files so it
-//	will not be extracted.
+//	used to detect the start of encapsulated PostScript in files so it will
+//	not be extracted.
 //
 //*****************************************************************************
 {
@@ -58,8 +58,8 @@
 //
 // SEE ALSO
 //
-//	Adobe Systems Incorporated.  "PostScript Langauge Reference Manual,
-//	2nd ed."  Addison-Wesley, Reading, MA.  pp. 346-359.
+//	Adobe Systems Incorporated.  "PostScript Langauge Reference Manual, 2nd
+//	ed."  Addison-Wesley, Reading, MA.  pp. 346-359.
 //
 //*****************************************************************************
 {

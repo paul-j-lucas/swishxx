@@ -39,11 +39,10 @@
 //	A meta_map is used to map a META name to its unique integer ID. IDs
 //	start at zero.
 //
-//	Note that the declaration of std::map has a default "Compare"
-//	template parameter of "less< key_type >" and, since we've included
-//	less.h above that defines "less< char const* >", C-style string
-//	comparisons work properly.
-//
+//	Note that the declaration of std::map has a default "Compare" template
+//	parameter of "less< key_type >" and, since we've included less.h above
+//	that defines "less< char const* >", C-style string comparisons work
+//	properly.
 //
 //*****************************************************************************
 
