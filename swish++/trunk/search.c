@@ -36,8 +36,10 @@
 // local
 #include "auto_vec.h"
 #include "bcd.h"
+#include "classic_formatter.h"
 #include "config.h"
 #include "exit_codes.h"
+#include "file_info.h"
 #include "file_list.h"
 #include "indexer.h"
 #include "IndexFile.h"
@@ -49,8 +51,10 @@
 #include "option_stream.h"
 #include "platform.h"
 #include "query.h"
-#include "ResultsMax.h"
 #include "ResultSeparator.h"
+#include "ResultsFormat.h"
+#include "results_formatter.h"
+#include "ResultsMax.h"
 #include "search.h"
 #include "StemWords.h"
 #include "token.h"
@@ -59,6 +63,7 @@
 #include "WordFilesMax.h"
 #include "WordPercentMax.h"
 #include "word_util.h"
+#include "xml_formatter.h"
 #ifdef	SEARCH_DAEMON
 #include "PidFile.h"
 #include "SearchDaemon.h"
@@ -112,6 +117,7 @@ index_segment	directories, files, meta_names, stop_words, words;
 ResultsMax	max_results;
 char const*	me;				// executable name
 ResultSeparator	result_separator;
+ResultsFormat	results_format;
 StemWords	stem_words;
 WordFilesMax	word_file_max;
 WordPercentMax	word_percent_max;
@@ -190,6 +196,8 @@ inline omanip< char const* > index_file_info( int index ) {
 		index_file_name = opt.index_file_name_arg;
 	if ( opt.max_results_arg )
 		max_results = opt.max_results_arg;
+	if ( opt.results_format_arg )
+		results_format = opt.results_format_arg;
 	if ( opt.result_separator_arg )
 		result_separator = opt.result_separator_arg;
 	if ( opt.stem_words_opt )
@@ -428,41 +436,54 @@ inline omanip< char const* > index_file_info( int index ) {
 
 	////////// Print the results //////////////////////////////////////////
 
-	// Print stop-words, if any.
-	if ( !stop_words_found.empty() ) {
-		out << "# ignored:";
-		FOR_EACH( stop_word_set, stop_words_found, word )
-#ifdef	PJL_GCC_295 /* see the comment in platform.h */
-			out << ' ' << word->c_str();
-#else
-			out << ' ' << *word;
-#endif
-		out << '\n';
-		if ( !out )
-			return;
-	}
+	results_formatter const *format;
+	if ( results_format == "xml" )
+		format = new xml_formatter( out );
+	else
+		format = new classic_formatter( out );
 
-	out << "# results: " << results.size() << '\n';
+	format->pre( stop_words_found, results.size() );
 	if ( !out )
 		return;
-	if ( skip_results >= results.size() || !max_results )
-		return;
-
-	// Copy the results to a vector to sort them by rank.
-	typedef vector< search_result_type > sorted_results_type;
-	sorted_results_type sorted;
-	sorted.reserve( results.size() );
-	::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
-	::sort( sorted.begin(), sorted.end(), sort_by_rank() );
-	double const normalize = 100.0 / sorted[0].second;	// highest rank
-
-	for ( sorted_results_type::const_iterator
-		i  = sorted.begin() + skip_results;
-		i != sorted.end() && max_results-- > 0 && out;
-		++i
-	)
-		out	<< int( i->second * normalize ) << result_separator
-			<< index_file_info( i->first ) << '\n';
+	if ( skip_results < results.size() && max_results ) {
+		//
+		// Copy the results to a vector to sort them by rank.
+		//
+		typedef vector< search_result_type > sorted_results_type;
+		sorted_results_type sorted;
+		sorted.reserve( results.size() );
+		::copy(
+			results.begin(), results.end(),
+			::back_inserter( sorted )
+		);
+		::sort( sorted.begin(), sorted.end(), sort_by_rank() );
+		//
+		// Compute the highest rank and the normalization factor.
+		//
+		int highest_rank = sorted[0].second;
+		double const normalize = 100.0 / highest_rank;
+		//
+		// Print the sorted results skipping some if requested to and
+		// not exceeding the maximum.
+		//
+		for ( sorted_results_type::const_iterator
+			i  = sorted.begin() + skip_results;
+			i != sorted.end() && max_results-- > 0 && out;
+			++i
+		) {
+			format->result(
+				i->second * normalize,
+				file_info(
+					reinterpret_cast<unsigned char const*>(
+						files[ i->first ]
+					)
+				)
+			);
+			if ( !out )
+				return;
+		}
+	}
+	format->post();
 }
 
 //*****************************************************************************
@@ -506,6 +527,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	dump_word_index_opt		= false;
 	index_file_name_arg		= 0;
 	max_results_arg			= 0;
+	results_format_arg		= 0;
 	result_separator_arg		= 0;
 	skip_results_arg		= 0;
 	stem_words_opt			= false;
@@ -527,7 +549,7 @@ inline omanip< char const* > index_file_info( int index ) {
 		switch ( opt ) {
 
 #ifdef	SEARCH_DAEMON
-			case 'a': // Specify TCP socket address.
+			case 'a': // TCP socket address.
 				socket_address_arg = opt.arg();
 				break;
 
@@ -535,7 +557,7 @@ inline omanip< char const* > index_file_info( int index ) {
 				daemon_type_arg = opt.arg();
 				break;
 #endif
-			case 'c': // Specify config. file.
+			case 'c': // Config. file.
 				config_file_name_arg = opt.arg();
 				break;
 
@@ -547,15 +569,19 @@ inline omanip< char const* > index_file_info( int index ) {
 				dump_entire_index_opt = true;
 				break;
 
-			case 'f': // Specify the word/file file maximum.
+			case 'f': // Word/file file maximum.
 				word_file_max_arg = opt.arg();
 				break;
 
-			case 'i': // Specify index file overriding the default.
+			case 'F': // Results format.
+				results_format_arg = opt.arg();
+				break;
+
+			case 'i': // Index file.
 				index_file_name_arg = opt.arg();
 				break;
 
-			case 'm': // Specify max. number of results.
+			case 'm': // Max. number of results.
 				max_results_arg = opt.arg();
 				break;
 
@@ -563,29 +589,29 @@ inline omanip< char const* > index_file_info( int index ) {
 				dump_meta_names_opt = true;
 				break;
 #ifdef	SEARCH_DAEMON
-			case 'o': // Specify socket timeout.
+			case 'o': // Socket timeout.
 				socket_timeout_arg = ::atoi( opt.arg() );
 				break;
 
-			case 'O': // Specify thread timeout.
+			case 'O': // Thread timeout.
 				thread_timeout_arg = ::atoi( opt.arg() );
 				break;
 #endif
-			case 'p': // Specify the word/file percentage.
+			case 'p': // Word/file percentage.
 				word_percent_max_arg = opt.arg();
 				break;
 #ifdef	SEARCH_DAEMON
-			case 'P': // Specify PID file.
+			case 'P': // PID file.
 				pid_file_name_arg = opt.arg();
 				break;
 
-			case 'q': // Specify socket queue size.
+			case 'q': // Socket queue size.
 				socket_queue_size_arg = ::atoi( opt.arg() );
 				if ( socket_queue_size_arg < 1 )
 					socket_queue_size_arg = 1;
 				break;
 #endif
-			case 'r': // Specify number of initial results to skip.
+			case 'r': // Number of initial results to skip.
 				skip_results_arg = ::atoi( opt.arg() );
 				if ( skip_results_arg < 0 )
 					skip_results_arg = 0;
@@ -611,7 +637,7 @@ inline omanip< char const* > index_file_info( int index ) {
 				max_threads_arg = ::atoi( opt.arg() );
 				break;
 
-			case 'u': // Specify Unix domain socket file.
+			case 'u': // Unix domain socket file.
 				socket_file_name_arg = opt.arg();
 				break;
 #endif
@@ -764,13 +790,11 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
-	int const dir_index = parse_bcd( u );
-	o << directories[ dir_index ] << '/' << u;	// directory/filename
-	while ( *u++ ) ;				// skip past filename
-	size_t const size = parse_bcd( u );
-	parse_bcd( u );					// skip past num_words
-	return o << result_separator << size << result_separator << u;
+	file_info const fi( reinterpret_cast<unsigned char const*>( p ) );
+	return o
+		<< directories[ fi.dir_index() ] << '/' << fi.file_name()
+		<< result_separator << fi.size() << result_separator
+		<< fi.title();
 }
 
 //*****************************************************************************
@@ -792,6 +816,7 @@ ostream& usage( ostream &err ) {
 	"-d   | --dump-words       : Dump query word indices, exit\n"
 	"-D   | --dump-index       : Dump entire word index, exit\n"
 	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
+	"-F f | --format f         : Output format [default: classic]\n"
 	"-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
 	"-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
 	"-M   | --dump-meta        : Dump meta-name index, exit\n"
