@@ -175,6 +175,14 @@
 		// We're not running as a filter: check to see if the extracted
 		// file already exists; if so, skip extraction entirely.
 		//
+		if ( ::strlen( file_name ) + extract_extension.length()
+			> PATH_MAX
+		) {
+			if ( verbosity > 3 )
+				cout	<< " (skipped: " << extract_extension
+					<< " file-name too long)\n";
+			return;
+		}
 		char extracted_file_name[ PATH_MAX + 1 ];
 		::strcpy( extracted_file_name, file_name );
 		::strcat( extracted_file_name, extract_extension );
@@ -210,12 +218,12 @@
 	// We can (finally!) open the (possibly post-filtered) file.
 	//
 	mmap_file const file( file_name );
-	file.behavior( mmap_file::sequential );
 	if ( !file ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: can not open)\n";
 		return;
 	}
+	file.behavior( mmap_file::sequential );
 
 	if ( verbosity == 3 )			// print base name of file
 		cout << "  " << orig_base_name << flush;
