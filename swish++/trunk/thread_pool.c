@@ -86,15 +86,15 @@ namespace PJL {
 	//
 	t->q_lock_->dec_ref();
 
-	if ( !t->destructing_ ) {
+	if ( t->state_ != thread_pool::thread::destructing_state ) {
 		//
-		// The thread's destructor is not presently executing.  Set the
-		// destructing_ flag so it will not call pthread_cancel() and
+		// The thread's destructor is not presently executing.  Change
+		// the thread's state so it will not call pthread_cancel() and
 		// then delete it.  Since thread::operator delete() is
 		// overridden to do nothing, "delete" only calls the destructor
 		// and no memory is deallocated.
 		//
-		t->destructing_ = true;
+		t->state_ = thread_pool::thread::destructing_state;
 		delete t;
 	}
 
@@ -145,7 +145,7 @@ namespace PJL {
 	int result = ::pthread_detach( ::pthread_self() );
 	if ( result ) {
 		error()	<< "could not detach thread: "
-			<< ::strerror( result ) << "\n";
+			<< ::strerror( result ) << endl;
 		::exit( Exit_No_Detach_Thread );
 	}
 
@@ -182,7 +182,7 @@ namespace PJL {
 	while ( true ) {
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): waiting for task\n";
+		cerr << "thread_main(): waiting for task" << endl;
 #		endif
 
 		result = 0;
@@ -203,7 +203,6 @@ namespace PJL {
 				result = 0;	// ignore possible prior timeout
 				continue;
 			}
-			::pthread_mutex_unlock( &t->pool_.t_lock_ );
 			//
 			// More threads exist than the minimum.  Check to see
 			// if we timed out waiting for a task on the last loop.
@@ -216,6 +215,7 @@ namespace PJL {
 				// will never return.
 				//
 				::pthread_mutex_unlock( &t->q_lock_->mutex_ );
+				t->state_ = thread_pool::thread::expired_state;
 				delete t;
 				internal_error
 					<< "thread_main(): "
@@ -223,6 +223,7 @@ namespace PJL {
 					   "alleged destruction\n"
 					<< report_error;
 			}
+			::pthread_mutex_unlock( &t->pool_.t_lock_ );
 			//
 			// Wait only a finite amount of time for a task to
 			// become available.
@@ -243,7 +244,7 @@ namespace PJL {
 		}
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): got task\n";
+		cerr << "thread_main(): got task" << endl;
 #		endif
 
 		::pthread_mutex_lock( &t->pool_.t_busy_lock_ );
@@ -256,13 +257,13 @@ namespace PJL {
 		::pthread_mutex_unlock( &t->q_lock_->mutex_ );
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): performing task\n";
+		cerr << "thread_main(): performing task" << endl;
 #		endif
 
 		t->main( arg );			// do the real work
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): completed task\n";
+		cerr << "thread_main(): completed task" << endl;
 #		endif
 
 		::pthread_mutex_lock( &t->pool_.t_busy_lock_ );
@@ -300,7 +301,7 @@ namespace PJL {
 //	start_func	The function that is called upon thread creation.
 //
 //*****************************************************************************
-	: pool_( p ), destructing_( false )
+	: pool_( p ), state_( normal_state )
 {
 #	ifdef DEBUG_threads
 	cerr << "thread::thread(" << (long)this << ')' << endl;
@@ -314,7 +315,7 @@ namespace PJL {
 	// created before the thread_pool is fully constructed.
 	//
 	if ( ::pthread_mutex_init( &run_lock_, 0 ) ) {
-		error() << "could not init thread mutex\n";
+		error() << "could not init thread mutex" << endl;
 		::exit( Exit_No_Init_Thread_Mutex );
 	}
 	::pthread_mutex_lock( &run_lock_ );
@@ -322,7 +323,7 @@ namespace PJL {
 	int const result = ::pthread_create( &thread_, 0, start_func, this );
 	if ( result ) {
 		error()	<< "could not create thread: "
-			<< ::strerror( result ) << "\n";
+			<< ::strerror( result ) << endl;
 		::exit( Exit_No_Create_Thread );
 	}
 }
@@ -349,7 +350,13 @@ namespace PJL {
 		// We are committing suicide.  But first, we have to delete the
 		// pointer to us in our thread pool's set of threads.
 		//
-		::pthread_mutex_lock( &pool_.t_lock_ );
+		if ( state_ != expired_state ) {
+			//
+			// Lock the t_lock_ mutex only if we are not in the
+			// expired state because it will already be locked.
+			//
+			::pthread_mutex_lock( &pool_.t_lock_ );
+		}
 		pool_.threads_.erase( this );
 		::pthread_mutex_unlock( &pool_.t_lock_ );
 	} else {
@@ -360,13 +367,13 @@ namespace PJL {
 		//
 	}
 
-	if ( !destructing_ ) {
+	if ( state_ != destructing_state ) {
 		//
-		// We're not being called via the clean-up function, so set a
-		// flag to prevent the clean-up function from calling us when
+		// We're not being called via the clean-up function, so change
+		// state to prevent the clean-up function from calling us when
 		// it eventually runs.
 		//
-		destructing_ = true;
+		state_ = destructing_state;
 		if ( ::pthread_equal( thread_, ::pthread_self() ) ) {
 			//
 			// This thread is committing suicide because there are
@@ -466,14 +473,14 @@ namespace PJL {
 		::pthread_mutex_init( &q_lock_->mutex_, &at ) ||
 		::pthread_mutex_init( &t_lock_, 0 )
 	) {
-		error() << "could not init thread mutex\n";
+		error() << "could not init thread mutex" << endl;
 		::exit( Exit_No_Init_Thread_Mutex );
 	}
 	::pthread_mutexattr_destroy( &at );
 	if (	::pthread_cond_init( &q_not_empty_, 0 ) ||
 		::pthread_cond_init( &t_idle_, 0 )
 	) {
-		error() << "could not init thread condition\n";
+		error() << "could not init thread condition" << endl;
 		::exit( Exit_No_Init_Thread_Condition );
 	}
 
@@ -542,7 +549,7 @@ namespace PJL {
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
-	cerr << "thread_pool::new_task()\n";
+	cerr << "thread_pool::new_task()" << endl;
 #	endif
 
 	::pthread_mutex_lock( &q_lock_->mutex_ );
