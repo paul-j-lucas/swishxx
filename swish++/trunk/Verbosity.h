@@ -45,4 +45,6 @@ public:
 	CONF_INT_ASSIGN_OPS( Verbosity )
 };
 
+extern Verbosity verbosity;
+
 #endif	/* Verbosity_H */
