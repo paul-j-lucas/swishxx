@@ -34,6 +34,7 @@
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
+namespace PJL {
 #endif
 
 extern char const*	me;
@@ -443,5 +444,9 @@ extern char const*	me;
 		::pthread_mutex_unlock( &t_busy_lock_ );
 	::pthread_mutex_unlock( &t_lock_ );
 }
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* MULTI_THREADED */

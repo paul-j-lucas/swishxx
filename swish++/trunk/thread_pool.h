@@ -29,6 +29,12 @@
 #include <queue>
 #include <set>
 
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#else
+#define	PJL /* nothing */
+#endif
+
 extern "C" void	*thread_main( void* );
 extern "C" void	thread_destroy( void* );
 
@@ -155,6 +161,10 @@ private:
 	friend void*	thread_main( void* );
 	friend void	thread_destroy( void* );
 };
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* thread_pool_H */
 

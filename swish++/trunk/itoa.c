@@ -20,11 +20,13 @@
 */
 
 // local
+#include "itoa.h"
 #include "platform.h"
 #include "util.h"			/* for char_buffer_pool<> */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
+namespace PJL {
 #endif
 
 //*****************************************************************************
@@ -78,3 +80,7 @@ using namespace std;
 
 	return buf.current();
 }
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif

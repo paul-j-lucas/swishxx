@@ -22,10 +22,20 @@
 #ifndef	itoa_H
 #define	itoa_H
 
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#else
+#define	PJL /* nothing */
+#endif
+
 //
 // Conversion from long and int to string: opposite of atol and atoi.
 //
 extern char const*	ltoa( long );
-inline char const*	itoa( int n )		{ return ::ltoa( n ); }
+inline char const*	itoa( int n )		{ return PJL::ltoa( n ); }
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* itoa_H */

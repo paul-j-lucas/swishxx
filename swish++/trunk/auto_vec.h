@@ -1,5 +1,5 @@
 /*
-**	SWISH++
+**	PJL C++ Library
 **	auto_vec.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
@@ -24,6 +24,12 @@
 
 // local
 #include "fake_ansi.h"			/* for explicit */
+
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#else
+#define	PJL /* nothing */
+#endif
 
 //*****************************************************************************
 //
@@ -63,5 +69,9 @@ private:
 	auto_vec( auto_vec<T> const& );		// forbid copy
 	auto_vec& operator=( auto_vec< T >& );	// forbid assignment
 };
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* auto_vec_H */
