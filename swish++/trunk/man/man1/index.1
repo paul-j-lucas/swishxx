@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "February 16, 2000" "SWISH++"
+.TH \f3index\f1 1 "May 18, 2000" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -58,37 +58,37 @@ or
 option or the
 .B RecurseSubdirs
 variable is given).
-Files are indexed either only if their filename extension is among the set
-specified with either the
+Files are indexed either only if their filename matches
+one of the patterns in the set specified with either the
 .BR \-e ,
-.BR \-\-extension ,
+.BR \-\-pattern ,
 .BR \-h ,
 or
-.B \-\-html-extension
+.B \-\-html-pattern
 option or the
-.B IncludeExtension
+.B IncludeFile
 or
-.B HTMLExtension
+.B HTMLFile
 variables (unless standard input is used; see next paragraph)
-or is not among the set specified with either the
+or is not in the set specified with either the
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 option or the
-.B ExcludeExtension
+.B ExcludeFile
 variable.
 .PP
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to index is instead taken from standard input (one per line).
 In this case,
-filename extensions of files to index need not be specified explicitly:
-all files, regardless of extension
-(unless it is among the set not to index specified with either the
+filename patterns of files to index need not be specified explicitly:
+all files, regardless of whether they match a pattern
+(unless they are in the set not to index specified with either the
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 option or the
-.B ExcludeExtension
+.B ExcludeFile
 variable), are indexed, i.e.,
 .B index
 assumes you know what you're doing when specifying filenames in this manner.
@@ -109,7 +109,8 @@ Characters in the ISO 8859-1 (Latin 1) character set
 are mapped to their closest ASCII equivalent
 before further examination and indexing.
 .SS Character Entities
-Both HTML character and numeric (decimal and hexadecimal) entity references
+Both HTML or XHTML character and numeric
+(decimal and hexadecimal) entity references
 are converted to their ASCII character equivalents
 before further examination and indexing.
 For example, ``r&eacute;sum&#233;'' becomes ``resume'' before indexing.
@@ -161,15 +162,15 @@ Contains more than \f(CWWord_Max_Consec_Vowels\f1 consecutive vowels.
 Contains more than \f(CWWord_Max_Consec_Puncts\f1 consecutive punctuation
 characters.
 (Default is 1.)
-.SS HTML Files
-Additional processing is done for HTML files.
-(HTML files are recognized as such only if their filename extension
-is among the set specified via the
+.SS HTML or XHTML Files
+Additional processing is done for HTML or XHTML files.
+(HTML or XHTML files are recognized as such only if their filename matches
+one of the patterns in the set specified via the
 .B \-h
 or
-.B \-\-html-extension
+.B \-\-html-pattern
 option or the
-.B HTMLExtension
+.B HTMLFile
 variable.)
 The additional processing is:
 .TP 4
@@ -182,9 +183,9 @@ file's title rather than the file's name.
 leading and trailing spaces are removed.)
 .TP
 2.
-If an HTML element contains a \f(CWCLASS\f1 attribute whose value is among
-the set of class names specified as those not to index (via one or more
-of either the
+If an HTML or XHTML element contains a \f(CWCLASS\f1 attribute
+whose value is among the set of class names specified
+as those not to index (via one or more of either the
 .B \-C
 or
 .B \-\-no-class
@@ -209,7 +210,7 @@ or
 option.)
 .TP
 3.
-If an HTML element contains a \f(CWTITLE\f1 attribute,
+If an HTML or XHTML element contains a \f(CWTITLE\f1 attribute,
 then the words specified as the value of the \f(CWTITLE\f1 attribute
 are indexed.
 .TP
@@ -250,7 +251,7 @@ then the words specified as the value of the \f(CWSTANDBY\f1 attribute
 are indexed.
 .TP
 8.
-All other HTML tags and comments
+All other HTML or XHTML tags and comments
 (anything between \f(CW<\f1 and \f(CW>\f1 characters)
 are discarded.
 .PP
@@ -264,9 +265,9 @@ is legal, but
 allows it.
 .SS Filters
 Via the
-.B FilterExtension
+.B FilterFile
 configuration file variable,
-files having particular extensions can be filtered prior to indexing.
+files matching particular patterns can be filtered prior to indexing.
 (See FILTERS in
 .BR swish++.conf (4).)
 .SS Incremental Indexing
@@ -357,50 +358,46 @@ however, if one is specified and it does not exist, then this is an error.
 .ns
 .TP
 .BI \-\-no-class= c
-For HTML files only,
+For HTML or XHTML files only,
 a class name,
 .IR c ,
-of an HTML element whose text is not to be indexed.
+of an HTML or XHTML element whose text is not to be indexed.
 Multiple
 .B \-C
 or
 .B \-\-no-class
 options may be specified.
 .TP
-.BI \-e e
+.BI \-e p
 .br
 .ns
 .TP
-.BI \-\-extension= e
-A filename extension,
-.IR e ,
-of files to index
-.I without
-the ``dot.''
+.BI \-\-pattern= p
+A filename pattern,
+.IR p ,
+of files to index.
 Case is significant.
 Multiple
 .B \-e
 or
-.B \-\-extension
+.B \-\-pattern
 options may be specified.
 .TP
-.BI \-E e
+.BI \-E p
 .br
 .ns
 .TP
-.BI \-\-no-extension= e
-A filename extension,
-.IR e ,
+.BI \-\-no-pattern= p
+A filename pattern,
+.IR p ,
 of files
 .I not
-to index
-.I without
-the ``dot.''
+to index.
 Case is significant.
 Multiple
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 options may be specified.
 .TP
 .BI \-f n
@@ -428,11 +425,12 @@ but with a slight performace penalty.
 .BI \-G
 .br
 .ns
+.TP
 .BI \-\-files-grow= n
-Grow the space for the reserved number of files when incrementally indexing.
-The number,
+Grow the space for the reserved number of files,
 .IR n ,
-can either be an absolute number of files
+when incrementally indexing.
+The number can either be an absolute number of files
 or a percentage (when followed by a percent sign \f(CW%\f1).
 Just as with the
 .B \-F
@@ -441,21 +439,19 @@ more space will be allocated as necessary,
 but with a slight performace penalty.
 (Default is 100.)
 .TP
-.BI \-h e
+.BI \-h p
 .br
 .ns
 .TP
-.BI \-\-html-extension= e
-A filename extension,
-.IR e ,
-of HTML files to index
-.I without
-the ``dot.''
+.BI \-\-html-pattern= p
+A filename pattern,
+.IR p ,
+of HTML or XHTML files to index.
 Case is significant.
 Multiple
 .B \-h
 or
-.B \-\-html-extension
+.B \-\-html-pattern
 options may be specified.
 .TP
 .B \-H
@@ -463,7 +459,8 @@ options may be specified.
 .ns
 .TP
 .B \-\-dump-html
-Dump the built-in set of recognized HTML elements to standard output and exit.
+Dump the built-in set of recognized HTML and XHTML elements
+to standard output and exit.
 .TP
 .BI \-i f
 .br
@@ -501,7 +498,7 @@ since it doesn't support symbolic links.
 .ns
 .TP
 .BI \-\-meta= m
-For HTML files only, the value of a meta \f(CWNAME\f1 attribute,
+For HTML or XHTML files only, the value of a meta \f(CWNAME\f1 attribute,
 .IR m ,
 for which the words in the value of the associated \f(CWCONTENT\f1 attribute
 should be indexed.
@@ -528,7 +525,7 @@ options are indexed.
 .ns
 .TP
 .BI \-\-no-meta= m
-For HTML files only, the value of a meta \f(CWNAME\f1 attribute,
+For HTML or XHTML files only, the value of a meta \f(CWNAME\f1 attribute,
 .IR m ,
 for which the words in the value of the associated \f(CWCONTENT\f1 attribute
 should not be indexed.
@@ -558,19 +555,19 @@ If you want to keep all words regardless, specify 101.
 Do not recursively index the files in subdirectories,
 that is: when a directory is encountered,
 all the files in that directory are indexed
-(modulo the filename extensions specified via either the
+(modulo the filename patterns specified via either the
 .BR \-e ,
-.BR \-\-extension ,
+.BR \-\-pattern ,
 .BR \-h ,
-.BR \-\-html-extension ,
+.BR \-\-html-pattern ,
 .BR \-E ,
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 options or the
-.BR IncludeExtension ,
-.BR HTMLExtension ,
+.BR IncludeFile ,
+.BR HTMLFile ,
 or
-.B ExcludeExtension
+.B ExcludeFile
 variables) but subdirectories encountered are ignored
 and therefore the files contained in them are not indexed.
 This option is most useful when specifying the directories and files to index
@@ -600,9 +597,9 @@ Dump the built-in set of stop-words to standard output and exit.
 .ns
 .TP
 .BI \-\-title-lines= n
-For HTML files only, the maximum number of lines,
+For HTML or XHTML files only, the maximum number of lines,
 .IR n ,
-into a file to look at for HTML \f(CW<TITLE>\f1 tags.
+into a file to look at for \f(CW<TITLE>\f1 tags.
 (Default is 12.)
 Larger numbers slow indexing.
 .TP
@@ -678,11 +675,11 @@ Same as
 or
 .B \-\-no-class
 .TP
-.B ExcludeExtension
+.B ExcludeFile
 Same as
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 .TP
 .B ExcludeMeta
 Same as
@@ -696,7 +693,7 @@ Same as
 or
 .B \-\-files-reserve
 .TP
-.B FilterExtension
+.B FilterFile
 (See FILTERS in
 .BR swish++.conf (4).)
 .TP
@@ -706,17 +703,17 @@ Same as
 or
 .B \-\-follow-links
 .TP
-.B HTMLExtension
+.B HTMLFile
 Same as
 .B \-h
 or
-.B \-\-html-extension
+.B \-\-html-pattern
 .TP
-.B IncludeExtension
+.B IncludeFile
 Same as
 .B \-e
 or
-.B \-\-extension
+.B \-\-pattern
 .TP
 .B IncludeMeta
 Same as
@@ -786,21 +783,21 @@ to your web server's document root prior to indexing.
 .P
 To index all HTML and text files on a web server:
 .cS
-index -v3 -h html -h shtml -e txt .
+index -v3 -h '*.*htm*' -e '*.txt' .
 .cE
 To index all files not under directories named \f(CWSCCS\f1:
 .cS
-find . -name SCCS -prune -o -type f -a -print | index -h html -
+find . -name SCCS -prune -o -type f -a -print | index -h '*.*htm*' -
 .cE
 .SS Using \f(CWCLASS\fP Attributes to Index Selectively
-In an HTML document, there may be sections that should not be indexed.
+In an HTML or XHTML document, there may be sections that should not be indexed.
 For example, if every page of a web site contains a navigation menu such as:
 .cS
 <SELECT NAME="menu">
-<OPTION>Home
-<OPTION>Automotive
-<OPTION>Clothing
-<OPTION>Hardware
+  <OPTION>Home
+  <OPTION>Automotive
+  <OPTION>Clothing
+  <OPTION>Hardware
 </SELECT>
 .cE
 or a common header and footer, then, ordinarily,
@@ -812,9 +809,9 @@ or
 .B \-\-no-class
 option or the
 .B ExcludeClass
-variable, one or more class names can be specified and then HTML elements
-belonging to one of those classes will not have the text
-up to the tag that ends them indexed.
+variable, one or more class names can be specified
+and then HTML or XHTML elements belonging to one of those classes
+will not have the text up to the tag that ends them indexed.
 Given a class name of, say, \f(CWno_index\f1, the above menu can be changed to:
 .cS
 <SELECT NAME="menu" CLASS="no_index">
@@ -831,11 +828,11 @@ For example, in:
 <P CLASS="no_index">
 This was the poem that Alice read:
 <BLOCKQUOTE>
-<B>Jabberwocky</B><BR>
-`Twas brillig, and the slithy toves<BR>
-Did gyre and gimble in the wabe;<BR>
-All mimsy were the borogoves,<BR>
-And the mome raths outgrabe.
+  <B>Jabberwocky</B><BR>
+  `Twas brillig, and the slithy toves<BR>
+  Did gyre and gimble in the wabe;<BR>
+  All mimsy were the borogoves,<BR>
+  And the mome raths outgrabe.
 </BLOCKQUOTE>
 .cE
 the \f(CW<BLOCKQUOTE>\f1 tag implicitly ends the \f(CW<P>\f1 element
@@ -843,7 +840,7 @@ the \f(CW<BLOCKQUOTE>\f1 tag implicitly ends the \f(CW<P>\f1 element
 so the only text that is not indexed above is:
 ``This was the poem that Alice read.''
 .PP
-For an HTML element that does not have an end tag,
+For an HTML or XHTML element that does not have an end tag,
 only the text within the start tag will not be indexed.
 For example, in:
 .cS
@@ -885,18 +882,15 @@ Unable to read stop-word file.
 .SH CAVEATS
 .TP 4
 1.
-Files without extensions can not be indexed.
-.TP
-2.
 Generated index files are machine-dependent
 (size of data types and byte order).
 .TP
-3.
+2.
 The character encoding always used is ISO 8859-1 (Latin 1).
 Character encodings specified either in \f(CWMETA\f1 elements
 or via the \f(CWCHARSET\f1 attribute in other elements are ignored.
 .TP
-4.
+3.
 The word-determination heuristics employed are heavily geared for English.
 Using SWISH++ as-is to index and search files in non-English languages
 is not recommended.
@@ -913,19 +907,34 @@ default index file name
 .BR extract (1),
 .BR find (1),
 .BR search (1),
-.BR swish++.conf (4)
+.BR swish++.conf (4),
+.BR glob (7)
 .PP
 International Standards Organization.
-``ISO 8859-1: Information Processing
--- 8-bit single-byte coded graphic character sets
--- Part 1: Latin alphabet No. 1.''
+.I ISO 8859-1: Information Processing
+.I -- 8-bit single-byte coded graphic character sets
+.I -- Part 1: Latin alphabet No. 1,
 1987.
 .PP
 \-\-.
-``ISO 8879: Information Processing
--- Text and Office Systems
--- Standard Generalized Markup Language (SGML)''
+.I ISO 8879: Information Processing
+.I -- Text and Office Systems
+.I -- Standard Generalized Markup Language (SGML),
 1986.
+.PP
+\-\-.
+.I ISO/IEC 9945-2: Information Technology
+.I -- Portable Operating System Interface (POSIX)
+.I -- Part 2: Shell and Utilities,
+1993.
+.PP
+Steven Pemberton, et al.
+.I XHTML 1.0: The Extensible HyperText Markup Language,
+World Wide Web Consortium,
+January 2000.
+.RS
+http://www.w3.org/TR/xhtml1/
+.RE
 .PP
 Dave Raggett, Arnaud Le Hors, and Ian Jacobs.
 ``On SGML and HTML: SGML constructs used in HTML: Entities,''
