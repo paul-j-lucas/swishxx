@@ -280,6 +280,10 @@
 
 		switch ( v ) {
 
+			case element::forbidden:
+				// do nothing
+				break;
+
 			case element::optional:
 				//
 				// Elements that have optional end tags have a
@@ -298,4 +302,34 @@
 				break;
 		}
 	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */ element_map const& element_map::instance()
+//
+// DESCRIPTION
+//
+//	Define and initialize (exactly once) a static instance of element_map
+//	and return a reference to it.  The reason for this function is to
+//	guarantee that there is exactly one instance of it and that it is
+//	initialized before its first use across all translation units,
+//	something that would not guaranteed if it were defined and initialized
+//	at file scope.
+//
+// RETURN VALUE
+//
+//	Returns a reference to a static instance of an initialized element_map.
+//
+// SEE ALSO
+//
+//	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++
+//	Reference Manual."  Addison-Wesley, Reading, MA.  p. 19.
+//
+//*****************************************************************************
+{
+	static element_map m;
+	return m;
 }
