@@ -510,7 +510,7 @@ void			write_word_index( ostream&, off_t* );
 				continue;
 			}
 			if ( is_directory() )
-				do_directory( file_name );
+				do_directory( ::strdup( file_name ) );
 			else
 				do_file( file_name );
 		}
@@ -656,8 +656,8 @@ void			write_word_index( ostream&, off_t* );
 		//
 		directories_reserve = directories_grow( old_dirs.size() );
 	}
-	FOR_EACH( index_segment, old_dirs, di )
-		dir_list.push_back( *di );
+	FOR_EACH( index_segment, old_dirs, d )
+		check_add_directory( ::strdup( *d ) );
 
 	index_segment old_files( index_file, index_segment::file_index );
 	if ( files_reserve <= old_files.size() ) {
@@ -667,17 +667,17 @@ void			write_word_index( ostream&, off_t* );
 		//
 		files_reserve = files_grow( old_files.size() );
 	}
-	FOR_EACH( index_segment, old_files, fi )
-		parse_file_info( *fi, old_dirs );
+	FOR_EACH( index_segment, old_files, f )
+		parse_file_info( *f, old_dirs );
 
 	index_segment old_meta_names(
 		index_file, index_segment::meta_name_index
 	);
-	FOR_EACH( index_segment, old_meta_names, meta_name ) {
+	FOR_EACH( index_segment, old_meta_names, m ) {
 		unsigned char const *p =
-			reinterpret_cast<unsigned char const*>( *meta_name );
+			reinterpret_cast<unsigned char const*>( *m );
 		while ( *p++ ) ;		// skip past meta name
-		meta_names[ ::strdup( *meta_name ) ] = parse_bcd( p );
+		meta_names[ ::strdup( *m ) ] = parse_bcd( p );
 	}
 
 	partial_index_file_names.push_back( index_file_name );
