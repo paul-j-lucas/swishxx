@@ -56,17 +56,30 @@ protected:
 	virtual ~conf_var();
 
 	void		alias_name( char const *var_name );
-	static void	parse_line( char *line, int line_no );
-	void		parse_const_value( char const *line );
-	virtual void	parse_value( char const *var_name, char *line ) = 0;
-	virtual void	reset() = 0;
+	//		An instance of a derived class can call this in its
+	//		constructor to have more than one variable name map to
+	//		itself in the case where what it does is very similar
+	//		for all names and doesn't justify creating another
+	//		derived class.
 
-	static std::ostream&	error( std::ostream &o ) {
-					return msg( o, "error" );
-				}
-	static std::ostream&	warning( std::ostream &o ) {
-					return msg( o, "warning" );
-				}
+	virtual void	parse_value( char const *var_name, char *line ) = 0;
+	//		Derived classes must define this to parse a line and
+	//		set their value.  The var_name is the name of the
+	//		configuration variable whose line is being parsed that
+	//		can differ from the name of the derived instance
+	//		variable when an alias is involved.
+
+	void		parse_const_value( char const *line );
+	//		This is a convenience function that can be called to
+	//		parse a line where the line is const.  This is used by
+	//		operator=().
+
+	virtual void	reset() = 0;
+	//		Reset value to default.  Derived classes must define
+	//		this.
+
+	static std::ostream&	error( std::ostream& );
+	static std::ostream&	warning( std::ostream& );
 private:
 	// Note that the declaration of std::map has a default "Compare"
 	// template parameter of "less< key_type >" and, since we've included
@@ -78,11 +91,18 @@ private:
 	char const		*const name_;
 	static int		current_config_file_line_no_;
 
-	void			init( conf_var *alias = 0 );
 	static map_type&	map_ref();
 	static std::ostream&	msg( std::ostream&, char const *label );
+	static void		parse_line( char *line, int line_no );
 	static void		reset_all();
 };
+
+inline std::ostream& conf_var::error( std::ostream &o ) {
+	return msg( o, "error" );
+}
+inline std::ostream& conf_var::warning( std::ostream &o ) {
+	return msg( o, "warning" );
+}
 
 //
 // We define this macro for convenience since operator=() is not inherited.
@@ -98,7 +118,7 @@ private:
 	}
 
 //
-//	This template declaration allows specializations for T later.
+// This template declaration allows specializations for T later.
 //
 template< class T > class conf;
 
