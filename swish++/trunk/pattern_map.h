@@ -79,6 +79,13 @@ public:
 	// find() must be overridden to use our own comparison class.
 	//
 	iterator find( char const *file_name ) {
+		//
+		// Using find_if() make this run in O(n) instead of O(lg n),
+		// but there's no choice because no ordering can be imposed on
+		// filename patterns, i.e., either a filename matches a pattern
+		// or it doesn't.  Continuing to use a map still allows O(lg n)
+		// insertion, however.
+		//
 		return std::find_if(
 			begin(), end(), pattern_match( file_name )
 		);
