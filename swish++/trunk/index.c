@@ -247,13 +247,13 @@ void			write_word_index( ostream&, off_t* );
 				config_file_name_arg = opt.arg();
 				break;
 #ifdef	MOD_HTML
-			case 'C': // Specify CLASS name not to index.
+			case 'C': // Specify CLASS name(s) not to index.
 				exclude_class_names.insert(
 					to_lower( opt.arg() )
 				);
 				break;
 #endif
-			case 'e': { // Specify filename pattern(s) to index.
+			case 'e': { // Filename pattern(s) to index.
 				if ( !::strtok( opt.arg(), ":" ) ) {
 					error()	<< "no indexer module name"
 						<< endl;
@@ -271,9 +271,14 @@ void			write_word_index( ostream&, off_t* );
 				break;
 			}
 
-			case 'E': // Specify filename pattern(s) not to index.
-				exclude_patterns.insert( opt.arg() );
+			case 'E': { // Filename pattern(s) not to index.
+				char *a = opt.arg();
+				for ( char *pat; pat = ::strtok( a, "," ); ) {
+					exclude_patterns.insert( pat );
+					a = 0;
+				}
 				break;
+			}
 
 			case 'f': // Specify the word/file file maximum.
 				word_file_max_arg = opt.arg();
