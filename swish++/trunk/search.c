@@ -499,6 +499,7 @@ inline omanip< char const* > index_file_info( int index ) {
 		}
 	}
 	format->post();
+	delete format;
 }
 
 //*****************************************************************************
