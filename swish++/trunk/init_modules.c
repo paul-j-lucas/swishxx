@@ -1,6 +1,6 @@
 /*
 **	SWISH++
-**	indexer_modules.c
+**	init_modules.c
 **
 **	Copyright (C) 2000  Paul J. Lucas
 **
