@@ -50,11 +50,12 @@ protected:
 		return *this;
 	}
 	CONF_VAR_ASSIGN_OPS( conf<bool> )
+
+	virtual void	parse_value( char const *var_name, char *line );
 private:
 	bool const	default_value_;
 	bool		value_;
 
-	virtual void	parse_value( char const *var_name, char *line );
 	virtual void	reset() { value_ = default_value_; }
 };
 
@@ -63,7 +64,7 @@ private:
 		conf<bool>::operator=( b );	\
 		return *this;			\
 	}					\
-	T& operator=( string const &s ) {	\
+	T& operator=( std::string const &s ) {	\
 		conf<bool>::operator=( s );	\
 		return *this;			\
 	}					\

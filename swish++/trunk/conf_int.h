@@ -68,11 +68,12 @@ protected:
 	);
 	conf<int>& operator=( int );
 	CONF_VAR_ASSIGN_OPS( conf<int> )
+
+	virtual void	parse_value( char const *var_name, char *line );
 private:
 	int const	default_value_, min_, max_;
 	int		value_;
 
-	virtual void	parse_value( char const *var_name, char *line );
 	virtual void	reset() { value_ = default_value_; }
 };
 
@@ -81,7 +82,7 @@ private:
 		conf<int>::operator=( i );	\
 		return *this;			\
 	}					\
-	T& operator=( string const &s ) {	\
+	T& operator=( std::string const &s ) {	\
 		conf<int>::operator=( s );	\
 		return *this;			\
 	}					\
