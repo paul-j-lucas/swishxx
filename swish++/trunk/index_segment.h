@@ -50,13 +50,11 @@
 public:
 	////////// typedefs ///////////////////////////////////////////////////
 
-	typedef long size_type;
+	typedef unsigned long size_type;
 	typedef ptrdiff_t difference_type;
 
-	typedef char* value_type;
-	typedef char** pointer;
+	typedef char const* value_type;
 	typedef char const** const_pointer;
-	typedef char* reference;
 	typedef char const* const_reference;
 
 	enum segment_id {
@@ -78,9 +76,10 @@ public:
 	void		set_index_file( file_vector const&, segment_id );
 	size_type	size() const		{ return num_entries_; }
 
-	const_reference operator[]( long i ) const {
+	const_reference operator[]( size_type i ) const {
 		return begin_ + offset_[ i ];
 	}
+
 	////////// iterators //////////////////////////////////////////////////
 
 	class const_iterator;
@@ -90,8 +89,8 @@ public:
 		public random_access_iterator< value_type, difference_type > {
 	private:
 		index_segment const *index_;
-		long i_;
-		const_iterator( index_segment const *index, long i ) :
+		size_type i_;
+		const_iterator( index_segment const *index, size_type i ) :
 			index_( index ), i_( i ) { }
 		friend class index_segment;
 	public:
