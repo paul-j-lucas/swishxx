@@ -41,7 +41,7 @@
 // stl_config.h incorrectly defines __STL_NO_NAMESPACES when it shouldn't
 // (causing __STL_USE_NAMESPACES to be undefined) and stl_iterator.h defines
 // "struct iterator" only when __STL_USE_NAMESPACES is defined.  Short of those
-// headers being fixed (supposedly in g++ 3.0), we defines std::iterator here
+// headers being fixed (supposedly in g++ 3.0), we define std::iterator here
 // ourselves: the definition is copied/pasted from stl_iterator.h.
 //
 #if	 defined(__GNUC__) && __GNUC__ <= 2 && \
