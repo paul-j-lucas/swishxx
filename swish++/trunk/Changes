@@ -2,6 +2,75 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* On some platforms, index(1) would index "0 words" for every file.
+
+  (This bug fix shall be known as bug fix IZW.)
+
+* There was a race condition in the search daemon thread pool code whereby the
+  prototype thread could begin executing before its owning thread_pool was
+  fully constructed.
+
+  (This bug fix shall be known as bug fix TPR.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* encoded_char.h
+
+	1. Made encoded_char_range::const_iterator's ch_ and decode() compile
+	   in only when MOD_MAIL is defined for bug fix IZW.
+
+	2. In encoded_char_range::const_iterator::operator*(), made it return
+	   *pos_ when MOD_MAIL wasn't defined for bug fix IZW.
+
+* exit_codes.h
+
+	1. Added Exit_No_Init_Condition and Exit_No_Init_Mutex.
+
+* man/man1/search.1
+
+	1. Added exit coded 66 and 67.
+
+* thread_pool.c
+
+	1. In thread_main(), added "::pthread_mutex_lock( &t->run_lock_ );" for
+	   bug fix TPR.
+	2. In thread_pool::thread::thread(), added initialization and locking
+	   of run_lock_ for bug fix TPR.
+	3. In thread_pool::thread::~thread(), added destruction of run_lock_
+	   for bug fix TPR.
+	4. Changed thread_pool::thread_pool() to take a pointer to non-const
+	   thread for bug fix TPR.
+	5. In thread_pool::thread_pool(), made use of Exit_No_Init_Condition
+	   and Exit_No_Init_Mutex.
+	6. In thread_pool::thread_pool(), added prototype thread to pool and
+	   now creating thread_min - 1 additional threads.
+	7. In thread_pool::thread_pool(), s/create/create_and_run()/ for bug
+	   fix TPR.
+	8. In thread_pool::new_task(), s/create/create_and_run()/ for bug fix
+	   TPR.
+
+* thread_pool.h
+
+	1. Added thread_pool::thread::run_lock_ for bug fix TPR.
+	2. Added thread_pool::thread::run() and create_and_run() for bug fix
+	   TPR.
+	3. Changed thread_pool::thread_pool() to take a pointer to non-const
+	   thread for bug fix TPR.
+
+* version.h
+
+	1. Changed version to "5.3.2".
+
+
+*******************************************************************************
 5.3.1
 *******************************************************************************
 
