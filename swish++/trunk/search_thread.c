@@ -136,9 +136,11 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		//	sends an RST to the peer, not the normal four-packet
 		//	connection termination sequence.
 		//
-		// The reason for doing this is so we don't waste an ephemeral
-		// port from a socket lingering in TIME-WAIT on a client that
-		// was too dumb to give us a valid request in the first place.
+		// The reason for doing this is so we don't potentially have a
+		// socket lingering in TIME-WAIT on a client that was too dumb
+		// to give us a valid request in the first place.  This helps
+		// alleviate denial-of-service attacks (if that's what's going
+		// on).
 		//
 		// Note: this is not implemented in in Linux 2.2.x kernels so
 		// the normal four-packet sequence is done instead.
