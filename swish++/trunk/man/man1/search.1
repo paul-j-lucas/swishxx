@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "March 29, 2004" "SWISH++"
+.TH \f3search\fP 1 "February 1, 2005" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -57,7 +57,7 @@ The formal grammar of a query is:
 .RS 5
 .TP 16
 .IR query :
-.I query optional_relop meta
+.I query relop meta
 .br
 .I meta
 .TP
@@ -78,7 +78,7 @@ The formal grammar of a query is:
 .br
 .IR word \f(CW*\fP
 .TP
-.IR optional_relop :
+.IR relop :
 \f(CWand\fP
 .br
 \f(CWnear\fP
@@ -101,8 +101,8 @@ and
 ``\f(CWnot near\fP.''
 The asterisk (\f(CW*\fP) can be used as a wildcard character
 at the end of words.
-Note that an asterisk is a shell meta-character
-and as such must be escaped (backslashed)
+Note that an asterisk and parentheses are shell meta-characters
+and as such must either be escaped (backslashed) or quoted
 when passed to a shell.
 .PP
 Although syntactically legal, it is a semantic error to have
