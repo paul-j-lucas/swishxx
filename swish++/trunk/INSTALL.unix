@@ -91,6 +91,9 @@ Building SWISH++ for Unix
 
    In either case, also edit /etc/swish++.conf to your liking.
 
+   If you are running search(1) under Solaris and you expect that it will be
+   heavily used, read README.Solaris.
+
 6. Optional: if you want to use SWISH++ to index your incoming mail
    automatically, you need to use Procmail to split messages into into
    individual files.  Included in this distribution (in the procmailrc file) is
