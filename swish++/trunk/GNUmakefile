@@ -88,6 +88,7 @@ I_SOURCES:=	bcd.c \
 		TempDirectory.c \
 		util.c \
 		word_info.c \
+		WordThreshold.c \
 		word_util.c \
 		index.c
 ifdef WIN32
