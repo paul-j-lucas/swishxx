@@ -129,7 +129,8 @@ int const	SocketTimeout_Default		= 10; // seconds
 //		The number of seconds a client has to complete a search request
 //		before being disconnected.  This is to prevent a client from
 //		connecting, not completing a request, and causing the thread
-//		servicing the request to wait forever.
+//		servicing the request to wait forever.  This can be overridden
+//		either in a config. file or on the command line.
 
 int const	ThreadsMin_Default		= 5;
 //		The minimum number of simultanous threads; this can be
@@ -141,12 +142,14 @@ int const	ThreadsMax_Default		= 100;
 
 int const	ThreadTimeout_Default		= 30; // seconds
 //		The number of seconds until an idle spare thread times out and
-//		destroys itself.
+//		destroys itself.  This can be overridden either in a config.
+//		file or on the command line.
 
 char const	User_Default[]			= "nobody";
 char const	Group_Default[]			= "nobody";
 //		The user and group to switch to after initialization (if root
-//		to begin with).
+//		to begin with).  This can be overridden either in a config.
+//		file or on the command line.
 #endif
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
