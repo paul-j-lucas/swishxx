@@ -78,7 +78,7 @@
 	search_options(
 		int *argc, char ***argv,
 		PJL::option_stream::spec const[],
-		std::ostream& = cerr
+		std::ostream& = std::cerr
 	);
 
 	operator bool() const			{ return !bad_; }
@@ -89,7 +89,7 @@ private:
 void		service_request(
 			char *argv[],
 			search_options const&,
-			std::ostream& = cout, std::ostream& = cerr
+			std::ostream& = std::cout, std::ostream& = std::cerr
 		);
 
 std::ostream&	usage( std::ostream& );
