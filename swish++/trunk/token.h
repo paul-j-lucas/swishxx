@@ -30,8 +30,10 @@
 // standard
 #ifdef	PJL_GCC_2xx
 #include <strstream>
+#define	TOKEN_STREAM_BASE std::istrstream
 #else
 #include <sstream>
+#define	TOKEN_STREAM_BASE std::istringstream
 #endif
 
 class token_stream;
@@ -79,12 +81,6 @@ private:
 	char		lower_buf_[ Word_Hard_Max_Size + 1 ];
 	int		len_;
 };
-
-#ifdef	PJL_GCC_2xx
-#define	TOKEN_STREAM_BASE std::istrstream
-#else
-#define	TOKEN_STREAM_BASE std::istringstream
-#endif
 
 //*****************************************************************************
 //
