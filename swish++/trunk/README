@@ -64,14 +64,29 @@
 	    index text in common page headers, footers, and pop-up
 	    menus.
 
-	 4. Apply filters to files on-the-fly prior to indexing
+	 4. Intelligently index mail and news files
+	    SWISH++ indexes words in headers and associates them with
+	    the name of the headers as meta names that can later be
+	    queried against specifically, e.g.:
+
+		search subject = big-bang
+
+	    Similarly, words in vCard fields are associated with the
+	    names of the fields as meta names that can also later be
+	    queried against, e.g.:
+
+		search title = professor
+		search org = SLAC
+
+	    Additionally, plain and enriched text in any one of 7-bit,
+	    8-bit, quoted-printable, or base-64 encodings is decoded
+	    and converted on-the-fly thus properly indexing
+	    attachments.
+
+	 5. Apply filters to files on-the-fly prior to indexing
 	    Based on filename patterns, files can be filtered before
 	    being indexed, e.g.: compressed files uncompressed, PDF
 	    files converted to plain text, etc.
-
-	 5. Index new files incrementally
-	    New files can be indexed and added to an existing index
-	    incrementally.
 
 	 6. Index non-text files such as Microsoft Office documents
 	    A separate text-extraction utility "extract" is included to
@@ -80,41 +95,49 @@
 	    but employs the same word-determination heuristics used for
 	    indexing.
 
-	 7. Index remote web sites
+	 7. Modular indexing architecture
+	    New indexing modules can be written to index other file
+	    formats directly (without filters).
+
+	 8. Index new files incrementally
+	    New files can be indexed and added to an existing index
+	    incrementally.
+
+	 9. Index remote web sites
 	    A separate utility "httpindex" is included that interfaces
 	    SWISH++ to the wget(1) command enabling remote web sites to
 	    be indexed. This is useful to be able to search all the
 	    servers in your local area network simultaneously.
 
-	 8. Handles large collections of files
+	10. Handles large collections of files
 	    SWISH++ automatically splits and merges partial indices for
 	    large collections of files as it goes thereby not bringing
 	    your machine to its knees by exhausting physical memory and
 	    causing it to swap like mad.
 
-	 9. Lightning-fast searching
+	11. Lightning-fast searching
 	    The same mmap(2) technique used for indexing is used again
 	    for searching. The generated index file is written to disk
 	    such that it can be mmap'ed back into memory and binary
 	    searched immediately, with no parsing of the data, also in
 	    O(lg n) time.
 
-	10. Optional word stemming (suffix stripping)
+	12. Optional word stemming (suffix stripping)
 	    SWISH++ allows stemming to be performed at the time of
 	    searches, not at the time of index generation.  This allows
 	    users to decide whether to perform stemming or not.
 
-	11. Ability to run as a search server
+	13. Ability to run as a search server
 	    SWISH++'s search engine can run in the background as a
 	    multi-threaded daemon process to function as a search
 	    server accepting query requests and returning results via a
-	    Unix domain socket.  For search-intensive applications,
-	    such as a search engine on a heavily used web site, this
-	    can yield a large performace improvement since the start-up
-	    cost (fork(2), exec(2), and initialization) is paid only
-	    once.
+	    Unix domain or TCP socket or both.  For search-intensive
+	    applications, such as a search engine on a heavily used web
+	    site, this can yield a large performace improvement since
+	    the start-up cost (fork(2), exec(2), and initialization) is
+	    paid only once.
 
-	12. Easy-to-parse results format
+	14. Easy-to-parse results format
 	    SWISH++ outputs its search results in the form:
 
 		rank path_name file_size file_title
@@ -124,7 +147,7 @@
 
 		($rank,$path,$size,$title) = split( / /, $_, 4 );
 
-	13. Generously commented source code
+	15. Generously commented source code
 	    The source code is clearly written with lots of comments
 	    including references to other works in case you want to
 	    modify it under the terms of the GNU general public
@@ -155,6 +178,6 @@
 
 	________________________________________________________________
 
-	Copyright (C) 1998-2000 by Paul J. Lucas <pjl@best.com>
+	Copyright (C) 1998-2000 by Paul J. Lucas <pauljlucas@mac.com>
 	SWISH++ is available under the GNU General Public License.
-	This file last updated: May 17, 2000
+	This file last updated: December 3, 2000
