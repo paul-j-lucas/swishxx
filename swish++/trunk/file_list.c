@@ -24,7 +24,7 @@
 
 // local
 #include "bcd.h"
-#include "fake_ansi.h"				/* for CONST_CAST */
+#include "fake_ansi.h"			/* for CONST_CAST */
 #include "file_list.h"
 
 //*****************************************************************************
@@ -66,6 +66,7 @@
 			while ( *++p != 0xEE ) ;
 			++p;				// skip past 0xEE
 		}
+		while ( (*p++ & 0x0F) != 0x0A ) ;	// skip past occurrences
 		while ( (*p++ & 0x0F) != 0x0A ) ;	// skip past rank
 		++THIS->size_;
 	}
@@ -88,7 +89,6 @@
 //
 // SEE ALSO
 //
-//	word_index.h
 //	index.c		write_full_index() for a description of the index file
 //			format.
 //
@@ -113,6 +113,7 @@
 		++c_;				// skip past 0xEE
 	}
 
+	v_.occurrences_ = parse_bcd( c_ );
 	v_.rank_ = parse_bcd( c_ );
 
 	return *this;
