@@ -29,6 +29,7 @@
 // local
 #include "config.h"
 #include "fake_ansi.h"			/* for std */
+#include "util.h"
 
 extern char const iso8859_map[ 256 ];
 
@@ -111,7 +112,7 @@ extern char const iso8859_map[ 256 ];
 {
 	return c > 0 &&
 #if OPTIMIZE_WORD_CHARS
-	( isalnum( c ) ||
+	( is_alnum( c ) ||
 		//
 		// If you change Word_Chars in config.h from the default set
 		// but would like to keep the optimization, edit the line below
@@ -152,7 +153,7 @@ extern char const iso8859_map[ 256 ];
 	// would like to keep the optimization, edit the line below to compare
 	// 'c' against every character in your set of Word_Begin_Chars.
 	//
-	return isalnum( c );
+	return is_alnum( c );
 #else
 	return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
 #endif
@@ -179,7 +180,7 @@ extern char const iso8859_map[ 256 ];
 	//
 	// Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
 	//
-	return isalnum( c );
+	return is_alnum( c );
 #else
 	return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
 #endif
