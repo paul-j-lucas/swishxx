@@ -21,6 +21,9 @@
 
 // standard
 #include <cctype>
+#ifdef DEBUG_is_ok_word
+#include <iostream>
+#endif
 
 // local
 #include "config.h"
