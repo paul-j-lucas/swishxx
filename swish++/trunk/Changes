@@ -2,6 +2,58 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+3.0.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The -r option for index and extract was broken by release 3.0; it's fixed
+  now.
+
+  (This bug fix will be known as bug fix DASHR.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* directory.c
+
+	1. On line 104, reversed the order of the conditions to now be:
+
+		if ( is_directory( path ) && recurse_subdirectories )
+
+	   for bug fix DASHR.  For directories, a stat(2) wasn't being
+	   performed so the is_plain_file() call in do_file() didn't
+	   work.
+
+* extract.c
+* index.c
+
+	1. In main(), performed following substitutions for command
+	   line argument variables:
+
+		s/char*/char const*/
+
+* search.c
+
+	1. In main(), performed following substitutions for command
+	   line argument variables:
+
+		s/char*/char const*/
+
+	2. Performed following substitutions:
+
+		s/dump_match/dump_match_arg/
+		s/dump_window_size/dump_window_size_arg/
+		s/skip_results/skip_results_arg/
+
+* version.h
+
+	1. Updated version to "3.0.2".
+
+
+*******************************************************************************
 3.0.1
 *******************************************************************************
 
