@@ -31,41 +31,6 @@
 #include "fake_ansi.h"			/* for std */
 #include "util.h"
 
-extern char const iso8859_map[ 256 ];
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline char iso8859_to_ascii( char c )
-//
-// DESCRIPTION
-//
-//	Convert an 8-bit ISO 8859-1 (Latin 1) character to its closest 7-bit
-//	ASCII equivalent.  (This mostly means that accents are stripped.)
-//
-//	This function exists to ensure that the value of the character used
-//	to index the iso8859_map[] vector declared above is unsigned.
-//
-// PARAMETERS
-//
-//	c	The character to be converted.
-//
-// RETURN VALUE
-//
-//	Returns said character.
-//
-// SEE ALSO
-//
-//	International Standards Organization.  "ISO 8859-1: Information
-//	Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
-//	Latin alphabet No. 1," 1987.
-//
-//*****************************************************************************
-{
-	return iso8859_map[ static_cast<unsigned char>( c ) ];
-}
-
 //*****************************************************************************
 //
 // SYNOPSIS
