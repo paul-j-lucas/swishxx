@@ -25,29 +25,29 @@
 // local
 #include "less.h"
 
-extern char const*	stem_word( char const *word );
-
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	struct less_stem : less< char const * >
+	struct less_stem : less< char const* >
 //
 // DESCRIPTION
 //
-//	A less_stem is-a less< char const* > that compares C-style strings
-//	but stems (suffix strips) the words before comparison.
+//	A less_stem is-a less< char const* > that compares C-style strings but
+//	possibly stems (suffix strips) the words before comparison.
 //
 //*****************************************************************************
 {
-	less_stem() { }
-	// This constructor doesn't need to be defined, but g++ 2.8.0 complains
-	// if it isn't and you try to define a "const less_stem" object.
+	less_stem( bool stem ) : stem_func_( stem ? stem_word : no_stem ) { }
 
 	result_type
 	operator()( first_argument_type a, second_argument_type b ) const {
-		return std::strcmp( stem_word( a ), stem_word( b ) ) < 0;
+		return std::strcmp( stem_func_( a ), stem_func_( b ) ) < 0;
 	}
+private:
+	char const*		(*const stem_func_)( char const *word );
+	static char const*	no_stem( char const *word ) { return word; }
+	static char const*	stem_word( char const *word );
 };
 
 #endif	/* stem_word_H */
