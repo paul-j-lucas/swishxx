@@ -23,43 +23,27 @@
 #define FilterFile_H
 
 // local
-#include "conf_var.h"
-#include "filter.h"
-#include "pattern_map.h"
+#include "conf_filter.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class FilterFile : public conf_var
+	class FilterFile : public conf_filter
 //
 // DESCRIPTION
 //
-//	A FilterFile is-a conf_var for mapping a filename pattern to a filter
-//	(being a Unix process called via command-line).  Certain filename
-//	patterns need to be filtered first, e.g., uncompressed.
+//	A FilterFile is-a conf_filter for mapping a filename pattern to a
+//	filter (being a Unix process called via command-line).  Certain
+//	filename patterns need to be filtered first, e.g., converting PDF to
+//	text.
 //
 //*****************************************************************************
 {
 public:
-	typedef char const* key_type;
-	typedef filter value_type;
-	typedef value_type const* const_pointer;
-
-	FilterFile();
-
-	const_pointer operator[]( key_type key ) const {
-		map_type::const_iterator const i = map_.find( key );
-		return i != map_.end() ? &i->second : 0;
-	}
-private:
-	typedef pattern_map< value_type > map_type;
-	map_type map_;
-
-	virtual void	parse_value( char *line );
-	virtual void	reset() { map_.clear(); }
+	FilterFile() : conf_filter( "FilterFile" ) { }
 };
 
-extern FilterFile filters;
+extern FilterFile file_filters;
 
 #endif	/* FilterFile_H */
