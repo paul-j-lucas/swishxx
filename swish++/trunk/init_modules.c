@@ -26,6 +26,9 @@
 #ifdef	MOD_MAIL
 #include "mod_mail.h"
 #endif
+#ifdef	MOD_MAN
+#include "mod_man.h"
+#endif
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -50,6 +53,9 @@ using namespace std;
 #endif
 #ifdef	MOD_MAIL
 	static mail_indexer	mail;
+#endif
+#ifdef	MOD_MAN
+	static man_indexer	man;
 #endif
 	// The plain text indexer is initialized in indexer::map_ref().
 }
