@@ -81,5 +81,6 @@ extern index_segment directories;
 {
 	out_ <<	rank << result_separator
 	     <<	directories[ fi.dir_index() ] << '/' << fi.file_name()
-	     << result_separator << fi.size() << fi.title() << '\n';
+	     << result_separator << fi.size()
+	     << result_separator << fi.title() << '\n';
 }
