@@ -25,6 +25,7 @@
 // standard
 #include <iostream>
 #include <map>
+#include <string>
 
 // local
 #include "encoded_char.h"
@@ -156,6 +157,11 @@ protected:
 	//		prints nothing.  A derived indexer that has its own
 	//		command-line options should override this function.
 private:
+	// This needs to be a string rather than a char* because the module
+	// names have to be converted to lower case strings (since they have to
+	// be stored separately from the original module names, i.e., the
+	// original char*'s can't be used), strings might as well be used.
+	//
 	typedef std::map< std::string, indexer* > map_type;
 
 	indexer( indexer const& );		// forbid initialization
