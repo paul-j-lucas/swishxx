@@ -23,6 +23,7 @@
 #include <cstring>
 
 // local
+#include "exit_codes.h"
 #include "IncludeFile.h"
 
 //*****************************************************************************
@@ -30,23 +31,32 @@
 // SYNOPSIS
 //
 	/* virtual */
-	void IncludeFile::parse_value( char const *var_name, char *line )
+	void IncludeFile::parse_value( char const*, char *line )
 //
 // DESCRIPTION
 //
-//	Parse the line of text by splitting it into words that are separated by
-//	whitespace.  It also handles the configuration variable alias case for
-//	HTMLFile.
+//	Parse the line of text of the form:
+//
+//		mod_name pattern1 pattern2 ...
 //
 // PARAMETERS
-//
-//	var_name	The name of the configuration variable.
 //
 //	line		The line of text to be parsed.
 //
 //*****************************************************************************
 {
-	bool const is_html_pattern = !::strcmp( var_name, "HTMLFile" );
-	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
-		insert( ::strdup( s ), is_html_pattern );
+	char const *const mod_name = ::strtok( line, " \r\t" );
+	if ( !mod_name ) {
+		error() << "no indexer module name" << endl;
+		::exit( Exit_Config_File );
+	}
+	indexer *const i = indexer::find( mod_name );
+	if ( !i ) {
+		error() << '"' << mod_name << "\": no such indexing module"
+			<< endl;
+		::exit( Exit_Config_File );
+	}
+
+	for ( register char const *s; s = ::strtok( 0, " \r\t" ); )
+		insert( ::strdup( s ), i );
 }
