@@ -234,7 +234,7 @@ install_lib: $(I_LIB)
 install_man:
 	@$(MAKE) -C man install
 
-install_conf:
+install_conf: $(I_ETC)
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) swish++.conf $(I_ETC)
 
 $(I_BIN) $(I_ETC) $(I_LIB):
