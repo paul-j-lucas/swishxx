@@ -51,14 +51,14 @@ class token_stream;
 public:
 	enum type {
 		no_token,
-		word_token,
-		word_star_token,
 		and_token,
-		or_token,
-		not_token,
+		equal_token,
 		lparen_token,
+		not_token,
+		or_token,
 		rparen_token,
-		equal_token
+		word_star_token,
+		word_token
 	};
 
 	token() : type_( no_token )		{ }
