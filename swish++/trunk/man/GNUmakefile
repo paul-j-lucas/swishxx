@@ -21,10 +21,10 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=		..
+ROOT:=		..
 include		$(ROOT)/config/config.mk
 
-SUBDIRS=	man*
+SUBDIRS:=	man*
 
 ##
 # Build rules

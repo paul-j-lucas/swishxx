@@ -21,6 +21,6 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-ROOT=	../..
-SECT=	8
+ROOT:=	../..
+SECT:=	8
 include	$(ROOT)/config/man.mk
