@@ -2,6 +2,125 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.4
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* The FilterExtension variable now allows you to specify literal % and @
+  characters by simply doubling the character.
+
+  (This feature will be known as feature FLC.)
+
+
+BUG FIXES
+---------
+
+* Added various #include lines and replacement for ENODATA to make it compile
+  on BSD systems.
+
+  (This bug fix will be known as bug fix BSD2.)
+
+* Fixed a bug in config.pl whereby a \$ would cause all $ after it not to
+  expand because the while loop exited prematurely.  (This didn't currently
+  matter, but it might in the future.)
+
+  (This bug fix will be known as bug fix CEV.)
+
+* Fixed a bug in install-sh whereby source files in subdirectories would not
+  be chown'd and chmod'd properly.  (This didn't matter for SWISH++ the way
+  it's distributed, but it might in the future.)
+
+  (This bug fix will be known as bug fix ISD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config.pl
+
+	1. 
+
+* config/man.mk
+
+	1. Added empty "all" rule so text versions of manual pages are
+	   not automatically built.
+
+* directory.c
+
+	1. Added #include <sys/types.h> for bug fix BSD2.
+
+* file_vector.c
+
+	1. Added #include <sys/types.h> for bug fix BSD2.
+
+	2. Added test for ENODATA and, if not available, use something
+	   else.  (For bug fix BSD2.)
+
+* filter.c
+
+	1. Added code for feature FLC.
+
+	2. Added special-case code for sleep(3) for Windows.
+
+* FilterExtension.c
+
+	1. Added code for feature FLC.
+
+* GNUmakefile
+
+	1. Performed substitutions of the form:
+
+		s/@cd $(DIR) && $(MAKE) $@/@$(MAKE) -C $(DIR) $@/
+
+	   since GNU make has a -C option.
+
+	2. Added conditionals so as not to regenerate .d files when
+	   making clean, distclean, or dist.
+
+	3. Added "txt" as a target.
+
+* install-sh
+
+	1. Added code to strip directories via basename and xargs for
+	   bug fix ISD.
+
+* man/Makefile
+
+	1. Renamed to GNUmakefile.
+
+* man/GNUmakefile
+
+	1. Renamed from Makefile.
+
+	2. Replaced all targets with simpler %.
+
+* man/man1/GNUmakefile
+* man/man1/Makefile
+* man/man3/GNUmakefile
+* man/man3/Makefile
+* man/man4/GNUmakefile
+* man/man4/Makefile
+
+	1. Renamed Makefile to GNUmakefile.
+
+* man/man4/swish++.conf.4
+
+	1. Added description of feature FLC.
+
+* search.c
+* search_daemon.c
+* util.h
+
+	1. Added #include <ctime> for bug fix BSD2.
+
+* version.h
+
+	1. Updated version to "4.4".
+
+
+*******************************************************************************
 4.3.1
 *******************************************************************************
 
