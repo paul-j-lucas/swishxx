@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "May 19, 1998" "SWISH++"
+.TH \f3search\fP 1 "May 29, 1998" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -125,12 +125,15 @@ The
 .I comment-keys
 are:
 .RS 5
-.TP 22
+.TP 25
 \f3ignored\fP: \f2stop-words\fP
 The list of stop-words (separated by spaces) ignored in the query.
 .TP
 \f3not found\fP: \f2word\fP
 The word was not found in the index.
+.TP
+\f3results\fP: \f2result-count\fP
+The total number of results.
 .RE
 .SH OPTIONS
 .TP 16
@@ -159,8 +162,12 @@ Used in conjunction with
 .BR \-m ,
 results can be returned in ``pages.''
 .TP
+.B \-R
+Print the result-count only.
+.TP
 .B \-s
 Perform stemming (suffix stripping) on words during the search.
+Words that end in the wildcard character are not stemmed.
 .TP
 .B \-S
 Dump the stop-word index to standard output and exit.
