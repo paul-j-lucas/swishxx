@@ -522,6 +522,7 @@ CHANGES, file-by-file
 	6. Added references for feature MAN.
 	7. Added -A, --no-assoc-meta, and AssociateMeta for feature AMN.
 	8. Added mention of and reference for Ruby elements for feature RUBY.
+	9. Made -T option no longer refer to <TITLE> element.
 
 * man/man1/search.1
 
