@@ -122,6 +122,9 @@ E_SRCS:=	mmap_file.c \
 		util.c \
 		word_util.c \
 		extract.c
+ifdef WIN32
+E_SRCS+=	fnmatch.c		# see the comment in pattern_map.h
+endif
 E_OBJS:=	$(E_SRCS:.c=.o)
 E_LINK:=	$(CCLINK)
 
@@ -167,7 +170,7 @@ dep:
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
 # Also, don't do the "include" if the goal is the "dist" goal.
 ifneq ($(MAKECMDGOALS),dist)
-include	 $(I_SRCS:%.c=dep/%.d) $(E_SRCS:%.c=dep/%.d) $(S_SRCS:%.c=dep/%.d)
+include $(I_SRCS:%.c=dep/%.d) $(E_SRCS:%.c=dep/%.d) $(S_SRCS:%.c=dep/%.d)
 endif
 endif
 
