@@ -85,12 +85,12 @@ using namespace std;
 {
 	char const *const pattern = ::strtok( line, " \r\t" );
 	if ( !pattern ) {
-		cerr << error << "no filename pattern" << endl;
+		error() << "no filename pattern\n";
 		::exit( Exit_Config_File );
 	}
 	char const *const command = ::strtok( 0, "\n" );
 	if ( !command ) {
-		cerr << error << "no filter command" << endl;
+		error() << "no filter command\n";
 		::exit( Exit_Config_File );
 	}
 
@@ -113,7 +113,7 @@ using namespace std;
 
 		if ( *s == '@' )
 			if ( found_target ) {
-				cerr << error << "more than one @" << endl;
+				error() << "more than one @\n";
 				::exit( Exit_Config_File );
 			} else {
 				found_target = true;
@@ -130,16 +130,16 @@ using namespace std;
 				++num_substitutions;
 				continue;
 		}
-		cerr << error << "non-[bBeEfF%] character after %" << endl;
+		error() << "non-[bBeEfF%] character after %\n";
 		::exit( Exit_Config_File );
 	}
 
 	if ( num_substitutions < 1 ) {
-		cerr << error << "at least 1 substitution is required" << endl;
+		error() << "at least 1 substitution is required\n";
 		::exit( Exit_Config_File );
 	}
 	if ( !found_target ) {
-		cerr << error << "filter does not contain required @" << endl;
+		error() << "filter does not contain required @\n";
 		::exit( Exit_Config_File );
 	}
 

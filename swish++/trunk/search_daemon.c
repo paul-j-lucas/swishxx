@@ -190,7 +190,7 @@ int	open_unix_socket();
 	);
 	while ( true ) {
 #		ifdef DEBUG_threads
-		cerr << "waiting for request" << endl;
+		cerr << "waiting for request\n";
 #		endif
 
 		fd_set rset;
@@ -226,7 +226,7 @@ int	open_unix_socket();
 				accept_failed();
 			else {
 #				ifdef DEBUG_threads
-				cerr << "dispatching request" << endl;
+				cerr << "dispatching request\n";
 #				endif
 				threads.new_task( accept_fd );
 			}
@@ -241,7 +241,7 @@ int	open_unix_socket();
 				accept_failed();
 			else {
 #				ifdef DEBUG_threads
-				cerr << "dispatching request" << endl;
+				cerr << "dispatching request\n";
 #				endif
 				threads.new_task( accept_fd );
 			}

@@ -92,14 +92,14 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 #include "search_options.c"			/* defines opt_spec */
 
 #	ifdef DEBUG_threads
-	cerr << "in search_thread::main()" << endl;
+	cerr << "in search_thread::main()\n";
 #	endif
 
 	char buf[ 1024 ];
 	if ( timed_read_line( arg.i, buf, sizeof buf, socket_timeout ) ) {
 
 #		ifdef DEBUG_threads
-		cerr << "query=" << buf << endl;
+		cerr << "query=" << buf << "\n";
 #		endif
 
 		char*	argv_vec[ ARG_MAX ];

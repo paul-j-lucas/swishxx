@@ -95,6 +95,6 @@ extern char const*	me;
 			comma = true;
 		cerr << *value;
 	}
-	cerr << endl;
+	cerr << "\n";
 	::exit( Exit_Config_File );
 }

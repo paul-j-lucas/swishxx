@@ -160,33 +160,33 @@ char const iso8859_map[] = {
 	if ( is_upper( *word ) ) {		// starts with a capital letter
 		if ( uppers + digits + puncts == len ) {
 #			ifdef DEBUG_is_ok_word
-			cerr << "(potential acronym)" << endl;
+			cerr << "(potential acronym)\n";
 #			endif
 			return true;
 		}
 		if ( ( uppers + digits ) * 100 / len > 33 ) {
 #			ifdef DEBUG_is_ok_word
-			cerr << "(too many intermediate uppers)" << endl;
+			cerr << "(too many intermediate uppers)\n";
 #			endif
 			return false;
 		}
 	} else if ( uppers ) {			// contains a capital letter
 #		ifdef DEBUG_is_ok_word
-		cerr << "(intermediate uppers)" << endl;
+		cerr << "(intermediate uppers)\n";
 #		endif
 		return false;
 	}
 
 	if ( len < Word_Min_Size ) {
 #		ifdef DEBUG_is_ok_word
-		cerr << "(len < Word_Min_Size)" << endl;
+		cerr << "(len < Word_Min_Size)\n";
 #		endif
 		return false;
 	}
 
 	if ( vowels < Word_Min_Vowels ) {
 #		ifdef DEBUG_is_ok_word
-		cerr << "(vowels < Word_Min_Vowels)" << endl;
+		cerr << "(vowels < Word_Min_Vowels)\n";
 #		endif
 		return false;
 	}
@@ -212,7 +212,7 @@ char const iso8859_map[] = {
 		if ( is_punct( *c ) ) {
 			if ( ++consec_puncts > Word_Max_Consec_Puncts ) {
 #				ifdef DEBUG_is_ok_word
-				cerr << "(exceeded consec puncts)" << endl;
+				cerr << "(exceeded consec puncts)\n";
 #				endif
 				return false;
 			}
@@ -224,7 +224,7 @@ char const iso8859_map[] = {
 		if ( *c == last_c ) {
 			if ( ++consec_same > Word_Max_Consec_Same ) {
 #				ifdef DEBUG_is_ok_word
-				cerr << "(exceeded consec same)" << endl;
+				cerr << "(exceeded consec same)\n";
 #				endif
 				return false;
 			}
@@ -236,7 +236,7 @@ char const iso8859_map[] = {
 		if ( is_vowel( tolower( *c ) ) ) {
 			if ( ++consec_vowels > Word_Max_Consec_Vowels ) {
 #				ifdef DEBUG_is_ok_word
-				cerr << "(exceeded consec vowels)" << endl;
+				cerr << "(exceeded consec vowels)\n";
 #				endif
 				return false;
 			}
@@ -247,7 +247,7 @@ char const iso8859_map[] = {
 
 		if ( ++consec_consonants > Word_Max_Consec_Consonants ) {
 #			ifdef DEBUG_is_ok_word
-			cerr << "(exceeded consec consonants)" << endl;
+			cerr << "(exceeded consec consonants)\n";
 #			endif
 			return false;
 		}
@@ -256,7 +256,7 @@ char const iso8859_map[] = {
 	}
 
 #	ifdef DEBUG_is_ok_word
-	cerr << endl;
+	cerr << "\n";
 #	endif
 	return true;
 }

@@ -68,8 +68,7 @@ using namespace std;
 		if ( reassign ) {
 			*reassign = '\0';
 			if ( !*++reassign ) {
-				cerr	<< error << "name expected after '='"
-					<< endl;
+				error() << "name expected after '='\n";
 				::exit( Exit_Config_File );
 			}
 		}

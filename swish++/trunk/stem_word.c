@@ -204,7 +204,7 @@ int	word_size( char const *word );
 //*****************************************************************************
 {
 #	ifdef DEBUG_stem_word
-	cerr << "---> replace_suffix( \"" << word << "\" )" << endl;
+	cerr << "---> replace_suffix( \"" << word << "\" )\n";
 #	endif
 
 	for ( ; rule->id; ++rule ) {
@@ -214,7 +214,7 @@ int	word_size( char const *word );
 
 #		ifdef DEBUG_stem_word
 		cerr	<< "---> suffix=" << suffix
-			<< ", old=" << rule->old_suffix << endl;
+			<< ", old=" << rule->old_suffix << "\n";
 #		endif
 		if ( ::strcmp( suffix, rule->old_suffix ) )
 			continue;
@@ -226,7 +226,7 @@ int	word_size( char const *word );
 		) {
 			::strcpy( suffix, rule->new_suffix );
 #			ifdef DEBUG_stem_word
-			cerr << "---> replaced word=" << word << endl;
+			cerr << "---> replaced word=" << word << "\n";
 #			endif
 			end = suffix + rule->new_suffix_len;
 			break;
@@ -394,7 +394,7 @@ int	word_size( char const *word );
 	////////// Stem the word //////////////////////////////////////////////
 
 #	ifdef DEBUG_stem_word
-	cerr << "\n---> stem_word( \"" << word << "\" )" << endl;
+	cerr << "\n---> stem_word( \"" << word << "\" )\n";
 #	endif
 
 	char word_buf[ Word_Hard_Max_Size ];
@@ -413,7 +413,7 @@ int	word_size( char const *word );
 	replace_suffix( word_buf, rules_5b );
 
 #	ifdef DEBUG_stem_word
-	cerr << "\n---> stemmed word=" << word_buf << endl;
+	cerr << "\n---> stemmed word=" << word_buf << "\n";
 #	endif
 
 	char const *const new_word = ::strdup( word_buf );

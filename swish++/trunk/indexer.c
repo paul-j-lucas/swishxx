@@ -66,7 +66,7 @@ int		indexer::suspend_indexing_count_ = 0;
 	indexer *&i = map_ref()[ to_lower( mod_name ) ];
 	if ( i ) {
 		cerr	<< "indexer::indexer(\"" << mod_name << "\"): "
-			"registered more than once" << endl;
+			"registered more than once\n";
 		::abort();
 	}
 	i = this;

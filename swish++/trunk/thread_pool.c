@@ -63,7 +63,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
-	cerr << "thread_destroy()" << endl;
+	cerr << "thread_destroy()\n";
 #	endif
 
 	thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
@@ -117,7 +117,7 @@ extern char const*	me;
 	int result = ::pthread_detach( ::pthread_self() );
 	if ( result ) {
 		error()	<< "could not detach thread: "
-			<< ::strerror( result ) << endl;
+			<< ::strerror( result ) << "\n";
 		::exit( Exit_No_Detach_Thread );
 	}
 
@@ -139,7 +139,7 @@ extern char const*	me;
 	while ( true ) {
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): waiting for task" << endl;
+		cerr << "thread_main(): waiting for task\n";
 #		endif
 
 		result = 0;
@@ -196,7 +196,7 @@ extern char const*	me;
 		}
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): got task" << endl;
+		cerr << "thread_main(): got task\n";
 #		endif
 
 		::pthread_mutex_lock( &t->pool_.t_busy_lock_ );
@@ -209,13 +209,13 @@ extern char const*	me;
 		::pthread_mutex_unlock( &t->pool_.q_lock_ );
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): performing task" << endl;
+		cerr << "thread_main(): performing task\n";
 #		endif
 
 		t->main( arg );			// do the real work
 
 #		ifdef DEBUG_threads
-		cerr << "thread_main(): completed task" << endl;
+		cerr << "thread_main(): completed task\n";
 #		endif
 
 		::pthread_mutex_lock( &t->pool_.t_busy_lock_ );
@@ -256,13 +256,13 @@ extern char const*	me;
 	: pool_( p ), destructing_( false )
 {
 #	ifdef DEBUG_threads
-	cerr << "thread::thread()" << endl;
+	cerr << "thread::thread()\n";
 #	endif
 
 	int const result = ::pthread_create( &thread_, 0, start_func, this );
 	if ( result ) {
 		error()	<< "could not create thread: "
-			<< ::strerror( result ) << endl;
+			<< ::strerror( result ) << "\n";
 		::exit( Exit_No_Create_Thread );
 	}
 }
@@ -280,7 +280,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
-	cerr << "thread::~thread()" << endl;
+	cerr << "thread::~thread()\n";
 #	endif
 
 	::pthread_mutex_lock( &pool_.destructing_lock_ );
@@ -348,13 +348,13 @@ extern char const*	me;
 		::pthread_mutex_init( &q_lock_, 0 ) ||
 		::pthread_mutex_init( &t_lock_, 0 )
 	) {
-		error() << "could not init thread mutex" << endl;
+		error() << "could not init thread mutex\n";
 		::exit( 1 );
 	}
 	if (	::pthread_cond_init( &q_not_empty_, 0 ) ||
 		::pthread_cond_init( &t_idle_, 0 )
 	) {
-		error() << "could not init thread condition" << endl;
+		error() << "could not init thread condition\n";
 		::exit( 1 );
 	}
 
@@ -419,7 +419,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 #	ifdef DEBUG_threads
-	cerr << "thread_pool::new_task()" << endl;
+	cerr << "thread_pool::new_task()\n";
 #	endif
 
 	::pthread_mutex_lock( &q_lock_ );

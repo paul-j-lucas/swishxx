@@ -96,7 +96,7 @@ extern char const*	me;
 			return;
 		}
 	}
-	cerr << error << '"' << name() << "\" is not one of: "
-		"f, false, n, no, off, on, t, true, y, yes" << endl;
+	error()	<< '"' << name() << "\" is not one of: "
+		"f, false, n, no, off, on, t, true, y, yes\n";
 	::exit( Exit_Config_File );
 }

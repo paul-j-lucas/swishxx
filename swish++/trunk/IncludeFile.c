@@ -52,13 +52,12 @@ using namespace std;
 {
 	char const *const mod_name = ::strtok( line, " \r\t" );
 	if ( !mod_name ) {
-		error() << "no indexer module name" << endl;
+		error() << "no indexer module name\n";
 		::exit( Exit_Config_File );
 	}
 	indexer *const i = indexer::find_indexer( mod_name );
 	if ( !i ) {
-		error() << '"' << mod_name << "\": no such indexing module"
-			<< endl;
+		error() << '"' << mod_name << "\": no such indexing module\n";
 		::exit( Exit_Config_File );
 	}
 

@@ -64,7 +64,7 @@ int conf_var::current_config_file_line_no_ = 0;
 	conf_var *&var = map_ref()[ to_lower( name_ ) ];
 	if ( var ) {
 		cerr	<< "conf_var::conf_var(): \"" << name_
-			<< "\" registered more than once" << endl;
+			<< "\" registered more than once\n";
 		::abort();
 	}
 	var = this;
@@ -249,7 +249,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			return;
 		}
 		cerr	<< "could not read configuration from \""
-			<< file_name << '"' << endl;
+			<< file_name << "\"\n";
 		::exit( Exit_Config_File );
 	}
 

@@ -390,7 +390,7 @@ stop_word_set*		stop_words;		// pointer to global set
 
 	mmap_file const file( file_name );
 	if ( !file ) {
-		error() << "could not open \"" << file_name << '"' << endl;
+		error() << "could not open \"" << file_name << "\"\n";
 		::exit( Exit_No_Read_Stopwords );
 	}
 

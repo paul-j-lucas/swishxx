@@ -59,7 +59,7 @@ using namespace std;
 		// This should never happen: substitute() was never called on
 		// this filter.  If this happens, the programmer goofed.
 		//
-		cerr << "filter::exec(): command is empty" << endl;
+		cerr << "filter::exec(): command is empty\n";
 		::abort();
 	}
 	int exit_code;
@@ -206,8 +206,7 @@ using namespace std;
 		// been checked by FilterFile::parse_line() for the existence
 		// of an @.  If this happens, the programmer goofed.
 		//
-		cerr	<< "filter::substitute(): target_pos == string::npos"
-			<< endl;
+		cerr << "filter::substitute(): target_pos == string::npos\n";
 		::abort();
 	}
 
