@@ -22,6 +22,6 @@
 #ifndef	version_H
 #define	version_H
 
-char const	version[] = "4.5";
+char const	version[] = "4.6";
 
 #endif	/* version_H */
