@@ -29,7 +29,7 @@
 //
 // SYNOPSIS
 //
-	struct postscript_comment_set : char_ptr_set
+	struct postscript_comment_set : PJL::char_ptr_set
 //
 // DESCRIPTION
 //
@@ -46,7 +46,7 @@
 //
 // SYNOPSIS
 //
-	struct postscript_operator_set : char_ptr_set
+	struct postscript_operator_set : PJL::char_ptr_set
 //
 // DESCRIPTION
 //

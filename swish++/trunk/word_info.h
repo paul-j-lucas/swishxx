@@ -48,7 +48,7 @@
 {
 public:
 	struct file {
-		typedef my_set< short > meta_set;
+		typedef PJL::my_set< short > meta_set;
 
 		int		index_;		// occurs in i-th file
 		meta_set	meta_ids_;	// meta name(s) associated with

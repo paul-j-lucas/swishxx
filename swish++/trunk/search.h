@@ -77,7 +77,7 @@
 #endif
 	search_options(
 		int *argc, char ***argv,
-		option_stream::spec const[],
+		PJL::option_stream::spec const[],
 		std::ostream& = cerr
 	);
 

@@ -62,6 +62,7 @@
 #include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
+using namespace PJL;
 using namespace std;
 #endif
 

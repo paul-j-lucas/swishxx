@@ -56,6 +56,7 @@
 #include "util.h"			/* for max_out_limit() */
 
 #ifndef	PJL_NO_NAMESPACES
+using namespace PJL;
 using namespace std;
 #endif
 

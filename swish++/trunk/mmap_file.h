@@ -40,6 +40,12 @@
 #undef	close
 #endif
 
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#else
+#define	PJL /* nothing */
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSYS
@@ -141,5 +147,9 @@ private:
 	int		errno_;
 	void		init();
 };
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* mmap_file_H */

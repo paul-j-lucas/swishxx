@@ -71,7 +71,7 @@
 public:
 	mail_indexer() : indexer( "mail" ) { }
 
-	virtual char const*	find_title( mmap_file const& ) const;
+	virtual char const*	find_title( PJL::mmap_file const& ) const;
 	virtual void		index_words(
 					encoded_char_range const&,
 					int meta_id = No_Meta_ID
@@ -104,7 +104,7 @@ private:
 		message_type;
 
 	struct key_value {
-		auto_vec<char> key;
+		PJL::auto_vec<char> key;
 		char const *value_begin, *value_end;
 	};
 

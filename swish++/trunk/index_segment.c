@@ -22,6 +22,10 @@
 // local
 #include "index_segment.h"
 
+#ifndef	PJL_NO_NAMESPACES
+using namespace PJL;
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS

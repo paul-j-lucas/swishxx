@@ -31,7 +31,7 @@
 //
 // SYNOPSIS
 //
-	class search_thread : public thread_pool::thread
+	class search_thread : public PJL::thread_pool::thread
 //
 // DESCRIPTION
 //
@@ -41,11 +41,11 @@
 //*****************************************************************************
 {
 public:
-	search_thread( thread_pool &p ) : thread_pool::thread( p ) { }
+	search_thread( PJL::thread_pool &p ) : PJL::thread_pool::thread( p ) { }
 
 	static unsigned	socket_timeout;
 private:
-	virtual thread*	create( thread_pool &p ) const {
+	virtual thread*	create( PJL::thread_pool &p ) const {
 				return new search_thread( p );
 			}
 	virtual void	main( argument_type );

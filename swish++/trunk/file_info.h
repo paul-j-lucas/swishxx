@@ -46,7 +46,7 @@
 //*****************************************************************************
 {
 	typedef std::vector< file_info* > list_type;
-	typedef char_ptr_set name_set_type;
+	typedef PJL::char_ptr_set name_set_type;
 
 	static list_type	list_;
 

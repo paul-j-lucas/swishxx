@@ -1,5 +1,5 @@
 /*
-**	SWISH++
+**	PJL C++ Library
 **	my_set.h
 **
 **	Copyright (C) 1998  Paul J. Lucas
@@ -29,6 +29,12 @@
 // local
 #include "fake_ansi.h"			/* for std */
 #include "less.h"
+
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#else
+#define	PJL /* nothing */
+#endif
 
 //*****************************************************************************
 //
@@ -68,5 +74,9 @@ public:
 
 typedef my_set< char const* >	char_ptr_set;
 typedef my_set< std::string >	string_set;
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* my_set_H */

@@ -23,14 +23,14 @@
 #define stop_words_H
 
 // local
-class mmap_file;
+#include "mmap_file.h"
 #include "my_set.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	struct stop_word_set : char_ptr_set
+	struct stop_word_set : PJL::char_ptr_set
 //
 // DESCRIPTION
 //
@@ -41,7 +41,7 @@ class mmap_file;
 //*****************************************************************************
 {
 	stop_word_set( char const *file_name = 0 );
-	stop_word_set( mmap_file const &index_file );
+	stop_word_set( PJL::mmap_file const &index_file );
 };
 
 extern stop_word_set*	stop_words;

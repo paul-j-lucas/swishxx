@@ -75,6 +75,7 @@
 #endif	/* SEARCH_DAEMON */
 
 #ifndef	PJL_NO_NAMESPACES
+using namespace PJL;
 using namespace std;
 #endif
 
