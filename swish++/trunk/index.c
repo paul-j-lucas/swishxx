@@ -590,7 +590,7 @@ void			write_word_index( ostream&, off_t* );
 	);
 	FOR_EACH( index_segment, old_meta_names, meta_name ) {
 		unsigned char const *p =
-			REINTERPRET_CAST(unsigned char const*)( *meta_name );
+			reinterpret_cast<unsigned char const*>( *meta_name );
 		while ( *p++ ) ;		// skip past meta name
 		meta_names[ ::strdup( *meta_name ) ] = parse_bcd( p );
 	}
