@@ -76,6 +76,8 @@ else
 	gs -q -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=$@ $< -c quit
 endif
 
+all:
+
 text txt: $(TARGET_TXT)
 pdf: $(TARGET_PDF)
 ps : $(TARGET_PS)
