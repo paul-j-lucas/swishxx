@@ -170,7 +170,7 @@ $(MOD_LIBS): FORCE
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
 # Also, don't do the "include" if the goal is the "dist" goal.
 ifneq ($(MAKECMDGOALS),dist)
-include $(I_SOURCES:%.c=dep/%.d) $(E_SOURCES:%.c=dep/%.d) $(S_SOURCES:%.c=dep/%.d)
+include $(I_SOURCES:%.c=.%.d) $(E_SOURCES:%.c=.%.d) $(S_SOURCES:%.c=.%.d)
 endif
 endif
 
@@ -215,7 +215,7 @@ clean:
 	@$(call MAKE_SUBDIRS,$@)
 
 distclean: clean
-	$(RM) $(TARGET) dep init_modules.c platform.h
+	$(RM) $(TARGET) .*.d init_modules.c platform.h
 	@$(call MAKE_SUBDIRS,$@)
 
 dist: clean

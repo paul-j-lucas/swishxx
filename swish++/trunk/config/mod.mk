@@ -42,7 +42,7 @@ $(TARGET): $(SOURCES:.c=.o)
 # Don't do the "include" if the goal contains the word "clean," i.e., either
 # the "clean" or "distclean" goal.
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
-include $(SOURCES:%.c=dep/%.d)
+include $(SOURCES:%.c=.%.d)
 endif
 
 ##
@@ -53,4 +53,4 @@ clean:
 	$(RM) *.o
 
 distclean: clean
-	$(RM) $(TARGET) dep
+	$(RM) $(TARGET) .*.d
