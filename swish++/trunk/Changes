@@ -3,6 +3,51 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.0.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The calculation of word deltas was wrong.
+
+  (This bug fix shall be known as bug fix CWD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* index.c
+
+	1. Removed no-class and dump-html options.  (They should have
+	   been removed a long time ago because module-specific options
+	   were moved to the modules themselves.)
+
+* indexer.h
+
+	1. In resume_indexing(), added "if" statement.
+
+* INSTALL.unix
+
+	1. Changed minimum supported g++ compiler to the 3.x series, i.e.,
+	   2.95.x and earlier are no longer supported.
+
+* mod/html/mod_html.c
+
+	1. In parse_html_tag(), now additionally skipping XML processing
+	   instructions.
+
+* word_info.c
+* word_info.h
+
+	1. Added last_absolute_word_pos_ for bug fix CWD.
+
+* version.h
+
+	1. Changed to "6.0.3".
+
+
+*******************************************************************************
 6.0.2
 *******************************************************************************
 
