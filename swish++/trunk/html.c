@@ -24,6 +24,7 @@
 #include <cctype>
 #include <cstring>
 #include <vector>
+#include <utility>				/* for pair<> */
 
 // local
 #include "config.h"
