@@ -114,7 +114,7 @@ int		indexer::suspend_indexing_count_ = 0;
 	option_stream::spec *c = combined_spec;
 
 	for ( s = main_spec; s->long_name; ++s )
-		++option_count;
+		*c++ = *s;
 	FOR_EACH( map_type, map_ref(), mod )
 		if ( s = mod->second->option_spec() )
 			while ( s->long_name )
