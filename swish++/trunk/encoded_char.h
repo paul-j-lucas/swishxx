@@ -75,16 +75,24 @@ public:
 		const_pointer begin, const_pointer end,
 		content_transfer_encoding = Eight_Bit
 	);
+	encoded_char_range( const_iterator const &pos );
+	encoded_char_range(
+		const_iterator const &begin, const_iterator const &end
+	);
 
 	// default copy constructor is fine
 	// default assignment operator is fine
 
-	const_iterator			begin() const;
-	const_iterator			end()   const;
-	content_transfer_encoding	encoding() const { return encoding_; }
+	const_iterator	begin() const;
+	const_pointer	begin_pos() const		{ return begin_; }
+	void		begin_pos( const_pointer p )	{ begin_ = p; }
+	void		begin_pos( const_iterator const& );
+	const_iterator	end() const;
+	const_pointer	end_pos() const			{ return end_; }
+	void		end_pos( const_pointer p )	{ end_ = p; }
+	void		end_pos( const_iterator const& );
 
-	void				begin( const_pointer p ) { begin_ = p; }
-	void				end  ( const_pointer p ) { end_   = p; }
+	content_transfer_encoding	encoding() const { return encoding_; }
 protected:
 	encoded_char_range() { }
 
@@ -123,7 +131,7 @@ public:
 	const_iterator() { }
 	const_iterator(
 		const_pointer begin, const_pointer end,
-		content_transfer_encoding encoding = Eight_Bit
+		content_transfer_encoding = Eight_Bit
 	);
 
 	// default copy constructor is fine
@@ -135,19 +143,12 @@ public:
 
 	bool		at_end() const			{ return pos_ == end_; }
 
-	const_pointer	begin_pos() const		{ return begin_; }
-	const_pointer	pos()       const		{ return pos_; }
+	const_pointer	pos() const			{ return pos_; }
 	const_pointer&	pos()				{ return pos_; }
-	const_pointer	end_pos()   const		{ return end_; }
-	const_pointer	prev_pos()  const		{ return prev_; }
-
-	void		pos    ( const_pointer i )	{ pos_ = i; }
-	void		end_pos( const_pointer i )	{ end_ = i; }
+	const_pointer	prev_pos() const		{ return prev_; }
 
 	friend bool operator==( const_iterator const&, const_iterator const& );
-	friend bool operator==(
-		const_iterator const&, const_pointer
-	);
+	friend bool operator==( const_iterator const&, const_pointer );
 private:
 	mutable const_pointer	pos_;
 	mutable const_pointer	prev_;
@@ -173,32 +174,45 @@ private:
 #endif
 };
 
-#define	ECR_CI	encoded_char_range::const_iterator
+// I hate lots of typing.
+#define	ECR_CI encoded_char_range::const_iterator
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline encoded_char_range::encoded_char_range(
-		const_pointer begin, const_pointer end,
-		content_transfer_encoding encoding
-	)
-//
-// DESCRIPTION
-//
-//	Construct an encoded_char_range.
-//
-// PARAMETERS
-//
-//	begin		An pointer marking the beginning of the range.
-//
-//	end		An pointer marking the end of the range.
-//
-//	encoding	The Content-Transfer-Encoding of the text.
-//
-//*****************************************************************************
-	: begin_( begin ), end_( end ), encoding_( encoding )
+////////// encoded_char_range inlines /////////////////////////////////////////
+
+inline encoded_char_range::encoded_char_range(
+	const_pointer begin, const_pointer end,
+	content_transfer_encoding encoding
+) :
+	begin_( begin ), end_( end ), encoding_( encoding )
 {
+}
+
+inline encoded_char_range::encoded_char_range( const_iterator const &i ) :
+	begin_( i.pos_ ), end_( i.end_ ), encoding_( i.encoding_ )
+{
+}
+
+inline encoded_char_range::encoded_char_range(
+	const_iterator const &begin, const_iterator const &end
+) :
+	begin_( begin.pos_ ), end_( end.pos_ ), encoding_( begin.encoding_ )
+{
+}
+
+inline ECR_CI encoded_char_range::begin() const {
+	return const_iterator( this, begin_ );
+}
+
+inline ECR_CI encoded_char_range::end() const {
+	return const_iterator( this, end_ );
+}
+
+inline void encoded_char_range::begin_pos( const_iterator const &i ) {
+	begin_ = i.pos_;
+}
+
+inline void encoded_char_range::end_pos( const_iterator const &i ) {
+	end_ = i.pos_;
 }
 
 //*****************************************************************************
@@ -459,22 +473,9 @@ inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
 
 //*****************************************************************************
 //
-//	Miscellaneous encoded_char_range inline functions.
-//
-//*****************************************************************************
-
-inline ECR_CI encoded_char_range::begin() const {
-	return const_iterator( this, begin_ );
-}
-inline ECR_CI encoded_char_range::end() const {
-	return const_iterator( this, end_ );
-}
-
-//*****************************************************************************
-//
 // SYNOPSIS
 //
-	inline char *to_lower( ECR_CI c )
+	inline char *to_lower( encoded_char_range const &range )
 //
 // DESCRIPTION
 //
@@ -497,8 +498,10 @@ inline ECR_CI encoded_char_range::end() const {
 {
 	extern char_buffer_pool<128,5> lower_buf;
 	register char *p = lower_buf.next();
-	while ( !c.at_end() )
-		*p++ = to_lower( *c++ );
+	for ( encoded_char_range::const_iterator
+		c = range.begin(); !c.at_end(); ++c
+	)
+		*p++ = to_lower( *c );
 	*p = '\0';
 	return lower_buf.current();
 }
