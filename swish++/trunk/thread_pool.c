@@ -139,6 +139,15 @@ namespace PJL {
 	register thread_pool::thread *const
 		t = static_cast<thread_pool::thread*>( p );
 
+	//
+	// We need to wait for the "run" mutex to become unlocked before
+	// continuing to run the main() function to ensure that the thread pool
+	// object to which we belong has been fully constructed before we
+	// access its data members.  (It becomes unlocked when the run() member
+	// function is called.)
+	//
+	::pthread_mutex_lock( &t->run_lock_ );
+
 	while ( true ) {
 
 #		ifdef DEBUG_threads
@@ -266,6 +275,19 @@ namespace PJL {
 	cerr << "thread::thread()\n";
 #	endif
 
+	//
+	// Create a locked "run" mutex that the soon-to-be-created thread will
+	// wait for before running the code in the start function that accesses
+	// our data members.  The only reason this is necessary is because the
+	// prototype thread that is passed to the thread_pool constructor is
+	// created before the thread_pool is fully constructed.
+	//
+	if ( ::pthread_mutex_init( &run_lock_, 0 ) ) {
+		error() << "could not init thread mutex\n";
+		::exit( Exit_No_Init_Mutex );
+	}
+	::pthread_mutex_lock( &run_lock_ );
+
 	int const result = ::pthread_create( &thread_, 0, start_func, this );
 	if ( result ) {
 		error()	<< "could not create thread: "
@@ -289,6 +311,7 @@ namespace PJL {
 #	ifdef DEBUG_threads
 	cerr << "thread::~thread()\n";
 #	endif
+	::pthread_mutex_destroy( &run_lock_ );
 
 	::pthread_mutex_lock( &pool_.destructing_lock_ );
 	if ( pool_.destructing_ ) {
@@ -326,7 +349,7 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-	thread_pool::thread_pool( thread const *prototype,
+	thread_pool::thread_pool( thread *prototype,
 		int min_threads, int max_threads, int timeout
 	)
 //
@@ -358,18 +381,20 @@ namespace PJL {
 		::pthread_mutex_init( &t_lock_, 0 )
 	) {
 		error() << "could not init thread mutex\n";
-		::exit( 1 );
+		::exit( Exit_No_Init_Mutex );
 	}
 	if (	::pthread_cond_init( &q_not_empty_, 0 ) ||
 		::pthread_cond_init( &t_idle_, 0 )
 	) {
 		error() << "could not init thread condition\n";
-		::exit( 1 );
+		::exit( Exit_No_Init_Condition );
 	}
 
 	::pthread_mutex_lock( &t_lock_ );
-	for ( int i = 0; i < t_min_; ++i )
-		threads_.insert( prototype->create( *this ) );
+	threads_.insert( prototype );
+	prototype->run();
+	for ( int i = 1; i < t_min_; ++i )
+		threads_.insert( prototype->create_and_run() );
 	::pthread_mutex_unlock( &t_lock_ );
 }
 
@@ -446,9 +471,11 @@ namespace PJL {
 		if ( threads_.size() < t_max_ ) {
 			//
 			// We haven't maxed-out the number of threads we can
-			// make, so create another one to handle the request.
+			// make, so create another one to handle the request by
+			// using the first thread in the pool as a prototype.
 			//
-			threads_.insert( (*threads_.begin())->create( *this ) );
+			thread *const prototype = *threads_.begin();
+			threads_.insert( prototype->create_and_run() );
 		} else {
 			//
 			// We've maxed out the number of threads we can make,
