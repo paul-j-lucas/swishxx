@@ -78,6 +78,7 @@ CHANGES, file-by-file
 * exit_codes.h
 
 	1. Added Exit_No_Create_Thread_Key.
+	2. Added Exit_No_Word_Pos_Data for feature NS.
 
 * file_list.c
 
@@ -138,7 +139,8 @@ CHANGES, file-by-file
 
 	1. Added description of "near" for feature NS.
 	2. Reworked EXAMPLES section.
-	3. Added exit code 70: Could not create thread key.
+	3. Added: Could not create thread key.
+	4. Added: Attempted "near" search without word-position data.
 
 * man/man4/swish++.conf.4
 
@@ -158,6 +160,7 @@ CHANGES, file-by-file
 	5. Move is_too_frequent() to query.h.
 	6. Reworked parse functions to build query_nodes.
 	7. Moved the code for perform_and() to query_node.c.
+	8. Added assert_index_has_word_pos_data() for feature NS.
 
 * query.h
 
