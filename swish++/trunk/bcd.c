@@ -67,16 +67,16 @@ using namespace std;
 	//
 	// Now go through the bytes and compress them into BCD.
 	//
-	register bool high_order = true;
+	register bool high = true;
 	register unsigned char byte;
 	do {
-		if ( high_order )
+		if ( high )
 			byte = *p << 4;
 		else
-			o << (unsigned char)( byte | *p );
-		high_order = !high_order;
+			o << STATIC_CAST(unsigned char)( byte | *p );
+		high = !high;
 	} while ( p-- > buf );
-	return o << (unsigned char)( high_order ? 0xAA : byte | 0x0A );
+	return o << STATIC_CAST(unsigned char)( high ? 0xAA : byte | 0x0A );
 }
 
 //*****************************************************************************
@@ -105,15 +105,15 @@ using namespace std;
 //*****************************************************************************
 {
 	register int n = 0;
-	register bool high_order = true;
+	register bool high = true;
 	while ( *p != 0xAA ) {
-		if ( high_order ) {
+		if ( high ) {
 			n = n * 10 + ( (*p & 0xF0) >> 4 );
 			if ( (*p & 0x0F) == 0x0A )
 				break;
 		} else
 			n = n * 10 + (*p++ & 0x0F);
-		high_order = !high_order;
+		high = !high;
 	}
 	++p;					// leave one past terminator
 	return n;
