@@ -54,7 +54,7 @@ public:
 	enum {
 		no_arg	= 0,
 		req_arg	= 1,
-		opt_arg	= 2,
+		opt_arg	= 2
 	};
 	struct spec {
 		//

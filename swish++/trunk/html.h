@@ -27,7 +27,7 @@
 
 enum {
 	No_Meta_ID		= -1,
-	Meta_ID_Not_Found	= -2,
+	Meta_ID_Not_Found	= -2
 };
 
 char		entity_to_ascii(

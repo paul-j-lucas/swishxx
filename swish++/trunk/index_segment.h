@@ -63,7 +63,7 @@ public:
 		word_index	= 0,
 		stop_word_index	= 1,
 		file_index	= 2,
-		meta_name_index	= 3,
+		meta_name_index	= 3
 	};
 
 	////////// constructors ///////////////////////////////////////////////
