@@ -37,6 +37,7 @@
 // we use a local copy.
 //
 #include "fnmatch.h"
+#define	PJL_LOCAL_FNMATCH 1
 #endif
 #include "less.h"
 
@@ -78,10 +79,14 @@ public:
 	// find() must be overridden to use our own comparison class.
 	//
 	iterator find( char const *file_name ) {
-		return ::find_if( begin(), end(), pattern_match( file_name ) );
+		return std::find_if(
+			begin(), end(), pattern_match( file_name )
+		);
 	}
 	const_iterator find( char const *file_name ) const {
-		return ::find_if( begin(), end(), pattern_match( file_name ) );
+		return std::find_if(
+			begin(), end(), pattern_match( file_name )
+		);
 	}
 
 	bool matches( char const *file_name ) const {
@@ -99,7 +104,11 @@ private:
 		pattern_match( char const *file_name ) :
 			file_name_( file_name ) { }
 		result_type operator()( value_type const &map_node ) const {
+#ifdef	PJL_LOCAL_FNMATCH
 			return !::fnmatch( map_node.first, file_name_, 0 );
+#else
+			return !std::fnmatch( map_node.first, file_name_, 0 );
+#endif
 		}
 	private:
 		char const *const file_name_;
