@@ -35,7 +35,8 @@
 
 ifndef WIN32
 #		The search daemon ability is not currently supported for
-#		Windows.
+#		Windows.  The only way it will ever be is if somebody
+#		volunteers to port the socket and multithreading code.
 
 SEARCH_DAEMON=	-DSEARCH_DAEMON -DMULTI_THREADED -D_REENTRANT
 #		These definitions will build search(1) with the ability to run
