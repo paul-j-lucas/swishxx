@@ -124,7 +124,7 @@ int		indexer::suspend_indexing_count_ = 0;
 	// evaluated first.
 	//
 	int const meta_id = meta_names.size();
-	return meta_names[ ::strdup( meta_name ) ] = meta_id;
+	return meta_names[ new_strdup( meta_name ) ] = meta_id;
 }
 
 //*****************************************************************************

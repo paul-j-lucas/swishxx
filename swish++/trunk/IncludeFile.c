@@ -26,7 +26,7 @@
 #include "exit_codes.h"
 #include "IncludeFile.h"
 #include "platform.h"
-#include "util.h"			/* for error() */
+#include "util.h"			/* for error(), new_strdup() */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -62,5 +62,5 @@ using namespace std;
 	}
 
 	for ( register char const *s; s = ::strtok( 0, " \r\t" ); )
-		insert( ::strdup( s ), i );
+		insert( new_strdup( s ), i );
 }

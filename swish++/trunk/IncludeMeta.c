@@ -27,7 +27,7 @@
 #include "IncludeMeta.h"
 #include "exit_codes.h"
 #include "platform.h"
-#include "util.h"
+#include "util.h"			/* for error(), new_strdup() */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
@@ -72,7 +72,7 @@ using namespace std;
 				::exit( Exit_Config_File );
 			}
 		}
-		char const *const m = ::strdup( meta_name );
-		insert( value_type( m, reassign ? ::strdup( reassign ) : m ) );
+		char const *const m = new_strdup( meta_name );
+		insert( value_type( m, reassign ? new_strdup( reassign ) : m ));
 	}
 }

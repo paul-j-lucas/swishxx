@@ -510,7 +510,7 @@ void			write_word_index( ostream&, off_t* );
 				continue;
 			}
 			if ( is_directory() )
-				do_directory( ::strdup( file_name ) );
+				do_directory( new_strdup( file_name ) );
 			else
 				do_check_add_file( file_name );
 		}
@@ -661,7 +661,7 @@ void			write_word_index( ostream&, off_t* );
 		directories_reserve = directories_grow( old_dirs.size() );
 	}
 	FOR_EACH( index_segment, old_dirs, d )
-		check_add_directory( ::strdup( *d ) );
+		check_add_directory( new_strdup( *d ) );
 
 	////////// Load old files /////////////////////////////////////////////
 
@@ -682,11 +682,11 @@ void			write_word_index( ostream&, off_t* );
 		size_t const size = parse_bcd( u );
 		int const num_words = parse_bcd( u );
 		char const *const
-			title = ::strdup( reinterpret_cast<char const*>( u ));
+			title = new_strdup( reinterpret_cast<char const*>( u ));
 
 		string const dir_str( old_dirs[ dir_index ] );
 		string const path( dir_str + '/' + file_name );
-		char const *const path_name = ::strdup( path.c_str() );
+		char const *const path_name = new_strdup( path.c_str() );
 
 		new file_info( path_name, dir_index, size, title, num_words );
 	}
@@ -700,7 +700,7 @@ void			write_word_index( ostream&, off_t* );
 		unsigned char const*
 			p = reinterpret_cast<unsigned char const*>( *m );
 		while ( *p++ ) ;		// skip past meta name
-		meta_names[ ::strdup( *m ) ] = parse_bcd( p );
+		meta_names[ new_strdup( *m ) ] = parse_bcd( p );
 	}
 
 	partial_index_file_names.push_back( index_file_name );
@@ -1015,7 +1015,7 @@ void			write_word_index( ostream&, off_t* );
 			// The word occurs too frequently: consider it a stop
 			// word.
 			//
-			stop_words->insert( ::strdup( w->first.c_str() ) );
+			stop_words->insert( new_strdup( w->first.c_str() ) );
 			words.erase( w );
 			continue;
 		}

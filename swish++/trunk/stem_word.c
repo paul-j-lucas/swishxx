@@ -36,6 +36,7 @@
 #include "platform.h"
 #include "stem_word.h"
 #include "word_util.h"
+#include "util.h"			/* for new_strdup() */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -416,8 +417,8 @@ int	word_size( char const *word );
 	cerr << "\n---> stemmed word=" << word_buf << "\n";
 #	endif
 
-	char const *const new_word = ::strdup( word_buf );
-	cache[ ::strdup( word ) ] = new_word;
+	char const *const new_word = new_strdup( word_buf );
+	cache[ new_strdup( word ) ] = new_word;
 
 #ifdef	SEARCH_DAEMON
 	::pthread_mutex_unlock( &cache_lock );

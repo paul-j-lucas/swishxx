@@ -28,7 +28,7 @@
 #include "FilesReserve.h"
 #include "file_info.h"
 #include "platform.h"
-#include "util.h"
+#include "util.h"			/* for new_strdup() */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -75,7 +75,9 @@ FilesReserve			files_reserve;
 		// of files encountered; then make file_name_ point to the base
 		// name inside the same string, i.e., it shares storage.
 		//
-		pjl_basename( *name_set_.insert( ::strdup( path_name ) ).first )
+		pjl_basename(
+			*name_set_.insert( new_strdup( path_name ) ).first
+		)
 	  ),
 	  dir_index_( dir_list.size() - 1 ),
 	  num_words_( num_words ), size_( file_size ),
@@ -84,7 +86,7 @@ FilesReserve			files_reserve;
 		// If there was a title given, use that; otherwise the title is
 		// the file name.  Note that it too shares storage.
 		//
-		title ? ::strdup( title ) : file_name_
+		title ? new_strdup( title ) : file_name_
 	  )
 {
 	construct();

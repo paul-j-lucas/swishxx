@@ -441,7 +441,7 @@ stop_word_set*		stop_words;		// pointer to global set
 			continue;
 
 		word[ len ] = '\0';
-		insert( ::strdup( word ) );
+		insert( new_strdup( word ) );
 	}
 }
 
@@ -463,5 +463,5 @@ stop_word_set*		stop_words;		// pointer to global set
 {
 	index_segment stop_words( index_file, index_segment::stop_word_index );
 	FOR_EACH( index_segment, stop_words, stop_word )
-		insert( ::strdup( *stop_word ) );
+		insert( new_strdup( *stop_word ) );
 }

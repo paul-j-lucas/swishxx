@@ -25,6 +25,7 @@
 // local
 #include "ExtractFile.h"
 #include "platform.h"
+#include "util.h"			/* for new_strdup() */
 
 #ifndef PJL_NO_NAMESPACES
 using namespace std;
@@ -48,5 +49,5 @@ using namespace std;
 //*****************************************************************************
 {
 	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
-		insert( ::strdup( s ) );
+		insert( new_strdup( s ) );
 }
