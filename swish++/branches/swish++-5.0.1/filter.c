@@ -104,7 +104,7 @@ using namespace std;
 	// Determine the base name of the file in case we need it for 'b' or
 	// 'B' substitutions.
 	//
-	char const *const base_name = basename( file_name );
+	char const *const base_name = pjl_basename( file_name );
 
 	//
 	// For this kind of string manipulation, the C++ string class is much
