@@ -42,7 +42,9 @@ Building SWISH++ for Unix
 1. Edit the "config.h" file to your liking.  This file controls how the
    software runs.  You REALLY need to understand and properly set TempDirectory
    and Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
-   it should only take minutes.
+   it should only take minutes.  Once you understand them, comment out the
+   #error lines.  (The #error lines are there intentionally to force you to
+   edit the file.)
 
 2. Go to the "config" directory and edit the "config.mk" file as necessary.
    This file controls how the software is compiled.
