@@ -41,9 +41,21 @@
 {
 protected:
 	conf_set( char const *name ) : conf_var( name ) { }
-private:
+	CONF_VAR_ASSIGN_OPS( conf_set )
+
 	virtual void	parse_value( char const *var_name, char *line );
+private:
 	virtual void	reset() { clear(); }
 };
+
+#define	CONF_SET_ASSIGN_OPS(T)			\
+	T& operator=( char const *s ) {		\
+		conf_set::operator=( s );	\
+		return *this;			\
+	}					\
+	T& operator=( std::string const &s ) {	\
+		conf_set::operator=( s );	\
+		return *this;			\
+	}
 
 #endif	/* conf_set_H */
