@@ -107,10 +107,7 @@ protected:
 	//			going through the motions of collecting word
 	//			statistics.  Suspend/resume calls may nest.
 
-	static char const*	tidy_title(
-					file_vector::const_iterator begin,
-					file_vector::const_iterator end
-				);
+	static char const*	tidy_title( char const *begin, char const *end);
 private:
 	typedef std::map< std::string, indexer* > map_type;
 
