@@ -116,7 +116,7 @@ WordPercentMax		word_percent_max;
 void			load_old_index( char const *index_file_name );
 void			merge_indicies( ostream& );
 void			rank_full_index();
-extern "C" void		remove_temp_files();
+extern "C" void		remove_temp_files( void );
 ostream&		usage( ostream& = cerr );
 void			write_file_index( ostream&, off_t* );
 void			write_full_index( ostream& );
@@ -480,7 +480,7 @@ void			write_word_index( ostream&, off_t* );
 	} else {
 		if ( words.size() ) {
 			//
-			// Since we created any partial indicies, write any
+			// Since we created partial indicies, write any
 			// remaining words to their own partial index so the
 			// merge code doesn't have a special case.
 			//
@@ -970,7 +970,7 @@ void			write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-	void remove_temp_files()
+	void remove_temp_files( void )
 //
 // DESCRIPTION
 //
