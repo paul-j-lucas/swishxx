@@ -23,9 +23,10 @@
 
 // standard
 #include <arpa/inet.h>			/* for Internet networking stuff */
+#include <cerrno>
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
-#include <cerrno>
+#include <ctime>			/* needed by sys/resource.h */
 #include <fstream>
 #include <iostream>
 #include <sys/resource.h>		/* for RLIMIT_* */

@@ -23,6 +23,7 @@
 #include <iostream>
 #include <queue>
 #include <string>
+#include <sys/types.h>			/* needed by dirent.h */
 #include <dirent.h>
 
 // local
