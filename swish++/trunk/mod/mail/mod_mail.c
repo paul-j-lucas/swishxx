@@ -32,6 +32,7 @@
 #include "AssociateMeta.h"
 #include "auto_vec.h"
 #include "config.h"
+#include "encoded_char.h"
 #include "FilterAttachment.h"
 #include "IncludeMeta.h"
 #include "less.h"
@@ -46,7 +47,6 @@
 #include "TitleLines.h"
 #include "util.h"
 #include "Verbosity.h"
-#include "word_util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace PJL;
@@ -358,14 +358,14 @@ could_not_filter:
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
 			if ( ::strstr( value, "binary" ) )
-				type.decoder_ = Binary;
-#ifdef	DECODE_base64
+				type.encoding_ = Binary;
+#ifdef	ENCODING_base64
 			else if ( ::strstr( value, "base64" ) )
-				type.decoder_ = decode_base64;
+				type.encoding_ = encoding_base64;
 #endif
-#ifdef	DECODE_quoted_printable
+#ifdef	ENCODING_quoted_printable
 			else if ( ::strstr( value, "quoted-printable" ) )
-				type.decoder_ = decode_quoted_printable;
+				type.encoding_ = encoding_quoted_printable;
 #endif
 			continue;
 		}
@@ -385,6 +385,29 @@ could_not_filter:
 			if ( !*s )		// all whitespace: weird
 				continue;
 			string const mime_type( s, ::strcspn( s, "; \n\r\t" ) );
+
+			//
+			// Extract the charset, if any.
+			//
+			char const *charset = ::strstr( value, "charset=" );
+			if ( charset && *(charset += 8) ) {
+				if ( *charset == '"' )
+					++charset;
+				//
+				// We don't explicitly check for us-ascii since
+				// that's the default.
+				//
+				if ( !::strcmp( charset, "iso8859-1" ) )
+					type.charset_ = ISO_8859_1;
+#ifdef	CHARSET_utf7
+				else if ( !::strcmp( charset, "utf-7" ) )
+					type.charset_ = charset_utf7;
+#endif
+#ifdef	CHARSET_utf8
+				else if ( !::strcmp( charset, "utf-8" ) )
+					type.charset_ = charset_utf8;
+#endif
+			}
 
 			//
 			// See if there's a filter for the MIME type: if so,
@@ -478,7 +501,7 @@ could_not_filter:
 			meta_id = No_Meta_ID;
 
 		encoded_char_range const e(
-			kv.value_begin, kv.value_end, Seven_Bit
+			kv.value_begin, kv.value_end, US_ASCII, Seven_Bit
 		);
 		indexer::index_words( e, meta_id );
 	}
@@ -545,6 +568,7 @@ could_not_filter:
 		//
 		// Index the words between the boundaries.
 		//
+		encoded_char_range::decoder::reset_all();
 		encoded_char_range const part( part_begin, part_end );
 		index_words( part );
 
@@ -603,7 +627,7 @@ could_not_filter:
 		// being associated with the name of the type.
 		//
 		encoded_char_range const e(
-			kv.value_begin, kv.value_end, Eight_Bit
+			kv.value_begin, kv.value_end, ISO_8859_1, Eight_Bit
 		);
 		indexer::index_words( e, meta_id );
 	}
@@ -630,7 +654,7 @@ could_not_filter:
 	encoded_char_range::const_iterator c = e.begin();
 	message_type const type( index_headers( c.pos(), c.end_pos() ) );
 
-	if ( type.content_type_ == Not_Indexable || type.decoder_ == Binary ) {
+	if ( type.content_type_ == Not_Indexable || type.encoding_ == Binary ) {
 		//
 		// The attachment is something we can't index so just skip over
 		// it.
@@ -642,7 +666,9 @@ could_not_filter:
 	// Create a new encoded_char_range having the same range but the
 	// Content-Transfer-Encoding given in the headers.
 	//
-	encoded_char_range const e2( c.pos(), c.end_pos(), type.decoder_ );
+	encoded_char_range const e2(
+		c.pos(), c.end_pos(), type.charset_, type.encoding_
+	);
 
 	switch ( type.content_type_ ) {
 
@@ -738,7 +764,7 @@ could_not_filter:
 
 	char const *header_begin, *header_end, *nl;
 
-	while ( 1 ) {
+	while ( true ) {
 		if ( (nl = find_newline( c, end )) == end )
 			return false;
 		//
@@ -772,7 +798,7 @@ could_not_filter:
 	if ( ++c == end )			// skip past the ':'
 		return false;
 	kv->value_begin = c;
-	while ( 1 ) {
+	while ( true ) {
 		if ( (c = skip_newline( nl, end )) == end )
 			break;
 		//
