@@ -190,14 +190,14 @@ int const	ResultsMax_Default		= 100;
 //		overridden either in a config. file or on the command line.
 
 char const	ShellFilenameDelimChars[]	= " \t&;<>|";
-//		Characters in a Unix shell command that delimit filenames.  This
-//		should be a strict subset of ShellFilenameEscapeChars below.
+//		Characters in a Unix shell command that delimit file names.
+//		Note that this says "file" (not "path") names.
 
 char const	ShellFilenameEscapeChars[]	= " !\"#$&'()*/;<>?[\\]^`{|}~";
-//		Characters in a filename that must be escaped when passed to a
-//		Unix shell.  Note that this is a superset of what are commonly
-//		referred to as "meta-characers" because the space and tab
-//		characters are included.
+//		Characters in a file name that must be escaped when passed to a
+//		Unix shell.  This is a superset of what are commonly referred
+//		to as "meta-characers" because the space and tab characters are
+//		included.  Note again that this says "file" (not "path") name.
 
 #ifdef	WIN32
 char const	TempDirectory_Default[]		= "/temp";
