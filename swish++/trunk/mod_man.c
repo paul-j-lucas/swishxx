@@ -26,6 +26,7 @@
 #include <cstring>
 
 // local
+#include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
 #include "mod_man.h"
@@ -431,10 +432,6 @@ void	parse_backslash( char const *&pos, char const *end );
 		return;
 	word[ len ] = '\0';
 
-	int const meta_id = find_meta( word );
-	if ( meta_id == No_Meta_ID )
-		return;
-
 	////////// Find the next .SH macro. ///////////////////////////////////
 
 	char const *const begin = c;
@@ -464,6 +461,18 @@ void	parse_backslash( char const *&pos, char const *end );
 		}
 	}
 
+	////////// Index what's in between. ///////////////////////////////////
+
+	int meta_id;
+	if ( associate_meta ) {
+		//
+		// Potentially index the words in the section where they are
+		// associated with the name of the section as a meta name.
+		//
+		if ( (meta_id = find_meta( word )) == No_Meta_ID )
+			return;
+	} else
+		meta_id = No_Meta_ID;
 	//
 	// Index the words in between the two .SH macros marking them as being
 	// associated with the value of the current section heading name.
