@@ -27,7 +27,7 @@
 #include <iostream>
 #include <iterator>
 #include <string>
-#include <ctime>			/* needed by sys/resource.h */
+#include <time.h>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>		/* for RLIMIT_* */
 #include <utility>			/* for pair<> */
@@ -58,6 +58,9 @@
 #include "StemWords.h"
 #include "token.h"
 #include "util.h"
+#ifdef	__SUNPRO_CC
+#include "vector_adapter.h"
+#endif
 #include "version.h"
 #include "WordFilesMax.h"
 #include "WordPercentMax.h"
@@ -86,17 +89,17 @@ using namespace PJL;
 using namespace std;
 #endif
 
-typedef	pair< int, int > search_result_type;
+typedef	pair< int, int > search_result;
 //
-//	A search_result_type is an individual search result where the first
-//	int is a file index and the second int is that file's rank.
+//	A search_result is an individual search result where the first int is a
+//	file index and the second int is that file's rank.
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
 	struct sort_by_rank : binary_function<
-		search_result_type const&, search_result_type const&, bool
+		search_result const&, search_result const&, bool
 	>
 //
 // DESCRIPTION
@@ -472,13 +475,28 @@ inline omanip< char const* > index_file_info( int index ) {
 		//
 		// Copy the results to a vector to sort them by rank.
 		//
-		typedef vector< search_result_type > sorted_results_type;
+#ifndef	__SUNPRO_CC
+		typedef vector< search_result > sorted_results_type;
 		sorted_results_type sorted;
 		sorted.reserve( results.size() );
 		::copy(
 			results.begin(), results.end(),
 			::back_inserter( sorted )
 		);
+#else
+		// Sun's CC compiler and/or their STL implementation seems
+		// pretty broken so we have to do the following things the hard
+		// way.
+		//
+		typedef vector_adapter< search_result > sorted_results_type;
+		sorted_results_type sorted( results.size() );
+
+		int i = 0;
+		TRANSFORM_EACH( search_results, results, result )
+			sorted[ i++ ] =
+				*reinterpret_cast<search_result*>( &*result );
+#endif	/* __SUNPRO_CC */
+
 		::sort( sorted.begin(), sorted.end(), sort_by_rank() );
 		//
 		// Compute the highest rank and the normalization factor.
@@ -490,19 +508,19 @@ inline omanip< char const* > index_file_info( int index ) {
 		// not exceeding the maximum.
 		//
 		for ( sorted_results_type::const_iterator
-			i  = sorted.begin() + skip_results;
-			i != sorted.end() && max_results-- > 0 && out;
-			++i
+			r  = sorted.begin() + skip_results;
+			r != sorted.end() && max_results-- > 0 && out;
+			++r
 		) {
 			// cast gets rid of warning
-			int rank = static_cast<int>( i->second * normalize );
+			int rank = static_cast<int>( r->second * normalize );
 			if ( !rank )
 				rank = 1;
 			format->result(
 				rank,
 				file_info(
 					reinterpret_cast<unsigned char const*>(
-						files[ i->first ]
+						files[ r->first ]
 					)
 				)
 			);
