@@ -51,6 +51,10 @@ int conf_var::current_config_file_line_no_ = 0;
 //	we will complain about to the user) and one that simply isn't used in
 //	a particular executable (and will be silently ignored).
 //
+// RETURN VALUE
+//
+//	Returns a reference to a static instance of an initilized map_type.
+//
 // SEE ALSO
 //
 //	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++
@@ -58,35 +62,35 @@ int conf_var::current_config_file_line_no_ = 0;
 //
 //*****************************************************************************
 {
-	static map_type map;
-	if ( map.empty() ) {
-		map[ "ExcludeClass"	] = 0;
-		map[ "ExcludeExtension"	] = 0;
-		map[ "ExcludeMeta"	] = 0;
-		map[ "FilesReserve"	] = 0;
-		map[ "FilterExtension"	] = 0;
-		map[ "FollowLinks"	] = 0;
-		map[ "IncludeExtension"	] = 0;
-		map[ "IncludeMeta"	] = 0;
-		map[ "IndexFile"	] = 0;
-		map[ "RecurseSubdirs"	] = 0;
-		map[ "ResultsMax"	] = 0;
-		map[ "StemWords"	] = 0;
-		map[ "StopWordFile"	] = 0;
-		map[ "TempDirectory"	] = 0;
-		map[ "TitleLines"	] = 0;
-		map[ "Verbosity"	] = 0;
-		map[ "WordFilesMax"	] = 0;
-		map[ "WordPercentMax"	] = 0;
+	static map_type m;
+	if ( m.empty() ) {
+		m[ "ExcludeClass"	] = 0;
+		m[ "ExcludeExtension"	] = 0;
+		m[ "ExcludeMeta"	] = 0;
+		m[ "FilesReserve"	] = 0;
+		m[ "FilterExtension"	] = 0;
+		m[ "FollowLinks"	] = 0;
+		m[ "IncludeExtension"	] = 0;
+		m[ "IncludeMeta"	] = 0;
+		m[ "IndexFile"		] = 0;
+		m[ "RecurseSubdirs"	] = 0;
+		m[ "ResultsMax"		] = 0;
+		m[ "StemWords"		] = 0;
+		m[ "StopWordFile"	] = 0;
+		m[ "TempDirectory"	] = 0;
+		m[ "TitleLines"		] = 0;
+		m[ "Verbosity"		] = 0;
+		m[ "WordFilesMax"	] = 0;
+		m[ "WordPercentMax"	] = 0;
 	}
-	return map;
+	return m;
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	ostream& conf_var::msg( char const *kind )
+	ostream& conf_var::msg( ostream &o, char const *label )
 //
 // DESCRIPTION
 //
@@ -94,13 +98,12 @@ int conf_var::current_config_file_line_no_ = 0;
 //
 //*****************************************************************************
 {
-	cerr << me;
+	o << me;
 	if ( current_config_file_line_no_ ) {
 		cerr << ": config file line " << current_config_file_line_no_;
 		current_config_file_line_no_ = 0;
 	}
-	cerr << ": " << kind << ": ";
-	return cerr;
+	return o << ": " << label << ": ";
 }
 
 //*****************************************************************************
@@ -147,7 +150,7 @@ int conf_var::current_config_file_line_no_ = 0;
 	::strtok( line, " \r\t" );		// just the variable name
 	map_type::const_iterator const i = map_ref().find( line );
 	if ( i == map_ref().end() ) {
-		warn()	<< '"' << line
+		cerr	<< warning << '"' << line
 			<< "\" in config. file unrecognized; ignored\n";
 		return;
 	}
@@ -157,6 +160,9 @@ int conf_var::current_config_file_line_no_ = 0;
 			++value;
 		i->second->parse_value( value );
 	} // else
+	//
 	//	This config. variable is not used by the current executable:
 	//	silently ignore it.
+	//
+	current_config_file_line_no_ = 0;
 }
