@@ -2,6 +2,341 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+4.2
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* You can now index incrementally.
+
+  (This feature will be known as feature II.)
+
+
+BUG FIXES
+---------
+
+* You could get a segmentation fault if you indexed an HTML file that has no
+  title and has fewer than title_lines lines.
+
+  (This bug fix will be known as bug fix FTL.)
+
+* There was a small memory leak with stop-words when search(1) ran as a daemon.
+
+  (This bug fix will be known as bug fix SWL.)
+
+* When running as a daemon, the thread timeout value was set to a garbage
+  value.
+
+  (This bug fix will be known as bug fix TTG.)
+
+* In index(1), the --files-reserve option was incorrectly named --file-reserve.
+
+  (This bug fix will be known as bug fix FRO.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. Added GCC_WARNINGS for development purposes.
+
+* config.h
+
+	1. Added FilesGrow_Default for feature II.
+
+* conf_bool.h
+
+	1. Make parse_value() protected rather than private for feature
+	   II.
+
+	2. Performed the following substitution:
+
+		s/string/std::string/
+
+* conf_int.c
+
+	1. Made parse_value() thread-safe.
+
+	2. Same as conf_bool.h item #1.
+
+	3. Same as conf_bool.h item #2.
+
+* conf_set.h
+
+	1. Same as conf_bool.h item #1.
+
+	2. Added CONF_SET_ASSIGN_OPS macro.
+
+* conf_string.h
+
+	1. Added operator+=() for feature II.
+
+	2. Performed the following substitution:
+
+		s/string/std::string/
+
+* conf_var.c
+
+	1. Added definition of conf_var::~conf_var().
+
+	2. In map_ref(), added "Incremental" and "FilesGrow" for
+	   feature II.
+
+* conf_var.h
+
+	1. Added #include <string>.
+
+	2. Added virtual ~conf_var() because the class has virtual
+	   functions.
+
+	3. Performed the following substitution:
+
+		s/string/std::string/
+
+* do_file.c
+
+	1. In do_file(), added code to check for encountering the same
+	   file when incrementally indexing for feature II.
+
+	2. In do_file(), moved the code that checks the title for null
+	   to file_info.c.
+
+* ExcludeClass.h
+* ExcludeExtension.h
+* ExcludeMeta.h
+* IncludeMeta.h
+
+	1. Added CONF_SET_ASSIGN_OPS.
+
+* exit_codes.h
+
+	1. Adjusted exit codes for feature II.
+
+* file_index.h
+* file_index.c
+
+	1. These files were deleted; their functionality was
+	   consolidated into index_segment.[ch].
+
+* file_info.c
+
+	1. A num_words parameter was added to the constructor for
+	   feature II.
+
+	2. operator<< was eliminated for feature II.
+
+	3. Added file_info::out() and file_info::parse() for feature
+	   II.
+
+	4. Eliminated the class-specific operator new and moved the
+	   functionality inside the constructor.
+
+* file_info.h
+
+	Everything in file_info.c plus:
+
+	1. The private data members were made public and const for
+	   feature II.
+
+	2. Added name_set_ for feature II.
+
+* file_list.c
+
+	1. In calc_size(), code was added to skip occurrences for
+	   feature II.
+
+	2. In operator++(), code was added to parse occurrences for
+	   feature II.
+
+* file_list.h
+
+	1. Performed the following substitution:
+
+		s/word_index/index_segment/
+
+	   for feature II.
+
+* FilesReserve.h
+
+	1. Added extern declaration.
+
+* file_vector.h
+
+	1. In end(), performed following substitution:
+
+		s/size()/size_/
+
+	   so g++ can inline the functions.
+
+* filter.c
+
+	1. Changed types of pos and target_pos to string::size_type and
+	   changed -1 to string::npos.  (It should have been this way
+	   all along.)
+
+* html.c
+
+	1. In grep_title(), removed register storage class for 'c'
+	   since its address is taken.
+
+	2. In grep_title(), added "return 0" at the end for bug fix
+	   FTL.
+
+* Incremental.c
+* Incremental.h
+
+	1. Added these files for feature II.
+
+* index.c
+
+	1. Added global variables "files_grow", "incremental", and
+	   "partial_index_file_names" for feature II.
+
+	2. Added load_old_index() function for feature II.
+
+	3. In main() and usage(), changed "file-reserve" option to
+	   "files-reserve" for bug fix FRO.
+
+	4. In main(), added code to new -I and -G options for feature
+	   II.
+
+	5. In main(), added code to call load_old_index() for feature
+	   II.
+
+	6. In index_words(), removed "register" from declaration of
+	   argument 'c' since its address is taken.
+
+	7. In merge_indicies(), changed from using num_temp_files to
+	   partial_index_file_names.size() for feature II.
+
+	8. In write_file_index(), added code to write the format
+	   directly since file_info::operator<<() was eliminated.
+
+	9. In write_partial_index(), added code to add the partial
+	   index file name to the global variable "partial_index_file_names"
+	   for feature II.
+
+	A. In write_word_index(), added code to write the occurrence
+	   data for feature II.
+
+	B. In usage(), added description of new -I, --incremental, -G,
+	   and --files-grow options for feature II.
+
+* index_segment.c
+* index_segment.h
+
+	1. Added these files.
+
+* man/man1/index.1
+* man/man1/search.1
+
+	1. Added description of incremental indexing and new supporting
+	   options and variables for feature II.
+
+* man/man4/swish++.conf.4
+
+	1. Added description of "Incremental" and "FilesGrow" variables
+	   for feature II.
+
+* man/man4/swish++.index.4
+
+	1. Updated the description of the index file format for feature
+	   II.
+
+* managed_ptr.h
+
+	1. Added various member functions.
+
+* option_stream.c
+
+	1. Removed the constructor without the ostream argument and
+	   just made the other constructor have a default value.
+
+* search.c
+
+	1. Performed the following substitutions:
+
+		s/result_type/search_result_type/
+		s/results_type/search_results_type/
+
+	   that fixed the problem with deriving sort_by_rank from
+	   binary_function.
+
+	2. Changed the types of "files", "meta_names", "stop_words",
+	   and "words" to "index_segment" for feature II.
+
+	3. In main(), added word_file_max_arg and word_percent_max_arg
+	   for feature II.
+
+	4. Moved the become_daemon() into the new search_daemon.c file.
+
+	5. In dump_single_word(), added occurrence data to output.
+
+	6. Added is_too_frequent() function for feature II.
+
+	7. In parse_query(), added a default case to the switch statement.
+
+	8. In parse_primary(), eliminated the call to strdup() for bug
+	   fix SWL.
+
+	9. In parse_primary(), added code to check to see if a word is
+	   too frequent for feature II.
+
+	A. In search_options::search_options(), added code for
+	   word_file_max_arg and word_percent_max_arg for feature II.
+
+	B. In service_request(), added occurrence data to dump output
+	   for the entire index.
+
+	C. In usage(), added description for =f and -p options for
+	   feature II.
+
+* search.h
+
+	1. Added word_file_max_arg and word_percent_max_arg for feature
+	   II.
+
+* search_daemon.c
+
+	1. Moved the daemon code into this file.
+
+* search_options.c
+
+	1. Added "word-files" and "percent-files" arguments for feature
+	   II.
+
+* stop_words.c
+* stop_words.h
+
+	1. Added new contructor for feature II.
+
+* thread_pool.c
+
+	1. In thread_pool::thread_pool(), performed following substitution:
+
+		s/timeout_( timeout_ )/timeout_( timeout )/
+
+	   for bug fix TTG.
+
+* util.c
+* util.h
+
+	1. Moved get_index_info() to index_segment.c for feature II.
+
+* version.h
+
+	1. Updated version to "4.2".
+
+* word_info.h
+
+	1. Removed "union" in word_info::file for feature II.
+
+	2. Added initialization of rank_ data member for feature II.
+
+
+*******************************************************************************
 4.1
 *******************************************************************************
 
