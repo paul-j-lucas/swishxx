@@ -770,7 +770,7 @@ void			write_word_index( ostream&, off_t* );
 		unsigned char const *p =
 			REINTERPRET_CAST(unsigned char const*)( *meta_name );
 		while ( *p++ ) ;		// skip past meta name
-		meta_names[ *meta_name ] = parse_bcd( p );
+		meta_names[ ::strdup( *meta_name ) ] = parse_bcd( p );
 	}
 
 	partial_index_file_names.push_back( index_file_name );
