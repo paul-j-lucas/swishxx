@@ -2,6 +2,68 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4.4
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* In index(1), the config-file option wasn't recognized because it was spelled
+  as just "config" in the source code.  D'oh!
+
+  (This bug fix shall be known as bug fix LCO.)
+
+* Configuration file variables in modules were somehow being corrupted so some
+  weren't being recognized any longer.  I really don't know what was going on.
+  But, module-specific variables weren't recognized at all in search(1).  Oops.
+
+  (This bug fix shall be known as bug fix XCV.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_var.c
+
+	1. In map_ref(), added call to init_mod_vars() for bug fix XCV.
+
+* conf_var.h
+
+	1. Added init_mod_vars() for bug fix XCV.
+
+* GNUmakefile
+
+	1. Added init_mod_vars.c to I_SOURCES, S_SOURCES, and E_SOURCES for bug
+	   fix XCV.
+	2. Added rule to make init_mod_vars.c for bug fix XCV.
+
+* index.c
+
+	1. In main(), s/config/config-file/ for bug fix LCO.
+
+* init_mod_vars-sh
+
+	1. New file for bug fix XCV.
+
+* mod/html/mod_html.c
+* mod/html/mod_html.h
+* mod/mail/mod_mail.c
+* mod/mail/mod_mail.h
+
+	1. Moved constructor to .h file and removed register_var() for bug fix
+	   XCV.
+
+* mod/html/vars
+* mod/mail/vars
+
+	1. New files for bug fix XCV.
+
+* version.h
+
+	1. Updated version to "5.4.4".
+
+
+*******************************************************************************
 5.4.3
 *******************************************************************************
 
