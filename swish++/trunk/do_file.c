@@ -136,10 +136,13 @@
 	}
 
 	//
-	// Save a copy of the iterator so we can access it later to see if the
-	// file is an HTML or XHTML file.
+	// See if the filename pattern is included.
 	//
+#ifdef	INDEX
 	IncludeFile::const_iterator const
+#else
+	ExtractFile::const_iterator const
+#endif
 		include_pattern = include_patterns.find( file_name );
 
 	//
