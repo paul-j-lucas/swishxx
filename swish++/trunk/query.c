@@ -29,6 +29,7 @@
 
 // local
 #include "enc_int.h"
+#include "exit_codes.h"
 #include "file_list.h"
 #include "IndexFile.h"
 #include "query.h"
@@ -115,6 +116,39 @@ static bool	parse_optional_relop( token_stream&, token::type& );
 	return dec_int( p );
 }
 
+#ifdef	FEATURE_word_pos
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	static void assert_index_has_word_pos_data()
+//
+// DESCRIPTION
+//
+//	The current query has a "near" in it: check that the current index has
+//	word-position data stored in order to evaluate the "near".  If it
+//	doesn't, complain.
+//
+//*****************************************************************************
+{
+	//
+	// A simple way to check that the current index has word-position data
+	// stored is to get the file_list for the first word in the index then
+	// look to see if pos_delta_ is empty: if it is, no word-position data
+	// was stored.
+	//
+	file_list const list( words.begin() );
+	file_list::const_iterator const file( list.begin() );
+	if ( file->pos_deltas_.empty() ) {
+		extern IndexFile index_file_name;
+		error()	<< '"' << index_file_name
+			<< "\" does not contain word position data"
+			<< endl;
+		::exit( Exit_No_Word_Pos_Data );
+	}
+}
+#endif	/* FEATURE_word_pos */
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -157,15 +191,7 @@ static bool	parse_optional_relop( token_stream&, token::type& );
 
 #ifdef	FEATURE_word_pos
 	if ( args.got_near ) {
-		file_list const list( words.begin() );
-		file_list::const_iterator const file = list.begin();
-		if ( file->pos_deltas_.empty() ) {
-			extern IndexFile index_file_name;
-			error()	<< '"' << index_file_name
-				<< "\" does not contain word position data"
-				<< endl;
-			::exit( 1 );
-		}
+		assert_index_has_word_pos_data();
 		//
 		// We got a "near" somewhere in the query: walk the tree and
 		// distirbute the terms of all the near nodes.
