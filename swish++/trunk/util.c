@@ -65,30 +65,6 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	inline bool is_vowel( char c )
-//
-// DESCRIPTION
-//
-//	Determine whether a character is a vowel [aeiou] regardless of case.
-//
-// PARAMETERS
-//
-//	c	The character to be checked.
-//
-// RETURN VALUE
-//
-//	Returns true only if the character is a vowel.
-//
-//*****************************************************************************
-{
-	c = tolower( c );
-	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	bool is_ok_word( char const *word )
 //
 // DESCRIPTION
@@ -165,7 +141,7 @@ using namespace std;
 		}
 		if ( isupper( *c ) )
 			++uppers;
-		if ( is_vowel( *c ) )
+		if ( is_vowel( tolower( *c ) ) )
 			++vowels;
 	}
 	int const len = c - word;
@@ -246,7 +222,7 @@ using namespace std;
 			last_c = *c;
 		}
 
-		if ( is_vowel( *c ) ) {
+		if ( is_vowel( tolower( *c ) ) ) {
 			if ( ++consec_vowels > Word_Max_Consec_Vowels ) {
 #				ifdef DEBUG_is_ok_word
 				cerr << "(exceeded consec vowels)" << endl;
@@ -298,14 +274,9 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	static int const	Buf_Size	= 25;
-	static int const	Num_Buffers	= 10;
-
-	static char		buf[ Num_Buffers ][ Buf_Size ];
-	static int		b;		// which buffer to use
-
-	register char		*s = buf[ b ];
-	bool const		is_neg = n < 0;
+	static char_buffer_pool<25,5> buf;
+	register char	*s = buf.next();
+	bool const	is_neg = n < 0;
 
 	if ( is_neg ) n = -n;
 	do {					// generate digits in reverse
@@ -315,14 +286,11 @@ using namespace std;
 	*s = '\0';
 
 	// now reverse the string
-	for ( register char *t = buf[ b ]; t < s; ++t ) {
+	for ( register char *t = buf.current(); t < s; ++t ) {
 		char const tmp = *--s; *s = *t; *t = tmp;
 	}
 
-	s = buf[ b ];
-	b = (b + 1) % Num_Buffers;
-
-	return s;
+	return buf.current();
 }
 
 //*****************************************************************************
@@ -349,20 +317,12 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	static int const	Buf_Size	= 256;
-	static int const	Num_Buffers	= 5;
-
-	static char		buf[ Num_Buffers ][ Buf_Size ];
-	static int		b;		// which buffer to use
-
-	register char		*p = buf[ b ];
+	static char_buffer_pool<128,5> buf;
+	register char *p = buf.next();
 
 	while ( *p++ = to_lower( *s++ ) ) ;
 
-	p = buf[ b ];
-	b = (b + 1) % Num_Buffers;
-
-	return p;
+	return buf.current();
 }
 
 //*****************************************************************************
@@ -394,20 +354,12 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	static int const	Buf_Size	= 256;
-	static int const	Num_Buffers	= 5;
-
-	static char		buf[ Num_Buffers ][ Buf_Size ];
-	static int		b;		// which buffer to use
-
-	register char		*p = buf[ b ];
+	static char_buffer_pool<128,5> buf;
+	register char *p = buf.next();
 
 	while ( begin != end )
 		*p++ = to_lower( *begin++ );
 	*p = '\0';
 
-	p = buf[ b ];
-	b = (b + 1) % Num_Buffers;
-
-	return p;
+	return buf.current();
 }
