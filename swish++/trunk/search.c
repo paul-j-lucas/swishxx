@@ -21,18 +21,30 @@
 
 // standard
 #include <algorithm>
-#include <clocale>
 #include <cstdlib>
 #include <cstring>
 #include <functional>
 #include <iostream>
 #include <iterator>
 #include <map>
+#include <set>
 #include <string>
+#ifndef	WIN32
 #include <sys/resource.h>
-#include <strstream>
+#endif
+#include <unistd.h>
 #include <utility>
 #include <vector>
+#ifdef	SEARCH_DAEMON
+#include <arpa/inet.h>
+#include <cerrno>
+#include <signal.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#ifndef AF_LOCAL
+#define AF_LOCAL AF_UNIX
+#endif
+#endif	/* SEARCH_DAEMON */
 
 // local
 #include "config.h"
@@ -43,10 +55,12 @@
 #include "html.h"
 #include "IndexFile.h"
 #include "less.h"
+#include "managed_ptr.h"
 #include "my_set.h"
 #include "option_stream.h"
 #include "platform.h"
 #include "ResultsMax.h"
+#include "search.h"
 #include "stem_word.h"
 #include "StemWords.h"
 #include "token.h"
@@ -54,6 +68,16 @@
 #include "version.h"
 #include "word_index.h"
 #include "word_util.h"
+#ifdef	SEARCH_DAEMON
+#include "SearchDaemon.h"
+#include "search_thread.h"
+#include "SocketFile.h"
+#include "SocketQueueSize.h"
+#include "SocketTimeout.h"
+#include "ThreadsMax.h"
+#include "ThreadsMin.h"
+#include "ThreadTimeout.h"
+#endif	/* SEARCH_DAEMON */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -131,18 +155,33 @@ using namespace std;
 
 char const*	me;				// executable name
 file_index	files;
+#ifdef	SEARCH_DAEMON
+SearchDaemon	am_daemon;
+#endif
 word_index	words, stop_words, meta_names;
+ResultsMax	max_results;
 StemWords	stem_words;
-string_set	stop_words_found;
 
-void	dump_single_word( char const *word );
-void	dump_word_window( char const *word, int window_size, int match );
+#ifdef	SEARCH_DAEMON
+void	become_daemon( char const*, int, int, int, int, int );
+#endif
+void	dump_single_word( char const*, ostream& = cout );
+void	dump_word_window( char const*, int, int, ostream& = cout );
 int	get_meta_id( word_index::const_iterator );
-bool	parse_meta( token_stream&, results_type&, bool&, int = No_Meta_ID );
-bool	parse_primary( token_stream&, results_type&, bool&, int = No_Meta_ID);
-bool	parse_query( token_stream&, results_type&, bool&, int = No_Meta_ID );
+
+bool	parse_meta(
+		token_stream&, results_type&, set< string >&, bool&,
+		int = No_Meta_ID
+	);
+bool	parse_primary(
+		token_stream&, results_type&, set< string >&, bool&,
+		int = No_Meta_ID
+	);
+bool	parse_query(
+		token_stream&, results_type&, set< string >&, bool&,
+		int = No_Meta_ID
+	);
 bool	parse_optional_relop( token_stream&, token::type& );
-void	usage();
 
 //*****************************************************************************
 //
@@ -172,134 +211,78 @@ void	usage();
 //
 //*****************************************************************************
 {
+#include "search_options.c"			/* defines opt_spec */
+
 	me = ::strrchr( argv[0], '/' );		// determine base name ...
 	me = me ? me + 1 : argv[0];		// ... of executable
 
 #ifdef	RLIMIT_AS				/* SVR4 */
 	max_out_limit( RLIMIT_AS );		// max-out total avail. memory
 #endif
-	::setlocale( LC_CTYPE, "" );
-
 	/////////// Process command-line options //////////////////////////////
 
-	static option_stream::spec const opt_spec[] = {
-		"config-file",	1, 'c',
-		"dump-words",	1, 'd',
-		"dump-index",	1, 'D',
-		"index-file",	1, 'i',
-		"results",	1, 'm',
-		"dump-meta",	0, 'M',
-		"skip-results",	1, 'r',
-		"stem-words",	0, 's',
-		"dump-stop",	0, 'S',
-		"version",	0, 'V',
-		"window",	1, 'w',
-		0
-	};
-
-	char const*	config_file_name_arg = ConfigFile_Default;
-	bool		dump_entire_index_opt = false;
-	int		dump_match_arg = 0;
-	bool		dump_meta_names_opt = false;
-	bool		dump_stop_words_opt = false;
-	int		dump_window_size_arg = 0;
-	bool		dump_word_index_opt = false;
 	IndexFile	index_file_name;
-	char const*	index_file_name_arg = 0;
-	ResultsMax	max_results;
-	char const*	max_results_arg = 0;
-	bool		print_result_count_only_opt = false;
-	int		skip_results_arg = 0;
-	bool		stem_words_opt = false;
 
-	option_stream opt_in( argc, argv, opt_spec );
-	for ( option_stream::option opt; opt_in >> opt; )
-		switch ( opt ) {
+#ifdef	SEARCH_DAEMON
+	ThreadsMax	max_threads;
+	ThreadsMin	min_threads;
+	SocketFile	socket_file_name;
+	SocketQueueSize	socket_queue_size;
+	SocketTimeout	socket_timeout;
+	ThreadTimeout	thread_timeout;
+#endif
 
-			case 'c': // Specify config. file.
-				config_file_name_arg = opt.arg();
-				break;
+	search_options opt( &argc, &argv, opt_spec );
+	if ( !opt )
+		::exit( Exit_Usage );
 
-			case 'd': // Dump query word indices.
-				dump_word_index_opt = true;
-				break;
-
-			case 'D': // Dump entire word index.
-				dump_entire_index_opt = true;
-				break;
-
-			case 'i': // Specify index file overriding the default.
-				index_file_name_arg = opt.arg();
-				break;
-
-			case 'm': // Specify max. number of results.
-				max_results_arg = opt.arg();
-				break;
-
-			case 'M': // Dump meta-name list.
-				dump_meta_names_opt = true;
-				break;
-
-			case 'r': // Specify number of initial results to skip.
-				skip_results_arg = ::atoi( opt.arg() );
-				if ( skip_results_arg < 0 )
-					skip_results_arg = 0;
-				break;
-
-			case 's': // Stem words.
-				stem_words_opt = true;
-				break;
-
-			case 'S': // Dump stop-word list.
-				dump_stop_words_opt = true;
-				break;
-
-			case 'V': // Display version and exit.
-				cout << "SWISH++ " << version << endl;
-				::exit( Exit_Success );
-
-			case 'w': { // Dump words around query words.
-				dump_window_size_arg = ::atoi( opt.arg() );
-				if ( dump_window_size_arg < 0 )
-					dump_window_size_arg = 0;
-				char const *comma = ::strchr( opt.arg(), ',' );
-				if ( comma &&
-					(dump_match_arg = ::atoi( comma+1 )) < 0
-				)
-					dump_match_arg = 0;
-				break;
-			}
-
-			case '\0': // Bad option.
-				usage();
-		}
-
-	argc -= opt_in.shift(), argv += opt_in.shift();
 	if ( !( argc ||
-		dump_entire_index_opt ||
-		dump_meta_names_opt ||
-		dump_stop_words_opt
-	) )
-		usage();
+#ifdef	SEARCH_DAEMON
+		opt.daemon_opt ||
+#endif
+		opt.dump_entire_index_opt ||
+		opt.dump_meta_names_opt ||
+		opt.dump_stop_words_opt
+	) ) {
+		cerr << usage;
+		::exit( Exit_Usage );
+	}
 
 	//
 	// First, parse the config. file (if any); then override variables
 	// specified on the command line with options.
 	//
-	conf_var::parse_file( config_file_name_arg );
+	conf_var::parse_file( opt.config_file_name_arg );
 
-	if ( index_file_name_arg )
-		index_file_name = index_file_name_arg;
-	if ( max_results_arg )
-		max_results = max_results_arg;
-	if ( stem_words_opt )
+	if ( opt.index_file_name_arg )
+		index_file_name = opt.index_file_name_arg;
+	if ( opt.max_results_arg )
+		max_results = opt.max_results_arg;
+	if ( opt.stem_words_opt )
 		stem_words = true;
+
+#ifdef	SEARCH_DAEMON
+	if ( opt.daemon_opt )
+		am_daemon = true;
+	if ( opt.max_threads_arg )
+		max_threads = opt.max_threads_arg;
+	if ( opt.min_threads_arg )
+		min_threads = opt.min_threads_arg;
+	if ( opt.socket_file_name_arg )
+		socket_file_name = opt.socket_file_name_arg;
+	if ( opt.socket_queue_size_arg )
+		socket_queue_size = opt.socket_queue_size_arg;
+	if ( opt.socket_timeout_arg )
+		socket_timeout = opt.socket_timeout_arg;
+	if ( opt.thread_timeout_arg )
+		thread_timeout = opt.thread_timeout_arg;
+#endif	/* SEARCH_DAEMON */
 
 	/////////// Load index file ///////////////////////////////////////////
 
 	file_vector the_index( index_file_name );
 	if ( !the_index ) {
-		error()	<< "could not read index from \""
+		cerr	<< error << "could not read index from \""
 			<< index_file_name << '"' << endl;
 		::exit( Exit_No_Read_Index );
 	}
@@ -308,107 +291,188 @@ void	usage();
 	files.set_index_file( the_index );
 	meta_names.set_index_file( the_index, word_index::meta_name_index );
 
-	/////////// Dump stuff if requested ///////////////////////////////////
+#ifdef	SEARCH_DAEMON
+	////////// Become a daemon ////////////////////////////////////////////
 
-	if ( dump_window_size_arg ) {
-		while ( *argv )
-			dump_word_window(
-				*argv++, dump_window_size_arg, dump_match_arg
-			);
-		::exit( Exit_Success );
-	}
-	if ( dump_word_index_opt ) {
-		while ( *argv )
-			dump_single_word( *argv++ );
-		::exit( Exit_Success );
-	}
-	if ( dump_entire_index_opt )
-		FOR_EACH( word_index, words, w ) {
-			cout << *w << '\n';
-			file_list list( w );
-			FOR_EACH( file_list, list, file )
-				cout	<< "  " << file->rank_ << ' '
-					<< files[ file->index_ ] << '\n';
-			cout << '\n';
-		}
-
-	if ( dump_stop_words_opt )
-		::copy( stop_words.begin(), stop_words.end(),
-			ostream_iterator< char const* >( cout, "\n" )
+	if ( am_daemon )			// function does not return
+		become_daemon(
+			socket_file_name, socket_queue_size, socket_timeout,
+			min_threads, max_threads, thread_timeout
 		);
-
-	if ( dump_meta_names_opt )
-		::copy( meta_names.begin(), meta_names.end(),
-			ostream_iterator< char const* >( cout, "\n" )
-		);
-
-	if (	dump_entire_index_opt ||
-		dump_meta_names_opt ||
-		dump_stop_words_opt
-	)
-		::exit( Exit_Success );
+#endif	/* SEARCH_DAEMON */
 
 	////////// Perform the query //////////////////////////////////////////
 
-	//
-	// Paste the rest of the command line together into a single query
-	// string.
-	//
-	string query = *argv++;
-	while ( *argv ) {
-		query += ' ';
-		query += *argv++;
-	}
-
-	token_stream	query_stream( query.c_str() );
-	results_type	results;
-	bool		ignore;
-
-	if ( !( parse_query( query_stream, results, ignore ) &&
-		query_stream.eof()
-	) ) {
-		error() << "malformed query" << endl;
-		::exit( Exit_Malformed_Query );
-	}
-
-	////////// Print the results //////////////////////////////////////////
-
-	// Print stop-words, if any.
-	if ( stop_words_found.size() ) {
-		cout << "# ignored:";
-		FOR_EACH( string_set, stop_words_found, word )
-			cout << ' ' << *word;
-		cout << '\n';
-	}
-
-	cout << "# results: " << results.size() << '\n';
-	if ( skip_results_arg >= results.size() || !max_results )
-		::exit( Exit_Success );
-
-	// Copy the results to a vector to sort them by rank.
-	typedef vector< result_type > sorted_results_type;
-	sorted_results_type sorted;
-	sorted.reserve( results.size() );
-	::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
-	::sort( sorted.begin(), sorted.end(), sort_by_rank() );
-	double const normalize = 100.0 / sorted[0].second;	// highest rank
-
-	for ( sorted_results_type::const_iterator
-		i  = sorted.begin() + skip_results_arg;
-		i != sorted.end() && max_results-- > 0;
-		++i
-	)
-		cout	<< int( i->second * normalize )
-			<< ' ' << files[ i->first ] << '\n';
-
+	service_request( argv, opt );
 	::exit( Exit_Success );
 }
+
+#ifdef	SEARCH_DAEMON
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void become_daemon(
+		char const *socket_file_name,
+		int socket_queue_size, int socket_timeout,
+		int min_threads, int max_threads, int thread_timeout
+	)
+//
+// DESCRIPTION
+//
+//	Do things needed to becomd a daemon process: increase resource limits,
+//	create a socket, detach from the terminal, change to the root
+//	directory, and finally service requests.  This function never returns.
+//
+// PARAMETERS
+//
+//	socket_file_name	The full path to the file to use for the Unix
+//				domain socket.
+//
+//	socket_queue_size	Maximum number of queued connections for a
+//				socket.  (See the comment in config.h.)
+//
+//	socket_timeout		The number of seconds a client has to complete
+//				a search request.
+//
+//	min_threads		The minimum number of threads to maintain in
+//				the thread pool.
+//
+//	max_threads		The maximum number of threads to allow to exist
+//				in the thread pool.
+//
+//	thread_timeout		The number of seconds until an idle spare
+//				thread times out and destroys itself.
+//
+// SEE ALSO
+//
+//	W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+//	Addison-Wesley, Reading, MA, 1993.
+//
+//	---.  "Unix Network Programming, Vol 1, 2nd ed."  Prentice-Hall, Upper
+//	Saddle River, NJ, 1998.  Chapter 14.
+//
+//*****************************************************************************
+{
+	////////// Increase resource limits (hopefully) ///////////////////////
+
+#ifdef	RLIMIT_CPU				/* SVR4, 4.3+BSD */
+	//
+	// Max-out the amount of CPU time we can run since we will be a daemon
+	// and will run indefinitely.
+	//
+	max_out_limit( RLIMIT_CPU );
+#endif
+#ifdef	RLIMIT_NOFILE				/* SVR4 */
+	//
+	// Max-out the number of file descriptors we can have open to be able
+	// to service as many clients concurrently as possible.
+	//
+	max_out_limit( RLIMIT_NOFILE );
+#elif	defined( RLIMIT_OFILE )			/* 4.3+BSD name for NOFILE */
+	max_out_limit( RLIMIT_OFILE );
+#endif
+	////////// Create a socket ////////////////////////////////////////////
+
+	int const sock_fd = ::socket( AF_LOCAL, SOCK_STREAM, 0 );
+	if ( sock_fd == -1 ) {
+		cerr << error << "socket() failed" << error_string;
+		::exit( Exit_No_Socket );
+	}
+
+	struct sockaddr_un addr;
+	::memset( &addr, 0, sizeof addr );
+	addr.sun_family = AF_LOCAL;
+	::strncpy( addr.sun_path, socket_file_name, sizeof( addr.sun_path )-1 );
+
+	::unlink( socket_file_name );		// can't exist before bind
+	if ( ::bind( sock_fd, (struct sockaddr*)&addr, sizeof addr ) == -1 ) {
+		cerr << error << "bind() failed" << error_string;
+		::exit( Exit_No_Bind );
+	}
+	if ( ::listen( sock_fd, socket_queue_size ) == -1 ) {
+		cerr << error << "listen() failed" << error_string;
+		::exit( Exit_No_Listen );
+	}
+
+#ifndef DEBUG_threads
+	////////// Detach from terminal ///////////////////////////////////////
+	//
+	// From [Stevens 1993], p. 417, "Coding Rules":
+	//
+	//	The first thing to do is call fork and have the parent exit.
+	//	This does several things.  First, if the daemon was started as
+	//	a simple shell command, having the parent terminate makes the
+	//	shell think that the command is done.  Second, the child
+	//	inherits the process group ID of the parent but gets a new
+	//	process ID, so we're guaranteed that the child is not a process
+	//	group leader.  This is a prerequisite for the call to setsid
+	//	that is done next.
+	//
+	pid_t const child_pid = ::fork();
+	if ( child_pid == -1 ) {
+		cerr << error << "fork() failed" << error_string;
+		::exit( Exit_No_Fork );
+	}
+	if ( child_pid > 0 )			// parent process ...
+		::exit( Exit_Success );		// ... just exit as described
+
+	//
+	// From [Stevens 1993], p. 417, "Coding Rules":
+	//
+	//	Change the current working directory to the root directory.
+	//	The current working directory inherited from the parent could
+	//	be on a mounted filesystem.  Since daemons normally exist until
+	//	the system is rebooted, if the daemon stays on a mounted
+	//	filesystem, that filesystem can not be unmounted.
+	//
+	if ( ::chdir( "/" ) == -1 ) {
+		cerr << error << "chdir() failed" << error_string;
+		::exit( Exit_No_Change_Dir );
+	}
+#endif	/* DEBUG_threads */
+
+	////////// Accept requests ////////////////////////////////////////////
+
+	search_thread::socket_timeout = socket_timeout;
+	thread_pool threads = thread_pool( new search_thread( threads ),
+		min_threads, max_threads, thread_timeout
+	);
+	while ( 1 ) {
+		struct sockaddr_un addr;
+#ifdef	PJL_SOCKLEN_NOT_INT
+		unsigned addr_len = sizeof addr;
+#else
+		int addr_len = sizeof addr;
+#endif
+#		ifdef DEBUG_threads
+		cerr << "waiting for request" << endl;
+#		endif
+		int const accept_fd = ::accept(
+			sock_fd, (struct sockaddr*)&addr, &addr_len
+		);
+		if ( accept_fd == -1 ) {
+			switch ( errno )
+				case ECONNABORTED:	// POSIX.1g
+				case EINTR:
+				case EPROTO:		// SVR4
+					continue;
+			cerr << error << "accept() failed" << error_string;
+			::exit( Exit_No_Accept );
+		}
+#		ifdef DEBUG_threads
+		cerr << "dispatching request" << endl;
+#		endif
+		threads.new_task( accept_fd );
+	}
+}
+#endif	/* SEARCH_DAEMON */
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	void dump_single_word( char const *word )
+	void dump_single_word( char const *word, ostream &out )
 //
 // DESCRIPTION
 //
@@ -419,15 +483,21 @@ void	usage();
 //
 //	word	The word to have its index dumped.
 //
+//	out	The ostream to dump to.
+//
 //*****************************************************************************
 {
+#ifdef	SEARCH_DAEMON
+	managed_vec< char > const lower_word = to_lower_r( word );
+#else
 	char const *const lower_word = to_lower( word );
+#endif
 	less< char const* > const comparator;
 
 	if ( !is_ok_word( word ) || ::binary_search(
 		stop_words.begin(), stop_words.end(), lower_word, comparator
 	) ) {
-		cout << "# ignored: " << word << endl;
+		out << "# ignored: " << word << endl;
 		return;
 	}
 	//
@@ -439,20 +509,22 @@ void	usage();
 	if ( found.first == words.end() ||
 		comparator( lower_word, *found.first )
 	) {
-		cout << "# not found: " << word << endl;
+		out << "# not found: " << word << endl;
 		return;
 	}
 	file_list list( found.first );
 	FOR_EACH( file_list, list, file )
-		cout << file->rank_ << ' ' << files[ file->index_ ] << '\n';
-	cout << '\n';
+		out << file->rank_ << ' ' << files[ file->index_ ] << '\n';
+	out << '\n';
 }
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	void dump_word_window( char const *word, int window_size, int match )
+	void dump_word_window(
+		char const *word, int window_size, int match, ostream &out
+	)
 //
 // DESCRIPTION
 //
@@ -467,15 +539,21 @@ void	usage();
 //
 //	match		The number of characters to compare.
 //
+//	out		The ostream to dump to.
+//
 //*****************************************************************************
 {
+#ifdef	SEARCH_DAEMON
+	managed_vec< char > const lower_word = to_lower_r( word );
+#else
 	char const *const lower_word = to_lower( word );
+#endif
 	less< char const* > const comparator;
 
 	if ( !is_ok_word( word ) || ::binary_search(
 		stop_words.begin(), stop_words.end(), lower_word, comparator
 	) ) {
-		cout << "# ignored: " << word << endl;
+		out << "# ignored: " << word << endl;
 		return;
 	}
 	//
@@ -487,7 +565,7 @@ void	usage();
 	if ( found.first == words.end() ||
 		comparator( lower_word, *found.first )
 	) {
-		cout << "# not found: " << word << endl;
+		out << "# not found: " << word << endl;
 		return;
 	}
 
@@ -507,10 +585,10 @@ void	usage();
 			continue;
 		if ( cmp > 0 )
 			break;
-		cout << *found.first << '\n';
+		out << *found.first << '\n';
 		++i;
 	}
-	cout << '\n';
+	out << '\n';
 }
 
 //*****************************************************************************
@@ -546,8 +624,8 @@ void	usage();
 // SYNOPSIS
 //
 	bool parse_query(
-		token_stream &query, results_type &result, bool &ignore,
-		int meta_id
+		token_stream &query, results_type &result,
+		set< string > &stop_words_found, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -583,13 +661,18 @@ void	usage();
 //
 // PARAMETERS
 //
-//	query		The token_stream whence the query string is extracted.
+//	query			The token_stream whence the query string is
+//				extracted.
 //
-//	result		Where the result of performing the (sub)query is put.
+//	result			The query results go here.
 //
-//	ignore		Set to true only if this (sub)query should be ignored.
+//	stop_words_found	The set of stop-words in the query.
 //
-//	meta_id		The meta ID to constrain the matches against, if any.
+//	ignore			Set to true only if this (sub)query should be
+//				ignored.
+//
+//	meta_id			The meta ID to constrain the matches against,
+//				if any.
 //
 // RETURN VALUE
 //
@@ -602,7 +685,7 @@ void	usage();
 //
 //*****************************************************************************
 {
-	if ( !parse_meta( query, result, ignore, meta_id ) )
+	if ( !parse_meta( query, result, stop_words_found, ignore, meta_id ) )
 		return false;
 
 	//
@@ -613,7 +696,9 @@ void	usage();
 	while ( parse_optional_relop( query, relop ) ) {
 		results_type result1;
 		bool ignore1;
-		if ( !parse_meta( query, result1, ignore1, meta_id ) )
+		if ( !parse_meta(
+			query, result1, stop_words_found, ignore1, meta_id
+		) )
 			return false;
 		if ( ignore ) {
 			if ( !ignore1 ) {	// result is simply the RHS
@@ -661,8 +746,8 @@ void	usage();
 // SYNOPSIS
 //
 	bool parse_meta(
-		token_stream &query, results_type &result, bool &ignore,
-		int meta_id
+		token_stream &query, results_type &result,
+		set< string > &stop_words_found, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -671,13 +756,18 @@ void	usage();
 //
 // PARAMETERS
 //
-//	query		The token_stream whence the query string is extracted.
+//	query			The token_stream whence the query string is
+//				extracted.
 //
-//	result		Where the result of performing the (sub)query is put.
+//	result			The query results go here.
 //
-//	ignore		Set to true only if this (sub)query should be ignored.
+//	stop_words_found	The set of stop-words in the query.
 //
-//	meta_id		The meta ID to constrain the matches against, if any.
+//	ignore			Set to true only if this (sub)query should be
+//				ignored.
+//
+//	meta_id			The meta ID to constrain the matches against,
+//				if any.
 //
 // RETURN VALUE
 //
@@ -707,7 +797,7 @@ void	usage();
 	query.put_back( t );
 
 no_put_back:
-	return parse_primary( query, result, ignore, meta_id );
+	return parse_primary( query, result, stop_words_found, ignore, meta_id);
 }
 
 //*****************************************************************************
@@ -768,8 +858,8 @@ no_put_back:
 // SYNOPSIS
 //
 	bool parse_primary(
-		token_stream &query, results_type &result, bool &ignore,
-		int meta_id
+		token_stream &query, results_type &result,
+		set< string > &stop_words_found, bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -778,13 +868,18 @@ no_put_back:
 //
 // PARAMETERS
 //
-//	query		The token_stream whence the primary is extracted.
+//	query			The token_stream whence the query string is
+//				extracted.
 //
-//	result		Where the result of performing the (sub)query is put.
+//	result			The query results go here.
 //
-//	ignore		Set to true only if the word should be ignored.
+//	stop_words_found	The set of stop-words in the query.
 //
-//	meta_id		The meta ID to constrain the matches against, if any.
+//	ignore			Set to true only if this (sub)query should be
+//				ignored.
+//
+//	meta_id			The meta ID to constrain the matches against,
+//				if any.
 //
 // RETURN VALUE
 //
@@ -858,7 +953,9 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> '('" << endl;
 #			endif
-			if ( !parse_query( query, result, ignore, meta_id ) )
+			if ( !parse_query(
+				query, result, stop_words_found, ignore, meta_id
+			) )
 				return false;
 			query >> t;
 #			ifdef DEBUG_parse_query
@@ -872,7 +969,9 @@ no_put_back:
 			cerr << "---> begin not" << endl;
 #			endif
 			results_type temp;
-			if ( !parse_primary( query, temp, ignore, meta_id ) )
+			if ( !parse_primary(
+				query, temp, stop_words_found, ignore, meta_id
+			) )
 				return false;
 #			ifdef DEBUG_parse_query
 			cerr << "---> end not" << endl;
@@ -915,26 +1014,354 @@ no_put_back:
 
 //*****************************************************************************
 //
+// SYNOPSIS
+//
+	void search( char const *query,
+		int skip_results, int max_results,
+		ostream &out, ostream &err
+	)
+//
+// DESCRIPTION
+//
+//	Parse a query, perform a search, and output the results.
+//
+// PARAMETERS
+//
+//	query		The text of the query.
+//
+//	skip_results	The number of initial results to skip.
+//
+//	max_results	The maximum number of results to output.
+//
+//	out		The ostream to print the results to.
+//
+//	err		The ostream to print errors to.
+//
+//*****************************************************************************
+{
+	token_stream	query_stream( query );
+	results_type	results;
+	set< string >	stop_words_found;
+	bool		ignore;
+
+	if ( !( parse_query( query_stream, results, stop_words_found, ignore )
+		&& query_stream.eof()
+	) ) {
+		err << error << "malformed query" << endl;
+#ifdef	SEARCH_DAEMON
+		if ( am_daemon )
+			return;
+#endif
+		::exit( Exit_Malformed_Query );
+	}
+
+	////////// Print the results //////////////////////////////////////////
+
+	// Print stop-words, if any.
+	if ( !stop_words_found.empty() ) {
+		out << "# ignored:";
+		FOR_EACH( set< string >, stop_words_found, word )
+			out << ' ' << *word;
+		out << '\n';
+	}
+
+	out << "# results: " << results.size() << '\n';
+	if ( skip_results >= results.size() || !max_results )
+		return;
+
+	// Copy the results to a vector to sort them by rank.
+	typedef vector< result_type > sorted_results_type;
+	sorted_results_type sorted;
+	sorted.reserve( results.size() );
+	::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
+	::sort( sorted.begin(), sorted.end(), sort_by_rank() );
+	double const normalize = 100.0 / sorted[0].second;	// highest rank
+
+	for ( sorted_results_type::const_iterator
+		i  = sorted.begin() + skip_results;
+		i != sorted.end() && max_results-- > 0;
+		++i
+	)
+		out	<< int( i->second * normalize )
+			<< ' ' << files[ i->first ] << '\n';
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	search_options::search_options(
+		int *argc, char ***argv,
+		option_stream::spec const opt_spec[],
+		ostream &err
+	)
+//
+// DESCRIPTION
+//
+//	Construct (initialze) a search_options by parsing options from the argv
+//	vector accoring to the given option specification.
+//
+// PARAMETERS
+//
+//	argc		A pointer to the number of arguments.  The value is
+//			decremented by the number of options and their
+//			arguments.
+//
+//	argv		A pointer to the argv vector.  This pointer is
+//			incremented by the number of options and their
+//			arguments.
+//
+//	opt_spec	The set of options to allow and their parameters.
+//
+//	err		The ostream to print errors to.
+//
+//*****************************************************************************
+	: bad_( false )
+{
+	config_file_name_arg		= ConfigFile_Default;
+	dump_entire_index_opt		= false;
+	dump_match_arg			= 0;
+	dump_meta_names_opt		= false;
+	dump_stop_words_opt		= false;
+	dump_window_size_arg		= 0;
+	dump_word_index_opt		= false;
+	index_file_name_arg		= 0;
+	max_results_arg			= 0;
+	skip_results_arg		= 0;
+	stem_words_opt			= false;
+#ifdef	SEARCH_DAEMON
+	daemon_opt			= false;
+	max_threads_arg			= 0;
+	min_threads_arg			= 0;
+	socket_file_name_arg		= 0;
+	socket_queue_size_arg		= 0;
+	socket_timeout_arg		= 0;
+	thread_timeout_arg		= 0;
+#endif
+	option_stream opt_in( *argc, *argv, opt_spec );
+	for ( option_stream::option opt; opt_in >> opt; )
+		switch ( opt ) {
+
+#ifdef	SEARCH_DAEMON
+			case 'b': // Run in background as a daemon.
+				daemon_opt = true;
+				break;
+#endif
+			case 'c': // Specify config. file.
+				config_file_name_arg = opt.arg();
+				break;
+
+			case 'd': // Dump query word indices.
+				dump_word_index_opt = true;
+				break;
+
+			case 'D': // Dump entire word index.
+				dump_entire_index_opt = true;
+				break;
+
+			case 'i': // Specify index file overriding the default.
+				index_file_name_arg = opt.arg();
+				break;
+
+			case 'm': // Specify max. number of results.
+				max_results_arg = opt.arg();
+				break;
+
+			case 'M': // Dump meta-name list.
+				dump_meta_names_opt = true;
+				break;
+#ifdef	SEARCH_DAEMON
+			case 'o': // Specify socket timeout.
+				socket_timeout_arg = ::atoi( opt.arg() );
+				break;
+
+			case 'O': // Specify thread timeout.
+				thread_timeout_arg = ::atoi( opt.arg() );
+				break;
+
+			case 'q': // Specify socket queue size.
+				socket_queue_size_arg = ::atoi( opt.arg() );
+				if ( socket_queue_size_arg < 1 )
+					socket_queue_size_arg = 1;
+				break;
+#endif
+			case 'r': // Specify number of initial results to skip.
+				skip_results_arg = ::atoi( opt.arg() );
+				if ( skip_results_arg < 0 )
+					skip_results_arg = 0;
+				break;
+
+			case 's': // Stem words.
+				stem_words_opt = true;
+				break;
+
+			case 'S': // Dump stop-word list.
+				dump_stop_words_opt = true;
+				break;
+#ifdef	SEARCH_DAEMON
+			case 't': // Minimum number of concurrent threads.
+				min_threads_arg = ::atoi( opt.arg() );
+				break;
+
+			case 'T': // Maximum number of concurrent threads.
+				max_threads_arg = ::atoi( opt.arg() );
+				break;
+
+			case 'u': // Specify Unix domain socket file.
+				socket_file_name_arg = opt.arg();
+				break;
+#endif
+			case 'V': // Display version and exit.
+				err << "SWISH++ " << version << endl;
+#ifdef	SEARCH_DAEMON
+				if ( !am_daemon )
+#endif
+					::exit( Exit_Success );
+#ifdef	SEARCH_DAEMON
+				bad_ = true;
+				return;
+#endif
+			case 'w': { // Dump words around query words.
+				dump_window_size_arg = ::atoi( opt.arg() );
+				if ( dump_window_size_arg < 0 )
+					dump_window_size_arg = 0;
+				char const *comma = ::strchr( opt.arg(), ',' );
+				if ( !comma )
+					break;
+				dump_match_arg = ::atoi( comma + 1 );
+				if ( dump_match_arg < 0 )
+					dump_match_arg = 0;
+				break;
+			}
+
+			default: // Bad option.
+				err << usage;
+				bad_ = true;
+				return;
+		}
+
+	*argc -= opt_in.shift(), *argv += opt_in.shift();
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void service_request(
+		char *argv[], search_options const &opt,
+		ostream &out, ostream &err
+	)
+//
+// DESCRIPTION
+//
+//	Service a request either from the command line or from a client via a
+//	socket.
+//
+// PARAMETERS
+//
+//	argv	The post-option-parsed set of command line arguments, i.e., all
+//		the options have been stripped.
+//
+//	opt	The set of options specified for this request.
+//
+//	out	The ostream to send results to.
+//
+//	err	The ostream to send errors to.
+//
+//*****************************************************************************
+{
+	/////////// Dump stuff if requested ///////////////////////////////////
+
+	if ( opt.dump_window_size_arg ) {
+		while ( *argv )
+			dump_word_window( *argv++,
+				opt.dump_window_size_arg, opt.dump_match_arg,
+				out
+			);
+		return;
+	}
+	if ( opt.dump_word_index_opt ) {
+		while ( *argv )
+			dump_single_word( *argv++, out );
+		return;
+	}
+	if ( opt.dump_entire_index_opt ) {
+		FOR_EACH( word_index, words, w ) {
+			out << *w << '\n';
+			file_list list( w );
+			FOR_EACH( file_list, list, file )
+				out	<< "  " << file->rank_ << ' '
+					<< files[ file->index_ ] << '\n';
+			out << '\n';
+		}
+		return;
+	}
+	if ( opt.dump_stop_words_opt ) {
+		::copy( stop_words.begin(), stop_words.end(),
+			ostream_iterator< char const* >( out, "\n" )
+		);
+		return;
+	}
+	if ( opt.dump_meta_names_opt ) {
+		::copy( meta_names.begin(), meta_names.end(),
+			ostream_iterator< char const* >( out, "\n" )
+		);
+		return;
+	}
+
+	////////// Perform the query //////////////////////////////////////////
+
+	//
+	// Paste the rest of the command line together into a single query
+	// string.
+	//
+	string query = *argv++;
+	while ( *argv ) {
+		query += ' ';
+		query += *argv++;
+	}
+	search( query.c_str(),
+		opt.skip_results_arg,
+		opt.max_results_arg ?
+			::atoi( opt.max_results_arg ) : max_results,
+		out, err
+	);
+}
+
+//*****************************************************************************
+//
 //	Miscellaneous function(s)
 //
 //*****************************************************************************
 
-void usage() {
-	cerr <<	"usage: " << me << " [options] query\n"
+ostream& usage( ostream &err ) {
+	err <<	"usage: " << me << " [options] query\n"
 	"options: (unambiguous abbreviations may be used for long options)\n"
 	"========\n"
-	"-c f | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
-	"-d   | --dump-words      : Dump query word indices and exit\n"
-	"-D   | --dump-index      : Dump entire word index and exit\n"
-	"-h   | --help            : Print this help message\n"
-	"-i f | --index-file f    : Name of index file [default: " << IndexFile_Default << "]\n"
-	"-m n | --max-results n   : Maximum number of results [default: " << ResultsMax_Default << "]\n"
-	"-M   | --dump-meta       : Dump meta-name index and exit\n"
-	"-r n | --skip-results n  : Number of initial results to skip [default: 0]\n"
-	"-s   | --stem-words      : Stem words prior to search [default: no]\n"
-	"-S   | --dump-stop       : Dump stop-word index and exit\n"
-	"-V   | --version         : Print version number and exit\n"
-	"-w n[,c]\n"
-	"     | --window n[,c]    : Dump window of words around query words [default: 0]\n";
-	::exit( Exit_Usage );
+	"-?   | --help             : Print this help message\n"
+#ifdef SEARCH_DAEMON
+	"-b   | --daemon           : Run in the background as a daemon [default: no]\n"
+#endif
+	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+	"-d   | --dump-words       : Dump query word indices and exit\n"
+	"-D   | --dump-index       : Dump entire word index and exit\n"
+	"-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
+	"-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
+	"-M   | --dump-meta        : Dump meta-name index and exit\n"
+#ifdef SEARCH_DAEMON
+	"-o s | --socket-timeout s : Search client request timeout [default: " << SocketTimeout_Default << "]\n"
+	"-O s | --thread-timeout s : Idle spare thread timeout [default: " << ThreadTimeout_Default << "]\n"
+	"-q n | --queue-size n     : Maximum queued socket connections [default: " << SocketQueueSize_Default << "]\n"
+#endif
+	"-r n | --skip-results n   : Number of initial results to skip [default: 0]\n"
+	"-s   | --stem-words       : Stem words prior to search [default: no]\n"
+	"-S   | --dump-stop        : Dump stop-word index and exit\n"
+#ifdef SEARCH_DAEMON
+	"-t n | --min-threads n    : Minimum number of threads [default: " << ThreadsMin_Default << "] \n"
+	"-T n | --max-threads n    : Maximum number of threads [default: " << ThreadsMax_Default << "] \n"
+	"-u f | --socket-file f    : Name of socket file [default: " << SocketFile_Default << "]\n"
+#endif
+	"-V   | --version          : Print version number and exit\n"
+	"-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n";
+	return err;
 }
