@@ -126,26 +126,29 @@ STRIP:=		strip
 CC:=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
-ifdef WIN32
 OPTIM:=		-O2
-else
-OPTIM:=		-O3
-endif
 #		The optimization level.  Many compilers allow a digit after the
 #		O to specify the level of optimization; if so, set yours to the
-#		highest number your compiler allows (without eliciting bugs in
-#		its optimizer as with g++ under cynwin under Windows).  If
-#		SWISH++ doesn't work correctly with optimization on, but it
+#		highest number your compiler allows without eliciting problems
+#		in the optimizer.
+#
+#		Using g++, -O3 under Cynwin under Windows produces bad code;
+#		-O3 with 3.0 causes the optimizer to take ridiculously long and
+#		use most of the CPU and memory.
+#
+#		If SWISH++ doesn't work correctly with optimization on, but it
 #		works just fine with it off, then there is a bug in your
 #		compiler's optimizer.
 
 CCFLAGS:=	$(MOD_LIST) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
-ifeq ($(CC),g++)
+ifeq ($(findstring g++,$(CC)),g++)
 CCFLAGS+=	-fno-exceptions
+#		Since SWISH++ doesn't use exceptions, turn off code generation
+#		for them to save space in the executables.
 endif
 
-ifeq ($(CC),g++)
+ifeq ($(findstring g++,$(CC)),g++)
 #CCFLAGS+=	-W -Wcast-align -Wcast-qual -Wpointer-arith -Wswitch -Wtraditional -Wuninitialized -Wunused #-Winline -Wshadow
 endif
 #		Warning flags specific to g++.  Unless you are modifying the

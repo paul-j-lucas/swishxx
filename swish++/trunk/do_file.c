@@ -50,7 +50,7 @@
 //
 //*****************************************************************************
 {
-	char const *const orig_base_name = basename( file_name );
+	char const *const orig_base_name = pjl_basename( file_name );
 
 	++num_examined_files;
 	if ( verbosity > 3 )			// print base name of file
@@ -123,7 +123,7 @@
 		filter_list.push_back( *f );
 		file_name = filter_list.back().substitute( file_name );
 	}
-	char const *const base_name = basename( file_name );
+	char const *const base_name = pjl_basename( file_name );
 
 	//
 	// Skip the file if it matches one of the set of unacceptable patterns.

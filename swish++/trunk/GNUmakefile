@@ -97,6 +97,7 @@ ifdef SEARCH_DAEMON
 # See the comment in config/config.mk regarding the search daemon ability.
 ##
 S_SRCS+=	conf_enum.c \
+		fdbuf.c \
 		thread_pool.c \
 		search_thread.c \
 		search_daemon.c \

@@ -132,7 +132,7 @@ using namespace std;
 //
 // SYNOPSIS
 //
-	bool mmap_file::open( char const *path, ios::open_mode mode )
+	bool mmap_file::open( char const *path, ios::openmode mode )
 //
 // DESCRIPTION
 //

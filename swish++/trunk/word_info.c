@@ -24,6 +24,10 @@
 #include "word_info.h"
 #include "util.h"				/* for FOR_EACH */
 
+#ifndef	PJL_NO_NAMESPACES
+using namespace std;
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS

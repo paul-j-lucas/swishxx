@@ -1,8 +1,8 @@
 /*
-**	SWISH++
-**	stem_word.h
+**	PJL C++ Library
+**	omanip.h
 **
-**	Copyright (C) 1998  Paul J. Lucas
+**	Copyright (C) 2001  Paul J. Lucas
 **
 **	This program is free software; you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -19,35 +19,51 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef	stem_word_H
-#define	stem_word_H
+#ifndef	omanip_H
+#define	omanip_H
 
-// local
-#include "less.h"
+// standard
+#include <iostream>
+
+#ifndef	PJL_NO_NAMESPACES
+namespace PJL {
+#endif
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	struct less_stem : std::less< char const* >
+	template< class Arg > class omanip
 //
 // DESCRIPTION
 //
-//	A less_stem is-a less< char const* > that compares C-style strings but
-//	possibly stems (suffix strips) the words before comparison.
+//	An omanip is a class for assisting in the creating of ostream
+//	manipulators by storing a pointer to a function and its argument to be
+//	called later via operator<<().
+//
+// SEE ALSO
+//
+//	Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales."
+//	Addison-Wesley, Reading, MA., pp. 179-191.
 //
 //*****************************************************************************
 {
-	less_stem( bool stem ) : stem_func_( stem ? stem_word : no_stem ) { }
+public:
+	typedef std::ostream& (*func_type)( std::ostream&, Arg );
 
-	result_type
-	operator()( first_argument_type a, second_argument_type b ) const {
-		return std::strcmp( stem_func_( a ), stem_func_( b ) ) < 0;
+	omanip( func_type f, Arg const &arg ) : f_( f ), arg_( arg ) { }
+
+	friend
+	std::ostream& operator<<( std::ostream &o, omanip<Arg> const &om ) {
+		return (*om.f_)( o, om.arg_ );
 	}
 private:
-	char const*		(*const stem_func_)( char const *word );
-	static char const*	no_stem( char const *word ) { return word; }
-	static char const*	stem_word( char const *word );
+	func_type const f_;
+	Arg const arg_;
 };
 
-#endif	/* stem_word_H */
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
+
+#endif	/* omanip_H */

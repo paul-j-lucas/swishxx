@@ -24,7 +24,6 @@
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
 #include <functional>			/* for binary_function<> */
-#include <iomanip>			/* for omanip<> */
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -49,6 +48,7 @@
 #include "less.h"
 #include "mmap_file.h"
 #include "my_set.h"
+#include "omanip.h"
 #include "option_stream.h"
 #include "platform.h"
 #include "ResultsMax.h"
@@ -920,7 +920,11 @@ no_put_back:
 	if ( !stop_words_found.empty() ) {
 		out << "# ignored:";
 		FOR_EACH( set< string >, stop_words_found, word )
+#ifdef	PJL_GCC_295 /* see the comment in platform.h */
+			out << ' ' << word->c_str();
+#else
 			out << ' ' << *word;
+#endif
 		out << '\n';
 	}
 
