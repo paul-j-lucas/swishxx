@@ -42,9 +42,12 @@ extern char const num_entities[ 256 ];
 //	entity reference.  It uses char const* to point directly to the
 //	C-strings in the char_entity_table[] vector; no strings are copied.
 //
+//	The contructor is private, however, to ensure that only instance()
+//	can be called to initialize and access a single, static instance.
+//
 // SEE ALSO
 //
-//	entites.c	char_entity_table[]
+//	entites.c	char_entity_table[], instance()
 //	html.c		convert_entity()
 //
 //*****************************************************************************
@@ -53,13 +56,15 @@ public:
 	typedef char const* key_type;
 	typedef char value_type;
 
-	char_entity_map();
+	static char_entity_map const& instance();
 
 	value_type operator[]( key_type key ) const {
 		map_type::const_iterator const i = map_.find( key );
 		return i != map_.end() ? i->second : ' ';
 	}
 private:
+	char_entity_map();
+	//
 	// Note that the declaration of std::map has a default "Compare"
 	// template parameter of "less< key_type >" and, since we've included
 	// less.h above that defines "less< char const* >", C-style string

@@ -123,3 +123,34 @@ char const num_entities[] = {
 	for ( register char_entity const *e = char_entity_table; e->name; ++e )
 		map_[ e->name ] = e->char_equiv;
 }
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */ char_entity_map const& char_entity_map::instance()
+//
+// DESCRIPTION
+//
+//	Define and initialize (exactly once) a static instance of
+//	char_entity_map and return a reference to it.  The reason for this
+//	function is to guarantee that there is exactly one instance of it and
+//	that it is initialized before its first use across all translation
+//	units, something that would not guaranteed if it were defined and
+//	initialized at file scope.
+//
+// RETURN VALUE
+//
+//	Returns a reference to a static instance of an initialized
+//	char_entity_map.
+//
+// SEE ALSO
+//
+//	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++
+//	Reference Manual."  Addison-Wesley, Reading, MA.  p. 19.
+//
+//*****************************************************************************
+{
+	static char_entity_map m;
+	return m;
+}
