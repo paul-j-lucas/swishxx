@@ -70,7 +70,7 @@ public:
 	//			index the given file.
 
 	virtual void		index_words(
-					encoded_char_range::const_iterator&,
+					encoded_char_range const&,
 					int meta_id = No_Meta_ID
 				);
 	//			Index words in a file between [begin,end) and
@@ -132,8 +132,8 @@ inline indexer* indexer::find_indexer( char const *mod_name ) {
 inline void indexer::index_file( file_vector const &file ) {
 	suspend_indexing_count_ = 0;
 	new_file();
-	encoded_char_range::const_iterator c( file.begin(), file.end() );
-	index_words( c );
+	encoded_char_range const e( file.begin(), file.end() );
+	index_words( e );
 }
 
 inline void indexer::suspend_indexing() { ++suspend_indexing_count_; }
