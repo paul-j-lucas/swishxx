@@ -72,7 +72,7 @@ public:
 
 	virtual char const*	find_title( file_vector const& ) const;
 	virtual void		index_words(
-					encoded_char_range::const_iterator&,
+					encoded_char_range const&,
 					int meta_id = No_Meta_ID
 				);
 	virtual void		new_file();
@@ -108,23 +108,19 @@ private:
 	};
 
 	void			mail_indexer::index_enriched(
-					encoded_char_range::const_iterator&
+					encoded_char_range const&
 				);
 	message_type		mail_indexer::index_headers(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end
+					char const *&begin, char const *end
 				);
 	void			mail_indexer::index_multipart(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end
+					char const *&begin, char const *end
 				);
 	void			mail_indexer::index_vcard(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end
+					char const *&begin, char const *end
 				);
 	static bool		parse_header(
-					file_vector::const_iterator &begin,
-					file_vector::const_iterator end,
+					char const *&begin, char const *end,
 					key_value*
 				);
 
