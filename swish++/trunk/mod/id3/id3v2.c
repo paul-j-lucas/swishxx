@@ -694,7 +694,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 //
         void resynchronize(
             register char *dest, int dest_len,
-            register char const *src, unsigned int *src_len
+            register char const *src, unsigned *src_len
         )
 //
 // DESCRIPTION
@@ -721,7 +721,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 //
 //*****************************************************************************
 {
-    int pos = 0;
+    unsigned pos = 0;
     while ( pos++ < *src_len && dest_len-- )
         if ( static_cast<unsigned char>( *dest++ = *src++ ) == 0xFFu )
             if ( pos < *src_len && *src == 0x00 )
