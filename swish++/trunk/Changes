@@ -8,7 +8,7 @@ SWISH++ Changes
 NEW FEATURES
 ------------
 
-* E-mail attaches can not be filtered by external programs.
+* E-mail attaches can now be filtered by external programs.
 
   (This feature shall be know as feature AFP.)
 
