@@ -41,6 +41,8 @@
 //	A Group is-a conf<string> containing the group name of the user we
 //	should run as after initialization (if we're root to begin with).
 //
+//	This is the same as search's -G command-line option.
+//
 //*****************************************************************************
 {
 public:
