@@ -198,7 +198,7 @@ install_man:
 install_conf:
 	$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_MODE) swish++.conf $(I_ETC)
 
-$(I_BIN) $(I_LIB):
+$(I_BIN) $(I_ETC) $(I_LIB):
 	$(MKDIR) $@
 
 install_sysv: $(INITD_TARGET)
