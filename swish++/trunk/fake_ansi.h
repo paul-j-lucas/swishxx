@@ -52,8 +52,4 @@
 #	define explicit			/* nothing */
 #endif
 
-#ifdef	PJL_NO_MUTABLE
-#	define mutable			/* nothing */
-#endif
-
 #endif	/* fake_ansi_H */
