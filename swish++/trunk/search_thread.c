@@ -68,6 +68,7 @@ using namespace std;
 
 unsigned search_thread::socket_timeout;
 
+void	reset_socket( int fd );
 int	split_args( char *s, char *argv[], int arg_max );
 bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 
@@ -126,15 +127,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		//
 		// It was a bad request because it (a) timed out, (b) had too
 		// few or many arguments, (c) had an error in usage, or (d) was
-		// malformed.  That being the case, reset the TCP connection by
-		// using the SO_LINGER socket option.  From [Stevens 1998], p.
-		// 187, "SO_LINGER Socket Option":
-		//
-		//	If l_onoff is nonzero and l_linger is 0, TCP aborts the
-		//	connection when it is closed.  That is, TCP discards
-		//	any data still remaining in the socket send buffer and
-		//	sends an RST to the peer, not the normal four-packet
-		//	connection termination sequence.
+		// malformed.  That being the case, reset the TCP connection.
 		//
 		// The reason for doing this is so we don't potentially have a
 		// socket lingering in TIME-WAIT from a client that was too
@@ -142,15 +135,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		// helps alleviate denial-of-service attacks (if that's what's
 		// going on).
 		//
-		// Note: this is not implemented in Linux 2.2.x kernels so the
-		// normal four-packet sequence is done instead.
-		//
-		linger li;
-		li.l_onoff  = 1;
-		li.l_linger = 0;
-		::setsockopt( arg.i, SOL_SOCKET, SO_LINGER,
-			reinterpret_cast<char const*>( &li ), sizeof li
-		);
+		reset_socket( arg.i );
 	}
 
 	::close( arg.i );
