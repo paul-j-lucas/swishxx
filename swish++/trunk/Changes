@@ -86,6 +86,8 @@ CHANGES, file-by-file
 
 	7. Wrapped thread and socket stuff inside "ifdef SEARCH_DAEMON".
 
+	8. Added OS variable.
+
 * config/src/mutable.c
 
 	1. Removed this file since all C++ compilers should now support
