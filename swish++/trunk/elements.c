@@ -51,16 +51,16 @@
 	// below where each "row" has varying length.  It's kind of a hack, but
 	// it works.
 	//
-	cpcc F = REINTERPRET_CAST( char const* )( element::forbidden );
-	cpcc O = REINTERPRET_CAST( char const* )( element::optional  );
-	cpcc R = REINTERPRET_CAST( char const* )( element::required  );
+	static cpcc F = REINTERPRET_CAST( char const* )( element::forbidden );
+	static cpcc O = REINTERPRET_CAST( char const* )( element::optional  );
+	static cpcc R = REINTERPRET_CAST( char const* )( element::required  );
 
 	//
 	// Elements that have forbidden end tags (obviously) have no tags
 	// listed for them in the rows below.
 	//
-	// Elements that have optional end tags have a null-terminated list
-	// of tags that close them, either explicitly (their own end tag) or
+	// Elements that have optional end tags have a null-terminated list of
+	// tags that close them, either explicitly (their own end tag) or
 	// implicitly (a tag from some other element).
 	//
 	// Elements that have required end tags simply list their single end
@@ -325,8 +325,8 @@
 //
 // SEE ALSO
 //
-//	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++
-//	Reference Manual."  Addison-Wesley, Reading, MA.  p. 19.
+//	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++ Reference
+//	Manual."  Addison-Wesley, Reading, MA, 1990.  p. 19.
 //
 //*****************************************************************************
 {
