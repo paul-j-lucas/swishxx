@@ -116,6 +116,7 @@
 	header_result	parse_header( char const*&, id3v2_header const& );
 	void		parse_comm();
 	void		parse_sylt();
+	void		parse_tcon();
 	void		parse_text();
 };
 
