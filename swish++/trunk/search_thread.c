@@ -164,7 +164,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 //
 //*****************************************************************************
 {
-	for ( ; *s && isspace( *s ); ++s ) ;	// skip leading whitespace
+	for ( ; *s && is_space( *s ); ++s ) ;	// skip leading whitespace
 	if ( !*s )
 		return 0;
 
@@ -179,7 +179,7 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 			// We must skip *ALL* whitespace characters separating
 			// arguments.
 			//
-			while ( *++s && isspace( *s ) ) ;
+			while ( *++s && is_space( *s ) ) ;
 		}
 	}
 	return argc;

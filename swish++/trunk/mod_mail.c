@@ -752,7 +752,7 @@ bool				header_cmp(
 		// first character on the next line isn't whitespace, then the
 		// value isn't folded (it's the next header).
 		//
-		if ( !isspace( *c ) )
+		if ( !is_space( *c ) )
 			goto more_headers;
 		//
 		// The first character on the next line is whitespace: see how
@@ -769,7 +769,7 @@ bool				header_cmp(
 				c = skip_newline( c, end );
 				goto last_header;
 			}
-		} while ( ++c != end && isspace( *c ) );
+		} while ( ++c != end && is_space( *c ) );
 
 		//
 		// The next line has at least one non-leading non-whitespace
