@@ -72,7 +72,7 @@ do
 	[ -f $VARS_FILE ] || continue
 	cat $VARS_FILE | while read var_name
 	do cat <<!
-#ifdef	`basename $header | sed 's/\.h$//'`
+#ifdef	`basename $header | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
 	conf_var::register_var( "$var_name" );
 #endif
 !
