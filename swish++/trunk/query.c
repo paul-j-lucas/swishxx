@@ -439,28 +439,31 @@ no_put_back:
 //*****************************************************************************
 {
 	token const t( query );
-	token::type tt = t;
-	switch ( tt ) {
+	token::type t_type = t;
+	switch ( t_type ) {
 
 		case token::no_token:
 			return false;
 
-		case token::and_token:
 		case token::not_token:
 #ifdef	FEATURE_word_pos
 		{
 			token const t2( query );
-			if ( t2 == token::near_token )
-				tt = token::not_near_token;
-			else
+			if ( t2 != token::near_token ) {
 				query.put_back( t2 );
+				break;
+			}
+			t_type = token::not_near_token;
 		}
 		case token::near_token:
+#else
+			break;
 #endif
+		case token::and_token:
 		case token::or_token:
 #			ifdef DEBUG_parse_query
 			cerr << "---> relop \"";
-			switch ( tt ) {
+			switch ( t_type ) {
 				case token::and_token:
 					cerr << "and";
 					break;
@@ -478,19 +481,17 @@ no_put_back:
 			}
 			cerr << "\"\n";
 #			endif
-			relop = tt;
-			return true;
-
-		default:
-			query.put_back( t );
-			if ( t == token::rparen_token )
-				return false;
-#			ifdef DEBUG_parse_query
-			cerr << "---> relop \"and\" (implicit)\n";
-#			endif
-			relop = token::and_token;
+			relop = t_type;
 			return true;
 	}
+	query.put_back( t );
+	if ( t == token::rparen_token )
+		return false;
+#	ifdef DEBUG_parse_query
+	cerr << "---> relop \"and\" (implicit)\n";
+#	endif
+	relop = token::and_token;
+	return true;
 }
 
 //*****************************************************************************
