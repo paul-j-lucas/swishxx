@@ -121,6 +121,7 @@ int conf_var::current_config_file_line_no_ = 0;
 		m[ "ExcludeFile"	] = 0;
 		m[ "ExcludeMeta"	] = 0;
 		m[ "ExtractExtension"	] = 0;
+		m[ "ExtractFile"	] = 0;
 		m[ "ExtractFilter"	] = 0;
 		m[ "FilesGrow"		] = 0;
 		m[ "FilesReserve"	] = 0;
