@@ -17,6 +17,32 @@ BUG FIXES
 CHANGES, file-by-file
 ---------------------
 
+* Group.c
+* SocketAddress.c
+* WordThreshold.c
+
+	1. Removed config variable name from error message.
+
+* conf_var.c
+* search.c
+* stop_words.c
+* thread_pool.c
+
+	1. Switched to using error_string.
+
+* index.c
+
+	1. Switched to using error_string.
+	2. Added: max_out_limit( RLIMIT_FSIZE );
+
+* man/man4/swish++.conf.4
+
+	1. Added missing ID3 and LaTeX modules.
+
+* mod/html/mod_html.c
+
+	1. Made entity_to_ascii() and find_attribute() static.
+
 * util.h
 
 	1. Reworked error_string() for bug fix G341.
