@@ -159,6 +159,11 @@ char const	ConfigFile_Default[]		= "swish++.conf";
 //		Default name of the configuration file; this can be overridden
 //		on the command line.
 
+int const	FilesGrow_Default		= 100;
+//		Default number of files to grow reserved space for when
+//		incrementally indexing.  This can be overridden either in a
+//		config. file or on the command line.
+
 int const	FilesReserve_Default		= 1000;
 //		Default maximum number of files to reserve space for; see
 //		file_info::operator new() in file_info.c for details.  This can
@@ -170,7 +175,7 @@ int const	Fork_Attempts			= 5;
 
 int const	Fork_Sleep			= 5;
 //		Number of seconds to sleep before retrying to fork.  This
-//		parameter is used only by extract(1) in filter.c.
+//		parameter is used only in filter.c.
 
 char const	IndexFile_Default[]		= "swish++.index";
 //		Default name of the index file generated/searched; can be
