@@ -41,6 +41,20 @@ extern Verbosity	verbosity;
 
 extern void	do_file( char const *file_name );
 
+#ifdef	WIN32
+//
+// The directory separator character ('/' for Unix) is apparantly transformed
+// into '\' for Windows by the intermediate Windows port of POSIX functions.
+// However, in the case where '/' is inserted into a string and that string is
+// printed, the mere printing won't do the transformation.  Hence, this file
+// contains the one place in all of the SWISH++ code where we need to use '\'
+// explicitly when compiling under Windows.
+//
+char const	Dir_Sep_Char = '\\';
+#else
+char const	Dir_Sep_Char = '/';
+#endif
+
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 FollowLinks	follow_symbolic_links;
 #endif
@@ -102,13 +116,13 @@ FollowLinks	follow_symbolic_links;
 		cout << '\n';
 	}
 
-	string const dir_string( dir_name );
+	string const dir_str( dir_name );
 
 	struct dirent const *dir_ent;
 	while ( dir_ent = ::readdir( dir_p ) ) {
 		if ( *dir_ent->d_name == '.' )		// skip dot files
 			continue;
-		string const path( ( dir_string + '/' ) + dir_ent->d_name );
+		string const path( dir_str + Dir_Sep_Char + dir_ent->d_name );
 		if ( is_directory( path ) && recurse_subdirectories )
 			dir_queue.push( path );
 		else {
