@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "December 18, 2001" "SWISH++"
+.TH \f3index\f1 1 "December 19, 2001" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -200,16 +200,17 @@ Another way around this problem is to do periodic full indexing.
 .B index
 is written in a modular fashion
 where different types of files have different indexing modules.
-Currently, there are 4 modules:
+Currently, there are 5 modules:
 Text (plain text),
 HTML (HTML and XHTML),
 Mail (RFC 822 and Usenet News),
-and
 Manual (Unix manual pages in
 .BR nroff (1)
 with
 .BR man (7)
-macros).
+macros),
+and
+RTF (Rich Text Format).
 .SS Text Module
 This module simply indexes plain text files
 performing character mapping and word determination
@@ -487,6 +488,9 @@ The recommended sections to be indexed are:
 .BR SYNOPSIS ,
 and
 .BR WARNINGS .
+.SS RTF Module
+This module simply indexes rich text format files
+without all formatting commands.
 .SH OPTIONS
 Options begin with either a `\f(CW-\f1' for short options
 or a ``\f(CW--\f1'' for long options.
@@ -1107,6 +1111,7 @@ default index file name
 .SH SEE ALSO
 .BR extract (1),
 .BR find (1),
+.BR nroff (1),
 .BR search (1),
 .BR splitmail (1),
 .BR swish++.conf (4),
