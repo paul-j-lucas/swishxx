@@ -22,12 +22,17 @@
 #ifndef	token_H
 #define	token_H
 
-// standard
-#include <strstream>
-
 // local
 #include "config.h"
 #include "fake_ansi.h"			/* for explicit, std */
+#include "platform.h"
+
+// standard
+#ifdef	PJL_GCC_2xx
+#include <strstream>
+#else
+#include <sstream>
+#endif
 
 class token_stream;
 
@@ -76,7 +81,11 @@ private:
 //
 // SYNOPSIS
 //
+#ifdef	PJL_GCC_2xx
 	class token_stream : public std::istrstream
+#else
+	class token_stream : public std::istringstream
+#endif
 //
 // DESCRIPTION
 //
@@ -88,7 +97,11 @@ private:
 //*****************************************************************************
 {
 public:
+#ifdef	PJL_GCC_2xx
 	token_stream( char const *s ) : std::istrstream( s ), top_( -1 ) { }
+#else
+	token_stream( char const *s ) : std::istringstream( s ), top_( -1 ) { }
+#endif
 	void	put_back( token const &t ) { stack_[ ++top_ ] = t; }
 private:
 	// Our query parser needs at most 2 look-ahead tokens.
