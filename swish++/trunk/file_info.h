@@ -53,6 +53,7 @@ public:
 		char const *path_name, int dir_index, size_t file_size,
 		char const *title, int num_words = 0
 	);
+	file_info( unsigned char const *ptr_into_index_file );
 
 	int			dir_index() const	{ return dir_index_; }
 	char const*		file_name() const	{ return file_name_; }
@@ -70,10 +71,10 @@ public:
 					return name_set_.contains( file_name );
 				}
 private:
-	char const *const	file_name_;
 	int const		dir_index_;
-	int			num_words_;
+	char const *const	file_name_;
 	size_t const		size_;
+	int			num_words_;
 	char const *const	title_;
 
 	static list_type	list_;
