@@ -590,11 +590,12 @@ bool			tag_cmp(
 	if ( skip_html_tag( c, end ) || *tag_begin == '!' )
 		return;
 	file_vector::const_iterator tag_end = c - 1;
+	bool const is_end_tag = *tag_begin == '/';
 
 	////////// Deal with elements of a class not to index /////////////////
 
 	if ( !exclude_class_names.empty() ) {		// else, don't bother
-		char tag[ Tag_Name_Max_Size + 1 ];
+		char tag[ Tag_Name_Max_Size + 2 ];	// 1 for '/', 1 for null
 		{ // local scope
 		//
 		// Copy only the tag name by stopping at a whitespace character
@@ -605,10 +606,24 @@ bool			tag_cmp(
 		//
 		register char *to = tag;
 		register file_vector::const_iterator from = tag_begin;
-		while ( from != tag_end && !isspace( *from ) )
+		while ( from != tag_end && !isspace( *from ) ) {
+			//
+			// Check to see if the tag is too long to be a valid
+			// one for an HTML element: if it is, invalidate it by
+			// writing "garbage" into the tag so something like
+			// "BLOCKQUOTED" (an invalid tag) won't match
+			// "BLOCKQUOTE" (a valid tag) when one letter shorter
+			// and throw off element closures.
+			//
+			if ( to - tag >= Tag_Name_Max_Size + is_end_tag ) {
+				to = tag;
+				*to++ = '\1';
+				break;
+			}
 			*to++ = to_lower( *from++ );
-		*to = '\0';
 		}
+		*to = '\0';
+		} // local scope
 
 		//
 		// The element_stack keeps track of all the HTML or XHTML
@@ -661,7 +676,7 @@ bool			tag_cmp(
 				break;
 		}
 
-		if ( *tag == '/' ) {
+		if ( is_end_tag ) {
 			//
 			// The tag is an end tag: it doesn't have attributes.
 			//
@@ -747,7 +762,7 @@ bool			tag_cmp(
 		}
 	}
 
-	if ( *tag_begin == '/' ) {
+	if ( is_end_tag ) {
 		//
 		// The tag is an end tag: it doesn't have attributes.
 		//
