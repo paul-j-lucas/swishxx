@@ -101,8 +101,14 @@ private:
 		Multipart
 	};
 
+#ifdef	__SUNPRO_CC
+	//
+	// Sun's CC compiler doesn't implement the latest ANSI/ISO C++ standard
+	// with regard to section 11.8.
+	//
 	struct message_type;
 	friend struct message_type;
+#endif
 	struct message_type {
 		//
 		// A message_type contains information about the mail/news
