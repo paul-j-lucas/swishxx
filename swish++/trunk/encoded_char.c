@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_MAIL
+#ifdef mod_mail
 
 // standard
 #include <cctype>
@@ -319,4 +319,4 @@ reached_end:	c = end;
 		( is_digit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
 	);
 }
-#endif	/* MOD_MAIL */
+#endif	/* mod_mail */

@@ -34,7 +34,7 @@ enum content_transfer_encoding {
 	Seven_Bit,
 	Eight_Bit,			// treated the same as Seven_Bit
 	Binary,				// we don't know what to do with this
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	Quoted_Printable,
 	Base64,
 #endif
@@ -56,7 +56,7 @@ enum content_transfer_encoding {
 //
 //	However, doing this is a serious performance hit since it has to be
 //	done for every single character examined.  Hence, the code is #ifdef'd
-//	for MOD_MAIL: if MOD_MAIL isn't used, there's no need for any special
+//	for mod_mail: if mod_mail isn't used, there's no need for any special
 //	decoding.
 //
 //*****************************************************************************
@@ -149,7 +149,7 @@ public:
 private:
 	mutable pointer	pos_;
 	mutable pointer	prev_;
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	mutable value_type	ch_;
 	mutable bool		decoded_;
 	mutable int		delta_;
@@ -157,7 +157,7 @@ private:
 	const_iterator( encoded_char_range const*, pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
 
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	void		decode() const;
 	static value_type decode_base64(
 		pointer begin, pointer &pos, pointer end
@@ -234,7 +234,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 	: encoded_char_range( begin, end, encoding ), pos_( begin )
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	  , decoded_( false )
 #endif
 {
@@ -262,13 +262,13 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //*****************************************************************************
 	: encoded_char_range( start_pos, ecr->end_, ecr->encoding_ ),
 	  pos_( start_pos )
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	  , decoded_( false )
 #endif
 {
 }
 
-#ifdef MOD_MAIL
+#ifdef mod_mail
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -339,7 +339,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 	}
 	delta_ = c - pos_;
 }
-#endif	/* MOD_MAIL */
+#endif	/* mod_mail */
 
 //*****************************************************************************
 //
@@ -358,7 +358,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	if ( !decoded_ ) {
 		decode();
 		decoded_ = true;
@@ -385,7 +385,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	if ( decoded_ ) {
 		//
 		// The character at the current position has previously been
@@ -406,7 +406,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 	}
 #endif
 	prev_ = pos_;
-#ifdef MOD_MAIL
+#ifdef mod_mail
 	pos_ += delta_;
 #else
 	++pos_;
