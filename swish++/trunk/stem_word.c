@@ -50,16 +50,16 @@ struct rule_list {
 	bool		(*condition)( char const *word );
 };
 
-char	*end;				// iterator at end of word being stemmed
-// Acess to this global variable is protected by the stem_lock mutex in
+static char	*end;			// iterator at end of word being stemmed
+// Acess to this global variable is protected by the cache_lock mutex in
 // stem_word().
 
-bool	add_e( char const *word );
-bool	ends_with_cvc( char const *word );
-bool	has_vowel( char const *word );
-bool	remove_e( char const *word );
-int	replace_suffix( char *word, rule_list const* );
-int	word_size( char const *word );
+static bool	add_e( char const *word );
+static bool	ends_with_cvc( char const *word );
+static bool	has_vowel( char const *word );
+static bool	remove_e( char const *word );
+static int	replace_suffix( char *word, rule_list const* );
+static int	word_size( char const *word );
 
 //*****************************************************************************
 //
