@@ -79,6 +79,39 @@ using namespace std;
 //
 // SYNOPSIS
 //
+	bool find_left( encoded_char_range::const_iterator &c, char left )
+//
+// DESCRIPTION
+//
+//	Find a "left" character of a pair.
+//
+// PARAMETERS
+//
+//	c	The iterator to use.  It is presumed to be positioned at any
+//		character either before or at the "left" character.  It is
+//		repositioned after the "left" character only if it was found.
+//
+//	left	The left-hand character to find.
+//
+// RETURN VALUE
+//
+//	Returns true only if the match was found.
+//
+//*****************************************************************************
+{
+	for ( encoded_char_range::const_iterator d = c; !d.at_end(); ++d )
+		if ( *d == left ) {
+			c = ++d;
+			return true;
+		} else if ( *d == '\n' || *d == '\r' )
+			break;
+	return false;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	bool find_match( encoded_char_range::const_iterator &c, char left )
 //
 // DESCRIPTION
@@ -256,7 +289,7 @@ collect:	if ( is_word_char( ch ) ) {
 				//
 				bool newline = false;
 				while ( !(++c).at_end() )
-					if ( *c == '\n' )
+					if ( *c == '\n' || *c == '\r' )
 						newline = true;
 					else if ( newline && !is_space( *c ) )
 						break;
@@ -325,14 +358,13 @@ collect:	if ( is_word_char( ch ) ) {
 	////////// Deal with elements of a class not to index /////////////////
 
 	char command_buf[ Command_Name_Max_Size + 1 ];	// +1 for null
-	{ // local scope
 	//
-	// Copy only the tag name by stopping at a whitespace character (or
+	// Copy only the command name by stopping at a whitespace character (or
 	// running into the end of the tag).
 	//
 	register char *to = command_buf;
 	encoded_char_range::const_iterator from = c;
-	while ( !from.at_end() && !is_alnum( *from ) ) {
+	while ( !from.at_end() && is_alnum( *from ) ) {
 		//
 		// Check to see if the name is too long to be a valid one for a
 		// LaTeX command: if it is, invalidate it by writing "garbage"
@@ -346,14 +378,14 @@ collect:	if ( is_word_char( ch ) ) {
 		*to++ = *from++;
 	}
 	*to = '\0';
-	} // local scope
 
 	////////// Look-up command ////////////////////////////////////////////
 
 	static command_map const &commands = command_map::instance();
 	command_map::const_iterator const cmd = commands.find( command_buf );
 	if ( cmd == commands.end() )
-		return 0;
+		goto skip;
+
 	//
 	// We found the command in our internal table: now do different stuff
 	// depending upon the action.
@@ -361,6 +393,13 @@ collect:	if ( is_word_char( ch ) ) {
 	switch ( *cmd->second.action ) {
 		case '{':
 		case '[': {
+			//
+			// Just because the command is supposed to use either
+			// '{' or '[' doesn't mean it's actually there: try to
+			// find it first.  If not found, forget it.
+			//
+			if ( !find_left( c, *cmd->second.action ) )
+				goto skip;
 			//
 			// Find the matching '}' or ']' and index the words in
 			// between.
@@ -380,6 +419,9 @@ collect:	if ( is_word_char( ch ) ) {
 			return cmd->second.action;
 		}
 	}
+skip:
+	c = from;
+	return 0;
 }
 
 #endif	/* MOD_latex */
