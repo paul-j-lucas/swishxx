@@ -87,10 +87,16 @@ using namespace std;
 //
 //*****************************************************************************
 {
+#ifndef	MacOSX
+	//
+	// As of Mac OS X 10.2.1 (Darwin 6.1), madvise(2) seems broken, so
+	// don't bother.
+	//
 #ifndef	PJL_NO_MADVISE
 	if ( ::madvise( addr_, size_, behavior ) == -1 )
 		return errno_ = errno;
 #endif
+#endif	/* MacOSX */
 	return 0;
 }
 
