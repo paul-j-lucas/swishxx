@@ -30,83 +30,214 @@
 #include "config.h"
 #include "file_vector.h"
 
-#define	FOR_EACH(T,C,I) \
-	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	template< int Size, int N > class char_buffer_pool
+//
+// DESCRIPTION
+//
+//	A char_buffer_pool maintains a small set ("pool") of size N of
+//	available character buffers, each of size Size, and issues them in a
+//	round-robin manner.
+//
+//	This is used by functions to return a character string without having
+//	to allocate memory dynamically nor have previously returned strings
+//	overwritten.
+//
+//*****************************************************************************
+{
+public:
+	char_buffer_pool() : next_buf_index_( 0 ), cur_buf_( buf_[ 0 ] ) { }
 
-#define	TRANSFORM_EACH(T,C,I) \
-	for ( T::iterator I = (C).begin(); I != (C).end(); ++I )
-
-extern void	get_index_info(
-			file_vector<char> const &file, int i,
-			long *n, off_t const **offset
-		);
-
-inline bool	is_html_ext( char const *ext ) {
-			//
-			// This is faster than calling strcmp() multiple times.
-			//
-			int const i = ext[0] == 's';
-			return	 ext[ i ] == 'h' &&
-				 ext[i+1] == 't' &&
-				 ext[i+2] == 'm' &&
-				(ext[i+3] == 'l' && !ext[i+4] ||
-				!ext[i+3] && !i);
+	char*	current() const { return cur_buf_; }
+	char*	next() {
+			cur_buf_ = buf_[ next_buf_index_ ];
+			next_buf_index_ = (next_buf_index_ + 1) % N;
+			return cur_buf_;
 		}
+private:
+	char	buf_[ N ][ Size ];
+	int	next_buf_index_;
+	char	*cur_buf_;
+};
 
-inline bool	is_word_char( char c ) {
-			return c > 0 &&
-#			if OPTIMIZE_WORD_CHARS
-			( isalnum( c ) ||
-			//
-			// If you change Word_Chars in config.h from the
-			// default set but would like to keep the optimization,
-			// edit the line below to compare 'c' against every
-			// non-alphanumeric character in your set of
-			// Word_Chars.
-			//
-				c == '&' || c == '\'' || c == '-' || c == '_'
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline bool is_html_ext( char const *ext )
+//
+// DESCRIPTION
+//
+//	Checks the given filename extension to see if it is one used for HTML
+//	files: html, htm, or shtml.  Case is significant.
+//
+// PARAMETERS
+//
+//	ext	The filename extension to be checked.
+//
+// RETURN VALUE
+//
+//	Returns true only if the filename extension is one used for HTML
+//	files.
+//
+//*****************************************************************************
+{
+	int const i = ext[0] == 's';		// This is faster than calling
+	return	 ext[ i ] == 'h' &&		// strcmp() multiple times.
+		 ext[i+1] == 't' &&
+		 ext[i+2] == 'm' &&
+		(ext[i+3] == 'l' && !ext[i+4] ||
+		!ext[i+3] && !i);
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline bool is_vowel( char c )
+//
+// DESCRIPTION
+//
+//	Determine whether a character is a lower-case vowel [aeiou].
+//
+// PARAMETERS
+//
+//	c	The character to be checked.
+//
+// RETURN VALUE
+//
+//	Returns true only if the character is a vowel.
+//
+//*****************************************************************************
+{
+	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline bool is_word_char( char c )
+//
+// DESCRIPTION
+//
+//	Check whether a given character is a "word character," one that is
+//	valid to be in a word.
+//
+// PARAMETERS
+//
+//	c	The character to be checked.
+//
+// RETURN VALUE
+//
+//	Returns true only if the character is a "word character."
+//
+//*****************************************************************************
+{
+	return c > 0 &&
+#	if OPTIMIZE_WORD_CHARS
+	( isalnum( c ) ||
+		//
+		// If you change Word_Chars in config.h from the default set
+		// but would like to keep the optimization, edit the line below
+		// to compare 'c' against every non-alphanumeric character in
+		// your set of Word_Chars.
+		//
+		c == '&' || c == '\'' || c == '-' || c == '_'
+	);
+#	else
+	std::strchr( Word_Chars, tolower( c ) ) != 0;
+#	endif
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline bool is_word_begin_char( char c )
+//
+// DESCRIPTION
+//
+//	Check whether a given character is a "word beginning character," one
+//	that is valid to begin a word.
+//
+// PARAMETERS
+//
+//	c	The character to be checked.
+//
+// RETURN VALUE
+//
+//	Returns true only if the character is a "word beginning character."
+//
+//*****************************************************************************
+{
+#	if OPTIMIZE_WORD_BEGIN_CHARS
+	//
+	// If you change Word_Begin_Chars in config.h from the default set but
+	// would like to keep the optimization, edit the line below to compare
+	// 'c' against every character in your set of Word_Begin_Chars.
+	//
+	return isalnum( c );
+#	else
+	return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
+#	endif
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline bool is_word_end_char( char c )
+//
+// DESCRIPTION
+//
+//	Check whether a given character is a "word ending character," one
+//	that is valid to end a word.
+//
+// RETURN VALUE
+//
+//	Returns true only if the character is a "word ending character."
+//
+//*****************************************************************************
+{
+#	if OPTIMIZE_WORD_END_CHARS
+	//
+	// Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
+	//
+	return isalnum( c );
+#	else
+	return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
+#	endif
+}
+
+//*****************************************************************************
+//
+//	Miscelleneous.
+//
+//*****************************************************************************
+
+extern void		get_index_info(
+				file_vector<char> const &file, int i,
+				long *n, off_t const **offset
 			);
-#			else
-			std::strchr( Word_Chars, tolower( c ) ) != 0;
-#			endif
-		}
 
-inline bool	is_word_begin_char( char c ) {
-#			if OPTIMIZE_WORD_BEGIN_CHARS
-			//
-			// If you change Word_Begin_Chars in config.h from the
-			// default set but would like to keep the optimization,
-			// edit the line below to compare 'c' against every
-			// character in your set of Word_Begin_Chars.
-			//
-			return isalnum( c );
-#			else
-			return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
-#			endif
-		}
-inline bool	is_word_end_char( char c ) {
-#			if OPTIMIZE_WORD_END_CHARS
-			//
-			// Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
-			//
-			return isalnum( c );
-#			else
-			return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
-#			endif
-		}
-
-extern bool	is_ok_word( char const *word );
+extern bool		is_ok_word( char const *word );
 
 			// ensure function semantics: 'c' is expanded once
 inline char		to_lower( char c )	{ return tolower( c ); }
 extern char*		to_lower( char const *s );
 extern char*		to_lower( char const *begin, char const *end );
-inline char		to_upper( char c )	{ return toupper( c ); }
 
 extern char const*	ltoa( long );
-inline char const*	itoa( int    n )	{ return ::ltoa( n ); }
-inline char const*	ntoa( short  n )	{ return ::ltoa( n ); }
-inline char const*	ntoa( int    n )	{ return ::ltoa( n ); }
-inline char const*	ntoa( long   n )	{ return ::ltoa( n ); }
+inline char const*	itoa( int n )		{ return ::ltoa( n ); }
+
+#define	FOR_EACH(T,C,I) \
+	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
+
+#define	TRANSFORM_EACH(T,C,I) \
+	for ( T::iterator I = (C).begin(); I != (C).end(); ++I )
 
 #endif	/* util_H */
