@@ -56,14 +56,10 @@
 //	Network Working Group of the Internet Engineering Task Force, September
 //	1998.
 //
-//	Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
+//	Nathaniel S. Borenstein and Ned Freed.  "RFC 2045: Multipurpose
 //	Internet Mail Extensions (MIME) Part One: Format of Internet Message
 //	Bodies," RFC 822 Extensions Working Group of the Internet Engineering
 //	Task Force, November 1996.
-//
-//	Tim Berners-Lee.  "RFC 1563: The text/enriched MIME Content-type,"
-//	Network Working Group of the Internet Engineering Task Force, January
-//	1994.
 //
 //	Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "HTML 4.0
 //	Specification," World Wide Web Consortium, April 1998.
@@ -95,7 +91,9 @@ private:
 		External_Filter,
 
 		Text_Plain,
+#ifdef	mod_rtf
 		Text_Enriched,
+#endif
 #ifdef	mod_html
 		Text_HTML,
 #endif
@@ -123,9 +121,6 @@ private:
 		char const *value_begin, *value_end;
 	};
 
-	void			mail_indexer::index_enriched(
-					encoded_char_range const&
-				);
 	message_type		mail_indexer::index_headers(
 					char const *&begin, char const *end
 				);
