@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "April 5, 2000" "SWISH++"
+.TH \f3search\fP 1 "September 20, 2000" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -123,15 +123,13 @@ A results line can be parsed easily in Perl with:
 .cS
 ($rank,$path,$size,$title) = split( / /, $_, 4 );
 .cE
-In addition to results lines, comment lines may also appear
+Prior to results lines, comment lines may also appear
 containing additional information about the query results.
 Comment lines are in the format of:
 .cS
 # \f2comment-key\fP: \f2comment-value\fP
 .cE
-The
-.I comment-keys
-are:
+The keys and values are:
 .RS 5
 .TP 25
 \f3ignored\fP: \f2stop-words\fP
