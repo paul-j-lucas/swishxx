@@ -314,13 +314,25 @@ could_not_filter:
 			);
 			if ( ::strstr( value, "binary" ) )
 				type.encoding_ = Binary;
-#ifdef	ENCODING_base64
 			else if ( ::strstr( value, "base64" ) )
+#ifdef	ENCODING_base64
 				type.encoding_ = encoding_base64;
+#else
+				// Since Base64 encoding wasn't compiled in, we
+				// need to make it not indexable: set the
+				// encoding to binary.
+				//
+				type.encoding_ = Binary;
 #endif
 #ifdef	ENCODING_quoted_printable
 			else if ( ::strstr( value, "quoted-printable" ) )
 				type.encoding_ = encoding_quoted_printable;
+#else
+			// Treat quoted-printable as plain text since it *is*
+			// mostly plain text.  (This is the best that can be
+			// done if the encoding isn't compiled in and it's
+			// better than treating the text as binary and not
+			// indexing it at all.)
 #endif
 			continue;
 		}
@@ -354,13 +366,17 @@ could_not_filter:
 				//
 				if ( !::strcmp( charset, "iso8859-1" ) )
 					type.charset_ = ISO_8859_1;
-#ifdef	CHARSET_utf7
 				else if ( !::strcmp( charset, "utf-7" ) )
+#ifdef	CHARSET_utf7
 					type.charset_ = charset_utf7;
+#else
+					goto not_indexable;
 #endif
-#ifdef	CHARSET_utf8
 				else if ( !::strcmp( charset, "utf-8" ) )
+#ifdef	CHARSET_utf8
 					type.charset_ = charset_utf8;
+#else
+					goto not_indexable;
 #endif
 			}
 
@@ -390,14 +406,10 @@ could_not_filter:
 			//
 			if ( mime_type == "text/plain" )
 				type.content_type_ = Text_Plain;
-#ifdef	MOD_rtf
 			else if ( mime_type == "text/enriched" )
 				type.content_type_ = Text_Enriched;
-#endif
-#ifdef	MOD_html
 			else if ( mime_type == "text/html" )
 				type.content_type_ = Text_HTML;
-#endif
 			else if ( ::strstr( value, "vcard" ) )
 				type.content_type_ = Text_vCard;
 			else if ( mime_type == "message/rfc822" )
@@ -410,10 +422,8 @@ could_not_filter:
 			//
 			else if ( ::strstr( value, "multipart/" ) ) {
 				char const *b = ::strstr( value, "boundary=" );
-				if ( !b || !*(b += 9) ) {
-					type.content_type_ = Not_Indexable;
-					continue;	// weird case
-				}
+				if ( !b || !*(b += 9) )	// weird case
+					goto not_indexable;
 				//
 				// Erase everything (including any surrounding
 				// quotes) except the boundary string from the
@@ -437,7 +447,7 @@ could_not_filter:
 				// It's not a Content-Type we know anything
 				// about, so it's not indexable.
 				//
-				type.content_type_ = Not_Indexable;
+not_indexable:			type.content_type_ = Not_Indexable;
 			}
 		}
 
