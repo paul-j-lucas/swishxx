@@ -194,11 +194,11 @@ private:
 	typedef std::set< thread* > thread_set;
 	typedef std::queue< thread::argument_type > task_queue_type;
 
-	int		min_threads_, max_threads_;
+	int volatile	min_threads_, max_threads_;
 	thread_set	threads_;
 	pthread_mutex_t	t_lock_;
 
-	int		t_busy_;			// how many are busy
+	int volatile	t_busy_;			// how many are busy
 	pthread_mutex_t	t_busy_lock_;
 	pthread_cond_t	t_idle_;			// a thread is idle
 
@@ -207,7 +207,7 @@ private:
 	pthread_cond_t	q_not_empty_;			// a task is available
 
 	bool		destructing_;			// destructor called?
-	int		timeout_;
+	int volatile	timeout_;
 };
 
 #ifndef	PJL_NO_NAMESPACES
