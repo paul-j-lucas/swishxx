@@ -94,17 +94,18 @@ int		indexer::suspend_indexing_count_ = 0;
 	if ( exclude_meta_names.contains( meta_name ) )
 		return No_Meta_ID;
 
-	IncludeMeta::const_iterator m;
-	if (	!include_meta_names.empty() &&
-		(m = include_meta_names.find( meta_name ))
-			== include_meta_names.end()
-	)
-		return No_Meta_ID;
+	if ( !include_meta_names.empty() ) {
+		IncludeMeta::const_iterator const
+			m = include_meta_names.find( meta_name );
+		if ( m == include_meta_names.end() )
+			return No_Meta_ID;
+		meta_name = m->second;
+	}
 
 	//
 	// Look up the meta name to get its associated unique integer ID.
 	//
-	meta_map::const_iterator const i = meta_names.find( m->second );
+	meta_map::const_iterator const i = meta_names.find( meta_name );
 	int meta_id;
 	if ( i != meta_names.end() )
 		meta_id = i->second;
@@ -114,7 +115,7 @@ int		indexer::suspend_indexing_count_ = 0;
 		// guarantee that the RHS of assignment is evaluated first.
 		//
 		meta_id = meta_names.size();
-		meta_names[ m->second ] = meta_id;
+		meta_names[ meta_name ] = meta_id;
 	}
 	return meta_id;
 }
