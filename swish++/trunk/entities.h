@@ -23,13 +23,7 @@
 #define	entities_H
 
 // standard
-#ifdef HASH
-#	include <hash_map>
-#	define MAP hash_map
-#else
-#	include <map>
-#	define MAP map
-#endif
+#include <map>
 
 // local
 #include "less.h"
@@ -66,13 +60,12 @@ public:
 		return i != map_.end() ? i->second : ' ';
 	}
 private:
-	//
 	// Note that the declaration of std::map has a default "Compare"
 	// template parameter of "less< key_type >" and, since we've included
 	// less.h above that defines "less< char const* >", C-style string
 	// comparisons work properly.
 	//
-	typedef std::MAP< key_type, value_type > map_type;
+	typedef std::map< key_type, value_type > map_type;
 	map_type map_;
 };
 
