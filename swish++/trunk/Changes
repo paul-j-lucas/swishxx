@@ -97,6 +97,16 @@ CHANGES, file-by-file
 
 	1. Removed "ephemeral ports" since that wasn't right.
 
+* search_daemon.c
+
+	1. Removed: accept_failed().
+	2. Added: handle_accept() and reset_socket().
+	3. Moved thread_pool object inside of handle_accept().
+
+* search_thread.c
+
+	1. Factored out reset_socket().
+
 * swish++.conf
 
 	1. Changed value for SocketQueueSize to 511.
