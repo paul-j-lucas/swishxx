@@ -37,6 +37,7 @@ I_SRCS:=	bcd.c \
 		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
+		conf_filter.c \
 		conf_int.c \
 		conf_percent.c \
 		conf_set.c \
@@ -46,7 +47,6 @@ I_SRCS:=	bcd.c \
 		file_info.c \
 		file_list.c \
 		filter.c \
-		FilterFile.c \
 		IncludeFile.c \
 		IncludeMeta.c \
 		indexer.c \
@@ -110,6 +110,7 @@ S_LINK:=	$(CCLINK) $(SOCKET_LIB) $(PTHREAD_LIB)
 E_SRCS:=	mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
+		conf_filter.c \
 		conf_int.c \
 		conf_set.c \
 		conf_string.c \
@@ -118,7 +119,6 @@ E_SRCS:=	mmap_file.c \
 		ExcludeFile.c \
 		ExtractFile.c \
 		filter.c \
-		FilterFile.c \
 		index_segment.c \
 		option_stream.c \
 		postscript.c \
