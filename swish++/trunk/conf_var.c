@@ -314,10 +314,9 @@ next_line:
 {
 	current_config_file_line_no_ = line_no;
 	::strtok( line, " \r\t" );		// just the variable name
-	map_type::const_iterator const i = map_ref().find( line );
+	map_type::const_iterator const i = map_ref().find( to_lower( line ) );
 	if ( i == map_ref().end() ) {
-		cerr	<< warning << '"' << line
-			<< "\" in config. file unrecognized; ignored\n";
+		cerr << warning << '"' << line << "\" unrecognized; ignored\n";
 		return;
 	}
 	if ( i->second ) {
