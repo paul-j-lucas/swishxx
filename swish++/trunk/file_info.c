@@ -23,12 +23,12 @@
 #include <cstring>
 
 // local
-#include "bcd.h"
 #include "config.h"
-#include "file_info.h"
+#include "directory.h"
 #include "FilesReserve.h"
+#include "file_info.h"
 #include "platform.h"
-#include "ResultSeparator.h"
+#include "util.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -38,14 +38,13 @@ file_info::list_type		file_info::list_;
 file_info::name_set_type	file_info::name_set_;
 
 FilesReserve			files_reserve;
-ResultSeparator			result_separator;
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
 	file_info::file_info(
-		char const *file_name, size_t file_size, char const *title,
+		char const *path_name, size_t file_size, char const *title,
 		int num_words
 	)
 //
@@ -59,77 +58,85 @@ ResultSeparator			result_separator;
 //	reserve files_reserve slots for files.  If exceeded, the vector will
 //	automatically grow, but with a slight performance penalty.
 //
+// PARAMETERS
+//
+//	path_name	The full path name of the file.
+//
+//	file_size	The size of the file in bytes.
+//
+//	title		The title of the file only if not null.
+//
+//	num_words	The number of words in the file.
+//
 //*****************************************************************************
-:
-	file_name_( ::strdup( file_name ) ),
-	title_( title ? ::strdup( title ) :
+	: file_name_(
 		//
-		// Note that in the cases below, title_ will end up pointing
-		// within file_name_, i.e., they will share storage.
+		// First duplicate the entire path name and put it into the set
+		// of files encountered; then make file_name_ point to the base
+		// name inside the same string, i.e., it shares storage.
 		//
-		(title = ::strrchr( file_name_, '/' )) ? title + 1 : file_name_
-	),
-	size_( file_size ), num_words_( num_words )
+		pjl_basename( *name_set_.insert( ::strdup( path_name ) ).first )
+	  ),
+	  dir_index_( dir_list.size() - 1 ),
+	  num_words_( num_words ), size_( file_size ),
+	  title_(
+		//
+		// If there was a title given, use that; otherwise the title is
+		// the file name.  Note that it too shares storage.
+		//
+		title ? ::strdup( title ) : file_name_
+	  )
+{
+	construct();
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	file_info::file_info(
+		char const *path_name, int dir_index, size_t file_size,
+		char const *title, int num_words
+	)
+//
+// DESCRIPTION
+//
+//	Construct a file_info reconstituted from an index file for incremental
+//	indexing.
+//
+// PARAMETERS
+//
+//	path_name	The full path name of the file.
+//
+//	dir_index	The numerical index of the directory.
+//
+//	file_size	The size of the file in bytes.
+//
+//	title		The title of the file only if not null.
+//
+//	num_words	The number of words in the file.
+//
+//*****************************************************************************
+	: file_name_( pjl_basename( path_name ) ), dir_index_( dir_index ),
+	  size_( file_size ), title_( title ), num_words_( num_words )
+{
+	construct();
+	name_set_.insert( path_name );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void file_info::construct()
+//
+// DESCRIPTION
+//
+//	This factors out code common to constructors.
+//
+//*****************************************************************************
 {
 	if ( list_.empty() )
 		list_.reserve( files_reserve );
 	list_.push_back( this );
-	name_set_.insert( file_name_ );
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	/* static */ ostream& file_info::out( ostream &o, char const *p )
-//
-// DESCRIPTION
-//
-//	Parse a file_info from an index file and write it to an ostream.
-//
-// PARAMETERS
-//
-//	o	The ostream to write to.
-//
-//	p	A pointer to the first character containing a file_info inside
-//		an index file.
-//
-// RETURN VALUE
-//
-//	The passed-in ostream.
-//
-//*****************************************************************************
-{
-	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
-	o << u;
-	while ( *u++ ) ;				// skip past filename
-	size_t const size = parse_bcd( u );
-	parse_bcd( u );					// skip past num_words
-	return o << result_separator << size << result_separator << u;
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	/* static */ file_info* file_info::parse( char const *p )
-//
-// DESCRIPTION
-//
-//	Parse a file_info from an index file to reconstitute an instance.
-//
-// PARAMETERS
-//
-//	p	A pointer to the first character containing a file_info inside
-//		an index file.
-//
-//*****************************************************************************
-{
-	unsigned char const *u = reinterpret_cast<unsigned char const*>( p );
-	while ( *u++ ) ;				// skip past filename
-	size_t const size = parse_bcd( u );
-	int const num_words = parse_bcd( u );
-	return new file_info(
-		p, size, reinterpret_cast<char const*>( u ), num_words
-	);
 }
