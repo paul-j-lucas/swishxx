@@ -77,18 +77,28 @@ while ( my $file = shift( @files ) ) {
 	my $file_dir = dirname( $file );
 	unless ( exists $dir_set{ $file_dir } ) {
 		$dir_set{ $file_dir } = 1;
-		push( @dirs, $file_dir );
+		push( @dirs2, $file_dir );
 	}
 
 	##
 	# Look in all directories in @dirs for the current file.
 	##
 	my $found_dir;
-	for ( @dirs ) {
-		my $path = "$_/$file";
-		next unless open( SOURCE, $path );
-		$dep_set{ $path } = 1;
-		$found_dir = $_;
+	for my $dir ( @dirs ) {
+		my $path = "$dir/$file";
+		if ( open( SOURCE, $path ) ) {
+			$found_dir = $dir;
+			goto FOUND;
+		}
+		for my $dir2 ( @dirs2 ) {
+			$path = "$dir/$dir2/$file";
+			if ( open( SOURCE, $path ) ) {
+				$found_dir = "$dir/$dir2";
+				goto FOUND;
+			}
+		}
+		next;
+FOUND:		$dep_set{ $path } = 1;
 		last;
 	}
 	die "$ME: error: can not open $file\n" unless $found_dir;
