@@ -40,7 +40,9 @@
 #include "mod/html/mod_html.h"
 #endif
 #include "mod_mail.h"
-#include "platform.h"
+#ifdef	mod_rtf
+#include "mod/rtf/mod_rtf.h"
+#endif
 #include "TitleLines.h"
 #include "util.h"
 #include "Verbosity.h"
@@ -309,92 +311,6 @@ could_not_filter:
 //
 // SYNOPSIS
 //
-	void mail_indexer::index_enriched( encoded_char_range const &e )
-//
-// DESCRIPTION
-//
-//	Index the words between the given iterators.  The text is assumed to be
-//	text/enriched content type.
-//
-//	The code is copied-and-pasted from indexer::index_words() because,
-//	despite the code redundancy (which isn't all that much), this is much
-//	faster than, say, calling an overrideable virtual function for every
-//	single character.
-//
-// PARAMETERS
-//
-//	e	The encoded character range to index.
-//
-// SEE ALSO
-//
-//	Tim Berners-Lee.  "RFC 1563: The text/enriched MIME Content-type,"
-//	Network Working Group of the Internet Engineering Task Force, January
-//	1994.
-//
-//*****************************************************************************
-{
-	char	word[ Word_Hard_Max_Size + 1 ];
-	bool	in_word = false;
-	int	len;
-
-	encoded_char_range::const_iterator c = e.begin();
-	while ( !c.at_end() ) {
-		register char ch = iso8859_to_ascii( *c++ );
-
-		////////// Collect a word /////////////////////////////////////
-
-		if ( is_word_char( ch ) ) {
-			if ( !in_word ) {
-				// start a new word
-				word[ 0 ] = ch;
-				len = 1;
-				in_word = true;
-				continue;
-			}
-			if ( len < Word_Hard_Max_Size ) {
-				// continue same word
-				word[ len++ ] = ch;
-				continue;
-			}
-			in_word = false;	// too big: skip chars
-			while ( !c.at_end() && is_word_char( *c++ ) ) ;
-			continue;
-		}
-
-		if ( in_word ) {
-			//
-			// We ran into a non-word character, so index the word
-			// up to, but not including, it.
-			//
-			in_word = false;
-			index_word( word, len );
-		}
-
-		if ( ch == '<' ) {
-			//
-			// This is probably the start of command; if so, skip
-			// everything until the terminating '>'.
-			//
-			if ( c.at_end() )
-				break;
-			if ( (ch = *c++) == '<' )
-				continue;	// a literal '<': ignore it
-			while ( !c.at_end() && *c++ != '>' ) ;
-		}
-	}
-	if ( in_word ) {
-		//
-		// We ran into 'end' while still accumulating characters into a
-		// word, so just index what we've got.
-		//
-		index_word( word, len );
-	}
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	mail_indexer::message_type mail_indexer::index_headers(
 		register char const *&c, register char const *end
 	)
@@ -438,7 +354,7 @@ could_not_filter:
 		////////// Deal with Content-Transfer-Encoding ////////////////
 
 		if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
-			auto_vec< char > const value(
+			auto_vec<char> const value(
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
 			if ( ::strstr( value, "quoted-printable" ) )
@@ -453,7 +369,7 @@ could_not_filter:
 		////////// Deal with Content-Type /////////////////////////////
 
 		if ( !::strcmp( kv.key, "content-type" ) ) {
-			auto_vec< char > const value(
+			auto_vec<char> const value(
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
 
@@ -492,8 +408,10 @@ could_not_filter:
 			//
 			if ( mime_type == "text/plain" )
 				type.content_type_ = Text_Plain;
+#ifdef	mod_rtf
 			else if ( mime_type == "text/enriched" )
 				type.content_type_ = Text_Enriched;
+#endif
 #ifdef	mod_html
 			else if ( mime_type == "text/html" )
 				type.content_type_ = Text_HTML;
@@ -731,15 +649,17 @@ could_not_filter:
 		case Text_Plain:
 			indexer::index_words( e2 );
 			break;
-
-		case Text_Enriched:
-			index_enriched( e2 );
+#ifdef	mod_rtf
+		case Text_Enriched: {
+			static indexer &rtf = *indexer::find_indexer( "RTF" );
+			rtf.index_words( e2 );
 			break;
+		}
+#endif
 #ifdef	mod_html
 		case Text_HTML: {
-			static indexer *const
-				html = indexer::find_indexer( "HTML" );
-			html->index_words( e2 );
+			static indexer &html = *indexer::find_indexer( "HTML" );
+			html.index_words( e2 );
 			break;
 		}
 #endif
