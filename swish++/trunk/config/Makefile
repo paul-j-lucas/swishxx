@@ -34,10 +34,12 @@ TARGET=		$(ROOT)/$(PLATFORM_H)
 
 all config:	$(TARGET)
 
-$(TARGET):	src/explicit$(CCCEXT) \
+$(TARGET):	src/errno$(CCCEXT) \
+		src/explicit$(CCCEXT) \
 		src/mutable$(CCCEXT) \
 		src/namespaces$(CCCEXT) \
-		src/new_casts$(CCCEXT)
+		src/new_casts$(CCCEXT) \
+		src/socklen$(CCCEXT)
 	./config-sh $(TARGET) $(CCCEXT) $(CCOEXT) $(CC) $(CCFLAGS)
 
 ##
