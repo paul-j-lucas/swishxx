@@ -72,8 +72,24 @@ Building SWISH++ for Unix
    recommended by the GNU Make authors themselves for generating dependency
    files automatically.
 
-   If everything works out, the software will be built.  If you're root, you
-   can also type "make install".
+   If everything works out, the software will be built.
+
+4. Type "make install".
+
+5. Optional: if you are going to run search(1) as a daemon and you want it
+   started automatically on system boot, you need to call searchmonitor from
+   your system's start-up scripts.
+
+   For SysV-like systems, e.g. Linux and Solaris, type "make install_sysv" and
+   then edit the variable definitions in the beginning of /etc/init.d/searchd
+   if necessary.
+
+   For other types of Unix systems, e.g., FreeBSD, add a call to searchmonitor
+   in /etc/rc.local like:
+
+   	/path/to/searchmonitor -c /path/to/swish++.conf -s /path/to/search &
+
+   In either case, also edit /etc/swish++.conf to your liking.
 
 
 ===============================================================================
