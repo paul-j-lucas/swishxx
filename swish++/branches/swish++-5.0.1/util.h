@@ -27,6 +27,7 @@
 #include <cerrno>
 #include <climits>
 #include <cstring>
+#include <iostream>
 #include <string>
 #include <ctime>			/* needed by sys/resource.h */
 #include <sys/time.h>			/* needed by FreeBSD systems */
@@ -85,31 +86,6 @@ private:
 	int	next_buf_index_;
 	char	*cur_buf_;
 };
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline char const* basename( char const *file_name )
-//
-// DESCRIPTION
-//
-//	Determine the base name of a given file name.
-//
-// PARAMETERS
-//
-//	file_name	The file_name.
-//
-// RETURN VALUE
-//
-//	Returns a pointer to the base name of the file name.  Note that the
-//	pointer points within file_name, i.e., the two will share storage.
-//
-//*****************************************************************************
-{
-	char const *const slash = ::strrchr( file_name, '/' );
-	return slash ? slash + 1 : file_name;
-}
 
 //*****************************************************************************
 //
@@ -175,6 +151,31 @@ private:
 //
 // SYNOPSIS
 //
+	inline char const* pjl_basename( char const *file_name )
+//
+// DESCRIPTION
+//
+//	Determine the base name of a given file name.
+//
+// PARAMETERS
+//
+//	file_name	The file_name.
+//
+// RETURN VALUE
+//
+//	Returns a pointer to the base name of the file name.  Note that the
+//	pointer points within file_name, i.e., the two will share storage.
+//
+//*****************************************************************************
+{
+	char const *const slash = ::strrchr( file_name, '/' );
+	return slash ? slash + 1 : file_name;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	inline char const* skip_newline( char const *c, char const *end )
 //
 // DESCRIPTION
@@ -211,7 +212,7 @@ private:
 extern struct stat	stat_buf;		// somplace to do a stat(2) in
 
 inline bool	file_exists( char const *path ) {
-			return std::stat( path, &stat_buf ) != -1;
+			return ::stat( path, &stat_buf ) != -1;
 		}
 inline bool	file_exists( std::string const &path ) {
 			return file_exists( path.c_str() );
@@ -244,7 +245,7 @@ inline bool	is_symbolic_link() {
 			return S_ISLNK( stat_buf.st_mode & S_IFLNK );
 		}
 inline bool	is_symbolic_link( char const *path ) {
-			return	std::lstat( path, &stat_buf ) != -1
+			return	::lstat( path, &stat_buf ) != -1
 				&& is_symbolic_link();
 		}
 inline bool	is_symbolic_link( std::string const &path ) {
@@ -258,12 +259,12 @@ inline bool	is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
-inline std::ostream&	error( std::ostream &o = cerr ) {
+inline std::ostream&	error( std::ostream &o = std::cerr ) {
 				return o << me << ": error: ";
 			}
-inline std::ostream&	error_string( std::ostream &o = cerr ) {
+inline std::ostream&	error_string( std::ostream &o = std::cerr ) {
 				return o << ": " << std::strerror( errno )
-					<< endl;
+					<< std::endl;
 			}
 
 inline char*		new_strdup( char const *s ) {
