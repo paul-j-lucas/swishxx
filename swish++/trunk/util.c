@@ -50,7 +50,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-	char const *c = REINTERPRET_CAST( char const* )( file.begin() );
+	file_vector<char>::const_iterator c = file.begin();
 	long const *p = REINTERPRET_CAST( long const* )( c );
 	*n = p[ 0 ];
 	while ( i-- > 0 ) {
