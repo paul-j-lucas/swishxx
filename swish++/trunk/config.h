@@ -89,21 +89,6 @@ char const	Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 #define		OPTIMIZE_WORD_END_CHARS		1
 //		Same deal as with OPTIMIZE_WORD_CHARS.
 
-#ifdef	MOD_HTML
-////////// HTML and XHTML parameters //////////////////////////////////////////
-
-int const	Entity_Max_Size			= 6;
-//		The maximum size of an entity reference, e.g., "&eacute;" NOT
-//		counting the leading '&' or the trailing ';'.  You should have
-//		no reason to change this.
-
-int const	Tag_Name_Max_Size		= 10;
-//		The maximum size of an HTML or XHTML tag name, e.g.,
-//		"BLOCKQUOTE".  You might need to increase this if you are
-//		indexing HTML or XHTML documents that contain non-standard tags
-//		and at least one of them is longer than the above.
-#endif
-
 #ifdef	SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
 
