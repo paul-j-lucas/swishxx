@@ -23,8 +23,8 @@
 #define file_vector_H
 
 // standard
+#include <cstddef>			/* for size_t */
 #include <iterator>
-#include <sys/types.h>			/* for off_t */
 
 #ifdef	WIN32
 #include <windows.h>
@@ -58,7 +58,7 @@ public:
 #ifdef	WIN32
 	typedef DWORD size_type;
 #else
-	typedef off_t size_type;
+	typedef size_t size_type;
 #endif
 	typedef ptrdiff_t difference_type;
 	typedef char value_type;
