@@ -47,4 +47,6 @@ public:
 	CONF_INT_ASSIGN_OPS( FilesReserve )
 };
 
+extern FilesReserve files_reserve;
+
 #endif	/* FilesReserve_H */
