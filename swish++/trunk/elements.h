@@ -23,6 +23,7 @@
 #define element_map_H
 
 // standard
+#include <iostream>
 #include <map>
 
 // local
@@ -62,7 +63,7 @@ private:
 //
 // SYNOPSIS
 //
-	struct element_map : std::map< char const*, element >
+	class element_map : public std::map< char const*, element >
 //
 // DESCRIPTION
 //
@@ -71,6 +72,9 @@ private:
 //	for having a derived class rather than a typedef is so that we can
 //	have a custom constructor that initializes itself.
 //
+//	The contructor is private, however, to ensure that only instance()
+//	can be called to initialize and access a single, static instance.
+//
 // NOTE
 //
 //	Note that the declaration of std::map has a default "Compare"
@@ -78,9 +82,44 @@ private:
 //	less.h above that defines "less< char const* >", C-style string
 //	comparisons work properly.
 //
+// SEE ALSO
+//
+//	elements.c	instance()
+//
 //*****************************************************************************
 {
+public:
+	static element_map const& instance();
+private:
 	element_map();
 };
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline std::ostream&
+	operator<<( std::ostream &o, element_map::value_type const &e )
+//
+// DESCRIPTION
+//
+//	Write the key of an element_map::value_type (the HTML element name)
+//	to an ostream.  This is useful so an ostream_iterator can be used to
+//	dump the entire element_map.
+//
+// PARAMETERS
+//
+//	o	The ostream to write to.
+//
+//	e	The element_map::value_type.
+//
+// RETURN VALUE
+//
+//	The same ostream passed in.
+//
+//*****************************************************************************
+{
+	return o << e.first;
+}
 
 #endif	/* element_map_H */
