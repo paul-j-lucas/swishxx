@@ -22,44 +22,6 @@
 // local
 #include "entities.h"
 
-//
-// All numeric entities are from the ISO 8859-1 character set.
-//
-char const num_entities[] = {
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	//   0
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	//  |
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	//  |
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	//  31
-	' ', '!', '"', '#', '$', '%', '&', '\'',//  32
-	'(', ')', '*', '+', ',', '-', '.', '/',	//  |
-	'0', '1', '2', '3', '4', '5', '6', '7',	//  |
-	'8', '9', ':', ';', '<', '=', '>', '?',	//  |
-	'@', 'A', 'B', 'C', 'D', 'E', 'F', 'G',	//  |
-	'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',	//  |
-	'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',	//  |
-	'X', 'Y', 'Z', '[', '\\', ']', '^', '_',//  |
-	'`', 'a', 'b', 'c', 'd', 'e', 'f', 'g',	//  |
-	'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',	//  |
-	'p', 'q', 'r', 's', 't', 'u', 'v', 'w',	//  |
-	'x', 'y', 'z', '{', '|', '}', '~', ' ',	// 127
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	// 128
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	//  |
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	//  |
-	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',	// 159
-	' ', '!', ' ', '#', ' ', ' ', '|', ' ',	// 160
-	' ', ' ', ' ', '"', ' ', '-', ' ', ' ',	//  |
-	' ', ' ', '2', '3', '\'', ' ', ' ', '.',//  |
-	' ', '1', ' ', '"', ' ', ' ', ' ', '?',	//  |
-	'A', 'A', 'A', 'A', 'A', 'A', 'E', 'C',	//  |
-	'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I',	//  |
-	'D', 'N', 'O', 'O', 'O', 'O', 'O', ' ',	//  |
-	'O', 'U', 'U', 'U', 'U', 'Y', ' ', 's',	//  |
-	'a', 'a', 'a', 'a', 'a', 'a', 'e', 'c',	//  |
-	'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i',	//  |
-	'd', 'n', 'o', 'o', 'o', 'o', 'o', ' ',	//  |
-	'o', 'u', 'u', 'u', 'u', 'y', ' ', 'y',	// 255
-};
-
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -68,10 +30,10 @@ char const num_entities[] = {
 //
 // DESCRIPTION
 //
-//	Construct (initialize) a char_entity_map.  Any entity that isn't
-//	listed below will convert to a space.  Note that is isn't necessary
-//	to convert "&lt;" and "&gt;" since such entities aren't indexed
-//	anyway (but "&amp;" is when part of an acronym like "AT&T").
+//	Construct (initialize) a char_entity_map.  Any entity that isn't listed
+//	below will convert to a space.  Note that is isn't necessary to convert
+//	"&lt;" and "&gt;" since such entities aren't indexed anyway (but
+//	"&amp;" is when part of an acronym like "AT&T").
 //
 // SEE ALSO
 //
@@ -146,8 +108,8 @@ char const num_entities[] = {
 //
 // SEE ALSO
 //
-//	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++
-//	Reference Manual."  Addison-Wesley, Reading, MA.  p. 19.
+//	Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++ Reference
+//	Manual."  Addison-Wesley, Reading, MA, 1990.  p. 19.
 //
 //*****************************************************************************
 {
