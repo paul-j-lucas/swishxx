@@ -39,6 +39,7 @@
 #include <vector>
 
 // local
+#include "auto_vec.h"
 #include "bcd.h"
 #include "config.h"
 #include "exit_codes.h"
@@ -63,7 +64,6 @@
 #include "WordPercentMax.h"
 #include "word_util.h"
 #ifdef	SEARCH_DAEMON
-#include "auto_vec.h"
 #include "PidFile.h"
 #include "SearchDaemon.h"
 #include "SocketAddress.h"
@@ -304,11 +304,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-#ifdef	SEARCH_DAEMON
 	auto_vec< char > const lower_word( to_lower_r( word ) );
-#else
-	char const *const lower_word = to_lower( word );
-#endif
 	less< char const* > const comparator;
 
 	if ( !is_ok_word( word ) || ::binary_search(
@@ -361,11 +357,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-#ifdef	SEARCH_DAEMON
 	auto_vec< char > const lower_word( to_lower_r( word ) );
-#else
-	char const *const lower_word = to_lower( word );
-#endif
 	less< char const* > const comparator;
 
 	if ( !is_ok_word( word ) || ::binary_search(
