@@ -246,9 +246,8 @@ int conf_var::current_config_file_line_no_ = 0;
 		//
 		// Find the end of the line.
 		//
-		register file_vector::const_iterator nl = c + 1;
-		while ( nl != conf_file.end() && *nl != '\n' )
-			++nl;
+		file_vector::const_iterator const
+			nl = skip_line( c, conf_file.end() );
 		if ( nl == conf_file.end() )
 			break;
 
