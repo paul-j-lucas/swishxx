@@ -118,15 +118,10 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 			if ( opt )
 				service_request( argv, opt, out, out );
 		}
+		out << flush;
 	}
 
-	//
-	// Close the file descriptor making sure to "interrupt-proof" it.
-	//
-	int result;
-	do {
-		result = ::close( arg.i );
-	} while ( result == -1 && errno == EINTR );
+	::close( arg.i );
 }
 
 //*****************************************************************************
