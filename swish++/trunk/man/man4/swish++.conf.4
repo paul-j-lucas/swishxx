@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "April 21, 2001" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "April 26, 2001" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -226,8 +226,8 @@ is a filename pattern and
 is the command-line to execute the filter.
 .PP
 Within a command,
-there are a few \f(CW%\f1 or \f(CW@\f1 substitutions
-that are substituted at run-time:
+there are a few \f(CW%\f1 substitutions
+that are done at run-time:
 .PP
 .RS 5
 .PD 0
@@ -241,6 +241,9 @@ Basename minus last extension.
 .B e
 Extension of filename.
 .TP
+.B E
+Second-to-last extension of filename.
+.TP
 .B f
 Entire filename.
 .TP
@@ -249,10 +252,15 @@ Filename minus last extension.
 .RE
 .PD
 .PP
-The @ substitution is used to indicate which filename is the target
-or product of the filter.
-There must be exactly one @ substitution.
-This file is subsequently deleted after indexing or extraction.
+That is the \f(CW%\f1 and one character immediately after it
+are substituted as described in the above table.
+Substituted filenames are skipped past and not rescanned for more substitutions,
+but the remainer of the command is.
+.PP
+Additionally, exactly one filename must be preceeded by a \f(CW@\f1
+to mark it as the target or product of the filter.
+This file will be deleted immediately after is indexed or extracted.
+.PP
 A file can be filtered more than once prior to indexing or extraction, i.e.,
 filters can be ``chained'' together.
 .PP
@@ -272,23 +280,20 @@ If the extension of
 filename should be indexed or extracted
 (because it is among the set of extensions specified with either the
 .B \-e
-option or the
+or
+.B \-\-pattern
+options or the
 .B IncludeFile
 variable
 or is not among the set specified with either the
 .B \-E
-option or the
+or
+.B \-\-no-pattern
+options or the
 .B ExcludeFile
 variable),
 then the filter(s) are executed to create it.
 (See the EXAMPLES.)
-.PP
-The
-.B b
-and
-.B B
-substititions can be used when the temporary files should be created
-in directories other than where the original files are, e.g., \f(CW/tmp\f1.
 .PP
 To use a literal \f(CW%\f1 or \f(CW@\f1, simply double it.
 .SH EXAMPLES
@@ -298,8 +303,8 @@ prior to indexing or extraction, the
 .B FilterFile
 variable lines in a configuration file would be:
 .cS
-FilterFile *.gz   gunzip -c %f > @F
-FilterFile *.Z    uncompress -c %f > @F
+FilterFile *.gz   gunzip -c %f > @%F
+FilterFile *.Z    uncompress -c %f > @%F
 .cE
 Given that, a filename such as \f(CWfoo.txt.gz\f1 would become \f(CWfoo.txt\f1.
 If files having \f(CWtxt\f1 extensions should be indexed, then it will be.
@@ -309,7 +314,7 @@ line must
 .I not
 simply be:
 .cS
-gunzip @f				# WRONG!
+gunzip @%f				# WRONG!
 .cE
 because \f(CWgunzip\f1 will
 .I replace
@@ -319,7 +324,7 @@ Here's an example to convert PDF to plain text for indexing using the
 .BR xpdf (1)
 package's \f(CWpdftotext\f1 command:
 .cS
-FilterFile *.pdf  pdftotext %f @F.txt
+FilterFile *.pdf  pdftotext %f @%F.txt
 .cE
 Not that if used in conjunction with the uncompression filters above,
 then compressed PDF files will also be indexed, i.e.,
