@@ -3,6 +3,195 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.13
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added an indexing module for ID3 tags (typically found inside MP3 files).
+  ID3v1.x and ID3v2.x through 2.4.0 are supported (with the exception of
+  encrypted frames).
+
+  (This feature shall be known as feature ID3.)
+
+* Since it was needed by feature ID3, decoding of UTF-16 text (both big- and
+  little-endian) was added.
+
+  (This feature shall be known as feature UTF16.)
+
+BUG FIXES
+---------
+
+* If the Mail module was compiled without Base64 encoding compiled in, it was
+  indexed as plain text (which is wrong).  It should be treated as Binary and
+  not indexed at all.
+
+  (This bug fix shall be known as bug fix MN64.)
+
+* If the Mail module was compiled without the UTF-7 charset compiled in, it was
+  indexed as plain text (which is wrong).  It should be treated as Binary and
+  not indexed at all.
+
+  (This bug fix shall be known as bug fix MNU7.)
+
+* httpindex didn't accept some index(1) options that it should have.
+
+  (This bug fix shall be known as bug fix HIO.)
+
+* httpindex could block if index(1) was generating partial indicies.
+
+  (This bug fix shall be known as bug fix HPI.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* charsets/charsets.h
+
+	1. Added UNKNOWN_CHARSET for feature ID3.
+	2. Added charset_utf16be() and charset_utf16le() for feature UTF16.
+
+* charsets/utf16.c
+
+	1. New file for feature UTF16.
+
+* config/config-sh
+
+	1. Added a target.mk argument.
+	2. Now generating a target.mk file.
+	3. Added DATE.
+	4. s/TARGET/TARGET_H/
+	5. Changed define() to emit for both targets.
+
+* config/config.mk
+
+	1. Added "id3" to MOD_LIST for feature ID3.
+	2. Added "utf17" to CHARSET_LIST for feature ID3.
+	3. Removed CHARSET_LIST and ENCODING_LIST from inside MOD_mail.
+	4. Added "DECODING:= -DIMPLEMENT_DECODING" to simplify
+	   encoded_char.[ch].
+	5. s/PTHREAD_LIB/PTHREAD_LINK/
+	6. s/SOCKET_LIB/SOCKET_LINK/
+	7. Added ZLIB_LINK for feature ID3.
+	8. Added "$(DECODING)" to CCFLAGS.
+	9. Added platform.mk fo dependency line.
+
+* config/GNUmakefile
+
+	1. Added platform.mk to $(TARGET).
+	2. s/$@/$(TARGET)/
+	3. Removed .*.d
+
+* config/src/zlib.c
+
+	1. New file for feature ID3.
+
+* do_file.c
+
+	1. s/#ifdef MOD_mail/#ifdef IMPLEMENT_DECODING/ for feature ID3.
+	2. Switched to using indexer::text_indexer().
+
+* encoded_char.c
+* encoded_char.h
+
+	1. s/#ifdef MOD_mail/#ifdef IMPLEMENT_DECODING/ for feature ID3.
+
+* encodings/encodings.h
+
+	1. s/-1/~0/
+
+* GNUmakefile
+
+	1. Added include of platform.mk
+	2. Added -DDEBUG_id3v2 for feature ID3.
+	3. Changed the way CFLAGS was assigned.
+	4. Added config to SUBDIRS.
+	5. Added ifndef HAVE_ZLIB
+	6. Added $(BLIB_LINK) to I_LINK for feature ID3.
+	7. s/PTHREAD_LIB/PTHREAD_LINK/
+	8. s/SOCKET_LIB/SOCKET_LINK/
+	9. Removed platform.h from disclean.
+
+* httpindex.in
+
+	1. Added missing index(1) options for bug fix HIO.
+	2. Added code to read extra lines from index(1) for bug fix HPI.
+
+* indexer.c
+
+	1. Added text_indexer_.
+	2. In map_ref(), added assignment to text_indexer_.
+
+* indexer.h
+
+	1. Made find_meta() public.
+	2. Made index_word() public.
+	3. Added text_indexer().
+	4. Added text_indexer_.
+
+* man/man1/index.1
+
+	1. Added description of ID3 module for feature ID3.
+
+* mod/id3/GNUmakefile
+* mod/id3/id3v1.c
+* mod/id3/id3v1.h
+* mod/id3/id3v2.c
+* mod/id3/id3v2.h
+* mod/id3/mod_id3.c
+* mod/id3/mod_id3.h
+
+	1. New files for feature ID3.
+
+* mod/html/mod_html.c
+* mod/latex/mod_latex.c
+* mod/mail/mod_mail.c
+* mod/man/mod_man.c
+
+	1. Switched to using move_if_match().
+
+* mod/mail/mod_mail.c
+
+	1. Made indexing treat Base64 as Binary if its encoding wasn't
+	   compiled in for bug fix MN64.
+	2. Made indexing skip UTF-7 and UTF-8 if their respective character set
+	   code wasn't compiled in for bug fix MNU7.
+	3. In index_headers(), Removed module #ifdef's since they weren't
+	   really needed.
+
+* mod/mail/mod_mail.h
+
+	1. Removed module #ifdef's since they weren't really needed.
+
+* README
+
+	1. Aded blurb about ID3 for feature ID3.
+
+* swish++.conf
+
+	1. Added IncludeMeta's for ID3v2 tag fields for feature ID3.
+	2. Added "IncludeFule ID3 *.mp3" for feature ID3.
+
+* util.h
+
+	1. Added NUM_ELEMENTS().
+
+* word_util.c
+* word_util.h
+
+	1. Added move_if_match().
+
+* www_example
+
+	1. Added "--" at end of search options to close security hole.
+
+* version.h
+
+	1. Changed to "5.13."
+
+
+*******************************************************************************
 5.12.1
 *******************************************************************************
 
