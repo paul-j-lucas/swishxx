@@ -149,16 +149,16 @@ public:
 private:
 	mutable pointer	pos_;
 	mutable pointer	prev_;
-	mutable value_type	ch_;
 #ifdef MOD_MAIL
+	mutable value_type	ch_;
 	mutable bool		decoded_;
 	mutable int		delta_;
 #endif
 	const_iterator( encoded_char_range const*, pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
 
-	void		decode() const;
 #ifdef MOD_MAIL
+	void		decode() const;
 	static value_type decode_base64(
 		pointer begin, pointer &pos, pointer end
 	);
@@ -303,7 +303,6 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 		return *c++;
 	return ++c != end ? decode_quoted_printable_aux( c, end ) : ' ';
 }
-#endif
 
 //*****************************************************************************
 //
@@ -322,7 +321,6 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef MOD_MAIL
 	//
 	// Remember the current position to allow the decoders to advance
 	// through the encoded text.  This allows the delta to be computed so
@@ -340,10 +338,8 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 			ch_ = *c++;
 	}
 	delta_ = c - pos_;
-#else
-	ch_ = *pos_;
-#endif
 }
+#endif	/* MOD_MAIL */
 
 //*****************************************************************************
 //
@@ -367,8 +363,10 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 		decode();
 		decoded_ = true;
 	}
-#endif
 	return ch_;
+#else
+	return *pos_;
+#endif
 }
 
 //*****************************************************************************
