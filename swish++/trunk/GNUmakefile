@@ -34,7 +34,7 @@ include		$(ROOT)/config/config.mk
 # Don't do the "include" if the goal contains the word "clean," i.e., either
 # the "clean" or "distclean" goal.
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
-include		$(ROOT)/config/platform.mk
+-include	$(ROOT)/config/platform.mk
 endif
 
 DEBUGFLAGS:=
@@ -215,7 +215,7 @@ $(SCRIPTS): FORCE
 # Don't do the "include" if the goal contains the word "clean," i.e., either
 # the "clean" or "distclean" goal.
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
-include $(I_SOURCES:%.c=.%.d) $(E_SOURCES:%.c=.%.d) $(S_SOURCES:%.c=.%.d)
+-include $(I_SOURCES:%.c=.%.d) $(E_SOURCES:%.c=.%.d) $(S_SOURCES:%.c=.%.d)
 endif
 
 ps pdf txt:
