@@ -30,18 +30,28 @@
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#ifdef	WIN32
+int const	MAXNAMLEN = 255;
+#else
 #include <dirent.h>				/* for MAXNAMLEN */
+#endif
 
 // local
 #include "config.h"
 #include "directory.h"
-#include "ext_proc.h"
-#include "fake_ansi.h"
+#include "ExcludeExtension.h"
+#include "exit_codes.h"
 #include "file_vector.h"
-#include "my_set.h"
+#include "FilterExtension.h"
+#include "IncludeExtension.h"
+#include "platform.h"
 #include "postscript.h"
+#include "RecurseSubdirs.h"
+#include "StopWordFile.h"
 #include "stop_words.h"
 #include "util.h"
+#include "Verbosity.h"
 #include "version.h"
 
 extern "C" {
@@ -53,16 +63,23 @@ extern "C" {
 using namespace std;
 #endif
 
-string_set	include_extensions;		// file extensions to index
-string_set	exclude_extensions;		// file extensions not to index
+ExcludeExtension exclude_extensions;		// do not extract these
+IncludeExtension include_extensions;		// do extract these
+FilterExtension	filters;
 bool		in_postscript;
 char const*	me;				// executable name
-int		num_files;
-bool		recurse_subdirectories = true;
-int		verbosity;			// how much to print
+int		num_examined_files;
+int		num_extracted_files;
+RecurseSubdirs	recurse_subdirectories;
+Verbosity	verbosity;			// how much to print
 
 void		do_file( char const *path );
 bool		extract_word( char *word, int len, ofstream& );
+void		extract_words(
+			file_vector<char>::const_iterator begin,
+			file_vector<char>::const_iterator end,
+			ofstream&
+		);
 void		usage();
 
 //*****************************************************************************
@@ -82,7 +99,7 @@ void		usage();
 //
 //	argv	A vector of the arguments; argv[argc] is null.  Aside from
 //		the options below, the arguments are the names of the files
-//		and directories to extract.
+//		and directories to be extracted.
 //
 // SEE ALSO
 //
@@ -96,12 +113,29 @@ void		usage();
 
 	/////////// Process command-line options //////////////////////////////
 
-	char const *stop_word_file_name = 0;
+	char const*	config_file_name_arg = Config_Filename_Default;
+	bool		dump_stop_words_opt = false;
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+	bool		follow_symbolic_links_opt = false;
+#endif
+	bool		recurse_subdirectories_opt = false;
+	StopWordFile	stop_word_file_name;
+	char*		stop_word_file_name_arg = 0;
+	char*		verbosity_arg = 0;
+
+	char const opts[] =
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+		"l"
+#endif
+		"c:e:E:rs:Sv:V";
 
 	::opterr = 1;
-	char const opts[] = "e:E:lrs:v:V";
 	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
 		switch ( opt ) {
+
+			case 'c': // Specify config. file.
+				config_file_name_arg = ::optarg;
+				break;
 
 			case 'e': // Specify filename extension to extract.
 				include_extensions.insert( ::optarg );
@@ -110,49 +144,75 @@ void		usage();
 			case 'E': // Specify filename extension not to extract.
 				exclude_extensions.insert( ::optarg );
 				break;
-
+#ifndef	PJL_NO_SYMBOLIC_LINKS
 			case 'l': // Follow symbolic links during extraction.
-				follow_symbolic_links = true;
+				follow_symbolic_links_opt = true;
 				break;
-
+#endif
 			case 'r': // Specify whether to extract recursively.
-				recurse_subdirectories = false;
+				recurse_subdirectories_opt = true;
 				break;
 
 			case 's': // Specify stop-word list.
-				stop_word_file_name = ::optarg;
+				stop_word_file_name_arg = ::optarg;
+				break;
+
+			case 'S': // Dump stop-word list.
+				dump_stop_words_opt = true;
 				break;
 
 			case 'v': // Specify verbosity level.
-				verbosity = ::atoi( ::optarg );
-				if ( verbosity < 0 )
-					verbosity = 0;
-				else if ( verbosity > 4 )
-					verbosity = 4;
+				verbosity_arg = ::optarg;
 				break;
 
 			case 'V': // Display version and exit.
 				cout << "SWISH++ " << version << endl;
-				::exit( 0 );
+				::exit( Exit_Success );
 
 			case '?': // Bad option.
 				usage();
 		}
 	argc -= ::optind, argv += ::optind;
 
-	if ( !argc )
-		usage();
+	//
+	// First, parse the config. file (if any); then override variables
+	// specified on the command line with options.
+	//
+	parse_config_file( config_file_name_arg );
+
+#ifndef	PJL_NO_SYMBOLIC_LINKS
+	if ( follow_symbolic_links_opt )
+		follow_symbolic_links = true;
+#endif
+	if ( recurse_subdirectories_opt )
+		recurse_subdirectories = false;
+	if ( stop_word_file_name_arg )
+		stop_word_file_name = stop_word_file_name_arg;
+	if ( verbosity_arg )
+		verbosity = verbosity_arg;
+
+	/////////// Deal with stop-words //////////////////////////////////////
+
+	stop_words = new stop_word_set( stop_word_file_name );
+	if ( dump_stop_words_opt ) {
+		::copy( stop_words->begin(), stop_words->end(),
+			ostream_iterator< char const* >( cout, "\n" )
+		);
+		::exit( Exit_Success );
+	}
+
+	/////////// Extract specified directories and files ///////////////////
 
 	bool const using_stdin = *argv && (*argv)[0] == '-' && !(*argv)[1];
 	if ( !using_stdin &&
 		include_extensions.empty() && exclude_extensions.empty()
 	) {
-		cerr << me << ": extensions must be specified "
+		ERROR << "extensions must be specified "
 			"when not using standard input " << endl;
 		usage();
 	}
-
-	stop_words = new stop_word_set( stop_word_file_name );
+	if ( !argc )
+		usage();
 
 	////////// Extract text from specified files //////////////////////////
 
@@ -163,220 +223,53 @@ void		usage();
 		// Read file/directory names from standard input.
 		//
 		char file_name[ MAXNAMLEN + 1 ];
-		while ( cin.getline( file_name, MAXNAMLEN ) )
-			if ( is_directory( file_name ) )
+		while ( cin.getline( file_name, MAXNAMLEN ) ) {
+			if ( !file_exists( *argv ) ) {
+				if ( verbosity > 3 )
+					cout	<< " (skipped: does not exist)"
+						<< endl;
+				continue;
+			}
+			if ( is_directory() )
 				do_directory( file_name );
 			else
 				do_file( file_name );
+		}
 	} else {
 		//
 		// Read file/directory names from command line.
 		//
-		while ( *argv ) {
-			if ( is_directory( *argv ) )
+		for ( ; *argv; ++argv ) {
+			if ( !file_exists( *argv ) ) {
+				if ( verbosity > 3 )
+					cout	<< " (skipped: does not exist)"
+						<< endl;
+				continue;
+			}
+			if ( is_directory() )
 				do_directory( *argv );
 			else
 				do_file( *argv );
-			++argv;
 		}
 	}
 
 	if ( verbosity ) { 
 		time = ::time( 0 ) - time;	// Stop!
-		cout	<< setfill('0')
-			<< "\nExtraction done:\n  "
+		cout	<< '\n' << me << ": done:\n  "
+			<< setfill('0')
 			<< setw(2) << (time / 60) << ':'
 			<< setw(2) << (time % 60)
-			<< " elapsed time\n  "
-			<< num_files << " files\n\n"
+			<< " (min:sec) elapsed time\n  "
+			<< num_examined_files << " files, "
+			<< num_extracted_files << " extracted\n\n"
 			<< setfill(' ');
 	}
 
-	return 0;
+	::exit( Exit_Success );
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void do_file( char const *file_name )
-//
-// DESCRIPTION
-//
-//	Extract the text.  This algorithm is loosely based on what the Unix
-//	strings(1) command does except it goes a bit further to discard
-//	things like Encapsulated PostScript and raw hex data.
-//
-// PARAMETERS
-//
-//	file_name	The file to extract text from.
-//
-//*****************************************************************************
-{
-	char const *const slash = ::strrchr( file_name, '/' );
-	char const *const base_name = slash ? slash + 1 : file_name;
-
-	if ( verbosity > 3 )			// print base name of file
-		cout << "  " << base_name << flush;
-
-	////////// Determine if we should process the file ////////////////////
-
-	if ( !is_plain_file() ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: not plain file)" << endl;
-		return;
-	}
-	if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: symbolic link)" << endl;
-		return;
-	}
-
-	//
-	// Check to see if the file name has an extension by looking for a '.'
-	// in it and making sure that it is not the last character.  If the
-	// extension contains a '/', then it's really not an extension; rather,
-	// it's a file name like: "/a.bizarre/file".
-	//
-	char const *ext = ::strrchr( file_name, '.' );
-	if ( !ext || !*++ext || ::strchr( ext, '/' ) ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: no extension)" << endl;
-		return;
-	}
-
-	//
-	// Determine if the file needs to be preprocessed first.
-	//
-	static ext_proc_map const ext_procs;
-	ext_proc_map::value_type const *const proc = ext_procs[ ext ];
-
-	if ( proc ) {
-		static char ext_buf[ 10 ];
-		//
-		// Get the "real" filename extension, e.g., get "txt" out of
-		// "foo.txt.gz".
-		//
-		register char const *p;
-		for ( p = ext - 2; p > file_name; --p )
-			if ( *p == '.' ) {
-				::copy( p + 1, ext - 1, ext_buf );
-				ext_buf[ ext - p - 2 ] = '\0';
-				break;
-			}
-		if ( *p != '.' ) {
-			//
-			// File doesn't have a "real" extension, e.g., it's
-			// something like "bar.gz".
-			//
-			if ( verbosity > 3 )
-				cout << " (skipped: no real extension)" << endl;
-			return;
-		}
-		static string fixed_file_name;
-		fixed_file_name = string( file_name, ext - 1 );
-		file_name = fixed_file_name.c_str();
-		ext = ext_buf;
-	}
-
-	//
-	// Skip the file if either the set of unacceptable extensions contains
-	// the candidate or the set of acceptable extensions doesn't.
-	//
-	if ( exclude_extensions.find( ext ) ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: extension excluded)" << endl;
-		return;
-	}
-	if ( !include_extensions.empty() && !include_extensions.find( ext ) ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: extension not included)" << endl;
-		return;
-	}
-
-	//
-	// Check to see if the .txt file already exists; if so, skip it.
-	//
-	string const file_name_txt = string( file_name ) + ".txt";
-	if ( ::stat( file_name_txt.c_str(), &stat_buf ) != -1 ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: .txt file already exists)" << endl;
-		return;
-	}
-	ofstream txt( file_name_txt.c_str() );
-	if ( !txt ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: can not create .txt file)" << endl;
-		return;
-	}
-
-	if ( proc && !process_file( proc->undo, file_name ) ) {
-		if ( verbosity > 3 )
-			cout	<< " (skipped: could not " << proc->undo
-				<< " file)" << endl;
-		return;
-	}
-
-	file_vector<char> file( file_name );	// try to open the file
-	if ( !file ) {
-		if ( verbosity > 3 )
-			cout << " (skipped: can not open)" << endl;
-		return;
-	}
-
-	if ( verbosity == 3 )			// print base name of file
-		cout << "  " << base_name << flush;
-
-	////////// Parse the file /////////////////////////////////////////////
-
-	++num_files;
-
-	char buf[ Word_Hard_Max_Size + 1 ];
-	register char *word;
-	int len;
-	int num_words = 0;
-	bool in_word = false;
-	in_postscript = false;
-
-	register file_vector<char>::const_iterator c = file.begin();
-	while ( c != file.end() ) {
-		register char ch = *c++;
-
-		////////// Collect a word /////////////////////////////////////
-
-		if ( is_word_char( ch ) || ch == '%' ) {
-			if ( !in_word ) {
-				// start a new word
-				word = buf;
-				word[ 0 ] = ch;
-				len = 1;
-				in_word = true;
-				continue;
-			}
-			if ( len < Word_Hard_Max_Size ) {
-				// continue same word
-				word[ len++ ] = ch;
-				continue;
-			}
-			in_word = false;	// too big: skip chars
-			while ( c != file.end() && is_word_char( *c++ ) ) ;
-			continue;
-		}
-
-		if ( in_word ) {
-			in_word = false;
-			num_words += extract_word( word, len, txt );
-		}
-	}
-	if ( in_word )
-		num_words += extract_word( word, len, txt );
-
-	if ( verbosity > 2 )
-		cout << " (" << num_words << " words)" << endl;
-
-	if ( proc )			// restore file to the way it was
-		process_file( proc->redo, file_name );
-}
+#define	EXTRACT
+#include "do_file.c"
 
 //*****************************************************************************
 //
@@ -461,6 +354,71 @@ void		usage();
 
 //*****************************************************************************
 //
+// SYNOPSIS
+//
+	void extract_words(
+		register file_vector<char>::const_iterator c,
+		register file_vector<char>::const_iterator end,
+		ofstream &out
+	)
+//
+// DESCRIPTION
+//
+//	Extract the words between the given iterators.
+//
+// PARAMETERS
+//
+//	c	The iterator marking the beginning of the text to extract.
+//
+//	end	The iterator marking the end of the text to extract.
+//
+//*****************************************************************************
+{
+	char buf[ Word_Hard_Max_Size + 1 ];
+	register char *word;
+	int len;
+	int num_words = 0;
+	bool in_word = false;
+	in_postscript = false;
+
+	while ( c != end ) {
+		register char ch = *c++;
+
+		////////// Collect a word /////////////////////////////////////
+
+		if ( is_word_char( ch ) || ch == '%' ) {
+			if ( !in_word ) {
+				// start a new word
+				word = buf;
+				word[ 0 ] = ch;
+				len = 1;
+				in_word = true;
+				continue;
+			}
+			if ( len < Word_Hard_Max_Size ) {
+				// continue same word
+				word[ len++ ] = ch;
+				continue;
+			}
+			in_word = false;	// too big: skip chars
+			while ( c != end && is_word_char( *c++ ) ) ;
+			continue;
+		}
+
+		if ( in_word ) {
+			in_word = false;
+			num_words += extract_word( word, len, out );
+		}
+	}
+	if ( in_word )
+		num_words += extract_word( word, len, out );
+
+	if ( verbosity > 2 )
+		cout << " (" << num_words << " words)" << endl;
+}
+
+//*****************************************************************************
+//
 //	Miscellaneous function(s)
 //
 //*****************************************************************************
@@ -469,12 +427,16 @@ void usage() {
 	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
 	" options:\n"
 	" --------\n"
+	"  -c config_file  : Name of configuration file [default: " << Config_Filename_Default << "]\n"
 	"  -e ext          : Extension to extract [default: none]\n"
 	"  -E ext          : Extension not to extract [default: none]\n"
+#ifndef	PJL_NO_SYMBOLIC_LINKS
 	"  -l              : Follow symbolic links [default: no]\n"
-	"  -r              : Do not recursively extract subdirectories [default: false]\n"
+#endif
+	"  -r              : Do not recursively extract subdirectories [default: do]\n"
 	"  -s stop_file    : Stop-word file to use instead of compiled-in default\n"
+	"  -S              : Dump default stop-words and exit\n"
 	"  -v verbosity    : Verbosity level [0-4; default: 0]\n"
 	"  -V              : Print version number and exit\n";
-	::exit( 1 );
+	::exit( Exit_Usage );
 }
