@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "May 9, 2002" "SWISH++"
+.TH \f3search\fP 1 "June 4, 2002" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -54,40 +54,37 @@ functioning as a ``search server.''
 .SH QUERY INPUT
 .SS Query Syntax
 The formal grammar of a query is:
-.ft 2
 .RS 5
 .TP 16
-query:
-query optional_relop meta
+.IR query :
+.I query optional_relop meta
 .br
-meta
+.I meta
 .TP
-meta:
-meta_name \f(CW=\fP primary
+.IR meta :
+.I meta_name \f(CW=\fP primary
 .br
-primary
+.I primary
 .TP
-meta_name:
-word
+.IR meta_name :
+.I word
 .TP
-primary:
-\f(CW(\fP query \f(CW)\fP
+.IR primary :
+.I \f(CW(\fP query \f(CW)\fP
 .br
-\f(CWnot\fP
-meta
+.I \f(CWnot\fP meta
 .br
-word
+.I word
 .br
-word\f(CW*\fP
+.I word\f(CW*\fP
 .TP
-optional_relop:
+.IR optional_relop :
 \f(CWand\fP
 .br
 \f(CWor\fP
 .br
-(empty)
+.I (empty)
 .RE
-.ft 1
 .PP
 In practice, however, the query is the set of words sought after,
 possibly restricted to meta data,
@@ -122,7 +119,7 @@ The file's size in bytes.
 .TP
 .I file-title
 If the file is of a format that can have titles
-(HTML, XHTML, mail, or Unix manual pages)
+(HTML, XHTML, LaTeX, mail, or Unix manual pages)
 and the title was extracted, then
 .I file-title
 is its title;
@@ -136,7 +133,7 @@ It can be parsed easily in Perl with:
 .cS
 ($rank,$path,$size,$title) = split( / /, $_, 4 );
 .cE
-(The separator character can be changed via the 
+(The separator can be changed via the 
 .B \-R
 or
 .B \-\-separator
@@ -175,12 +172,20 @@ The XML results format is given by the DTD:
 <!ELEMENT Path (#PCDATA)>
 <!ELEMENT Size (#PCDATA)>                                                       <!ELEMENT Title (#PCDATA)>
 .cE
+and by the XML schema located at:
+.cS
+http://homepage.mac.com/pauljlucas/software/swish/SearchResults/SearchResults.xsd
+.cE
 For example:
 .cS
+<?xml version="1.0" encoding="us-ascii"?>
 <!DOCTYPE SearchResults SYSTEM
  "http://homepage.mac.com/pauljlucas/software/swish/SearchResults.dtd">
-<?xml version="1.0" encoding="us-ascii"?>
-<SearchResults>
+<SearchResults
+ xmlns="http://homepage.mac.com/pauljlucas/software/swish/SearchResults"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://homepage.mac.com/pauljlucas/software/swish/SearchResults
+                     SearchResults.xsd">
   <IgnoredList>
     <Ignored>\f2stop-word\fP</Ignored>
     \f2\&...\fP
