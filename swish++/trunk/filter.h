@@ -45,10 +45,7 @@
 {
 public:
 	explicit filter( char const *command ) : command_template_( command ) {}
-	~filter() {
-		if ( !target_file_name_.empty() )
-			std::unlink( target_file_name_.c_str() );
-	}
+	~filter();
 
 	char const*	substitute( char const *file_name );
 	char const*	exec() const;
@@ -63,5 +60,12 @@ private:
 	std::string	command_;
 	std::string	target_file_name_;
 };
+
+////////// Inlines ////////////////////////////////////////////////////////////
+
+inline filter::~filter() {
+	if ( !target_file_name_.empty() )
+		std::unlink( target_file_name_.c_str() );
+}
 
 #endif	/* filter_H */
