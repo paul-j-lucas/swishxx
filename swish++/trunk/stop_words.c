@@ -369,7 +369,8 @@ stop_word_set*		stop_words;		// pointer to global set
 
 		"yes",
 		"yet",
-		"you", "your", "yours", "yourself", "yourselves",
+		"you", "you'll", "your", "you're", "yours",
+		"yourself", "yourselves",
 
 		// Z
 
