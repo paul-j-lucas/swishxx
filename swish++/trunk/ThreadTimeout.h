@@ -49,6 +49,8 @@ public:
 	CONF_INT_ASSIGN_OPS( ThreadTimeout )
 };
 
+extern ThreadTimeout thread_timeout;
+
 #endif	/* ThreadTimeout_H */
 
 #endif	/* SEARCH_DAEMON */
