@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "September 20, 2000" "SWISH++"
+.TH \f3search\fP 1 "December 2, 2000" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -147,19 +147,30 @@ can alternatively run in the background as a daemon process
 (via either the
 .BR \-b
 or
-.BR \-\-daemon
+.BR \-\-daemon-type
 options or the
 .BR SearchDaemon
 variable)
 functioning as a ``search server''
-by listening to a Unix domain socket file
+by listening to a Unix domain socket
 (specified by either the
 .BR \-u
 or
 .BR \-\-socket-file
 options or the
 .B SocketFile
-variable).
+variable),
+a TCP socket
+(specified by either the
+.BR \-a
+or
+.BR \-\-socket-address
+options or the
+.B SocketAddress
+variable),
+or both.
+Unix domain sockets are preferred for both performance and security.
+.PP
 For search-intensive applications,
 such as a search engine on a heavily used web site,
 this can yield a large performance improvement
@@ -172,8 +183,8 @@ is paid only once.
 Search clients connect to a daemon via a socket
 and send a query in the same manner as on the command line
 (including the first word being ``\f(CWsearch\f1'').
-The only exception is that shell meta-characters must
-.B not
+The only exception is that shell meta-characters
+.I "must not"
 be escaped (backslashed) since no shell is involved.
 Search results are returned via the same socket.
 See the EXAMPLES.
@@ -182,8 +193,8 @@ A single daemon can search only a single index.
 To be able to search multiple indices concurrently,
 multiple daemons can be run,
 each searching its own index and using its own socket file.
-An index must
-.B not
+An index
+.I "must not"
 be modified or deleted while a daemon is using it.
 .PP
 A daemon can serve multiple query requests simultaneously
@@ -265,13 +276,74 @@ a `\f(CW-\fP'.
 .B \-\-help
 Print the usage (``help'') message and exit.
 .TP
-.B \-b
+.B \-a a
 .br
 .ns
 .TP
-.B \-\-daemon
+.B \-\-socket-address= a
+When running as a daemon,
+the address,
+.IR a , 
+to listen to for TCP requests.
+(Default is all IP addresses and port 1967.)
+The address argument is of the form:
+.sp
+.RS 25
+.ft CW
+\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
+.ft 1
+.RE
+.TP 20
+.B ""
+that is: an optional host and colon
+followed by a port number.
+The
+.I host
+may be one of a host name, an IP address, or the \f(CW*\f1 character
+meaning ``any IP address.''
+Omitting the
+.I host
+and colon also means ``any IP address.''
+.TP
+.B \-b t
+.br
+.ns
+.TP
+.B \-\-daemon-type= t
 Run in the background as a daemon process.
 (Default is not to.)
+The type,
+.IR t ,
+is one of:
+.PP
+.RS 20
+.TP 8
+\f(CWnone\f1
+Same as not specifying the option at all.
+(This does not purport to be useful,
+but rather consistent with the types that can be specified to the
+.B SearchDaemon
+variable.)
+.TP
+\f(CWtcp\f1
+Listen on a TCP socket
+(see the
+.B \-a
+option).
+.TP
+\f(CWunix\f1
+Listen on a Unix domain socket
+(see the
+.B \-u
+option).
+.TP
+\f(CWboth\f1
+Listen on both.
+.RE
+.PD
+.RE
+.TP 20
+.B ""
 If executed from the command-line,
 .B search
 appears to return immediately;
@@ -501,7 +573,13 @@ or
 Same as
 .B \-b
 or
-.B \-\-daemon
+.B \-\-daemon-type
+.TP
+.B SocketAddress
+Same as
+.B \-a
+or
+.B \-\-socket-address
 .TP
 .B SocketFile
 Same as
@@ -638,7 +716,7 @@ connect( SEARCH, sockaddr_un( $SocketFile ) ) or
 	die "can not connect to \\"$SocketFile\\": $!\\n";
 .cE
 Autoflush
-.B must
+.I must
 be set for the socket filehandle
 (see [Wall], p. 130, 211),
 otherwise the server thread will hang
@@ -687,40 +765,60 @@ Malformed query.
 Could not write to PID file.
 .TP
 52
-Could not open socket file.
+Host or IP address is invalid or nonexistent.
 .TP
 53
-Could not
-.BR unlink (2)
-socket file.
+Could not open a TCP socket.
 .TP
 54
-Could not
-.BR bind (3)
-to socket.
+Could not open a Unix domain socket.
 .TP
 55
 Could not
-.BR listen (3)
-to socket.
+.BR unlink (2)
+a Unix domain socket file.
 .TP
 56
+Could not
+.BR bind (3)
+to a TCP socket.
+.TP
+57
+Could not
+.BR bind (3)
+to a Unix domain socket.
+.TP
+58
+Could not
+.BR listen (3)
+to a TCP socket.
+.TP
+59
+Could not
+.BR listen (3)
+to a Unix domain socket.
+.TP
+60
+Could not
+.BR select (3).
+.TP
+61
 Could not
 .BR accept (3)
 a socket connection.
 .TP
-57
+62
 Could not
 .BR fork (2)
 child process.
 .TP
-58
+63
 Could not change directory to \f(CW/\f1.
 .TP
-59
+64
 Could not create thread.
 .TP
-60
+65
 Could not detach thread.
 .PD
 .RE
@@ -733,16 +831,10 @@ when searching through and index of files that are in English
 because the Porter stemming algorithm used only stems English words.
 .TP
 2.
-When run as a daemon,
-.B search
-can presently listen only to a Unix domain socket file
-and not to an Internet domain socket
-to serve queries from remote machines.
-This would require lots of additional code to provide security features
-(domain or IP address restrictions)
-so that everybody on the Internet wouldn't have the ability to search
-your indices.
-Such code may be added in a future version.
+When run as a daemon using a TCP socket,
+there are no security restrictions on who may connect and search.
+The code to implement domain and IP address restrictions
+isn't worth it since the port is better blocked at the router anyway.
 .SH FILES
 .PD 0
 .TP 20
@@ -761,6 +853,7 @@ default index file name
 .BR accept (3),
 .BR bind (3),
 .BR listen (3),
+.BR select (3),
 .BR swish++.conf (4)
 .PP
 Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
@@ -786,4 +879,4 @@ O'Reilly & Associates, Inc., Sebastopol, CA,
 1996.
 .SH AUTHOR
 Paul J. Lucas
-.RI < pjl@best.com >
+.RI < pauljlucas@mac.com >
