@@ -89,7 +89,7 @@ char const	Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 #define		OPTIMIZE_WORD_END_CHARS		1
 //		Same deal as with OPTIMIZE_WORD_CHARS.
 
-////////// HTML parameters ////////////////////////////////////////////////////
+////////// HTML and XHTML parameters //////////////////////////////////////////
 
 int const	Entity_Max_Size			= 6;
 //		The maximum size of an entity reference, e.g., "&eacute;" NOT
@@ -97,15 +97,15 @@ int const	Entity_Max_Size			= 6;
 //		no reason to change this.
 
 int const	Tag_Name_Max_Size		= 11;
-//		The maximum size of an HTML tag name, e.g., "/BLOCKQUOTE".  You
-//		might need to increase this if you are indexing HTML documents
-//		that contain non-standard tags and at least one of them is
-//		longer than the above.
+//		The maximum size of an HTML or XHTML tag name, e.g.,
+//		"/BLOCKQUOTE".  You might need to increase this if you are
+//		indexing HTML or XHTML documents that contain non-standard tags
+//		and at least one of them is longer than the above.
 
 int const	TitleLines_Default		= 12;
 //		Specifies the maximum number of lines into a file to look at
-//		for HTML <TITLE> tags; this can be overridden either in a
-//		config. file or on the command line.
+//		for HTML or XHTML <TITLE> tags; this can be overridden either
+//		in a config. file or on the command line.
 
 int const	Title_Max_Size			= 200;
 //		Maximum length of a title between <TITLE>...</TITLE>.
