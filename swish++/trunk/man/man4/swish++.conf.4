@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "November 9, 2001" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "December 19, 2001" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -229,8 +229,9 @@ Module names are:
 \f(CWtext\f1 (plain text),
 \f(CWHTML\f1 (HTML and XHTML),
 \f(CWMail\f1 (mail and news messages),
+\f(CWMan\f1 (Unix manual pages),
 and
-\f(CWMan\f1 (Unix manual pages).
+\f(CWRTF\f1 (Rich Text Format).
 .P
 An
 .B IncludeMeta
@@ -377,8 +378,8 @@ The MIME types that are built into
 .BR index (1)
 are:
 \f(CWtext/plain\f1,
-\f(CWtext/enriched\f1,
-\f(CWtext/html\f1,
+\f(CWtext/enriched\f1 (but only if the RTF module is compiled in),
+\f(CWtext/html\f1 (but only if the HTML module is compiled in),
 \f(CWtext/*vcard\f1,
 \f(CWmessage/rfc822\f1,
 \f(CWmultipart/\f1\f2something\f1
@@ -407,7 +408,7 @@ what any intermediate MIME types would be to apply more filters.)
 .BR uncompress (1),
 .BR glob (7)
 .PP
-Tim Berners-Lee.
+Nathaniel S. Borenstein.
 ``The text/enriched MIME Content-type,''
 .IR "Request for Comments 1563" ,
 Network Working Group of the Internet Engineering Task Force,
