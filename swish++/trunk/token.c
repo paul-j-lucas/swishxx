@@ -127,13 +127,17 @@ using namespace std;
 			return ts;
 
 		//
-		// Check to see if the word is an operator.  For only 3
+		// Check to see if the word is an operator.  For only 4
 		// comparisons, linear search is good enough.
 		//
 		if ( !::strcmp( t.lower_buf_, "and" ) )
 			t.type_ = token::and_token;
 		else if ( !::strcmp( t.lower_buf_, "or"  ) )
 			t.type_ = token::or_token;
+#ifdef	FEATURE_word_pos
+		else if ( !::strcmp( t.lower_buf_, "near" ) )
+			t.type_ = token::near_token;
+#endif
 		else if ( !::strcmp( t.lower_buf_, "not" ) )
 			t.type_ = token::not_token;
 		else
