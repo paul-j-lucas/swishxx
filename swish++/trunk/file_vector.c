@@ -233,7 +233,7 @@ using namespace std;
 	}
 
 	addr_ = ::mmap( 0, stat_buf.st_size, prot, MAP_SHARED, fd_, 0 );
-	if ( addr_ == REINTERPRET_CAST( caddr_t )( -1 ) ) {
+	if ( addr_ == MAP_FAILED ) {
 		addr_ = 0;
 		errno_ = errno;
 		return false;
