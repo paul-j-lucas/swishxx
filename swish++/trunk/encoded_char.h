@@ -24,11 +24,12 @@
 
 // standard
 #include <iterator>
+#include <set>
 
 // local
 #include "fake_ansi.h"			/* for iterator, std */
+#include "iso8859-1.h"
 #include "util.h"			/* for to_lower() */
-#include "word_util.h"
 
 //*****************************************************************************
 //
@@ -39,10 +40,10 @@
 // DESCRIPTION
 //
 //	An encoded_char_range is an abstraction that contains a range of
-//	characters in memory that are encoded according to some scheme (a
-//	Content-Transfer-Encoding) such as Quoted-Printable or Base64.  A
-//	const_iterator is used to iterate over the range and, when
-//	dereferenced, decodes a character.
+//	characters in memory that are encoded according to some scheme, either
+//	a Content-Transfer-Encoding (such as Quoted-Printable or Base64) or a
+//	character set (such as UTF-7 or UTF-8).  A const_iterator is used to
+//	iterate over the range and, when dereferenced, decodes a character.
 //
 //	However, doing this is a serious performance hit since it has to be
 //	done for every single character examined.  Hence, the code is #ifdef'd
@@ -55,12 +56,15 @@ public:
 	typedef ptrdiff_t difference_type;
 	typedef char value_type;
 	typedef value_type const* pointer;
-	typedef value_type (*decoder_type)( pointer, pointer&, pointer );
+	typedef value_type (*charset_type )( pointer, pointer&, pointer );
+	typedef value_type (*encoding_type)( pointer, pointer&, pointer );
 
 	class const_iterator;
 	friend class const_iterator;
 
-	encoded_char_range( pointer begin, pointer end, decoder_type = 0 );
+	encoded_char_range(
+		pointer begin, pointer end, charset_type = 0, encoding_type = 0
+	);
 	encoded_char_range( const_iterator const &pos );
 	encoded_char_range(
 		const_iterator const &begin, const_iterator const &end
@@ -78,19 +82,19 @@ public:
 	void		end_pos( pointer p )		{ end_ = p; }
 	void		end_pos( const_iterator const& );
 
-	decoder_type	decoder() const			{ return decoder_; }
+#ifdef	MOD_mail
+	class decoder;
+#endif
 protected:
 	encoded_char_range() { }
 
 	pointer		begin_;
 	pointer		end_;
-	decoder_type	decoder_;
-};
-
-#ifdef MOD_mail
-// local
-#include "decoders/decoders.h"
+#ifdef	MOD_mail
+	charset_type	charset_;
+	encoding_type	encoding_;
 #endif
+};
 
 //*****************************************************************************
 //
@@ -119,7 +123,9 @@ public:
 	typedef encoded_char_range::pointer pointer;
 
 	const_iterator() { }
-	const_iterator( pointer begin, pointer end, decoder_type = 0 );
+	const_iterator(
+		pointer begin, pointer end, charset_type = 0, encoding_type = 0
+	);
 
 	// default copy constructor is fine
 	// default assignment operator is fine
@@ -139,38 +145,77 @@ public:
 private:
 	mutable pointer	pos_;
 	mutable pointer	prev_;
-#ifdef MOD_mail
+#ifdef	MOD_mail
 	mutable value_type	ch_;
 	mutable bool		decoded_;
 	mutable int		delta_;
 #endif
 	const_iterator( encoded_char_range const*, pointer start_pos );
 	friend class	encoded_char_range;	// for access to c'tor above
-#ifdef MOD_mail
+#ifdef	MOD_mail
 	void		decode() const;
 #endif
 };
+
+#ifdef	MOD_mail
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	class encoded_char_range::decoder
+//
+// DESCRIPTION
+//
+//	An encoded_char_range::decoder is used to keep decoders' state between
+//	calls and reset state between files to their initial states just before
+//	starting to index a file.
+//
+//*****************************************************************************
+{
+public:
+	typedef encoded_char_range::value_type value_type;
+	typedef encoded_char_range::pointer pointer;
+
+	static void	reset_all();
+protected:
+	decoder()	{ set_.insert( this ); }
+
+	virtual void	reset() = 0;
+private:
+	typedef std::set< decoder* > set_type;
+	static set_type set_;
+};
+#endif	/* MOD_mail */
+
+////////// encoded_char_range inlines /////////////////////////////////////////
 
 // I hate lots of typing.
 #define ECR	encoded_char_range
 #define	ECR_CI	ECR::const_iterator
 
-////////// encoded_char_range inlines /////////////////////////////////////////
-
 inline ECR::ECR(
-	pointer begin, pointer end, decoder_type decoder
+	pointer begin, pointer end, charset_type charset, encoding_type encoding
 ) :
-	begin_( begin ), end_( end ), decoder_( decoder )
+	begin_( begin ), end_( end )
+#ifdef	MOD_mail
+	, charset_( charset ), encoding_( encoding )
+#endif
 {
 }
 
 inline ECR::ECR( const_iterator const &i ) :
-	begin_( i.pos_ ), end_( i.end_ ), decoder_( i.decoder_ )
+	begin_( i.pos_ ), end_( i.end_ )
+#ifdef	MOD_mail
+	, charset_( i.charset_ ), encoding_( i.encoding_ )
+#endif
 {
 }
 
 inline ECR::ECR( const_iterator const &begin, const_iterator const &end ) :
-	begin_( begin.pos_ ), end_( end.pos_ ), decoder_( begin.decoder_ )
+	begin_( begin.pos_ ), end_( end.pos_ )
+#ifdef	MOD_mail
+	, charset_( begin.charset_ ), encoding_( begin.encoding_ )
+#endif
 {
 }
 
@@ -190,61 +235,31 @@ inline void ECR::end_pos( const_iterator const &i ) {
 	end_ = i.pos_;
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline ECR_CI::const_iterator(
-		pointer begin, pointer end, decoder_type decoder = 0
-	)
-//
-// DESCRIPTION
-//
-//	Construct a const_iterator.
-//
-// PARAMETERS
-//
-//	begin		An pointer marking the beginning of the range.
-//
-//	end		An pointer marking the end of the range.
-//
-//	decoder		The decoder for the text.
-//
-//*****************************************************************************
-	: encoded_char_range( begin, end, decoder ), pos_( begin )
-#ifdef MOD_mail
-	  , decoded_( false )
+////////// encoded_char_range::const_iterator inlines /////////////////////////
+
+inline ECR_CI::const_iterator(
+	pointer begin, pointer end,
+	charset_type charset, encoding_type encoding
+) :
+	encoded_char_range( begin, end, charset, encoding ), pos_( begin )
+#ifdef	MOD_mail
+	, decoded_( false )
 #endif
 {
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos )
-//
-// DESCRIPTION
-//
-//	Construct a const_iterator.
-//
-// PARAMETERS
-//
-//	ecr		The encoded_char_range to iterate over.
-//
-//	start_pos	A pointer marking the position where the this pointer
-//			is to start.
-//
-//*****************************************************************************
-	: encoded_char_range( start_pos, ecr->end_, ecr->decoder_ ),
-	  pos_( start_pos )
-#ifdef MOD_mail
-	  , decoded_( false )
+inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
+	encoded_char_range(
+		start_pos, ecr->end_, ecr->charset_, ecr->encoding_
+	),
+	pos_( start_pos )
+#ifdef	MOD_mail
+	, decoded_( false )
 #endif
 {
 }
 
-#ifdef MOD_mail
+#ifdef	MOD_mail
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -268,7 +283,27 @@ inline void ECR::end_pos( const_iterator const &i ) {
 	// the iterator can be incremented later.
 	//
 	pointer c = pos_;
-	ch_ = decoder_ ? (*decoder_)( begin_, c, end_ ) : *c++;
+	//
+	// A mail message can have both an encoding and a non-ASCII or
+	// non-ISO-8859-1 charset simultaneously, e.g., base64-encoded UTF-8.
+	// (In practice, this particular case should never happen since UTF-7
+	// should be used instead; but you get the idea.)
+	//
+	// However, handling both an encoding and such a charset simultaneously
+	// is a real pain because both can use multiple characters to decode a
+	// single character and keeping track of both positions is messy and I
+	// didn't feel like thinking about this just now.
+	//
+	// Hence, a current caveat is that a mail message or attachment can
+	// have EITHER an encoding OR a non-ASCII/ISO-8859-1 character set, but
+	// not both.  If it does, the encoding takes precedence.
+	//
+	if ( encoding_ )
+		ch_ = (*encoding_)( begin_, c, end_ );
+	else if ( charset_ )
+		ch_ = (*charset_)( begin_, c, end_ );
+	else
+		ch_ = iso8859_1_to_ascii( *c++ );
 	delta_ = c - pos_;
 }
 #endif	/* MOD_mail */
@@ -290,14 +325,14 @@ inline void ECR::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef MOD_mail
+#ifdef	MOD_mail
 	if ( !decoded_ ) {
 		decode();
 		decoded_ = true;
 	}
 	return ch_;
 #else
-	return *pos_;
+	return iso8859_1_to_ascii( *pos_ );
 #endif
 }
 
@@ -317,7 +352,7 @@ inline void ECR::end_pos( const_iterator const &i ) {
 //
 //*****************************************************************************
 {
-#ifdef MOD_mail
+#ifdef	MOD_mail
 	if ( decoded_ ) {
 		//
 		// The character at the current position has previously been
@@ -338,7 +373,7 @@ inline void ECR::end_pos( const_iterator const &i ) {
 	}
 #endif
 	prev_ = pos_;
-#ifdef MOD_mail
+#ifdef	MOD_mail
 	pos_ += delta_;
 #else
 	++pos_;
