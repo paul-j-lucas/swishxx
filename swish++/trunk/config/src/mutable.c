@@ -2,7 +2,7 @@
 **	mutable.c
 **
 **	TEST	mutable
-**	DEFINE	PJL_NO_MUTABLE
+**	FAIL	PJL_NO_MUTABLE
 */
 
 struct S {

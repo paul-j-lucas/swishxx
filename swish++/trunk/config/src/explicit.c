@@ -2,7 +2,7 @@
 **	explicit.c
 **
 **	TEST	explicit
-**	DEFINE	PJL_NO_EXPLICIT
+**	FAIL	PJL_NO_EXPLICIT
 */
 
 struct S {

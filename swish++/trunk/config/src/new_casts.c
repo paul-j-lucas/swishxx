@@ -2,7 +2,7 @@
 **	new_casts.c
 **
 **	TEST	new-style casts
-**	DEFINE	PJL_NO_NEW_CASTS
+**	FAIL	PJL_NO_NEW_CASTS
 */
 
 void f() {

@@ -2,7 +2,7 @@
 **	namespaces.c
 **
 **	TEST	namespaces
-**	DEFINE	PJL_NO_NAMESPACES
+**	FAIL	PJL_NO_NAMESPACES
 */
 
 //
