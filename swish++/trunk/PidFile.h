@@ -47,6 +47,8 @@ public:
 	CONF_STRING_ASSIGN_OPS( PidFile )
 };
 
+extern PidFile pid_file_name;
+
 #endif	/* PidFile_H */
 
 #endif	/* SEARCH_DAEMON */
