@@ -3,6 +3,32 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.13.5
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The top-level GNUmakefile didn't make the "etc" directory (I_ETC) if it
+  didn't exist.  (This was supposedly fixed in 5.8, but apparantly not.)
+
+  (This bug fix shall be know as bug fix I_ETC2.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* GNUmakefile
+
+	1. Added $(I_ETC) as a target of the $(MKDIR) $@ line for bug
+	   fix I_ETC2.
+
+* version.h
+
+	1. Changed to "5.13.5."
+
+
+*******************************************************************************
 5.13.4
 *******************************************************************************
 
