@@ -28,6 +28,7 @@
 #include "file_info.h"
 #include "FilesReserve.h"
 #include "platform.h"
+#include "ResultSeparator.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -37,6 +38,7 @@ file_info::list_type		file_info::list_;
 file_info::name_set_type	file_info::name_set_;
 
 FilesReserve			files_reserve;
+ResultSeparator			result_separator;
 
 //*****************************************************************************
 //
@@ -103,7 +105,7 @@ FilesReserve			files_reserve;
 	while ( *u++ ) ;				// skip past filename
 	off_t const size = parse_bcd( u );
 	parse_bcd( u );					// skip past num_words
-	return o << ' ' << size << ' ' << u;
+	return o << result_separator << size << result_separator << u;
 }
 
 //*****************************************************************************
