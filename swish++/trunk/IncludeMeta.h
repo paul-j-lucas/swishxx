@@ -22,27 +22,35 @@
 #ifndef IncludeMeta_H
 #define IncludeMeta_H
 
+// standard
+#include <map>
+
 // local
-#include "conf_set.h"
+#include "conf_var.h"
+#include "less.h"
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-	class IncludeMeta : public conf_set
+	class IncludeMeta :
+		public conf_var, public std::map< char const*, char const* >
 //
 // DESCRIPTION
 //
-//	An IncludeMeta is-a conf_set containing the set of META names to
-//	include during indexing.
+//	An IncludeMeta is-a conf_var and a map containing the set of meta names
+//	(and their possible reassigned names) to include during indexing.
 //
 //	This is the same as index's -m command-line option.
 //
 //*****************************************************************************
 {
 public:
-	IncludeMeta() : conf_set( "IncludeMeta" ) { }
-	CONF_SET_ASSIGN_OPS( IncludeMeta )
+	IncludeMeta() : conf_var( "IncludeMeta" ) { }
+	CONF_VAR_ASSIGN_OPS( IncludeMeta )
+	virtual void	parse_value( char *line );
+private:
+	virtual void	reset() { clear(); }
 };
 
 extern IncludeMeta include_meta_names;
