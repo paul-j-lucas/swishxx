@@ -342,13 +342,13 @@ Via the
 .B FilterAttachment
 configuration file variable,
 e-mail attachments whose MIME types match particular patterns
-can be filtered and thus indexed or extracted.
+can be filtered and thus indexed.
 An attachment is written to a temporary file by itself
 (after having been base-64 decoded, if necessary)
 and a filter command is called on that file.
 .PP
 For example,
-to convert a PDF attachment to plain text so it can be indexed or extracted, the
+to convert a PDF attachment to plain text so it can be indexed, the
 .B FilterAttachment
 variable line in a configuration file would be:
 .cS
