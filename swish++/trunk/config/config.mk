@@ -70,15 +70,23 @@ ENCODING_LIST:=	base64 quoted_printable
 #		The Content-Transfer-Encodings you want index(1) to be able to
 #		decode only when MOD_LIST contains "mail".
 
-#------------->	Including any character sets or encodings requires more
+## READ THIS ->	Including any character sets or encodings requires more
 #		processing PER CHARACTER and therefore will be slower for ALL
 #		files (not just those that are encoded).  So if you don't need
 #		any character sets (other than ISO 8859-1) or encodings, do NOT
 #		compile them in.
 
+FEATURE_LIST:=	word_pos
+#		The set of optional features you want built into SWISH++:
+#
+#		1. word_pos: Store word positions during indexing needed to do
+#		   "near" searches.  Storing said data approximately doubles
+#		   the size of the generated index.
+
 # Leave the following lines alone!
 CHARSET_DEFS:=	$(foreach charset,$(CHARSET_LIST),-DCHARSET_$(charset))
 ENCODING_DEFS:=	$(foreach encoding,$(ENCODING_LIST),-DENCODING_$(encoding))
+FEATURE_DEFS:=	$(foreach feature,$(FEATURE_LIST),-DFEATURE_$(feature))
 MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-DMOD_$(mod))
 
 # These too!
@@ -203,13 +211,19 @@ endif
 endif # DEBUG
 
 CCFLAGS:=	-I. $(CHARSET_DEFS) $(ENCODING_DEFS) $(DECODING) $(MOD_DEFS) \
-		$(SEARCH_DAEMON) $(OS) $(OPTIM)
+		$(FEATURE_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
 
 ifeq ($(findstring g++,$(CC)),g++)
-CCFLAGS+=	-fno-exceptions -fno-rtti
-#		Since SWISH++ doesn't use exceptions or RTTI, turn off code
-#		generation for them to save space in the executables.
+CCFLAGS+=	-fno-exceptions
+#		Since SWISH++ doesn't use exceptions, turn off code generation
+#		for them to save space in the executables.
+ifneq ($(findstring word_pos,$(FEATURE_LIST)),word_pos)
+CCFLAGS+=	-fno-rtti
+#		SWISH++ uses RTTI only for the word_pos feature, so, if the
+#		feature isn't being compiled in, turn off code generation for
+#		RTTI to save space in the executables.
+endif
 endif
 
 ifeq ($(findstring g++,$(CC)),g++)
