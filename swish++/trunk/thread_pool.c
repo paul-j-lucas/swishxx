@@ -75,7 +75,8 @@ namespace PJL {
 	// reacquired, we have to unlock it.  However, we don't know for sure
 	// that the mutex was locked, so this mutex was created to have the
 	// PTHREAD_MUTEX_ERRORCHECK attribute that renders unlocking a mutex
-	// that is not locked harmless.
+	// that is not locked harmless.  Note that this isn't true under
+	// FreeBSD, unfortunately, because it doesn't support said attribute.
 	//
 	::pthread_mutex_unlock( &t->q_lock_->mutex_ );
 
@@ -453,7 +454,14 @@ namespace PJL {
 {
 	pthread_mutexattr_t at;
 	if (	::pthread_mutexattr_init( &at ) ||
+#ifndef	FreeBSD
+		//
+		// Apparantly, FreeBSD doesn't support "error checking" mutexes
+		// so we can't do the line below which may result in undefined
+		// behavior.  Oh well.
+		//
 		::pthread_mutexattr_settype( &at, PTHREAD_MUTEX_ERRORCHECK ) ||
+#endif
 		::pthread_mutex_init( &t_busy_lock_, 0 ) ||
 		::pthread_mutex_init( &q_lock_->mutex_, &at ) ||
 		::pthread_mutex_init( &t_lock_, 0 )
