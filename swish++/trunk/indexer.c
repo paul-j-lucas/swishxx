@@ -73,7 +73,7 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
-	int indexer::find_meta( char const *meta_name )
+	/* static */ int indexer::find_meta( char const *meta_name )
 //
 // DESCRIPTION
 //
@@ -121,6 +121,7 @@ int			indexer::suspend_indexing_count_ = 0;
 //
 // SYNOPSIS
 //
+	/* virtual */
 	char const* indexer::find_title( file_vector const& ) const
 //
 // DESCRIPTION
