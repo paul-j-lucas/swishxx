@@ -25,7 +25,6 @@
 // standard
 #include <cstddef>				/* for size_t */
 #include <iostream>
-#include <sys/types.h>				/* for off_t */
 #include <vector>
 
 // local
@@ -35,20 +34,20 @@
 //
 // SYNOPSIS
 //
-	struct file_info
+	class file_info
 //
 // DESCRIPTION
 //
-//	This struct is used to contain information for every file encountered
-//	during indexing.  A static data member keeps track of all dynamically
+//	This is used to contain information for every file encountered during
+//	indexing.  A static data member keeps track of all dynamically
 //	allocated instances so thay can be iterated over later.
 //
 //*****************************************************************************
 {
+public:
 	typedef std::vector< file_info* > list_type;
+	typedef list_type::const_iterator const_iterator;
 	typedef PJL::char_ptr_set name_set_type;
-
-	static list_type	list_;
 
 	file_info(
 		char const *file_name, size_t file_size, char const *title,
@@ -57,11 +56,15 @@
 
 	char const*		file_name() const	{ return file_name_; }
 	int			num_words() const	{ return num_words_; }
-	off_t			size() const		{ return size_; }
+	size_t			size() const		{ return size_; }
 	char const*		title() const		{ return title_; }
 
+	static const_iterator	begin()			{ return list_.begin();}
+	static const_iterator	end()			{ return list_.end(); }
 	static int		current_index()	{ return list_.size() - 1; }
 	static void		inc_words()	{ ++list_.back()->num_words_; }
+	static file_info*	ith_info( int i )	{ return list_[ i ]; }
+	static int		num_files()		{ return list_.size(); }
 	static std::ostream&	out( std::ostream&, char const* );
 	static file_info*	parse( char const* );
 	static bool		seen_file( char const *file_name ) {
@@ -70,9 +73,10 @@
 private:
 	char const *const	file_name_;
 	int			num_words_;
-	off_t const		size_;
+	size_t const		size_;
 	char const *const	title_;
 
+	static list_type	list_;
 	static name_set_type	name_set_;
 };
 
