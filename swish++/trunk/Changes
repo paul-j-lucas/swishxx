@@ -3,6 +3,31 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.11.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Invalid UTF-8 could send the indexer into an infinite loop.
+
+  (This bug fix shall be know as bug fix IU8.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* charsets/utf8.c
+
+	1. Changed syncing to skip forward rather than back for bug fix IU8.
+	2. Added check for FE and FF bytes.
+
+* version.h
+
+	1. Upped version to "5.11.1".
+
+
+*******************************************************************************
 5.11
 *******************************************************************************
 
@@ -3593,7 +3618,7 @@ CHANGES, file-by-file
 	3. s/am_daemon/daemon_type/ and s/daemon_opt/type_type_arg/ for
 	   feature TCP.
 	4. Made the daemon configuration variables global and
-	   become_daemon() take no arguments becuase the argument list
+	   become_daemon() take no arguments because the argument list
 	   was getting way too long.
 	5. In search_options::search_options(), added socket_address_arg
 	   for feature TCP.
@@ -5577,7 +5602,7 @@ BUG FIXES
   (This bug fix will be known as bug fix CLASS1.)
 
 * Really long start tags, those with lots of attributes, exceeding 128
-  characters, would cuase a buffer overflow and, occasionally, a core dump.
+  characters, would cause a buffer overflow and, occasionally, a core dump.
   The fix is to change the way getting the name of tags is done.
 
   (This bug fix will be known as bug fix RLST.)
