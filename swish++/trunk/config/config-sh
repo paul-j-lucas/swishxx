@@ -113,7 +113,6 @@ define() {
 
 for file in src/*.c
 do
-
 	echo "+ checking for \"`grep TEST $file | cut -f3-`\"..."
 	if $CC $CFLAGS $file >/dev/null 2>/dev/null
 	then
