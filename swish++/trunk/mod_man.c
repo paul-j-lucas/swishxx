@@ -167,7 +167,7 @@ void	parse_backslash( char const *&pos, char const *end );
 	int	len;
 	bool	newline = false;
 
-	register char const* c = e.begin_pos();
+	char const* c = e.begin_pos();
 	while ( 1 ) {
 		register char const ch = iso8859_to_ascii( *c );
 
