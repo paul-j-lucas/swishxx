@@ -274,8 +274,8 @@ ostream&		usage( ostream& = cerr );
 		//
 		// Read file/directory names from standard input.
 		//
-		char file_name[ NAME_MAX + 1 ];
-		while ( cin.getline( file_name, NAME_MAX ) ) {
+		char file_name[ PATH_MAX + 1 ];
+		while ( cin.getline( file_name, PATH_MAX ) ) {
 			if ( !file_exists( *argv ) ) {
 				if ( verbosity > 3 )
 					cout << "  " << file_name

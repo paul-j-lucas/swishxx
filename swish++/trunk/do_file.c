@@ -163,7 +163,7 @@
 		// We're not running as a filter: check to see if the extracted
 		// file already exists; if so, skip extraction entirely.
 		//
-		char extracted_file_name[ NAME_MAX + 1 ];
+		char extracted_file_name[ PATH_MAX + 1 ];
 		::strcpy( extracted_file_name, file_name );
 		::strcat( extracted_file_name, extract_extension );
 		if ( file_exists( extracted_file_name ) ) {
