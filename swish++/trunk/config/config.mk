@@ -8,12 +8,12 @@
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation; either version 2 of the License, or
 #	(at your option) any later version.
-# 
+#
 #	This program is distributed in the hope that it will be useful,
 #	but WITHOUT ANY WARRANTY; without even the implied warranty of
 #	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #	GNU General Public License for more details.
-# 
+#
 #	You should have received a copy of the GNU General Public License
 #	along with this program; if not, write to the Free Software
 #	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -129,7 +129,15 @@ CC=		g++
 #		Warning flags specific to gcc/g++.  Unless you are modifying
 #		the source code, you should leave this commented out.
 
-CCFLAGS=	$(GCC_WARNINGS) $(MOD_LIST) $(SEARCH_DAEMON) $(OS) -O3
+ifdef WIN32
+OPTIM=		-O2
+else
+OPTIM=		-O3
+endif
+#		The optimization level.  Under Windows, -O3 causes a segfault
+#		due to an optimizer bug, presumeably.
+
+CCFLAGS=	$(GCC_WARNINGS) $(MOD_LIST) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Additional flags for the C++ compiler:
 #
 #		-g	Include symbol-table information in object file.  (You
