@@ -143,6 +143,9 @@ public:
 		operator-( const_iterator const &i, const_iterator const &j ) {
 			return i.i_ - j.i_;
 		}
+
+		// default copy constructor is OK
+		// default assignment operator is OK
 	};
 
 	const_iterator begin() const {
