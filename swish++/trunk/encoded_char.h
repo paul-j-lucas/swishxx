@@ -27,7 +27,7 @@
 
 // local
 #include "file_vector.h"
-#include "util.h"
+#include "util.h"			/* for to_lower() */
 #include "word_util.h"
 
 enum content_transfer_encoding {
@@ -69,21 +69,26 @@ public:
 	typedef file_vector::reference reference;
 	typedef file_vector::const_reference const_reference;
 
+	class const_iterator;
+	friend class const_iterator;
+
 	encoded_char_range(
 		file_vector::const_iterator begin,
 		file_vector::const_iterator end,
 		content_transfer_encoding = Eight_Bit
 	);
 
+	encoded_char_range( const_iterator const& );
+
 	// default copy constructor is fine
 	// default assignment operator is fine
-
-	class const_iterator;
-	friend class const_iterator;
 
 	const_iterator			begin() const;
 	const_iterator			end()   const;
 	content_transfer_encoding	encoding() const { return encoding_; }
+
+	void begin( file_vector::const_iterator i ) { begin_ = i; }
+	void end  ( file_vector::const_iterator i ) { end_   = i; }
 protected:
 	encoded_char_range() { }
 
@@ -106,7 +111,8 @@ protected:
 //	for an encoded_char_range.  It might seem a bit odd to have an iterator
 //	derived from the container class it's an iterator for (that's because
 //	it is odd), but the iterator needs access to all its data members and
-//	going through an extra level of indirection would be slower.
+//	going through an extra level of indirection by having a pointer to it
+//	would be slower.
 //
 //*****************************************************************************
 {
@@ -198,6 +204,28 @@ private:
 //
 //*****************************************************************************
 	: begin_( begin ), end_( end ), encoding_( encoding )
+{
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline encoded_char_range::encoded_char_range(
+		encoded_char_range::const_iterator const &c
+	)
+//
+// DESCRIPTION
+//
+//	Construct an encoded_char_range from an iterator on an
+//	encoded_char_range.
+//
+// PARAMETERS
+//
+//	c	The iterator to take the information from.
+//
+//*****************************************************************************
+	: begin_( c.begin_ ), end_( c.end_ ), encoding_( c.encoding_ )
 {
 }
 
@@ -494,6 +522,39 @@ inline bool operator!=(
 	encoded_char_range::const_iterator const &e
 ) {
 	return e != f;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline char *to_lower( encoded_char_range::const_iterator c )
+//
+// DESCRIPTION
+//
+//	Return a pointer to a string converted to lower case taking the
+//	encoding of the characters into account; the original string is
+//	untouched.  The string returned is from an internal pool of string
+//	buffers.  The time you get into trouble is if you hang on to more then
+//	Num_Buffers strings.  This doesn't normally happen in practice,
+//	however.
+//
+// PARAMETERS
+//
+//	c	The iterator to use.
+//
+// RETURN VALUE
+//
+//	A pointer to the lower-case string.
+//
+//*****************************************************************************
+{
+	extern char_buffer_pool<128,5> lower_buf;
+	register char *p = lower_buf.next();
+	while ( !c.at_end() )
+		*p++ = to_lower( *c++ );
+	*p = '\0';
+	return lower_buf.current();
 }
 
 #endif	/* encoded_char_H */
