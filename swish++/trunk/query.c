@@ -435,6 +435,8 @@ no_put_back:
 //
 //	stop_words_found	The set of stop-words in the query.
 //
+//	and_results		The partial results to be and-ed together.
+//
 //	ignore			Set to true only if this (sub)query should be
 //				ignored.
 //
