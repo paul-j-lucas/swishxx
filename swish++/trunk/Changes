@@ -3,6 +3,32 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.14.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Fixed a small error when compiling under Solaris.
+
+  (This bug fix shall be know as bug fix MADV1.)
+
+* The version string in 5.14 wasn't updated.
+
+
+CHANGES, file-by-file
+---------------------
+
+* mmap_file.c
+
+	1. Added cast to caddr_t in madvise() call for bug fix MADV1.
+
+* version.h
+
+	1. Changed to "5.14.1".
+
+
+*******************************************************************************
 5.14
 *******************************************************************************
 
@@ -73,7 +99,7 @@ CHANGES, file-by-file
 
 * version.h
 
-	1. Changed to "5.14."
+	1. Changed to "5.14".
 
 
 *******************************************************************************
