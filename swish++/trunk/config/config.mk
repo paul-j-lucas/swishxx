@@ -49,7 +49,7 @@ OS:=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
 #
 ###############################################################################
 
-MOD_LIST:=	html mail man rtf
+MOD_LIST:=	html latex mail man rtf
 #		The indexing modules you want built into index(1).  If you have
 #		no intention of indexing mail or news files, you should NOT
 #		build-in "mail" since it requires more processing per character
@@ -145,8 +145,7 @@ STRIP:=		strip
 #
 ###############################################################################
 
-#CC:=		g++
-CC:=		/usr/local/bin/g++
+CC:=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
 #DEBUG:=		true
@@ -201,6 +200,9 @@ I_ROOT:=	/usr/local
 
 I_BIN:=		$(I_ROOT)/bin
 #		Where executables are installed; usually "$(I_ROOT)/bin".
+
+I_ETC:=		$(I_ROOT)/etc
+#		Where .conf files are installed; usually "$(I_ROOT)/etc".
 
 I_LIB:=		$(I_ROOT)/lib
 #		Where libraries are installed; usually "$(I_ROOT)/lib".
