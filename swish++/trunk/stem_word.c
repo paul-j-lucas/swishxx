@@ -28,10 +28,12 @@
 #include <cctype>
 #include <cstring>
 #include <map>
+#ifdef	SEARCH_DAEMON
+#include <pthread.h>
+#endif
 
 // local
 #include "stem_word.h"
-#include "util.h"
 #include "word_util.h"
 
 struct rule_list {
@@ -43,6 +45,8 @@ struct rule_list {
 };
 
 char	*end;				// iterator at end of word being stemmed
+// Acess to this global variable is protected by the stem_lock mutex in
+// stem_word().
 
 bool	add_e( char const *word );
 bool	ends_with_cvc( char const *word );
@@ -73,8 +77,8 @@ int	word_size( char const *word );
 //
 // NOTE
 //
-//	This function would be "inline" except that its address is taken in
-//	the rule_list tables.
+//	This function would be "inline" except that its address is taken in the
+//	rule_list tables.
 //
 //*****************************************************************************
 {
@@ -89,9 +93,9 @@ int	word_size( char const *word );
 //
 // DESCRIPTION
 //
-//	Check if the given word ends with in a consonant-vowel-consonant
-//	triple and the second consonant is not w, x, or y.  Some of the
-//	rewrite rules apply only to a stem with this characteristic.
+//	Check if the given word ends with in a consonant-vowel-consonant triple
+//	and the second consonant is not w, x, or y.  Some of the rewrite rules
+//	apply only to a stem with this characteristic.
 //
 // PARAMETERS
 //
@@ -134,8 +138,8 @@ int	word_size( char const *word );
 //
 // NOTE
 //
-//	This function would be "inline" except that its address is taken in
-//	the rule_list tables.
+//	This function would be "inline" except that its address is taken in the
+//	rule_list tables.
 //
 //*****************************************************************************
 {
@@ -162,8 +166,8 @@ int	word_size( char const *word );
 //
 // NOTE
 //
-//	This function would be "inline" except that its address is taken in
-//	the rule_list tables.
+//	This function would be "inline" except that its address is taken in the
+//	rule_list tables.
 //
 //*****************************************************************************
 {
@@ -235,9 +239,9 @@ int	word_size( char const *word );
 //
 // DESCRIPTION
 //
-//	Stem the given word by applying Porter's algorithm: run through
-//	several sets of suffix replacement rules applying at most one per
-//	set.  A word is stemmed only if it is composed entirely of letters.
+//	Stem the given word by applying Porter's algorithm: run through several
+//	sets of suffix replacement rules applying at most one per set.  A word
+//	is stemmed only if it is composed entirely of letters.
 //
 // PARAMETERS
 //
@@ -248,10 +252,14 @@ int	word_size( char const *word );
 //
 //	Returns the word stemmed.
 //
+// CAVEAT
+//
+//	This algorithm is (obviosuly) geared only for English.
+//
 // SEE ALSO
 //
-//	M.F. Porter. "An Algorithm For Suffix Stripping," Program, 14(3),
-//	July 1980, pp. 130-137.
+//	M.F. Porter. "An Algorithm For Suffix Stripping," Program, 14(3), July
+//	1980, pp. 130-137.
 //
 //*****************************************************************************
 {
@@ -366,9 +374,17 @@ int	word_size( char const *word );
 
 	typedef map< char const*, char const* > stem_cache;
 	static stem_cache cache;
+#ifdef	SEARCH_DAEMON
+	static pthread_mutex_t cache_lock = PTHREAD_MUTEX_INITIALIZER;
+	::pthread_mutex_lock( &cache_lock );
+#endif
 	stem_cache::const_iterator const found = cache.find( word );
-	if ( found != cache.end() )
+	if ( found != cache.end() ) {
+#ifdef	SEARCH_DAEMON
+		::pthread_mutex_unlock( &cache_lock );
+#endif
 		return found->second;
+	}
 
 	////////// Stem the word //////////////////////////////////////////////
 
@@ -395,7 +411,13 @@ int	word_size( char const *word );
 	cerr << "\n---> stemmed word=" << word_buf << endl;
 #	endif
 
-	return cache[ ::strdup( word ) ] = ::strdup( word_buf );
+	char const *const new_word = ::strdup( word_buf );
+	cache[ ::strdup( word ) ] = new_word;
+
+#ifdef	SEARCH_DAEMON
+	::pthread_mutex_unlock( &cache_lock );
+#endif
+	return new_word;
 }
 
 //*****************************************************************************

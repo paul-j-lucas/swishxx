@@ -24,10 +24,13 @@
 #include <fcntl.h>				/* for open(2), O_RDONLY, ... */
 #ifndef	WIN32
 #include <sys/mman.h>				/* for mmap(2) */
-#endif
 #include <sys/resource.h>			/* for get/setrlimit(2) */
+#endif
 #include <sys/stat.h>				/* for stat(2) */
 #include <unistd.h>				/* for close(2) */
+#if	defined( MULTI_THREADED ) && defined( RLIMIT_VMEM )
+#include <pthread.h>
+#endif
 
 // local
 #include "fake_ansi.h"
@@ -115,11 +118,16 @@ using namespace std;
 	// space as opposed to data, stack, or heap space.  Anyway, we want to
 	// max it out so we can mmap(2) very large files.
 	//
+#ifdef	MULTI_THREADED
+	static pthread_once_t max_out = PTHREAD_ONCE_INIT;
+	::pthread_once( &max_out, max_out_limits );
+#else
 	static bool maxed_out;
 	if ( !maxed_out ) {
 		max_out_limits();
 		maxed_out = true;
 	}
+#endif	/* MULTI_THREADED */
 #endif	/* RLIMIT_VMEM */
 
 	size_ = 0;
