@@ -24,7 +24,7 @@
 
 // standard
 #include <iterator>
-#include <sys/types.h>				/* for off_t */
+#include <sys/types.h>			/* for off_t */
 
 #ifdef	WIN32
 #include <windows.h>
@@ -91,8 +91,8 @@ public:
 
 	iterator	begin()		{ return (iterator)addr_; }
 	const_iterator	begin() const	{ return (const_iterator)addr_; }
-	iterator	end()		{ return begin() + size(); }
-	const_iterator	end() const	{ return begin() + size(); }
+	iterator	end()		{ return begin() + size_; }
+	const_iterator	end() const	{ return begin() + size_; }
 
 	reverse_iterator rbegin() {
 		return reverse_iterator( end() );
