@@ -236,8 +236,7 @@ inline bool	is_directory() {
 			return ( stat_buf.st_mode & S_IFMT ) == S_IFDIR;
 		}
 inline bool	is_directory( char const *path ) {
-			return	::stat( path, &stat_buf ) != -1
-				&& is_directory();
+			return file_exists( path ) && is_directory();
 		}
 inline bool	is_directory( string const &path ) {
 			return is_directory( path.c_str() );
@@ -247,8 +246,7 @@ inline bool	is_plain_file() {
 			return ( stat_buf.st_mode & S_IFMT ) == S_IFREG;
 		}
 inline bool	is_plain_file( char const *path ) {
-			return	::stat( path, &stat_buf ) != -1
-				&& is_plain_file();
+			return file_exists( path ) && is_plain_file();
 		}
 inline bool	is_plain_file( string const &path ) {
 			return is_plain_file( path.c_str() );
