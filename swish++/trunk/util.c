@@ -158,3 +158,4 @@ struct stat		stat_buf;	// someplace to do a stat(2) in
 	*p = '\0';
 	return buf;
 }
+/* vim:set noet sw=8 ts=8: */

@@ -518,3 +518,4 @@ ostream& usage( ostream &o ) {
 	::exit( Exit_Usage );
 	return o;			// just to make the compiler happy
 }
+/* vim:set noet sw=8 ts=8: */

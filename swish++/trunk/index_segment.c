@@ -61,3 +61,4 @@ using namespace PJL;
 	}
 	offset_ = reinterpret_cast<off_t const*>( &p[ 1 ] );
 }
+/* vim:set noet sw=8 ts=8: */

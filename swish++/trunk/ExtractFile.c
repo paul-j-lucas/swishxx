@@ -51,3 +51,4 @@ using namespace std;
 	for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
 		insert( new_strdup( s ), 0 );
 }
+/* vim:set noet sw=8 ts=8: */

@@ -907,3 +907,4 @@ ostream& usage( ostream &err ) {
 	"-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n";
 	return err;
 }
+/* vim:set noet sw=8 ts=8: */

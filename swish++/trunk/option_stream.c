@@ -335,3 +335,4 @@ int main( int argc, char *argv[] ) {
 }
 
 #endif	/* TEST_OPTION_STREAM */
+/* vim:set noet sw=8 ts=8: */

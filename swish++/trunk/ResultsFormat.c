@@ -27,3 +27,4 @@ char const *const ResultsFormat::legal_values_[] = {
 	"xml",
 	0
 };
+/* vim:set noet sw=8 ts=8: */

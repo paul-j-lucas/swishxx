@@ -267,3 +267,4 @@
 	extract_words( file.begin(), file.end(), *out );
 #endif	/* EXTRACT */
 }
+/* vim:set noet sw=8 ts=8: */

@@ -180,3 +180,4 @@ extern index_segment directories;
 		out_ << "  </ResultList>\n";
 	out_ << "</SearchResults>\n";
 }
+/* vim:set noet sw=8 ts=8: */

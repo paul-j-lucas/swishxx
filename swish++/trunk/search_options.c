@@ -67,3 +67,4 @@ static option_stream::spec const opt_spec[] = {
 #endif	/* SEARCH_DAEMON_OPTIONS_ONLY */
 	0
 };
+/* vim:set noet sw=8 ts=8: */

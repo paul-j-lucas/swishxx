@@ -52,3 +52,4 @@ using namespace std;
 	char const *const tmpdir = ::getenv( "TMPDIR" );
 	return tmpdir ? tmpdir : TempDirectory_Default;
 }
+/* vim:set noet sw=8 ts=8: */

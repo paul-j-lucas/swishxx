@@ -279,3 +279,4 @@ static bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 }
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

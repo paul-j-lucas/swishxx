@@ -54,3 +54,4 @@ void word_info::file::write_word_pos( ostream &o ) const {
 	o << Stop_Marker;
 }
 #endif	/* FEATURE_word_pos */
+/* vim:set noet sw=8 ts=8: */

@@ -249,3 +249,4 @@ FollowLinks		follow_symbolic_links;
 		--recursion;
 	}
 }
+/* vim:set noet sw=8 ts=8: */

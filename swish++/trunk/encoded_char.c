@@ -43,3 +43,4 @@ encoded_char_range::decoder::set_type encoded_char_range::decoder::set_;
 }
 
 #endif	/* IMPLEMENT_DECODING */
+/* vim:set noet sw=8 ts=8: */

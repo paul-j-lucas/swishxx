@@ -469,3 +469,4 @@ static void	set_signal_handlers();
 }
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

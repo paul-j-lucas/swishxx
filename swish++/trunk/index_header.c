@@ -90,3 +90,4 @@
 	delete[] file_offset;
 	delete[] meta_name_offset;
 #endif
+/* vim:set noet sw=8 ts=8: */

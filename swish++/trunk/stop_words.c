@@ -467,3 +467,4 @@ stop_word_set*		stop_words;		// pointer to global set
 	FOR_EACH( index_segment, stop_words, stop_word )
 		insert( new_strdup( *stop_word ) );
 }
+/* vim:set noet sw=8 ts=8: */

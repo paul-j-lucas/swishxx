@@ -33,3 +33,4 @@ char const *const SearchDaemon::legal_values_[] = {
 };
 
 #endif	/* SEARCH_DAEMON */
+/* vim:set noet sw=8 ts=8: */

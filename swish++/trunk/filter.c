@@ -284,3 +284,4 @@ using namespace std;
 	unescape_filename( target_file_name_ );
 	return target_file_name_.c_str();
 }
+/* vim:set noet sw=8 ts=8: */

@@ -107,3 +107,4 @@ using namespace std;
 	if ( !port_ )
 		::exit( Exit_Config_File );
 }
+/* vim:set noet sw=8 ts=8: */

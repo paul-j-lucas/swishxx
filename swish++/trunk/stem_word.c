@@ -492,3 +492,4 @@ static int	word_size( char const *word );
 		}
 	return size;
 }
+/* vim:set noet sw=8 ts=8: */

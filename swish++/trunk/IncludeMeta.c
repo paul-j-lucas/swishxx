@@ -76,3 +76,4 @@ using namespace std;
 		insert( value_type( m, reassign ? new_strdup( reassign ) : m ));
 	}
 }
+/* vim:set noet sw=8 ts=8: */

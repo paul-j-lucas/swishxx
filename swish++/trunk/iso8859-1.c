@@ -60,3 +60,4 @@ extern char const iso8859_1_map[] = {
 	'd', 'n', 'o', 'o', 'o', 'o', 'o', ' ',	//  |
 	'o', 'u', 'u', 'u', 'u', 'y', ' ', 'y',	// 255
 };
+/* vim:set noet sw=8 ts=8: */

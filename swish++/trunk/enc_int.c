@@ -98,3 +98,4 @@ using namespace std;
 
 	return o.write( reinterpret_cast<char*>( p ), buf + sizeof buf - p );
 }
+/* vim:set noet sw=8 ts=8: */

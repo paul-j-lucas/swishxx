@@ -163,3 +163,4 @@ file_list::byte const file_list::const_iterator::end_value = 0;
 		++c_;					// skip Stop_Marker
 	}
 }
+/* vim:set noet sw=8 ts=8: */

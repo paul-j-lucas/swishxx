@@ -309,3 +309,4 @@
 	for ( register char const *const *p = postscript_table; *p; ++p )
 		insert( *p );
 }
+/* vim:set noet sw=8 ts=8: */

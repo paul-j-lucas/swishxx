@@ -56,3 +56,4 @@ using namespace std;
 		::exit( Exit_Not_Root );
 	}
 }
+/* vim:set noet sw=8 ts=8: */

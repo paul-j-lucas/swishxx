@@ -84,3 +84,4 @@ namespace PJL {
 #ifndef	PJL_NO_NAMESPACES
 }
 #endif
+/* vim:set noet sw=8 ts=8: */
