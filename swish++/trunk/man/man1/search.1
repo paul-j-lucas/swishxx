@@ -1014,79 +1014,82 @@ Unable to read index file.
 Malformed query.
 .TP
 51
+Attempted ``near'' search without word-position data.
+.TP
+60
 Could not write to PID file.
 .TP
-52
+61
 Host or IP address is invalid or nonexistent.
 .TP
-53
+62
 Could not open a TCP socket.
 .TP
-54
+63
 Could not open a Unix domain socket.
 .TP
-55
+64
 Could not
 .BR unlink (2)
 a Unix domain socket file.
 .TP
-56
+65
 Could not
 .BR bind (3)
 to a TCP socket.
 .TP
-57
+66
 Could not
 .BR bind (3)
 to a Unix domain socket.
 .TP
-58
+67
 Could not
 .BR listen (3)
 to a TCP socket.
 .TP
-59
+68
 Could not
 .BR listen (3)
 to a Unix domain socket.
 .TP
-60
+69
 Could not
 .BR select (3).
 .TP
-61
+70
 Could not
 .BR accept (3)
 a socket connection.
 .TP
-62
+71
 Could not
 .BR fork (2)
 child process.
 .TP
-63
+72
 Could not change directory to \f(CW/\f1.
 .TP
-64
+73
 Could not create thread.
 .TP
-65
+74
+Could not create thread key.
+.TP
+75
 Could not detach thread.
 .TP
-66
+76
 Could not initialize thread condition.
 .TP
-67
+77
 Could not initialize thread mutex.
 .TP
-68
+78
 Could not switch to user.
 .TP
-69
+79
 Could not switch to group.
-.TP
-70
-Could not create thread key.
 .PD
 .RE
 .SH CAVEATS
