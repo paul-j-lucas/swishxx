@@ -275,7 +275,7 @@ check_arg:
 	// fall through
 option_error:
 	o.arg_ = '\0';
-	// fall through
+	return os;
 the_end:
 	os.end_ = true;
 	return os;
