@@ -51,4 +51,5 @@ using namespace std;
 #ifdef	MOD_MAIL
 	static mail_indexer	mail;
 #endif
+	// The plain text indexer is initialized in indexer::map_ref().
 }
