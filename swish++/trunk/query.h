@@ -33,19 +33,19 @@
 #include "index_segment.h"
 #include "token.h"
 
-typedef	std::map< int, int > search_results_type;
+typedef	std::map< int, int > search_results;
 //
-//	A search_results_type contains a set of search results where the key
-//	int is a file index and the value int is that file's rank.
+//	A search_results contains a set of search results where the key int is
+//	a file index and the value int is that file's rank.
 
 typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
-	find_result_type;
+	find_result;
 //
-//	A find_result_type is-a pair of iterators marking the beginning and end
-//	of a range over which a given word matches.
+//	A find_result is-a pair of iterators marking the beginning and end of a
+//	range over which a given word matches.
 
 typedef	std::set< std::string > stop_word_set;
 
-bool	parse_query( token_stream&, search_results_type&, stop_word_set& );
+bool	parse_query( token_stream&, search_results&, stop_word_set& );
 
 #endif	/* query_H */

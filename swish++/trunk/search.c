@@ -293,7 +293,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	//
 	// Look up the word.
 	//
-	find_result_type const found = ::equal_range(
+	find_result const found = ::equal_range(
 		words.begin(), words.end(), lower_word, comparator
 	);
 	if ( found.first == words.end() ||
@@ -347,7 +347,7 @@ inline omanip< char const* > index_file_info( int index ) {
 	//
 	// Look up the word.
 	//
-	find_result_type found = ::equal_range(
+	find_result found = ::equal_range(
 		words.begin(), words.end(), lower_word, comparator
 	);
 	if ( found.first == words.end() ||
@@ -406,9 +406,9 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-	token_stream		query_stream( query );
-	search_results_type	results;
-	stop_word_set		stop_words_found;
+	token_stream	query_stream( query );
+	search_results	results;
+	stop_word_set	stop_words_found;
 
 	if ( !( parse_query( query_stream, results, stop_words_found )
 		&& query_stream.eof()
