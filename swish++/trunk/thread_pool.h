@@ -38,10 +38,14 @@ namespace PJL {
 #define	PJL /* nothing */
 #endif
 
-extern "C" void		thread_pool_decrement_busy( void* );
-extern "C" void		thread_pool_thread_data_cleanup( void* );
-extern "C" void*	thread_pool_thread_main( void* );
-extern "C" void		thread_pool_thread_once();
+extern "C" {
+	typedef void* (*thread_start_function_type)( void* );
+
+	void	thread_pool_decrement_busy( void* );
+	void	thread_pool_thread_data_cleanup( void* );
+	void*	thread_pool_thread_main( void* );
+	void	thread_pool_thread_once();
+}
 
 //*****************************************************************************
 //
@@ -130,11 +134,9 @@ public:
 			friend void*	thread_pool_thread_main( void* );
 		};
 	protected:
-		typedef void* (*start_function_type)( void* );
-
 		thread(
 			thread_pool&,
-			start_function_type = thread_pool_thread_main
+			thread_start_function_type = thread_pool_thread_main
 		);
 
 		virtual thread*	create( thread_pool& ) const = 0;
