@@ -50,6 +50,7 @@ int const		PATH_MAX = 1024;
 
 // local
 #include "config.h"
+#include "exit_codes.h"
 #include "fake_ansi.h"			/* for std */
 #include "platform.h"			/* for PJL_NO_SYMBOLIC_LINKS */
 
@@ -266,6 +267,15 @@ inline std::ostream&	error( std::ostream &o = std::cerr ) {
 inline std::ostream&	error_string( std::ostream &o = std::cerr ) {
 				return o << ": " << std::strerror( errno )
 					<< std::endl;
+			}
+
+#define	internal_error	std::cerr << (me ? me : "SWISH++") << ", \"" \
+			<< __FILE__ << "\", line " << __LINE__ \
+			<< ": internal error:\n"
+
+inline std::ostream&	report_error( std::ostream &o = std::cerr ) {
+				o << "please report this error\n";
+				std::_exit( Exit_Internal_Error );
 			}
 
 inline char*		new_strdup( char const *s ) {
