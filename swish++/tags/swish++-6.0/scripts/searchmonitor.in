@@ -1,0 +1,140 @@
+#! /bin/sh
+# This code is Bourne Shell for maximal portability.
+##
+#       SWISH++
+#       searchmonitor -- search daemon monitor
+#
+#       Copyright (C) 2001  Paul J. Lucas
+#
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##
+
+##
+# What stuff is called and where it's located.
+##
+LOG="logger -t search -p daemon"
+SEARCH_DEFAULT="%%I_BIN%%/search"
+
+##
+# You may need to set LD_LIBRARY_PATH to contain the directory of the C++
+# run-time library, e.g. libstdc++.so if g++ was used to compile SWISH++.
+##
+#LD_LIBRARY_PATH=/usr/local/lib
+#export LD_LIBRARY_PATH
+
+########### You shouldn't have to change anything below this line. ############
+
+ME=`basename $0`
+USAGE="usage: $ME [-c conf_file] [-s search_path]"
+
+##
+# Parse command-line options.
+##
+while getopts Bc:s: opt
+do
+    case $opt in
+    B) NO_BACKGROUND=true ;;
+    c) CONF_FILE="$OPTARG" ;;
+    s) SEARCH="$OPTARG" ;;
+    ?) echo $USAGE >&2; exit 1 ;;
+    esac
+done
+shift `expr $OPTIND - 1`
+
+##
+# Check for existence of configuration file.
+##
+if [ -n "$CONF_FILE" ]
+then
+    [ -f "$CONF_FILE" ] || { echo "$ME: $CONF_FILE not found" >&2; exit 3; }
+else
+    CONF_FILE="swish++.conf"
+    if [ ! -f "$CONF_FILE" ]
+    then
+        CONF_FILE="/etc/$CONF_FILE"
+        [ -f "$CONF_FILE" ] ||
+            { echo "$ME: no configuration file found" >&2; exit 3; }
+    fi
+fi
+
+##
+# Check for existence of search.
+##
+[ -z "$SEARCH" ] && SEARCH="$SEARCH_DEFAULT"
+[ -f "$SEARCH" ] || { echo "$ME: $SEARCH not found" >&2; exit 2; }
+
+##
+# Determine the numeric value for SIGUSR2 that we use to kill search.  By using
+# a user-generated signal, if search gets killed and it was killed by SIGUSR2,
+# then it MUST have been done by manual request.
+##
+KILL=`which kill`                           # ensure shell built-in isn't used
+USR2=`$KILL -l USR2 2>&1`
+
+##
+# If we haven't already put ourselves into the background, call ourselves in
+# the background (the child process) and immediately exit (as the parent
+# process).  This is effectively how to fork(2) in shell.
+##
+[ -z "$NO_BACKGROUND" ] && { $0 -B -c "$CONF_FILE" -s "$SEARCH" & exit 0; }
+
+##
+# Start search as a daemon and wait for it to exit.  If it exited because of a
+# condition that restarting might cure, restart it.
+##
+while true
+do
+    $SEARCH -B -c $CONF_FILE
+    exit_code=$?
+    if [ $exit_code -lt 128 ]
+    then # it exited by itself
+        case $exit_code in
+         1) $LOG.alert "configuration file error; NOT restarting"; exit 0 ;;
+         2) $LOG.alert "usage error; NOT restarting"; exit 0 ;;
+        40) $LOG.alert "can't read index file; NOT restarting"; exit 0 ;;
+        51) $LOG.alert "can't write PID file; NOT restarting"; exit 0 ;;
+        52) $LOG.alert "bad host/IP; NOT restarting"; exit 0 ;;
+        53) $LOG.err   "can't create TCP socket; restarting ..." ;;
+        54) $LOG.err   "can't create Unix socket; restarting ..." ;;
+        55) $LOG.alert "can't delete Unix socket; NOT restarting"; exit 0 ;;
+        56) $LOG.err   "can't bind TCP socket; restarting ..." ;;
+        57) $LOG.err   "can't bind Unix socket; restarting ..." ;;
+        58) $LOG.err   "can't listen TCP socket; restarting ..." ;;
+        59) $LOG.err   "can't listen Unix socket; restarting ..." ;;
+        60) $LOG.err   "can't select; restarting ..." ;;
+        61) $LOG.err   "can't accept; restarting ..." ;;
+        62) $LOG.err   "can't fork; restarting ..." ;;
+        63) $LOG.alert "can't cd /; NOT restarting"; exit 0 ;;
+        64) $LOG.err   "can't create thread; restarting ..." ;;
+        65) $LOG.err   "can't detach thread; restarting ..." ;;
+        66) $LOG.err   "can't init thread condition; restarting ..." ;;
+        67) $LOG.err   "can't init thread mutex; restarting ..." ;;
+        68) $LOG.alert "No such user; NOT restarting"; exit 0 ;;
+        69) $LOG.alert "No such group; NOT restarting"; exit 0 ;;
+         *) $LOG.err   "exited with code $exit_code; restarting..." ;;
+        esac
+    else # it received a signal
+        sig=`expr $exit_code - 128`
+        if [ $sig -eq $USR2 ]
+        then
+            $LOG.notice "shut down by manual request via signal USR2"
+            exit 0
+        else
+            $LOG.err "died on signal $sig; restarting..."
+        fi
+    fi
+    sleep 5
+done 2>/dev/null
+# vim:set et sw=4 ts=4:
