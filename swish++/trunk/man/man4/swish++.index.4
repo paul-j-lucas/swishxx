@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.index\f1 4 "August 14, 2000" "SWISH++"
+.TH \f3swish++.index\f1 4 "July 2, 2001" "SWISH++"
 .SH NAME
 swish++.index \- SWISH++ index file format
 .SH SYNOPSIS
@@ -46,6 +46,8 @@ long	num_words;
 off_t	word_offset[ num_words ];
 long	num_stop_words;
 off_t	stop_word_offset[ num_stop_words ];
+long	num_directories;
+off_t	directory_offset[ num_directories ];
 long	num_files;
 off_t	file_offset[ num_files ];
 long	num_meta_names;
@@ -53,6 +55,7 @@ off_t	meta_name_offset[ num_meta_names ];
 .ft 2
 	word index
 	stop-word index
+	directory index
 	file index
 	meta-name index
 .ft 1
@@ -67,9 +70,13 @@ every \f(CWstop_word_offset\f1 is an offset into the
 .I "stop-word index"
 pointing at the first character of a stop-word entry;
 similarly,
+every \f(CWdirectory_offset\f1 is an offset into the
+.I "directory index"
+pointing at the first character of a directory entry;
+similarly,
 every \f(CWfile_offset\f1 is an offset into the
 .I "file index"
-pointing at the first character of a file entry;
+pointing at the first byte of a file entry;
 finally,
 every \f(CWmeta_name_offset\f1 is an offset into the
 .I "mete-name index"
@@ -126,16 +133,27 @@ is of the form:
 \f2stop-word\fP0
 .cE
 that is: every word is null-terminated.
+.SS Directory Entries
+Every directory entry in the
+.I "directory index"
+is unique and of the form:
+.cS
+\f2directory-path\fP0
+.cE
+that is: a null-terminated full pathname of a directory.
+(It does not end in a slash.)
+The pathnames are relative to where the indexing was performed
+(unless absolute paths were used).
 .SS File Entries
 Every file entry in the
 .I "file index"
 is of the form:
 .cS
-\f2path-name\fP0\f3\s+2{\s-2\f2S\f3\s+2}{\s-2\f2W\f3\s+2}\s-2\f2file-title\fP0
+\f3\s+2{\s-2\f2D\f3\s+2}\s-2\f2file-name\fP0\f3\s+2{\s-2\f2S\f3\s+2}{\s-2\f2W\f3\s+2}\s-2\f2file-title\fP0
 .cE
-that is: a null-terminated pathname for a file
-relative to where the indexing was performed
-(unless absolute paths were used)
+that is: the file's directory index
+.RI ( D )
+followed by a null-terminated file name
 followed by the file's size in bytes
 .RI ( S )
 followed by the number of words in the file
@@ -145,7 +163,11 @@ The integers are in BCD format.
 .PP
 For an HTML or XHTML file,
 the title is what is between \f(CW<TITLE>\f1 ... \f(CW</TITLE>\f1 pairs.
-If a file is not an HTML or XHTML file, or is but does not have a title,
+For a mail or news file,
+the title is the value of the \f(CWSubject\f1 header.
+For a Unix manual page file,
+the title is the contents of the first line within the \f(CWNAME\f1 section.
+If a file is not one of those types of files, or is but does not have a title,
 the title is simply the file (not path) name.
 .SS Meta-Name Entries
 Every meta-name entry in the
