@@ -40,6 +40,16 @@ enum {
 	// unique to search
 	Exit_No_Read_Index	= 50,
 	Exit_Malformed_Query	= 51,
+#ifdef	SEARCH_DAEMON
+	Exit_No_Socket		= 52,
+	Exit_No_Bind		= 53,
+	Exit_No_Listen		= 54,
+	Exit_No_Accept		= 55,
+	Exit_No_Fork		= 56,
+	Exit_No_Change_Dir	= 57,
+	Exit_No_Create_Thread	= 58,
+	Exit_No_Detach_Thread	= 59,
+#endif
 };
 
 #endif	/* exit_codes_H */
