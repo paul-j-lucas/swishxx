@@ -1325,34 +1325,34 @@ ostream& usage( ostream &o ) {
 	o << "usage: " << me << " [options] dir ... file ...\n"
 	"options: (unambiguous abbreviations may be used for long options)\n"
 	"========\n"
-	"-?   | --help             : Print this help message\n"
-	"-c f | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+	"-?     | --help            : Print this help message\n"
+	"-c f   | --config-file f   : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 #ifdef	MOD_HTML
-	"-C c | --no-class c       : Class name not to index [default: none]\n"
+	"-C c   | --no-class c      : Class name not to index [default: none]\n"
 #endif
-	"-e p | --pattern p        : File pattern to index [default: none]\n"
-	"-E p | --no-pattern p     : File pattern not to index [default: none]\n"
-	"-f n | --word-files n     : Word/file maximum [default: infinity]\n"
-	"-F n | --files-reserve n  : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
-	"-G n | --files-grow n     : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
+	"-e m:p | --pattern m:p     : Module and file pattern to index [default: none]\n"
+	"-E p   | --no-pattern p    : File pattern not to index [default: none]\n"
+	"-f n   | --word-files n    : Word/file maximum [default: infinity]\n"
+	"-F n   | --files-reserve n : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
+	"-G n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
 #ifdef	MOD_HTML
-	"-H   | --dump-html        : Dump built-in recognized HTML/XHTML elements, exit\n"
+	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n"
 #endif
-	"-i f | --index-file f     : Name of index file to use [default: " << IndexFile_Default << "]\n"
-	"-I   | --incremental      : Add files to index [default: replace]\n"
+	"-i f   | --index-file f    : Name of index file to use [default: " << IndexFile_Default << "]\n"
+	"-I     | --incremental     : Add files to index [default: replace]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
-	"-l   | --follow-links     : Follow symbolic links [default: no]\n"
+	"-l     | --follow-links    : Follow symbolic links [default: no]\n"
 #endif
-	"-m m | --meta m           : Meta name to index [default: all]\n"
-	"-M m | --no-meta m        : Meta name not to index [default: none]\n"
-	"-p n | --word-percent n   : Word/file percentage [default: 100]\n"
-	"-r   | --no-recurse       : Don't index subdirectories [default: do]\n"
-	"-s f | --stop-file f      : Stop-word file to use instead of built-in default\n"
-	"-S   | --dump-stop        : Dump built-in stop-words, exit\n"
-	"-t n | --title-lines n    : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
-	"-T d | --temp-dir d       : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
-	"-v n | --verbosity n      : Verbosity level [0-4; default: 0]\n"
-	"-V   | --version          : Print version number, exit\n";
+	"-m m   | --meta m          : Meta name to index [default: all]\n"
+	"-M m   | --no-meta m       : Meta name not to index [default: none]\n"
+	"-p n   | --word-percent n  : Word/file percentage [default: 100]\n"
+	"-r     | --no-recurse      : Don't index subdirectories [default: do]\n"
+	"-s f   | --stop-file f     : Stop-word file to use instead of built-in default\n"
+	"-S     | --dump-stop       : Dump built-in stop-words, exit\n"
+	"-t n   | --title-lines n   : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
+	"-T d   | --temp-dir d      : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
+	"-v n   | --verbosity n     : Verbosity level [0-4; default: 0]\n"
+	"-V     | --version         : Print version number, exit\n";
 	::exit( Exit_Usage );
 	return o;			// just to make the compiler happy
 }
