@@ -19,7 +19,7 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	mod_mail
+#ifdef	MOD_mail
 
 // standard
 #include <algorithm>			/* for copy() */
@@ -36,11 +36,11 @@
 #include "IncludeMeta.h"
 #include "less.h"
 #include "meta_map.h"
-#ifdef	mod_html
+#ifdef	MOD_html
 #include "mod/html/mod_html.h"
 #endif
 #include "mod_mail.h"
-#ifdef	mod_rtf
+#ifdef	MOD_rtf
 #include "mod/rtf/mod_rtf.h"
 #endif
 #include "TitleLines.h"
@@ -357,12 +357,12 @@ could_not_filter:
 			auto_vec<char> const value(
 				to_lower_r( kv.value_begin, kv.value_end )
 			);
-			if ( ::strstr( value, "quoted-printable" ) )
-				type.encoding_ = Quoted_Printable;
+			if ( ::strstr( value, "binary" ) )
+				type.decoder_ = Binary;
 			else if ( ::strstr( value, "base64" ) )
-				type.encoding_ = Base64;
-			else if ( ::strstr( value, "binary" ) )
-				type.encoding_ = Binary;
+				type.decoder_ = decode_base64;
+			else if ( ::strstr( value, "quoted-printable" ) )
+				type.decoder_ = decode_quoted_printable;
 			continue;
 		}
 
@@ -408,11 +408,11 @@ could_not_filter:
 			//
 			if ( mime_type == "text/plain" )
 				type.content_type_ = Text_Plain;
-#ifdef	mod_rtf
+#ifdef	MOD_rtf
 			else if ( mime_type == "text/enriched" )
 				type.content_type_ = Text_Enriched;
 #endif
-#ifdef	mod_html
+#ifdef	MOD_html
 			else if ( mime_type == "text/html" )
 				type.content_type_ = Text_HTML;
 #endif
@@ -626,7 +626,7 @@ could_not_filter:
 	encoded_char_range::const_iterator c = e.begin();
 	message_type const type( index_headers( c.pos(), c.end_pos() ) );
 
-	if ( type.content_type_ == Not_Indexable || type.encoding_ == Binary ) {
+	if ( type.content_type_ == Not_Indexable || type.decoder_ == Binary ) {
 		//
 		// The attachment is something we can't index so just skip over
 		// it.
@@ -638,7 +638,7 @@ could_not_filter:
 	// Create a new encoded_char_range having the same range but the
 	// Content-Transfer-Encoding given in the headers.
 	//
-	encoded_char_range const e2( c.pos(), c.end_pos(), type.encoding_ );
+	encoded_char_range const e2( c.pos(), c.end_pos(), type.decoder_ );
 
 	switch ( type.content_type_ ) {
 
@@ -649,14 +649,14 @@ could_not_filter:
 		case Text_Plain:
 			indexer::index_words( e2 );
 			break;
-#ifdef	mod_rtf
+#ifdef	MOD_rtf
 		case Text_Enriched: {
 			static indexer &rtf = *indexer::find_indexer( "RTF" );
 			rtf.index_words( e2 );
 			break;
 		}
 #endif
-#ifdef	mod_html
+#ifdef	MOD_html
 		case Text_HTML: {
 			static indexer &html = *indexer::find_indexer( "HTML" );
 			html.index_words( e2 );
@@ -814,4 +814,4 @@ more_headers:
 	return true;
 }
 
-#endif	/* mod_mail */
+#endif	/* MOD_mail */
