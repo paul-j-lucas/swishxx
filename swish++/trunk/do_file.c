@@ -31,7 +31,11 @@
 //
 // SYNOPSIS
 //
+#ifdef	INDEX
+	void do_file( char const *file_name, int dir_index )
+#else
 	void do_file( char const *file_name )
+#endif
 //
 // DESCRIPTION
 //
@@ -160,7 +164,7 @@
 	ofstream extracted_file;
 	if ( extract_as_filter ) {
 		//
-		// We're running as a filter: write to standard ouput.
+		// We're running as a filter: write to standard output.
 		//
 		out = &cout;
 	} else {
@@ -226,7 +230,7 @@
 	static indexer *const text = indexer::find_indexer( "text" );
 	indexer *const i = found_pattern ? include_pattern->second : text;
 	file_info *const fi = new file_info(
-		orig_file_name, orig_file_size, i->find_title( file )
+		orig_file_name, dir_index, orig_file_size, i->find_title( file )
 	);
 	i->index_file( file );
 
