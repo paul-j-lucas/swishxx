@@ -56,7 +56,8 @@ PID_FILE=`grep -i '^PidFile' $CONF_FILE | tail -1 | sed 's!^[^/]*!!'`
 # a user-generated signal, if search gets killed and it was killed by SIGUSR2,
 # then it MUST have been done by manual request.
 ##
-USR2=`kill -l USR2 2>&1`
+KILL=`which kill`                           # ensure shell built-in isn't used
+USR2=`$KILL -l USR2 2>&1`
 
 ##
 # Figure out how to do echo without a newline.  This is stolen from Perl's
@@ -95,12 +96,13 @@ case "$1" in
         echo $n "Stopping $SEARCH$c"
         if [ -n "$LINUX" ]
         then killproc $SEARCH -$USR2 2>/dev/null
-        else kill -s USR2 `head -1 $PID_FILE`
+        else $KILL -s USR2 `head -1 $PID_FILE` || exit 1
         fi
         echo
         ;;
     restart)
-        $SCRIPT_DIR/$SEARCH stop
+        $SCRIPT_DIR/$SEARCH stop || exit 1
+        sleep 3
         $SCRIPT_DIR/$SEARCH start
         ;;
     *)
