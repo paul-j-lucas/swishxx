@@ -479,8 +479,7 @@ void			write_word_index( ostream&, off_t* );
 			<< file_info::list_.size() << " indexed\n  "
 			<< num_total_words << " words, "
 			<< num_indexed_words << " indexed, "
-			<< num_unique_words << " unique\n\n"
-			<< setfill(' ');
+			<< num_unique_words << " unique\n\n";
 	}
 
 	::exit( Exit_Success );
