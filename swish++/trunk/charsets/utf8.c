@@ -145,4 +145,5 @@
 
 	return unicode_to_ascii( u );
 }
+
 #endif	/* CHARSET_utf8 */

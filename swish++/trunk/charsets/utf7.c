@@ -304,4 +304,5 @@ return_decoded_char:
 	decoder.prev_c_ = c = orig_c + 1;
 	goto return_decoded_char;
 }
+
 #endif	/* CHARSET_utf7 */
