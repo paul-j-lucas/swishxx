@@ -43,6 +43,8 @@
 //*****************************************************************************
 {
 public:
+	int length() const		{ return value_.length(); }
+	int size() const		{ return value_.size(); }
 	operator char const*() const	{ return value_.c_str(); }
 
 	friend bool
