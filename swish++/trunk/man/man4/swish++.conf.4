@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "April 10, 2000" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "May 7, 2000" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -144,7 +144,8 @@ is the filename extension (without the dot) and
 is the command-line to execute the filter.
 .PP
 Within a command,
-there are a few % or @ substitutions that are substituted at run-time:
+there are a few \f(CW%\f1 or \f(CW@\f1 substitutions
+that are substituted at run-time:
 .PP
 .RS 5
 .PD 0
@@ -193,6 +194,8 @@ option or the
 variable),
 then the filter(s) are executed to create it.
 (See the EXAMPLES.)
+.PP
+To use a literal \f(CW%\f1 or \f(CW@\f1, simply double it.
 .SH EXAMPLES
 .SS Filters
 To uncompress \f(CWgzip\f1'd and \f(CWcompress\f1'd files
