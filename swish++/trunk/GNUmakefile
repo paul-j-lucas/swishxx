@@ -170,10 +170,7 @@ $(MOD_LIBS): FORCE
 # Don't do the "include" if the goal contains the word "clean," i.e., either
 # the "clean" or "distclean" goal.
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
-# Also, don't do the "include" if the goal is the "dist" goal.
-ifneq ($(MAKECMDGOALS),dist)
 include $(I_SOURCES:%.c=.%.d) $(E_SOURCES:%.c=.%.d) $(S_SOURCES:%.c=.%.d)
-endif
 endif
 
 ps pdf txt:
@@ -230,8 +227,4 @@ clean:
 
 distclean: clean
 	$(RM) $(TARGET) .*.d init_modules.c platform.h
-	@$(call MAKE_SUBDIRS,$@)
-
-dist: clean
-	$(RM) $(TARGET) init_modules.c platform.h
 	@$(call MAKE_SUBDIRS,$@)

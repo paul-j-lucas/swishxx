@@ -42,5 +42,5 @@ $(TARGET): src/*.c
 
 clean:
 
-distclean dist: clean
+distclean: clean
 	$(RM) $(TARGET) .*.d
