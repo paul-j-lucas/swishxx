@@ -218,7 +218,7 @@ stop_word_set*		stop_words;		// pointer to global set
 		"most", "mostly",
 		"mrs",
 		"much",
-		"must",
+		"must", "mustn't",
 		"my",
 		"myself",
 
