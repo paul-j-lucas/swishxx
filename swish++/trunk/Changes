@@ -2,6 +2,210 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.3.5
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* The code for modules has been reorganized into subdirectories that build
+  libraries with the goal of having a completely modular indexing architecture
+  similar to the way Apache has modules.  This is a work-in-progress.
+
+
+BUG FIXES
+---------
+
+* Version 5.1 broke indexing file names via standard input.  D'oh!
+
+  (This bug fix shall be known as bug fix FSI.)
+
+* Version 5.1 also added unnecessary work for extract(1).
+
+  (This bug fix shall be known as bug fix ESI.)
+
+* The thread::~thread() destructor mistakenly killed the calling thread rather
+  than itself.  Oops.  This didn't actually matter for SWISH++ since it's never
+  called.
+
+  (This bug fix shall be known as bug fix TPTD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config.h
+
+	1. Moved MOD_HTML parameters to mod/html/html_config.h.
+
+* config/config.mk
+
+	1. Changed format of MOD_LIST.
+	2. Added RANLIB.
+	3. Moved auto-dependency generation here.
+
+* config/GNUmakefile
+
+	1. Moved TARGET definition before include.
+	2. Added removal of accidental dep subdirectory.
+
+* config/mod.mk
+
+	1. New file for modularization.
+
+* conf_var.c
+
+	1. s/MOD_HTML/mod_html/
+	2. s/MOD_MAIL/mod_mail/
+
+* directory.c
+
+	1. Made this file #include'd by index.c and extract.c for bug fix FSI.
+	2. Added: #include "fake_ansi.h"
+	3. Added "#ifdef INDEX" in various places for bug fix ESI.
+	4. Added do_check_add_file() for bug fix FSI.
+
+* directory.h
+
+	1. Removed local #include's and follow_symbolic_links and
+	   function declarations for bug fix FSI.
+
+* elements.c
+* elements.h
+* entities.c
+* entities.h
+* ExcludeClass.h
+* mod_html.c
+* mod_html.h
+
+	1. Moved to mod/html subdirectory.
+
+* encoded_char.c
+* encoded_char.h
+
+	1. s/MOD_MAIL/mod_mail/
+
+* extract.c
+
+	1. Moved #include of platform.h first so PJL_NO_SYMBOLIC_LINKS would be
+	   defined at the right time.
+	2. Added: #include "FollowLinks.h" for bug fix ESI.
+	3. Added: #include "directory.c" for bug fix ESI.
+	4. s/::strdup()/new_strdup()/
+
+* ExcludeFile.c
+* ExtractFile.c
+
+	1. s/::strdup()/new_strdup()/
+
+* file_info.c
+
+	1. s/::strdup()/new_strdup()/
+
+* FollowLinks.h
+
+	1. s/follow_links/follow_symbolic_links/
+
+* FilterAttachment.h
+* mod_mail.c
+* mod_mail.h
+
+	1. Moved to mod/mail subdirectory.
+
+* GNUmakefile
+
+	1. Moved target definition before include.
+	2. s/C_TARGET/CPP_TARGET/
+	3. Added MOD_LIBS, MOD_LIB_PATHS, MOD_LINK.
+	4. s/I_SRCS/I_SOURCES/, s/I_OBJS/I_OBJECTS/, s/S_SRCS/S_SOURCES/,
+	   s/S_OBJS/S_OBJECTS/, s/E_SRCS/E_SOURCES/, s/E_OBJS/E_OBJECTS/
+	5. Removed module-specific .c files.
+	6. Removed $(CCLINK) -- not used.
+	7. Made use of $(MOD_LINK)
+	8. Removed entities.c from E_SOURCES -- not used.
+	9. Added $(MOD_LIBS) to index dependencies.
+	A. Added rule to build init_modules.c
+	B. Added ruleto build module libraries.
+	C. Moved auto-dependency generation to config/config.mk.
+	D. Added MAKE_SUBDIRS function and made use of it in clean, distclean.
+	E. Removed directory.c from I_SOURCES AND E_SOURCES for bug fix ESI.
+
+* IncludeFile.c
+* IncludeMeta.c
+
+	1. s/::strdup()/new_strdup()/
+
+* index.c
+
+	1. Changed includes to use mod/html form.
+	2. s/MOD_HTML/mod_html/
+	3. Moved #include of platform.h first so PJL_NO_SYMBOLIC_LINKS would be
+	   defined at the right time.
+	4. Added: #include "FollowLinks.h" for bug fix FSI.
+	5. Added: #include "directory.c" for bug fix FSI.
+	6. In main(), s/do_file()/do_check_add_file()/
+	7. s/::strdup()/new_strdup()/
+
+* indexer.c
+
+	1. s/::strdup()/new_strdup()/
+
+* init_modules.c
+
+	1. Removed since it's not automatically generated.
+
+* init_modules-sh
+
+	1. Added to generate init_modules.c automatically.
+
+* mod_man.c
+* mod_man.h
+
+	1. Moved to  mod/man subdirectory.
+
+* mod/html/html_config.h
+
+	1. Moved MOD_HTML-specific configuration parameters here.
+
+* mod/html/ExcludeClass.h
+* mod/html/GNUmakefile
+* mod/html/elements.c
+* mod/html/elements.h
+* mod/html/entities.c
+* mod/html/entities.h
+* mod/html/mod_html.c
+* mod/html/mod_html.h
+* mod/mail/FilterAttachment.h
+* mod/mail/GNUmakefile
+* mod/mail/encoded_char.c
+* mod/mail/mod_mail.c
+* mod/mail/mod_mail.h
+* mod/man/GNUmakefile
+* mod/man/mod_man.c
+* mod/man/mod_man.h
+
+	1. Moved from top-level directory.
+
+* stem_word.c
+* stop_words.c
+
+	1. s/::strdup()/new_strdup()/
+
+* thread_pool.c
+
+	1. Fixed thread::~thread() for bug fix TPTD.
+
+* util.c
+* util.h
+
+	1. Removed unneeded #include's.
+
+* version.h
+
+	1. Changed version to "5.3.5".
+
+
+*******************************************************************************
 5.3.4
 *******************************************************************************
 
