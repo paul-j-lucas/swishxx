@@ -2,6 +2,458 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.1
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Reduced index storage size by recording directory names once.
+
+  Note that the old -G option for index(1) has changed to -g and that there is
+  a new -G option.
+
+  (This feature shall be known as feature DIR1.)
+
+
+BUG FIXES
+---------
+
+* The swish++.conf(4) manual page was missing FilesReserve and ResultsMax.
+
+  (This bug fix shall be known as bug fix MFR.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* bcd.h
+
+	1. Added: #include "fake_ansi.h"
+
+* config.h
+
+	1. Added DirectoriesGrow_Default and DirectoriesReserve_Default for
+	   feature DIR1.
+
+* conf_bool.h
+* conf_enum.h
+* conf_int.h
+* conf_set.h
+* conf_string.h
+
+	1. Added: #include "fake_ansi.h"
+
+* conf_percent.c
+* conf_percent.h
+* DirectoriesGrow.h
+* DirectoriesReserve.h
+
+	1. Added these files for feature DIR1.
+
+* conf_var.c
+
+	1. Added DirectoriesGrow and DirectoriesReserve configuration variables
+	   for feature DIR1.
+
+* directory.c
+
+	1. Added dir_list for feature DIR1.
+	2. Added directories_reserve.
+	3. Added check_add_directory() for feature DIR1.
+
+* directory.h
+
+	1. Added dir_list for feature DIR1.
+	2. Added check_add_directory() for feature DIR1.
+	3. Added: #include "fake_ansi.h"
+
+* elements.h
+* entities.h
+
+	1. Added: #include "fake_ansi.h"
+
+* ExcludeFile.h
+* ExtractFile.h
+* ExtractFilter.h
+
+	1. Added extern declaration.
+
+* ExtractExtension.h
+
+	1. Added extern declaration.
+	2. Added: #include "fake_ansi.h"
+
+* FilesGrow.c
+
+	1. This functionality was replaced by conf_percent.c for feature DIR1.
+
+* FilesGrow.h
+
+	1. Changed to be derived from conf_percent.
+	2. Added extern declaration.
+
+* file_info.c
+
+	1. Added result_separator.
+	2. Redid the constructor mem-initializers.
+	3. Moved common constructor code to construct().
+	4. Added a second constructor used for reconsituting instances during
+	   incremental indexing.
+	5. Moved code for parse() to index.c.
+
+* file_info.h
+
+	1. Removed: #include <iostream>
+	2. Added: #include "fake_ansi.h"
+	3. Added a second constructor used for reconsituting instances during
+	   incremental indexing.
+	4. Added dir_index() and dir_index_ for feature DIR1.
+	5. Added: construct()
+	6. Made all data mambers private and added accessor functions.
+	7. s/struct/class/
+	8. Added: const_iterator, begin(), end(), ith_info(), and num_files().
+
+* FilterFile.h
+
+	1. Added extern declaration.
+	2. Removed: #include <map>
+
+* fnmatch.h
+
+	1. Removed unused #ifndef's.
+	2. Added #undef's.
+	3. Removed FNM_ERROR since it's not used.
+
+* FollowLinks.h
+
+	1. Added extern declaration.
+
+* GNUmakefile
+
+	1. Added conf_percent.c for feature DIR1.
+	2. Removed FilesGrow.c for feature DIR1.
+	3. Removed file_info.c from S_SRCS since file_info::out() has been
+	   moved to write_file_info() in search.c for feature DIR1.
+	4. Added query.c to S_SRCS.
+
+* IncludeFile.h
+
+	1. Added extern declaration.
+
+* IncludeMeta.h
+
+	1. Added: #include "fake_ansi.h"
+
+* Incremental.h
+
+	1. Added extern declaration.
+
+* index.c
+
+	1. Added DirectoriesGrow and DirectoriesReserve for feature DIR1.
+	2. Added my_write() since ostream::write() now apparantly requires a
+	   char* rather than a void* and I'm lazy about having to cast the
+	   pointers.
+	3. Added dirs-reserve and dirs-grow command-line options for feature
+	   DIR1.
+	4. Added #ifdef PJL_GCC_295.
+	5. In load_old_index(), added loading of directory index for feature
+	   DIR1.
+	6. Moved index-file header-writing code to index_header.c.
+	7. Added write_dir_index() for feature DIR1.
+	8. Added new options to usage message for feature DIR1.
+	9. In usage(), s/<TITLE>/title/.
+	A. In main(), added: check_add_directory( "." );
+	B. s/file_info::parse/parse_file_info/
+	C. Added parse_file_info().
+
+* IndexFile.h
+
+	1. Added: #include "fake_ansi.h"
+
+* indexer.h
+
+	1. Added: #include "fake_ansi.h"
+
+* index_header.c
+
+	1. Added this file to have index-file header-writing code only once.
+
+* index_segment.h
+
+	1. Added dir_index for feature DIR1.
+
+* man/man1/index.1
+
+	1. Added -D, --dirs-reserve options for feature DIR1.
+	2. Changed old -G option to -g for feature DIR1.
+	3. Added new -G, --dirs-grow options for feature DIR1.
+	4. Added missing FilesGrow variable for bug fix MFR.
+	5. Added DirectoriesGrow and DirectoriesReserve variables for feature
+	   DIR1.
+
+* man/man4/swish++.conf.4
+
+	1. Added missing FilesReserve variable for bug fix MFR.
+	2. Added DirectoriesGrow and DirectoriesReserve vairable for feature
+	   DIR1.
+	3. Added "Percentage variables" section.
+
+* man/man4/swish++.index.4
+
+	1. Added directory index description.
+	2. Added other module cases describing a file's title.
+
+* meta_map.h
+* mmap_file.h
+* mod_html.h
+* mod_mail.h
+
+	1. Added: #include "fake_ansi.h"
+
+* my_set.h
+
+	1. Moved declaration of #include "fake_ansi.h".
+
+* omanip.h
+
+	1. Added: #define PJL /* nothing */
+	2. Added: #include "fake_ansi.h"
+
+* option_stream.h
+* pattern_map.h
+* PidFile.h
+
+	1. Added: #include "fake_ansi.h"
+
+* query.c
+* query.h
+
+	1. Split out thr query-parsing code from search.c to here.
+
+* ResultsMax.h
+
+	1. Added extern declaration.
+
+* ResultSeparator.h
+
+	1. Added extern declaration.
+	2. Added: #include "fake_ansi.h"
+
+* search.c
+
+	1. Added "directories" index_segment global variable for feature DIR1.
+	2. Moved file_info::out() to write_file_info() for feature DIR1.
+	3. Moved result_separator definition here for feature DIR1.
+	4. Moved query-parsing code to query.c.
+
+* search.h
+* SocketAddress.h
+* SocketFile.h
+
+	1. Added: #include "fake_ansi.h"
+
+* StemWords.h
+
+	1. Added extern declaration.
+
+* StopWordFile.h
+
+	1. Added: #include "fake_ansi.h"
+
+* swish++.conf
+
+	1. Added DirectoriesGrow and DirectoriesReserve for feature DIR1.
+
+* TempDirectory.h
+
+	1. Added: #include "fake_ansi.h"
+
+* thread_pool.c
+
+	1. Added start_function_type to thread() constructor.
+
+* thread_pool.h
+
+	1. Added start_function_type to thread() constructor.
+	2. Added: #define PJL /* nothing */
+	3. Added: #include "fake_ansi.h"
+
+* util.h
+
+	1. Added: #include "fake_ansi.h"
+
+* version.h
+
+	1. Updated version to "5.1".
+
+* WordFilesMax.h
+* WordPercentMax.h
+
+	1. Added extern declaration.
+
+
+*******************************************************************************
+5.0.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* This releases fixes a lot of compile issues (mostly namespaces) with g++ 3.0.
+
+  (This bug fix shall be known as bug fix GCC3.)
+
+* The changes to fix the above have apparantly caused bugs in (at least) g++
+  2.95.3 to manifest themselves:
+
+	1. In some cases, the compiler "forgets" that operator<<(
+	   ostream&, string const& ) has been defined.  The hack
+	   workaround is to use operator<<( ostream&, char const* ) and
+	   use string::c_str().
+
+	2. The compiler "forgets" that stream manipulators have been defined.
+	   The workaround is not to use them.  :-(
+
+  (This fix shall be known as fix OOS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* bcd.h
+
+	1. Switched to using local omanip since depending on the
+	   underlying C++ implementation is not portable.  This was
+	   done for GCC3.
+
+* config/config-sh
+
+	1. Added PJL_GCC_295 since it's used in multiple places.  This was done
+	   for OOS.
+
+* config/config.mk
+
+	1. Made OPTIM = -O2 for g++ also since the optimizer under 3.0
+	   takes ridiculously long and uses most of the CPU and memory.
+	2. s/($(CC),g++)/($(findstring g++,$(CC)),g++)/
+
+* conf_var.h
+
+	1. s/cerr/std::cerr/ for OOS.
+
+* do_file.c
+
+	1. s/basename/pjl_basename/ due to name collision.
+
+* fake_ansi.h
+
+	1. Replaced __GNUC__, et al, with PJL_GCC_295 for OOS.
+
+* fdbuf.c
+* fdbuf.h
+
+	1. Added these files since the ability to attach an fstream to a Unix
+	   file descriptor has been removed from ANSI C++.  This was done for
+	   OOS.
+
+* filter.c
+
+	1. s/basename/pjl_basename/ due to name collision.
+
+* filter.h
+
+	1. s/std::unlink/::unlink/ for OOS.
+
+* GNUmakefile
+
+	1. Added fdbuf.c to S_SRCS for OOS.
+
+* index.c
+
+	1. Added my_write() since ostream::write() now apparantly requires a
+	   char* rather than a void* and I'm lazy about having to cast the
+	   pointers.  This was done for OOS.
+	2. s/o.write( /my_write( o, / for OOS.
+	3. Added #ifdef PJL_GCC_295 for fix OOS.
+
+* index_segment.h
+
+	1. s/random_access_iterator_tag/std::random_access_iterator_tag/ for
+	   OOS.
+
+* less.h
+
+	1. Added needed "namespace std { ... }" for OOS.
+
+* mmap_file.c
+
+	1. s/ios::open_mode/ios::openmode/ for OOS.
+
+* mmap_file.h
+
+	1. Added missing #include <fstream> for OOS.
+	2. s/ios::open_mode/std::ios::openmode/ for OOS.
+	3. s/reverse_bidirectional_iterator/std::reverse_bidirectional_iterator/
+	   for OOS.
+
+* omanip.h
+
+	1. Added this file to roll own ostream manipulator since depending on
+	   the underlying C++ implementation is not portable.  This was done
+	   for OOS.
+
+* option_stream.h
+
+	1. s/cerr/std::cerr/ for OOS.
+
+* pattern_map.h
+
+	1. Removed PJL_LOCAL_FNMATCH since it's not needed.
+	2. s/unary_function/std::unary_function/ for OOS.
+	3. s/std::fnmatch/::fnmatch/ for OOS.
+
+* search.c
+
+	1. s/#include <iomanip>/#include "omanip"/ for OOS.
+	2. Added #ifdef PJL_GCC_295 for fix OOS.
+
+* search.h
+
+	1. s/cerr/std::cerr/ for OOS.
+	2. s/cout/std::cout/ for OOS.
+
+* search_thread.c
+
+	1. Removed #include <fstream> for OOS.
+	2. Added #include "fdbuf.h" for OOS.
+	3. Switched to using fdbuf since the ability to attach an fstream to a
+	   Unix file descriptor has been removed from ANSI C++.
+
+* stem_word.h
+
+	1. s/less/std::less/
+
+* util.h
+
+	1. Added missing #include <iostream>
+	2. s/basename/pjl_basename/ due to name collision.
+	3. s/std::stat/::stat/ for OOS.
+	4. s/std::lstat/::lstat/ for OOS.
+	5. s/cerr/std::cerr/ for OOS.
+	6. s/endl/std::endl/ for OOS.
+
+* version.h
+
+	1. Updated version to "5.0.1".
+
+* word_info.c
+
+	1. Added missing "using namespace std;" for OOS.
+
+
+*******************************************************************************
 5.0
 *******************************************************************************
 
@@ -1899,7 +2351,7 @@ CHANGES, file-by-file
 
 	3. Made changes to daemon (daemon-type) for feature TCP.
 
-	4. Added stuff for TCP sockets. for feature TCP.
+	4. Added stuff for TCP sockets for feature TCP.
 
 	5. Updated exit status codes for feature TCP.
 
