@@ -120,6 +120,7 @@ int conf_var::current_config_file_line_no_ = 0;
 	static map_type m;
 	if ( m.empty() ) {
 		static char const *const var_name_table[] = {
+			"associatemeta",
 #ifdef	MOD_HTML
 			"excludeclass",
 #endif
