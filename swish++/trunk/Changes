@@ -147,6 +147,10 @@ CHANGES, file-by-file
 	1. Added StoreWordPositions for feature NS.
 	2. Added WordsNear for feature NS.
 
+* man/man4/swish++.index.4
+
+	1. Added Word-position list for feature NS.
+
 * mmap_file.h
 
 	1. Removed trailing ',' from behavior_type.
