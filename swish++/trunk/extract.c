@@ -163,7 +163,7 @@ static ostream&		usage( ostream& = cerr );
 			case 'e': { // Filename pattern(s) to extract.
 				char *a = opt.arg();
 				for ( char *pat; pat = ::strtok( a, "," ); ) {
-					include_patterns.insert( pat );
+					include_patterns.insert( pat, 0 );
 					a = 0;
 				}
 				break;
@@ -471,12 +471,21 @@ static ostream&		usage( ostream& = cerr );
 		}
 
 		if ( in_word ) {
+			//
+			// We ran into a non-word character, so extract the
+			// word up to, but not including, it.
+			//
 			in_word = false;
 			num_words += extract_word( word, len, out );
 		}
 	}
-	if ( in_word )
+	if ( in_word ) {
+		//
+		// We ran into 'end' while still accumulating characters into a
+		// word, so just extract what we've got.
+		//
 		num_words += extract_word( word, len, out );
+	}
 
 	if ( verbosity > 2 )
 		cout << " (" << num_words << " words)" << endl;
