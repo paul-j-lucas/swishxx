@@ -41,13 +41,21 @@ CFLAGS:=	$(CCFLAGS) $(DEBUGFLAGS)
 
 ########## You shouldn't have to change anything below this line. #############
 
+SUBDIRS:=	man mod/*
+
+ifdef CHARSET_LIST
+SUBDIRS+=		charsets
 CHARSET_LIB:=		charsets/libcharsets.a
 CHARSET_LIB_PATH:=	-Lcharsets
 CHARSET_LINK:=		-lcharsets
+endif
 
+ifdef ENCODING_LIST
+SUBDIRS+=		encodings
 ENCODING_LIB:=		encodings/libencodings.a
 ENCODING_LIB_PATH:=	-Lencodings
 ENCODING_LINK:=		-lencodings
+endif
 
 MOD_LIBS:=		$(foreach mod,$(MOD_LIST),mod/$(mod)/libmod_$(mod).a)
 MOD_LIB_PATHS:=		$(foreach mod,$(MOD_LIST),-Lmod/$(mod))
@@ -235,7 +243,7 @@ uninstall:
 # Utility rules
 ##
 
-MAKE_SUBDIRS=	for dir in charsets encodings man mod/*; \
+MAKE_SUBDIRS=	for dir in $(SUBDIRS); \
 		do [ -f $$dir/*akefile ] && $(MAKE) -C $$dir $1; \
 		done
 
