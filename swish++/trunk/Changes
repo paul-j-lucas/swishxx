@@ -1,6 +1,85 @@
 SWISH++ Changes
 ===============
 
+*******************************************************************************
+5.15
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Numbers stored in the generated index file are now more highly compressed
+  resulting in an overall average savings of approximately 6% in index size.
+
+  (This feature shall be known as feature HCI.)
+
+
+BUG FIXES
+---------
+
+* The call to change the behavior of mmap(2) was in the wrong place.
+
+  (This bug fix shall be known as bug fix MMB2.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* bcd.h
+* bcd.c
+
+	1. Replaced by enc_int.[hc], respectively, for feature HCI.
+
+* conf_var.c
+
+	1. Moved call to change behavior of mmap(2) for bug fix MMB2.
+
+* file_info.c
+
+	1. s/bcd.h/enc_int.h/ for feature HCI.
+	2. s/parse_bcd/dec_int/ for feature HCI.
+
+* file_list.c
+
+	1. s/bcd.c/enc_int.c/ for feature HCI.
+	2. Reworked calc_size() and operator++() for new index file format
+	   for feature HCI.
+
+* GNUmakefile
+
+	1. s/bcd.c/enc_int.c/ for feature HCI.
+
+* index.c
+
+	1. s/bcd.c/enc_int.c/ for feature HCI.
+	2. Added: #include "word_markers.h" for feature HCI.
+	3. s/parse_bcd/dec_int/ for feature HCI.
+	4. Reworked merge_indicies() and write_word_index() for new file format
+	   for feature HCI.
+
+* query.c
+
+	1. s/bcd.h/enc_int.h/ for feature HCI.
+	2. s/parse_bcd/dec_int/ for feature HCI.
+
+* search.c
+
+	1. Removed unneeded #include "bcd.h"
+
+* word_info.c
+
+	1. s/bcd.h/enc_int.h/ for feature HCI.
+	2. Added: #include "word_markers.h" for feature HCI.
+	3. Now using Meta_Name_List_Marker and Stop_Marker for feature HCI.
+
+* word_markers.h
+
+	1. New file for feature HCI.
+
+* version.h
+
+	1. Changed to "5.15".
+
 
 *******************************************************************************
 5.14.2
