@@ -2,6 +2,37 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.5.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Automatic thread-pool size reduction had a race condition where too many
+  threads could be destroyed.
+
+  (This feature fix shall be known as bug fix TCD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* thread_pool.cpp
+
+	1. Changed thread::destructing_ to thread::state_ for bug fix TCD.
+	2. In thread_main(), set thread state to expired before calling delete
+	   on it for bug fix TCD.
+
+* thread_pool.h
+
+	1. Changed thread::destructing_ to thread::state_ for bug fix TCD.
+
+* version.h
+
+	1. Upped version to 5.5.1.
+
+
+*******************************************************************************
 5.5
 *******************************************************************************
 
