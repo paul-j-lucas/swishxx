@@ -27,7 +27,7 @@ all: $(TARGET)
 include		$(ROOT)/config/config.mk
 
 INCLUDES:=	-I$(ROOT)
-CFLAGS:=	$(CCFLAGS) $(DEBUG) $(INCLUDES)
+CFLAGS:=	$(CCFLAGS) $(DEBUGFLAGS) $(INCLUDES)
 SOURCES:=	$(wildcard *.c)
 
 ##
