@@ -121,6 +121,8 @@ int conf_var::current_config_file_line_no_ = 0;
 	if ( m.empty() ) {
 		static char const *const var_name_table[] = {
 			"associatemeta",
+			"directoriesgrow",
+			"directoriesreserve",
 #ifdef	MOD_HTML
 			"excludeclass",
 #endif
