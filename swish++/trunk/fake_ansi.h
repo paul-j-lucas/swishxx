@@ -24,20 +24,6 @@
 
 #include "platform.h"
 
-/* new cast operators */
-
-#ifdef	PJL_NO_NEW_CASTS
-#	define CONST_CAST(T)		(T)
-#	define STATIC_CAST(T)		(T)
-#	define DYNAMIC_CAST(T)		(T)
-#	define REINTERPRET_CAST(T)	(T)
-#else
-#	define CONST_CAST(T)		const_cast<T>
-#	define STATIC_CAST(T)		static_cast<T>
-#	define DYNAMIC_CAST(T)		dynamic_cast<T>
-#	define REINTERPRET_CAST(T)	reinterpret_cast<T>
-#endif
-
 /* namespaces */
 
 #ifdef	PJL_NO_NAMESPACES
