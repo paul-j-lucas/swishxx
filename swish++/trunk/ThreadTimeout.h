@@ -37,7 +37,7 @@
 // DESCRIPTION
 //
 //	A ThreadTimeout is-a conf<int> containing the number of seconds until
-//	and idle spare thread times out and destroys itself.
+//	an idle spare thread times out and destroys itself.
 //
 //	This is the same as index's -o command-line option.
 //
