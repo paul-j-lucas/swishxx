@@ -37,10 +37,10 @@
 //
 // DESCRIPTION
 //
-//	A my_set is-a set but with the find() member function replaced with
-//	one that returns a simpler bool result indicating whether a given
-//	element is in the set.  (This is called a lot and I hate lots of
-//	typing.)
+//	A my_set is-a set but with the addition of a contains() member
+//	function, one that returns a simpler bool result indicating whether a
+//	given element is in the set.  (This is called a lot and I hate lots
+//	of typing.)
 //
 //*****************************************************************************
 {
@@ -49,7 +49,7 @@ public:
 protected:
 	typedef std::set< key_type > base_type;
 public:
-	bool find( key_type s ) const {		// less typing
+	bool contains( key_type s ) const {
 		return base_type::find( s ) != base_type::end();
 	}
 };
