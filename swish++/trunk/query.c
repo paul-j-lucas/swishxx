@@ -372,9 +372,6 @@ static bool	parse_optional_relop( token_stream&, token::type& );
 	}
 
 	if ( !args.and_nodes.empty() ) {
-		//
-		// TODO
-		//
 		args.and_nodes.push_back( args.node );
 		args.node = new and_node( args.pool, args.and_nodes );
 	}
