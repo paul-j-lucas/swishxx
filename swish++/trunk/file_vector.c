@@ -21,26 +21,26 @@
 
 // standard
 #include <cerrno>
-#include <fcntl.h>				/* for open(2), O_RDONLY, ... */
+#include <fcntl.h>			/* for open(2), O_RDONLY, etc */
 #ifndef	WIN32
-#include <sys/mman.h>				/* for mmap(2) */
-#include <sys/resource.h>			/* for get/setrlimit(2) */
+#include <sys/mman.h>			/* for mmap(2) */
+#include <sys/resource.h>		/* for get/setrlimit(2) */
 #endif
-#include <sys/stat.h>				/* for stat(2) */
-#include <unistd.h>				/* for close(2) */
+#include <sys/stat.h>			/* for stat(2) */
+#include <unistd.h>			/* for close(2) */
 #if	defined( MULTI_THREADED ) && defined( RLIMIT_VMEM )
 #include <pthread.h>
 #endif
 
 // local
-#include "fake_ansi.h"
-#include "file_vector.h"			/* for *_CAST */
+#include "fake_ansi.h"			/* for *_CAST */
+#include "file_vector.h"
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
 #endif
 
-#ifdef	RLIMIT_VMEM				/* SVR4 */
+#ifdef	RLIMIT_VMEM			/* SVR4 */
 //*****************************************************************************
 //
 // SYNOPSIS
