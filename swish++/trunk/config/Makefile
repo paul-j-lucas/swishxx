@@ -24,23 +24,16 @@
 ROOT=		..
 include 	$(ROOT)/config/config.mk
 
-.SUFFIXES:
+TARGET=		$(ROOT)/platform.h
 
 ##
 # Build rules
 ##
 
-TARGET=		$(ROOT)/$(PLATFORM_H)
+all config: $(TARGET)
 
-all config:	$(TARGET)
-
-$(TARGET):	src/errno$(CCCEXT) \
-		src/explicit$(CCCEXT) \
-		src/mutable$(CCCEXT) \
-		src/namespaces$(CCCEXT) \
-		src/new_casts$(CCCEXT) \
-		src/socklen$(CCCEXT)
-	./config-sh $(TARGET) $(CCCEXT) $(CCOEXT) $(CC) $(CCFLAGS)
+$(TARGET): src/*.c
+	./config-sh $(TARGET) $(CC) $(CCFLAGS)
 
 ##
 # Utility rules
