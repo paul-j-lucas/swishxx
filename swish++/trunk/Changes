@@ -2,6 +2,65 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+2.0.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The code parsed HTML attributes inside HTML comments.  This is (obviously)
+  the wrong thing to do.  HTML comments declarations are now really, really
+  ignored.  Honest.
+
+  (This bug fix will be known as bug fix ACP.)
+
+* The code parsed HTML attributes inside <!DOCTYPE ...> declarations.  This is
+  also (obviously) the wrong thing to do.  <!DOCTYPE...> declarations are now
+  also ignored.
+
+  (This bug fix will be known as bug fix EXP.)
+
+* The set of HTML end tags that close some HTML elements was incomplete.
+
+  (This bug fix will be known as bug fix HC1.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* elements.c
+
+	1. For the <colgroup> element, added <colgroup> for bug fix
+	   HC1.
+
+	2. For the <td> element, added <tbody>, </tbody>, </td>,
+	   <tfoot>, </tfoot>, <tr>, and </tr> for bug fix HC1.
+
+	3. For the <tfoot> element, added <tbody> and <thead> for bug
+	   fix HC1.
+
+	4. For the <th> element, added <tbody>, </tbody>, <tfoot>,
+	   </tfoot>, </th>, <tr>, and </tr> for bug fix HC1.
+
+	5. For the <thead> element, added <tbody> and <tfoot> for bug
+	   fix HC1.
+
+	6. For the <tr> element, added <tbody>, </tbody>, <tfoot>,
+	   </tfoot>, and </thead> for bug fix HC1.
+
+* html.c
+
+	1. In parse_html_tag(), added "if ( ... ) return;" around call
+	   to skip_html_tag() for bug fix ACP.
+
+	2. In parse_html_tag(), added check to see if first character
+	   of an HTML tag is '!' for bug fix EXP.
+
+	3. In skip_html_tag(), changed return type to "bool" and added
+	   "return" statements for bug fix ACP.
+
+
+*******************************************************************************
 2.0
 *******************************************************************************
 
