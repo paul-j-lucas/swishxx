@@ -106,8 +106,7 @@ using namespace std;
 		//
 		// We advance the pointer 1 position for the first 2 characters
 		// but 2 positions for the 3rd since we have to skip over the
-		// 4th character used in the encoded versions of the
-		// characters.
+		// 4th character used in the encoded version of the characters.
 		//
 return_decoded_char:
 		if ( ++c != end && delta == 2 )
@@ -120,7 +119,11 @@ return_decoded_char:
 	//
 	register pointer line_begin = skip_newline( c, end );
 	if ( line_begin == end ) {
-		c = end;
+		//
+		// We ran into the end: return something innocuous like a space
+		// since we have to return something.
+		//
+reached_end:	c = end;
 		return ' ';
 	}
 
@@ -156,8 +159,7 @@ return_decoded_char:
 		// Well-formed Base64-encoded text should always been in groups
 		// of 4 characters.  This text isn't: stop.
 		//
-		c = end;
-		return ' ';
+		goto reached_end;
 	}
 
 	//
@@ -167,7 +169,7 @@ return_decoded_char:
 	int const num_chars = group[2] == '=' ? 1 : group[3] == '=' ? 2 : 3;
 
 	//
-	// Calculate a combined value of the 4 encoded 6-bit characters.
+	// Calculate a combined value of the encoded 6-bit characters.
 	//
 	register unsigned value = 0;
 	register int i;
