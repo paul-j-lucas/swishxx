@@ -1015,8 +1015,8 @@ static bool tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 {
 	o <<
 	"---------------------------- HTML options -------------------------------------\n"
-	"-C c   | --no-class c      : Class name not to index [default: none]\n"
-	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n";
+	"-C c   | --no-class c       : Class name not to index [default: none]\n"
+	"-H     | --dump-html        : Dump built-in recognized HTML/XHTML elements, exit\n";
 }
 
 #endif	/* MOD_html */
