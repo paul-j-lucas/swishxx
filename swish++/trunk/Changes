@@ -3,6 +3,48 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.9
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Added XML schema informaion in seach results XML output.
+
+  (This feature shall be known as feature XMLS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* man/man1/search.1
+
+	1. Fixed formatting for grammar.
+	2. Added LaTeX to set of files that can have titles.
+	3. Added XML schema information for feature XMLS.
+
+* man/man4/swish++.index.4
+
+	1. Added missing mention of LaTeX titles.
+
+* version.h
+
+	1. Upped version to "5.9".
+
+* SearchResults.xsd
+
+	1. New file for feature XMLS.
+
+* xml_formatter.c
+
+	1. Added SWISHPP_URI, SEARCH_RESULTS_DTD, SEARCH_RESULTS_NS_URI,
+	   SEARCH_RESULTS_XSD, and XML_SCHEMA_INSTANCE_URI for feature XMLS.
+	2. In pre(), put "<?xml ..." before "<!DOCUMENT ..."
+	3. In pre(), added xmlns, xmlns:xsi, xsi:schemaLocation
+	   for feature XMLS.
+
+
+*******************************************************************************
 5.8
 *******************************************************************************
 
