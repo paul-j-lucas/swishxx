@@ -40,20 +40,8 @@ Building SWISH++ for Microsoft Windows 98/NT/2000/XP
 2. Go to the "config" directory and edit the "config.mk" file as necessary.
    This file controls how the software is compiled.
 
-3. Go back to the top-level directory and type "make".  Note: lines of the
-   form:
-
-	GNUmakefile:169: .bcd.d: No such file or directory
-	GNUmakefile:169: .mmap_file.d: No such file or directory
-	GNUmakefile:169: .conf_var.d: No such file or directory
-	...
-
-   are EXPECTED and NORMAL.  Those files INTENTIONALLY are not distributed in
-   the tar file.  This causes "make" to build them.  This is a technique
-   recommended by the GNU Make authors themselves for generating dependency
-   files automatically.
-
-   If everything works out, the software will be built.
+3. Go back to the top-level directory and type "make".  If everything works
+   out, the software will be built.
 
 
 ===============================================================================
