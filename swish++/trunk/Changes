@@ -18,6 +18,50 @@ day job.
 
 
 *******************************************************************************
+4.6.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* When using filters, the post-filtered filename and size were stored in the
+  index rather than the original filename and size.
+
+  (This bug fix will be known as bug fix FFS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* do_file.c
+
+	1. Added orig_file_size for bug fix FFS.
+
+	2. Moved test for encountering file during incremental indexing
+	   to before the filter filename substitutions for bug fix FFS.
+
+	3. Added orig_file_name for bug fix FFS.
+
+	4. Changed "new file_info()" call to use orig_file_name and
+	   orig_file_size for bug fix FFS.
+
+* filter.c
+* filter.h
+
+	1. Performed following substitution:
+
+		s/target_file_/target_file_name_/
+
+* util.h
+
+	1. Added file_size() for bug fix FFS.
+
+* version.h
+
+	1. Updated version to "4.6.2".
+
+
+*******************************************************************************
 4.6.1
 *******************************************************************************
 
