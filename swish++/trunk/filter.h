@@ -24,10 +24,10 @@
 
 // standard
 #include <string>
-#include <unistd.h>				/* for unlink(2) */
+#include <unistd.h>			/* for unlink(2) */
 
 // local
-#include "fake_ansi.h"				/* for explicit, std */
+#include "fake_ansi.h"			/* for explicit, std */
 
 //*****************************************************************************
 //

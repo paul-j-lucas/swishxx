@@ -27,7 +27,7 @@
 #include <iterator>
 
 // local
-#include "fake_ansi.h"			/* for iterator */
+#include "fake_ansi.h"			/* for iterator, std */
 #include "index_segment.h"
 #include "word_info.h"
 

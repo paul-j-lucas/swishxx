@@ -26,7 +26,7 @@
 #include <iterator>
 
 // local
-#include "fake_ansi.h"			/* for iterator */
+#include "fake_ansi.h"			/* for iterator, std */
 #include "util.h"			/* for to_lower() */
 #include "word_util.h"
 

@@ -29,8 +29,8 @@
 #include <string>
 
 // local
-#include "fake_ansi.h"				/* for explicit, std */
-#include "indexer.h"				/* for No_Meta_ID */
+#include "fake_ansi.h"			/* for explicit, std */
+#include "indexer.h"			/* for No_Meta_ID */
 #include "my_set.h"
 
 //*****************************************************************************

@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"				/* for std */
+#include "fake_ansi.h"			/* for std */
 
 extern char const iso8859_map[ 256 ];
 
