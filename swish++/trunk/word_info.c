@@ -29,24 +29,28 @@
 using namespace std;
 #endif
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void word_info::file::write_meta_ids( ostream &o ) const
-//
-// DESCRIPTION
-//
-//	Write out the set of META IDs for a word in a given file.
-//
-// PARAMETERS
-//
-//	o	The ostream to write to.
-//
-//*****************************************************************************
+word_info::file::file() {
+	// do nothing
+}
+
+word_info::file::file( int index ) :
+	index_( index ), occurrences_( 1 ), rank_( 0 )
 {
+	// do nothing else
+}
+
+void word_info::file::write_meta_ids( ostream &o ) const {
 	o << Meta_Name_List_Marker;
 	FOR_EACH( meta_set, meta_ids_, meta_id )
 		o << enc_int( *meta_id );
 	o << Stop_Marker;
 }
+
+#ifdef	FEATURE_word_pos
+void word_info::file::write_word_pos( ostream &o ) const {
+	o << Word_Pos_List_Marker;
+	FOR_EACH( pos_delta_list, pos_deltas_, pos_delta )
+		o << enc_int( *pos_delta );
+	o << Stop_Marker;
+}
+#endif	/* FEATURE_word_pos */
