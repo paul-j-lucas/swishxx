@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "May 31, 2002" "SWISH++"
+.TH \f3index\f1 1 "November 1, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -573,30 +573,30 @@ or
 .B \-\-no-class
 options may be specified.
 .TP
-.BI \-e m : p
+.BI \-e m : p [, p ...]
 .br
 .ns
 .TP
-.BI \-\-pattern= m : p
+.BI \-\-pattern= m : p [, p ...]
 A module name,
 .IR m ,
-and a filename pattern,
+and a filename pattern (or set of patterns separated by commas),
 .IR p ,
 of files to index.
 Case is irrelevant for the module name,
-but significant for the pattern.
+but significant for the patterns.
 Multiple
 .B \-e
 or
 .B \-\-pattern
 options may be specified.
 .TP
-.BI \-E p
+.BI \-E p [, p ...]
 .br
 .ns
 .TP
-.BI \-\-no-pattern= p
-A filename pattern,
+.BI \-\-no-pattern= p [, p ...]
+A filename pattern (or set of patterns separated by commas),
 .IR p ,
 of files
 .I not
