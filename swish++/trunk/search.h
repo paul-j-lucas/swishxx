@@ -71,6 +71,7 @@
 	int		max_threads_arg;
 	int		min_threads_arg;
 	char const*	pid_file_name_arg;
+	bool		search_background_opt;
 	char const*	socket_address_arg;
 	char const*	socket_file_name_arg;
 	int		socket_queue_size_arg;
