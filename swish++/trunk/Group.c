@@ -53,8 +53,7 @@ using namespace std;
 	char const *const group_name = operator char const*();
 	struct group const *const g = ::getgrnam( group_name );
 	if ( !g ) {
-		error()	<< '"' << name() << "\" value of \""
-			<< group_name << "\" does not exist" << endl;
+		error()	<< '"' << group_name << "\" does not exist" << endl;
 		::exit( Exit_No_Group );
 	}
 	gid_ = g->gr_gid;

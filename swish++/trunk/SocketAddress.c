@@ -66,8 +66,7 @@ using namespace std;
 
 	struct hostent const *const host = ::gethostbyname( hostname_or_ip );
 	if ( !host ) {
-		error()	<< '"' << name() << "\" value of \"" << hostname_or_ip
-			<< "\" is invalid\n";
+		error()	<< '"' << hostname_or_ip << "\" is invalid\n";
 		::exit( Exit_No_Host_or_IP );
 	}
 
