@@ -22,6 +22,9 @@
 #ifndef directory_H
 #define directory_H
 
+// standard
+#include <vector>
+
 // local
 #include "platform.h"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -29,6 +32,11 @@
 
 extern FollowLinks follow_symbolic_links;
 #endif
+
+typedef std::vector< char const* > dir_list_type;
+extern dir_list_type dir_list;
+//
+//	This contains the list of all directories in the order encountered.
 
 void	do_directory( char const *path );
 
