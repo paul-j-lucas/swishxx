@@ -29,7 +29,8 @@
 void		index_words(
 			file_vector::const_iterator pos,
 			file_vector::const_iterator end,
-			bool is_html, int meta_id = No_Meta_ID
+			bool is_html, int meta_id = No_Meta_ID,
+			bool is_new_file = false
 		);
 
 #endif	/* index_H */
