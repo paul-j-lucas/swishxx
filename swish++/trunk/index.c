@@ -200,7 +200,7 @@ void			write_word_index( ostream&, off_t* );
 	static option_stream::spec const opt_spec[] = {
 		"help",			0, '?',
 		"no-assoc-meta",	0, 'A',
-		"config",		1, 'c',
+		"config-file",		1, 'c',
 #ifdef	mod_html
 		"no-class",		1, 'C',
 #endif
