@@ -44,8 +44,8 @@ FilesReserve			files_reserve;
 // SYNOPSIS
 //
 	file_info::file_info(
-		char const *path_name, size_t file_size, char const *title,
-		int num_words
+		char const *path_name, int dir_index, size_t file_size,
+		char const *title, int num_words
 	)
 //
 // DESCRIPTION
@@ -61,6 +61,8 @@ FilesReserve			files_reserve;
 // PARAMETERS
 //
 //	path_name	The full path name of the file.
+//
+//	dir_index	The numerical index of the directory.
 //
 //	file_size	The size of the file in bytes.
 //
@@ -79,7 +81,7 @@ FilesReserve			files_reserve;
 			*name_set_.insert( new_strdup( path_name ) ).first
 		)
 	  ),
-	  dir_index_( dir_list.size() - 1 ),
+	  dir_index_( dir_index ),
 	  num_words_( num_words ), size_( file_size ),
 	  title_(
 		//
@@ -88,55 +90,6 @@ FilesReserve			files_reserve;
 		//
 		title ? new_strdup( title ) : file_name_
 	  )
-{
-	construct();
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	file_info::file_info(
-		char const *path_name, int dir_index, size_t file_size,
-		char const *title, int num_words
-	)
-//
-// DESCRIPTION
-//
-//	Construct a file_info reconstituted from an index file for incremental
-//	indexing.
-//
-// PARAMETERS
-//
-//	path_name	The full path name of the file.
-//
-//	dir_index	The numerical index of the directory.
-//
-//	file_size	The size of the file in bytes.
-//
-//	title		The title of the file only if not null.
-//
-//	num_words	The number of words in the file.
-//
-//*****************************************************************************
-	: file_name_( pjl_basename( path_name ) ), dir_index_( dir_index ),
-	  num_words_( num_words ), size_( file_size ), title_( title )
-{
-	construct();
-	name_set_.insert( path_name );
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	void file_info::construct()
-//
-// DESCRIPTION
-//
-//	This factors out code common to constructors.
-//
-//*****************************************************************************
 {
 	if ( list_.empty() )
 		list_.reserve( files_reserve );
