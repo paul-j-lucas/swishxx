@@ -46,12 +46,13 @@ extern index_segment	files, meta_names, stop_words, words;
 int	get_meta_id( index_segment::const_iterator );
 
 bool	parse_meta(
-		token_stream&, search_results_type&, stop_word_set&, bool&,
-		int = No_Meta_ID
+		token_stream&, search_results_type&, stop_word_set&, bool&, int
 	);
 bool	parse_primary(
-		token_stream&, search_results_type&, stop_word_set&, bool&,
-		int = No_Meta_ID
+		token_stream&, search_results_type&, stop_word_set&, bool&, int
+	);
+bool	parse_query2(
+		token_stream&, search_results_type&, stop_word_set&, bool&, int
 	);
 bool	parse_optional_relop( token_stream&, token::type& );
 
@@ -111,6 +112,40 @@ bool	parse_optional_relop( token_stream&, token::type& );
 // SYNOPSIS
 //
 	bool parse_query(
+		token_stream &query, search_results_type &result,
+		stop_word_set &stop_words_found
+	)
+//
+// DESCRIPTION
+//
+//	Parse a query.
+//
+// PARAMETERS
+//
+//	query			The token_stream whence the query string is
+//				extracted.
+//
+//	result			The query results go here.
+//
+//	stop_words_found	The set of stop-words in the query.
+//
+// RETURN RESULT
+//
+//	Returns true only if a query was successfully parsed.
+//
+//*****************************************************************************
+{
+	bool ignore;
+	return parse_query2(
+		query, result, stop_words_found, ignore, No_Meta_ID
+	);
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	bool parse_query2(
 		token_stream &query, search_results_type &result,
 		stop_word_set &stop_words_found, bool &ignore, int meta_id
 	)
@@ -231,7 +266,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 				// the programmer goofed.
 				//
 				internal_error
-					<< "parse_query(): "
+					<< "parse_query2(): "
 					   "got non-and/or token\n"
 					<< report_error;
 		}
@@ -451,7 +486,7 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> '('\n";
 #			endif
-			if ( !parse_query(
+			if ( !parse_query2(
 				query, result, stop_words_found, ignore, meta_id
 			) )
 				return false;
