@@ -53,19 +53,19 @@ protected:
 	conf_var( char const *var_name );
 	virtual ~conf_var();
 
-	virtual void	parse_value( char *line ) = 0;
-	//		Derived classes must define this to parse a line and
-	//		set their value.
+	virtual void		parse_value( char *line ) = 0;
+	//			Derived classes must define this to parse a
+	//			line and set their value.
 
-	void		parse_const_value( char const *line );
-	//		This is a convenience function that can be called to
-	//		parse a line where the line is const.  This is used by
-	//		operator=().
+	void			parse_const_value( char const *line );
+	//			This is a convenience function that can be
+	//			called to parse a line where the line is const.
+	//			This is used by operator=().
 
-	virtual void	reset() = 0;
-	//		Reset value to default.
+	virtual void		reset() = 0;
+	//			Reset value to default.
 
-	static std::ostream&	error( std::ostream& = cerr);
+	static std::ostream&	error  ( std::ostream& = cerr );
 	static std::ostream&	warning( std::ostream& = cerr );
 private:
 	// Note that the declaration of std::map has a default "Compare"
