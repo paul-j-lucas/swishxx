@@ -84,6 +84,8 @@ private:
 	static void		reset_all();
 };
 
+////////// Inlines ////////////////////////////////////////////////////////////
+
 inline std::ostream& conf_var::error( std::ostream &o ) {
 	return msg( o, "error" );
 }
