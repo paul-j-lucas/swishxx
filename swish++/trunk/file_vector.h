@@ -47,6 +47,8 @@
 //*****************************************************************************
 {
 public:
+	////////// typedefs ///////////////////////////////////////////////////
+
 #ifdef	WIN32
 	typedef DWORD size_type;
 #else
@@ -54,12 +56,16 @@ public:
 #endif
 	typedef ptrdiff_t difference_type;
 
+	////////// constructors & destructor //////////////////////////////////
+
 	file_vector_base()			{ init(); }
 	file_vector_base( char const *path, ios::open_mode mode = ios::in ) {
 		init();
 		open( path, mode );
 	}
 	~file_vector_base()			{ close(); }
+
+	////////// member functions ///////////////////////////////////////////
 
 	bool		open( char const *path, ios::open_mode = ios::in );
 	void		close();
@@ -151,7 +157,7 @@ public:
 		return const_reverse_iterator( begin() );
 	}
 
-	////////// element access /////////////////////////////////////////////
+	////////// member functions ///////////////////////////////////////////
 
 	reference	back()			{ return *( end() - 1 ); }
 	const_reference	back() const		{ return *( end() - 1 ); }
