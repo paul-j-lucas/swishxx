@@ -409,9 +409,8 @@ inline omanip< char const* > index_file_info( int index ) {
 	token_stream		query_stream( query );
 	search_results_type	results;
 	stop_word_set		stop_words_found;
-	bool			ignore;
 
-	if ( !( parse_query( query_stream, results, stop_words_found, ignore )
+	if ( !( parse_query( query_stream, results, stop_words_found )
 		&& query_stream.eof()
 	) ) {
 		err << error << "malformed query\n";
