@@ -32,6 +32,8 @@
 #include "fake_ansi.h"			/* for std */
 #include "index_segment.h"
 #include "token.h"
+#include "WordFilesMax.h"
+#include "WordPercentMax.h"
 
 typedef	std::map< int, int > search_results;
 //
@@ -46,6 +48,33 @@ typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
 
 typedef	std::set< std::string > stop_word_set;
 
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline bool is_too_frequent( int file_count )
+//
+// DESCRIPTION
+//
+//	Checks to see if a word is too frequent by either exceeding the maximum
+//	number or percentage of files it can be in.
+//
+// PARAMETERS
+//
+//	file_count	The number of files a word occurs in.
+//
+// RETURN VALUE
+//
+//	Returns true only if a word is too frequent.
+//
+//*****************************************************************************
+{
+	extern index_segment files;
+	return	file_count > word_files_max ||
+		file_count * 100 / files.size() >= word_percent_max;
+}
+
 bool	parse_query( token_stream&, search_results&, stop_word_set& );
 
 #endif	/* query_H */
+/* vim:set noet sw=8 ts=8: */
