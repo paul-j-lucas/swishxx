@@ -27,7 +27,7 @@
 int const	Word_Hard_Min_Size		= 3;
 int const	Word_Hard_Max_Size		= 25;
 //		The minimum and maximum lengths a word must be in order even to
-//		bother doing more aggressive checks on to determine if it
+//		bother doing more aggressive checks on it to determine if it
 //		should be indexed.
 
 int const	Word_Min_Size			= 4;
@@ -48,16 +48,16 @@ int const	Word_Hex_Max_Size		= 4;
 // I don't think there is a word in English that has more than...
 
 int const	Word_Max_Consec_Consonants	= 5;
-//		...5 consecutive consonants
+//		...this many consecutive consonants
 
 int const	Word_Max_Consec_Vowels		= 4;
-//		...4 consecutive vowels (like "queue")
+//		...this many consecutive vowels (like "queue")
 
 int const	Word_Max_Consec_Same		= 2;
-//		...2 of the same alphabetic character consecutively
+//		...this many of the same alphabetic character consecutively
 
 int const	Word_Max_Consec_Puncts		= 1;
-//		...1 punctuation character in a row
+//		...this many punctuation character in a row
 
 // Characters that are permissible in words: letters must be lower case and
 // upper case letters would be redundant.
@@ -178,7 +178,7 @@ int const	Fork_Attempts			= 5;
 //		Number of times to try to fork before giving up.  This
 //		parameter is used only in filter.c.
 
-int const	Fork_Sleep			= 5;
+int const	Fork_Sleep			= 5; // seconds
 //		Number of seconds to sleep before retrying to fork.  This
 //		parameter is used only in filter.c.
 
@@ -195,14 +195,14 @@ int const	ResultsMax_Default		= 100;
 
 char const	TempDirectory_Default[]		= "/tmp";
 //		Default directory to use for temporary files during indexing.
-//		If your OS mounts swap space on /tmp, as indexing progresses
-//		and more files get created in /tmp, you will have less swap
-//		space, indexing will get slower, and you may run out of memory.
-//		If this is the case, you can either change this default here
-//		for all users (preferred) or override it either in a config.
-//		file or on the command line to use a directory on a real
-//		filesystem, i.e., one on a physical disk, e.g., /var/tmp on
-//		some OSs.  The directory must exist.
+//		If your OS mounts swap space via /tmp (e.g., Solaris), as
+//		indexing progresses and more files get created in /tmp, you
+//		will have less swap space, indexing will get slower, and you
+//		may run out of memory.  If this is the case, you can either
+//		change this default here for all users (preferred) or override
+//		it either in a config.  file or on the command line to use a
+//		directory on a real filesystem, i.e., one on a physical disk,
+//		e.g., /var/tmp on some OSs.  The directory must exist.
 
 int const	WordPercentMax_Default		= 100;
 //		Default maximum percentage of files a word may occur in before
