@@ -24,6 +24,7 @@
 
 // standard
 #include <set>
+#include <string>
 
 // local
 #include "fake_ansi.h"				/* for std */
@@ -39,38 +40,16 @@
 //
 //	A my_set is-a set but with the addition of a contains() member
 //	function, one that returns a simpler bool result indicating whether a
-//	given element is in the set.  (This is called a lot and I hate lots
-//	of typing.)
+//	given element is in the set.  (This is called a lot and I hate lots of
+//	typing.)
 //
 //*****************************************************************************
 {
 public:
-	typedef T key_type;
-protected:
-	typedef std::set< key_type > base_type;
-public:
-	bool contains( key_type s ) const {
-		return base_type::find( s ) != base_type::end();
-	}
+	bool contains( key_type s ) const { return find( s ) != end(); }
 };
 
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	typedef my_set< char const* > string_set;
-//
-// DESCRIPTION
-//
-//	A string_set is used to contain a set of strings that can be easily
-//	searched.  Note that C-style strings are used and that no string data
-//	is actually copied.
-//
-// SEE ALSO
-//
-//	less.h
-//
-//*****************************************************************************
+typedef my_set< char const* >	char_ptr_set;
+typedef my_set< std::string >	string_set;
 
 #endif	/* my_set_H */
