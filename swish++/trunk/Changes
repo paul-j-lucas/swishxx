@@ -3,6 +3,48 @@ SWISH++ Changes
 
 
 *******************************************************************************
+5.11
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* The ranking result numbers (1-100) have been significantly improved: they are
+  much less striated now.  (Simply increasing the scaling factor by 3 orders of
+  magnitide did the trick.)
+
+  (This feature shall be know as feature IRF.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* index.c
+
+	1. Added Rank_Factor constant.
+	2. Changed rank factor from 10000 to 10000000 for feature IRF.
+
+* man/man1/extract.1
+
+	1. Changed wording for -e to agree with index(1).
+
+* man/man1/index.1
+
+	1. Added (missing) documentation that -e and --pattern options
+	   can take multiple patterns separated by commas.
+
+* swish++.conf
+
+	1. Added *.png to ExcludeFile
+	2. Changed Word filter to wvText and added URL for www.wvware.com.
+	3. Added (missing) LaTeX and Man IncludeFile lines.
+
+* version.h
+
+	1. Upped version to "5.11".
+
+
+*******************************************************************************
 5.10
 *******************************************************************************
 
