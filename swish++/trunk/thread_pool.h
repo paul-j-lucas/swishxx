@@ -29,9 +29,6 @@
 #include <queue>
 #include <set>
 
-// local
-#include "fake_ansi.h"
-
 extern "C" void	*thread_main( void* );
 extern "C" void	thread_destroy( void* );
 
