@@ -248,6 +248,9 @@
 	file_info *const fi = new file_info(
 		orig_file_name, dir_index, orig_file_size, i->find_title( file )
 	);
+#ifdef	FEATURE_word_pos
+	word_pos = 0;
+#endif
 	i->index_file( file );
 
 	if ( verbosity > 2 )
