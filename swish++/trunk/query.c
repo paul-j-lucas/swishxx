@@ -24,6 +24,8 @@
 #ifdef	DEBUG_parse_query
 #include <iostream>
 #endif
+#include <memory>			/* for auto_ptr<T> */
+#include <vector>
 
 // local
 #include "bcd.h"
@@ -41,20 +43,26 @@ using namespace PJL;
 using namespace std;
 #endif
 
+typedef	vector< search_results* > and_results_type;
+
 extern index_segment	files, meta_names, stop_words, words;
 
 int	get_meta_id( index_segment::const_iterator );
 
 bool	parse_meta(
-		token_stream&, search_results_type&, stop_word_set&, bool&, int
+		token_stream&, search_results&, stop_word_set&,
+		and_results_type&, bool&, int
 	);
 bool	parse_primary(
-		token_stream&, search_results_type&, stop_word_set&, bool&, int
+		token_stream&, search_results&, stop_word_set&,
+		and_results_type&, bool&, int
 	);
 bool	parse_query2(
-		token_stream&, search_results_type&, stop_word_set&, bool&, int
+		token_stream&, search_results&, stop_word_set&,
+		and_results_type&, bool&, int
 	);
 bool	parse_optional_relop( token_stream&, token::type& );
+void	perform_and( search_results&, and_results_type& );
 
 //*****************************************************************************
 //
@@ -112,20 +120,21 @@ bool	parse_optional_relop( token_stream&, token::type& );
 // SYNOPSIS
 //
 	bool parse_query(
-		token_stream &query, search_results_type &result,
+		token_stream &query, search_results &results,
 		stop_word_set &stop_words_found
 	)
 //
 // DESCRIPTION
 //
-//	Parse a query.
+//	Parse a query.  This is merely a front-end for parse_query2(), but has
+//	a less ugly API.
 //
 // PARAMETERS
 //
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	result			The query results go here.
+//	results			The query results go here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
@@ -135,9 +144,12 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //
 //*****************************************************************************
 {
+	and_results_type and_results;
 	bool ignore;
+
 	return parse_query2(
-		query, result, stop_words_found, ignore, No_Meta_ID
+		query, results, stop_words_found, and_results, ignore,
+		No_Meta_ID
 	);
 }
 
@@ -146,8 +158,9 @@ bool	parse_optional_relop( token_stream&, token::type& );
 // SYNOPSIS
 //
 	bool parse_query2(
-		token_stream &query, search_results_type &result,
-		stop_word_set &stop_words_found, bool &ignore, int meta_id
+		token_stream &query, search_results &results,
+		stop_word_set &stop_words_found, and_results_type &and_results,
+		bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -186,7 +199,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	result			The query results go here.
+//	results			The query results go here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
@@ -207,7 +220,9 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //
 //*****************************************************************************
 {
-	if ( !parse_meta( query, result, stop_words_found, ignore, meta_id ) )
+	if ( !parse_meta(
+		query, results, stop_words_found, and_results, ignore, meta_id
+	) )
 		return false;
 
 	//
@@ -216,51 +231,49 @@ bool	parse_optional_relop( token_stream&, token::type& );
 	//
 	token::type relop;
 	while ( parse_optional_relop( query, relop ) ) {
-		search_results_type result1;
-		bool ignore1;
+		auto_ptr<search_results> results_rhs( new search_results );
+		bool ignore_rhs;
 		if ( !parse_meta(
-			query, result1, stop_words_found, ignore1, meta_id
+			query, *results_rhs, stop_words_found, and_results,
+			ignore_rhs, meta_id
 		) )
 			return false;
 		if ( ignore ) {
-			if ( !ignore1 ) {	// result is simply the RHS
-				result = result1;
+			if ( !ignore_rhs ) {	// results are simply the RHS
+				results.swap( *results_rhs );
 				ignore = false;
 			}
 			continue;
 		}
-		if ( ignore1 )			// result is simply the LHS
+		if ( ignore_rhs )		// results are simply the LHS
 			continue;
 
 		switch ( relop ) {
 
-			case token::and_token: {
-#				ifdef DEBUG_parse_query
-				cerr << "---> performing and\n";
-#				endif
-				search_results_type result2;
-				FOR_EACH( search_results_type, result1, i ) {
-					search_results_type::const_iterator
-						found = result.find( i->first );
-					if ( found != result.end() )
-						result2[ found->first ] =
-						(found->second + i->second) / 2;
-				}
-				result.swap( result2 );
+			case token::and_token:
+				//
+				// Defer performing the "and" until later so
+				// that all the "and"s at the same level can be
+				// performed together.
+				//
+				and_results.push_back( results_rhs.release() );
 				break;
-			}
 
 			case token::or_token: {
+				//
+				// Encountering an "or" forces us to perform
+				// the accumulated "and"s now.
+				//
+				perform_and( results, and_results );
 #				ifdef DEBUG_parse_query
 				cerr << "---> performing or\n";
 #				endif
-				FOR_EACH( search_results_type, result1, i )
-					result[ i->first ] += i->second;
+				FOR_EACH( search_results, *results_rhs, i )
+					results[ i->first ] += i->second;
 				break;
 			}
 
-			default:
-				//
+			default://
 				// We should never get anything other than an
 				// and_token or an or_token.  If we get there,
 				// the programmer goofed.
@@ -271,6 +284,12 @@ bool	parse_optional_relop( token_stream&, token::type& );
 					<< report_error;
 		}
 	}
+
+	//
+	// We're done with this level: perform the "and" of the accumulated
+	// partial results now.
+	//
+	perform_and( results, and_results );
 	return true;
 }
 
@@ -279,8 +298,9 @@ bool	parse_optional_relop( token_stream&, token::type& );
 // SYNOPSIS
 //
 	bool parse_meta(
-		token_stream &query, search_results_type &result,
-		stop_word_set &stop_words_found, bool &ignore, int meta_id
+		token_stream &query, search_results &results,
+		stop_word_set &stop_words_found, and_results_type &and_results,
+		bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -292,7 +312,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	result			The query results go here.
+//	results			The query results go here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
@@ -313,7 +333,7 @@ bool	parse_optional_relop( token_stream&, token::type& );
 		token const t2( query );
 		if ( t2 == token::equal_token ) {	// ... followed by '='
 			less< char const* > const comparator;
-			find_result_type const found = ::equal_range(
+			find_result const found = ::equal_range(
 				meta_names.begin(), meta_names.end(),
 				t.lower_str(), comparator
 			);
@@ -330,7 +350,9 @@ bool	parse_optional_relop( token_stream&, token::type& );
 	query.put_back( t );
 
 no_put_back:
-	return parse_primary( query, result, stop_words_found, ignore, meta_id);
+	return parse_primary(
+		query, results, stop_words_found, and_results, ignore, meta_id
+	);
 }
 
 //*****************************************************************************
@@ -391,8 +413,9 @@ no_put_back:
 // SYNOPSIS
 //
 	bool parse_primary(
-		token_stream &query, search_results_type &result,
-		stop_word_set &stop_words_found, bool &ignore, int meta_id
+		token_stream &query, search_results &results,
+		stop_word_set &stop_words_found, and_results_type &and_results,
+		bool &ignore, int meta_id
 	)
 //
 // DESCRIPTION
@@ -404,7 +427,7 @@ no_put_back:
 //	query			The token_stream whence the query string is
 //				extracted.
 //
-//	result			The query results go here.
+//	results			The query results go here.
 //
 //	stop_words_found	The set of stop-words in the query.
 //
@@ -421,7 +444,7 @@ no_put_back:
 //*****************************************************************************
 {
 	ignore = false;
-	find_result_type found;
+	find_result found;
 	token t( query );
 
 	switch ( t ) {
@@ -487,7 +510,8 @@ no_put_back:
 			cerr << "---> '('\n";
 #			endif
 			if ( !parse_query2(
-				query, result, stop_words_found, ignore, meta_id
+				query, results, stop_words_found, and_results,
+				ignore, meta_id
 			) )
 				return false;
 			query >> t;
@@ -501,9 +525,10 @@ no_put_back:
 #			ifdef DEBUG_parse_query
 			cerr << "---> begin not\n";
 #			endif
-			search_results_type temp;
+			search_results temp;
 			if ( !parse_primary(
-				query, temp, stop_words_found, ignore, meta_id
+				query, temp, stop_words_found, and_results,
+				ignore, meta_id
 			) )
 				return false;
 #			ifdef DEBUG_parse_query
@@ -516,7 +541,7 @@ no_put_back:
 				//
 				for ( int i = 0; i < files.size(); ++i )
 					if ( temp.find( i ) == temp.end() )
-						result[ i ] = 100;
+						results[ i ] = 100;
 			}
 			return true;
 		}
@@ -551,9 +576,83 @@ no_put_back:
 				if (	meta_id == No_Meta_ID ||
 					file->meta_ids_.contains( meta_id )
 				)
-					result[ file->index_ ] += file->rank_;
+					results[ file->index_ ] += file->rank_;
 		}
 	}
 
 	return true;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void perform_and(
+		search_results &results, and_results_type &and_results
+	)
+//
+// DESCRIPTION
+//
+//	Perform "and"s among all the partial results at a given level at the
+//	same time.  This is done to solve the weighting problem with more than
+//	two "and" terms.  For example, the query:
+//
+//		mouse and computer and keyboard
+//
+//	is parsed and treated as:
+//
+//		(mouse and computer) and keyboard
+//		  25%         25%           50%
+//
+//	The problem is that the last term always gets 50% of the weighting and
+//	the rest get 50% divided by the number of terms minus 1.
+//
+//	In order to weight all the terms equally, the "and" results for each
+//	term are saved in a list and then and'ed together at the end.
+//
+// PARAMETERS
+//
+//	results		The results go here.
+//
+//	and_results	The list of results to be and'ed together.
+//
+//*****************************************************************************
+{
+	if ( and_results.empty() )
+		return;
+#	ifdef DEBUG_parse_query
+	cerr << "---> performing and\n";
+#	endif
+
+	//
+	// For each search result, see if it's in each and-result: if it is,
+	// sum the ranks; if it isn't, delete the result.
+	//
+	TRANSFORM_EACH( search_results, results, result ) {
+		FOR_EACH( and_results_type, and_results, and_result ) {
+			search_results::const_iterator const
+				found = (*and_result)->find( result->first );
+			if ( found != (*and_result)->end() )
+				result->second += found->second;
+			else
+				results.erase( result );
+		}
+	}
+
+	//
+	// Now that the and-results have been summed, divide each by the number
+	// of and-results, i.e., average them.  (It's +1 below because you have
+	// to include the "result" variable itself.)
+	//
+	int const num_ands = and_results.size() + 1;
+	TRANSFORM_EACH( search_results, results, result )
+		result->second /= num_ands;
+
+	//
+	// Blow away the "and" search results pointed to by each and-result and
+	// then blow away the pointers themselves.
+	//
+	FOR_EACH( and_results_type, and_results, and_result )
+		delete *and_result;
+	and_results.clear();
 }
