@@ -29,18 +29,16 @@
 #	OS selection
 #
 #	Uncomment whichever line represents your OS.  If your OS isn't listed
-#	here, just pick Linux and see if that works.
+#	here, first try none; then, if that doesn't work, pick Linux and see if
+#	that works.
 #
 ###############################################################################
 
-#FREE_BSD:=	-DFreeBSD
-LINUX:=		-DLinux -D_BSD_SOURCE
-#MAC_OS_X:=	-DMacOSX
-#SOLARIS:=	-DSolaris
-#WIN32:=		-DWIN32
-
-# Leave the following line alone!
-OS:=		$(FREE_BSD) $(LINUX) $(MAC_OS_X) $(SOLARIS) $(WIN32)
+#FREE_BSD:=1
+LINUX:=1
+#MAC_OS_X:=1
+#SOLARIS:=1
+#WIN32:=1
 
 ###############################################################################
 #
@@ -211,8 +209,12 @@ endif
 endif # DEBUG
 
 CCFLAGS:=	-I. $(CHARSET_DEFS) $(ENCODING_DEFS) $(DECODING) $(MOD_DEFS) \
-		$(FEATURE_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
+		$(FEATURE_DEFS) $(SEARCH_DAEMON) $(OPTIM)
 #		Flags for the C++ compiler.
+
+ifdef LINUX
+CCFLAGS+=	-D_BSD_SOURCE
+endif
 
 ifeq ($(findstring g++,$(CC)),g++)
 CCFLAGS+=	-fno-exceptions
