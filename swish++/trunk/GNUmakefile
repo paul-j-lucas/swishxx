@@ -42,12 +42,13 @@ I_SRCS:=	bcd.c \
 		directory.c \
 		elements.c \
 		entities.c \
+		ExcludeFile.c \
 		file_vector.c \
 		file_info.c \
 		filter.c \
 		FilesGrow.c \
-		FilterExtension.c \
-		IncludeExtension.c \
+		FilterFile.c \
+		IncludeFile.c \
 		index_segment.c \
 		file_list.c \
 		itoa.c \
@@ -91,10 +92,11 @@ E_SRCS:=	conf_var.c \
 		conf_string.c \
 		directory.c \
 		entities.c \
+		ExcludeFile.c \
 		file_vector.c \
 		filter.c \
-		FilterExtension.c \
-		IncludeExtension.c \
+		FilterFile.c \
+		IncludeFile.c \
 		index_segment.c \
 		option_stream.c \
 		postscript.c \
@@ -117,6 +119,7 @@ BUILD_TARGET:=	$(C_TARGET) $(PERL_TARGET)
 # Build rules
 ##
 
+.PHONY: all
 all: $(BUILD_TARGET)
 
 extract: $(E_OBJS)
