@@ -1,0 +1,36 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+
+<head>
+  <title>Sample SWISH++ Search Form</title>
+  <meta name="description"
+   content="This is a toy example XHTML form to show how to interface SWISH++ to a web-based search form." />
+  <meta name="author" content="Paul J. Lucas" />
+  <meta name="copyright" content="Copyright (C) 2001 Paul J. Lucas" />
+</head>
+
+<body>
+
+  <script language="JavaScript">
+    <!--
+    function not_empty( the_field ) {
+        if ( the_field.value == "" ) {
+            alert( "The " + the_field.name + " field is required." );
+            the_field.focus();
+            return false;
+        }
+        return true;
+    }
+    // -->
+  </script>
+
+  <form action="search.cgi" onsubmit="return not_empty( Search )">
+    <input type="text" name="Search" size="30" /><br />
+    <input type="checkbox" name="Stem"><b>Stem&nbsp;words</b>
+    <input type="submit" value="Search" />
+  </form>
+
+</body>
+</html>
