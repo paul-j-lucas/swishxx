@@ -30,6 +30,7 @@
 #include <string>
 #ifndef	WIN32
 #include <ctime>			/* needed by sys/resource.h */
+#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/resource.h>
 #endif
 #include <sys/stat.h>

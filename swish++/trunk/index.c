@@ -24,6 +24,7 @@
 #include <cstdlib>			/* for exit(2) */
 #include <cstring>
 #include <ctime>
+#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <fstream>
 #include <iomanip>			/* for setfill(), setw() */
 #include <iostream>

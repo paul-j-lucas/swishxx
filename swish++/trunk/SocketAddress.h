@@ -26,6 +26,7 @@
 
 // standard
 #include <arpa/inet.h>			/* for htonl(3), INADDR_ANY */
+#include <netinet/in.h>			/* for struct in_addr */
 
 // local
 #include "config.h"

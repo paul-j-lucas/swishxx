@@ -24,6 +24,7 @@
 #include <fcntl.h>			/* for open(2), O_RDONLY, etc */
 #ifndef	WIN32
 #include <ctime>			/* needed by sys/resource.h */
+#include <sys/time.h>			/* needed by FreeBSD systems */
 #include <sys/mman.h>			/* for mmap(2) */
 #include <sys/resource.h>		/* for get/setrlimit(2) */
 #endif
