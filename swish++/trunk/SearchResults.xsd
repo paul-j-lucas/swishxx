@@ -21,7 +21,7 @@
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://homepage.mac.com/pauljlucas/software/swish/SearchResults"
+  targetNamespace="http://www.pauljlucas.org/pauljlucas/software/swish/SearchResults"
   elementFormDefault="qualified"
   version="1.0">
 
