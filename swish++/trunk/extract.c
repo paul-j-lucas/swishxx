@@ -35,10 +35,10 @@
 #include "ExcludeFile.h"
 #include "exit_codes.h"
 #include "ExtractExtension.h"
+#include "ExtractFile.h"
 #include "ExtractFilter.h"
 #include "file_vector.h"
 #include "FilterFile.h"
-#include "IncludeFile.h"
 #include "option_stream.h"
 #include "platform.h"
 #include "postscript.h"
@@ -55,9 +55,9 @@ using namespace std;
 #endif
 
 ExcludeFile		exclude_patterns;	// do not extract these
+ExtractFile		include_patterns;	// do extract these
 ExtractFilter		extract_as_filter;
 ExtractExtension	extract_extension;
-IncludeFile		include_patterns;	// do extract these
 FilterFile		filters;
 bool			in_postscript;
 char const*		me;			// executable name
@@ -156,11 +156,16 @@ ostream&		usage( ostream& = cerr );
 				config_file_name_arg = opt.arg();
 				break;
 
-			case 'e': // Specify filename pattern to extract.
-				include_patterns.insert( opt.arg(), false );
+			case 'e': { // Specify filename pattern(s) to extract.
+				char *a = opt.arg();
+				for ( char *pat; pat = ::strtok( a, "," ); ) {
+					include_patterns.insert( pat );
+					a = 0;
+				}
 				break;
+			}
 
-			case 'E': // Specify filename pattern not to extract.
+			case 'E': // Specify filename pattern(s) not to extract.
 				exclude_patterns.insert( opt.arg() );
 				break;
 
