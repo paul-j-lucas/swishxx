@@ -59,6 +59,7 @@
 	bool		dump_word_index_opt;
 	char const*	index_file_name_arg;
 	char const*	max_results_arg;
+	char const*	result_separator_arg;
 	int		skip_results_arg;
 	bool		stem_words_opt;
 	char const*	word_file_max_arg;
