@@ -308,9 +308,7 @@ void			write_word_index( ostream&, off_t* );
 				break;
 #endif
 			case 'm': // Specify meta name(s) to index.
-				include_meta_names.insert(
-					to_lower( opt.arg() )
-				);
+				include_meta_names.parse_value( opt.arg() );
 				break;
 
 			case 'M': // Specify meta name(s) not to index.
