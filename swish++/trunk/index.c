@@ -38,8 +38,8 @@
 // local
 #include "platform.h"
 #include "AssociateMeta.h"
-#include "bcd.h"
 #include "config.h"
+#include "enc_int.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -71,6 +71,7 @@
 #include "version.h"
 #include "WordFilesMax.h"
 #include "word_info.h"
+#include "word_markers.h"
 #include "WordPercentMax.h"
 #include "WordThreshold.h"
 #include "word_util.h"
@@ -650,11 +651,11 @@ static void		write_word_index( ostream&, off_t* );
 	FOR_EACH( index_segment, old_files, f ) {
 		unsigned char const*
 			u = reinterpret_cast<unsigned char const*>( *f );
-		int const dir_index = parse_bcd( u );
+		int const dir_index = dec_int( u );
 		char const *const file_name = reinterpret_cast<char const*>(u);
 		while ( *u++ ) ;		// skip past filename
-		size_t const size = parse_bcd( u );
-		int const num_words = parse_bcd( u );
+		size_t const size = dec_int( u );
+		int const num_words = dec_int( u );
 		char const *const title = reinterpret_cast<char const*>( u );
 
 		string const dir_str( old_dirs[ dir_index ] );
@@ -672,7 +673,7 @@ static void		write_word_index( ostream&, off_t* );
 		unsigned char const*
 			p = reinterpret_cast<unsigned char const*>( *m );
 		while ( *p++ ) ;		// skip past meta name
-		meta_names[ new_strdup( *m ) ] = parse_bcd( p );
+		meta_names[ new_strdup( *m ) ] = dec_int( p );
 	}
 
 	partial_index_file_names.push_back( index_file_name );
@@ -892,19 +893,25 @@ static void		write_word_index( ostream&, off_t* );
 				continue;
 			if ( ::strcmp( *word[ j ], *word[ i ] ) )
 				continue;
+			bool continues = false;
 			file_list const list( word[ j ] );
 			FOR_EACH( file_list, list, file ) {
-				o << bcd( file->index_ );
+				if ( continues )
+					o << Word_Entry_Continues_Marker;
+				else
+					continues = true;
+				o << enc_int( file->index_ )
+				  << enc_int( file->occurrences_ )
+				  << enc_int( rank(
+					file->index_, file->occurrences_, factor
+				     ) );
 				if ( !file->meta_ids_.empty() )
 					file->write_meta_ids( o );
-				o << bcd( file->occurrences_ ) << bcd( rank(
-					file->index_, file->occurrences_, factor
-				) );
 			}
 
 			if ( j != i ) ++word[ j ];
 		}
-		o << '\xFF';
+		o << Stop_Marker;
 
 		++word[ i ];
 	}
@@ -933,15 +940,21 @@ static void		write_word_index( ostream&, off_t* );
 
 			////////// Copy all index info and compute ranks //////
 
+			bool continues = false;
 			FOR_EACH( file_list, list, file ) {
-				o << bcd( file->index_ );
+				if ( continues )
+					o << Word_Entry_Continues_Marker;
+				else
+					continues = true;
+				o << enc_int( file->index_ )
+				  << enc_int( file->occurrences_ )
+				  << enc_int( rank(
+					file->index_, file->occurrences_, factor
+				  ) );
 				if ( !file->meta_ids_.empty() )
 					file->write_meta_ids( o );
-				o << bcd( file->occurrences_ ) << bcd( rank(
-					file->index_, file->occurrences_, factor
-				) );
 			}
-			o << '\xFF';
+			o << Stop_Marker;
 		}
 	}
 
@@ -1094,9 +1107,11 @@ static void		write_word_index( ostream&, off_t* );
 		i = file_info::begin(); i != file_info::end(); ++i
 	) {
 		offset[ file_index++ ] = o.tellp();
-		o	<< bcd( (*i)->dir_index() )
-			<< (*i)->file_name() << '\0' << bcd( (*i)->size() )
-			<< bcd( (*i)->num_words() ) << (*i)->title() << '\0';
+		o	<< enc_int( (*i)->dir_index() )
+			<< (*i)->file_name() << '\0'
+			<< enc_int( (*i)->size() )
+			<< enc_int( (*i)->num_words() )
+			<< (*i)->title() << '\0';
 	}
 }
 
@@ -1238,7 +1253,7 @@ static void		write_word_index( ostream&, off_t* );
 	register int meta_index = 0;
 	FOR_EACH( meta_map, meta_names, m ) {
 		offset[ meta_index++ ] = o.tellp();
-		o << m->first << '\0' << bcd( m->second );
+		o << m->first << '\0' << enc_int( m->second );
 	}
 }
 
@@ -1353,15 +1368,21 @@ static void		write_word_index( ostream&, off_t* );
 #else
 		o << w->first << '\0';
 #endif
+		bool continues = false;
 		word_info const &info = w->second;
 		FOR_EACH( word_info::file_list, info.files_, file ) {
-			o << bcd( file->index_ );
+			if ( continues )
+				o << Word_Entry_Continues_Marker;
+			else
+				continues = true;
+			o << enc_int( file->index_ )
+			  << enc_int( file->occurrences_ )
+			  << enc_int( file->rank_ );
 			if ( !file->meta_ids_.empty() )
 				file->write_meta_ids( o );
-			o << bcd( file->occurrences_ ) << bcd( file->rank_ );
 		}
 
-		o << '\xFF';
+		o << Stop_Marker;
 	}
 }
 
