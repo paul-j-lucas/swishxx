@@ -19,6 +19,9 @@
 **	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// standard
+#include <cstring>
+
 // local
 #include "config.h"
 #include "encoded_char.h"
@@ -95,6 +98,11 @@ int		indexer::suspend_indexing_count_ = 0;
 		return No_Meta_ID;
 
 	if ( !include_meta_names.empty() ) {
+		//
+		// There were meta names explicitly given: see if the meta name
+		// is among them.  If not, forget it; if so, possible reassign
+		// the name.
+		//
 		IncludeMeta::const_iterator const
 			m = include_meta_names.find( meta_name );
 		if ( m == include_meta_names.end() )
@@ -106,18 +114,15 @@ int		indexer::suspend_indexing_count_ = 0;
 	// Look up the meta name to get its associated unique integer ID.
 	//
 	meta_map::const_iterator const i = meta_names.find( meta_name );
-	int meta_id;
 	if ( i != meta_names.end() )
-		meta_id = i->second;
-	else {				// new meta name: add it
-		//
-		// Do this in two statements intentionally because C++ doesn't
-		// guarantee that the RHS of assignment is evaluated first.
-		//
-		meta_id = meta_names.size();
-		meta_names[ meta_name ] = meta_id;
-	}
-	return meta_id;
+		return i->second;
+	//
+	// New meta name: add it.  Do this in two statements intentionally
+	// because C++ doesn't guarantee that the RHS of assignment is
+	// evaluated first.
+	//
+	int const meta_id = meta_names.size();
+	return meta_names[ ::strdup( meta_name ) ] = meta_id;
 }
 
 //*****************************************************************************
