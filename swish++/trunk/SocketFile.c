@@ -22,7 +22,7 @@
 #ifdef	SEARCH_DAEMON
 
 // standard
-#include <cstdlib>
+#include <cstdlib>			/* for exit(2) */
 
 // local
 #include "exit_codes.h"

@@ -20,7 +20,7 @@
 */
 
 // standard
-#include <cstdlib>
+#include <cstdlib>			/* for exit(2) */
 #include <cstring>
 
 // local
