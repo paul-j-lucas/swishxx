@@ -2,6 +2,30 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.5.2
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Indexing attachments has been broken since version 5.2.  Major d'oh.
+
+  (This bug fix shall be known as bug fix IAB.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* mod/mail/mod_mail.c
+
+	1. In index_headers(), put a missing "else" back for bug fix IAB.
+
+* version.h
+
+	1. Upped version to 5.5.2.
+
+
+*******************************************************************************
 5.5.1
 *******************************************************************************
 
@@ -11,7 +35,7 @@ BUG FIXES
 * Automatic thread-pool size reduction had a race condition where too many
   threads could be destroyed.
 
-  (This feature fix shall be known as bug fix TCD.)
+  (This bug fix shall be known as bug fix TCD.)
 
 
 CHANGES, file-by-file
@@ -46,13 +70,13 @@ NEW FEATURES
   Correspondingly, there are 2 new utility scripts: searchmonitor (a process
   monitor for search) and searchd (a start/stop script for SysV-like systems).
 
-  (This feature fix shall be known as feature NOB.)
+  (This bug fix shall be known as feature NOB.)
 
 * search(1), when run as a daemon, can give away its root privileges if it
   started with them.  There are now new command-line options of -U, --user, -G,
   and --group as well as new configuration variables User and Group.
 
-  (This feature fix shall be known as feature GAR.)
+  (This bug fix shall be known as feature GAR.)
 
 
 BUG FIXES
