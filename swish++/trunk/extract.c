@@ -315,7 +315,7 @@ ostream&		usage( ostream& = cerr );
 		}
 	}
 
-	if ( verbosity ) { 
+	if ( verbosity ) {
 		time = ::time( 0 ) - time;	// Stop!
 		cout	<< '\n' << me << ": done:\n  "
 			<< setfill('0')
