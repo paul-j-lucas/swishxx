@@ -39,9 +39,9 @@ typedef	std::map< int, int > search_results;
 //	a file index and the value int is that file's rank.
 
 typedef	std::pair< index_segment::const_iterator, index_segment::const_iterator>
-	find_result;
+	word_range;
 //
-//	A find_result is-a pair of iterators marking the beginning and end of a
+//	A word_range is-a pair of iterators marking the beginning and end of a
 //	range over which a given word matches.
 
 typedef	std::set< std::string > stop_word_set;

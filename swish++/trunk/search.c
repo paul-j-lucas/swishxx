@@ -313,16 +313,16 @@ inline omanip< char const* > index_file_info( int index ) {
 	//
 	// Look up the word.
 	//
-	find_result const found = ::equal_range(
+	word_range const range = ::equal_range(
 		words.begin(), words.end(), lower_word, comparator
 	);
-	if ( found.first == words.end() ||
-		comparator( lower_word, *found.first )
+	if ( range.first == words.end() ||
+		comparator( lower_word, *range.first )
 	) {
 		out << "# not found: " << word << endl;
 		return;
 	}
-	file_list const list( found.first );
+	file_list const list( range.first );
 	FOR_EACH( file_list, list, file ) {
 		out	<< file->occurrences_ << ' '
 			<< file->rank_ << result_separator
@@ -370,11 +370,11 @@ inline omanip< char const* > index_file_info( int index ) {
 	//
 	// Look up the word.
 	//
-	find_result found = ::equal_range(
+	word_range range = ::equal_range(
 		words.begin(), words.end(), lower_word, comparator
 	);
-	if ( found.first == words.end() ||
-		comparator( lower_word, *found.first )
+	if ( range.first == words.end() ||
+		comparator( lower_word, *range.first )
 	) {
 		out << "# not found: " << word << endl;
 		return;
@@ -385,18 +385,18 @@ inline omanip< char const* > index_file_info( int index ) {
 	// going forward.
 	//
 	int i = window_size / 2;
-	while ( found.first != words.begin() && i-- > 0 )
-		--found.first;
+	while ( range.first != words.begin() && i-- > 0 )
+		--range.first;
 	for (	i = 0;
-		found.first != words.end() && i < window_size;
-		++found.first
+		range.first != words.end() && i < window_size;
+		++range.first
 	) {
-		int const cmp = ::strncmp( *found.first, lower_word, match );
+		int const cmp = ::strncmp( *range.first, lower_word, match );
 		if ( cmp < 0 )
 			continue;
 		if ( cmp > 0 )
 			break;
-		out << *found.first << '\n';
+		out << *range.first << '\n';
 		if ( !out )
 			return;
 		++i;
