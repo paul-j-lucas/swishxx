@@ -38,6 +38,9 @@ LINUX=		-DLinux
 #SOLARIS=	-DSolaris
 #WIN32=		-DWIN32
 
+# Leave the following line alone!
+OS=		$(FREE_BSD) $(LINUX) $(SOLARIS) $(WIN32)
+
 ###############################################################################
 #
 #	SWISH++ stuff
@@ -79,14 +82,11 @@ endif
 #		Library to link against for POSIX threads if building with the
 #		search daemon ability.
 
-ifndef LINUX
-SOCKET_LIB=	-lsocket
 ifdef SOLARIS
-SOCKET_LIB+=	-lnsl
-endif
+SOCKET_LIB=	-lsocket -lnsl
 #		Library to link against for sockets if building with the search
 #		daemon ability.
-endif # LINUX
+endif
 
 endif # SEARCH_DAEMON
 endif # WIN32
@@ -129,7 +129,7 @@ CC=		g++
 #		Warning flags specific to gcc/g++.  Unless you are modifying
 #		the source code, you should leave this commented out.
 
-CCFLAGS=	$(GCC_WARNINGS) $(MOD_LIST) $(SEARCH_DAEMON) $(WIN32) -O3
+CCFLAGS=	$(GCC_WARNINGS) $(MOD_LIST) $(SEARCH_DAEMON) $(OS) -O3
 #		Additional flags for the C++ compiler:
 #
 #		-g	Include symbol-table information in object file.  (You
