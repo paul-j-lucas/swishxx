@@ -61,11 +61,10 @@ int conf_var::current_config_file_line_no_ = 0;
 	: name_( var_name )
 {
 	conf_var *&var = map_ref()[ to_lower( name_ ) ];
-	if ( var ) {
+	if ( var )
 		internal_error
 			<< "conf_var::conf_var(): \"" << name_
 			<< "\" registered more than once\n" << report_error;
-	}
 	var = this;
 }
 
@@ -120,9 +119,6 @@ int conf_var::current_config_file_line_no_ = 0;
 	if ( m.empty() ) {
 		static char const *const var_name_table[] = {
 			"associatemeta",
-#ifdef	mod_html
-			"excludeclass",
-#endif
 			"excludefile",
 			"excludemeta",
 			"extractextension",
@@ -130,9 +126,6 @@ int conf_var::current_config_file_line_no_ = 0;
 			"extractfilter",
 			"filesgrow",
 			"filesreserve",
-#ifdef	mod_mail
-			"filterattachment",
-#endif
 			"filterfile",
 			"followlinks",
 			"includefile",
@@ -346,6 +339,32 @@ next_line:
 	//	silently ignore it.
 	//
 	current_config_file_line_no_ = 0;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	/* static */ void conf_var::register_var( char const *name )
+//
+// DESCRIPTION
+//
+//	Register a variable name for so that it can be used in a config. file.
+//	Derived indexing modules use this function to register module-specific
+//	variables.
+//
+// PARAMETERS
+//
+//	name	The name of the variable.
+//
+//*****************************************************************************
+{
+	map_type::const_iterator const i = map_ref().find( name );
+	if ( i != map_ref().end() )
+		internal_error
+			<< "conf_var::register_var(): \"" << name
+			<< "\" registered more than once\n" << report_error;
+	map_ref()[ name ] = 0;
 }
 
 //*****************************************************************************
