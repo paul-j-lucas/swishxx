@@ -27,6 +27,15 @@ CHANGES, file-by-file
 
 	1. Added description of RTF module.
 
+* man/man4/swish++.conf.4
+
+	1. Added mention of RTF module.
+	2. Added mention that text/enriched attachments can be indexed only if
+	   the RTF module is compiled into index(1).
+	3. Added mention that text/html attachments can be indexed only if the
+	   HTML module is compiled into index(1).
+	4. Fixed RFC 1563 attribution.
+
 * mod/mail/mod_mail.c
 
 	1. Removed: #include "platform.h"
