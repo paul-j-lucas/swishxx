@@ -39,6 +39,8 @@
 #include "AssociateMeta.h"
 #include "bcd.h"
 #include "config.h"
+#include "DirectoriesGrow.h"
+#include "DirectoriesReserve.h"
 #include "directory.h"
 #ifdef	MOD_HTML
 #include "elements.h"
@@ -85,6 +87,7 @@ using namespace std;
 #endif
 
 AssociateMeta		associate_meta;
+DirectoriesGrow		directories_grow;
 ExcludeFile		exclude_patterns;	// do not index these
 IncludeFile		include_patterns;	// do index these
 #ifdef	MOD_HTML
@@ -116,6 +119,7 @@ void			merge_indicies( ostream& );
 void			rank_full_index();
 extern "C" void		remove_temp_files( void );
 ostream&		usage( ostream& = cerr );
+void			write_dir_index( ostream&, off_t* );
 void			write_file_index( ostream&, off_t* );
 void			write_full_index( ostream& );
 void			write_meta_name_index( ostream&, off_t* );
@@ -125,6 +129,31 @@ void			write_word_index( ostream&, off_t* );
 
 #define	INDEX
 #include "do_file.c"
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline void my_write( ostream &o, void const *buf, size_t len )
+//
+// DESCRIPTION
+//
+//	In the latest g++ implementation of the ANSI C++ standard library,
+//	ostream::write() now apparantly requires a char* rather than a void*.
+//	This function is to do the case in one place because I'm lazy.
+//
+// PARAMETERS
+//
+//	o	The ostream to write to.
+//
+//	buf	The buffer to be written.
+//
+//	len	The length of the buffer.
+//
+//*****************************************************************************
+{
+	o.write( reinterpret_cast<char const*>( buf ), len );
+}
 
 //*****************************************************************************
 //
@@ -185,11 +214,13 @@ void			write_word_index( ostream&, off_t* );
 #ifdef	MOD_HTML
 		"no-class",		1, 'C',
 #endif
+		"dirs-reserve",		1, 'D',
 		"pattern",		1, 'e',
 		"no-pattern",		1, 'E',
 		"file-max",		1, 'f',
 		"files-reserve",	1, 'F',
-		"files-grow",		1, 'G',
+		"files-grow",		1, 'g',
+		"dirs-grow",		1, 'G',
 #ifdef	MOD_HTML
 		"dump-html",		0, 'H',
 #endif
@@ -212,6 +243,8 @@ void			write_word_index( ostream&, off_t* );
 	};
 
 	char const*	config_file_name_arg = ConfigFile_Default;
+	char const*	directories_grow_arg = 0;
+	char const*	directories_reserve_arg = 0;
 #ifdef	MOD_HTML
 	bool		dump_html_elements_opt = false;
 #endif
@@ -256,18 +289,20 @@ void			write_word_index( ostream&, off_t* );
 				);
 				break;
 #endif
+			case 'D': // Specify directories to reserve space for.
+				directories_reserve_arg = opt.arg();
+				break;
+
 			case 'e': { // Filename pattern(s) to index.
 				if ( !::strtok( opt.arg(), ":" ) ) {
-					error()	<< "no indexer module name"
-						<< endl;
+					error() << "no indexer module name\n";
 					::exit( Exit_Usage );
 				}
 				indexer *const
 					i = indexer::find_indexer( opt.arg() );
 				if ( !i ) {
-					error()	<< '"' << opt.arg()
-						<< "\": no such indexing module"
-						<< endl;
+					error()	<< '"' << opt.arg() << "\": "
+						"no such indexing module\n";
 					::exit( Exit_Usage );
 				}
 				for ( char *pat; pat = ::strtok( 0, "," ); )
@@ -292,8 +327,12 @@ void			write_word_index( ostream&, off_t* );
 				files_reserve_arg = opt.arg();
 				break;
 
-			case 'G': // Specify files to reserve space for growth.
+			case 'g': // Specify files to reserve space for growth.
 				files_grow_arg = opt.arg();
+				break;
+
+			case 'G': // Specify dirs to reserve space for growth.
+				directories_grow_arg = opt.arg();
 				break;
 #ifdef	MOD_HTML
 			case 'H': // Dump recognized HTML and XHTML elements.
@@ -365,6 +404,10 @@ void			write_word_index( ostream&, off_t* );
 	//
 	conf_var::parse_file( config_file_name_arg );
 
+	if ( directories_grow_arg )
+		directories_grow = directories_grow_arg;
+	if ( directories_reserve_arg )
+		directories_reserve = directories_reserve_arg;
 	if ( files_grow_arg )
 		files_grow = files_grow_arg;
 	if ( files_reserve_arg )
@@ -439,7 +482,7 @@ void			write_word_index( ostream&, off_t* );
 	ofstream out( index_file_name, ios::out | ios::binary );
 	if ( !out ) {
 		error()	<< "can not write index to \""
-			<< index_file_name << '"' << endl;
+			<< index_file_name << "\"\n";
 		::exit( Exit_No_Write_Index );
 	}
 
@@ -500,9 +543,24 @@ void			write_word_index( ostream&, off_t* );
 	if ( verbosity ) {
 		time = ::time( 0 ) - time;	// Stop!
 		cout	<< '\n' << me << ": done:\n  "
+#ifdef	PJL_GCC_295 /* see the comment in platform.h */
+		;
+		cout.fill('0');
+		cout.width( 2 );
+		cout
+#else
 			<< setfill('0')
-			<< setw(2) << (time / 60) << ':'
-			<< setw(2) << (time % 60)
+			<< setw(2)
+#endif
+			<< (time / 60) << ':'
+#ifdef	PJL_GCC_295 /* see the comment in platform.h */
+		;
+		cout.width( 2 );
+		cout
+#else
+			<< setw(2)
+#endif
+			<< (time % 60)
 			<< " (min:sec) elapsed time\n  "
 			<< num_examined_files << " files, "
 			<< file_info::num_files() << " indexed\n  "
@@ -562,8 +620,8 @@ void			write_word_index( ostream&, off_t* );
 //
 // DESCRIPTION
 //
-//	Load the stop-word, file, and meta-name indicies from an existing index
-//	file.
+//	Load the stop-word, file, directory, and meta-name indicies from an
+//	existing index file.
 //
 // PARAMETERS
 //
@@ -573,8 +631,8 @@ void			write_word_index( ostream&, off_t* );
 {
 	mmap_file const index_file( index_file_name );
 	if ( !index_file ) {
-		cerr	<< error << "could not read index from \""
-			<< index_file_name << '"' << endl;
+		error()	<< "could not read index from \"" << index_file_name
+			<< "\"\n";
 		::exit( Exit_No_Read_Index );
 	}
 
@@ -590,6 +648,18 @@ void			write_word_index( ostream&, off_t* );
 	}
 	FOR_EACH( index_segment, old_files, fi )
 		file_info::parse( *fi );
+
+	index_segment old_dirs( index_file, index_segment::dir_index );
+	if ( directories_reserve <= old_dirs.size() ) {
+		//
+		// Add the DirectoriesGrow configuration variable to the
+		// DirectoriesReserve configuration variable to allow room for
+		// growth.
+		//
+		directories_reserve = directories_grow( old_dirs.size() );
+	}
+	FOR_EACH( index_segment, old_dirs, di )
+		dir_list.push_back( *di );
 
 	index_segment old_meta_names(
 		index_file, index_segment::meta_name_index
@@ -682,7 +752,12 @@ void			write_word_index( ostream&, off_t* );
 		index[ i ].open( file_name->c_str() );
 		if ( !index[ i ] ) {
 			error()	<< "can not reopen temp. file \""
-				<< *file_name << '"' << endl;
+#ifdef	PJL_GCC_295 /* see the comment in platform.h */
+				<< file_name->c_str()
+#else
+				<< *file_name
+#endif
+				<< "\"\n";
 			::exit( Exit_No_Open_Temp );
 		}
 		words[ i ].set_index_file(
@@ -752,37 +827,9 @@ void			write_word_index( ostream&, off_t* );
 
 	////////// Write index file header ////////////////////////////////////
 
-	long const num_files = file_info::num_files();
-	long const num_stop_words = stop_words->size();
-	long const num_meta_names = meta_names.size();
-	off_t *const word_offset = new off_t[ num_unique_words ];
-	off_t *const stop_word_offset = num_stop_words ?
-		new off_t[ num_stop_words ] : 0;
-	off_t *const file_offset = new off_t[ num_files ];
-	off_t *const meta_name_offset = num_meta_names ?
-		new off_t[ num_meta_names ] : 0;
-
-	o.write( &num_unique_words, sizeof( num_unique_words ) );
-	streampos const word_offset_pos = o.tellp();
-	o.write( word_offset, num_unique_words * sizeof( word_offset[0] ) );
-
-	o.write( &num_stop_words, sizeof( num_stop_words ) );
-	streampos const stop_word_offset_pos = o.tellp();
-	if ( num_stop_words )
-		o.write( stop_word_offset,
-			num_stop_words * sizeof( stop_word_offset[0] )
-		);
-
-	o.write( &num_files, sizeof( num_files ) );
-	streampos const file_offset_pos = o.tellp();
-	o.write( file_offset, num_files * sizeof( file_offset[0] ) );
-
-	o.write( &num_meta_names, sizeof( num_meta_names ) );
-	streampos const meta_name_offset_pos = o.tellp();
-	if ( num_meta_names )
-		o.write( meta_name_offset,
-			num_meta_names * sizeof( meta_name_offset[0] )
-		);
+#define	WRITE_HEADER
+#include "index_header.c"
+#undef	WRITE_HEADER
 
 	////////// Merge the indicies /////////////////////////////////////////
 
@@ -894,32 +941,15 @@ void			write_word_index( ostream&, off_t* );
 	}
 
 	write_stop_word_index( o, stop_word_offset );
-	write_file_index( o, file_offset );
+	write_dir_index      ( o, dir_offset );
+	write_file_index     ( o, file_offset );
 	write_meta_name_index( o, meta_name_offset );
 
 	////////// Go back and write the computed offsets /////////////////////
 
-	o.seekp( word_offset_pos );
-	o.write( word_offset, num_unique_words * sizeof( word_offset[0] ) );
-	if ( num_stop_words ) {
-		o.seekp( stop_word_offset_pos );
-		o.write( stop_word_offset,
-			num_stop_words * sizeof( stop_word_offset[0] )
-		);
-	}
-	o.seekp( file_offset_pos );
-	o.write( file_offset, num_files * sizeof( file_offset[0] ) );
-	if ( num_meta_names ) {
-		o.seekp( meta_name_offset_pos );
-		o.write( meta_name_offset,
-			num_meta_names * sizeof( meta_name_offset[0] )
-		);
-	}
-
-	delete[] word_offset;
-	delete[] stop_word_offset;
-	delete[] file_offset;
-	delete[] meta_name_offset;
+#define	REWRITE_HEADER
+#include "index_header.c"
+#undef	REWRITE_HEADER
 
 	if ( verbosity > 1 )
 		cout << '\n';
@@ -1001,6 +1031,34 @@ void			write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
+	void write_dir_index( ostream &o, register off_t *offset )
+//
+// DESCRIPTION
+//
+//	Write the directory index to the given ostream recording the offsets as
+//	it goes.
+//
+// PARAMETERS
+//
+//	o	The ostream to write the index to.
+//
+//	offset	A pointer to a built-in vector where to record the offsets.
+//
+//*****************************************************************************
+{
+	register int dir_index = 0;
+	for ( dir_list_type::const_iterator
+		i = dir_list.begin(); i != dir_list.end(); ++i
+	) {
+		offset[ dir_index++ ] = o.tellp();
+		o << *i << '\0';
+	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
 	void write_file_index( ostream &o, register off_t *offset )
 //
 // DESCRIPTION
@@ -1021,9 +1079,126 @@ void			write_word_index( ostream&, off_t* );
 		i = file_info::begin(); i != file_info::end(); ++i
 	) {
 		offset[ file_index++ ] = o.tellp();
-		o	<< (*i)->file_name() << '\0' << bcd( (*i)->size() )
+		o	<< bcd( (*i)->dir_index() )
+			<< (*i)->file_name() << '\0' << bcd( (*i)->size() )
 			<< bcd( (*i)->num_words() ) << (*i)->title() << '\0';
 	}
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void write_full_index( ostream &o )
+//
+// DESCRIPTION
+//
+//	Write the index to the given ostream.  The index file is written in
+//	such a way so that it can be mmap'd and used instantly with no parsing
+//	or other processing.  The format of an index file is:
+//
+//		long	num_unique_words;
+//		off_t	word_offset[ num_unique_words ];
+//		long	num_stop_words;
+//		off_t	stop_word_offset[ num_stop_words ];
+//		long	num_directories;
+//		off_t	directory_offset[ num_directories ];
+//		long	num_files;
+//		off_t	file_offset[ num_files ];
+//		long	num_meta_names;
+//		off_t	meta_name_offset[ num_meta_names ];
+//			(word index)
+//			(stop-word index)
+//			(directory index)
+//			(file index)
+//			(meta-name index)
+//
+//	The word index is a list of all the words indexed in alphabetical
+//	order.  Each entry is of the form:
+//
+//		word\0{data}...\xFF
+//
+//	that is: a null-terminated word followed by one or more data entries
+//	followed by an \xFF byte where a data entry is:
+//
+//		{I}[\xEE{M}...\xEE]{O}{R}
+//
+//	that is: a file-index (I) followed by zero or more meta-IDs (M)
+//	surrounded by \xEE bytes followed by the number of occurrences in the
+//	file (O) followed by a rank (R).  The integers are in BCD (binary coded
+//	decimal) not raw binary.  A BCD integer that has an odd number of
+//	digits is terminated by a low-order nybble with the value \xA; an
+//	integer that has an even number of digits is terminated by a a byte
+//	with the value \xAA.  (These values were chosen because they are
+//	invalid BCD.  All other values \xA0 through \xFE are reserved for
+//	future use.)  The file-index is an index into the file offset table;
+//	the meta-IDs, if present, are unique integers identifying which meta
+//	name(s) a word is associated with in the meta-name index.
+//
+//	The stop-word index is a list of all the stop words (either the built-
+//	in list or the list supplied from a file, plus those that exceed either
+//	the file limit or word percentage) in alphabetical order.  Each entry
+//	is of the form:
+//
+//		word\0
+//
+//	where the word is terminated by a null byte.
+//
+//	The directory index is a list of all the directories in the order
+//	encountered.  Each entry is of the form:
+//
+//		path\0
+//
+//	where the path is terminated by a null byte.
+//
+//	The file index is a list of file information.  Each entry is of the
+//	form:
+//
+//		{D}file_name\0{S}{W}file_title\0
+//
+//	that is: a directory-index (D) followed by a null-terminated file name
+//	followed by the file's size in bytes (S) followed by the number of
+//	words in the file (W) followed by the file's null-terminated title.
+//	The integers are in BCD format.
+//
+//	The meta-name index is a list of all the meta names (in alphabetical
+//	order) encountered during indexing of all the files.  Each meta-name is
+//	followed by its numeric ID that is simply a unique integer to identify
+//	it.  Each entry is of the form:
+//
+//		meta_name\0{I}
+//
+//	that is: a null-terminated meta-name followed by the ID (I) in BCD
+//	format.
+//
+// PARAMETERS
+//
+//	o	The ostream to write the index to.
+//
+//*****************************************************************************
+{
+	if ( !( num_unique_words = words.size() ) )
+		return;
+
+	if ( verbosity > 1 )
+		cout << me << ": writing index..." << flush;
+
+#define	WRITE_HEADER
+#include "index_header.c"
+#undef	WRITE_HEADER
+
+	write_word_index     ( o, word_offset );
+	write_stop_word_index( o, stop_word_offset );
+	write_dir_index      ( o, dir_offset );
+	write_file_index     ( o, file_offset );
+	write_meta_name_index( o, meta_name_offset );
+
+#define	REWRITE_HEADER
+#include "index_header.c"
+#undef	REWRITE_HEADER
+
+	if ( verbosity > 1 )
+		cout << '\n';
 }
 
 //*****************************************************************************
@@ -1056,159 +1231,6 @@ void			write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-	void write_full_index( ostream &o )
-//
-// DESCRIPTION
-//
-//	Write the index to the given ostream.  The index file is written in
-//	such a way so that it can be mmap'd and used instantly with no parsing
-//	or other processing.  The format of an index file is:
-//
-//		long	num_unique_words;
-//		off_t	word_offset[ num_unique_words ];
-//		long	num_stop_words;
-//		off_t	stop_word_offset[ num_stop_words ];
-//		long	num_files;
-//		off_t	file_offset[ num_files ];
-//		long	num_meta_names;
-//		off_t	meta_name_offset[ num_meta_names ];
-//			(word index)
-//			(stop-word index)
-//			(file index)
-//			(meta-name index)
-//
-//	The word index is a list of all the words indexed in alphabetical
-//	order.  Each entry is of the form:
-//
-//		word\0{data}...\xFF
-//
-//	that is: a null-terminated word followed by one or more data entries
-//	followed by an \xFF byte where a data entry is:
-//
-//		I[\xEE{M}...\xEE]OR
-//
-//	that is: a file-index (I) followed by zero or more meta-IDs (M)
-//	surrounded by \xEE bytes followed by the number of occurrences in the
-//	file (O) followed by a rank (R) followed by an \xFF byte.  The integers
-//	are in BCD (binary coded decimal) not raw binary.  A BCD integer that
-//	has an odd number of digits is terminated by a low-order nybble with
-//	the value \xA; an integer that has an even number of digits is
-//	terminated by a a byte with the value \xAA.  (These values were chosen
-//	because they are invalid BCD.  All other values \xA0 through \xFE are
-//	reserved for future use.)  The file-index is an index into the file
-//	offset table; the meta-IDs, if present, are unique integers identifying
-//	which meta name(s) a word is associated with in the meta-name index.
-//
-//	The stop-word index is a list of all the stop words (either the built-
-//	in list or the list supplied from a file, plus those that exceed either
-//	the file limit or word percentage) in alphabetical order.  Each entry
-//	is of the form:
-//
-//		word\0
-//
-//	where the word is terminated by a null byte.
-//
-//	The file index is a list of file information.  Each entry is of the
-//	form:
-//
-//		path_name\0{S}{W}file_title\0
-//
-//	that is: a null-terminated pathname followed by the file's size in
-//	bytes (S) followed by the number of words in the file (W) followed by
-//	the file's null-terminated title.  The integers are in BCD format.
-//	Each file_offset points to the first character in a path name.
-//
-//	The meta-name index is a list of all the meta names (in alphabetical
-//	order) encountered during indexing of all the files.  Each meta-name is
-//	followed by its numeric ID that is simply a unique integer to identify
-//	it.  Each entry is of the form:
-//
-//		meta_name\0{I}
-//
-//	that is: a null-terminated meta-name followed by the ID (I) in BCD
-//	format.
-//
-// PARAMETERS
-//
-//	o	The ostream to write the index to.
-//
-//*****************************************************************************
-{
-	if ( !( num_unique_words = words.size() ) )
-		return;
-
-	if ( verbosity > 1 )
-		cout << me << ": writing index..." << flush;
-
-	long const num_stop_words = stop_words->size();
-	long const num_files = file_info::num_files();
-	long const num_meta_names = meta_names.size();
-	off_t *const word_offset = new off_t[ num_unique_words ];
-	off_t *const stop_word_offset = num_stop_words ?
-		new off_t[ num_stop_words ] : 0;
-	off_t *const file_offset = new off_t[ num_files ];
-	off_t *const meta_name_offset = num_meta_names ?
-		new off_t[ num_meta_names ] : 0;
-
-	// Write dummy data as a placeholder until the offsets are computed.
-	o.write( &num_unique_words, sizeof( num_unique_words ) );
-	streampos const word_offset_pos = o.tellp();
-	o.write( word_offset, num_unique_words * sizeof( word_offset[0] ) );
-
-	o.write( &num_stop_words, sizeof( num_stop_words ) );
-	streampos const stop_word_offset_pos = o.tellp();
-	if ( num_stop_words )
-		o.write( stop_word_offset,
-			num_stop_words * sizeof( stop_word_offset[0] )
-		);
-
-	o.write( &num_files, sizeof( num_files ) );
-	streampos const file_offset_pos = o.tellp();
-	o.write( file_offset, num_files * sizeof( file_offset[0] ) );
-
-	o.write( &num_meta_names, sizeof( num_meta_names ) );
-	streampos const meta_name_offset_pos = o.tellp();
-	if ( num_meta_names )
-		o.write( meta_name_offset,
-			num_meta_names * sizeof( meta_name_offset[0] )
-		);
-
-	write_word_index( o, word_offset );
-	write_stop_word_index( o, stop_word_offset );
-	write_file_index( o, file_offset );
-	write_meta_name_index( o, meta_name_offset );
-
-	// Go back and write the computed offsets.
-	o.seekp( word_offset_pos );
-	o.write( word_offset, num_unique_words * sizeof( word_offset[0] ) );
-	if ( num_stop_words ) {
-		o.seekp( stop_word_offset_pos );
-		o.write( stop_word_offset,
-			num_stop_words * sizeof( stop_word_offset[0] )
-		);
-	}
-	o.seekp( file_offset_pos );
-	o.write( file_offset, num_files * sizeof( file_offset[0] ) );
-	if ( num_meta_names ) {
-		o.seekp( meta_name_offset_pos );
-		o.write( meta_name_offset,
-			num_meta_names * sizeof( meta_name_offset[0] )
-		);
-	}
-
-	delete[] word_offset;
-	delete[] stop_word_offset;
-	delete[] file_offset;
-	delete[] meta_name_offset;
-
-	if ( verbosity > 1 )
-		cout << '\n';
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	void write_partial_index()
 //
 // DESCRIPTION
@@ -1229,7 +1251,12 @@ void			write_word_index( ostream&, off_t* );
 	ofstream o( temp_file_name.c_str(), ios::out | ios::binary );
 	if ( !o ) {
 		error()	<< "can not write temp. file \""
-			<< temp_file_name << '"' << endl;
+#ifdef	PJL_GCC_295 /* see the comment in platform.h */
+			<< temp_file_name.c_str()
+#else
+			<< temp_file_name
+#endif
+			<< "\"\n";
 		::exit( Exit_No_Write_Temp );
 	}
 	partial_index_file_names.push_back( temp_file_name );
@@ -1241,15 +1268,15 @@ void			write_word_index( ostream&, off_t* );
 	off_t *const word_offset = new off_t[ num_words ];
 
 	// Write dummy data as a placeholder until the offsets are computed.
-	o.write( &num_words, sizeof( num_words ) );
+	my_write( o, &num_words, sizeof( num_words ) );
 	streampos const word_offset_pos = o.tellp();
-	o.write( word_offset, num_words * sizeof( word_offset[0] ) );
+	my_write( o, word_offset, num_words * sizeof( word_offset[0] ) );
 
 	write_word_index( o, word_offset );
 
 	// Go back and write the computed offsets.
 	o.seekp( word_offset_pos );
-	o.write( word_offset, num_words * sizeof( word_offset[0] ) );
+	my_write( o, word_offset, num_words * sizeof( word_offset[0] ) );
 
 	delete[] word_offset;
 	words.clear();
@@ -1306,8 +1333,11 @@ void			write_word_index( ostream&, off_t* );
 	register int word_index = 0;
 	FOR_EACH( word_map, words, w ) {
 		offset[ word_index++ ] = o.tellp();
+#ifdef	PJL_GCC_295 /* see the comment in platform.h */
+		o << w->first.c_str() << '\0';
+#else
 		o << w->first << '\0';
-
+#endif
 		word_info const &info = w->second;
 		FOR_EACH( word_info::file_list, info.files_, file ) {
 			o << bcd( file->index_ );
@@ -1336,11 +1366,13 @@ ostream& usage( ostream &o ) {
 #ifdef	MOD_HTML
 	"-C c   | --no-class c      : Class name not to index [default: none]\n"
 #endif
+	"-D n   | --dirs-reserve n  : Reserve space for number of dirs [default: " << DirectoriesReserve_Default << "]\n"
 	"-e m:p | --pattern m:p     : Module and file pattern to index [default: none]\n"
 	"-E p   | --no-pattern p    : File pattern not to index [default: none]\n"
 	"-f n   | --word-files n    : Word/file maximum [default: infinity]\n"
 	"-F n   | --files-reserve n : Reserve space for number of files [default: " << FilesReserve_Default << "]\n"
-	"-G n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
+	"-g n   | --files-grow n    : Number or percentage to grow by [default: " << FilesGrow_Default << "]\n"
+	"-G n   | --dirs-grow n     : Number or percentage to grow by [default: " << DirectoriesGrow_Default << "]\n"
 #ifdef	MOD_HTML
 	"-H     | --dump-html       : Dump built-in recognized HTML/XHTML elements, exit\n"
 #endif
@@ -1355,7 +1387,7 @@ ostream& usage( ostream &o ) {
 	"-r     | --no-recurse      : Don't index subdirectories [default: do]\n"
 	"-s f   | --stop-file f     : Stop-word file to use instead of built-in default\n"
 	"-S     | --dump-stop       : Dump built-in stop-words, exit\n"
-	"-t n   | --title-lines n   : Lines to look for <TITLE> [default: " << TitleLines_Default << "]\n"
+	"-t n   | --title-lines n   : Lines to look for titles [default: " << TitleLines_Default << "]\n"
 	"-T d   | --temp-dir d      : Directory for temporary files [default: " << TempDirectory_Default << "]\n"
 	"-v n   | --verbosity n     : Verbosity level [0-4; default: 0]\n"
 	"-V     | --version         : Print version number, exit\n";
