@@ -110,14 +110,22 @@ public:
 
 	typedef pointer iterator;
 	typedef const_pointer const_iterator;
+#ifndef	__SUNPRO_CC
+	//
+	// There's a known bug with the reverse_iterator definition in the STL
+	// headers that Sun's CC compiler uses.  Since we don't actually use
+	// reverse_iterator in SWISH++, just leave it out.
+	//
 	typedef std::reverse_iterator< iterator > reverse_iterator;
 	typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
+#endif
 
 	iterator	begin()		{ return (iterator)addr_; }
 	const_iterator	begin() const	{ return (const_iterator)addr_; }
 	iterator	end()		{ return begin() + size_; }
 	const_iterator	end() const	{ return begin() + size_; }
 
+#ifndef	__SUNPRO_CC
 	reverse_iterator rbegin() {
 		return reverse_iterator( end() );
 	}
@@ -130,6 +138,7 @@ public:
 	const_reverse_iterator rend() const {
 		return const_reverse_iterator( begin() );
 	}
+#endif	/* __SUNPRO_CC */
 
 	////////// member functions ///////////////////////////////////////////
 
