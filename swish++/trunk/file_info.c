@@ -118,7 +118,7 @@ FilesReserve			files_reserve;
 //
 //*****************************************************************************
 	: file_name_( pjl_basename( path_name ) ), dir_index_( dir_index ),
-	  size_( file_size ), title_( title ), num_words_( num_words )
+	  num_words_( num_words ), size_( file_size ), title_( title )
 {
 	construct();
 	name_set_.insert( path_name );
