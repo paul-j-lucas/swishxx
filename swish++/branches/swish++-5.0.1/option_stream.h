@@ -129,7 +129,7 @@ public:
 	};
 
 	option_stream(
-		int argc, char *argv[], spec const[], std::ostream& = cerr
+		int argc, char *argv[], spec const[], std::ostream& = std::cerr
 	);
 
 	int	shift() const		{ return index_; }
