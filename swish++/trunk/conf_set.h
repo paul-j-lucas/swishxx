@@ -42,7 +42,8 @@
 protected:
 	conf_set( char const *name ) : conf_var( name ) { }
 private:
-	virtual void	parse_value( char *line );
+	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	reset() { clear(); }
 };
 
 #endif	/* conf_set_H */

@@ -24,6 +24,7 @@
 
 // system
 #include <climits>				/* for INT_MAX */
+#include <string>
 
 // local
 #include "conf_var.h"
@@ -66,15 +67,27 @@ protected:
 		int default_value, int min = 0, int max = INT_MAX
 	);
 	conf<int>& operator=( int );
-	conf<int>& operator=( char const *s ) {
-		parse_const_value( s );
-		return *this;
-	}
+	CONF_VAR_ASSIGN_OPS( conf<int> )
 private:
 	int const	default_value_, min_, max_;
 	int		value_;
 
-	virtual void	parse_value( char *line );
+	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	reset() { value_ = default_value_; }
 };
+
+#define	CONF_INT_ASSIGN_OPS(T)			\
+	T& operator=( int i ) {			\
+		conf<int>::operator=( i );	\
+		return *this;			\
+	}					\
+	T& operator=( string const &s ) {	\
+		conf<int>::operator=( s );	\
+		return *this;			\
+	}					\
+	T& operator=( char const *s ) {		\
+		conf<int>::operator=( s );	\
+		return *this;			\
+	}					\
 
 #endif	/* conf_int_H */

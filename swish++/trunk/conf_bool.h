@@ -22,6 +22,9 @@
 #ifndef conf_bool_H
 #define conf_bool_H
 
+// standard
+#include <string>
+
 // local
 #include "conf_var.h"
 
@@ -46,15 +49,27 @@ protected:
 		value_ = new_value;
 		return *this;
 	}
-	conf<bool>& operator=( char const *s ) {
-		parse_const_value( s );
-		return *this;
-	}
+	CONF_VAR_ASSIGN_OPS( conf<bool> )
 private:
 	bool const	default_value_;
 	bool		value_;
 
-	virtual void	parse_value( char *line );
+	virtual void	parse_value( char const *var_name, char *line );
+	virtual void	reset() { value_ = default_value_; }
 };
+
+#define	CONF_BOOL_ASSIGN_OPS(T)			\
+	T& operator=( bool b ) {		\
+		conf<bool>::operator=( b );	\
+		return *this;			\
+	}					\
+	T& operator=( string const &s ) {	\
+		conf<bool>::operator=( s );	\
+		return *this;			\
+	}					\
+	T& operator=( char const *s ) {		\
+		conf<bool>::operator=( s );	\
+		return *this;			\
+	}					\
 
 #endif	/* conf_bool_H */
