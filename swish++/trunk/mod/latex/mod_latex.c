@@ -308,7 +308,8 @@ collect:	if ( is_word_char( ch ) ) {
 // DESCRIPTION
 //
 //	This function does everything skip_latex_command() does but
-//	additionally does extra parsing for certain HTML or XHTML elements:
+//	additionally does extra processing for LaTeX commands including text
+//	substitution.
 //
 // PARAMETERS
 //
