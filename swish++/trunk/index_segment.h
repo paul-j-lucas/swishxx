@@ -87,7 +87,9 @@ public:
 	friend class const_iterator;
 
 	class const_iterator :
-		public std::iterator< random_access_iterator_tag, value_type > {
+		public std::iterator<
+			std::random_access_iterator_tag, value_type
+		> {
 	private:
 		index_segment const *index_;
 		size_type i_;
