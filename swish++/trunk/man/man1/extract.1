@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3extract\fP 1 "December 7, 1999" "SWISH++"
+.TH \f3extract\fP 1 "May 17, 2000" "SWISH++"
 .SH NAME
 extract \- SWISH++ text extractor
 .SH SYNOPSIS
@@ -65,33 +65,33 @@ or
 option or the
 .B RecurseSubdirs
 variable is given).
-Text is extracted from files either only if their filename extension
-is among the set specified with either the
+Text is extracted from files either only if their filename matches
+one of the patterns in the set specified with either the
 .B \-e
 or
-.B \-\-extension
+.B \-\-pattern
 option or the
-.B IncludeExtension
+.B IncludeFile
 variable (unless standard input is used; see next paragraph)
 or is not among the set specified with either the
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 option or the
-.B ExcludeExtension
+.B ExcludeFile
 variable.
 .PP
 If there is a single filename of `\f(CW-\f1', the list of directories and files
 to extract is instead taken from standard input (one per line).
 In this case,
-filename extensions of files to extract need not be specified explicitly:
-all files, regardless of extension
-(unless it is among the set not to extract specified with either the
+filename patterns of files to extract need not be specified explicitly:
+all files, regardless of whether they match a pattern
+(unless they are among the set not to extract specified with either the
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 option or the
-.B ExcludeExtension
+.B ExcludeFile
 variable), are extracted, i.e.,
 .B extract
 assumes you know what you're doing when specifying filenames in this manner.
@@ -115,9 +115,9 @@ after extraction.
 However, extraction is not performed if the extracted text file exists.
 .SS Filters
 Via the
-.B FilterExtension
+.B FilterFile
 configuration file variable,
-files having particular extensions can be filtered prior to extraction.
+files having particular patterns can be filtered prior to extraction.
 (See the examples in
 .BR swish++.conf (4).)
 .SS Character Mapping and Word Determination
@@ -217,40 +217,36 @@ A configuration file is not required:
 if none is specified and the default does not exist, none is used;
 however, if one is specified and it does not exist, then this is an error.
 .TP
-.BI \-e 
+.BI \-e p
 .br
 .ns
 .TP
-.BI \-\-extension= e
-A filename extension,
-.IR e ,
-of files to extract text from
-.I without
-the ``dot.''
+.BI \-\-pattern= p
+A filename pattern,
+.IR p ,
+of files to extract text from.
 Case is significant.
 Multiple
 .B \-e
 or
-.B \-\-extension
+.B \-\-pattern
 options may be specified.
 .TP
-.BI \-E e
+.BI \-E p
 .br
 .ns
 .TP
-.BI \-\-no-extension= e
-A filename extension,
-.IR e ,
+.BI \-\-no-pattern= p
+A filename pattern,
+.IR p ,
 of files
 .I not
-to extract text from
-.I without
-the ``dot.''
+to extract text from.
 Case is significant.
 Multiple
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 options may be specified.
 .TP
 .B \-l
@@ -271,16 +267,16 @@ since it doesn't support symbolic links.)
 Do not recursively extract the files in subdirectories,
 that is: when a directory is encountered,
 all the files in that directory are extracted
-(modulo the filename extensions specified via the
+(modulo the filename patterns specified via the
 .BR \-e ,
-.BR \-\-extension ,
+.BR \-\-pattern ,
 .BR \-E ,
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 options or the
-.B IncludeExtension
+.B IncludeFile
 or
-.B ExcludeExtension
+.B ExcludeFile
 variables) but subdirectories encountered are ignored
 and therefore the files contained in them are not extracted.
 (This option is most useful when specifying the directories and files to extract
@@ -351,13 +347,13 @@ Variables and command-line options can be mixed.
 .RS 5
 .PD 0
 .TP 18
-.B ExcludeExtension
+.B ExcludeFile
 Same as
 .B \-E
 or
-.B \-\-no-extension
+.B \-\-no-pattern
 .TP
-.B FilterExtension
+.B FilterFile
 (See Filters.)
 .TP
 .B FollowLinks
@@ -366,11 +362,11 @@ Same as
 or
 .B \-\-follow-links
 .TP
-.B IncludeExtension
+.B IncludeFile
 Same as
 .B \-e
 or
-.B \-\-extension
+.B \-\-pattern
 .TP
 .B RecurseSubdirs
 Same as
@@ -396,7 +392,7 @@ or
 To extract text from all Microsoft Office files on a web server:
 .cS
 cd /home/www/htdocs
-extract -v3 -e doc -e ppt -e xls .
+extract -v3 -e '*.doc' -e *.ppt' -e '*.xls' .
 .cE
 .SS Filters
 (See the examples in
@@ -441,12 +437,19 @@ default configuration file name
 .BR index (1),
 .BR search (1),
 .BR strings (1),
-.BR swish++.conf (4)
+.BR swish++.conf (4),
+.BR glob (7)
 .PP
 Adobe Systems Incorporated.
 .I PostScript Langauge Reference Manual, 2nd ed.
 Addison-Wesley, Reading, MA.
 pp. 346-359.
+.PP
+International Standards Organization.
+``ISO/IEC 9945-2: Information Technology
+-- Portable Operating System Interface (POSIX)
+-- Part 2: Shell and Utilities,''
+1993.
 .SH AUTHOR
 Paul J. Lucas
 .RI < pjl@best.com >
