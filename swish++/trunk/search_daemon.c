@@ -386,7 +386,6 @@ void	set_signal_handlers();
 	// connected; instead, we deal with the EPIPE error.
 	//
 	sa.sa_handler = SIG_IGN;
-	sa.sa_flags = SA_RESTART;
 	::sigaction( SIGPIPE, &sa, 0 );
 }
 
