@@ -32,13 +32,17 @@
 
 // local
 #include "config.h"
-#include "fake_ansi.h"
+#include "exit_codes.h"
 #include "file_index.h"
 #include "file_list.h"
 #include "html.h"
+#include "IndexFile.h"
 #include "less.h"
 #include "my_set.h"
+#include "platform.h"
+#include "ResultsMax.h"
 #include "stem_word.h"
+#include "StemWords.h"
 #include "token.h"
 #include "util.h"
 #include "version.h"
@@ -60,15 +64,15 @@ typedef pair< word_index::const_iterator, word_index::const_iterator >
 char const*	me;				// executable name
 file_index	files;
 word_index	words, stop_words, meta_names;
-bool		stem_words;
+StemWords	stem_words;
 string_set	stop_words_found;
 
 void	dump_single_word( char const *word );
 void	dump_word_window( char const *word, int window_size, int match );
 int	get_meta_id( word_index::const_iterator );
-bool	parse_meta( istream&, result_type&, bool &ignore, int = no_meta_id );
-bool	parse_primary( istream&, result_type&, bool &ignore, int = no_meta_id );
-bool	parse_query( istream&, result_type&, bool &ignore, int = no_meta_id );
+bool	parse_meta( istream&, result_type&, bool &ignore, int = No_Meta_ID );
+bool	parse_primary( istream&, result_type&, bool &ignore, int = No_Meta_ID );
+bool	parse_query( istream&, result_type&, bool &ignore, int = No_Meta_ID );
 bool	parse_optional_relop( istream&, token::type& );
 void	usage();
 
@@ -85,8 +89,8 @@ void	usage();
 //
 // DESCRIPTION
 //
-//	A binary_function used to sort the search results by rank in
-//	descending order (highest rank first).
+//	A sort_by_rank is-a binary_function used to sort the search results
+//	by rank in descending order (highest rank first).
 //
 // BUGS
 //
@@ -133,40 +137,48 @@ void	usage();
 
 	/////////// Process command-line options //////////////////////////////
 
-	bool		dump_entire_index = false;
+	char const*	config_file_name_arg = Config_Filename_Default;
+	bool		dump_entire_index_opt = false;
 	int		dump_match = 0;
-	bool		dump_meta_names = false;
-	bool		dump_stop_words = false;
+	bool		dump_meta_names_opt = false;
+	bool		dump_stop_words_opt = false;
 	int		dump_window_size = 0;
-	bool		dump_word_index = false;
-	char const*	index_file_name = Index_Filename_Default;
-	int		max_results = Results_Max_Default;
-	bool		print_result_count_only = false;
+	bool		dump_word_index_opt = false;
+	IndexFile	index_file_name;
+	char*		index_file_name_arg = 0;
+	ResultsMax	max_results;
+	char*		max_results_arg = 0;
+	bool		print_result_count_only_opt = false;
 	int		skip_results = 0;
+	bool		stem_words_opt = false;
 
 	::opterr = 1;
-	char const opts[] = "dDi:m:Mr:RsSVw:";
+	char const opts[] = "c:dDi:m:Mr:RsSVw:";
 	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
 		switch ( opt ) {
 
+			case 'c': // Specify config. file.
+				config_file_name_arg = ::optarg;
+				break;
+
 			case 'd': // Dump query word indices to standard out.
-				dump_word_index = true;
+				dump_word_index_opt = true;
 				break;
 
 			case 'D': // Dump entire word index to standard out.
-				dump_entire_index = true;
+				dump_entire_index_opt = true;
 				break;
 
 			case 'i': // Specify index file overriding the default.
-				index_file_name = ::optarg;
+				index_file_name_arg = ::optarg;
 				break;
 
 			case 'm': // Specify max. number of results.
-				max_results = ::atoi( ::optarg );
+				max_results_arg = ::optarg;
 				break;
 
 			case 'M': // Dump meta-name list.
-				dump_meta_names = true;
+				dump_meta_names_opt = true;
 				break;
 
 			case 'r': // Specify number of initial results to skip.
@@ -176,20 +188,20 @@ void	usage();
 				break;
 
 			case 'R': // Print result-count only.
-				print_result_count_only = true;
+				print_result_count_only_opt = true;
 				break;
 
 			case 's': // Stem words.
-				stem_words = true;
+				stem_words_opt = true;
 				break;
 
 			case 'S': // Dump stop-word list.
-				dump_stop_words = true;
+				dump_stop_words_opt = true;
 				break;
 
 			case 'V': // Display version and exit.
 				cout << "SWISH++ " << version << endl;
-				::exit( 0 );
+				::exit( Exit_Success );
 
 			case 'w': { // Dump words around query words.
 				dump_window_size = ::atoi( ::optarg );
@@ -208,16 +220,33 @@ void	usage();
 		}
 
 	argc -= ::optind, argv += ::optind;
-	if ( !(argc || dump_entire_index || dump_meta_names || dump_stop_words) )
+	if ( !( argc ||
+		dump_entire_index_opt ||
+		dump_meta_names_opt ||
+		dump_stop_words_opt
+	) )
 		usage();
+
+	//
+	// First, parse the config. file (if any); then override variables
+	// specified on the command line with options.
+	//
+	parse_config_file( config_file_name_arg );
+
+	if ( index_file_name_arg )
+		index_file_name = index_file_name_arg;
+	if ( max_results_arg )
+		max_results = max_results_arg;
+	if ( stem_words_opt )
+		stem_words = true;
 
 	/////////// Load index file ///////////////////////////////////////////
 
 	file_vector<char> the_index( index_file_name );
 	if ( !the_index ) {
-		cerr	<< me << ": could not read index from "
-			<< index_file_name << endl;
-		::exit( 2 );
+		ERROR	<< "could not read index from \""
+			<< index_file_name << '"' << endl;
+		::exit( Exit_No_Read_Index );
 	}
 	words.set_index_file( the_index );
 	stop_words.set_index_file( the_index, word_index::stop_word_index );
@@ -229,14 +258,14 @@ void	usage();
 	if ( dump_window_size ) {
 		while ( *argv )
 			dump_word_window( *argv++, dump_window_size, dump_match );
-		return 0;
+		::exit( Exit_Success );
 	}
-	if ( dump_word_index ) {
+	if ( dump_word_index_opt ) {
 		while ( *argv )
 			dump_single_word( *argv++ );
-		return 0;
+		::exit( Exit_Success );
 	}
-	if ( dump_entire_index )
+	if ( dump_entire_index_opt )
 		FOR_EACH( word_index, words, w ) {
 			cout << *w << '\n';
 			file_list list( w );
@@ -246,18 +275,18 @@ void	usage();
 			cout << '\n';
 		}
 
-	if ( dump_stop_words )
-		copy( stop_words.begin(), stop_words.end(),
+	if ( dump_stop_words_opt )
+		::copy( stop_words.begin(), stop_words.end(),
 			ostream_iterator< char const* >( cout, "\n" )
 		);
 
-	if ( dump_meta_names )
-		copy( meta_names.begin(), meta_names.end(),
+	if ( dump_meta_names_opt )
+		::copy( meta_names.begin(), meta_names.end(),
 			ostream_iterator< char const* >( cout, "\n" )
 		);
 
-	if ( dump_entire_index || dump_meta_names || dump_stop_words )
-		return 0;
+	if ( dump_entire_index_opt || dump_meta_names_opt || dump_stop_words_opt )
+		::exit( Exit_Success );
 
 	////////// Perform the query //////////////////////////////////////////
 
@@ -277,8 +306,8 @@ void	usage();
 	if ( !( parse_query( query_stream, results, ignore ) &&
 		query_stream.eof()
 	) ) {
-		cerr << me << ": malformed query" << endl;
-		::exit( 3 );
+		ERROR << "malformed query" << endl;
+		::exit( Exit_Malformed_Query );
 	}
 
 	////////// Print the results //////////////////////////////////////////
@@ -292,11 +321,8 @@ void	usage();
 	}
 
 	cout << "# results: " << results.size() << '\n';
-	if ( print_result_count_only )
-		return 0;
-
-	if ( skip_results >= results.size() )
-		return 0;
+	if ( print_result_count_only_opt || skip_results >= results.size() )
+		::exit( Exit_Success );
 
 	// Copy the results to a vector to sort them by rank.
 	typedef vector< result_type::value_type > sorted_result_type;
@@ -314,7 +340,7 @@ void	usage();
 		cout	<< int( i->second * normalize )
 			<< ' ' << files[ i->first ] << '\n';
 
-	return 0;
+	::exit( Exit_Success );
 }
 
 //*****************************************************************************
@@ -610,7 +636,7 @@ void	usage();
 				!comparator( t.lower_str(), *found.first ) ?
 				get_meta_id( found.first )
 			:
-				meta_id_not_found;
+				Meta_ID_Not_Found;
 			goto no_put_back;
 		}
 		t2.put_back();				// put back '='
@@ -829,7 +855,7 @@ no_put_back:
 	while ( found.first != found.second ) {
 		file_list list( found.first++ );
 		FOR_EACH( file_list, list, file )
-			if (	meta_id == no_meta_id ||
+			if (	meta_id == No_Meta_ID ||
 				file->meta_ids_.find( meta_id )
 			)
 				result[ file->index_ ] += file->rank_;
@@ -848,6 +874,7 @@ void usage() {
 	cerr <<	"usage: " << me << " [options] query\n"
 	" options:\n"
 	" --------\n"
+	"  -c config_file  : Name of configuration file [default: " << Config_Filename_Default << "]\n"
 	"  -d              : Dump query word indices to standard out and exit\n"
 	"  -D              : Dump entire word index to standard out and exit\n"
 	"  -i index_file   : Name of index file to use [default: " << Index_Filename_Default << "]\n"
@@ -859,5 +886,5 @@ void usage() {
 	"  -S              : Dump stop-word index to standard out and exit\n"
 	"  -V              : Print version number and exit\n"
 	"  -w size[,match] : Dump size window of words around query words [default: 0]\n";
-	::exit( 1 );
+	::exit( Exit_Usage );
 }
