@@ -230,8 +230,8 @@ void			write_word_index( ostream&, off_t* );
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
 	char const*	stop_word_file_name_arg = 0;
-	TempDirectory	temp_directory;
-	char const*	temp_directory_arg = TempDirectory_Default;
+	TempDirectory	temp_directory = TempDirectory_Default;
+	char const*	temp_directory_arg = 0;
 	char const*	verbosity_arg = 0;
 	char const*	word_file_max_arg = 0;
 	char const*	word_percent_max_arg = 0;
@@ -259,7 +259,8 @@ void			write_word_index( ostream&, off_t* );
 						<< endl;
 					::exit( Exit_Usage );
 				}
-				indexer *const i = indexer::find( opt.arg() );
+				indexer *const
+					i = indexer::find_indexer( opt.arg() );
 				if ( !i ) {
 					error()	<< '"' << opt.arg()
 						<< "\": no such indexing module"
