@@ -223,7 +223,7 @@
 			cout << " (skipped: can not open)\n";
 		return;
 	}
-	file.behavior( mmap_file::sequential );
+	file.behavior( mmap_file::bt_sequential );
 
 	if ( verbosity == 3 )			// print base name of file
 		cout << "  " << orig_base_name << flush;
