@@ -46,7 +46,7 @@ using namespace std;
 //
 // RETURN VALUE
 //
-//	Returns true only if the file was filtered successfully.
+//	If successful, returns the post-filtered file name; null otherwise.
 //
 // SEE ALSO
 //
