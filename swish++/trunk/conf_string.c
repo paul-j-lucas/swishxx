@@ -27,6 +27,7 @@
 #include "conf_string.h"
 #include "exit_codes.h"
 #include "platform.h"
+#include "util.h"			/* for error() */
 
 #ifndef	PJL_NO_NAMESPACES
 using namespace std;
@@ -75,7 +76,7 @@ extern char const*	me;
 //*****************************************************************************
 {
 	if ( !line || !*line ) {
-		cerr << error << '"' << name() << "\" has no value" << endl;
+		error() << '"' << name() << "\" has no value" << endl;
 		::exit( Exit_Config_File );
 	}
 
