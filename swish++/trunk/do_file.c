@@ -36,7 +36,8 @@
 //
 //	Either index or extract text from the given file, but only if its
 //	extension is among (not among) the specified set.  It will not follow
-//	symbolic links unless the -l command-line option was given.
+//	symbolic links unless either the FollowLinks config. file variable or
+//	the -l command-line option was given.
 //
 //	For indexing, a file is considered to be an HTML file only if its
 //	extension is "htm", "html", or "shtml".
