@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3swish++.index\f1 4 "July 12, 1999" "SWISH++"
+.TH \f3swish++.index\f1 4 "January 27, 2000" "SWISH++"
 .SH NAME
 swish++.index \- SWISH++ index file format
 .SH SYNOPSIS
@@ -83,7 +83,7 @@ Every word entry in the
 .I word index
 is of the form:
 .cS
-\f2word\fP0\f3\s+2{\s-2\fP\f2data\fP\f3\s+2}...\s-2\fP0
+\f2word\fP0\f3\s+2{\s-2\fP\f2data\fP\f3\s+2}...\s-2\fPFF
 .cE
 that is: a null-terminated word followed by one or more
 .I data
@@ -91,17 +91,19 @@ entries followed by a null byte where a
 .I data
 entry is:
 .cS
-\f2file-index\fP\f3\s+2[\s-2\fP2\f2meta-ID\fP\f3\s+2]...\s-2\fP1\f2rank\fP1
+\f2file-index\fP\f3\s+2[\s-2\fPEE\f3\s+2{\s-2\fP\f2meta-ID\fP\f3\s+2}...\s-2\fPEE\f3\s+2]\s-2\fP\f2rank\fP
 .cE
 that is: a file-index followed by zero or more meta-IDs
-(each preceeded by the ASCII 2 character)
-followed by a rank (both preceeded and followed by the ASCII 1 character).
-The integers are in ASCII, not binary.
-Currently, only ASCII characters 1 and 2
-(the binary values 1 and 2,
-not the digits \f(CW1\f1 and \f(CW2\f1 having ASCII codes of 49 and 50 decimal,
-respectively) are used.
-(Other low ASCII characters are reserved for future use.)
+(surrounded by \f(CW\\xEE\f1 bytes)
+followed by a rank followed by a \f(CW\\xFF\f1 byte.
+The integers are in BCD (binary coded decimal) not raw binary.
+A BCD integer that has an odd number of digits
+is terminated by a low-order nybble with the value \f(CW\\xA\f1;
+an integer that has an even number of digits
+is terminated by a a byte with the value \f(CW\\xAA\f1.
+(These values were chosen because they are invalid BCD.
+All other values \f(CW\\xA0\f1 through \f(CW\\xFE\f1
+are reserved for future use.)
 The
 .I file-index
 is an index into the \f(CWfile_offset\f1 table; the
@@ -140,9 +142,10 @@ Every meta-name entry in the
 .I meta-name index
 is of the form:
 .cS
-\f2meta-name\fP0
+\f2meta-name\fP0\f2ID\fP
 .cE
-that is: every word is null-terminated.
+where the meta-name is terminated by a null character
+and the ID is in BCD as described above.
 .SH CAVEATS
 .TP 4
 1.
