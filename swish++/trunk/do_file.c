@@ -209,6 +209,7 @@
 	// We can (finally!) open the (possibly post-filtered) file.
 	//
 	mmap_file const file( file_name );
+	file.behavior( mmap_file::sequential );
 	if ( !file ) {
 		if ( verbosity > 3 )
 			cout << " (skipped: can not open)\n";
