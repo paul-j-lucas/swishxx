@@ -34,6 +34,9 @@ word_info::file::file() {
 }
 
 word_info::file::file( int index ) :
+#ifdef	FEATURE_word_pos
+	last_absolute_word_pos_( 0 ),
+#endif
 	index_( index ), occurrences_( 1 ), rank_( 0 )
 {
 	// do nothing else

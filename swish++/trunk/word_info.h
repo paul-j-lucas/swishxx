@@ -62,6 +62,7 @@ public:
 
 #ifdef	FEATURE_word_pos
 		typedef std::vector< short > pos_delta_list;
+		int		last_absolute_word_pos_;
 		pos_delta_list	pos_deltas_;
 		void		add_word_pos( int );
 		void		write_word_pos( std::ostream& ) const;
@@ -98,8 +99,9 @@ inline void word_info::file::add_word_pos( int absolute_pos ) {
 		// are stored in a variable-length binary representation in the
 		// generated index file and smaller integers take less bytes.
 		// 
-		pos_deltas_.push_back( absolute_pos - pos_deltas_.back() );
+		pos_deltas_.push_back( absolute_pos - last_absolute_word_pos_ );
 	}
+	last_absolute_word_pos_ = absolute_pos;
 }
 #endif	/* FEATURE_word_pos */
 
