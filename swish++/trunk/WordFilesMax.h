@@ -48,4 +48,6 @@ public:
 	CONF_INT_ASSIGN_OPS( WordFilesMax )
 };
 
+extern WordFilesMax word_file_max;
+
 #endif	/* WordFilesMax_H */

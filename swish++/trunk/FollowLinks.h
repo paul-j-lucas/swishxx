@@ -45,4 +45,6 @@ public:
 	CONF_BOOL_ASSIGN_OPS( FollowLinks )
 };
 
+extern FollowLinks follow_links;
+
 #endif	/* FollowLinks_H */

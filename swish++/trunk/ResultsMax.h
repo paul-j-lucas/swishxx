@@ -46,4 +46,6 @@ public:
 	CONF_INT_ASSIGN_OPS( ResultsMax )
 };
 
+extern ResultsMax max_results;
+
 #endif	/* ResultsMax_H */

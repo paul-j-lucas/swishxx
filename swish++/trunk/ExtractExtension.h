@@ -48,4 +48,6 @@ public:
 	CONF_STRING_ASSIGN_OPS( ExtractExtension )
 };
 
+extern ExtractExtension extract_extension;
+
 #endif	/* ExtractExtension_H */

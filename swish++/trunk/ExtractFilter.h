@@ -46,4 +46,6 @@ public:
 	CONF_BOOL_ASSIGN_OPS( ExtractFilter )
 };
 
+extern ExtractFilter extract_as_filter;
+
 #endif	/* ExtractFilter_H */

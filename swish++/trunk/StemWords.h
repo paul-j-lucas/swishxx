@@ -45,4 +45,6 @@ public:
 	CONF_BOOL_ASSIGN_OPS( StemWords )
 };
 
+extern StemWords stem_words;
+
 #endif	/* StemWords_H */

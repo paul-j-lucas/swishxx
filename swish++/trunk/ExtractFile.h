@@ -48,4 +48,6 @@ private:
 	virtual void	reset() { clear(); }
 };
 
+extern ExtractFile include_patterns;
+
 #endif	/* ExtractFile_H */

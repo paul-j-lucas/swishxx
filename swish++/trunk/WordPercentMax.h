@@ -47,4 +47,6 @@ public:
 	CONF_INT_ASSIGN_OPS( WordPercentMax )
 };
 
+extern WordPercentMax word_percent_max;
+
 #endif	/* WordPercentMax_H */

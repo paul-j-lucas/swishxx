@@ -45,6 +45,6 @@ public:
 	CONF_STRING_ASSIGN_OPS( ResultSeparator )
 };
 
-extern ResultSeparator	result_separator;
+extern ResultSeparator result_separator;
 
 #endif	/* ResultSeparator_H */

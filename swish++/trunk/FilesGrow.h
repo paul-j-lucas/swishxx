@@ -47,4 +47,6 @@ public:
 	CONF_PERCENT_ASSIGN_OPS( FilesGrow )
 };
 
+extern FilesGrow files_grow;
+
 #endif	/* FilesGrow_H */

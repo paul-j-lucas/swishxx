@@ -68,4 +68,6 @@ private:
 	virtual void	reset() { map_.clear(); }
 };
 
+extern FilterFile filters;
+
 #endif	/* FilterFile_H */

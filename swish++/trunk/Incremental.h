@@ -45,4 +45,6 @@ public:
 	CONF_BOOL_ASSIGN_OPS( Incremental )
 };
 
+extern Incremental incremental;
+
 #endif	/* Incremental_H */

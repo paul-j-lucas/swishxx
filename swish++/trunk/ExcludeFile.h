@@ -58,4 +58,6 @@ private:
 	virtual void	reset() { clear(); }
 };
 
+extern ExcludeFile exclude_patterns;
+
 #endif	/* ExcludeFile_H */

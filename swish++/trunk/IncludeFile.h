@@ -51,4 +51,6 @@ private:
 	virtual void	reset() { clear(); }
 };
 
+extern IncludeFile include_patterns;
+
 #endif	/* IncludeFile_H */

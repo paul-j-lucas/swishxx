@@ -48,4 +48,6 @@ public:
 	CONF_PERCENT_ASSIGN_OPS( DirectoriesGrow )
 };
 
+extern DirectoriesGrow directories_grow;
+
 #endif	/* DirectoriesGrow_H */
