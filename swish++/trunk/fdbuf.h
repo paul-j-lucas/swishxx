@@ -22,16 +22,17 @@
 #ifndef	fdbuf_H
 #define	fdbuf_H
 
+// local
+#include "fake_ansi.h"			/* for explicit, std */
+#include "platform.h"
+
 // standard
 #include <iostream>
-#if defined(__GNUC__) && __GNUC__ < 3
+#ifdef	PJL_GCC_2xx
 #include <streambuf.h>
 #else
 #include <streambuf>
 #endif
-
-// local
-#include "fake_ansi.h"			/* for explicit, std */
 
 #ifndef	PJL_NO_NAMESPACES
 namespace PJL {
