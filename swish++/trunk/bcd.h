@@ -23,8 +23,8 @@
 #define	bcd_H
 
 // standard
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 std::ostream&	bcd( std::ostream&, unsigned );
 int		parse_bcd( unsigned char const*& );
