@@ -6,28 +6,31 @@
 extern "C" {
 #endif
 
-#ifndef __dj_ENFORCE_ANSI_FREESTANDING
+#ifdef	FNM_NOESCAPE
+#undef	FNM_NOESCAPE
+#endif
+#ifdef	FNM_PATHNAME
+#undef	FNM_PATHNAME
+#endif
+#ifdef	FNM_PERIOD
+#undef	FNM_PERIOD
+#endif
+#ifdef	FNM_NOCASE
+#undef	FNM_NOCASE
+#endif
 
-#ifndef __STRICT_ANSI__
+#define	FNM_NOESCAPE	0x01
+#define	FNM_PATHNAME	0x02
+#define	FNM_PERIOD	0x04
+#define	FNM_NOCASE	0x08
 
-#define FNM_NOESCAPE	0x01
-#define FNM_PATHNAME	0x02
-#define FNM_PERIOD	0x04
-#define FNM_NOCASE	0x08
+#ifdef	FNM_NOMATCH
+#undef	FNM_NOMATCH
+#endif
 
-#define FNM_NOMATCH	1
-#define FNM_ERROR	2
+#define	FNM_NOMATCH	1
 
-int fnmatch(const char *_pattern, const char *_string, int _flags);
-
-#ifndef _POSIX_SOURCE
-
-#endif /* !_POSIX_SOURCE */
-#endif /* !__STRICT_ANSI__ */
-#endif /* !__dj_ENFORCE_ANSI_FREESTANDING */
-
-#ifndef __dj_ENFORCE_FUNCTION_CALLS
-#endif /* !__dj_ENFORCE_FUNCTION_CALLS */
+int fnmatch( const char *pattern, const char *string, int flags );
 
 #ifdef __cplusplus
 }
