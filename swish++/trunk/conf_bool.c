@@ -60,7 +60,7 @@ extern char const*	me;
 // DESCRIPTION
 //
 //	Parse a Boolean value from the line of text.  Acceptable values
-//	(regardless of case) are: false, f, no, n, true, t, yes, y
+//	(regardless of case) are: f, false, n, no, off, on, t, true, y, yes
 //
 // PARAMETERS
 //
@@ -70,24 +70,25 @@ extern char const*	me;
 {
 	char const *const lower = to_lower( line );
 
-	if (	::strcmp( lower, "false" ) || ::strcmp( lower, "no" ) ||
-		( *lower && lower[1] == '\0' &&
-			( *lower == 'f' || *lower == 'n' )
-		)
-	)
-		operator=( false );
-
-	else if ( ::strcmp( lower, "true" ) || ::strcmp( lower, "yes" ) ||
-		( *lower && lower[1] == '\0' &&
-			( *lower == 't' || *lower == 'y' )
-		)
-	)
-		operator=( true );
-
-	else {
-		error()	<< '"' << name()
-			<< "\" is not one of: "
-			"false, f, no, n, true, t, yes, y" << endl;
-		::exit( Exit_Config_File );
+	if ( *lower ) {
+		if (	!::strcmp( lower, "false" ) ||
+			!::strcmp( lower, "no" ) ||
+			!::strcmp( lower, "off" ) ||
+			( lower[1] == '\0' && (*lower == 'f' || *lower == 'n') )
+		) {
+			operator=( false );
+			return;
+		}
+		if (	!::strcmp( lower, "true" ) ||
+			!::strcmp( lower, "on" ) ||
+			!::strcmp( lower, "yes" ) ||
+			( lower[1] == '\0' && (*lower == 't' || *lower == 'y') )
+		) {
+			operator=( true );
+			return;
+		}
 	}
+	cerr << error << '"' << name() << "\" is not one of: "
+		"f, false, n, no, off, on, t, true, y, yes" << endl;
+	::exit( Exit_Config_File );
 }
