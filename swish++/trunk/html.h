@@ -41,6 +41,9 @@ char		convert_entity(
 void		parse_html_tag(
 			file_vector<char>::const_iterator &pos,
 			file_vector<char>::const_iterator end
+#ifdef	FEATURE_CLASS
+			, bool is_new_file = false
+#endif	/* FEATURE_CLASS */
 		);
 
 #endif	/* html_H */

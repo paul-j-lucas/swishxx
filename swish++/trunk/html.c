@@ -23,9 +23,15 @@
 #include <algorithm>
 #include <cctype>
 #include <cstring>
+#ifdef	FEATURE_CLASS
+#include <vector>
+#endif	/* FEATURE_CLASS */
 
 // local
 #include "config.h"
+#ifdef	FEATURE_CLASS
+#include "elements.h"
+#endif	/* FEATURE_CLASS */
 #include "entities.h"
 #include "fake_ansi.h"
 #include "html.h"
@@ -39,6 +45,10 @@ using namespace std;
 #endif
 
 extern string_set	exclude_meta_names, include_meta_names;
+#ifdef	FEATURE_CLASS
+extern int		no_index_class_count;
+extern string_set	no_index_class_names;
+#endif	/* FEATURE_CLASS */
 extern int		num_title_lines;
 
 bool			find_attribute(
@@ -492,27 +502,40 @@ void			skip_html_tag(
 	void parse_html_tag(
 		register file_vector<char>::const_iterator &c,
 		register file_vector<char>::const_iterator end
+#ifdef	FEATURE_CLASS
+		, bool is_new_file
+#endif	/* FEATURE_CLASS */
 	)
 //
 // DESCRIPTION
 //
 //	This function does everything skip_html_tag() does but additionally
-//	does extra parsing for certein HTML elements:
+//	does extra parsing for certain HTML elements:
 //
-//	1. If the tag contains a TITLE attribute, it indexes the words of its
+//	1. If the tag contains a CLASS attribute whose value is among the set
+//	   of class names specified as those not to index, then all the text
+//	   up to the tag that ends the element will not be indexed.
+//
+//	   For an element that has an optional end tag, "the tag that ends
+//	   the element" is either the element's end tag or a tag of another
+//	   element that implicitly ends it; for an element that does not have
+//	   an end tag, "the tag that ends the element" is the element's start
+//	   tag.
+//
+//	2. If the tag contains a TITLE attribute, it indexes the words of its
 //	   value.
 //
-//	2. If the tag is an AREA, IMG, or INPUT element and contains an ALT
+//	3. If the tag is an AREA, IMG, or INPUT element and contains an ALT
 //	   attribute, it indexes the words of its value.
 //
-//	3. If the tag is a META element, it parses its NAME and CONTENT
+//	4. If the tag is a META element, it parses its NAME and CONTENT
 //	   attributes indexing the words of the latter associated with the
 //	   former.
 //
-//	4. If the tag is an OBJECT element and contains a STANDBY attribute,
+//	5. If the tag is an OBJECT element and contains a STANDBY attribute,
 //	   it indexes the words of its value.
 //
-//	5. If the tag is a TABLE element and contains a SUMMARY attribute, it
+//	6. If the tag is a TABLE element and contains a SUMMARY attribute, it
 //	   indexes the words of its value.
 //
 // PARAMETERS
@@ -522,6 +545,9 @@ void			skip_html_tag(
 //			first character after the '>'.
 //
 //	end		The iterator marking the end of the file.
+//
+//
+//	is_new_file	If true, clear our internal element stack.
 //
 // SEE ALSO
 //
@@ -535,6 +561,11 @@ void			skip_html_tag(
 //	Meta data," HTML 4.0 Specification, section 7.4.4, World Wide Web
 //	Consortium, April 1998.
 //		http://www.w3.org/TR/PR-html40/struct/global.html#h-7.4.4
+//
+//	---.  "The global structure of an HTML document: The document body:
+//	Element identifiers: the id and class attributes," HTML 4.0
+//	Specification, section 7.5.2, World Wide Web Consortium, April 1998.
+//		http://www.w3.org/TR/PR-html40/struct/global.html#h-7.5.2
 //
 //	---. "Tables: Elements for constructing tables: The TABLE element,"
 //	HTML 4.0 Specification, section 11.2.1, World Wide Web Consortium,
@@ -556,6 +587,142 @@ void			skip_html_tag(
 	file_vector<char>::const_iterator tag_begin = c;
 	skip_html_tag( c, end );
 	file_vector<char>::const_iterator tag_end = c - 1;
+
+#ifdef	FEATURE_CLASS
+	////////// Deal with elements of a class not to index /////////////////
+
+	if ( !no_index_class_names.empty() ) {		// else, don't bother
+		char *const tag = to_lower( tag_begin, tag_end );
+		static char const whitespace[] = " \f\n\r\t\v";
+		::strtok( tag, whitespace );		// just the element name
+
+		static vector< pair< element const*, bool > > element_stack;
+		//
+		// The element_stack keeps track of all the HTML elements we
+		// encounter until they are closed.  The first member of the
+		// pair is a pointer to the element and the second member of
+		// the pair is a flag indicating whether the words between the
+		// start and end tags of that element are not to be indexed
+		// (true = "don't index").
+		//
+		// Note: I can't use an actual STL stack since I need to be
+		// able to clear the entire stack and, unfortunately, clear()
+		// isn't supported for stacks...an oversight in STL, IMHO.
+		//
+		if ( is_new_file ) {
+#			ifdef DEBUG_parse_class
+			cerr << "---> new file: clear stack" << endl;
+#			endif
+			element_stack.clear();
+		}
+
+		////////// Close open element(s) //////////////////////////////
+
+		while ( !element_stack.empty() ) {
+#			ifdef DEBUG_parse_class
+			cerr << "---> stack not empty: find: " << tag << endl;
+#			endif
+			if ( element_stack.back().first->close_tags.find(tag) ){
+#				ifdef DEBUG_parse_class
+				cerr << "---> found it" << endl;
+#				endif
+				//
+				// The tag we're parsing closes the currently
+				// open element: if the currently open element
+				// is a member of one of the classes not being
+				// being indexed, decrement
+				// no_index_class_count.
+				//
+				if ( element_stack.back().second ) {
+					--no_index_class_count;
+#					ifdef DEBUG_parse_class
+					cerr	<< "---- decrement: "
+						<< no_index_class_count << endl;
+#					endif
+				}
+				element_stack.pop_back();
+			} else
+				break;
+		}
+
+		////////// Look for CLASS attribute ///////////////////////////
+
+		bool is_no_index_class = false;
+
+		file_vector<char>::const_iterator class_begin = tag_begin;
+		file_vector<char>::const_iterator class_end = tag_end;
+		if ( find_attribute( class_begin, class_end, "CLASS" ) ) {
+			//
+			// CLASS attribute values can contain multiple classes
+			// separated by whitespace: we must iterate over all of
+			// them to see if one of them is among the set not to
+			// index.
+			//
+			char *names = to_lower( class_begin, class_end );
+			register char const *name;
+			while ( name = ::strtok( names, whitespace ) ) {
+				if ( no_index_class_names.find( name ) ) {
+					is_no_index_class = true;
+					break;
+				}
+				names = 0;
+			}
+		}
+
+		static element_map const elements;
+		element_map::const_iterator const e = elements.find( tag );
+		if ( e != elements.end() ) {
+			//
+			// Found the element in our internal table: now do
+			// different stuff depending upon whether its end tag
+			// is forbidden or not.
+			//
+#			ifdef DEBUG_parse_class
+			cerr << "---> found new: " << tag << endl;
+#			endif
+			if ( e->second.end_tag != element::forbidden ) {
+				//
+				// The element's end tag isn't forbidden, so we
+				// have to keep track of it on the stack and
+				// whether the text between the start and end
+				// tags should be indexed or not.
+				//
+				// Note that we have to keep track of all HTML
+				// elements even if they are not members of a
+				// class to be indexed because they could be
+				// nested inside of an element that is, e.g.:
+				// <SPAN CLASS=ignore><B>Hello</B></SPAN>
+				//
+				element_stack.push_back( make_pair(
+					&e->second, is_no_index_class
+				) );
+#				ifdef DEBUG_parse_class
+				cerr << "---> push stack: " << tag << endl;
+#				endif
+				if ( is_no_index_class ) {
+					//
+					// A class name in the value of this
+					// element's CLASS attribute is among
+					// the set not to index: increment
+					// no_index_class_count.
+					//
+					++no_index_class_count;
+#					ifdef DEBUG_parse_class
+					cerr	<< "---> increment: "
+						<< no_index_class_count << endl;
+#					endif
+				}
+			}
+			if ( is_no_index_class ) {
+				//
+				// Regardless of this element's end tag, it is
+				// to be ignored, so we can stop parsing it.
+				//
+				return;
+			}
+		}
+	}
+#endif	/* FEATURE_CLASS */
 
 	////////// Look for a TITLE attribute /////////////////////////////////
 

@@ -65,8 +65,14 @@ string_set	exclude_extensions;		// file extensions not to index
 string_set	include_extensions;		// file extensions to index
 string_set	exclude_meta_names;		// meta names not to index
 string_set	include_meta_names;		// meta names to index
+#ifdef	FEATURE_CLASS
+string_set	no_index_class_names;		// class names not to index
+#endif	/* FEATURE_CLASS */
 char const*	me;				// executable name
 meta_map	meta_names;
+#ifdef	FEATURE_CLASS
+int		no_index_class_count;		// don't index words if > 0
+#endif	/* FEATURE_CLASS */
 int		num_files_reserve = Files_Reserve_Default;
 int		num_title_lines = Title_Lines_Default;
 long		num_total_words;		// over all files indexed
@@ -131,9 +137,21 @@ void		write_word_index( ostream&, off_t* );
 	char const *index_file_name = Index_Filename_Default;
 
 	::opterr = 1;
+#ifdef	FEATURE_CLASS
+	char const opts[] = "C:e:E:f:F:i:lm:M:p:rs:St:v:V";
+#else
 	char const opts[] = "e:E:f:F:i:lm:M:p:rs:St:v:V";
+#endif	/* FEATURE_CLASS */
 	for ( int opt; (opt = ::getopt( argc, argv, opts )) != EOF; )
 		switch ( opt ) {
+
+#ifdef	FEATURE_CLASS
+			case 'C': // Specify CLASS name not to index.
+				no_index_class_names.insert(
+					::strdup( to_lower( ::optarg ) )
+				);
+				break;
+#endif	/* FEATURE_CLASS */
 
 			case 'e': // Specify filename extension(s) to index.
 				include_extensions.insert( ::optarg );
@@ -434,6 +452,17 @@ void		write_word_index( ostream&, off_t* );
 	if ( len < Word_Hard_Min_Size )
 		return;
 
+#ifdef	FEATURE_CLASS
+	if ( no_index_class_count ) {
+		//
+		// Word is within an HTML element's begin/end tags whose begin
+		// tag's CLASS attribute value is among the set of class names
+		// not to index.
+		//
+		return;
+	}
+#endif	/* FEATURE_CLASS */
+
 	////////// Strip chars not in Word_Begin_Chars/Word_End_Chars /////////
 
 	for ( register int i = len - 1; i >= 0; --i ) {
@@ -524,6 +553,9 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
+#ifdef	FEATURE_CLASS
+	static bool new_file = true;
+#endif	/* FEATURE_CLASS */
 	char buf[ Word_Hard_Max_Size + 1 ];
 	register char *word;
 	int len;
@@ -561,11 +593,21 @@ void		write_word_index( ostream&, off_t* );
 			index_word( word, len, meta_id );
 		}
 
-		if ( is_html && ch == '<' && meta_id == no_meta_id )
+		if ( is_html && ch == '<' && meta_id == no_meta_id ) {
+#ifdef	FEATURE_CLASS
+			parse_html_tag( c, end, new_file );
+			new_file = false;
+#else
 			parse_html_tag( c, end );
+#endif	/* FEATURE_CLASS */
+		}
 	}
 	if ( in_word )
 		index_word( word, len, meta_id );
+
+#ifdef	FEATURE_CLASS
+	new_file = true;
+#endif	/* FEATURE_CLASS */
 }
 
 //*****************************************************************************
@@ -1146,7 +1188,7 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-	if ( !( num_unique_words = words.size() ) ) 
+	if ( !( num_unique_words = words.size() ) )
 		return;
 
 	if ( verbosity > 1 )
@@ -1341,6 +1383,9 @@ void usage() {
 	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
 	" options:\n"
 	" --------\n"
+#ifdef	FEATURE_CLASS
+	"  -C class_name   : Class name not to index [default: none]\n"
+#endif	/* FEATURE_CLASS */
 	"  -e ext          : Extension to index [default: none]\n"
 	"  -E ext          : Extension not to index [default: none]\n"
 	"  -f file_max     : Word/file maximum [default: infinity]\n"
