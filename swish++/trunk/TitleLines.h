@@ -46,4 +46,6 @@ public:
 	CONF_INT_ASSIGN_OPS( TitleLines )
 };
 
+extern TitleLines num_title_lines;
+
 #endif	/* TitleLines_H */
