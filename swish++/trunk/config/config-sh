@@ -27,15 +27,13 @@
 ########### You shouldn't have to change anything below this line. ############
 
 ME=$0; ME=`expr $ME : '.*/\(.*\)'`
-USAGE="usage: $ME target CC_c_ext CC_o_ext compiler [ compiler-options ]"
-N=4
+USAGE="usage: $ME target compiler [ compiler-options ]"
+N=2
 
 [ $# -lt $N ] && { echo $USAGE >&2; exit 1; }
 
 TARGET=$1
-CCCEXT=$2
-CCOEXT=$3
-CC=$4
+CC=$2
 shift $N
 CFLAGS="$* -c"
 
@@ -43,7 +41,7 @@ echo
 echo "$ME: checking C++ compiler $CC"
 echo
 
-trap "rm -f *$CCOEXT $TARGET; exit 1" 0 1 2 15
+trap "rm -f *.o $TARGET; exit 1" 0 1 2 15
 
 cat > $TARGET <<!
 /*
@@ -79,7 +77,7 @@ cat > $TARGET <<!
 
 !
 
-for file in src/*$CCCEXT
+for file in src/*.c
 do
 	echo "$ME: checking for \"`grep TEST $file | cut -f3-`\"..."
 	$CC $CFLAGS $file >&- 2>&- && continue
@@ -104,4 +102,4 @@ cat >> $TARGET <<!
 #endif	/* platform_H */
 !
 
-trap "x=$?; rm -f *$CCOEXT; exit $x" 0 1 2 15
+trap "x=$?; rm -f *.o; exit $x" 0 1 2 15
