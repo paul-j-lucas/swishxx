@@ -43,7 +43,7 @@ int const	Word_Hex_Max_Size		= 4;
 //		digits i.e., ASCII hex data, can be before it is discarded.
 //		Note that the word "cafe" is a legitimate English word
 //		composed entirely of hexedecimal digits.  This parameter is
-//		used only in extract.c.
+//		used only by extract(1) in extract.c.
 
 // I don't think there is a word in English that has more than...
 
@@ -103,9 +103,14 @@ int const	Title_Max_Size			= 200;
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
 
+char const	Config_Filename_Default[]	= "swish++.conf";
+//		Default name of the configuration file; this can be
+//		overridden on the command line.
+
 int const	Entity_Max_Size			= 7;
 //		The maximum size of an entity reference, e.g., "&eacute;" NOT
-//		counting the leading '&' or the trailing ';'.
+//		counting the leading '&' or the trailing ';'.  You should have
+//		no reason to change this.
 
 int const	Files_Reserve_Default		= 1000;
 //		Default maximum number of files to reserve space for; see
@@ -113,12 +118,14 @@ int const	Files_Reserve_Default		= 1000;
 //		be overridden on the command line.
 
 int const	Fork_Attempts			= 5;
-//		Number of times to try to fork before giving up.
+//		Number of times to try to fork before giving up.  This
+//		parameter is used only by extract(1) in filter.c.
 
 int const	Fork_Sleep			= 5;
-//		Number of seconds to sleep before retrying to fork.
+//		Number of seconds to sleep before retrying to fork.  This
+//		parameter is used only by extract(1) in filter.c.
 
-char const	Index_Filename_Default[]	= "the.index";
+char const	Index_Filename_Default[]	= "swish++.index";
 //		Default name of the index file generated/searched; can be
 //		overridden on the command line.
 
@@ -126,9 +133,15 @@ int const	Results_Max_Default		= 100;
 //		Default maximum number of search results; this can be
 //		overridden on the command line.
 
-char const	Tmp_Dir[]			= "/tmp/";
-//		The directory to use for temporary files.  Note that it MUST
-//		have a trailing '/'.
+char const	Temp_Directory_Default[]	= "/tmp";
+//		Default directory to use for temporary files during indexing.
+//		If your OS mounts swap space on /tmp, as indexing progresses
+//		and more files get created in /tmp, you will have less swap
+//		space, indexing will get slower, and you may run out of memory.
+//		If this is the case, you can either change this default here
+//		for all users or override it on the command line to use a
+//		directory on a real filesystem, i.e., one on a physical disk.
+//		The directory must exist.
 
 int const	Word_Threshold			= 250000;
 //		The word count past which partial indicies are generated and
