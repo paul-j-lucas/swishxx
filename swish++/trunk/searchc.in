@@ -22,7 +22,7 @@
 
 $ConfigFile_Default = 'swish++.conf';
 $ResultsMax_Default = 100;
-$SocketFile_Default = '/tmp/swish++.socket';
+$SocketFile_Default = '/tmp/search.socket';
 
 ########## You should't have to change anything below this line. ##############
 
