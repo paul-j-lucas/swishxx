@@ -83,6 +83,11 @@ endif
 #		Library to link against for POSIX threads if building with the
 #		search daemon ability.
 
+ifdef LINUX
+SEARCH_DAEMON+=	-D_XOPEN_SOURCE=500
+#		Linux needs this to define more POSIX thread functions.
+endif
+
 ifdef SOLARIS
 SOCKET_LIB:=	-lsocket -lnsl
 #		Library to link against for sockets if building with the search
@@ -148,6 +153,7 @@ OPTIM:=		-O2
 
 CCFLAGS:=	-I. $(MOD_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
+
 ifeq ($(findstring g++,$(CC)),g++)
 CCFLAGS+=	-fno-exceptions
 #		Since SWISH++ doesn't use exceptions, turn off code generation
