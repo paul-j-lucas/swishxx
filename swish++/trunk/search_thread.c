@@ -140,6 +140,9 @@ bool	timed_read_line( int fd, char *buf, int buf_size, int seconds );
 		// port from a socket lingering in TIME-WAIT on a client that
 		// was too dumb to give us a valid request in the first place.
 		//
+		// Note: this is not implemented in in Linux 2.2.x kernels so
+		// the normal four-packet sequence is done instead.
+		//
 		linger li;
 		li.l_onoff  = 1;
 		li.l_linger = 0;
