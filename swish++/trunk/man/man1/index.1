@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "December 19, 2001" "SWISH++"
+.TH \f3index\f1 1 "February 5, 2002" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -1108,6 +1108,19 @@ default configuration file name
 \f(CWswish++.index\f1
 default index file name
 .PD
+.SH ENVIRONMENT
+.TP 10
+\f(CWTMPDIR\f1
+If set,
+the default path of the directory to use for temporary files.
+The directory must exist.
+This is superseded by either the
+.B \-T
+or
+.B \-\-temp-dir
+option or the
+.B TempDirectory
+variable.
 .SH SEE ALSO
 .BR extract (1),
 .BR find (1),
