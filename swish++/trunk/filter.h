@@ -65,7 +65,7 @@ private:
 
 inline filter::~filter() {
 	if ( !target_file_name_.empty() )
-		std::unlink( target_file_name_.c_str() );
+		::unlink( target_file_name_.c_str() );
 }
 
 #endif	/* filter_H */
