@@ -29,6 +29,10 @@
 // local
 #include "fake_ansi.h"			/* for std */
 
+#ifndef	PJL_NO_NAMESPACES
+namespace std {
+#endif
+
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -88,5 +92,9 @@
 private:
 	int const n_;
 };
+
+#ifndef	PJL_NO_NAMESPACES
+}
+#endif
 
 #endif	/* less_H */
