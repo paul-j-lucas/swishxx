@@ -633,17 +633,30 @@ no_put_back:
 	// For each search result, see if it's in each and-result: if it is,
 	// sum the ranks; if it isn't, delete the result.
 	//
-	TRANSFORM_EACH( search_results, results, result ) {
+	for ( search_results::iterator
+		result = results.begin(); result != results.end();
+	) {
+		bool increment_result_iterator = true;
 		FOR_EACH( and_results_type, and_results, and_result ) {
 			search_results::const_iterator const
 				found = (*and_result)->find( result->first );
-			if ( found != (*and_result)->end() )
+			if ( found != (*and_result)->end() ) {
 				result->second += found->second;
-			else {
-				results.erase( result );
-				break;
+				continue;
 			}
+			//
+			// Erasing an element at a given iterator invalidates
+			// the iterator: copy the iterator to a temporary and
+			// increment the real iterator off of the element to be
+			// erased so the real iterator won't be invalidated.
+			//
+			search_results::iterator const erase_me = result++;
+			results.erase( erase_me );
+			increment_result_iterator = false;
+			break;
 		}
+		if ( increment_result_iterator )
+			++result;
 	}
 
 	//
