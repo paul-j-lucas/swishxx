@@ -2,6 +2,31 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
+5.4.1
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The command-line option spec. building introduced in version 5.4 was broken.
+
+  (This bug fix shall be know as bug fix COS.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* indexer.c
+
+	1. In indexer::all_mods_options(), s/++option_count/*c++ = *s/
+	   for buf fix COS.
+
+* version.h
+
+	1. Updated version to "5.4.1".
+
+
+*******************************************************************************
 5.4
 *******************************************************************************
 
