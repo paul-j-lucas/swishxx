@@ -96,7 +96,7 @@ namespace PJL {
 //
 // PARAMETERS
 //
-//	os	The option_stream to extract options from
+//	os	The option_stream to extract options from.
 //
 //	o	The option to deposit into.
 //
