@@ -62,13 +62,19 @@ MOD_LIST:=	html latex mail man rtf
 #		then you also need to build-in "rtf".
 
 ifeq ($(findstring mail,$(MOD_LIST)),mail)
-DECODER_LIST:=	base64 quoted_printable
-#		The indexing decoders you want built into index(1) when
-#		MOD_LIST contains mail.
+CHARSET_LIST:=	utf7 utf8
+#		The character sets you want index(1) to be able to decode only
+#		when MOD_LIST contains "mail".  Note that "us-ascii" and
+#		"iso8859-1" are implicitly included.
+
+ENCODING_LIST:=	base64 quoted_printable
+#		The Content-Transfer-Encodings you want index(1) to be able to
+#		decode only when MOD_LIST contains "mail".
 endif
 
 # Leave the following lines alone!
-DECODER_DEFS:=	$(foreach decoder,$(DECODER_LIST),-DDECODE_$(decoder))
+CHARSET_DEFS:=	$(foreach charset,$(CHARSET_LIST),-DCHARSET_$(charset))
+ENCODING_DEFS:=	$(foreach encoding,$(ENCODING_LIST),-DENCODING_$(encoding))
 MOD_DEFS:=	$(foreach mod,$(MOD_LIST),-DMOD_$(mod))
 
 ifndef WIN32
@@ -152,7 +158,7 @@ STRIP:=		strip
 #
 ###############################################################################
 
-CC:=		/usr/local/bin/g++
+CC:=		g++
 #		The C++ compiler you are using; usually "CC" or "g++".
 
 #DEBUG:=		true
@@ -178,7 +184,8 @@ OPTIM+=		-fomit-frame-pointer
 endif
 endif # DEBUG
 
-CCFLAGS:=	-I. $(DECODER_DEFS) $(MOD_DEFS) $(SEARCH_DAEMON) $(OS) $(OPTIM)
+CCFLAGS:=	-I. $(CHARSET_DEFS) $(ENCODING_DEFS) $(MOD_DEFS) \
+		$(SEARCH_DAEMON) $(OS) $(OPTIM)
 #		Flags for the C++ compiler.
 
 ifeq ($(findstring g++,$(CC)),g++)
