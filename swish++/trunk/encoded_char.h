@@ -254,7 +254,7 @@ inline void encoded_char_range::end_pos( const_iterator const &i ) {
 //
 // PARAMETERS
 //
-//	ecr		The encoded_char_rage to iterate over.
+//	ecr		The encoded_char_range to iterate over.
 //
 //	start_pos	A pointer marking the position where the this pointer
 //			is to start.
