@@ -22,6 +22,8 @@
 #ifdef	MOD_id3
 
 // standard
+#include <cstdlib>
+#include <cstring>
 #include <map>
 #ifdef	DEBUG_id3v2
 #include <iostream>
@@ -38,6 +40,7 @@
 #include "AssociateMeta.h"
 #include "charsets/charsets.h"
 #include "encoded_char.h"
+#include "id3v1.h"
 #include "id3v2.h"
 #include "indexer.h"
 #include "less.h"
@@ -56,6 +59,33 @@ static unsigned int	parse_int( char const*&, int );
 static text_encoding	parse_text_encoding( char const*&, int = 0 );
 static void		resynchronize( char*, int, char const*, unsigned int* );
 static unsigned int	unsynchsafe( char const*&, int = 4 );
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	inline id3v1_genre const *find_genre( char const *s, int len )
+//
+// DESCRIPTION
+//
+//	Finds the text label for a genre given a string containing its ID.
+//
+// PARAMETERS
+//
+//	s	The pointer to the string.
+//
+//	len	The length of 's'.
+//
+// RETURN VALUE
+//
+//	Returns said text label or null if the string doesn't represent an
+//	integer ID or the ID is out of range.
+//
+//*****************************************************************************
+{
+	return	::strspn( s, "0123456789" ) < len ?
+		0 : find_genre( ::atoi( s ) );
+}
 
 //*****************************************************************************
 //
@@ -91,7 +121,7 @@ static unsigned int	unsynchsafe( char const*&, int = 4 );
 		"sylt",	&id3v2_frame::parse_sylt, // Synchronised lyrics
 		"talb",	&id3v2_frame::parse_text, // Album title
 		"tcom",	&id3v2_frame::parse_text, // Composer
-		"tcon",	&id3v2_frame::parse_text, // Content type (genre)
+		"tcon",	&id3v2_frame::parse_tcon, // Content type (genre)
 		"tcop",	&id3v2_frame::parse_text, // Copyright message
 		"tenc",	&id3v2_frame::parse_text, // Encoded by
 		"text",	&id3v2_frame::parse_text, // Lyricist
@@ -126,7 +156,7 @@ static unsigned int	unsynchsafe( char const*&, int = 4 );
 		"slt",	&id3v2_frame::parse_sylt, // becomes SYLT
 		"tal",	&id3v2_frame::parse_text, // becomes TALB
 		"tcm",	&id3v2_frame::parse_text, // becomes TCOM
-		"tco",	&id3v2_frame::parse_text, // becomes TCON
+		"tco",	&id3v2_frame::parse_tcon, // becomes TCON
 		"tcr",	&id3v2_frame::parse_text, // becomes TCOP
 		"ten",	&id3v2_frame::parse_text, // becomes TENC
 		"toa",	&id3v2_frame::parse_text, // becomes TOPE
@@ -380,6 +410,97 @@ static unsigned int	unsynchsafe( char const*&, int = 4 );
 
 	encoded_char_range const e( content_begin_, content_end_, encoding );
 	indexer::text_indexer()->index_words( e, meta_id_ );
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+	void id3v2_frame::parse_tcon()
+//
+// DESCRIPTION
+//
+//	Parse a TCON (genre) ID3v2 frame.  In ID3v2.x, genres are either
+//	strings or references to ID3v1.x numeric IDs.
+//
+//	In ID3v2.3, an ID3v1.x reference is of the form "(n)" where 'n' is one
+//	or more decimal digits.  It can be optionally followed by a
+//	"refinement," e.g., "(4)Eurodisco".  Multiple references can be given,
+//	e.g., "(n)(n)".
+//
+//	In ID3v2.4, an ID3v1.x reference is of the form "n" (without
+//	parentheses) where 'n' is one or more decimal digits.  Multiple
+//	genres/references are null separated.
+//
+// SEE ALSO
+//
+//	Martin Nilsson.  "4.2. Text information frames," ID3 tag version 2.4.0
+//	- Native Frames, November 2000.
+//		http://www.id3.org/
+//
+//*****************************************************************************
+{
+	text_encoding const encoding = parse_text_encoding( content_begin_ );
+	if ( encoding == UNKNOWN_CHARSET )
+		return;
+
+	char	word[ Word_Hard_Max_Size + 1 ];
+	bool	in_word = false;
+	int	len;
+
+	char const *c = content_begin_;
+	while ( c != content_end_ ) {
+		register char const ch = *c++;
+
+		////////// Collect a word /////////////////////////////////////
+
+		if ( is_word_char( ch ) ) {
+			if ( !in_word ) {
+				// start a new word
+				word[ 0 ] = ch;
+				len = 1;
+				in_word = true;
+				continue;
+			}
+			if ( len < Word_Hard_Max_Size ) {
+				// continue same word
+				word[ len++ ] = ch;
+				continue;
+			}
+			in_word = false;	// too big: skip chars
+			while ( c != content_end_ && is_word_char( *c++ ) ) ;
+			continue;
+		}
+
+		if ( in_word ) {
+			//
+			// We ran into a non-word character, so index the word
+			// up to, but not including, it.  But first see if the
+			// word is a number, i.e., an ID3v1.x genre ID: if so,
+			// look up the genre string and index that instead.
+			//
+			in_word = false;
+			word[ len ] = '\0';
+			id3v1_genre const *const g = find_genre( word, len );
+			if ( g ) {
+				::strcpy( word, g->name );
+				len = g->length;
+			}
+			indexer::index_word( word, len, meta_id_ );
+		}
+	}
+	if ( in_word ) {
+		//
+		// We ran into 'end' while still accumulating characters into a
+		// word, so just index what we've got.
+		//
+		word[ len ] = '\0';
+		if ( id3v1_genre const *const g = find_genre( word, len ) ) {
+			::strcpy( word, g->name );
+			len = g->length;
+		}
+		indexer::index_word( word, len, meta_id_ );
+	}
 }
 
 //*****************************************************************************
