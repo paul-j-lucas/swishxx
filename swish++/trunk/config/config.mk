@@ -91,7 +91,7 @@ CCLOPT=		-L
 INSTALL=	$(ROOT)/install-sh
 #		Install command; usually "$(ROOT)/install-sh".
 
-I_ROOT=		/home/www/swish++
+I_ROOT=		/home/www/packages/swish++
 #		The top-level directory of where SWISH++ will be installed.
 
 I_BIN=		$(I_ROOT)/bin
