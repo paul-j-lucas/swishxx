@@ -64,7 +64,7 @@
 	static int		current_index()	{ return list_.size() - 1; }
 	static file_info&	current_file()	{ return *list_.back(); }
 
-	static ostream&		out( ostream&, char const* );
+	static std::ostream&	out( std::ostream&, char const* );
 	static file_info*	parse( char const* );
 };
 

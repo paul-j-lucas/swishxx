@@ -65,7 +65,7 @@ public:
 				meta_ids_.insert( meta_id );
 		}
 
-		void	write_meta_ids( ostream& ) const;
+		void	write_meta_ids( std::ostream& ) const;
 	};
 
 	typedef std::list< file > file_list;

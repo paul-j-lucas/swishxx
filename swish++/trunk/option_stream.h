@@ -122,7 +122,9 @@ public:
 #endif
 	};
 
-	option_stream( int argc, char *argv[], spec const[], ostream& = cerr );
+	option_stream(
+		int argc, char *argv[], spec const[], std::ostream& = cerr
+	);
 
 	int	shift() const		{ return index_; }
 	operator bool() const 		{ return !end_; }
@@ -171,7 +173,7 @@ private:
 	int		argc_;
 	char**		argv_;
 	spec const*	specs_;
-	ostream&	err_;
+	std::ostream&	err_;
 
 	int		index_;
 	char*		next_c_;
