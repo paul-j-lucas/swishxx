@@ -32,6 +32,7 @@
 #include "meta_map.h"
 #include "platform.h"
 #include "stop_words.h"
+#include "StoreWordPositions.h"
 #include "util.h"
 #include "word_info.h"
 #include "word_util.h"
@@ -43,6 +44,9 @@ using namespace std;
 
 extern unsigned long	num_indexed_words;
 extern unsigned long	num_total_words;
+#ifdef	FEATURE_word_pos
+extern int		word_pos;
+#endif
 extern word_map		words;
 
 int			indexer::suspend_indexing_count_ = 0;
@@ -68,7 +72,7 @@ indexer*		indexer::text_indexer_ = 0;
 	if ( i ) {
 		internal_error
 			<< "indexer::indexer(\"" << mod_name << "\"): "
-			   "registered more than once\n" << report_error;
+			   "registered more than once" << report_error;
 	}
 	i = this;
 }
@@ -77,7 +81,7 @@ indexer*		indexer::text_indexer_ = 0;
 //
 // SYNOPSIS
 //
-	/* static */ PJL::option_stream::spec*
+	/* static */ option_stream::spec*
 	indexer::all_mods_options( option_stream::spec const *main_spec )
 //
 // DESCRIPTION
@@ -313,6 +317,9 @@ indexer*		indexer::text_indexer_ = 0;
 //*****************************************************************************
 {
 	++num_total_words;
+#ifdef	FEATURE_word_pos
+	++word_pos;
+#endif
 
 	if ( len < Word_Hard_Min_Size )
 		return;
@@ -371,22 +378,28 @@ indexer*		indexer::text_indexer_ = 0;
 		//
 		// We've seen this word before: determine whether we've seen it
 		// before in THIS file, and, if so, increment the number of
-		// occurrences and associate with the current meta name, if
-		// any.
+		// occurrences.
 		//
 		word_info::file &last_file = wi.files_.back();
 		if ( last_file.index_ == file_info::current_index() ) {
 			++last_file.occurrences_;
-			if ( meta_id != No_Meta_ID )
-				last_file.meta_ids_.insert( meta_id );
-			return;
+			goto skip_push_back;
 		}
 	}
 
+	//
 	// First time word occurred in current file.
-	wi.files_.push_back(
-		word_info::file( file_info::current_index(), meta_id )
-	);
+	//
+	wi.files_.push_back( word_info::file( file_info::current_index() ) );
+
+skip_push_back:
+	word_info::file &last_file = wi.files_.back();
+	if ( meta_id != No_Meta_ID )
+		last_file.meta_ids_.insert( meta_id );
+#ifdef	FEATURE_word_pos
+	if ( store_word_positions )
+		last_file.add_word_pos( word_pos );
+#endif
 }
 
 //*****************************************************************************
