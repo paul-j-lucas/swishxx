@@ -34,6 +34,7 @@ enum {
 	Exit_No_Open_Temp		= 10,
 	Exit_No_Write_Index		= 11,
 	Exit_No_Write_Temp		= 12,
+	Exit_Not_Root			= 13,
 
 	// unique to extract
 	Exit_No_Such_File		= 20,
