@@ -23,14 +23,16 @@
 #define	bcd_H
 
 // standard
-#include <iomanip>
 #include <iostream>
+
+// local
+#include "omanip.h"
 
 std::ostream&	bcd( std::ostream&, unsigned );
 int		parse_bcd( unsigned char const*& );
 
-inline omanip< unsigned > bcd( unsigned n ) {
-	return omanip< unsigned >( bcd, n );
+inline PJL::omanip< unsigned > bcd( unsigned n ) {
+	return PJL::omanip< unsigned >( bcd, n );
 }
 
 #endif	/* bcd_H */
