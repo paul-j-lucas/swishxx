@@ -43,7 +43,7 @@
 {
 public:
 	TempDirectory() :
-		conf<char const*>( "TempDirectory", Temp_Directory_Default ) { }
+		conf<char const*>( "TempDirectory", TempDirectory_Default ) { }
 
 	TempDirectory& operator=( char const *s ) {
 		conf<char const*>::operator=( s );

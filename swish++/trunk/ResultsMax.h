@@ -42,7 +42,7 @@
 //*****************************************************************************
 {
 public:
-	ResultsMax() : conf<int>( "ResultsMax", Results_Max_Default, 1 ) { }
+	ResultsMax() : conf<int>( "ResultsMax", ResultsMax_Default, 1 ) { }
 
 	ResultsMax& operator=( int i ) {
 		conf<int>::operator=( i );

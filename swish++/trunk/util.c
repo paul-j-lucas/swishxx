@@ -319,7 +319,7 @@ struct stat	stat_buf;			// someplace to do a stat(2) in
 {
 	file_vector<char> conf_file( file_name );
 	if ( !conf_file ) {
-		if ( !::strcmp( file_name, Config_Filename_Default ) )
+		if ( !::strcmp( file_name, ConfigFile_Default ) )
 			return;
 		ERROR	<< "could not read configuration from \""
 			<< file_name << '"' << endl;

@@ -42,7 +42,7 @@
 //*****************************************************************************
 {
 public:
-	TitleLines() : conf<int>( "TitleLines", Title_Lines_Default ) { }
+	TitleLines() : conf<int>( "TitleLines", TitleLines_Default ) { }
 
 	TitleLines& operator=( int i ) {
 		conf<int>::operator=( i );

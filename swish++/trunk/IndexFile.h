@@ -42,7 +42,8 @@
 //*****************************************************************************
 {
 public:
-	IndexFile() : conf<char const*>( "IndexFile", IndexFile_Default ) { }
+	IndexFile() :
+		conf<char const*>( "IndexFile", IndexFile_Default ) { }
 
 	IndexFile& operator=( char const *s ) {
 		conf<char const*>::operator=( s );

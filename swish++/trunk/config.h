@@ -93,7 +93,7 @@ char const	Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 ////////// HTML file parameters ///////////////////////////////////////////////
 
-int const	Title_Lines_Default		= 12;
+int const	TitleLines_Default		= 12;
 //		Specifies the maximum number of lines into a file to look at
 //		for HTML <TITLE> tags; this can be overridden either in a
 //		config. file or on the command line.
@@ -103,7 +103,7 @@ int const	Title_Max_Size			= 200;
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
 
-char const	Config_Filename_Default[]	= "swish++.conf";
+char const	ConfigFile_Default[]		= "swish++.conf";
 //		Default name of the configuration file; this can be
 //		overridden on the command line.
 
@@ -112,7 +112,7 @@ int const	Entity_Max_Size			= 7;
 //		counting the leading '&' or the trailing ';'.  You should have
 //		no reason to change this.
 
-int const	Files_Reserve_Default		= 1000;
+int const	FilesReserve_Default		= 1000;
 //		Default maximum number of files to reserve space for; see
 //		file_info::operator new() in file_info.c for details.  This can
 //		be overridden either in a config. file or on the command line.
@@ -125,15 +125,15 @@ int const	Fork_Sleep			= 5;
 //		Number of seconds to sleep before retrying to fork.  This
 //		parameter is used only by extract(1) in filter.c.
 
-char const	Index_Filename_Default[]	= "swish++.index";
+char const	IndexFile_Default[]		= "swish++.index";
 //		Default name of the index file generated/searched; can be
 //		overridden either in a config. file or on the command line.
 
-int const	Results_Max_Default		= 100;
+int const	ResultsMax_Default		= 100;
 //		Default maximum number of search results; this can be
 //		overridden either in a config. file or on the command line.
 
-char const	Temp_Directory_Default[]	= "/tmp";
+char const	TempDirectory_Default[]		= "/tmp";
 //		Default directory to use for temporary files during indexing.
 //		If your OS mounts swap space on /tmp, as indexing progresses
 //		and more files get created in /tmp, you will have less swap

@@ -113,15 +113,15 @@ void		usage();
 
 	/////////// Process command-line options //////////////////////////////
 
-	char const*	config_file_name_arg = Config_Filename_Default;
+	char const*	config_file_name_arg = ConfigFile_Default;
 	bool		dump_stop_words_opt = false;
 #ifndef	PJL_NO_SYMBOLIC_LINKS
 	bool		follow_symbolic_links_opt = false;
 #endif
 	bool		recurse_subdirectories_opt = false;
 	StopWordFile	stop_word_file_name;
-	char*		stop_word_file_name_arg = 0;
-	char*		verbosity_arg = 0;
+	char const*	stop_word_file_name_arg = 0;
+	char const*	verbosity_arg = 0;
 
 	char const opts[] =
 #ifndef	PJL_NO_SYMBOLIC_LINKS
@@ -427,7 +427,7 @@ void usage() {
 	cerr <<	"usage: " << me << " [options] dir ... file ...\n"
 	" options:\n"
 	" --------\n"
-	"  -c config_file  : Name of configuration file [default: " << Config_Filename_Default << "]\n"
+	"  -c config_file  : Name of configuration file [default: " << ConfigFile_Default << "]\n"
 	"  -e ext          : Extension to extract [default: none]\n"
 	"  -E ext          : Extension not to extract [default: none]\n"
 #ifndef	PJL_NO_SYMBOLIC_LINKS
