@@ -218,10 +218,10 @@ int const	WordPercentMax_Default		= 100;
 //		it is discarded as being too frequent; this can be overridden
 //		either in a config. file or on the command line.
 
-#error		You have not set Word_Threshold for your system.
+#error		You have not set WordThreshold_Default for your system.
 #error		Comment out these lines after you have set it.
 
-int const	Word_Threshold			= 250000;
+int const	WordThreshold_Default		= 250000;
 //		The word count past which partial indicies are generated and
 //		merged since all the words are too big to fit into memory at
 //		the same time.  If you index and your machine begins to swap
@@ -230,6 +230,7 @@ int const	Word_Threshold			= 250000;
 //		additional 64MB of RAM you have.  These numbers are for a SPARC
 //		machine running Solaris.  Other machines running other
 //		operating systems use memory differently.  You simply have to
-//		experiment.
+//		experiment.  Only the super-user can increase this either in a
+//		config. file or on the command line.
 
 #endif	/* config_H */
