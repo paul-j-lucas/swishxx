@@ -61,6 +61,8 @@
 	char const*	max_results_arg;
 	int		skip_results_arg;
 	bool		stem_words_opt;
+	char const*	word_file_max_arg;
+	char const*	word_percent_max_arg;
 #ifdef	SEARCH_DAEMON
 	bool		daemon_opt;
 	int		max_threads_arg;
