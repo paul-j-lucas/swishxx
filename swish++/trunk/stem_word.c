@@ -52,7 +52,7 @@ bool	add_e( char const *word );
 bool	ends_with_cvc( char const *word );
 bool	has_vowel( char const *word );
 bool	remove_e( char const *word );
-int	replace_suffix( char *word, rule_list* );
+int	replace_suffix( char *word, rule_list const* );
 int	word_size( char const *word );
 
 //*****************************************************************************
