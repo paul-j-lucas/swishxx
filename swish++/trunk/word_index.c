@@ -20,7 +20,6 @@
 */
 
 // local
-#include "fake_ansi.h"
 #include "util.h"
 #include "word_index.h"
 
