@@ -34,8 +34,12 @@
 using namespace std;
 #endif
 
-#define	SEARCH_RESULTS_DTD_URI \
-	"http://homepage.mac.com/pauljlucas/software/swish/SearchResults.dtd"
+#define	SWISHPP_URI "http://homepage.mac.com/pauljlucas/software/swish"
+
+#define	SEARCH_RESULTS_DTD	"SearchResults.dtd"
+#define	SEARCH_RESULTS_NS_URI	SWISHPP_URI "/SearchResults"
+#define	SEARCH_RESULTS_XSD	"SearchResults.xsd"
+#define	XML_SCHEMA_INSTANCE_URI	"http://www.w3.org/2001/XMLSchema-instance"
 
 extern index_segment directories;
 
@@ -94,10 +98,14 @@ extern index_segment directories;
 //
 //*****************************************************************************
 {
-	out_ <<	"<!DOCTYPE SearchResults SYSTEM\n"
-		" \"" SEARCH_RESULTS_DTD_URI "\">\n"
-		"<?xml version=\"1.0\" encoding=\"us-ascii\"?>\n"
-		"<SearchResults>\n";
+	out_ <<	"<?xml version=\"1.0\" encoding=\"us-ascii\"?>\n"
+		"<!DOCTYPE SearchResults SYSTEM\n"
+		" \"" SWISHPP_URI "/" SEARCH_RESULTS_DTD "\">\n"
+		"<SearchResults\n"
+		"  xmlns=\"" SEARCH_RESULTS_NS_URI "\"\n"
+		"  xmlns:xsi=\"" XML_SCHEMA_INSTANCE_URI "\"\n"
+		"  xsi:schemaLocation=\"" SEARCH_RESULTS_NS_URI
+		" " SEARCH_RESULTS_XSD "\">\n";
 
 	if ( !stop_words.empty() ) {
 		out_ << "  <IgnoredList>\n";
