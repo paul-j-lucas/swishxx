@@ -82,6 +82,7 @@ S_SOURCES:=	bcd.c \
 		mmap_file.c \
 		conf_var.c \
 		conf_bool.c \
+		conf_enum.c \
 		conf_int.c \
 		conf_string.c \
 		index_segment.c \
@@ -102,8 +103,7 @@ ifdef SEARCH_DAEMON
 ##
 # See the comment in config/config.mk regarding the search daemon ability.
 ##
-S_SOURCES+=	conf_enum.c \
-		fdbuf.c \
+S_SOURCES+=	fdbuf.c \
 		thread_pool.c \
 		search_thread.c \
 		search_daemon.c \
