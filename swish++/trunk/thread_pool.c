@@ -23,7 +23,7 @@
 
 // standard
 #include <cstdlib>			/* for exit(2) */
-#include <ctime>
+#include <time.h>
 #ifdef	DEBUG_threads
 #include <iostream>
 #endif
@@ -351,7 +351,7 @@ pthread_key_t		thread_pool::thread::thread_obj_key_;
 // SYNOPSIS
 //
 	thread_pool::thread::thread(
-		thread_pool &p, start_function_type start_func
+		thread_pool &p, thread_start_function_type start_func
 	)
 //
 // DESCRIPTION
