@@ -1,8 +1,8 @@
 /*
-**	socklen.c
+**	socklen_int.c
 **
-**	TEST	socket length type
-**	DEFINE	PJL_SOCKLEN_NOT_INT
+**	TEST	socket length type is int
+**	PASS	PJL_SOCKLEN_TYPE int
 */
 
 #include <sys/socket.h>
