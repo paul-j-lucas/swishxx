@@ -186,7 +186,7 @@ int const	ResultsMax_Default		= 100;
 //		overridden either in a config. file or on the command line.
 
 #error		You have not set TempDirectory_Default for your system.
-#error		Delete these lines after you have set it.
+#error		Comment out these lines after you have set it.
 
 char const	TempDirectory_Default[]		= "/tmp";
 //		Default directory to use for temporary files during indexing.
@@ -205,7 +205,7 @@ int const	WordPercentMax_Default		= 100;
 //		either in a config. file or on the command line.
 
 #error		You have not set Word_Threshold for your system.
-#error		Delete these lines after you have set it.
+#error		Comment out these lines after you have set it.
 
 int const	Word_Threshold			= 250000;
 //		The word count past which partial indicies are generated and
