@@ -53,7 +53,7 @@
 //*****************************************************************************
 {
 public:
-	HTML_indexer();
+	HTML_indexer() : indexer( "HTML" ) { }
 
 	virtual char const*	find_title( PJL::mmap_file const& ) const;
 	virtual void		index_words(

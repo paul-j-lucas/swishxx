@@ -55,22 +55,6 @@ bool	tag_cmp( encoded_char_range::const_iterator &pos, char const *tag );
 //
 // SYNOPSIS
 //
-	HTML_indexer::HTML_indexer()
-//
-// DESCRIPTION
-//
-//	Construct an HTML indexer.
-//
-//*****************************************************************************
-	: indexer( "HTML" )
-{
-	conf_var::register_var( "excludeclass" );
-}
-
-//*****************************************************************************
-//
-// SYNOPSIS
-//
 	bool HTML_indexer::claims_option( option_stream::option const &opt )
 //
 // DESCRIPTION
