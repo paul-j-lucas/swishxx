@@ -18,8 +18,8 @@ SWISH++ has the following software as prerequisites:
 
 	http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/download.html
 
-3. Perl 5 (or later), but only if you intend on using either httpindex or
-   WWW.pm.  A free binary distribution is available from:
+3. Perl 5 (or later), but only if you intend on using either httpindex,
+   searchc, or WWW.pm.  A free binary distribution is available from:
 
 	http://www.activestate.com/ActivePerl/
 
@@ -33,6 +33,11 @@ SWISH++ has the following software as prerequisites:
 Building SWISH++ for Microsoft Windows 95/98/NT
 ===============================================================================
 
+	Note: the multi-threaded daemon server feature of search(1) is
+	currently NOT supported under Windows, nor will it be until
+	somebody familiar with multi-threaded programming under Windows
+	volunteers to port it.
+
 1. Edit the "config.h" file to your liking.  This file controls how the
    software runs.
 
@@ -41,8 +46,8 @@ Building SWISH++ for Microsoft Windows 95/98/NT
 3. Go to the "config" directory and edit the "config.mk" file as necessary.
    This file controls how the software is compiled.
 
-4. Go back to the top-level directory and type "make".  If everything works
-   out, the software will be built.
+4. Go back to the top-level directory and type "make -f Makefile.win32".  If
+   everything works out, the software will be built.
 
 
 ===============================================================================
