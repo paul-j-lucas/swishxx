@@ -51,8 +51,8 @@ namespace PJL {
 //*****************************************************************************
 {
 public:
-	explicit auto_vec( T *p = 0 ) : p_( p ) { }
-	~auto_vec() { delete[] p_; }
+	explicit auto_vec( T *p = 0 ) : p_( p )		{ }
+	~auto_vec()					{ delete[] p_; }
 
 	auto_vec<T>& operator=( T *p ) {
 		delete[] p_;
@@ -60,9 +60,14 @@ public:
 		return *this;
 	}
 
-	T& operator*() const			{ return *p_; }
-	T& operator[]( int i ) const		{ return p_[ i ]; }
-	   operator T*() const			{ return p_; }
+	T&		operator*()			{ return *p_; }
+	T const&	operator*() const		{ return *p_; }
+
+	T&		operator[]( int i )		{ return p_[ i ]; }
+	T const&	operator[]( int i ) const	{ return p_[ i ]; }
+
+			operator T*()			{ return p_; }
+			operator T const*() const	{ return p_; }
 private:
 	T *p_;
 
