@@ -68,7 +68,7 @@ char const	Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
 		// SWISH-E, ';' does not need to be here to recognize and
 		// convert character entity references.
 
-#define		OPTIMIZE_WORD_CHARS 1
+#define		OPTIMIZE_WORD_CHARS		1
 		// If you are using the default set of characters, that is the
 		// alphanumerics and "&'-_" characters, then having this macro
 		// set to 1 will optimize the is_word_char() function yielding
@@ -81,14 +81,14 @@ char const	Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 		// Characters that may begin a word; should be a subset of the
 		// above.
 
-#define		OPTIMIZE_WORD_BEGIN_CHARS 1
+#define		OPTIMIZE_WORD_BEGIN_CHARS	1
 		// Same deal as with OPTIMIZE_WORD_CHARS.
 
 char const	Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 		// Characters that may end a word; usually the same as the
 		// above.
 
-#define		OPTIMIZE_WORD_END_CHARS 1
+#define		OPTIMIZE_WORD_END_CHARS		1
 		// Same deal as with OPTIMIZE_WORD_CHARS.
 
 ////////// HTML file parameters ///////////////////////////////////////////////
@@ -99,7 +99,7 @@ int const	TitleLines_Default		= 12;
 //		config. file or on the command line.
 
 int const	Title_Max_Size			= 200;
-//		Maximum length of a title.
+//		Maximum length of a title between <TITLE>...</TITLE>.
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
 
@@ -119,7 +119,7 @@ int const	FilesReserve_Default		= 1000;
 
 int const	Fork_Attempts			= 5;
 //		Number of times to try to fork before giving up.  This
-//		parameter is used only by extract(1) in filter.c.
+//		parameter is used only in filter.c.
 
 int const	Fork_Sleep			= 5;
 //		Number of seconds to sleep before retrying to fork.  This
