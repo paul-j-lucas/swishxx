@@ -23,10 +23,11 @@
 #define	file_list_H
 
 // standard
-#include <cstddef>				/* for ptrdiff_t */
+#include <cstddef>			/* for ptrdiff_t */
 #include <iterator>
 
 // local
+#include "fake_ansi.h"			/* for iterator */
 #include "index_segment.h"
 #include "word_info.h"
 
@@ -58,9 +59,7 @@ public:
 	typedef ptrdiff_t difference_type;
 
 	typedef word_info::file value_type;
-	typedef value_type* pointer;
 	typedef value_type const* const_pointer;
-	typedef value_type& reference;
 	typedef value_type const& const_reference;
 
 	////////// constructors ///////////////////////////////////////////////
@@ -82,7 +81,7 @@ public:
 	friend class const_iterator;
 
 	class const_iterator :
-		public forward_iterator< value_type, difference_type > {
+		public std::iterator< std::forward_iterator_tag, value_type > {
 	public:
 		const_iterator() { }
 
