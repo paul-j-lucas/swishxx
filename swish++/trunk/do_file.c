@@ -192,6 +192,7 @@
 					<< extract_extension << " file)\n";
 			return;
 		}
+		out = &extracted_file;
 	}
 #endif
 
