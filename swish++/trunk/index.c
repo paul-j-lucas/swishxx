@@ -69,8 +69,9 @@ char const*	me;				// executable name
 meta_map	meta_names;
 int		num_files_reserve = Files_Reserve_Default;
 int		num_title_lines = Title_Lines_Default;
-long		num_total_words;
-long		num_unique_words;
+long		num_total_words;		// over all files indexed
+long		num_indexed_words;		// over all files indexed
+long		num_unique_words;		// over all files indexed
 int		num_tmp_files;
 bool		recurse_subdirectories = true;
 int		verbosity;			// how much to print
@@ -288,6 +289,7 @@ void		write_word_index( ostream&, off_t* );
 			<< " elapsed time\n  "
 			<< file_info::set_.size() << " files\n  "
 			<< num_total_words << " words, "
+			<< num_indexed_words << " indexed, "
 			<< num_unique_words << " unique\n\n"
 			<< setfill(' ');
 	}
@@ -427,6 +429,8 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
+	++num_total_words;
+
 	if ( len < Word_Hard_Min_Size )
 		return;
 
@@ -462,7 +466,7 @@ void		write_word_index( ostream&, off_t* );
 	////////// Add the word ///////////////////////////////////////////////
 
 	++file_info::current_file().num_words_;
-	++num_total_words;
+	++num_indexed_words;
 
 	word_info &wi = words[ lower_word ];
 	++wi.occurrences_;
@@ -496,8 +500,7 @@ void		write_word_index( ostream&, off_t* );
 	void index_words(
 		register file_vector<char>::const_iterator c,
 		register file_vector<char>::const_iterator end,
-		bool is_html,
-		int meta_id
+		bool is_html, int meta_id
 	)
 //
 // DESCRIPTION
@@ -740,9 +743,11 @@ void		write_word_index( ostream&, off_t* );
 	long const num_stop_words = stop_words->size();
 	long const num_meta_names = meta_names.size();
 	off_t *const word_offset = new off_t[ num_unique_words ];
-	off_t *const stop_word_offset = new off_t[ num_stop_words ];
+	off_t *const stop_word_offset = num_stop_words ?
+		new off_t[ num_stop_words ] : 0;
 	off_t *const file_offset = new off_t[ num_files ];
-	off_t *const meta_name_offset = new off_t[ num_meta_names ];
+	off_t *const meta_name_offset = num_meta_names ?
+		new off_t[ num_meta_names ] : 0;
 
 	o.write( &num_unique_words, sizeof( num_unique_words ) );
 	streampos const word_offset_pos = o.tellp();
@@ -750,7 +755,10 @@ void		write_word_index( ostream&, off_t* );
 
 	o.write( &num_stop_words, sizeof( num_stop_words ) );
 	streampos const stop_word_offset_pos = o.tellp();
-	o.write( stop_word_offset, num_stop_words * sizeof( stop_word_offset[0] ) );
+	if ( num_stop_words )
+		o.write( stop_word_offset,
+			num_stop_words * sizeof( stop_word_offset[0] )
+		);
 
 	o.write( &num_files, sizeof( num_files ) );
 	streampos const file_offset_pos = o.tellp();
@@ -758,7 +766,10 @@ void		write_word_index( ostream&, off_t* );
 
 	o.write( &num_meta_names, sizeof( num_meta_names ) );
 	streampos const meta_name_offset_pos = o.tellp();
-	o.write( meta_name_offset, num_meta_names * sizeof( meta_name_offset[0] ) );
+	if ( num_meta_names )
+		o.write( meta_name_offset,
+			num_meta_names * sizeof( meta_name_offset[0] )
+		);
 
 	////////// Merge the indicies /////////////////////////////////////////
 
@@ -886,12 +897,20 @@ void		write_word_index( ostream&, off_t* );
 
 	o.seekp( word_offset_pos );
 	o.write( word_offset, num_unique_words * sizeof( word_offset[0] ) );
-	o.seekp( stop_word_offset_pos );
-	o.write( stop_word_offset, num_stop_words * sizeof( stop_word_offset[0] ) );
+	if ( num_stop_words ) {
+		o.seekp( stop_word_offset_pos );
+		o.write( stop_word_offset,
+			num_stop_words * sizeof( stop_word_offset[0] )
+		);
+	}
 	o.seekp( file_offset_pos );
 	o.write( file_offset, num_files * sizeof( file_offset[0] ) );
-	o.seekp( meta_name_offset_pos );
-	o.write( meta_name_offset, num_meta_names * sizeof( meta_name_offset[0] ) );
+	if ( num_meta_names ) {
+		o.seekp( meta_name_offset_pos );
+		o.write( meta_name_offset,
+			num_meta_names * sizeof( meta_name_offset[0] )
+		);
+	}
 
 	delete[] word_offset;
 	delete[] stop_word_offset;
@@ -916,6 +935,9 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
+	if ( words.empty() )
+		return;
+
 	if ( verbosity > 1 )
 		cout <<	"\nRanking index..." << flush;
 
@@ -1124,17 +1146,21 @@ void		write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
+	if ( !( num_unique_words = words.size() ) ) 
+		return;
+
 	if ( verbosity > 1 )
 		cout << "Writing index..." << flush;
 
-	num_unique_words = words.size();
 	long const num_stop_words = stop_words->size();
 	long const num_files = file_info::set_.size();
 	long const num_meta_names = meta_names.size();
 	off_t *const word_offset = new off_t[ num_unique_words ];
-	off_t *const stop_word_offset = new off_t[ num_stop_words ];
+	off_t *const stop_word_offset = num_stop_words ?
+		new off_t[ num_stop_words ] : 0;
 	off_t *const file_offset = new off_t[ num_files ];
-	off_t *const meta_name_offset = new off_t[ num_meta_names ];
+	off_t *const meta_name_offset = num_meta_names ?
+		new off_t[ num_meta_names ] : 0;
 
 	// Write dummy data as a placeholder until the offsets are computed.
 	o.write( &num_unique_words, sizeof( num_unique_words ) );
@@ -1143,7 +1169,10 @@ void		write_word_index( ostream&, off_t* );
 
 	o.write( &num_stop_words, sizeof( num_stop_words ) );
 	streampos const stop_word_offset_pos = o.tellp();
-	o.write( stop_word_offset, num_stop_words * sizeof( stop_word_offset[0] ) );
+	if ( num_stop_words )
+		o.write( stop_word_offset,
+			num_stop_words * sizeof( stop_word_offset[0] )
+		);
 
 	o.write( &num_files, sizeof( num_files ) );
 	streampos const file_offset_pos = o.tellp();
@@ -1151,7 +1180,10 @@ void		write_word_index( ostream&, off_t* );
 
 	o.write( &num_meta_names, sizeof( num_meta_names ) );
 	streampos const meta_name_offset_pos = o.tellp();
-	o.write( meta_name_offset, num_meta_names * sizeof( meta_name_offset[0] ) );
+	if ( num_meta_names )
+		o.write( meta_name_offset,
+			num_meta_names * sizeof( meta_name_offset[0] )
+		);
 
 	write_word_index( o, word_offset );
 	write_stop_word_index( o, stop_word_offset );
@@ -1161,12 +1193,20 @@ void		write_word_index( ostream&, off_t* );
 	// Go back and write the computed offsets.
 	o.seekp( word_offset_pos );
 	o.write( word_offset, num_unique_words * sizeof( word_offset[0] ) );
-	o.seekp( stop_word_offset_pos );
-	o.write( stop_word_offset, num_stop_words * sizeof( stop_word_offset[0] ) );
+	if ( num_stop_words ) {
+		o.seekp( stop_word_offset_pos );
+		o.write( stop_word_offset,
+			num_stop_words * sizeof( stop_word_offset[0] )
+		);
+	}
 	o.seekp( file_offset_pos );
 	o.write( file_offset, num_files * sizeof( file_offset[0] ) );
-	o.seekp( meta_name_offset_pos );
-	o.write( meta_name_offset, num_meta_names * sizeof( meta_name_offset[0] ) );
+	if ( num_meta_names ) {
+		o.seekp( meta_name_offset_pos );
+		o.write( meta_name_offset,
+			num_meta_names * sizeof( meta_name_offset[0] )
+		);
+	}
 
 	delete[] word_offset;
 	delete[] stop_word_offset;
