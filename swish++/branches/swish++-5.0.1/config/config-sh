@@ -72,6 +72,19 @@ cat > $TARGET <<!
 
 #if	defined(__GNUC__) && __GNUC__ <= 2 && __GNUC_MINOR__ <= 95
 #define	PJL_GCC_295
+//
+//	The changes to fix various namespace and library issues for g++ 3.0
+//	have apparantly caused bugs in (at least) g++ 2.95.3 to manifest
+//	themselves:
+//
+//	1. In some cases, the compiler "forgets" that operator<<( ostream&,
+//	   string const& ) has been defined.
+//
+//	2. The compiler "forgets" that stream manipulators have been defined.
+//
+//	Since g++ 3.0 is, as of this writing, very new and not many people are
+//	using it yet, I would still like the code to compile under 2.95.3.
+//
 #endif
 
 #ifdef	WIN32
