@@ -102,9 +102,9 @@ extern index_segment directories;
 		"<!DOCTYPE SearchResults SYSTEM\n"
 		" \"" SWISHPP_URI "/" SEARCH_RESULTS_DTD "\">\n"
 		"<SearchResults\n"
-		"  xmlns=\"" SEARCH_RESULTS_NS_URI "\"\n"
-		"  xmlns:xsi=\"" XML_SCHEMA_INSTANCE_URI "\"\n"
-		"  xsi:schemaLocation=\"" SEARCH_RESULTS_NS_URI
+		" xmlns=\"" SEARCH_RESULTS_NS_URI "\"\n"
+		" xmlns:xsi=\"" XML_SCHEMA_INSTANCE_URI "\"\n"
+		" xsi:schemaLocation=\"" SEARCH_RESULTS_NS_URI
 		" " SEARCH_RESULTS_XSD "\">\n";
 
 	if ( !stop_words.empty() ) {
