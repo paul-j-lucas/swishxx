@@ -25,10 +25,11 @@ ROOT=		.
 include		$(ROOT)/config/config.mk
 
 CTARGET=	index search extract
-CFLAGS=		$(CCFLAGS) # -DDEBUG_is_ok_word -DDEBUG_parse_query -DDEBUG_stem_word
+CFLAGS=		$(CCFLAGS) -DFEATURE_CLASS # -DDEBUG_parse_class -DDEBUG_parse_query -DDEBUG_is_ok_word -DDEBUG_stem_word
 
 I_LINK=		-lm
 I_OBJS=		directory$(CCOEXT) \
+		elements$(CCOEXT) \
 		entities$(CCOEXT) \
 		file_vector$(CCOEXT) \
 		file_info$(CCOEXT) \
@@ -85,6 +86,12 @@ directory$(CCOEXT): \
 	directory$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H)
+
+elements$(CCOEXT): \
+	elements$(CCHEXT) \
+		my_set$(CCHEXT) \
+			fake_ansi$(CCHEXT) \
+			less$(CCHEXT)
 
 entities$(CCOEXT): \
 	entities$(CCHEXT) \
@@ -145,15 +152,16 @@ file_vector$(CCOEXT): \
 
 html$(CCOEXT): \
 	config$(CCHEXT) \
+	elements$(CCHEXT) \
+		my_set$(CCHEXT) \
+			less$(CCHEXT) \
+				fake_ansi$(CCHEXT) \
+					$(PLATFORM_H) \
 	entities$(CCHEXT) \
-		less$(CCHEXT) \
-	fake_ansi$(CCHEXT) \
-		$(PLATFORM_H) \
 	html$(CCHEXT) \
 		file_vector$(CCHEXT) \
 	index$(CCHEXT) \
 	meta_map$(CCHEXT) \
-	my_set$(CCHEXT) \
 	util$(CCHEXT)
 
 index$(CCOEXT): \
