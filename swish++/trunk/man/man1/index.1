@@ -35,7 +35,7 @@
 .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "May 18, 2000" "SWISH++"
+.TH \f3index\f1 1 "May 24, 2000" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -147,7 +147,7 @@ Contains less than \f(CWWord_Min_Vowels\f1 vowels.
 .TP
 5.
 Contains more than \f(CWWord_Max_Consec_Same\f1 of the same character
-consecutevely (not including digits).
+consecutively (not including digits).
 (Default is 2.)
 .TP
 6.
@@ -295,7 +295,7 @@ variables are used,
 then words that are too frequent are discarded.
 If new documents are added containing very few of those words,
 then they could no longer be too frequent.
-However, there is no way to get them back since they were discared.
+However, there is no way to get them back since they were discarded.
 .P
 The way around this problem is not to discard any words
 by specifying 101%.
@@ -304,7 +304,7 @@ the size of the index file will be larger,
 perhaps significantly so.
 .P
 It is possible that, in practice, the loss of words may not be that important
-espcially if new documents are very similar to old documents
+especially if new documents are very similar to old documents
 and that words that were too frequent in the old set
 would also be too frequent in new set.
 .P

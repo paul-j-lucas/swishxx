@@ -181,7 +181,7 @@ Search results are returned via the same socket.
 See the EXAMPLES.
 .PP
 A single daemon can search only a single index.
-To be able to search multiple indicies concurrently,
+To be able to search multiple indices concurrently,
 multiple daemons can be run,
 each searching its own index and using its own socket file.
 An index must
@@ -192,7 +192,7 @@ A daemon can serve multiple query requests simultaneously
 since it is multi-threaded.
 When started,
 it ``pre-threads'' meaning that it creates a pool of threads in advance
-that service an indefinite numer of requests
+that service an indefinite number of requests
 as a further performance improvement
 since a thread is not created and destroyed per request.
 .PP
@@ -767,7 +767,7 @@ default index file name
 .PP
 Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
 .I Pthreads Programming,
-O'Reilly & Associates, Sebestabol, CA,
+O'Reilly & Associates, Sebastopol, CA,
 1996.
 .PP
 M.F. Porter.
