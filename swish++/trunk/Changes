@@ -2,11 +2,16 @@ SWISH++ Changes
 ===============
 
 *******************************************************************************
-1.8
+2.0
 *******************************************************************************
 
 NEW FEATURES
 ------------
+
+* SWISH++ can now selectively not index text in HTML files within HTML elements
+  that are members of specified classes.
+
+  (This feature will be known as feature CLASS.)
 
 * The 'search' command now offers optional stemming.  Indexing is unaffected.
 
@@ -18,60 +23,129 @@ NEW FEATURES
 
   (This feature will be known as feature NTW.)
 
+* The 'search' command now outputs an additional comment "results" followed by
+  the total number of search results.  Additionally, there is a new -R command-
+  line option to print this alone.
+
+  (This feature will be known as feature PRC.)
+
 
 CHANGES, file-by-file
 ---------------------
 
+* elements.c
+* elements.h
+
+	1. Added these files for feature CLASS.
+
 * html.c
 
-	1. Performed following substitution:
+	1. Added #include "elements.h" for feature CLASS.
+
+	2. Added extern references to no_index_class_names and
+	   no_index_class_count corresponding to index.c #1.
+
+	3. Performed the following substitution:
 
 		s/to_upper/to_lower/
 
 	   to eliminate the to_upper() function entirely.
 
-	2. In grep_title(), performed the following substitution:
+	4. In grep_title(), performed the following substitution:
 
 		s/TITLE/title/
 
-	   to eliminate the to_upper() function entirely.
+	   so we can eliminate the to_upper() function entirely.
+
+	5. In parse_html_tag(), corresponding change for html.h #1.
+
+	6. In parse_html_tag(), added code for feature CLASS.
+
+* html.h
+
+	1. For parse_html_tag() function, added:
+
+		bool is_new_file = false
+
+	   for feature CLASS.
 
 * index.c
 
-	1. Added global variable:
+	1. Added global variables:
+
+		string_set	no_index_class_names;
+		int		no_index_class_count;
+
+	   for feature CLASS.
+
+	2. Added global variable:
 
 		long	num_indexed_words;
 
 	   for feature NTW.
 
-	2. In main(), added code to print num_indexed_words for feature
+	3. In main(), added -C option for feature CLASS.
+
+	4. In main(), added code to print num_indexed_words for feature
 	   NTW.
 
-	3. In index_word(), performed following substitution:
+	5. In index_word(), performed following substitution:
 
 		s/num_total_words/num_indexed_words/
 
 	   for feature NTW.
 
-	4. In index_word(), added new:
+	6. In index_word(), added new:
 
 		++num_total_words;
 
 	   for feature NTW.
 
+	7. In index_word(), added code to test no_index_class_count for
+	   feature CLASS.
+
+	8. In index_words(), added:
+
+		static bool new_file;
+
+	   variable for feature CLASS.
+
+	9. In usage(), added description for -C option for feature CLASS.
+
+	A. In merge_indicies(), changed write-header code to neither
+	   allocate nor write the offsets for stop words or meta names
+	   if there are zero of them.
+
+	B. In rank_full_index(), added check to see if there are no
+	   indexed words: if not, return.
+
+	C. In write_full_index(), added check to see if there are no
+	   indexed words: if not, return.
+
+	D. In write_full_index(), changed write-header code to neither
+	   allocate nor write the offsets for stop words or meta names
+	   if there are zero of them.
+
 * Makefile
 
-	1. Added -DDEBUG_stem_word for feature STEM.
+	1. Added -DDEBUG_parse_class for feature CLASS.
 
-	2. Added target for stem_word.o for feature STEM.
+	2. Added elements.o object for feature CLASS.
+
+	3. Added -DDEBUG_stem_word for feature STEM.
+
+	4. Added target for stem_word.o for feature STEM.
+
+* man/man1/index.1
+
+	1. Added description for -C option and examples for feature
+	   CLASS.
 
 * man/man1/search.1
-
-	1. Added description of new stemming option for feature STEM.
-
-* postscript.h
  
-	1. Added more comments.
+	 1. Added description of new stemming option for feature STEM.
+
+	 2. Added description of new -R option for feature PRC.
 
 * search.c
 
@@ -83,24 +157,30 @@ CHANGES, file-by-file
 
 	2. In main(), performed following substitution:
 
-		s/dDi:m:Ms:SVw:/dDi:m:Mr:sSVw:/
+		s/dDi:m:Ms:SVw:/dDi:m:Mr:RsSVw:/
 
-	   for feature STEM.
+	   for features PRC and STEM.
 
 	3. In main(), changed what was option 's' to option 'r' and
 	   added a new option 's' for feature STEM.
 
-	4. In parse_primary(), added "less_stem" object to word_token
+	4. In main, added a new -R option for feature PRC.
+
+	5. In parse_primary(), added "less_stem" object to word_token
 	   case as well as having two exclusive calls to
 	   binary_search() and equal_range() depending upon stem_words
 	   for feature STEM.
 
-	5. In usage(), corresponding changes to item #3.
+	6. In usage(), corresponding changes to items #3 and #4.
 
 * stem_word.c
 * stem_word.h
+ 
+	 1. Added these files for feature STEM.
 
-	1. Added these files for feature STEM.
+* postscript.h
+
+	1. Added more comments.
 
 * util.c
 
@@ -127,7 +207,7 @@ CHANGES, file-by-file
 
 * version.h
 
-	1. Updated version to "1.8".
+	1. Updated version to "2.0".
 
 
 *******************************************************************************
