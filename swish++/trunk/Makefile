@@ -25,9 +25,9 @@ include		$(ROOT)/config/config.mk
 CFLAGS=		$(CCFLAGS)
 #		Various debug flags; add to CFLAGS for debugging.
 #		-DDEBUG_is_ok_word
-#		-DDEBUG_parse_class
 #		-DDEBUG_parse_query
 #		-DDEBUG_stem_word
+#		-DDEBUG_threads
 
 ########## You shouldn't have to change anything below this line. #############
 
@@ -57,7 +57,7 @@ I_OBJS=		conf_var$(CCOEXT) \
 		word_util$(CCOEXT) \
 		index$(CCOEXT)
 
-S_LINK=		$(CCLINK)
+S_LINK=		$(CCLINK) $(SOCKET_LIB) $(PTHREAD_LIB)
 S_OBJS=		conf_var$(CCOEXT) \
 		conf_bool$(CCOEXT) \
 		conf_int$(CCOEXT) \
@@ -67,6 +67,9 @@ S_OBJS=		conf_var$(CCOEXT) \
 		word_index$(CCOEXT) \
 		file_list$(CCOEXT) \
 		option_stream$(CCOEXT) \
+		thread_pool$(CCOEXT) \
+		search_thread$(CCOEXT) \
+		SocketFile$(CCOEXT) \
 		token$(CCOEXT) \
 		stem_word$(CCOEXT) \
 		util$(CCOEXT) \
@@ -94,7 +97,7 @@ E_OBJS=		conf_var$(CCOEXT) \
 
 VARS=		I_BIN="$(I_BIN)" I_LIB="$(I_LIB)" PERL="$(PERL)"
 
-PERL_TARGET=	httpindex
+PERL_TARGET=	httpindex searchc
 LIB_TARGET=	WWW.pm
 
 BUILD_TARGET=	$(C_TARGET) $(PERL_TARGET)
@@ -364,18 +367,47 @@ search$(CCOEXT): \
 			conf_var$(CCHEXT) \
 				fake_ansi$(CCHEXT) \
 	less$(CCHEXT) \
+	managed_ptr$(CCHEXT) \
 	my_set$(CCHEXT) \
 	$(PLATFORM_H) \
 	ResultsMax$(CCHEXT) \
 		conf_int$(CCHEXT) \
+	search$(CCHEXT) \
+	SearchDaemon$(CCHEXT) \
+		conf_bool$(CCHEXT) \
+	search_options$(CCCEXT) \
+	search_thread$(CCHEXT) \
+	SocketFile$(CCHEXT) \
+	SocketQueueSize$(CCHEXT) \
+	SocketTimeout$(CCHEXT) \
 	stem_word$(CCHEXT) \
 	StemWords$(CCHEXT) \
 		conf_bool$(CCHEXT) \
+	ThreadsMax$(CCHEXT) \
+	ThreadsMin$(CCHEXT) \
+	ThreadTimeout$(CCHEXT) \
 	token$(CCHEXT) \
 	util$(CCHEXT) \
 	version$(CCHEXT) \
 	word_index$(CCHEXT) \
 	word_util$(CCHEXT)
+
+search_thread$(CCOEXT): \
+	fake_ansi$(CCHEXT) \
+		$(PLATFORM_H) \
+	search$(CCHEXT) \
+		option_stream$(CCCEXT) \
+	search_thread$(CCHEXT) \
+		thread_pool$(CCHEXT) \
+	util$(CCHEXT)
+
+SocketFile$(CCOEXT): \
+	exit_codes$(CCHEXT) \
+	SocketFile$(CCHEXT) \
+		config$(CCHEXT) \
+		conf_string$(CCHEXT) \
+			conf_var$(CCHEXT) \
+				fake_ansi$(CCHEXT)
 
 stem_word$(CCOEXT): \
 	stem_word$(CCHEXT) \
@@ -396,6 +428,13 @@ stop_words$(CCOEXT): \
 	util$(CCHEXT) \
 	word_util$(CCHEXT)
 
+thread_pool$(CCOEXT): \
+	thread_pool$(CCHEXT) \
+		fake_ansi$(CCHEXT) \
+			$(PLATFORM_H) \
+	exit_codes$(CCHEXT) \
+	util$(CCHEXT)
+
 token$(CCOEXT): \
 	config$(CCHEXT) \
 	$(PLATFORM_H) \
@@ -408,7 +447,6 @@ util$(CCOEXT): \
 	config$(CCHEXT) \
 	conf_var$(CCHEXT) \
 		less$(CCHEXT) \
-	exit_codes$(CCHEXT) \
 	fake_ansi$(CCHEXT) \
 		$(PLATFORM_H) \
 	file_vector$(CCHEXT) \
@@ -426,9 +464,6 @@ word_util$(CCOEXT): \
 
 $(PLATFORM_H):
 	@cd config && $(MAKE)
-
-httpindex: httpindex.in
-	$(PERL) $(CONFIG)/config.pl $@ $(VARS)
 
 ##
 # Install rules
