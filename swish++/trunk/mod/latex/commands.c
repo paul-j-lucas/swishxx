@@ -40,7 +40,7 @@
 	// A command maps to an action which is what to do about it when
 	// encountered in a document.  In most cases, the action is simply text
 	// to be substituted.  In cases where the action is either '{' or '[',
-	// the characters is to be "balanced" by looking for the closing '}' or
+	// the character is to be "balanced" by looking for the closing '}' or
 	// ']' and the words in between are indexed seperately.
 	//
 	static command const command_table[] = {
