@@ -36,22 +36,13 @@
 //	A Verbosity is-a conf<int> containing the verbosity level, i.e., how
 //	much information to print during either indexing or extraction.
 //
-//	This is the same as either index's or extract's -v command-line
-//	option.
+//	This is the same as either index's or extract's -v command-line option.
 //
 //*****************************************************************************
 {
 public:
 	Verbosity() : conf<int>( "Verbosity", 0, 0, 4 ) { }
-
-	Verbosity& operator=( int i ) {
-		conf<int>::operator=( i );
-		return *this;
-	}
-	Verbosity& operator=( char const *s ) {
-		conf<int>::operator=( s );
-		return *this;
-	}
+	CONF_INT_ASSIGN_OPS( Verbosity )
 };
 
 #endif	/* Verbosity_H */

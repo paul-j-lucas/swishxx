@@ -42,15 +42,7 @@
 {
 public:
 	StemWords() : conf<bool>( "StemWords", false ) { }
-
-	StemWords& operator=( bool b ) {
-		conf<bool>::operator=( b );
-		return *this;
-	}
-	StemWords& operator=( char const *s ) {
-		conf<bool>::operator=( s );
-		return *this;
-	}
+	CONF_BOOL_ASSIGN_OPS( StemWords )
 };
 
 #endif	/* StemWords_H */

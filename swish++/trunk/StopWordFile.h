@@ -29,25 +29,20 @@
 //
 // SYNOPSIS
 //
-	class StopWordFile : public conf<char const*>
+	class StopWordFile : public conf<string>
 //
 // DESCRIPTION
 //
-//	A StopWordFile is-a conf<char const*> containing the name of the file
+//	A StopWordFile is-a conf<string> containing the name of the file
 //	containing the stop-words to use instead of the compiled-in set.
 //
-//	This is the same as either index's or extract's -s command-line
-//	option.
+//	This is the same as either index's or extract's -s command-line option.
 //
 //*****************************************************************************
 {
 public:
-	StopWordFile() : conf<char const*>( "StopWordFile" ) { }
-
-	StopWordFile& operator=( char const *s ) {
-		conf<char const*>::operator=( s );
-		return *this;
-	}
+	StopWordFile() : conf<string>( "StopWordFile" ) { }
+	CONF_STRING_ASSIGN_OPS( StopWordFile )
 };
 
 #endif	/* StopWordFile_H */

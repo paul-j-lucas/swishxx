@@ -34,25 +34,16 @@
 // DESCRIPTION
 //
 //	A RecurseSubdirs is-a conf<bool> containing the Boolean value
-//	indicating whether to recurse subdirectories either during indexing
-//	or extraction.
+//	indicating whether to recurse subdirectories either during indexing or
+//	extraction.
 //
-//	This is the same as either index's or extract's -r command-line
-//	option.
+//	This is the same as either index's or extract's -r command-line option.
 //
 //*****************************************************************************
 {
 public:
 	RecurseSubdirs() : conf<bool>( "RecurseSubdirs", true ) { }
-
-	RecurseSubdirs& operator=( bool b ) {
-		conf<bool>::operator=( b );
-		return *this;
-	}
-	RecurseSubdirs& operator=( char const *s ) {
-		conf<bool>::operator=( s );
-		return *this;
-	}
+	CONF_BOOL_ASSIGN_OPS( RecurseSubdirs )
 };
 
 #endif	/* RecurseSubdirs_H */

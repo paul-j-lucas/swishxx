@@ -43,15 +43,7 @@
 {
 public:
 	TitleLines() : conf<int>( "TitleLines", TitleLines_Default ) { }
-
-	TitleLines& operator=( int i ) {
-		conf<int>::operator=( i );
-		return *this;
-	}
-	TitleLines& operator=( char const *s ) {
-		conf<int>::operator=( s );
-		return *this;
-	}
+	CONF_INT_ASSIGN_OPS( TitleLines )
 };
 
 #endif	/* TitleLines_H */

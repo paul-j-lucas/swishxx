@@ -34,24 +34,16 @@
 //
 // DESCRIPTION
 //
-//	A ResultsMax is-a conf_int containing the maximum number of results
-//	to return from a search.
+//	A ResultsMax is-a conf_int containing the maximum number of results to
+//	return from a search.
 //
 //	This is the same as search's -m command-line option.
 //
 //*****************************************************************************
 {
 public:
-	ResultsMax() : conf<int>( "ResultsMax", ResultsMax_Default, 1 ) { }
-
-	ResultsMax& operator=( int i ) {
-		conf<int>::operator=( i );
-		return *this;
-	}
-	ResultsMax& operator=( char const *s ) {
-		conf<int>::operator=( s );
-		return *this;
-	}
+	ResultsMax() : conf<int>( "ResultsMax", ResultsMax_Default ) { }
+	CONF_INT_ASSIGN_OPS( ResultsMax )
 };
 
 #endif	/* ResultsMax_H */

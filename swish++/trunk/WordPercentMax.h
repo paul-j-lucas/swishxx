@@ -23,6 +23,7 @@
 #define WordPercentMax_H
 
 // local
+#include "config.h"
 #include "conf_int.h"
 
 //*****************************************************************************
@@ -33,25 +34,17 @@
 //
 // DESCRIPTION
 //
-//	An WordPercentMax is-a conf<int> containing the maximum percentage of
-//	files a word may occur in before it is discarded as being too
-//	frequent.
+//	A WordPercentMax is-a conf<int> containing the maximum percentage of
+//	files a word may occur in before it is discarded as being too frequent.
 //
 //	This is the same as index's -p command-line option.
 //
 //*****************************************************************************
 {
 public:
-	WordPercentMax() : conf<int>( "WordPercentMax", 100, 1, 101 ) { }
-
-	WordPercentMax& operator=( int i ) {
-		conf<int>::operator=( i );
-		return *this;
-	}
-	WordPercentMax& operator=( char const *s ) {
-		conf<int>::operator=( s );
-		return *this;
-	}
+	WordPercentMax() :
+		conf<int>( "WordPercentMax", WordPercentMax_Default, 1, 101 ) {}
+	CONF_INT_ASSIGN_OPS( WordPercentMax )
 };
 
 #endif	/* WordPercentMax_H */

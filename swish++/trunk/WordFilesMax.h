@@ -36,8 +36,8 @@
 //
 // DESCRIPTION
 //
-//	An WordFilesMax is-a conf<int> containing the maximum number of files
-//	a word may occur in before it is discarded as being too frequent.
+//	An WordFilesMax is-a conf<int> containing the maximum number of files a
+//	word may occur in before it is discarded as being too frequent.
 //
 //	This is the same as index's -f command-line option.
 //
@@ -45,15 +45,7 @@
 {
 public:
 	WordFilesMax() : conf<int>( "WordFilesMax", INT_MAX, 2 ) { }
-
-	WordFilesMax& operator=( int i ) {
-		conf<int>::operator=( i );
-		return *this;
-	}
-	WordFilesMax& operator=( char const *s ) {
-		conf<int>::operator=( s );
-		return *this;
-	}
+	CONF_INT_ASSIGN_OPS( WordFilesMax )
 };
 
 #endif	/* WordFilesMax_H */
