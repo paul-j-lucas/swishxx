@@ -138,13 +138,14 @@ else
 	@$(MAKE) -C config
 endif
 
-.%.d : %.c platform.h
-	$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | sed "s/\([^:]*\):/\1 $@ : /g" > $@; [ -s $@ ] || $(RM) $@'
+dep/%.d : %.c platform.h dep
+	$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
+
+dep:
+	$(MKDIR) $@
 
 ifneq ($(findstring clean,$(MAKECMDGOALS)),clean)
-ifneq ($(MAKECMDGOALS),dist)
-include	 $(I_SRCS:%.c=.%.d) $(E_SRCS:%.c=.%.d) $(S_SRCS:%.c=.%.d)
-endif
+include	 $(I_SRCS:%.c=dep/%.d) $(E_SRCS:%.c=dep/%.d) $(S_SRCS:%.c=dep/%.d)
 endif
 
 ps pdf txt:
@@ -180,9 +181,13 @@ uninstall:
 ##
 
 clean:
-	$(RM) *.o .*.d core swish++.index
+	$(RM) *.o core swish++.index
 	@$(MAKE) -C man $@
 
-dist distclean: clean
+distclean: clean
+	$(RM) $(BUILD_TARGET) dep platform.h
+	@$(MAKE) -C man $@
+
+dist: clean
 	$(RM) $(BUILD_TARGET) platform.h
 	@$(MAKE) -C man $@
