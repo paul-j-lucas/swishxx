@@ -60,7 +60,7 @@ void			skip_html_comment(
 				file_vector<char>::const_iterator &pos,
 				file_vector<char>::const_iterator end
 			);
-void			skip_html_tag(
+bool			skip_html_tag(
 				file_vector<char>::const_iterator &pos,
 				file_vector<char>::const_iterator end
 			);
@@ -306,13 +306,14 @@ void			skip_html_tag(
 //
 // DESCRIPTION
 //
-//	Compares the tag starting at the given iterator to the given string.
+//	Compares the tag name starting at the given iterator to the given
+//	string.
 //
 // PARAMETERS
 //
 //	c	The iterator to use.  It is presumed to be positioned at the
-//		first character after the '<'.  If the tag matches, it is
-//		repositioned at the first character past the tag; otherwise,
+//		first character after the '<'.  If the tag name matches, it is
+//		repositioned at the first character past the name; otherwise,
 //		it is not touched.
 //
 //	end	The iterator marking the end of the file.
@@ -342,6 +343,15 @@ void			skip_html_tag(
 // DESCRIPTION
 //
 //	Checks to see if the current HTML element is the start of a comment.
+//
+// PARAMETERS
+//
+//	c	The iterator to use.  It is presumed to be positioned at the
+//		first character after the '<'.  If the tag is the start of a
+//		comment, it is repositioned at the first character past the
+//		tag, i.e., past the "!--"; otherwise, it is not touched.
+//
+//	end	The iterator marking the end of the file.
 //
 // RETURN VALUE
 //
@@ -585,7 +595,8 @@ void			skip_html_tag(
 //*****************************************************************************
 {
 	file_vector<char>::const_iterator tag_begin = c;
-	skip_html_tag( c, end );
+	if ( skip_html_tag( c, end ) || *tag_begin == '!' )
+		return;
 	file_vector<char>::const_iterator tag_end = c - 1;
 
 #ifdef	FEATURE_CLASS
@@ -673,7 +684,7 @@ void			skip_html_tag(
 		element_map::const_iterator const e = elements.find( tag );
 		if ( e != elements.end() ) {
 			//
-			// Found the element in our internal table: now do
+			// We found the element in our internal table: now do
 			// different stuff depending upon whether its end tag
 			// is forbidden or not.
 			//
@@ -689,9 +700,13 @@ void			skip_html_tag(
 				//
 				// Note that we have to keep track of all HTML
 				// elements even if they are not members of a
-				// class to be indexed because they could be
-				// nested inside of an element that is, e.g.:
-				// <SPAN CLASS=ignore><B>Hello</B></SPAN>
+				// class not to be indexed because they could
+				// be nested inside of an element that is,
+				// e.g.:
+				//
+				//	<DIV CLASS=ignore>
+				//	<SPAN CLASS=other>Hello</SPAN>
+				//	</DIV>
 				//
 				element_stack.push_back( make_pair(
 					&e->second, is_no_index_class
@@ -720,6 +735,13 @@ void			skip_html_tag(
 				//
 				return;
 			}
+		} else {
+			// We didn't find the element in our internal table:
+			// ignore it.  We really should do something better
+			// because this could potentially mess up the proper
+			// closing of elements, but, since we know nothing
+			// about this element, there's nothing better that can
+			// be done.
 		}
 	}
 #endif	/* FEATURE_CLASS */
@@ -862,7 +884,7 @@ void			skip_html_tag(
 //
 // SYNOPSIS
 //
-	void skip_html_tag(
+	bool skip_html_tag(
 		register file_vector<char>::const_iterator &c,
 		register file_vector<char>::const_iterator end
 	)
@@ -881,11 +903,15 @@ void			skip_html_tag(
 //
 //	end		The iterator marking the end of the file.
 //
+// RETURN VALUE
+//
+//	Returns true only if the tag is an HTML comment.
+//
 //*****************************************************************************
 {
 	if ( is_html_comment( c, end ) ) {
 		skip_html_comment( c, end );
-		return;
+		return true;
 	}
 
 	register char quote = '\0';
@@ -902,4 +928,6 @@ void			skip_html_tag(
 		if ( *c++ == '>' )		// found it  :)
 			break;
 	}
+
+	return false;
 }
