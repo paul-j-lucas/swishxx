@@ -52,6 +52,9 @@ static option_stream::spec const opt_spec[] = {
 	"index-file",		1, 'i',
 #ifdef	SEARCH_DAEMON
 	"daemon-type",		1, 'b',
+#ifdef	__APPLE__
+	"launchd",		0, 'X',
+#endif
 	"no-background",	0, 'B',
 	"group",		1, 'G',
 	"pid-file",		1, 'P',
