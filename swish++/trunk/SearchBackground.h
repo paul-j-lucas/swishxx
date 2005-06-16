@@ -19,6 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#ifdef  SEACH_DAEMON
+
 #ifndef SearchBackground_H
 #define SearchBackground_H
 
@@ -49,4 +51,6 @@ public:
 extern SearchBackground search_background;
 
 #endif  /* SearchBackground_H */
+
+#endif  /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */
