@@ -19,6 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#ifndef PJL_NO_SYMBOLIC_LINKS
+
 #ifndef FollowLinks_H
 #define FollowLinks_H
 
@@ -48,4 +50,6 @@ public:
 extern FollowLinks follow_symbolic_links;
 
 #endif  /* FollowLinks_H */
+
+#endif  /* PJL_NO_SYMBOLIC_LINKS */
 /* vim:set et sw=4 ts=4: */
