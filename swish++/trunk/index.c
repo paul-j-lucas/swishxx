@@ -20,19 +20,19 @@
 */
 
 // standard
-#include <cmath>                                /* for log(3) */
-#include <cstdlib>                              /* for exit(2) */
+#include <cmath>                        /* for log(3) */
+#include <cstdlib>                      /* for exit(2) */
 #include <cstring>
 #include <fstream>
-#include <iomanip>                              /* for setfill(), setw() */
+#include <iomanip>                      /* for setfill(), setw() */
 #include <iostream>
 #include <iterator>
 #include <string>
 #include <time.h>
-#include <sys/time.h>                           /* needed by FreeBSD systems */
-#include <sys/resource.h>                       /* for RLIMIT_* */
+#include <sys/time.h>                   /* needed by FreeBSD systems */
+#include <sys/resource.h>               /* for RLIMIT_* */
 #include <sys/types.h>
-#include <unistd.h>                             /* for unlink(2) */
+#include <unistd.h>                     /* for unlink(2) */
 #include <vector>
 
 // local
@@ -185,25 +185,25 @@ static void             write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-    me = ::strrchr( argv[0], '/' );             // determine base name...
-    me = me ? me + 1 : argv[0];                 // ...of executable
+    me = ::strrchr( argv[0], '/' );     // determine base name...
+    me = me ? me + 1 : argv[0];         // ...of executable
 
     ////////// Max-out various system resources ///////////////////////////////
 
-#ifdef  RLIMIT_AS                               /* SVR4 */
+#ifdef  RLIMIT_AS                       /* SVR4 */
     //
     // Max-out out out total memory potential.
     //
     max_out_limit( RLIMIT_AS );
 #endif
-#ifdef  RLIMIT_CPU                              /* SVR4, 4.3+BSD */
+#ifdef  RLIMIT_CPU                      /* SVR4, 4.3+BSD */
     //
     // Max-out the amount of CPU time we can run since indexing can take a
     // while.
     //
     max_out_limit( RLIMIT_CPU );
 #endif
-#ifdef  RLIMIT_DATA                             /* SVR4, 4.3+BSD */
+#ifdef  RLIMIT_DATA                     /* SVR4, 4.3+BSD */
     //
     // Max-out our heap allocation potential.
     //
@@ -215,16 +215,16 @@ static void             write_word_index( ostream&, off_t* );
     //
     max_out_limit( RLIMIT_FSIZE );
 #endif
-#ifdef  RLIMIT_NOFILE                           /* SVR4 */
+#ifdef  RLIMIT_NOFILE                   /* SVR4 */
     //
     // Max-out the number of file descriptors we can have open to be able to
     // merge as many partial indicies as possible.
     //
     max_out_limit( RLIMIT_NOFILE );
-#elif   defined( RLIMIT_OFILE )                 /* 4.3+BSD name for NOFILE */
+#elif   defined( RLIMIT_OFILE )         /* 4.3+BSD name for NOFILE */
     max_out_limit( RLIMIT_OFILE );
 #endif
-    /////////// Process command-line options //////////////////////////////
+    /////////// Process command-line options //////////////////////////////////
 
     static option_stream::spec const opt_spec[] = {
         "help",             0, '?',
@@ -491,7 +491,7 @@ static void             write_word_index( ostream&, off_t* );
         ::exit( Exit_No_Write_Index );
     }
 
-    time_t time = ::time( 0 );                  // Go!
+    time_t time = ::time( 0 );          // Go!
 
     if ( using_stdin ) {
         //
@@ -544,7 +544,7 @@ static void             write_word_index( ostream&, off_t* );
     out.close();
 
     if ( verbosity ) {
-        time = ::time( 0 ) - time;              // Stop!
+        time = ::time( 0 ) - time;      // Stop!
         cout << '\n' << me << ": done:\n  "
              << setfill('0') << setw(2) << (time / 60) << ':'
              << setw(2) << (time % 60) << " (min:sec) elapsed time\n  "
@@ -774,7 +774,7 @@ static void             write_word_index( ostream&, off_t* );
                     i = j;
                 else if ( n >= 2 )
                     break;
-        if ( n < 2 )                            // couldn't find at least 2
+        if ( n < 2 )                    // couldn't find at least 2
             break;
 
         // Find the lexographically least word.
@@ -841,7 +841,7 @@ static void             write_word_index( ostream&, off_t* );
                 else if ( n >= 2 )
                     break;
         }
-        if ( n < 2 )                            // couldn't find at least 2
+        if ( n < 2 )                    // couldn't find at least 2
             break;
 
         // Find the lexographically least word.
