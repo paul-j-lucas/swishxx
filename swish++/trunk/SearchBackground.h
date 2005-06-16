@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEACH_DAEMON
+#ifdef  SEARCH_DAEMON
 
 #ifndef SearchBackground_H
 #define SearchBackground_H
