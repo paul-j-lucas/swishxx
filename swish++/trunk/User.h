@@ -19,6 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#ifdef  SEARCH_DAEMON
+
 #ifndef User_H
 #define User_H
 
@@ -40,6 +42,8 @@
 //
 //      A User is-a conf<string> containing the login name of the user we
 //      should run as after initialization (if we're root to begin with).
+//
+//      This is the same as search's -U command-line option.
 //
 //*****************************************************************************
 {
@@ -70,4 +74,6 @@ inline bool User::change_to_uid() const {
 }
 
 #endif  /* User_H */
+
+#endif  /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */
