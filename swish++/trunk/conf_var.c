@@ -151,6 +151,9 @@ int conf_var::current_config_file_line_no_ = 0;
 #endif
 #ifdef	SEARCH_DAEMON
 			"group",
+#ifdef	__APPLE__
+			"launchdcooperation",
+#endif
 			"pidfile",
 			"searchbackground",
 			"searchdaemon",
@@ -162,7 +165,7 @@ int conf_var::current_config_file_line_no_ = 0;
 			"threadsmin",
 			"threadtimeout",
 			"user",
-#endif
+#endif	/* SEARCH_DAEMON */
 			0,
 		};
 		for ( register char const *const *v = var_name_table; *v; ++v )
