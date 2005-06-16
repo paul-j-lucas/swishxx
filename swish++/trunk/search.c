@@ -71,6 +71,9 @@
 #include "xml_formatter.h"
 #ifdef  SEARCH_DAEMON
 #include "Group.h"
+#ifdef  __APPLE__
+#include "LaunchdCooperation.h"
+#endif
 #include "PidFile.h"
 #include "SearchBackground.h"
 #include "SearchDaemon.h"
@@ -133,6 +136,9 @@ WordsNear           words_near;
 #ifdef  SEARCH_DAEMON
 SearchDaemon        daemon_type;
 Group               group;
+#ifdef  __APPLE__
+LaunchdCooperation  launchd_cooperation;
+#endif
 ThreadsMax          max_threads;
 ThreadsMin          min_threads;
 PidFile             pid_file_name;
@@ -145,7 +151,7 @@ ThreadTimeout       thread_timeout;
 User                user;
 
 void                become_daemon();
-#endif
+#endif  /* SEARCH_DAEMON */
 static void         dump_single_word( char const*, ostream& = cout );
 static void         dump_word_window( char const*, int, int, ostream& = cout );
 static ostream&     write_file_info( ostream&, char const* );
@@ -182,14 +188,11 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-#include "search_options.c"                     /* defines opt_spec */
+#include "search_options.c"             /* defines opt_spec */
 
-    me = ::strrchr( argv[0], '/' );             // determine base name ...
-    me = me ? me + 1 : argv[0];                 // ... of executable
+    me = ::strrchr( argv[0], '/' );     // determine base name ...
+    me = me ? me + 1 : argv[0];         // ... of executable
 
-#ifdef  RLIMIT_AS                               /* SVR4 */
-    max_out_limit( RLIMIT_AS );                 // max-out total avail. memory
-#endif
     /////////// Process command-line options //////////////////////////////////
 
     search_options const opt( &argc, &argv, opt_spec );
@@ -225,13 +228,21 @@ inline omanip< char const* > index_file_info( int index ) {
         daemon_type = opt.daemon_type_arg;
     if ( opt.group_arg )
         group = opt.group_arg;
+#ifdef  __APPLE__
+    if ( opt.launchd_opt )
+        launchd_cooperation = true;
+#endif
     if ( opt.max_threads_arg )
         max_threads = opt.max_threads_arg;
     if ( opt.min_threads_arg )
         min_threads = opt.min_threads_arg;
     if ( opt.pid_file_name_arg )
         pid_file_name = opt.pid_file_name_arg;
-    if ( opt.search_background_opt )
+    if ( opt.search_background_opt
+#ifdef  __APPLE__
+        || launchd_cooperation
+#endif
+       )
         search_background = false;
     if ( opt.socket_address_arg )
         socket_address = opt.socket_address_arg;
@@ -266,6 +277,13 @@ inline omanip< char const* > index_file_info( int index ) {
 
     /////////// Load index file ///////////////////////////////////////////////
 
+#ifdef  RLIMIT_AS                       /* SVR4 */
+#if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
+    if ( daemon_type != "none" && !launchd_cooperation )
+#endif
+        max_out_limit( RLIMIT_AS );     // max-out total avail. memory
+#endif  /* RLIMIT_AS */
+
     mmap_file const the_index( index_file_name );
     the_index.behavior( mmap_file::bt_random );
     if ( !the_index ) {
@@ -283,7 +301,7 @@ inline omanip< char const* > index_file_info( int index ) {
     ////////// Become a daemon ////////////////////////////////////////////////
 
     if ( !dump_something && daemon_type != "none" )
-        become_daemon();                        // function does not return
+        become_daemon();                // function does not return
 #endif
     ////////// Perform the query //////////////////////////////////////////////
 
@@ -570,6 +588,9 @@ inline omanip< char const* > index_file_info( int index ) {
 #ifdef  SEARCH_DAEMON
     daemon_type_arg         = 0;
     group_arg               = 0;
+#ifdef  __APPLE__
+    launchd_opt             = 0;
+#endif
     max_threads_arg         = 0;
     min_threads_arg         = 0;
     pid_file_name_arg       = 0;
@@ -580,7 +601,7 @@ inline omanip< char const* > index_file_info( int index ) {
     socket_timeout_arg      = 0;
     thread_timeout_arg      = 0;
     user_arg                = 0;
-#endif
+#endif  /* SEARCH_DAEMON */
     option_stream opt_in( *argc, *argv, opt_spec );
     for ( option_stream::option opt; opt_in >> opt; )
         switch ( opt ) {
@@ -628,7 +649,6 @@ inline omanip< char const* > index_file_info( int index ) {
             case 'i': // Index file.
                 index_file_name_arg = opt.arg();
                 break;
-
             case 'm': // Max. number of results.
                 max_results_arg = opt.arg();
                 break;
@@ -720,7 +740,11 @@ inline omanip< char const* > index_file_info( int index ) {
                     dump_match_arg = 0;
                 break;
             }
-
+#if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
+            case 'X': // Cooperate with Mac OS X's launchd.
+                launchd_opt = true;
+                break;
+#endif
             default: // Bad option.
                 err << usage;
                 bad_ = true;
@@ -901,7 +925,10 @@ ostream& usage( ostream &err ) {
     "-U s | --user s           : Daemon user to run as [default: " << User_Default << "]\n"
 #endif
     "-V   | --version          : Print version number, exit\n"
-    "-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n";
+    "-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n"
+#if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
+    "-X   | --launchd          : If a daemon, cooperate with Mac OS X's launchd\n";
+#endif
     return err;
 }
 /* vim:set et sw=4 ts=4: */
