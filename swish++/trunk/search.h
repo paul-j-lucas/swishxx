@@ -71,6 +71,9 @@
 #ifdef	SEARCH_DAEMON
 	char const*	daemon_type_arg;
 	char const*	group_arg;
+#ifdef	__APPLE__
+	bool		launchd_opt;
+#endif
 	int		max_threads_arg;
 	int		min_threads_arg;
 	char const*	pid_file_name_arg;
@@ -81,7 +84,7 @@
 	int		socket_timeout_arg;
 	int		thread_timeout_arg;
 	char const*	user_arg;
-#endif
+#endif	/* SEARCH_DAEMON */
 	search_options(
 		int *argc, char ***argv,
 		PJL::option_stream::spec const[],
