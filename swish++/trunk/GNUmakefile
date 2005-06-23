@@ -298,6 +298,6 @@ dist: distclean
 	echo; echo "Won't 'make $@' in source tree!"; echo; exit 1; \
 	fi
 	find . -name .cvsignore -exec $(RM) {} \;
-	$(RM) SWISH++.xcode
+	$(RM) *.xcode*
 
 # vim:set noet sw=8 ts=8:
