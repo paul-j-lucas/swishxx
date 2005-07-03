@@ -41,7 +41,7 @@ Building SWISH++ for Unix
 
 1. Edit the "config.h" file to your liking.  This file controls how the
    software runs.  You REALLY need to understand and properly set TempDirectory
-   and Word_Threshold.  Improperly set, SWISH++ can take hours to index whereas
+   and WordThreshold.  Improperly set, SWISH++ can take hours to index whereas
    it should only take minutes.  Once you understand them, comment out the
    #error lines.  (The #error lines are there intentionally to force you to
    edit the file.)
@@ -54,28 +54,37 @@ Building SWISH++ for Unix
 
 4. Type "make install".
 
-5. Optional: if you are going to run search(1) as a daemon and you want it
-   started automatically on system boot, you need to call searchmonitor from
-   your system's start-up scripts.
 
-   For SysV-like systems, e.g. Linux and Solaris, type "make install_sysv" and
-   then edit the variable definitions in the beginning of /etc/init.d/searchd
-   if necessary.
+===============================================================================
+Running SWISH++'s search(1) as a daemon for Unix
+===============================================================================
 
-   For other types of Unix systems, e.g., FreeBSD, add a call to searchmonitor
-   in /etc/rc.local like:
+If you are going to run search(1) as a daemon and you want it started
+automatically on system boot, you need to call searchmonitor from your system's
+start-up scripts.
 
-   	/path/to/searchmonitor -c /path/to/swish++.conf -s /path/to/search &
+For SysV-like systems, e.g. Linux and Solaris, type "make install_sysv" and
+then edit the variable definitions in the beginning of /etc/init.d/searchd if
+necessary.
 
-   In either case, also edit /etc/swish++.conf to your liking.
+For most other types of Unix systems, e.g., FreeBSD, add a call to
+searchmonitor in /etc/rc.local like:
 
-   If you are running search(1) under Solaris and you expect that it will be
-   heavily used, read README.Solaris.
+	/path/to/searchmonitor -c /path/to/swish++.conf -s /path/to/search &
 
-6. Optional: if you want to use SWISH++ to index your incoming mail
-   automatically, you need to use Procmail to split messages into individual
-   files.  Included in this distribution (in the procmailrc file) is a sample
-   Procmail recipe for doing this.
+In either case, also edit /etc/swish++.conf to your liking.
+
+If you are running search(1) under Solaris and you expect that it will be
+heavily used, read README.Solaris.
+
+If you are running search(1) under Mac OS X 10.4 (Tiger) or later, you should
+use launchd(8) to start it.  Included in this distribution (in the search.plist
+file) is a sample launchd propertly list file for doing this.
+
+if you want to use SWISH++ to index your incoming mail automatically, you need
+to use Procmail to split messages into individual files.  Included in this
+distribution (in the procmailrc file) is a sample Procmail recipe for doing
+this.
 
 
 ===============================================================================
