@@ -3,6 +3,87 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.1
+*******************************************************************************
+
+NEW FEATURES
+------------
+
+* Made search(1) cooperate with Mac OS X's launchd(8).
+
+  (This feature shall be known as feature LAUNCHD.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* conf_var.h
+
+	1. Added "launchdcooperation" for feature LAUNCHD.
+
+* FollowLinks.h
+
+	1. Added missing: #ifndef PJL_NO_SYMBOLIC_LINKS
+
+* INSTALL.unix
+
+	1. Added seperate daemon section.
+
+* man/man1/search.1
+
+	1. Added mention of new -l/--launchd options for feature LAUNCHD.
+
+* man/man4/swish++.conf.4
+
+	1. Added mention of new LaunchdCooperation configuration variable for
+	   feature LAUNCHD.
+
+* Group.h
+* SearchBackground.h
+
+	1. Added missing: #ifdef SEARCH_DAEMON
+
+* LaunchdCooperation.h
+
+	1. New file for feature LAUNCHD.
+
+* search.c
+
+	1. Added launchd_cooperation global variable.
+	2. Made specification of launchd cooperation force not going into the
+	   background and not set resource limits.
+	3. Added -l case.
+	4. Added -l/--launchd to usage message.
+
+* search.h
+
+	1. Added launchd_opt.
+
+* search_daemon.c
+
+	1. Added checking of launchd_cooperation variable.
+
+* search_options.c
+
+	1. Added "launchd".
+
+* swish++.conf
+
+	1. Added new LaunchdCooperation configuration variable for feature
+	   LAUNCHD.
+
+* User.h
+
+	1. Added missing: #ifdef SEARCH_DAEMON
+	2. Added comment about -U.
+
+* version.h
+
+	1. Upped version to 6.1.
+
+
+
+*******************************************************************************
 6.0.6
 *******************************************************************************
 
