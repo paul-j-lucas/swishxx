@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "February 1, 2005" "SWISH++"
+.TH \f3search\fP 1 "June 16, 2005" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
@@ -129,7 +129,7 @@ In either case, the components of the results are:
 
 .TP 12
 .I rank
-An integer from from 1 to 100.
+An integer from 1 to 100.
 .TP
 .I path-name
 The relative path to where the file was originally indexed.
@@ -345,9 +345,9 @@ with a `\f(CW-\f1'.
 .PP
 Short options that take no arguments can be grouped
 (but the last option in the group can take an argument), e.g.,
-\f(CW-lrv4\fP
+\f(CW-Bq511\fP
 is equivalent to
-\f(CW-l -r -v4\fP.
+\f(CW-B -q 511\fP.
 .PP
 For a long option that takes an argument,
 the argument is either taken to be the characters after a `\f(CW=\fP', if any,
@@ -450,6 +450,12 @@ do not detach from the terminal and run in the background.
 The reason not to run in the background
 is so a wrapper script can see if the process dies for any reason
 and automatically restart it.
+.IP ""
+This option is implied by the
+.B \-X
+or
+.B \-\-launchd
+options.
 .TP
 .BI \-c f
 .br
@@ -685,6 +691,31 @@ Wildcards are not permitted.
 .I c
 is 0.)
 Every window ends with a blank line.
+.TP
+.B \-X
+.br
+.ns
+.TP
+.B \-\-launchd
+If run as a daemon process,
+cooperate with Mac OS X's
+.BR launchd (8)
+by not ``daemonizing'' itself
+since
+.BR launchd (8)
+handles that.
+This option implies the
+.B \-B
+or
+.B \-\-no-background
+options.
+.IP ""
+This option is available only under Mac OS X,
+should be used only for version 10.4 (Tiger) or later,
+and only when
+.B search
+will be started via
+.BR launchd (8).
 .SH CONFIGURATION FILE
 The following variables can be set in a configuration file.
 Variables and command-line options can be mixed,
@@ -704,6 +735,12 @@ Same as
 .B \-i
 or
 .B \-\-index-file
+.TP
+.B LaunchdCooperation
+Same as
+.B \-X
+or
+.B \-\-launchd
 .TP
 .B PidFile
 Same as
@@ -1129,6 +1166,7 @@ default index file name
 .BR listen (3),
 .BR select (3),
 .BR swish++.conf (4),
+.BR launchd (8),
 .BR searchmonitor (8)
 .PP
 Tim Bray, et al.
