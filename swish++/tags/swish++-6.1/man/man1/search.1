@@ -1,0 +1,1199 @@
+.\"
+.\"	SWISH++
+.\"	search.1
+.\"
+.\"	Copyright (C) 2003  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\"
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\"
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.if !'\\$1'0' .sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3search\fP 1 "June 16, 2005" "SWISH++"
+.SH NAME
+search \- SWISH++ searcher
+.SH SYNOPSIS
+.B search
+[
+.I options
+]
+.I query
+.SH DESCRIPTION
+.B search
+is the SWISH++ searcher.
+It searches a previously generated index for the words specified in a query.
+In addition to running from the command-line,
+it can run as a daemon process
+functioning as a ``search server.''
+.SH QUERY INPUT
+.SS Query Syntax
+The formal grammar of a query is:
+.RS 5
+.TP 16
+.IR query :
+.I query relop meta
+.br
+.I meta
+.TP
+.IR meta :
+.IR meta_name \ \f(CW=\fP\  primary
+.br
+.I primary
+.TP
+.IR meta_name :
+.I word
+.TP
+.IR primary :
+.RI \f(CW(\fP query \f(CW)\fP
+.br
+.RI \f(CWnot\fP\  meta
+.br
+.I word
+.br
+.IR word \f(CW*\fP
+.TP
+.IR relop :
+\f(CWand\fP
+.br
+\f(CWnear\fP
+.br
+\f(CWnot near\fP
+.br
+\f(CWor\fP
+.br
+.I (empty)
+.RE
+.PP
+In practice, however, the query is the set of words sought after,
+possibly restricted to meta data,
+and possibly combined with the operators
+``\f(CWand\fP,''
+``\f(CWor\fP,''
+``\f(CWnear\fP,''
+``\f(CWnot\fP,''
+and
+``\f(CWnot near\fP.''
+The asterisk (\f(CW*\fP) can be used as a wildcard character
+at the end of words.
+Note that an asterisk and parentheses are shell meta-characters
+and as such must either be escaped (backslashed) or quoted
+when passed to a shell.
+.PP
+Although syntactically legal, it is a semantic error to have
+``\f(CWnear\fP''
+just before
+``\f(CWnot\fP''
+since such queries are nonsensical,
+e.g.:
+.cS
+mouse near not computer
+.cE
+Queries are evaluated in left-to-right order, i.e.,
+``\f(CWand\fP'' has the same precedence as ``\f(CWor\fP.''
+For more about query syntax,
+see the EXAMPLES.
+.SS Character Mapping and Word Determination
+The same character mapping and word determination heuristics used by
+.BR index (1)
+are used on queries prior to searching.
+.SH RESULTS OUTPUT
+.SS Result Components
+The results are output either in ``classic'' or XML format.
+In either case, the components of the results are:
+
+.TP 12
+.I rank
+An integer from 1 to 100.
+.TP
+.I path-name
+The relative path to where the file was originally indexed.
+.TP
+.I file-size
+The file's size in bytes.
+.TP
+.I file-title
+If the file is of a format that can have titles
+(HTML, XHTML, LaTeX, mail, or Unix manual pages)
+and the title was extracted, then
+.I file-title
+is its title;
+otherwise, it is its filename.
+.SS Classic Results Format
+The ``classic'' results format is plain text as:
+.cS
+.I rank path-name file-size file-title
+.cE
+It can be parsed easily in Perl with:
+.cS
+($rank,$path,$size,$title) = split( / /, $_, 4 );
+.cE
+(The separator can be changed via the 
+.B \-R
+or
+.B \-\-separator
+options or the
+.B ResultSeparator
+variable.)
+.P
+Prior to results lines, comment lines may also appear
+containing additional information about the query results.
+Comment lines are in the format of:
+.cS
+# \f2comment-key\fP: \f2comment-value\fP
+.cE
+The keys and values are:
+.RS 5
+.TP 24
+\f3ignored\fP: \f2stop-words\fP
+The list of stop-words (separated by spaces) ignored in the query.
+.TP
+\f3not found\fP: \f2word\fP
+The word was not found in the index.
+.TP
+\f3results\fP: \f2result-count\fP
+The total number of results.
+.RE
+.SS XML Results Format
+The XML results format is given by the DTD:
+.cS
+<!ELEMENT SearchResults (IgnoredList?, ResultCount, ResultList?)>
+<!ELEMENT IgnoredList (Ignored+)>
+<!ELEMENT Ignored (#PCDATA)>
+<!ELEMENT ResultCount (#PCDATA)>
+<!ELEMENT ResultList (File+)>
+<!ELEMENT File (Rank, Path, Size, Title)>
+<!ELEMENT Rank (#PCDATA)>
+<!ELEMENT Path (#PCDATA)>
+<!ELEMENT Size (#PCDATA)>                                                       <!ELEMENT Title (#PCDATA)>
+.cE
+and by the XML schema located at:
+.cS
+http://homepage.mac.com/pauljlucas/software/swish/SearchResults/SearchResults.xsd
+.cE
+For example:
+.cS
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE SearchResults SYSTEM
+ "http://homepage.mac.com/pauljlucas/software/swish/SearchResults.dtd">
+<SearchResults
+ xmlns="http://homepage.mac.com/pauljlucas/software/swish/SearchResults"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://homepage.mac.com/pauljlucas/software/swish/SearchResults
+                     SearchResults.xsd">
+  <IgnoredList>
+    <Ignored>\f2stop-word\fP</Ignored>
+    \f2\&...\fP
+  </IgnoredList>
+  <ResultCount>42</ResultCount>
+  <ResultList>
+    <File>
+      <Rank>\f2rank\fP</Rank>
+      <Path>\f2path-name\fP</Path>
+      <Size>\f2file-size\fP</Size>
+      <Title>\f2file-title\fP</Title>
+    </File>
+    \f2\&...\fP
+  </ResultList>
+</SearchResults>
+.cE 0
+.SH RUNNING AS A DAEMON PROCESS
+.SS Description
+.B search
+can alternatively run as a daemon process
+(via either the
+.B \-b
+or
+.B \-\-daemon-type
+options or the
+.B SearchDaemon
+variable)
+functioning as a ``search server''
+by listening to a Unix domain socket
+(specified by either the
+.B \-u
+or
+.B \-\-socket-file
+options or the
+.B SocketFile
+variable),
+a TCP socket
+(specified by either the
+.B \-a
+or
+.B \-\-socket-address
+options or the
+.B SocketAddress
+variable),
+or both.
+Unix domain sockets are preferred for both performance and security.
+For search-intensive applications,
+such as a search engine on a heavily used web site,
+this can yield a large performance improvement
+since the start-up cost
+.RB ( fork (2),
+.BR exec (2),
+and initialization)
+is paid only once.
+.PP
+If the process was started with root privileges,
+it will give them away immediately after initialization
+and before servicing any requests.
+.SS Clients and Requests
+Search clients connect to a daemon via a socket
+and send a query in the same manner as on the command line
+(including the first word being ``\f(CWsearch\f1'').
+The only exception is that shell meta-characters
+.I "must not"
+be escaped (backslashed) since no shell is involved.
+Search results are returned via the same socket.
+See the EXAMPLES.
+.SS Multithreading
+A daemon can serve multiple query requests simultaneously
+since it is multi-threaded.
+When started,
+it ``pre-threads'' meaning that it creates a pool of threads in advance
+that service an indefinite number of requests
+as a further performance improvement
+since a thread is not created and destroyed per request.
+.PP
+There is an initial, minimum number of threads in the thread pool.
+The number of threads grows dynamically
+when there are more requests than threads,
+but not more than a specified maximum
+to prevent the server from thrashing.
+(See the
+.BR \-t ,
+.BR \-\-min-threads ,
+.BR \-T ,
+and
+.B \-\-max-threads
+options or the
+.B ThreadsMin
+or
+.B ThreadsMax
+variables.)
+If the number of threads reaches the maximum,
+subsequent requests are queued until existing threads become available
+to service them after completing in-progress requests.
+(See either the
+.B \-q
+or
+.B \-\-queue-size
+options or the
+.B SocketQueueSize
+variable.)
+.PP
+If there are more than the minimum number of threads
+and some remain idle longer than a specified timeout period
+(because the number of requests per unit time has dropped),
+then threads will die off until the pool returns to its original minimum size.
+(See either the
+.B \-O
+or
+.B \-\-thread-timeout
+options or the
+.B ThreadTimeout
+variable.)
+.SS Restrictions
+A single daemon can search only a single index.
+To search multiple indices concurrently,
+multiple daemons can be run,
+each searching its own index and using its own socket.
+An index
+.I "must not"
+be modified or deleted while a daemon is using it.
+.SH OPTIONS
+Options begin with either a `\f(CW-\f1' for short options
+or a ``\f(CW--\f1'' for long options.
+Either a `\f(CW-\f1' or ``\f(CW--\f1'' by itself explicitly ends the options;
+however, the difference is that `\f(CW-\f1' is returned as the first non-option
+whereas ``\f(CW--\f1'' is skipped entirely.
+Either short or long options may be used.
+Long option names may be abbreviated
+so long as the abbreviation is unambiguous.
+.PP
+For a short option that takes an argument,
+the argument is either taken to be the remaining characters of the same option,
+if any, or, if not, is taken from the next option unless said option begins
+with a `\f(CW-\f1'.
+.PP
+Short options that take no arguments can be grouped
+(but the last option in the group can take an argument), e.g.,
+\f(CW-Bq511\fP
+is equivalent to
+\f(CW-B -q 511\fP.
+.PP
+For a long option that takes an argument,
+the argument is either taken to be the characters after a `\f(CW=\fP', if any,
+or, if not, is taken from the next option unless said option begins with
+a `\f(CW-\fP'.
+.TP 20
+.B \-?
+.br
+.ns
+.TP
+.B \-\-help
+Print the usage (``help'') message and exit.
+.TP
+.BI \-a a
+.br
+.ns
+.TP
+.BI \-\-socket-address= a
+When running as a daemon,
+the address,
+.IR a , 
+to listen to for TCP requests.
+(Default is all IP addresses and port 1967.)
+The address argument is of the form:
+.sp
+.RS 25
+.ft CW
+\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
+.ft 1
+.RE
+.TP 20
+.B ""
+that is: an optional host and colon
+followed by a port number.
+The
+.I host
+may be one of a host name, an IP address, or the \f(CW*\f1 character
+meaning ``any IP address.''
+Omitting the
+.I host
+and colon also means ``any IP address.''
+.TP
+.BI \-b t
+.br
+.ns
+.TP
+.BI \-\-daemon-type= t
+Run as a daemon process.
+(Default is not to.)
+The type,
+.IR t ,
+is one of:
+.RS 20
+.TP 8
+\f(CWnone\f1
+Same as not specifying the option at all.
+(This does not purport to be useful,
+but rather consistent with the types that can be specified to the
+.B SearchDaemon
+variable.)
+.TP
+\f(CWtcp\f1
+Listen on a TCP socket
+(see the
+.B \-a
+option).
+.TP
+\f(CWunix\f1
+Listen on a Unix domain socket
+(see the
+.B \-u
+option).
+.TP
+\f(CWboth\f1
+Listen on both.
+.RE
+.PD
+.RE
+.TP 20
+.B ""
+By default,
+if executed from the command-line,
+.B search
+appears to return immediately;
+however, it has merely
+detached from the terminal
+and
+put itself into the background.
+There is no need to follow the command with an `\f(CW&\f1'.
+.TP
+.B \-B
+.br
+.ns
+.TP
+.B \-\-no-background
+When running as a daemon process,
+do not detach from the terminal and run in the background.
+(Default does.)
+.IP ""
+The reason not to run in the background
+is so a wrapper script can see if the process dies for any reason
+and automatically restart it.
+.IP ""
+This option is implied by the
+.B \-X
+or
+.B \-\-launchd
+options.
+.TP
+.BI \-c f
+.br
+.ns
+.TP
+.BI \-\-config-file= f
+The name of the configuration file,
+.IR f ,
+to use.
+(Default is \f(CWswish++.conf\f1 in the current directory.)
+A configuration file is not required:
+if none is specified and the default does not exist, none is used;
+however, if one is specified and it does not exist, then this is an error.
+.TP
+.B \-d
+.br
+.ns
+.TP
+.B \-\-dump-words
+Dump the query word indices to standard output and exit.
+Wildcards are not permitted.
+.TP
+.B \-D
+.br
+.ns
+.TP
+.B \-\-dump-index
+Dump the entire word index to standard output and exit.
+.TP
+.BI \-F f
+.br
+.ns
+.TP
+.BI \-\-format= f
+The format,
+.IR f ,
+search results are output in.
+The format is either \f(CWclassic\fP or \f(CWXML\f1.
+(Default is \f(CWclassic\f1.)
+.TP
+.BI \-G s
+.br
+.ns
+.TP
+.BI \-\-group= s
+The group,
+.IR s ,
+to switch the process to after starting and only if started as root.
+(Default is \f(CWnobody\f1.)
+.TP
+.BI \-i f
+.br
+.ns
+.TP
+.BI \-\-index-file= f
+The name of the index file,
+.IR f ,
+to use.
+(Default is \f(CWswish++.index\fP in the current directory.)
+.TP
+.BI \-m n
+.br
+.ns
+.TP
+.BI \-\-max-results= n
+The maximum number of results,
+.IR n ,
+to return.
+(Default is 100.)
+.TP
+.B \-M
+.br
+.ns
+.TP
+.B \-\-dump-meta
+Dump the meta-name index to standard output and exit.
+.TP
+.BI \-n n
+.br
+.ns
+.TP
+.BI \-\-near= n
+The maximum number of words apart,
+.IR n ,
+two words can be to be considered ``near'' each other
+in queries using \f(CWnear\fP.
+(Default is 10.)
+.TP
+.BI \-o s
+.br
+.ns
+.TP
+.BI \-\-socket-timeout= s
+The number of seconds,
+.IR s ,
+a search client has to complete a query request
+before the socket connection is closed.
+(Default is 10.)
+This is to prevent a client from connecting, not completing a request,
+and causing the thread servicing the request to wait forever.
+.TP
+.BI \-O s
+.br
+.ns
+.TP
+.BI \-\-thread-timeout= s
+The number of seconds,
+.IR s ,
+until an idle spare thread dies while running as a daemon.
+(Default is 30.)
+.TP
+.BI \-p n
+.br
+.ns
+.TP
+.BI \-\-word-percent= n
+The maximum percentage,
+.IR n ,
+of files a word may occur in before it is discarded as being too frequent.
+(Default is 100.)
+If you want to keep all words regardless, specify 101.
+.TP
+.BI \-P f
+.br
+.ns
+.TP
+.BI \-\-pid-file= f
+The name of the file to record the process ID of
+.B search
+if running as a daemon.
+(Default is none.)
+.TP
+.BI \-q n
+.br
+.ns
+.TP
+.BI \-\-queue-size= n
+The maximum number of socket connections to queue.
+(Default is 511.)
+.TP
+.BI \-r n
+.br
+.ns
+.TP
+.BI \-\-skip-results= n
+The initial number of results,
+.IR n ,
+to skip.
+(Default is 0.)
+Used in conjunction with
+.B \-m
+or
+.BR \-\-max-results ,
+results can be returned in ``pages.''
+.TP
+.BI \-R s
+.br
+.ns
+.TP
+.BI \-\-separator= s
+The classic result separator string.
+(Default is " ".)
+.TP
+.B \-s
+.br
+.ns
+.TP
+.B \-\-stem-words
+Perform stemming (suffix stripping) on words during the search.
+Words that end in the wildcard character are not stemmed.
+(Default is no.)
+.TP
+.B \-S
+.br
+.ns
+.TP
+.B \-\-dump-stop
+Dump the stop-word index to standard output and exit.
+.TP
+.BI \-t n
+.br
+.ns
+.TP
+.BI \-\-min-threads= n
+Minimum number of threads to maintain while running as a daemon.
+.TP
+.BI \-T n
+.br
+.ns
+.TP
+.BI \-\-max-threads= n
+Maximum number of threads to allow while running as a daemon.
+.TP
+.BI \-u f
+.br
+.ns
+.TP
+.BI \-\-socket-file= f
+The name of the Unix domain socket file to use while running as a daemon.
+(Default is \f(CW/tmp/search.socket\f1.)
+.TP
+.BI \-U s
+.br
+.ns
+.TP
+.BI \-\-user= s
+The user,
+.IR s ,
+to switch the process to after starting and only if started as root.
+(Default is \f(CWnobody\f1.)
+.TP
+.B \-V
+.br
+.ns
+.TP
+.B \-\-version
+Print the version number of
+.B SWISH++
+to standard output and exit.
+.TP
+.BI \-w n [, c ]
+.br
+.ns
+.TP
+.BI \-\-window= n [, c ]
+Dump a ``window'' of at most
+.I n
+lines around each query word matching
+.I c
+characters.
+Wildcards are not permitted.
+(Default for
+.I c
+is 0.)
+Every window ends with a blank line.
+.TP
+.B \-X
+.br
+.ns
+.TP
+.B \-\-launchd
+If run as a daemon process,
+cooperate with Mac OS X's
+.BR launchd (8)
+by not ``daemonizing'' itself
+since
+.BR launchd (8)
+handles that.
+This option implies the
+.B \-B
+or
+.B \-\-no-background
+options.
+.IP ""
+This option is available only under Mac OS X,
+should be used only for version 10.4 (Tiger) or later,
+and only when
+.B search
+will be started via
+.BR launchd (8).
+.SH CONFIGURATION FILE
+The following variables can be set in a configuration file.
+Variables and command-line options can be mixed,
+the latter taking priority.
+.PP
+.RS 5
+.PD 0
+.TP 20
+.B Group
+Same as
+.B \-G
+or
+.B \-\-group
+.TP
+.B IndexFile
+Same as
+.B \-i
+or
+.B \-\-index-file
+.TP
+.B LaunchdCooperation
+Same as
+.B \-X
+or
+.B \-\-launchd
+.TP
+.B PidFile
+Same as
+.B \-P
+or
+.B \-\-pid-file
+.TP
+.B ResultSeparator
+Same as
+.B \-R
+or
+.B \-\-separator
+.TP
+.B ResultsFormat
+Same as
+.B \-F
+or
+.B \-\-format
+.TP
+.B ResultsMax
+Same as
+.B \-m
+or
+.B \-\-max-results
+.TP
+.B SearchBackground
+Same as
+.B \-B
+or
+.B \-\-no-background
+.TP
+.B SearchDaemon
+Same as
+.B \-b
+or
+.B \-\-daemon-type
+.TP
+.B SocketAddress
+Same as
+.B \-a
+or
+.B \-\-socket-address
+.TP
+.B SocketFile
+Same as
+.B \-u
+or
+.B \-\-socket-file
+.TP
+.B SocketQueueSize
+Same as
+.B \-q
+or
+.B \-\-queue-size
+.TP
+.B SocketTimeout
+Same as
+.B \-o
+or
+.B \-\-socket-timeout
+.TP
+.B StemWords
+Same as
+.B \-s
+or
+.B \-\-stem-words
+.TP
+.B ThreadsMax
+Same as
+.B \-T
+or
+.B \-\-max-threads
+.TP
+.B ThreadsMin
+Same as
+.B \-t
+or
+.B \-\-min-threads
+.TP
+.B ThreadTimeout
+Same as
+.B \-O
+or
+.B \-\-thread-timeout
+.TP
+.B User
+Same as
+.B \-U
+or
+.B \-\-user
+.TP
+.B WordFilesMax
+Same as
+.B \-f
+or
+.B \-\-word-files
+.TP
+.B WordPercentMax
+Same as
+.B \-p
+or
+.B \-\-word-percent
+.TP
+.B WordsNear
+Same as
+.B \-n
+or
+.B \-\-near
+.PD
+.RE
+.SH EXAMPLES
+.SS Simple Queries
+The query:
+.cS
+computer mouse
+.cE
+is the same as and short for:
+.cS
+computer and mouse
+.cE
+(because ``\f(CWand\fP'' is implicit)
+and would return only those documents that contain both words.
+The query:
+.cS
+cat or kitten or feline
+.cE
+would return only those documents regarding cats.
+The query:
+.cS
+mouse and computer or keyboard
+.cE
+is the same as:
+.cS
+(mouse and computer) or keyboard
+.cE
+(because queries are evaluated left-to-right)
+in that they will both return only those documents
+regarding either mice attached to a computer or any kind of keyboard.
+However, neither of those is the same as:
+.cS
+mouse and (computer or keyboard)
+.cE
+that would return only those documents regarding mice
+(including the rodents)
+and either a computer or a keyboard. 
+.SS Queries Using Wildcards
+The query:
+.cS
+comput*
+.cE
+would return only those documents that contain words beginning with ``comput''
+such as
+``computation,''
+``computational,''
+``computer,''
+``computerize,''
+``computing,'' and others.
+Wildcarded words can be used anywhere ordinary words can be.
+The query:
+.cS
+comput* (medicine or doctor*)
+.cE
+would return only those documents that contain something about
+computer use in medicine or by doctors.
+.SS Queries Using ``not''
+The query:
+.cS
+mouse or mice and not computer*
+.cE
+would return only those documents regarding mice (the rodents)
+and not the kind attached to a computer.
+.SS Queries Using ``near''
+Using ``\f(CWnear\fP'' is the same as using ``\f(CWand\fP''
+except that it not only requires both words to be in the documents,
+but that they be
+.I near
+each other, i.e.,
+it returns potentially fewer documents
+than the corresponding ``\f(CWand\fP'' query.
+The query:
+.cS
+computer near mouse
+.cE
+would return only those documents where both words are near each other.
+They query:
+.cS
+mouse near (computer or keyboard)
+.cE
+is the same as:
+.cS
+(mouse near computer) or (mouse near keyboard)
+.cE
+i.e., ``near'' gets
+.I distributed
+across parenthesized subqueries.
+.SS Queries Using ``not near''
+Using ``\f(CWnot near\fP'' is the same as using ``\f(CWand not\fP''
+except that it allows the right-hand side words to be in the documents,
+just 
+.I "not near"
+the left-hand side words, i.e.,
+it returns potentially more documents
+than the corresponding ``\f(CWand not\fP'' query.
+Of course the word(s) on the right-hand side
+need not be in the documents at all, i.e.,
+they would be considered ``infinitely far'' apart.
+The query:
+.cS
+mouse or mice not near computer*
+.cE
+would return only those documents regarding mice (the rodents)
+more effectively than the query:
+.cS
+mouse or mice and not computer*
+.cE
+because the latter would exclude documents about mice (the rodents)
+where computers just so happened to be mentioned in the same documents.
+.SS Queries Using Meta Data
+The query:
+.cS
+author = hawking
+.cE
+would return only those documents
+whose author attribute contains ``hawking.''
+The query:
+.cS
+author = hawking radiation
+.cE
+would return only those documents regarding radiation
+whose author attribute contains ``hawking.''
+The query:
+.cS
+author = (stephen hawking)
+.cE
+would return only those documents whose author is Stephen Hawking.
+The query:
+.cS
+author = (stephen hawking) or (black near hole*)
+.cE
+would return only those documents whose author is Stephen Hawking
+or that contain the word ``black'' near ``hole'' or ``holes''
+regardless of the author.
+Note that the second set of parentheses are necessary
+otherwise the query would have been the same as:
+.cS
+(author = (stephen hawking) or black) near hole*
+.cE
+that would have additionally required both ``stephen'' and ``hawking''
+to be near ``hole'' or ``holes.''
+.SS Sending Queries to a Search Daemon
+To send a query request to a search daemon using Perl,
+first open the socket and connect to the daemon
+(see [Wall], pp. 439-440):
+.cS
+use Socket;
+
+$SocketFile = '/tmp/search.socket';
+socket( SEARCH, PF_UNIX, SOCK_STREAM, 0 ) or
+	die "can not open socket: $!\\n";
+connect( SEARCH, sockaddr_un( $SocketFile ) ) or
+	die "can not connect to \\"$SocketFile\\": $!\\n";
+.cE
+Autoflush
+.I must
+be set for the socket filehandle
+(see [Wall], p. 781),
+otherwise the server thread will hang
+since I/O buffering will wait for the buffer to fill
+that will never happen since queries are short:
+.cS
+select( (select( SEARCH ), $| = 1)[0] );
+.cE
+Next, send a query request
+(beginning with the word ``search''
+and any options just as with a command-line)
+to the daemon via the socket filehandle
+making sure to include a trailing newline
+since the server reads an entire line of input
+(so therefore it looks and waits for a newline):
+.cS
+$query = 'mouse and computer';
+print SEARCH "search $query\\n";
+.cE
+Finally, read the results back and print them:
+.cS
+print while <SEARCH>;
+close( SEARCH );
+.cE
+.SH EXIT STATUS
+Exits with one of the values given below:
+.PP
+.RS 5
+.PD 0
+.TP 5
+0
+Success.
+.TP
+1
+Error in configuration file.
+.TP
+2
+Error in command-line options.
+.TP
+40
+Unable to read index file.
+.TP
+50
+Malformed query.
+.TP
+51
+Attempted ``near'' search without word-position data.
+.TP
+60
+Could not write to PID file.
+.TP
+61
+Host or IP address is invalid or nonexistent.
+.TP
+62
+Could not open a TCP socket.
+.TP
+63
+Could not open a Unix domain socket.
+.TP
+64
+Could not
+.BR unlink (2)
+a Unix domain socket file.
+.TP
+65
+Could not
+.BR bind (3)
+to a TCP socket.
+.TP
+66
+Could not
+.BR bind (3)
+to a Unix domain socket.
+.TP
+67
+Could not
+.BR listen (3)
+to a TCP socket.
+.TP
+68
+Could not
+.BR listen (3)
+to a Unix domain socket.
+.TP
+69
+Could not
+.BR select (3).
+.TP
+70
+Could not
+.BR accept (3)
+a socket connection.
+.TP
+71
+Could not
+.BR fork (2)
+child process.
+.TP
+72
+Could not change directory to \f(CW/\f1.
+.TP
+73
+Could not create thread.
+.TP
+74
+Could not create thread key.
+.TP
+75
+Could not detach thread.
+.TP
+76
+Could not initialize thread condition.
+.TP
+77
+Could not initialize thread mutex.
+.TP
+78
+Could not switch to user.
+.TP
+79
+Could not switch to group.
+.PD
+.RE
+.SH CAVEATS
+.TP 4
+1.
+Stemming can be done
+.B only
+when searching through and index of files that are in English
+because the Porter stemming algorithm used only stems English words.
+.TP
+2.
+When run as a daemon using a TCP socket,
+there are no security restrictions on who may connect and search.
+The code to implement domain and IP address restrictions
+isn't worth it since such things are better handled by firewalls and routers.
+.TP
+3.
+XML output can currently only be obtained for actual search results
+and not word, index, meta-name, or stop-word dumps.
+.SH FILES
+.PD 0
+.TP 20
+\f(CWswish++.conf\f1
+default configuration file name
+.TP
+\f(CWswish++.index\f1
+default index file name
+.PD
+.SH SEE ALSO
+.BR index (1),
+.BR perlfunc (1),
+.BR exec (2),
+.BR fork (2),
+.BR unlink (2),
+.BR accept (3),
+.BR bind (3),
+.BR listen (3),
+.BR select (3),
+.BR swish++.conf (4),
+.BR launchd (8),
+.BR searchmonitor (8)
+.PP
+Tim Bray, et al.
+.IR "Extensible Markup Language (XML) 1.0" ,
+February 10, 1998.
+.PP
+Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
+.IR "Pthreads Programming" ,
+O'Reilly & Associates, Sebastopol, CA,
+1996.
+.PP
+M.F. Porter.
+``An Algorithm For Suffix Stripping,''
+.IR Program ,
+14(3),
+July 1980,
+pp. 130-137.
+.PP
+W. Richard Stevens.
+.IR "Unix Network Programming, Vol 1, 2nd ed." ,
+Prentice-Hall, Upper Saddle River, NJ,
+1998.
+.PP
+Larry Wall, et al.
+.IR "Programming Perl, 3rd ed." ,
+O'Reilly & Associates, Inc., Sebastopol, CA,
+2000.
+.SH AUTHOR
+Paul J. Lucas
+.RI < pauljlucas@mac.com >
