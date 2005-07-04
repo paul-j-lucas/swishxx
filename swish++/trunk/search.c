@@ -927,8 +927,9 @@ ostream& usage( ostream &err ) {
     "-V   | --version          : Print version number, exit\n"
     "-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n"
 #if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
-    "-X   | --launchd          : If a daemon, cooperate with Mac OS X's launchd\n";
+    "-X   | --launchd          : If a daemon, cooperate with Mac OS X's launchd\n"
 #endif
+    ;
     return err;
 }
 /* vim:set et sw=4 ts=4: */
