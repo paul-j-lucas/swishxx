@@ -215,7 +215,7 @@ using namespace std;
                 ch = *substitution++;
                 goto collect;
             }
-            substitution = 0;   // reached end of substitution
+            substitution = 0;           // reached end of substitution
         }
         ch = iso8859_1_to_ascii( *c++ );
 
@@ -234,7 +234,7 @@ collect:    if ( is_word_char( ch ) ) {
                 word[ len++ ] = ch;
                 continue;
             }
-            in_word = false;                    // too big: skip chars
+            in_word = false;            // too big: skip chars
             while ( !c.at_end() && is_word_char( iso8859_1_to_ascii( *c++ ) ) )
                 ;
             continue;
