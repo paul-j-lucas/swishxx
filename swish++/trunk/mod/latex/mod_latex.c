@@ -244,33 +244,30 @@ collect:    if ( is_word_char( ch ) ) {
 
         switch ( ch ) {
 
-            case '%': {
+            case '%':
                 //
                 // Skip a comment that starts at a '%' that includes all the
                 // remaining characters on the line and any leading whitespace
                 // on the next line.
                 //
-                bool newline = false;
-                while ( !(++c).at_end() )
-                    if ( *c == '\n' || *c == '\r' )
+                for ( bool newline = false; !c.at_end(); ++c )
+                    if ( *c == '\n' )
                         newline = true;
                     else if ( newline && !is_space( *c ) )
                         break;
                 continue;
-            }
 
             case '~':
                 ch = ' ';
                 break;
 
-            case '\\': {
+            case '\\':
                 //
                 // Parse a LaTeX command: it may return text to be substituted
                 // for the command and indexed.
                 //
                 substitution = parse_latex_command( c );
                 continue;
-            }
         }
 
         ////////// Index a word, maybe ////////////////////////////////////////
