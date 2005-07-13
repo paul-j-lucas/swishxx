@@ -81,7 +81,7 @@ If you are running search(1) under Mac OS X 10.4 (Tiger) or later, you should
 use launchd(8) to start it.  Included in this distribution (in the search.plist
 file) is a sample launchd propertly list file for doing this.
 
-if you want to use SWISH++ to index your incoming mail automatically, you need
+If you want to use SWISH++ to index your incoming mail automatically, you need
 to use Procmail to split messages into individual files.  Included in this
 distribution (in the procmailrc file) is a sample Procmail recipe for doing
 this.
