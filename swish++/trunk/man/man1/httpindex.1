@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3httpindex\f1 1 "August 31, 2001" "SWISH++"
+.TH \f3httpindex\f1 1 "August 2, 2005" "SWISH++"
 .SH NAME
 httpindex \- HTTP front-end for SWISH++ indexer
 .SH SYNOPSIS
@@ -112,7 +112,7 @@ To index all HTML and text files on a remote web server
 keeping descriptions locally:
 .cS
 wget -A html,txt -linf -t2 -rxnv -nh -w2 http://www.foo.com 2>&1 |
-httpindex -d -e'html:*.html' -e'text:*.txt'
+httpindex -d -e'html:*.html,text:*.txt'
 .cE
 Note that you need to redirect
 .BR wget (1)'s
@@ -122,13 +122,34 @@ to pipe it to
 .SH EXIT STATUS
 Exits with a value of zero only if indexing completed sucessfully;
 non-zero otherwise.
-.SH CAVEATS & FILES
-Same as those for
-.BR index (1).
+.SH CAVEATS
+In addition to those for
+.BR index (1),
+.B httpindex
+does not correctly handle the use of multiple
+.BR \-e ,
+.BR \-E ,
+.BR \-m ,
+or
+.B \-M
+options
+(because the Perl script uses the standard \f(CWGetOpt::Std\f1 package
+for processing command-line options that doesn't).
+The last of any of those options ``wins.''
+.PP
+The work-around is to use multiple values for those options
+seperated by commas to a single one of those options.
+For example, if you want to do:
+.cS
+httpindex -e'html:*.html' -e'text:*.txt'
+.cE
+do this instead:
+.cS
+httpindex -e'html:*.html,text:*.txt'
+.cE
 .SH SEE ALSO
 .BR index (1),
-.BR wget (1),
-.BR WWW (3)
+.BR wget (1)
 .SH AUTHOR
 Paul J. Lucas
 .RI < pauljlucas@mac.com >
