@@ -3,6 +3,31 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.1.3
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* Fixed a mistake in the httpindex.1 manual page that shoed incorrect use of
+  multiple -e options.
+
+  (This bug fix shall be known as bug fix HTTP1.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* man/man1/httpindex.1
+
+	1. Fixed the aforementioned mistake.
+
+* version.h
+
+	1. Upped version to 6.1.3.
+
+
+*******************************************************************************
 6.1.2
 *******************************************************************************
 
