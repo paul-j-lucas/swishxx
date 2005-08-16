@@ -264,8 +264,9 @@ inline omanip< char const* > index_file_info( int index ) {
     //
     bool const dump_something =
         opt.dump_entire_index_opt ||
-        opt.dump_meta_names_opt ||
-        opt.dump_stop_words_opt;
+        opt.dump_meta_names_opt   ||
+        opt.dump_stop_words_opt   ||
+        opt.dump_word_index_opt;
     if ( !( argc || dump_something
 #ifdef  SEARCH_DAEMON
          || daemon_type != "none"
