@@ -49,7 +49,7 @@ extern index_segment directories;
 //
 // SYNOPSIS
 //
-	string escape( char const *s )
+	static string escape( char const *s )
 //
 // DESCRIPTION
 //
@@ -80,6 +80,25 @@ extern index_segment directories;
 		result.replace( i, 1, "&lt;" );
 
 	return result;
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
+        xml_formatter::~xml_formatter()
+//
+// DESCRIPTION
+//
+//      Destroy an xml_formatter.
+//
+// NOTE
+//
+//      This is out-of-line only because it's virtual.
+//
+//*****************************************************************************
+{
+    // do nothing
 }
 
 //*****************************************************************************

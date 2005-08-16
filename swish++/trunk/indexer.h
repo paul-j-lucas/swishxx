@@ -57,6 +57,8 @@ enum {
 //*****************************************************************************
 {
 public:
+    virtual ~indexer();
+
     static bool     any_mod_claims_option( PJL::option_stream::option const& );
     //              See if any indexing module claims a given option.
 

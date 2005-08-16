@@ -30,6 +30,25 @@ encoded_char_range::decoder::set_type encoded_char_range::decoder::set_;
 //
 // SYNOPSIS
 //
+        encoded_char_range::decoder::~decoder()
+//
+// DESCRIPTION
+//
+//      Destroy an encoded_char_range::decoder.
+//
+// NOTE
+//
+//      This is out-of-line only because it's virtual.
+//
+//*****************************************************************************
+{
+    // do nothing
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
         void encoded_char_range::decoder::reset_all()
 //
 // SYNOPSIS

@@ -80,6 +80,25 @@ indexer*                indexer::text_indexer_ = 0;
 //
 // SYNOPSIS
 //
+        indexer::~indexer()
+//
+// DESCRIPTION
+//
+//      Destroy an indexer.
+//
+// NOTE
+//
+//      This is out-of-line only because it's virtual.
+//
+//*****************************************************************************
+{
+    // do nothing
+}
+
+//*****************************************************************************
+//
+// SYNOPSIS
+//
         /* static */ option_stream::spec*
         indexer::all_mods_options( option_stream::spec const *main_spec )
 //

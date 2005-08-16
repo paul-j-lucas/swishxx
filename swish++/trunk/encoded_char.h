@@ -176,6 +176,8 @@ public:
 	typedef encoded_char_range::value_type value_type;
 	typedef encoded_char_range::pointer pointer;
 
+	virtual ~decoder();
+
 	static void	reset_all();
 protected:
 	decoder()	{ set_.insert( this ); }

@@ -43,6 +43,8 @@ class file_info;
 //*****************************************************************************
 {
 public:
+	virtual ~results_formatter();
+
 	virtual void	pre( stop_word_set const& ) const = 0;
 	//		Output search-result "meta" information before the
 	//		results themselves: the set of stop words found in the
