@@ -9,7 +9,11 @@ SWISH++ Changes
 BUG FIXES
 ---------
 
-* Fixed a mistake in the httpindex.1 manual page that shoed incorrect use of
+* The search(1) -d option didn't work.
+
+  (This bug fix shall be known as bug fix SEARCHd.)
+
+* Fixed a mistake in the httpindex.1 manual page that showed incorrect use of
   multiple -e options.
 
   (This bug fix shall be known as bug fix HTTP1.)
@@ -22,6 +26,23 @@ CHANGES, file-by-file
 
 	1. Fixed the aforementioned mistake.
 
+* classic_formatter.c
+* classic_formatter.h
+* encoded_char.c
+* encoded_char.h
+* indexer.c
+* indexer.h
+* results_formatter.c
+* results_formatter.h
+* xml_formatter.c
+* xml_formatter.h
+
+	1. Added virtual destructors.
+
+* search.c
+
+	1. In main(), added check of opt.dump_word_index_opt for bug fix
+	   SEARCHd.
 * version.h
 
 	1. Upped version to 6.1.3.
