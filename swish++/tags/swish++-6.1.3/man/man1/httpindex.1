@@ -1,0 +1,156 @@
+.\"
+.\"	SWISH++
+.\"	httpindex.1
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\"
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\"
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.if !'\\$1'0' .sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3httpindex\f1 1 "August 2, 2005" "SWISH++"
+.SH NAME
+httpindex \- HTTP front-end for SWISH++ indexer
+.SH SYNOPSIS
+.B wget
+[
+.I options
+]
+.I URL...
+.B 2>&1 | httpindex
+[
+.I options
+]
+.SH DESCRIPTION
+.B httpindex
+is a front-end for
+.BR index (1)
+to index files copied from remote servers using
+.BR wget (1).
+The files (in a copy of the remote directory structure)
+can be kept, deleted, or replaced with their descriptions after indexing.
+.SH OPTIONS
+.SS wget Options
+The
+.BR wget (1)
+options that are
+.B required
+are:
+.BR \-A ,
+.BR \-nv ,
+.BR \-r ,
+and
+.BR \-x ;
+the ones that are
+.B highly recommended
+are:
+.BR \-l ,
+.BR \-nh ,
+.BR \-t ,
+and
+.BR \-w .
+(See the EXAMPLE.)
+.SS httpindex Options
+.B httpindex
+accepts the same short options as
+.BR index (1)
+except for
+.BR \-H ,
+.BR \-I ,
+.BR \-l ,
+.BR \-r ,
+.BR \-S ,
+and
+.BR \-V .
+.PP
+The following options are unique to
+.BR httpindex :
+.TP
+.B \-d
+Replace the text of local copies of retrieved files with their descriptions
+after they have been indexed.
+This is useful to display file descriptions in search results
+without having to have complete copies of the remote files
+thus saving filesystem space.
+(See the \f(CWextract_description()\f1 function in
+.BR WWW (3)
+for details about how descriptions are extracted.)
+.TP
+.B \-D
+Delete the local copies of retrieved files after they have been indexed.
+This prevents your local filesystem from filling up
+with copies of remote files.
+.SH EXAMPLE
+To index all HTML and text files on a remote web server
+keeping descriptions locally:
+.cS
+wget -A html,txt -linf -t2 -rxnv -nh -w2 http://www.foo.com 2>&1 |
+httpindex -d -e'html:*.html,text:*.txt'
+.cE
+Note that you need to redirect
+.BR wget (1)'s
+output from standard error to standard output in order
+to pipe it to
+.BR httpindex .
+.SH EXIT STATUS
+Exits with a value of zero only if indexing completed sucessfully;
+non-zero otherwise.
+.SH CAVEATS
+In addition to those for
+.BR index (1),
+.B httpindex
+does not correctly handle the use of multiple
+.BR \-e ,
+.BR \-E ,
+.BR \-m ,
+or
+.B \-M
+options
+(because the Perl script uses the standard \f(CWGetOpt::Std\f1 package
+for processing command-line options that doesn't).
+The last of any of those options ``wins.''
+.PP
+The work-around is to use multiple values for those options
+seperated by commas to a single one of those options.
+For example, if you want to do:
+.cS
+httpindex -e'html:*.html' -e'text:*.txt'
+.cE
+do this instead:
+.cS
+httpindex -e'html:*.html,text:*.txt'
+.cE
+.SH SEE ALSO
+.BR index (1),
+.BR wget (1),
+.BR WWW (3)
+.SH AUTHOR
+Paul J. Lucas
+.RI < pauljlucas@mac.com >

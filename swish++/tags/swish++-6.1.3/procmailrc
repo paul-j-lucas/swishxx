@@ -1,0 +1,39 @@
+###############################################################################
+#
+# DESCRIPTION
+#
+#	This is an example .procmailrc file for Procmail to split incoming mail
+#	messages into one file per message so they all can be indexed
+#	effectively by SWISH++.
+#
+# SEE ALSO
+#
+#	procmail(1), procmailrc(5), procmailex(5), http://www.procmail.org/
+#
+###############################################################################
+
+##
+# Pick a directory into which individual mail messages will be split and create
+# it if it doesn't already exist.
+#
+# If you subscribe to a mailing list and you want to split mail into a separate
+# directory, replace "split" below with the mailing list name.
+##
+SPLIT_MAIL_DIR=$HOME/mail/split/`date +%Y/%m`
+JUNK=`test -d $SPLIT_MAIL_DIR || mkdir -p $SPLIT_MAIL_DIR`
+
+##
+# Copy the current mail message to the split mail directory; the original will
+# continue on its way to be processed by later recipies, if any.
+#
+# If you subscribe to a mailing list and you want to split mail into a separate
+# directory, insert a line like "* ^TOlist-name" between the two lines below.
+##
+:0 c
+$SPLIT_MAIL_DIR/.
+
+##
+# If you want to split multiple mailing lists, then you need to repeat the
+# above four (non-commentary) lines once per list (changing the list name, of
+# course).
+##
