@@ -21,6 +21,8 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
+TARGET:=	libmod_$(notdir $(CURDIR)).a
+
 .PHONY: all
 all: $(TARGET)
 

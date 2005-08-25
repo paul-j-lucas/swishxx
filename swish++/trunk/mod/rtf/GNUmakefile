@@ -21,6 +21,7 @@
 
 ########## You shouldn't have to change anything below this line. #############
 
-TARGET:=	libmod_rtf.a
 ROOT:=		../..
 include		$(ROOT)/config/mod.mk
+
+# vim:set noet sw=8 ts=8:
