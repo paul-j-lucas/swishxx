@@ -289,9 +289,9 @@ MKDIR:=		$(INSTALL) $(I_OWNER) $(I_GROUP) $(I_XMODE) -d
 # $(ROOT) is defined by the Makefile including this.
 
 ifeq ($(findstring g++,$(CC)),g++)
-MAKEDEPEND:=	$(CC) -MM $(CFLAGS)
+MAKEDEPEND=	$(CC) -MM $(CFLAGS)
 else
-MAKEDEPEND:=	$(PERL) $(ROOT)/config/makedepend.pl $(CFLAGS)
+MAKEDEPEND=	$(PERL) $(ROOT)/config/makedepend.pl $(CFLAGS)
 endif
 
 .%.d : %.c $(ROOT)/platform.h
