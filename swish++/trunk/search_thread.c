@@ -104,7 +104,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
 
         char*   argv_vec[ ARG_MAX ];
         char**  argv = argv_vec;
-        int argc = split_args( buf, argv, ARG_MAX );
+        int     argc = split_args( buf, argv, ARG_MAX );
         fdbuf   buf( arg.i );
         ostream out( &buf );
 
@@ -147,8 +147,8 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
 // DESCRIPTION
 //
 //      Split a string into individual, argv-like arguments at whitespace.
-//      This code is based on buf_args() in [Stevens 1993], p. 495, except
-//      that it:
+//      This code is based on buf_args() in [Stevens 1993], p. 495, except that
+//      it:
 //
 //          1. Is thread-safe by not using strtok().
 //          2. Discards leading whitespace in the buffer.
