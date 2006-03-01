@@ -31,7 +31,7 @@
 #endif
 
 // zlib
-#include "platform.h"                           /* needs to go before zlib.h */
+#include "platform.h"                   /* needs to go before zlib.h */
 #ifdef  HAVE_ZLIB
 #include <zlib.h>
 #endif
