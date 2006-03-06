@@ -86,7 +86,8 @@ using namespace std;
     // Either no ID3v2 tag was present or it didn't have a TIT2 (title) frame
     // -- see if it has an ID3v1 tag.
     //
-id3v1:  c = file.begin();
+id3v1:
+    c = file.begin();
     if ( has_id3v1_tag( c, file.end() ) )
         return tidy_title( c, c + ID3v1_Title_Size );
 
