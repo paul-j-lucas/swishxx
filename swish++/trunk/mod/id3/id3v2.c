@@ -251,7 +251,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 #ifdef  DEBUG_id3v2
     cerr << "frame_id='" << id_ << '\'' << endl;
     cerr << "frame_size=" << dec << size_ << endl;
-    cerr << "frame_flags=$" << hex << flags_ << endl;
+    cerr << "frame_flags=0x" << hex << flags_ << endl;
 #endif
 
     content_begin_ = c;
