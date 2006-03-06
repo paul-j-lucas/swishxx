@@ -571,7 +571,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
     flags_ = *c++;
     tag_size_ = unsynchsafe( c );
 #ifdef  DEBUG_id3v2
-    cerr << "header_flags=$" << hex << flags_ << endl;
+    cerr << "header_flags=0x" << hex << flags_ << endl;
     cerr << "tag_size=" << dec << tag_size_ << endl;
 #endif
     if ( flags_ & Flag_Extended ) {
