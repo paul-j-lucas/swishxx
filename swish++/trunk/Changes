@@ -3,6 +3,39 @@ SWISH++ Changes
 
 
 *******************************************************************************
+6.1.4
+*******************************************************************************
+
+BUG FIXES
+---------
+
+* The definition of MAKEDEPEND was wrong.  This broke dependency-file
+  generation when not using g++.
+
+  (This bug fix shall be known as bug fix MD1.)
+
+* Indexing of some ID3 tags was broken.
+
+  (This bug fix shall be known as bug fix ID31.)
+
+
+CHANGES, file-by-file
+---------------------
+
+* config/config.mk
+
+	1. For MAKEDEPEND, s/:=/=/ for bug fix MD1.
+
+* mod/id3/id3v2.c
+
+	1. In parse_int(), added cast to unsigned char for bug fix ID31.
+
+* version.h
+
+	1. Upped version to 6.1.4.
+
+
+*******************************************************************************
 6.1.3
 *******************************************************************************
 
@@ -43,6 +76,7 @@ CHANGES, file-by-file
 
 	1. In main(), added check of opt.dump_word_index_opt for bug fix
 	   SEARCHd.
+
 * version.h
 
 	1. Upped version to 6.1.3.
