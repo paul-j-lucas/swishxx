@@ -44,7 +44,7 @@ struct id3v1_genre {
     int         length;
 };
 
-typedef unsigned int id3v1_genre_id;
+typedef unsigned id3v1_genre_id;
 
 extern id3v1_genre const id3v1_genre_table[ 126 ];
 
