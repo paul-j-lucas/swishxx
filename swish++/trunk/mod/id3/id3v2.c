@@ -53,10 +53,10 @@ using namespace std;
 //
 typedef encoded_char_range::charset_type text_encoding;
 
-static unsigned int     parse_int( char const*&, int );
+static unsigned         parse_int( char const*&, int );
 static text_encoding    parse_text_encoding( char const*&, int = 0 );
-static void             resynchronize( char*, int, char const*, unsigned int* );
-static unsigned int     unsynchsafe( char const*&, int = 4 );
+static void             resynchronize( char*, int, char const*, unsigned* );
+static unsigned         unsynchsafe( char const*&, int = 4 );
 
 //*****************************************************************************
 //
@@ -212,7 +212,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 //
 // RETURN VALUE
 //
-//      Returns true only if an ID3v2 frame was parsed sucessfully.
+//      Returns a header_result.
 //
 // SEE ALSO
 //
@@ -281,7 +281,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 
     ////////// Handle unsynchronization ///////////////////////////////////////
 
-    unsigned int content_size = size_;
+    unsigned content_size = size_;
     if ( (flags_ & Flag_Unsynchronized)
          || header.flags_ & id3v2_header::Flag_Unsynchronized
     ) {
@@ -565,6 +565,9 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
         return false;
 
     version_ = parse_int( c, 2 );
+#ifdef  DEBUG_id3v2
+    cerr << "header_version=0x" << hex << version_ << endl;
+#endif
     if ( version_ < Version_Min || version_ > Version_Max )
         return false;
 
@@ -578,7 +581,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
         //
         // We don't care about anything in the extended header so just skip it.
         //
-        unsigned int const ext_size = version_ > 0x0300 ?
+        unsigned const ext_size = version_ > 0x0300 ?
             unsynchsafe( c ) : parse_int( c, 4 );
 #ifdef  DEBUG_id3v2
         cerr << "ext_size=" << dec << ext_size << endl;
@@ -593,7 +596,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 //
 // SYNOPSIS
 //
-        unsigned int parse_int( register char const *&c, int bytes )
+        unsigned parse_int( register char const *&c, int bytes )
 //
 // DESCRIPTION
 //
@@ -611,9 +614,9 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 //
 //*****************************************************************************
 {
-    register unsigned int n = 0;
+    register unsigned n = 0;
     while ( bytes-- > 0 )
-        n = (n << 8) | *c++;
+        n = (n << 8) | static_cast<unsigned char>( *c++ );
     return n;
 }
 
@@ -732,7 +735,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
 //
 // SYNOPSIS
 //
-        unsigned int unsynchsafe( char const *&c, int bytes )
+        unsigned unsynchsafe( char const *&c, int bytes )
 //
 // DESCRIPTION
 //
@@ -759,7 +762,7 @@ static unsigned int     unsynchsafe( char const*&, int = 4 );
     int const bits = 7;
     int const mask = (1 << bits) - 1;
 
-    register unsigned int n = 0;
+    register unsigned n = 0;
     while ( bytes-- > 0 )
         n = (n << bits) | (*c++ & mask);
     return n;
