@@ -210,7 +210,7 @@ using namespace std;
         // to use: EINVAL is the least bad.
         //
         errno_ = EINVAL;
-#endif
+#endif  /* ENODATA */
         return false;
     }
 
