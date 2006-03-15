@@ -859,7 +859,6 @@
 			isa = PBXGroup;
 			children = (
 				08FB7795FE84155DC02AAC07 /* Source */,
-				C6859E8C029090F304C91782 /* Documentation */,
 				0249A662FF388D9811CA2CEA /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
 			);
@@ -974,13 +973,6 @@
 				02AB808307B6873F00EED8FD /* extract */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C6859E8C029090F304C91782 /* Documentation */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Documentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
