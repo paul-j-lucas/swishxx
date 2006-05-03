@@ -295,7 +295,7 @@
         // become overly pedantic about casting to enums.
         //
         element::end_tag_type const
-            v = (element::end_tag_type const)(int const)(p[1]);
+            v = (element::end_tag_type const)(long const)(p[1]);
         element &e = insert( value_type( *p++, element( v ) ) ).first->second;
 
         switch ( v ) {
