@@ -44,7 +44,7 @@
 //
 // SYNOPSIS
 //
-	template< class T >
+	template< typename T >
 	class pattern_map : public std::map< char const*, T >
 //
 // DESCRIPTION

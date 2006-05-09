@@ -28,7 +28,7 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-        template< class T > class auto_vec
+        template< typename T > class auto_vec
 //
 // DESCRIPTION
 //

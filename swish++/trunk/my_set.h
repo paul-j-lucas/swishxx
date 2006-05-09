@@ -35,7 +35,7 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-	template< class T > class my_set : public std::set< T >
+	template< typename T > class my_set : public std::set< T >
 //
 // DESCRIPTION
 //

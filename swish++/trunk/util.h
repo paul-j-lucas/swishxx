@@ -122,7 +122,7 @@ private:
 //
 // SYNOPSIS
 //
-        template< class T > void max_out_limit( T resource )
+        template< typename T > void max_out_limit( T resource )
 //
 // DESCRIPTION
 //

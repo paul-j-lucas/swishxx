@@ -28,7 +28,7 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-        template< class T > class vector_adapter
+        template< typename T > class vector_adapter
 //
 // DESCRIPTION
 //

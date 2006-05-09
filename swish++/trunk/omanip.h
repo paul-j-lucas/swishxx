@@ -31,7 +31,7 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-        template< class Arg > class omanip
+        template< typename Arg > class omanip
 //
 // DESCRIPTION
 //
