@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	swish++.conf.4
 .\"
-.\"	Copyright (C) 1998  Paul J. Lucas
+.\"	Copyright (C) 1998-2008  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH "\f3swish++.conf\f1" 4 "June 16, 2005" "SWISH++"
+.TH "\f3swish++.conf\f1" 4 "February 22, 2008" "SWISH++"
 .SH NAME
 swish++.conf \- SWISH++ configuration file format
 .SH DESCRIPTION
@@ -147,10 +147,20 @@ Filename minus last extension.
 .RE
 .PD
 .PP
-That is: the \f(CW%\f1 and one character immediately after it
+That is: the \f(CW%\f1 and the character immediately after it
 are substituted as described in the above table.
 Substituted filenames are skipped past and not rescanned for more substitutions,
 but the remainder of the command is.
+.PP
+Exactly one of the \f(CW%\f1 substitutions must be preceded by a \f(CW@\f1
+to indicate which filename is the ``target'' file to be indexed.
+For example, to convert PDF to plain text for indexing using the
+.BR xpdf (1)
+package's \f(CWpdftotext\f1 command,
+the configuration file line would be:
+.cS
+FilterFile *.pdf  pdftotext %f @%F.txt
+.cE
 To use a literal \f(CW%\f1 or \f(CW@\f1, simply double it.
 (For more on filter variables, see FILTERS below.)
 .PP
@@ -309,12 +319,6 @@ because \f(CWgunzip\f1 will
 .I replace
 the compressed file with the uncompressed one.
 .PP
-Here's an example to convert PDF to plain text for indexing using the
-.BR xpdf (1)
-package's \f(CWpdftotext\f1 command:
-.cS
-FilterFile *.pdf  pdftotext %f @%F.txt
-.cE
 A file can be filtered more than once prior to indexing or extraction, i.e.,
 filters can be ``chained'' together.
 For example, if the uncompression and PDF examples shown above
