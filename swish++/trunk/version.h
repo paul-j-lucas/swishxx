@@ -2,7 +2,7 @@
 **      SWISH++
 **      version.h
 **
-**      Copyright (C) 2001-2005  Paul J. Lucas
+**      Copyright (C) 2001-2008  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #ifndef version_H
 #define version_H
 
-char const version[] = "6.1.5";
+char const version[] = "6.1.6";
 
 #endif  /* version_H */
 /* vim:set et sw=4 ts=4: */
