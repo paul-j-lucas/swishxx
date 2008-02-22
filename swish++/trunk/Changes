@@ -3,9 +3,39 @@ SWISH++ Changes
 
 
 *******************************************************************************
-6.1.5
+6.1.6
 *******************************************************************************
 
+BUG FIXES
+---------
+
+This is a documentation-only fix.  A few man pages had small mistakes,
+omissions, or formatting errors.
+
+
+CHANGES, file-by-file
+---------------------
+
+* man/man4/swish++.conf.4
+
+	1. Added missing documentation of @ character used in filters.
+
+* man/man4/swish++.index.4
+
+	1. For word entries, there are two types of list (not one).
+
+* man/man8/searchmonitor.8
+
+	1. Fixed nroff formatting error in the description of the -c option.
+
+* version.h
+
+	1. Upped version to 6.1.6.
+
+
+*******************************************************************************
+6.1.5
+*******************************************************************************
 
 BUG FIXES
 ---------
