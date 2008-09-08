@@ -20,13 +20,14 @@
 */
 
 // standard
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 
 // local
 #include "exit_codes.h"
 #include "IncludeFile.h"
 #include "platform.h"
-#include "util.h"                               /* for error(), new_strdup() */
+#include "util.h"                       /* for error(), new_strdup() */
 
 using namespace std;
 

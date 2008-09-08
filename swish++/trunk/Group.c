@@ -20,8 +20,9 @@
 */
 
 // standard
-#include <sys/types.h>                          /* needed by FreeBSD systems */
-#include <grp.h>                                /* for getgrnam(3) */
+#include <sys/types.h>                  /* needed by FreeBSD systems */
+#include <cstdlib>                      /* for exit(3) */
+#include <grp.h>                        /* for getgrnam(3) */
 
 // local
 #include "platform.h"

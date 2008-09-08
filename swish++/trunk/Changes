@@ -9,12 +9,40 @@ SWISH++ Changes
 BUG FIXES
 ---------
 
-This is a documentation-only fix.  A few man pages had small mistakes,
-omissions, or formatting errors.
+* Added missing #include <cstdlib> in many files.
 
 
 CHANGES, file-by-file
 ---------------------
+
+* conf_bool.c
+* conf_enum.c
+* conf_filter.c
+* config.h
+* conf_int.c
+* conf_percent.c
+* conf_string.c
+* conf_var.c
+* extract.c
+* Group.c
+* IncludeFile.c
+* IncludeMeta.c
+* index.c
+* mod/html/mod_html.c
+* query.c
+* search.c
+* search_daemon.c
+* SocketAddress.c
+* stop_words.c
+* thread_pool.c
+* User.c
+* WordThreshold.c
+
+	1. Added:
+
+		#include <cstdlib>
+
+	   for exit(3).
 
 * man/man4/swish++.conf.4
 

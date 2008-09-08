@@ -21,7 +21,7 @@
 
 // standard
 #include <algorithm>                            /* for binary_search(), etc */
-#include <cstdlib>                              /* for exit(2) */
+#include <cstdlib>                              /* for exit(3) */
 #include <cstring>
 #include <functional>                           /* for binary_function<> */
 #include <iostream>

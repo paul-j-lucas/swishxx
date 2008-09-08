@@ -25,7 +25,7 @@
 #include <algorithm>                    /* for max() */
 #include <arpa/inet.h>                  /* for Internet networking stuff */
 #include <cerrno>
-#include <cstdlib>                      /* for exit(2) */
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <fstream>
 #include <iostream>

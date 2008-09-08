@@ -199,8 +199,8 @@ char const  ShellFilenameEscapeChars[]  = " !\"#$&'()*/;<>?[\\]^`{|}~";
 #ifdef  __CYGWIN__
 char const  TempDirectory_Default[]     = "/temp";
 #else
-#error      You have not set TempDirectory_Default for your system.
-#error      Comment out these lines after you have set it.
+#/*#error      You have not set TempDirectory_Default for your system.*/
+#/*#error      Comment out these lines after you have set it.*/
 
 char const  TempDirectory_Default[]     = "/tmp";
 #endif
@@ -235,8 +235,8 @@ int const   WordPercentMax_Default      = 100;
 //          is discarded as being too frequent; this can be overridden either
 //          in a config. file or on the command line.
 
-#error      You have not set WordThreshold_Default for your system.
-#error      Comment out these lines after you have set it.
+#/*#error      You have not set WordThreshold_Default for your system.*/
+#/*#error      Comment out these lines after you have set it.*/
 
 int const   WordThreshold_Default       = 250000;
 //          The word count past which partial indicies are generated and merged

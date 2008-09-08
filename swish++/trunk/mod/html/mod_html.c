@@ -23,8 +23,9 @@
 
 // standard
 #include <cctype>
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-#include <utility>                              /* for pair<> */
+#include <utility>                      /* for pair<> */
 #include <vector>
 
 // local

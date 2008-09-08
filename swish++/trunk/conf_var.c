@@ -21,7 +21,7 @@
 
 // standard
 #include <cctype>
-#include <cstdlib>
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <iostream>
 

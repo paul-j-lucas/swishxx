@@ -20,11 +20,12 @@
 */
 
 // standard
-#include <algorithm>                            /* for binary_search(), etc */
+#include <algorithm>                    /* for binary_search(), etc */
+#include <cstdlib>                      /* for exit(3) */
 #ifdef  DEBUG_parse_query
 #include <iostream>
 #endif
-#include <memory>                               /* for auto_ptr<T> */
+#include <memory>                       /* for auto_ptr<T> */
 #include <vector>
 
 // local

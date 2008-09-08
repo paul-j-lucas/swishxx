@@ -22,7 +22,7 @@
 #ifdef  MULTI_THREADED
 
 // standard
-#include <cstdlib>                      /* for exit(2) */
+#include <cstdlib>                      /* for exit(3) */
 #include <time.h>
 #ifdef  DEBUG_threads
 #include <iostream>

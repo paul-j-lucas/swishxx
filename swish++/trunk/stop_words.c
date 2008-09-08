@@ -21,6 +21,7 @@
 
 // standard
 #include <cctype>
+#include <cstdlib>                      /* for exit(3) */
 
 // local
 #include "config.h"
@@ -38,7 +39,7 @@ using namespace std;
 
 extern char const*  me;
 
-stop_word_set*      stop_words;                 // pointer to global set
+stop_word_set*      stop_words;         // pointer to global set
 
 //*****************************************************************************
 //

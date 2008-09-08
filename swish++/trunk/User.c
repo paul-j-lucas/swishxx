@@ -20,7 +20,8 @@
 */
 
 // standard
-#include <pwd.h>                                /* for getpwnam(3) */
+#include <cstdlib>                      /* for exit(3) */
+#include <pwd.h>                        /* for getpwnam(3) */
 
 // local
 #include "exit_codes.h"

@@ -21,7 +21,7 @@
 
 // standard
 #include <cmath>                        /* for log(3) */
-#include <cstdlib>                      /* for exit(2) */
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <fstream>
 #include <iomanip>                      /* for setfill(), setw() */

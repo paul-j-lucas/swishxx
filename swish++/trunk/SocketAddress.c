@@ -21,11 +21,11 @@
 
 // standard
 #include <iostream>
-#include <netdb.h>                              /* for gethostbyname(3), etc */
-#include <sys/types.h>                          /* needed by FreeBSD systems */
+#include <netdb.h>                      /* for gethostbyname(3), etc */
+#include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <netinet/in.h>
 #include <cstring>
-#include <cstdlib>                              /* for atoi(3) */
+#include <cstdlib>                      /* for atoi(3), exit(3) */
 
 // local
 #include "exit_codes.h"

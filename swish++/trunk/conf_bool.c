@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <cstdlib>                      /* for exit(3) */
 #include <iostream>
 
 // local

@@ -20,6 +20,7 @@
 */
 
 // standard
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 
 // local
@@ -27,7 +28,7 @@
 #include "IncludeMeta.h"
 #include "exit_codes.h"
 #include "platform.h"
-#include "util.h"           /* for error(), new_strdup() */
+#include "util.h"                       /* for error(), new_strdup() */
 
 using namespace PJL;
 using namespace std;
