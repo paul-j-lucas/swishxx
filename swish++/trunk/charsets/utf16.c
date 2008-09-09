@@ -30,9 +30,9 @@
 // SYNOPSIS
 //
         encoded_char_range::value_type charset_utf16be(
-            encoded_char_range::pointer,
-            encoded_char_range::pointer &c,
-            encoded_char_range::pointer end
+            encoded_char_range::const_pointer,
+            encoded_char_range::const_pointer &c,
+            encoded_char_range::const_pointer end
         )
 //
 // DESCRIPTION
@@ -70,9 +70,9 @@
 // SYNOPSIS
 //
         encoded_char_range::value_type charset_utf16le(
-            encoded_char_range::pointer,
-            encoded_char_range::pointer &c,
-            encoded_char_range::pointer end
+            encoded_char_range::const_pointer,
+            encoded_char_range::const_pointer &c,
+            encoded_char_range::const_pointer end
         )
 //
 // DESCRIPTION

@@ -37,7 +37,7 @@ namespace {
     class utf7_decoder : public encoded_char_range::decoder {
     public:
         int buf_count_;
-        pointer prev_c_;
+        const_pointer prev_c_;
     private:
         virtual void reset() {
             buf_count_ = 0;
@@ -52,9 +52,9 @@ namespace {
 // SYNOPSIS
 //
         encoded_char_range::value_type charset_utf7(
-            encoded_char_range::pointer begin,
-            encoded_char_range::pointer &c,
-            encoded_char_range::pointer end
+            encoded_char_range::const_pointer begin,
+            encoded_char_range::const_pointer &c,
+            encoded_char_range::const_pointer end
         )
 //
 // DESCRIPTION
@@ -137,7 +137,7 @@ return_decoded_char:
     // or not.
     //
     bool encoded = false;
-    encoded_char_range::pointer const orig_c = c;
+    encoded_char_range::const_pointer const orig_c = c;
     while ( true ) {
         if ( ::strchr( set_B, *c ) ) {
             //

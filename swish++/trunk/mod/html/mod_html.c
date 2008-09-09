@@ -146,8 +146,8 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 //
 // PARAMETERS
 //
-//      c   This iterator is to be positioned at the character past the
-//          '&'; if an entity is found, it is left after the ';'.
+//      c   This iterator is to be positioned at the character past the '&';
+//          if an entity is found, it is left after the ';'.
 //
 // RETURN VALUE
 //
@@ -314,7 +314,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
         char const quote = ( *c == '"' || *c == '\'' ) ? *c : 0;
         if ( quote && (++c).at_end() )
             break;
-        encoded_char_range::pointer const new_begin = c.pos();
+        encoded_char_range::const_pointer const new_begin = c.pos();
         for ( ; !c.at_end(); ++c )
             if ( quote ) {                      // stop at matching quote only
                 if ( *c == quote )

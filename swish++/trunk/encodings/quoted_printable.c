@@ -36,9 +36,9 @@ using namespace std;
 // SYNOPSIS
 //
         encoded_char_range::value_type encoding_quoted_printable(
-            encoded_char_range::pointer,
-            encoded_char_range::pointer &c,
-            encoded_char_range::pointer end
+            encoded_char_range::const_pointer,
+            encoded_char_range::const_pointer &c,
+            encoded_char_range::const_pointer end
         )
 //
 // DESCRIPTION

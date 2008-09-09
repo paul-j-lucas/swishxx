@@ -35,7 +35,7 @@ namespace {
 
     class base64_decoder : public encoded_char_range::decoder {
     public:
-        pointer prev_c_;
+        const_pointer prev_c_;
     private:
         virtual void reset() {
             prev_c_ = 0;
@@ -49,9 +49,9 @@ namespace {
 // SYNOPSIS
 //
         encoded_char_range::value_type encoding_base64(
-            encoded_char_range::pointer begin,
-            encoded_char_range::pointer &c,
-            encoded_char_range::pointer end
+            encoded_char_range::const_pointer begin,
+            encoded_char_range::const_pointer &c,
+            encoded_char_range::const_pointer end
         )
 //
 // DESCRIPTION
@@ -127,7 +127,7 @@ return_decoded_char:
     //
     // If we're positioned at a newline, skip over it.
     //
-    encoded_char_range::pointer line_begin = skip_newline( c, end );
+    encoded_char_range::const_pointer line_begin = skip_newline( c, end );
     if ( line_begin == end ) {
         //
         // We ran into the end: return something innocuous like a space since
@@ -161,7 +161,7 @@ reached_end:    c = end;
     //
     delta = c - line_begin;
     encoded_char_range::difference_type const delta4 = delta & ~3u;
-    encoded_char_range::pointer const group = line_begin + delta4;
+    encoded_char_range::const_pointer const group = line_begin + delta4;
 
     if ( group + 1 == end || group + 2 == end || group + 3 == end ) {
         //

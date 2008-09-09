@@ -54,15 +54,18 @@
 public:
     typedef ptrdiff_t difference_type;
     typedef char value_type;
-    typedef value_type const* pointer;
-    typedef value_type (*charset_type )( pointer, pointer&, pointer );
-    typedef value_type (*encoding_type)( pointer, pointer&, pointer );
+    typedef value_type const* const_pointer;
+    typedef value_type (*charset_type)
+        ( const_pointer, const_pointer&, const_pointer );
+    typedef value_type (*encoding_type)
+        ( const_pointer, const_pointer&, const_pointer );
 
     class const_iterator;
     friend class const_iterator;
 
     encoded_char_range(
-        pointer begin, pointer end, charset_type = 0, encoding_type = 0
+        const_pointer begin, const_pointer end,
+        charset_type = 0, encoding_type = 0
     );
     encoded_char_range( const_iterator const &pos );
     encoded_char_range(
@@ -73,13 +76,13 @@ public:
     // default assignment operator is fine
 
     const_iterator  begin() const;
-    pointer     begin_pos() const       { return begin_; }
-    void        begin_pos( pointer p )      { begin_ = p; }
-    void        begin_pos( const_iterator const& );
+    const_pointer   begin_pos() const               { return begin_; }
+    void            begin_pos( const_pointer p )    { begin_ = p; }
+    void            begin_pos( const_iterator const& );
     const_iterator  end() const;
-    pointer     end_pos() const         { return end_; }
-    void        end_pos( pointer p )        { end_ = p; }
-    void        end_pos( const_iterator const& );
+    const_pointer   end_pos() const                 { return end_; }
+    void            end_pos( const_pointer p )      { end_ = p; }
+    void            end_pos( const_iterator const& );
 
 #ifdef  IMPLEMENT_DECODING
     class decoder;
@@ -87,8 +90,8 @@ public:
 protected:
     encoded_char_range() { }
 
-    pointer     begin_;
-    pointer     end_;
+    const_pointer   begin_;
+    const_pointer   end_;
 #ifdef  IMPLEMENT_DECODING
     charset_type    charset_;
     encoding_type   encoding_;
@@ -120,37 +123,38 @@ protected:
 public:
     typedef encoded_char_range::difference_type difference_type;
     typedef encoded_char_range::value_type value_type;
-    typedef encoded_char_range::pointer pointer;
+    typedef encoded_char_range::const_pointer const_pointer;
 
     const_iterator() { }
     const_iterator(
-        pointer begin, pointer end, charset_type = 0, encoding_type = 0
+        const_pointer begin, const_pointer end,
+        charset_type = 0, encoding_type = 0
     );
 
     // default copy constructor is fine
     // default assignment operator is fine
 
-    value_type  operator*() const;
+    value_type      operator*() const;
     const_iterator& operator++();
     const_iterator  operator++(int);
 
-    bool        at_end() const          { return pos_ == end_; }
+    bool            at_end() const      { return pos_ == end_; }
 
-    pointer     pos() const         { return pos_; }
-    pointer&    pos()               { return pos_; }
-    pointer     prev_pos() const        { return prev_; }
+    const_pointer   pos() const         { return pos_; }
+    const_pointer&  pos()               { return pos_; }
+    const_pointer   prev_pos() const    { return prev_; }
 
     friend bool operator==( const_iterator const&, const_iterator const& );
-    friend bool operator==( const_iterator const&, pointer );
+    friend bool operator==( const_iterator const&, const_pointer );
 private:
-    mutable pointer pos_;
-    mutable pointer prev_;
+    mutable const_pointer pos_;
+    mutable const_pointer prev_;
 #ifdef  IMPLEMENT_DECODING
     mutable value_type  ch_;
     mutable bool        decoded_;
     mutable int     delta_;
 #endif
-    const_iterator( encoded_char_range const*, pointer start_pos );
+    const_iterator( encoded_char_range const*, const_pointer start_pos );
     friend class    encoded_char_range; // for access to c'tor above
 #ifdef  IMPLEMENT_DECODING
     void        decode() const;
@@ -174,15 +178,15 @@ private:
 {
 public:
     typedef encoded_char_range::value_type value_type;
-    typedef encoded_char_range::pointer pointer;
+    typedef encoded_char_range::const_pointer const_pointer;
 
     virtual ~decoder();
 
     static void reset_all();
 protected:
-    decoder()   { set_.insert( this ); }
+    decoder()                           { set_.insert( this ); }
 
-    virtual void    reset() = 0;
+    virtual void reset() = 0;
 private:
     typedef std::set< decoder* > set_type;
     static set_type set_;
@@ -196,7 +200,8 @@ private:
 #define ECR_CI  ECR::const_iterator
 
 inline ECR::ECR(
-    pointer begin, pointer end, charset_type charset, encoding_type encoding
+    const_pointer begin, const_pointer end,
+    charset_type charset, encoding_type encoding
 ) :
     begin_( begin ), end_( end )
 #ifdef  IMPLEMENT_DECODING
@@ -240,7 +245,7 @@ inline void ECR::end_pos( const_iterator const &i ) {
 ////////// encoded_char_range::const_iterator inlines /////////////////////////
 
 inline ECR_CI::const_iterator(
-    pointer begin, pointer end,
+    const_pointer begin, const_pointer end,
     charset_type charset, encoding_type encoding
 ) :
     encoded_char_range( begin, end, charset, encoding ), pos_( begin )
@@ -250,7 +255,7 @@ inline ECR_CI::const_iterator(
 {
 }
 
-inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
+inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
     encoded_char_range(
         start_pos, ecr->end_
 #ifdef  IMPLEMENT_DECODING
@@ -287,7 +292,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, pointer start_pos ) :
     // the encoded text.  This allows the delta to be computed so the iterator
     // can be incremented later.
     //
-    pointer c = pos_;
+    const_pointer c = pos_;
     //
     // A mail message can have both an encoding and a non-ASCII or
     // non-ISO-8859-1 charset simultaneously, e.g., base64-encoded UTF-8.  (In
@@ -416,11 +421,11 @@ inline bool operator==( ECR_CI const &e1, ECR_CI const &e2 ) {
     return e1.pos_ == e2.pos_;
 }
 
-inline bool operator==( ECR_CI const &e, ECR_CI::pointer p ) {
+inline bool operator==( ECR_CI const &e, ECR_CI::const_pointer p ) {
     return e.pos_ == p;
 }
 
-inline bool operator==( ECR_CI::pointer p, ECR_CI const &e ) {
+inline bool operator==( ECR_CI::const_pointer p, ECR_CI const &e ) {
     return e == p;
 }
 
@@ -428,11 +433,11 @@ inline bool operator!=( ECR_CI const &e1, ECR_CI const &e2 ) {
     return !( e1 == e2 );
 }
 
-inline bool operator!=( ECR_CI const &e, ECR_CI::pointer p ) {
+inline bool operator!=( ECR_CI const &e, ECR_CI::const_pointer p ) {
     return !( e == p );
 }
 
-inline bool operator!=( ECR_CI::pointer p, ECR_CI const &e ) {
+inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
     return e != p;
 }
 

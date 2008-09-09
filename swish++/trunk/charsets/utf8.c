@@ -30,9 +30,9 @@
 // SYNOPSIS
 //
     encoded_char_range::value_type charset_utf8(
-        encoded_char_range::pointer /* begin */,
-        encoded_char_range::pointer &c,
-        encoded_char_range::pointer end
+        encoded_char_range::const_pointer /* begin */,
+        encoded_char_range::const_pointer &c,
+        encoded_char_range::const_pointer end
     )
 //
 // DESCRIPTION
