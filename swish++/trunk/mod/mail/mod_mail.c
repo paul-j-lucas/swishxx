@@ -373,24 +373,22 @@ could_not_filter:
             if ( charset && *(charset += 8) ) {
                 if ( *charset == '"' )
                     ++charset;
-                //
-                // We don't explicitly check for us-ascii since that's the
-                // default.
-                //
-                if ( !::strcmp( charset, "iso8859-1" ) )
+                if ( !::strncmp( charset, "us-ascii", 8 ) )
+                    type.charset_ = US_ASCII;
+                else if ( !::strncmp( charset, "iso8859-1", 9 ) )
                     type.charset_ = ISO_8859_1;
-                else if ( !::strcmp( charset, "utf-7" ) )
 #ifdef  CHARSET_utf7
+                else if ( !::strncmp( charset, "utf-7", 5 ) )
                     type.charset_ = charset_utf7;
-#else
-                    goto not_indexable;
 #endif
-                else if ( !::strcmp( charset, "utf-8" ) )
 #ifdef  CHARSET_utf8
+                else if ( !::strncmp( charset, "utf-8", 5 ) )
                     type.charset_ = charset_utf8;
-#else
-                    goto not_indexable;
 #endif
+                else {
+                    type.charset_ = CHARSET_UNKNOWN;
+                    goto not_indexable;
+                }
             }
 
             //
@@ -457,7 +455,7 @@ could_not_filter:
                 // It's not a Content-Type we know anything about, so it's not
                 // indexable.
                 //
-not_indexable:  type.content_type_ = ct_not_indexable;
+not_indexable:  type.content_type_ = ct_unknown;
             }
         }
 
@@ -503,7 +501,7 @@ not_indexable:  type.content_type_ = ct_not_indexable;
     encoded_char_range::const_iterator c = e.begin();
     message_type const type( index_headers( c.pos(), c.end_pos() ) );
 
-    if ( type.content_type_ == ct_not_indexable || type.encoding_ == Binary ) {
+    if ( type.content_type_ == ct_unknown || type.encoding_ == Binary ) {
         //
         // The attachment is something we can't index so just skip over it.
         //
@@ -555,7 +553,7 @@ not_indexable:  type.content_type_ = ct_not_indexable;
             index_vcard( c.pos(), c.end_pos() );
             break;
 
-        case ct_not_indexable:
+        case ct_unknown:
             // do nothing
             break;
     }
