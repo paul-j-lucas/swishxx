@@ -41,7 +41,7 @@
 //
 // PARAMETERS
 //
-//      begin   An pointer marking the beginning of the entire encoded range.
+//      begin   A pointer marking the beginning of the entire encoded range.
 //
 //      c       A pointer marking the position of the character to decode.
 //              It is left after the decoded character.

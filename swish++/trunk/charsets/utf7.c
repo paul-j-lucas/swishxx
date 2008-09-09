@@ -63,12 +63,12 @@ namespace {
 //
 // PARAMETERS
 //
-//      begin   An pointer marking the beginning of the entire encoded range.
+//      begin   A pointer marking the beginning of the entire encoded range.
 //
-//      c       An pointer marking the position of the character to decode.  It
+//      c       A pointer marking the position of the character to decode.  It
 //              is left after the decoded character.
 //
-//      end     An pointer marking the end of the entire encoded range.
+//      end     A pointer marking the end of the entire encoded range.
 //
 // RETURN VALUE
 //

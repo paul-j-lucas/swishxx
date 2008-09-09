@@ -54,10 +54,10 @@ using namespace std;
 //
 // PARAMETERS
 //
-//      c       An pointer marking the position of the character to decode.  It
+//      c       A pointer marking the position of the character to decode.  It
 //              is left after the decoded character.
 //
-//      end     An pointer marking the end of the entire encoded range.
+//      end     A pointer marking the end of the entire encoded range.
 //
 // RETURN VALUE
 //
