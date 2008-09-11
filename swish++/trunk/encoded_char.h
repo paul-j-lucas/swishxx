@@ -152,7 +152,7 @@ private:
 #ifdef  IMPLEMENT_DECODING
     mutable value_type  ch_;
     mutable bool        decoded_;
-    mutable int     delta_;
+    mutable ptrdiff_t   delta_;
 #endif
     const_iterator( encoded_char_range const*, const_pointer start_pos );
     friend class    encoded_char_range; // for access to c'tor above
