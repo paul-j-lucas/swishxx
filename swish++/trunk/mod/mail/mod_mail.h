@@ -89,7 +89,7 @@ private:
     static boundary_stack_type boundary_stack_;
 
     enum content_type {
-        ct_not_indexable, // a type we don't know how to index
+        ct_unknown,                     // a type we don't know how to index
         ct_external_filter,
 
         ct_text_plain,
