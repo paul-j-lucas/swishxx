@@ -79,6 +79,8 @@
 //
 //*****************************************************************************
 {
+    typedef unsigned int size_type;
+
     enum Sizes {
         Version_2_2_Size    =  6,
         Version_2_3_Size    = 10                // also 2.4.0
@@ -104,7 +106,7 @@
     typedef void (id3v2_frame::*parser)();
 
     char            id_[5];
-    unsigned int    size_;
+    size_type       size_;
     unsigned short  flags_;
     int             meta_id_;
     char const*     content_begin_;
