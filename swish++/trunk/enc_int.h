@@ -29,10 +29,10 @@
 #include "omanip.h"
 
 int		        dec_int( unsigned char const*& );
-std::ostream&	enc_int( std::ostream&, unsigned );
+std::ostream&	enc_int( std::ostream&, unsigned long );
 
-inline PJL::omanip<unsigned> enc_int( unsigned n ) {
-	return PJL::omanip<unsigned>( enc_int, n );
+inline PJL::omanip<unsigned long> enc_int( unsigned long n ) {
+	return PJL::omanip<unsigned long>( enc_int, n );
 }
 
 #endif	/* enc_int_H */

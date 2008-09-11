@@ -61,12 +61,12 @@ using namespace std;
 //
 // SYNOPSIS
 //
-        ostream& enc_int( ostream &o, register unsigned n )
+        ostream& enc_int( ostream &o, register unsigned long n )
 //
 // DESCRIPTION
 //
-//      Write an unsigned integer to the given ostream in an encoded format.
-//      The format uses a varying number of bytes.  For a given byte, only the
+//      Writes an unsigned long to the given ostream in an encoded format.  The
+//      format uses a varying number of bytes.  For a given byte, only the
 //      lower 7 bits are used for data; the high bit, if set, is used to
 //      indicate whether the integer continues into the next byte.  The encoded
 //      integer is written to the given ostream starting with the most
@@ -76,7 +76,7 @@ using namespace std;
 //
 //      o   The ostream to write to.
 //
-//      n   The integer to be written.
+//      n   The long to be written.
 //
 // RETURN VALUE
 //
@@ -86,7 +86,7 @@ using namespace std;
 {
     unsigned char buf[ 20 ];
     //
-    // Encode the integer (in reverse because it's easier) just like atoi().
+    // Encode the long (in reverse because it's easier) just like atoi().
     //
     register unsigned char *p = buf + sizeof buf;
     do {
