@@ -281,7 +281,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 
     ////////// Handle unsynchronization ///////////////////////////////////////
 
-    unsigned content_size = size_;
+    size_type content_size = size_;
     if ( (flags_ & Flag_Unsynchronized)
          || header.flags_ & id3v2_header::Flag_Unsynchronized
     ) {
@@ -343,7 +343,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 //*****************************************************************************
 {
     text_encoding const encoding = parse_text_encoding( content_begin_, 3 );
-    if ( encoding == UNKNOWN_CHARSET )
+    if ( encoding == CHARSET_UNKNOWN )
         return;
     content_begin_ += 3;                        // skip language
     encoded_char_range const e( content_begin_, content_end_, encoding );
@@ -381,7 +381,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     };
 
     text_encoding const encoding = parse_text_encoding( content_begin_, 5 );
-    if ( encoding == UNKNOWN_CHARSET )
+    if ( encoding == CHARSET_UNKNOWN )
         return;
 
     content_begin_ += 3;                        // skip language
@@ -438,7 +438,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 //*****************************************************************************
 {
     text_encoding const encoding = parse_text_encoding( content_begin_ );
-    if ( encoding == UNKNOWN_CHARSET )
+    if ( encoding == CHARSET_UNKNOWN )
         return;
 
     char    word[ Word_Hard_Max_Size + 1 ];
@@ -519,7 +519,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 //*****************************************************************************
 {
     text_encoding const encoding = parse_text_encoding( content_begin_ );
-    if ( encoding == UNKNOWN_CHARSET )
+    if ( encoding == CHARSET_UNKNOWN )
         return;
     encoded_char_range const e( content_begin_, content_end_, encoding );
     indexer::text_indexer()->index_words( e, meta_id_ );
@@ -687,7 +687,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
         }
 #endif
         default:
-            return UNKNOWN_CHARSET;
+            return CHARSET_UNKNOWN;
     }
 }
 
