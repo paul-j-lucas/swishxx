@@ -46,6 +46,7 @@
 public:
     typedef std::vector< file_info* > list_type;
     typedef list_type::const_iterator const_iterator;
+    typedef size_t size_type;
     typedef PJL::char_ptr_set name_set_type;
 
     file_info(
@@ -54,25 +55,58 @@ public:
     );
     file_info( unsigned char const *ptr_into_index_file );
 
-    int                     dir_index() const   { return dir_index_; }
-    char const*             file_name() const   { return file_name_; }
-    int                     num_words() const   { return num_words_; }
-    size_t                  size() const        { return size_; }
-    char const*             title() const       { return title_; }
+    int dir_index() const {
+        return dir_index_;
+    }
 
-    static const_iterator   begin()             { return list_.begin();}
-    static const_iterator   end()               { return list_.end(); }
-    static int              current_index()     { return list_.size() - 1; }
-    static void             inc_words()         { ++list_.back()->num_words_; }
-    static file_info*       ith_info( int i )   { return list_[ i ]; }
-    static int              num_files() { return list_.size(); }
-    static bool             seen_file( char const *file_name ) {
-                                return name_set_.contains( file_name );
-                            }
+    char const* file_name() const {
+        return file_name_;
+    }
+
+    int num_words() const {
+        return num_words_;
+    }
+
+    size_type size() const {
+        return size_;
+    }
+
+    char const* title() const {
+        return title_;
+    }
+
+    static const_iterator begin() {
+        return list_.begin();
+    }
+
+    static const_iterator end() {
+        return list_.end();
+    }
+
+    static int current_index() {
+        return static_cast<int>( list_.size() - 1 );
+    }
+
+    static void inc_words() {
+        ++list_.back()->num_words_;
+    }
+
+    static file_info* ith_info( int i ) {
+        return list_[ i ];
+    }
+
+    static int num_files() {
+        return static_cast<int>( list_.size() );
+    }
+
+    static bool seen_file( char const *file_name ) {
+        return name_set_.contains( file_name );
+    }
+
 private:
     int const               dir_index_;
     char const *const       file_name_;
-    size_t const            size_;
+    size_type const         size_;
     int                     num_words_;
     char const *const       title_;
 
