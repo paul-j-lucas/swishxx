@@ -42,9 +42,17 @@
 //*****************************************************************************
 {
 public:
-    int length() const                  { return value_.length(); }
-    int size() const                    { return value_.size(); }
-    operator char const*() const        { return value_.c_str(); }
+    std::string::size_type length() const {
+        return value_.length();
+    }
+
+    std::string::size_type size() const {
+        return value_.size();
+    }
+
+    operator char const*() const {
+        return value_.c_str();
+    }
 
     friend bool
     operator==( conf<std::string> const &i, conf<std::string> const &j ) {
@@ -100,7 +108,9 @@ private:
     std::string const   default_value_;
     std::string         value_;
 
-    virtual void        reset()         { value_ = default_value_; }
+    virtual void reset() {
+        value_ = default_value_;
+    }
 };
 
 #define CONF_STRING_ASSIGN_OPS(T)           \
