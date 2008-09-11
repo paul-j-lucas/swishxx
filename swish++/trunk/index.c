@@ -587,7 +587,8 @@ static void             write_word_index( ostream&, off_t* );
                  << " files)" << flush;
         return true;
     }
-    int const wfp = file_count * 100 / file_info::num_files();
+    int const wfp =
+        static_cast<int>( file_count * 100 / file_info::num_files() );
     if ( wfp >= word_percent_max ) {
         if ( verbosity > 2 )
             cout << "\n  \"" << word << "\" discarded (" << wfp << "%)"
@@ -639,7 +640,7 @@ static void             write_word_index( ostream&, off_t* );
         // Add the FilesGrow configuration variable to the FilesReserve
         // configuration variable to allow room for growth.
         //
-        files_reserve = files_grow( old_files.size() );
+        files_reserve = files_grow( static_cast<int>( old_files.size() ) );
     }
     FOR_EACH( index_segment, old_files, f ) {
         unsigned char const*

@@ -97,7 +97,7 @@ FollowLinks     follow_symbolic_links;
         // We really did insert a new directory: set the index to the actual
         // value.
         //
-        p.first->second = dir_set.size() - 1;
+        p.first->second = static_cast<int>( dir_set.size() - 1 );
     }
     return p.first->second;
 }

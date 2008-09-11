@@ -284,7 +284,7 @@ indexer*                indexer::text_indexer_ = 0;
     // New meta name: add it.  Do this in two statements intentionally because
     // C++ doesn't guarantee that the RHS of assignment is evaluated first.
     //
-    int const meta_id = meta_names.size();
+    int const meta_id = static_cast<int>( meta_names.size() );
     return meta_names[ new_strdup( meta_name ) ] = meta_id;
 }
 
