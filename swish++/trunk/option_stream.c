@@ -144,7 +144,7 @@ namespace PJL {
         // Now look through the options table for a match.
         //
         for ( s = os.specs_; s->long_name; ++s ) {
-            unsigned const len = end - arg;
+            ptrdiff_t const len = end - arg;
             if ( ::strncmp( arg, s->long_name, len ) )
                 continue;
             if ( ::strlen( s->long_name ) == len ) {
