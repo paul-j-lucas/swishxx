@@ -191,7 +191,8 @@ reached_end:    c = end;
         // Find the character in the Base64 alphabet.
         //
         if ( char const *const a = ::strchr( alphabet, group[i] ) )
-            value += (a - alphabet) << ((3 - i) * Bits_Per_Char);
+            value += static_cast<unsigned>( a - alphabet )
+                     << ((3 - i) * Bits_Per_Char);
         else {
             //
             // From RFC 2045, section 6.8:
