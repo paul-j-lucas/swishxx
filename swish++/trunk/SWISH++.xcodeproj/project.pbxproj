@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -13,18 +13,6 @@
 			buildPhases = (
 				020D8EA407B099CE00519658 /* ShellScript */,
 			);
-			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Prebuild;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 			);
 			name = Prebuild;
@@ -163,79 +151,6 @@
 		02AB80B307B6886400EED8FD /* word_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 020D8C5B07B08B5500519658 /* word_util.c */; };
 		02AB80B407B6886E00EED8FD /* extract.c in Sources */ = {isa = PBXBuildFile; fileRef = 020D8CC407B08B5500519658 /* extract.c */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildStyle section */
-		014CEA460018CE2711CA2923 /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					CHARSET_utf7,
-					CHARSET_utf8,
-					CHARSET_utf16,
-					ENCODING_base64,
-					ENCODING_quoted_printable,
-					IMPLEMENT_DECODING,
-					MOD_html,
-					MOD_id3,
-					MOD_latex,
-					MOD_mail,
-					MOD_man,
-					MOD_rtf,
-					FEATURE_word_pos,
-					SEARCH_DAEMON,
-					MULTI_THREADED,
-					_REENTRANT,
-				);
-				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_SIGN_COMPARE = NO;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)";
-				ZERO_LINK = NO;
-			};
-			name = Development;
-		};
-		014CEA470018CE2711CA2923 /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					CHARSET_utf7,
-					CHARSET_utf8,
-					CHARSET_utf16,
-					ENCODING_base64,
-					ENCODING_quoted_printable,
-					IMPLEMENT_DECODING,
-					MOD_html,
-					MOD_id3,
-					MOD_latex,
-					MOD_mail,
-					MOD_man,
-					MOD_rtf,
-					FEATURE_word_pos,
-					SEARCH_DAEMON,
-					MULTI_THREADED,
-					_REENTRANT,
-				);
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
 		020D8EAA07B09AAF00519658 /* PBXContainerItemProxy */ = {
@@ -1064,16 +979,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "-lz";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = index;
-				SECTORDER_FLAGS = "";
-			};
 			dependencies = (
 				020D8EAB07B09AAF00519658 /* PBXTargetDependency */,
 				02A153FC07B0B34100C8C6A3 /* PBXTargetDependency */,
@@ -1100,21 +1005,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.3;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = charsets;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8EAD07B09AD300519658 /* PBXTargetDependency */,
 			);
@@ -1133,20 +1023,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = encodings;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8EAF07B09ADF00519658 /* PBXTargetDependency */,
 			);
@@ -1165,20 +1041,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = mod_html;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8EDA07B0A24200519658 /* PBXTargetDependency */,
 			);
@@ -1197,20 +1059,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = mod_id3;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8EED07B0A35E00519658 /* PBXTargetDependency */,
 			);
@@ -1229,20 +1077,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = mod_mail;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8F0407B0A73900519658 /* PBXTargetDependency */,
 			);
@@ -1261,20 +1095,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = mod_man;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8F1707B0A96200519658 /* PBXTargetDependency */,
 			);
@@ -1293,20 +1113,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = mod_latex;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8F2A07B0AA7E00519658 /* PBXTargetDependency */,
 			);
@@ -1325,20 +1131,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/lib;
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = mod_rtf;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				020D8F3307B0AA9500519658 /* PBXTargetDependency */,
 			);
@@ -1356,18 +1148,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "-lpthread";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = search;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "";
-			};
 			dependencies = (
 				026DBDEA07B1F07D0026C69D /* PBXTargetDependency */,
 			);
@@ -1385,20 +1165,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = extract;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 				02AB808607B6874A00EED8FD /* PBXTargetDependency */,
 			);
@@ -1413,15 +1179,11 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 0247B18C08612F6C00D126C2 /* Build configuration list for PBXProject "SWISH++" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				014CEA460018CE2711CA2923 /* Development */,
-				014CEA470018CE2711CA2923 /* Deployment */,
-			);
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 08FB7794FE84155DC02AAC07 /* SWISH++ */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				020D8EA507B099CE00519658 /* Prebuild */,
 				020D8DE907B08DE400519658 /* index */,
@@ -2769,9 +2531,11 @@
 					MULTI_THREADED,
 					_REENTRANT,
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PROTOTYPE_CONVERSION = YES;
 				GCC_WARN_SIGN_COMPARE = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -2815,6 +2579,16 @@
 					MULTI_THREADED,
 					_REENTRANT,
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PROTOTYPE_CONVERSION = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.3;
@@ -2830,6 +2604,16 @@
 		0247B18308612F6C00D126C2 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PROTOTYPE_CONVERSION = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = /usr/lib/gcc/darwin/3.3;
@@ -3082,18 +2866,32 @@
 		0247B18D08612F6C00D126C2 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = x86_64;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PROTOTYPE_CONVERSION = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Development;
 		};
 		0247B18E08612F6C00D126C2 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 			};
 			name = Deployment;
 		};
 		0247B18F08612F6C00D126C2 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 			};
 			name = Default;
 		};
