@@ -255,8 +255,8 @@ int conf_var::current_config_file_line_no_ = 0;
             //
             return;
         }
-        cerr    << "could not read configuration from \"" << file_name
-            << '"' << error_string( conf_file.error() );
+        cerr << "could not read configuration from \"" << file_name
+             << '"' << error_string( conf_file.error() );
         ::exit( Exit_Config_File );
     }
     conf_file.behavior( mmap_file::bt_sequential );
@@ -268,8 +268,7 @@ int conf_var::current_config_file_line_no_ = 0;
         //
         // Find the end of the line.
         //
-        mmap_file::const_iterator const
-            nl = find_newline( c, conf_file.end() );
+        mmap_file::const_iterator const nl = find_newline( c, conf_file.end() );
         if ( nl == conf_file.end() )
             break;
 
