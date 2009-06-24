@@ -157,6 +157,7 @@ static void             write_word_index( ostream&, off_t* );
 //*****************************************************************************
 {
     o.write( reinterpret_cast<char const*>( buf ), len );
+    assert_stream( o );
 }
 
 //*****************************************************************************
@@ -618,7 +619,7 @@ static void             write_word_index( ostream&, off_t* );
     mmap_file const index_file( index_file_name );
     if ( !index_file ) {
         error() << "could not read index from \"" << index_file_name
-            << '"' << error_string( index_file.error() );
+                << '"' << error_string( index_file.error() );
         ::exit( Exit_No_Read_Index );
     }
 
@@ -852,7 +853,7 @@ static void             write_word_index( ostream&, off_t* );
                     i = j;
 
         word_offset[ word_index++ ] = o.tellp();
-        o << *word[ i ] << '\0';
+        o << *word[ i ] << '\0' << assert_stream;
 
         ////////// Calc. total occurrences in all indicies ////////////////////
 
@@ -879,12 +880,13 @@ static void             write_word_index( ostream&, off_t* );
             file_list const list( word[ j ] );
             FOR_EACH( file_list, list, file ) {
                 if ( continues )
-                    o << Word_Entry_Continues_Marker;
+                    o << Word_Entry_Continues_Marker << assert_stream;
                 else
                     continues = true;
                 o << enc_int( file->index_ )
                   << enc_int( file->occurrences_ )
-                  << enc_int( rank(file->index_, file->occurrences_, factor) );
+                  << enc_int( rank(file->index_, file->occurrences_, factor) )
+                  << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
 #ifdef  FEATURE_word_pos
@@ -895,7 +897,7 @@ static void             write_word_index( ostream&, off_t* );
 
             if ( j != i ) ++word[ j ];
         }
-        o << Stop_Marker;
+        o << Stop_Marker << assert_stream;
 
         ++word[ i ];
     }
@@ -911,7 +913,7 @@ static void             write_word_index( ostream&, off_t* );
                 continue;
 
             word_offset[ word_index++ ] = o.tellp();
-            o << *word[ j ] << '\0';
+            o << *word[ j ] << '\0' << assert_stream;
 
             ////////// Calc. total occurrences in all indicies ////////////////
 
@@ -926,12 +928,13 @@ static void             write_word_index( ostream&, off_t* );
             bool continues = false;
             FOR_EACH( file_list, list, file ) {
                 if ( continues )
-                    o << Word_Entry_Continues_Marker;
+                    o << Word_Entry_Continues_Marker << assert_stream;
                 else
                     continues = true;
                 o << enc_int( file->index_ )
                   << enc_int( file->occurrences_ )
-                  << enc_int( rank(file->index_, file->occurrences_, factor) );
+                  << enc_int( rank(file->index_, file->occurrences_, factor) )
+                  << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
 #ifdef  FEATURE_word_pos
@@ -939,7 +942,7 @@ static void             write_word_index( ostream&, off_t* );
                     file->write_word_pos( o );
 #endif
             }
-            o << Stop_Marker;
+            o << Stop_Marker << assert_stream;
         }
     }
 
@@ -1060,7 +1063,7 @@ static void             write_word_index( ostream&, off_t* );
     register int dir_index = 0;
     FOR_EACH( dir_list_type, dir_list, dir ) {
         offset[ dir_index++ ] = o.tellp();
-        o << *dir << '\0';
+        o << *dir << '\0' << assert_stream;
     }
 }
 
@@ -1092,7 +1095,8 @@ static void             write_word_index( ostream&, off_t* );
             << (*i)->file_name() << '\0'
             << enc_int( (*i)->size() )
             << enc_int( (*i)->num_words() )
-            << (*i)->title() << '\0';
+            << (*i)->title() << '\0'
+            << assert_stream;
     }
 }
 
@@ -1164,7 +1168,7 @@ static void             write_word_index( ostream&, off_t* );
     register int meta_index = 0;
     FOR_EACH( meta_map, meta_names, m ) {
         offset[ meta_index++ ] = o.tellp();
-        o << m->first << '\0' << enc_int( m->second );
+        o << m->first << '\0' << enc_int( m->second ) << assert_stream;
     }
 }
 
@@ -1242,7 +1246,7 @@ static void             write_word_index( ostream&, off_t* );
     register int word_index = 0;
     FOR_EACH( stop_word_set, *stop_words, word ) {
         offset[ word_index++ ] = o.tellp();
-        o << *word << '\0';
+        o << *word << '\0' << assert_stream;
     }
 }
 
@@ -1268,17 +1272,18 @@ static void             write_word_index( ostream&, off_t* );
     register int word_index = 0;
     FOR_EACH( word_map, words, w ) {
         offset[ word_index++ ] = o.tellp();
-        o << w->first << '\0';
+        o << w->first << '\0' << assert_stream;
         bool continues = false;
         word_info const &info = w->second;
         FOR_EACH( word_info::file_list, info.files_, file ) {
             if ( continues )
-                o << Word_Entry_Continues_Marker;
+                o << Word_Entry_Continues_Marker << assert_stream;
             else
                 continues = true;
             o << enc_int( file->index_ )
               << enc_int( file->occurrences_ )
-              << enc_int( file->rank_ );
+              << enc_int( file->rank_ )
+              << assert_stream;
             if ( !file->meta_ids_.empty() )
                 file->write_meta_ids( o );
 #ifdef  FEATURE_word_pos
@@ -1287,7 +1292,7 @@ static void             write_word_index( ostream&, off_t* );
 #endif
         }
 
-        o << Stop_Marker;
+        o << Stop_Marker << assert_stream;
     }
 }
 

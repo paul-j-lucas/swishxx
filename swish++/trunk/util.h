@@ -300,6 +300,14 @@ inline std::ostream& report_error( std::ostream &o = std::cerr ) {
 	return o;	                        // just to make compiler happy
 }
 
+inline std::ostream& assert_stream( std::ostream &o ) {
+    if ( !o ) {
+        error() << "writing index failed: " << error_string;
+        ::exit( Exit_No_Write_Index );
+    }
+    return o;
+}
+
 inline char*    new_strdup( char const *s ) {
                     return std::strcpy( new char[ std::strlen( s ) + 1 ], s );
                 }

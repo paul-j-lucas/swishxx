@@ -41,18 +41,18 @@ word_info::file::file( int index ) :
 }
 
 void word_info::file::write_meta_ids( ostream &o ) const {
-    o << Meta_Name_List_Marker;
+    o << Meta_Name_List_Marker << assert_stream;
     FOR_EACH( meta_set, meta_ids_, meta_id )
-        o << enc_int( *meta_id );
-    o << Stop_Marker;
+        o << enc_int( *meta_id ) << assert_stream;
+    o << Stop_Marker << assert_stream;
 }
 
 #ifdef  FEATURE_word_pos
 void word_info::file::write_word_pos( ostream &o ) const {
-    o << Word_Pos_List_Marker;
+    o << Word_Pos_List_Marker << assert_stream;
     FOR_EACH( pos_delta_list, pos_deltas_, pos_delta )
-        o << enc_int( *pos_delta );
-    o << Stop_Marker;
+        o << enc_int( *pos_delta ) << assert_stream;
+    o << Stop_Marker << assert_stream;
 }
 #endif  /* FEATURE_word_pos */
 /* vim:set et sw=4 ts=4: */
