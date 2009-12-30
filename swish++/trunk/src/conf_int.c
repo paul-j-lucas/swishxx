@@ -83,7 +83,7 @@ extern char const*  me;
     }
 
     error() << '"' << name() << "\" value \""
-        << new_value << "\" not in range [" << min_ << '-';
+            << new_value << "\" not in range [" << min_ << '-';
 
     if ( max_ == INT_MAX )
         cerr << "infinity";

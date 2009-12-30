@@ -49,15 +49,15 @@ private:
     char const *const *const legal_values_;
 };
 
-#define CONF_ENUM_ASSIGN_OPS(T)             \
-    T& operator=( std::string const &s ) {  \
-        conf_enum::operator=( s );          \
-        return *this;                       \
-    }                                       \
-    T& operator=( char const *s ) {         \
-        conf_enum::operator=( s );          \
-        return *this;                       \
-    }
+#define CONF_ENUM_ASSIGN_OPS(T)                 \
+        T& operator=( std::string const &s ) {  \
+            conf_enum::operator=( s );          \
+            return *this;                       \
+        }                                       \
+        T& operator=( char const *s ) {         \
+            conf_enum::operator=( s );          \
+            return *this;                       \
+        }
 
 #endif  /* conf_enum_H */
 /* vim:set et sw=4 ts=4: */

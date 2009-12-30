@@ -59,19 +59,19 @@ private:
     virtual void    reset() { value_ = default_value_; }
 };
 
-#define CONF_BOOL_ASSIGN_OPS(T)             \
-    T& operator=( bool b ) {                \
-        conf<bool>::operator=( b );         \
-        return *this;                       \
-    }                                       \
-    T& operator=( std::string const &s ) {  \
-        conf<bool>::operator=( s );         \
-        return *this;                       \
-    }                                       \
-    T& operator=( char const *s ) {         \
-        conf<bool>::operator=( s );         \
-        return *this;                       \
-    }
+#define CONF_BOOL_ASSIGN_OPS(T)                 \
+        T& operator=( bool b ) {                \
+            conf<bool>::operator=( b );         \
+            return *this;                       \
+        }                                       \
+        T& operator=( std::string const &s ) {  \
+            conf<bool>::operator=( s );         \
+            return *this;                       \
+        }                                       \
+        T& operator=( char const *s ) {         \
+            conf<bool>::operator=( s );         \
+            return *this;                       \
+        }
 
 #endif  /* conf_bool_H */
 /* vim:set et sw=4 ts=4: */

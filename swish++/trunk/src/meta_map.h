@@ -32,7 +32,7 @@
 //
 // SYNOPSIS
 //
-        typedef std::map< char const*, int > meta_map;
+        typedef std::map<char const*, int> meta_map;
 //
 // DESCRIPTION
 //
@@ -40,8 +40,8 @@
 //      start at zero.
 //
 //      Note that the declaration of std::map has a default "Compare" template
-//      parameter of "less< key_type >" and, since we've included less.h above
-//      that defines "less< char const* >", C-style string comparisons work
+//      parameter of "less<key_type>" and, since we've included less.h above
+//      that defines "less<char const*>", C-style string comparisons work
 //      properly.
 //
 //*****************************************************************************

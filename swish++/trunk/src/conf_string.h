@@ -113,23 +113,23 @@ private:
     }
 };
 
-#define CONF_STRING_ASSIGN_OPS(T)           \
-    T& operator=( std::string const &s ) {  \
-        conf<std::string>::operator=( s );  \
-        return *this;                       \
-    }                                       \
-    T& operator=( char const *s ) {         \
-        conf<std::string>::operator=( s );  \
-        return *this;                       \
-    }                                       \
-    T& operator+=( std::string const &s ) { \
-        conf<std::string>::operator+=( s ); \
-        return *this;                       \
-    }                                       \
-    T& operator+=( char const *s ) {        \
-        conf<std::string>::operator+=( s ); \
-        return *this;                       \
-    }
+#define CONF_STRING_ASSIGN_OPS(T)               \
+        T& operator=( std::string const &s ) {  \
+            conf<std::string>::operator=( s );  \
+            return *this;                       \
+        }                                       \
+        T& operator=( char const *s ) {         \
+            conf<std::string>::operator=( s );  \
+            return *this;                       \
+        }                                       \
+        T& operator+=( std::string const &s ) { \
+            conf<std::string>::operator+=( s ); \
+            return *this;                       \
+        }                                       \
+        T& operator+=( char const *s ) {        \
+            conf<std::string>::operator+=( s ); \
+            return *this;                       \
+        }
 
 #endif  /* conf_string_H */
 /* vim:set et sw=4 ts=4: */

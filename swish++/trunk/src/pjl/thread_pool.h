@@ -174,8 +174,8 @@ public:
     //      immediately, however; rather, the pool slowly adjusts as tasks are
     //      completed.
 private:
-    typedef std::set< thread* > thread_set;
-    typedef std::queue< thread::argument_type > task_queue_type;
+    typedef std::set<thread*> thread_set;
+    typedef std::queue<thread::argument_type> task_queue_type;
 
     int volatile    min_threads_, max_threads_;
     thread_set      threads_;

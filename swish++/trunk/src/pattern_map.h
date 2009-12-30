@@ -44,8 +44,8 @@
 //
 // SYNOPSIS
 //
-        template< typename T >
-        class pattern_map : public std::map< char const*, T >
+        template<typename T>
+        class pattern_map : public std::map<char const*, T>
 //
 // DESCRIPTION
 //
@@ -68,7 +68,7 @@
 //*****************************************************************************
 {
 public:
-    typedef typename std::map< char const*, T > map_type;
+    typedef typename std::map<char const*, T> map_type;
     typedef typename map_type::key_type key_type;
     typedef typename map_type::value_type value_type;
     typedef typename map_type::iterator iterator;
@@ -100,8 +100,7 @@ public:
     void insert( char const *pattern, T const &t ) { (*this)[pattern] = t; }
     void insert( value_type const &n ) { map_type::insert( n ); }
 private:
-    class pattern_match :
-        public std::unary_function< value_type const&, bool > {
+    class pattern_match : public std::unary_function<value_type const&, bool> {
         //
         // A pattern_match is-a unary_function to serve as a predicate to
         // find_if() above.

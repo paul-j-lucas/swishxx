@@ -67,8 +67,8 @@ public:
     bool contains( char const *s ) const { return find( s ) != this->end(); }
 };
 
-typedef pjl_set< char const* > char_ptr_set;
-typedef pjl_set< std::string > string_set;
+typedef pjl_set<char const*> char_ptr_set;
+typedef pjl_set<std::string> string_set;
 
 } // namespace PJL
 

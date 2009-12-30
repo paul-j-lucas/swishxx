@@ -55,9 +55,7 @@ using namespace std;
 {
     auto_vec<char> lower( to_lower_r( line ) );
     char *p = lower;
-    for ( register char const *meta_name;
-          meta_name = ::strtok( p, " \r\t" ); p = 0
-    ) {
+    for ( char const *meta_name; meta_name = ::strtok( p, " \r\t" ); p = 0 ) {
         //
         // See if the meta name contains a reassignment: if so, chop it at the
         // '='.
@@ -66,8 +64,7 @@ using namespace std;
         // strchr() returning char const*.  Its use is harmless for other
         // compilers.
         //
-        register char *reassign =
-            const_cast<char*>( ::strchr( meta_name, '=' ) );
+        char *reassign = const_cast<char*>( ::strchr( meta_name, '=' ) );
         if ( reassign ) {
             *reassign = '\0';
             if ( !*++reassign ) {

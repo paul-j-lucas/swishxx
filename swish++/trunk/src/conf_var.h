@@ -77,7 +77,7 @@ private:
     // that defines "less<char const*>", C-style string comparisons work
     // properly.
     //
-    typedef std::map< char const*, conf_var* > map_type;
+    typedef std::map<char const*, conf_var*> map_type;
 
     char const              *const name_;
     static int              current_config_file_line_no_;
@@ -100,20 +100,20 @@ inline std::ostream& conf_var::warning( std::ostream &o ) {
 //
 // We define this macro for convenience since operator=() is not inherited.
 //
-#define CONF_VAR_ASSIGN_OPS(T)              \
-    T& operator=( std::string const &s ) {  \
-        parse_const_value( s.c_str() );     \
-        return *this;                       \
-    }                                       \
-    T& operator=( char const *s ) {         \
-        parse_const_value( s );             \
-        return *this;                       \
-    }
+#define CONF_VAR_ASSIGN_OPS(T)                  \
+        T& operator=( std::string const &s ) {  \
+            parse_const_value( s.c_str() );     \
+            return *this;                       \
+        }                                       \
+        T& operator=( char const *s ) {         \
+            parse_const_value( s );             \
+            return *this;                       \
+        }
 
 //
 // This template declaration allows specializations for T later.
 //
-template< class T > class conf;
+template<typename T> class conf;
 
 #endif  /* conf_var_H */
 /* vim:set et sw=4 ts=4: */

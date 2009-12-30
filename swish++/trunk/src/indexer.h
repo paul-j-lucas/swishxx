@@ -155,7 +155,7 @@ private:
     // separately from the original module names, i.e., the original char*'s
     // can't be used), strings might as well be used.
     //
-    typedef std::map< std::string, indexer* > map_type;
+    typedef std::map<std::string, indexer*> map_type;
 
     indexer( indexer const& );                  // forbid initialization
     indexer& operator=( indexer const& );       // forbid assignment

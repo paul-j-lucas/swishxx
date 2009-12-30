@@ -75,19 +75,19 @@ private:
     virtual void    reset() { value_ = default_value_; }
 };
 
-#define CONF_INT_ASSIGN_OPS(T)              \
-    T& operator=( int i ) {                 \
-        conf<int>::operator=( i );          \
-        return *this;                       \
-    }                                       \
-    T& operator=( std::string const &s ) {  \
-        conf<int>::operator=( s );          \
-        return *this;                       \
-    }                                       \
-    T& operator=( char const *s ) {         \
-        conf<int>::operator=( s );          \
-        return *this;                       \
-    }
+#define CONF_INT_ASSIGN_OPS(T)                  \
+        T& operator=( int i ) {                 \
+            conf<int>::operator=( i );          \
+            return *this;                       \
+        }                                       \
+        T& operator=( std::string const &s ) {  \
+            conf<int>::operator=( s );          \
+            return *this;                       \
+        }                                       \
+        T& operator=( char const *s ) {         \
+            conf<int>::operator=( s );          \
+            return *this;                       \
+        }
 
 #endif  /* conf_int_H */
 /* vim:set et sw=4 ts=4: */

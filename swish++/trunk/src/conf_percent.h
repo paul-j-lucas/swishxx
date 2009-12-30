@@ -62,19 +62,19 @@ inline conf_percent::conf_percent( char const *name,
 {
 }
 
-#define CONF_PERCENT_ASSIGN_OPS(T)          \
-    T& operator=( int i ) {                 \
-        conf_percent::operator=( i );       \
-        return *this;                       \
-    }                                       \
-    T& operator=( std::string const &s ) {  \
-        conf_percent::operator=( s );       \
-        return *this;                       \
-    }                                       \
-    T& operator=( char const *s ) {         \
-        conf_percent::operator=( s );       \
-        return *this;                       \
-    }
+#define CONF_PERCENT_ASSIGN_OPS(T)              \
+        T& operator=( int i ) {                 \
+            conf_percent::operator=( i );       \
+            return *this;                       \
+        }                                       \
+        T& operator=( std::string const &s ) {  \
+            conf_percent::operator=( s );       \
+            return *this;                       \
+        }                                       \
+        T& operator=( char const *s ) {         \
+            conf_percent::operator=( s );       \
+            return *this;                       \
+        }
 
 #endif  /* conf_percent_H */
 /* vim:set et sw=4 ts=4: */

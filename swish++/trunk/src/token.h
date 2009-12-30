@@ -65,16 +65,16 @@ public:
         tt_word
     };
 
-    token() : type_( tt_none )                  { }
-    explicit token( token_stream &in )          { in >> *this; }
+    token() : type_( tt_none )          { }
+    explicit token( token_stream &in )  { in >> *this; }
 
     // default copy constructor is fine
     // default assignment operator is fine
 
-    operator    type() const                    { return type_; }
-    int         length() const                  { return len_; }
-    char const* str() const                     { return buf_; }
-    char const* lower_str() const               { return lower_buf_; }
+    operator    type() const            { return type_; }
+    int         length() const          { return len_; }
+    char const* str() const             { return buf_; }
+    char const* lower_str() const       { return lower_buf_; }
 
     friend token_stream& operator>>( token_stream&, token& );
 private:

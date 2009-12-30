@@ -146,8 +146,8 @@ inline mail_indexer::message_type::message_type() :
     // 5.2., "Content-Type Defaults":
     //
     //      Default RFC 822 messages without a MIME Content-Type header are
-    //      taken by this protocol to be plain text in the US-ASCII
-    //      character set, which can be explicitly specified as:
+    //      taken by this protocol to be plain text in the US-ASCII character
+    //      set, which can be explicitly specified as:
     //
     //      Content-type: text/plain; charset=us-ascii
     //
