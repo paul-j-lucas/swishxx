@@ -1,6 +1,6 @@
 	SWISH++
 	Simple Web Indexing System for Humans: C++ version
-	http://homepage.mac.com/pauljlucas/software/swish/
+	http://swishplusplus.sourceforge.net/
 	________________________________________________________________
 
 	SWISH++ is a Unix-based file indexing and searching engine
@@ -216,6 +216,6 @@
 
 	________________________________________________________________
 
-	Copyright (C) 1998-2002 by Paul J. Lucas <pauljlucas@mac.com>
+	Copyright (C) 1998-2010 by Paul J. Lucas <paul@lucasmail.org>
 	SWISH++ is available under the GNU General Public License.
-	This file last updated: May 13, 2002
+	This file last updated: January 1, 2010

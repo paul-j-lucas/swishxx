@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- !	SWISH++
- !	search.plist: property-list for for Mac OS X's launchd(8)
+ !    SWISH++
+ !    search.plist: property-list for for Mac OS X's launchd(8)
  !
- !	Copyright (C) 2005  Paul J. Lucas
+ !    Copyright (C) 2005  Paul J. Lucas
  !
- !	This program is free software; you can redistribute it and/or modify
- !	it under the terms of the GNU General Public License as published by
- !	the Free Software Foundation; either version 2 of the License, or
- !	(at your option) any later version.
+ !    This program is free software; you can redistribute it and/or modify
+ !    it under the terms of the GNU General Public License as published by
+ !    the Free Software Foundation; either version 2 of the License, or
+ !    (at your option) any later version.
  !
- !	This program is distributed in the hope that it will be useful,
- !	but WITHOUT ANY WARRANTY; without even the implied warranty of
- !	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- !	GNU General Public License for more details.
+ !    This program is distributed in the hope that it will be useful,
+ !    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ !    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ !    GNU General Public License for more details.
  !
- !	You should have received a copy of the GNU General Public License
- !	along with this program; if not, write to the Free Software
- !	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ !    You should have received a copy of the GNU General Public License
+ !    along with this program; if not, write to the Free Software
+ !    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 -->
 
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>org.pauljlucas.software.SWISH++.search</string>
-	<key>ProgramArguments</key>
-	<array>
-		<string>/usr/local/bin/search</string>
-		<!--
-		 ! Note that argument strings are treated as single strings,
-		 ! i.e., if a shell were being used, it would be as if the
-		 ! strings were quoted.  This means that options that have
-		 ! arguments must either not contain whitespace or have their
-		 ! arguments as seperate strings.
-		-->
-		<string>--launchd</string>
-		<string>-c/path/to/swish++.conf</string>
-		<!--
-		 ! You can specify more arguments either here or in a
-		 ! configuration file.
-		-->
-	</array>
-	<key>OnDemand</key>
-	<false/>
-	<key>WorkingDirectory</key>
-	<string>/</string>
+  <key>Label</key>
+  <string>org.pauljlucas.software.SWISH++.search</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/search</string>
+    <!--
+     ! Note that argument strings are treated as single strings, i.e., if a
+     ! shell were being used, it would be as if the strings were quoted.  This
+     ! means that options that have arguments must either not contain
+     ! whitespace or have their arguments as seperate strings.
+    -->
+    <string>--launchd</string>
+    <string>-c/path/to/swish++.conf</string>
+    <!--
+     ! You can specify more arguments either here or in a configuration file.
+    -->
+  </array>
+  <key>OnDemand</key>
+  <false/>
+  <key>WorkingDirectory</key>
+  <string>/</string>
 </dict>
 </plist>
+<!-- vim:set et sw=2 ts=2: -->

@@ -35,8 +35,8 @@
 ###############################################################################
 
 #FREE_BSD:=1
-LINUX:=1
-#MAC_OS_X:=1
+#LINUX:=1
+MAC_OS_X:=1
 #SOLARIS:=1
 #WIN32:=1
 
@@ -295,11 +295,11 @@ else
 MAKEDEPEND=	$(PERL) $(ROOT)/config/makedepend.pl $(CFLAGS)
 endif
 
-.%.d : %.c $(ROOT)/platform.h
+.%.d : %.c $(ROOT)/src/platform.h
 	$(SHELL) -ec '$(MAKEDEPEND) $< | sed "s!\([^:]*\):!\1 $@ : !g" > $@; [ -s $@ ] || $(RM) $@'
 
 ifneq ($(findstring platform,$(TARGET)),platform)
-$(ROOT)/platform.h $(ROOT)/config/platform.mk:
+$(ROOT)/src/platform.h $(ROOT)/config/platform.mk:
 	@$(MAKE) -C $(ROOT)/config
 endif
 

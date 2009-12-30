@@ -1,27 +1,27 @@
 #! /bin/sh
 ##
-#	SWISH++
-#	config-sh -- Configuration script
+#       SWISH++
+#       config-sh -- Configuration script
 #
-#	Copyright (C) 1998  Paul J. Lucas
+#       Copyright (C) 1998  Paul J. Lucas
 #
-#	This program is free software; you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation; either version 2 of the License, or
-#	(at your option) any later version.
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
 #
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
 #
-#	You should have received a copy of the GNU General Public License
-#	along with this program; if not, write to the Free Software
-#	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
 ##
-#	This code is Bourne Shell for maximal portability.
+# This code is Bourne Shell for maximal portability.
 ##
 
 ########### You shouldn't have to change anything below this line. ############
@@ -48,34 +48,34 @@ trap "rm -f *.o $TARGET_H $TARGET_MK; exit 1" 0 1 2 15
 
 cat > $TARGET_H <<!
 /*
-**	SWISH++
-**	`basename $TARGET_H`
+**      SWISH++
+**      `basename $TARGET_H`
 **
-**	This program is free software; you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation; either version 2 of the License, or
-**	(at your option) any later version.
+**      This program is free software; you can redistribute it and/or modify
+**      it under the terms of the GNU General Public License as published by
+**      the Free Software Foundation; either version 2 of the License, or
+**      (at your option) any later version.
 **
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
+**      This program is distributed in the hope that it will be useful,
+**      but WITHOUT ANY WARRANTY; without even the implied warranty of
+**      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**      GNU General Public License for more details.
 **
-**	You should have received a copy of the GNU General Public License
-**	along with this program; if not, write to the Free Software
-**	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+**      You should have received a copy of the GNU General Public License
+**      along with this program; if not, write to the Free Software
+**      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
 /*
-**	Note: This configuration file was automatically generated for the C++
-**	compiler $CC on $DATE.
+**      Note: This configuration file was automatically generated for the C++
+**      compiler $CC on $DATE.
 */
 
 #ifndef platform_H
 #define platform_H
 
-#ifdef	WIN32
-#define	PJL_NO_SYMBOLIC_LINKS
+#ifdef  WIN32
+#define PJL_NO_SYMBOLIC_LINKS
 #endif
 
 !
@@ -84,27 +84,27 @@ cat > $TARGET_H <<!
 
 cat > $TARGET_MK <<!
 ##
-#	SWISH++
-#	`basename $TARGET_MK`
+#       SWISH++
+#       `basename $TARGET_MK`
 #
-#	This program is free software; you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation; either version 2 of the License, or
-#	(at your option) any later version.
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
 #
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
 #
-#	You should have received a copy of the GNU General Public License
-#	along with this program; if not, write to the Free Software
-#	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
 ##
-#	Note: This make file was automatically generated for the C++ compiler
-#	$CC on $DATE.
+#       Note: This make file was automatically generated for the C++ compiler
+#       $CC on $DATE.
 ##
 
 !
@@ -112,36 +112,36 @@ cat > $TARGET_MK <<!
 ########## The main code ######################################################
 
 define() {
-	definition=`grep $1 $file | cut -f3-`
-	[ -z "$definition" ] && return
+    definition=`grep $1 $file | cut -f3-`
+    [ -z "$definition" ] && return
 
-	symbol=`echo $definition | cut -f1 -d' '`
-	{ echo "#ifndef $symbol";
-	  echo "#define $definition";
-	  echo "#endif"; } >> $TARGET_H
+    symbol=`echo $definition | cut -f1 -d' '`
+    { echo "#ifndef $symbol";
+      echo "#define $definition";
+      echo "#endif"; } >> $TARGET_H
 
-	value=`echo $definition | cut -f2 -d' '`
-	echo "$symbol:=$value" >> $TARGET_MK
+    value=`echo $definition | cut -f2 -d' '`
+    echo "$symbol:=$value" >> $TARGET_MK
 }
 
 for file in src/*.c
 do
-	echo "+ checking for \"`grep TEST $file | cut -f3-`\"..."
-	if $CC $CFLAGS $file >/dev/null 2>/dev/null
-	then
-		define PASS
-		continue
-	fi
+    echo "+ checking for \"`grep TEST $file | cut -f3-`\"..."
+    if $CC $CFLAGS $file >/dev/null 2>/dev/null
+    then
+        define PASS
+        continue
+    fi
 
-	if grep ERROR $file >&- 2>&-
-	then
-		echo '------------------------------------------------------------------------------'
-		grep ERROR $file | cut -f3-
-		echo '------------------------------------------------------------------------------'
-		exit 1
-	fi
+    if grep ERROR $file >&- 2>&-
+    then
+        echo '------------------------------------------------------------------------------'
+        grep ERROR $file | cut -f3-
+        echo '------------------------------------------------------------------------------'
+        exit 1
+    fi
 
-	define FAIL
+    define FAIL
 done
 
 echo
@@ -150,7 +150,9 @@ echo
 
 cat >> $TARGET_H <<!
 
-#endif	/* platform_H */
+#endif  /* platform_H */
 !
 
 trap "x=$?; rm -f *.o; exit $x" 0 1 2 15
+
+# vim:set et sw=4 ts=4:
