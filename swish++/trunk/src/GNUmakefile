@@ -105,7 +105,9 @@ I_OBJECTS:=	$(I_SOURCES:.c=.o)
 ifndef HAVE_ZLIB
 ZLIB_LINK:=
 endif
-I_LINK:=	$(MOD_LINK) $(ENCODING_LINK) $(CHARSET_LINK) $(PJL_LIB_LINK) \
+I_LIB_PATHS:=	$(CHARSET_LIB_PATH) $(ENCODING_LIB_PATH) $(MOD_LIB_PATHS) \
+		$(PJL_LIB_PATH)
+I_LINK:=	$(CHARSET_LINK) $(ENCODING_LINK) $(MOD_LINK) $(PJL_LIB_LINK) \
 		$(PTHREAD_LINK) -lm $(ZLIB_LINK)
 
 S_SOURCES:=	enc_int.c \
@@ -143,6 +145,7 @@ S_SOURCES+=	Group.c \
 		User.c
 endif
 S_OBJECTS:=	$(S_SOURCES:.c=.o)
+S_LIB_PATHS:=	$(PJL_LIB_PATH)
 S_LINK:=	$(SOCKET_LINK) $(PJL_LIB_LINK) $(PTHREAD_LINK)
 
 E_SOURCES:=	conf_var.c \
@@ -166,18 +169,12 @@ ifdef WIN32
 E_SOURCES+=	fnmatch.c		# see the comment in pattern_map.h
 endif
 E_OBJECTS:=	$(E_SOURCES:.c=.o)
+E_LIB_PATHS:=	$(PJL_LIB_PATH)
 E_LINK:=	$(PJL_LIB_LINK) $(PTHREAD_LINK)
 
 ##
 # Build rules
 ##
-
-extract: $(E_OBJECTS) $(PJL_LIB)
-	$(CC) $(CFLAGS) $(PJL_LIB_PATH) -o $@ $(E_OBJECTS) $(E_LINK)
-
-index: $(I_OBJECTS) $(CHARSET_LIB) $(ENCODING_LIB) $(MOD_LIBS) $(PJL_LIB)
-	$(CC) $(CFLAGS) $(CHARSET_LIB_PATH) $(ENCODING_LIB_PATH) \
-		$(MOD_LIB_PATHS) $(PJL_LIB_PATH) -o $@ $(I_OBJECTS) $(I_LINK)
 
 init_modules.c: mod/*/mod_*.h $(ROOT)/config/init_modules-sh
 	$(ROOT)/config/init_modules-sh > $@ || $(RM) $@
@@ -185,8 +182,14 @@ init_modules.c: mod/*/mod_*.h $(ROOT)/config/init_modules-sh
 init_mod_vars.c: mod/*/vars $(ROOT)/config/init_mod_vars-sh
 	$(ROOT)/config/init_mod_vars-sh > $@ || $(RM) $@
 
+extract: $(E_OBJECTS) $(PJL_LIB)
+	$(CC) $(CFLAGS) $(E_LIB_PATHS) -o $@ $(E_OBJECTS) $(E_LINK)
+
+index: $(I_OBJECTS) $(CHARSET_LIB) $(ENCODING_LIB) $(MOD_LIBS) $(PJL_LIB)
+	$(CC) $(CFLAGS) $(I_LIB_PATHS) -o $@ $(I_OBJECTS) $(I_LINK)
+
 search: $(S_OBJECTS) $(PJL_LIB)
-	$(CC) $(CFLAGS) $(PJL_LIB_PATH) -o $@ $^ $(S_LINK)
+	$(CC) $(CFLAGS) $(S_LIB_PATHS) -o $@ $(S_OBJECTS) $(S_LINK)
 
 $(CHARSET_LIB): FORCE
 	@$(MAKE) -C $(dir $@) DEBUGFLAGS="$(DEBUGFLAGS)"
@@ -225,7 +228,7 @@ clean:
 	@$(call MAKE_SUBDIRS,$@)
 
 distclean: clean
-	$(RM) $(TARGET) .*.d init_modules.c
+	$(RM) $(TARGET) .*.d init_modules.c init_mod_vars.c
 	@$(call MAKE_SUBDIRS,$@)
 
 dist: distclean
