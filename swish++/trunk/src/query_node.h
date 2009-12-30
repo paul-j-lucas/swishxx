@@ -30,14 +30,14 @@
 #include <vector>
 
 // local
+#include "pjl/auto_delete_pool.h"
 #include "query.h"
-#include "simple_pool.h"
 
 //*****************************************************************************
 //
 // SYNOPSYS
 //
-        class query_node : public PJL::simple_pool_object<query_node>
+        class query_node : public PJL::auto_delete_obj<query_node>
 //
 // DESCRIPTION
 //
@@ -81,7 +81,7 @@ protected:
 //*****************************************************************************
 {
 public:
-    typedef std::vector< query_node* > child_node_list;
+    typedef std::vector<query_node*> child_node_list;
 
     typedef child_node_list::iterator iterator;
     typedef child_node_list::const_iterator const_iterator;

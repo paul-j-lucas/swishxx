@@ -400,21 +400,21 @@ query_node* query_node::visit( visitor const &v ) {
         and_node::child_node_list new_child_nodes;
         FOR_EACH( and_node, *a, child ) {
             near_node *const new_child = make_node(
-                node->pool(), other_, (*child)->visit( d )
+                *node->pool(), other_, (*child)->visit( d )
             );
             new_child_nodes.push_back( new_child->distribute() );
         }
-        return new and_node( node->pool(), new_child_nodes );
+        return new and_node( *node->pool(), new_child_nodes );
     }
     if ( or_node *const o = dynamic_cast<or_node*>( node ) ) {
         near_node *const new_left = make_node(
-            node->pool(), other_, o->left()->visit( d )
+            *node->pool(), other_, o->left()->visit( d )
         );
         near_node *const new_right = make_node(
-            node->pool(), other_, o->right()->visit( d )
+            *node->pool(), other_, o->right()->visit( d )
         );
         return new or_node(
-            node->pool(), new_left->distribute(), new_right->distribute()
+            *node->pool(), new_left->distribute(), new_right->distribute()
         );
     }
     if ( dynamic_cast<not_node*>( node ) )
