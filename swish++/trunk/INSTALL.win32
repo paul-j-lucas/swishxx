@@ -1,12 +1,10 @@
 ===============================================================================
-Prerequisites for Building SWISH++ for Microsoft Windows 98/NT/2000/XP
+Prerequisites for Building SWISH++ for Microsoft Windows NT/2000/XP/Vista/7
 ===============================================================================
 
 SWISH++ has the following software as prerequisites:
 
-1. The Cygwin environment.  "The Cynwin tools are ports of the popular GNU
-   development tools and utilities for Windows 95, 98, and NT."  It is
-   available from:
+1. The Cygwin environment.  It is available from:
 
 	http://cygwin.com/
 
@@ -22,7 +20,7 @@ SWISH++ has the following software as prerequisites:
 
 
 ===============================================================================
-Building SWISH++ for Microsoft Windows 98/NT/2000/XP
+Building SWISH++ for Microsoft Windows NT/2000/XP/Vista/7
 ===============================================================================
 
 	Note: the multi-threaded daemon server feature of search(1) is
