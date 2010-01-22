@@ -32,13 +32,13 @@ namespace PJL {
 //
 // SYNOPSIS
 //
-    char const* ltoa( register long n )
+        char const* ltoa( register long n )
 //
 // DESCRIPTION
 //
-//      Convert a long integer to a string.  The string returned is from an
+//      Converts a long integer to a string.  The string returned is from an
 //      internal pool of string buffers.  The time you get into trouble is if
-//      you hang on to more then Num_Buffers strings.  This doesn't normally
+//      you hang on to more than Num_Buffers strings.  This doesn't normally
 //      happen in practice, however.
 //
 // PARAMETERS
