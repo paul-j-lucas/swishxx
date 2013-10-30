@@ -111,7 +111,7 @@
 
     ////////// Perform filter name substitution(s) ////////////////////////////
 
-    typedef vector< filter > filter_list_type;
+    typedef vector<filter> filter_list_type;
     filter_list_type filter_list;
 #ifdef  INDEX
     char const *const orig_file_name = file_name;
