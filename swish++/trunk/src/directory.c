@@ -90,7 +90,7 @@ FollowLinks     follow_symbolic_links;
 //
 //*****************************************************************************
 {
-    pair< dir_set_type::iterator, bool > const
+    pair<dir_set_type::iterator,bool> const
         p = dir_set.insert( dir_set_type::value_type( dir_path, 0 ) );
     if ( p.second ) {
         //
