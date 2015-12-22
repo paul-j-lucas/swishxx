@@ -34,7 +34,7 @@ AC_PROG_LN_S
 AC_PROG_RANLIB
 
 # Checks for libraries.
-AC_CHECK_LIB([zlib], [uncompress])
+AC_CHECK_LIB([z], [uncompress])
 
 # Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h])
@@ -59,7 +59,7 @@ AC_TYPE_SIZE_T
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_MMAP
-AC_CHECK_FUNCS([select socket strchr strrchr])
+AC_CHECK_FUNCS([madvise select socket strchr strrchr])
 
 # Miscellaneous.
 AC_LANG(C++)

@@ -1,10 +1,13 @@
 /*.alias
 /*.sed
 /alloca.h
+/arg-nonnull.h
+/c++defs.h
 /configmake.h
 /fnmatch.h
 /stdbool.h
 /stddef.h
 /string.h
+/warn-on-use.h
 /wchar.h
 /wctype.h

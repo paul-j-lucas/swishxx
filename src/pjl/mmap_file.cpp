@@ -90,11 +90,11 @@ using namespace std;
     // As of Mac OS X 10.2.1 (Darwin 6.1), madvise(2) seems broken, so don't
     // bother.
     //
-#ifndef PJL_NO_MADVISE
+#ifdef HAVE_MADVISE
     if ( ::madvise( static_cast<caddr_t>( addr_ ), size_, behavior ) == -1 )
         return errno_ = errno;
-#endif
-#endif  /* __APPLE__ */
+#endif /* HAVE_MADVISE */
+#endif /* __APPLE__ */
     return 0;
 }
 

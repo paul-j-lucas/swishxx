@@ -22,6 +22,9 @@
 #ifndef mmap_file_H
 #define mmap_file_H
 
+// local
+#include "config.h"
+
 // standard
 #include <cstddef>                      /* for ptrdiff_t, size_t */
 #include <fstream>                      /* for openmode */
@@ -82,15 +85,15 @@ public:
     typedef value_type const& const_reference;
 
     enum behavior_type {
-#ifdef  PJL_NO_MADVISE
-        bt_normal,
-        bt_random,
-        bt_sequential
-#else
+#ifdef HAVE_MADVISE
         bt_normal       = MADV_NORMAL,
         bt_random       = MADV_RANDOM,
         bt_sequential   = MADV_SEQUENTIAL
-#endif
+        bt_sequential
+#else
+        bt_normal,
+        bt_random,
+#endif /* HAVE_MADVISE */
     };
 
     ////////// constructors & destructor //////////////////////////////////////
