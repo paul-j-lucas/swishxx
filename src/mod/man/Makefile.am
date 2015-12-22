@@ -23,6 +23,6 @@ lib_LIBRARIES = libman.a
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src -L$(top_srcdir)/lib -L$(top_srcdir)/src/pjl
 
 libman_a_SOURCES = mod_man.cpp
-libman_a_LDADD = $(top_builddir)/lib/libgnu.a
+libman_a_LIBADD = $(top_builddir)/lib/libgnu.a
 
 # vim:set noet sw=8 ts=8:
