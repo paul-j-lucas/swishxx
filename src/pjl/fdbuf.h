@@ -28,64 +28,65 @@
 
 namespace PJL {
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class fdbuf : public std::streambuf
-//
-// DESCRIPTION
-//
-//      An fdbuf is-a streambuf that is used to be attached to a Unix file
-//      descriptor.
-//
-// SEE ALSO
-//
-//      Nicolai M. Josuttis.  "The C++ Starndard Library: A Tutorial and
-//      Reference," Addison-Wesley, 1999, pp. 672-676.
-//
-//      Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales:
-//      Advanced Programmer's Guide and Reference," Addison-Wesley, 2000, pp.
-//      225-244.
-//
-//*****************************************************************************
-{
-    enum { buf_size = 1024 };
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %fdbuf is-a streambuf that is used to be attached to a Unix file
+ * descriptor.
+ *
+ * See also:
+ *    Nicolai M. Josuttis.  "The C++ Starndard Library: A Tutorial and
+ *    Reference," Addison-Wesley, 1999, pp. 672-676.
+ *
+ *    Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales:
+ *    Advanced Programmer's Guide and Reference," Addison-Wesley, 2000, pp.
+ *    225-244.
+ */
+class fdbuf : public std::streambuf {
+  enum { buf_size = 1024 };
 public:
-    explicit fdbuf( int fd = -1 )       { init( fd ); }
-    ~fdbuf()                            { if ( fd_ > -1 ) sync(); }
+  explicit fdbuf( int fd = -1 )         { init( fd ); }
+  ~fdbuf()                              { if ( fd_ > -1 ) sync(); }
 
-    // default copy constructor is fine
-    // default assignment is fine
+  // default copy constructor is fine
+  // default assignment is fine
 
-    void    attach( int fd );
-    //      In the case where an fdbuf object was constructed using the default
-    //      constructor, and therefore not attached to any file descriptor,
-    //      this function is used to attach an fdbuf to one at some later time.
+  /**
+   * In the case where an fdbuf object was constructed using the default
+   * constructor, and therefore not attached to any file descriptor, this
+   * function is used to attach an fdbuf to one at some later time.
+   *
+   * @param fd The file descriptor to attach to.
+   */
+  void attach( int fd );
+
 protected:
-    typedef int int_type;
+  typedef int int_type;
 
-    virtual int_type        overflow( int_type c );
-    virtual int             sync();
-    virtual int_type        underflow();
-    std::streamsize         write_buf( char const*, std::streamsize );
-    virtual std::streamsize xsputn( char const *buf, std::streamsize len );
+  virtual int_type        overflow( int_type c );
+  virtual int             sync();
+  virtual int_type        underflow();
+  std::streamsize         write_buf( char const*, std::streamsize );
+  virtual std::streamsize xsputn( char const *buf, std::streamsize len );
+
 private:
-    int     fd_;
-    char    rbuf_[ buf_size ];
-    char    wbuf_[ buf_size ];
+  int   fd_;
+  char  rbuf_[ buf_size ];
+  char  wbuf_[ buf_size ];
 
-    void    init( int fd );
+  void init( int fd );
 };
 
 /////////// Inlines ///////////////////////////////////////////////////////////
 
 inline void fdbuf::attach( int fd ) {
-    if ( fd_ > -1 ) sync();
-    init( fd );
+  if ( fd_ > -1 ) sync();
+  init( fd );
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 } // namespace PJL
 
 #endif  /* fdbuf_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */
