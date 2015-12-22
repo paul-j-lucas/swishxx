@@ -20,12 +20,12 @@
 #       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-cat <<!
+cat <<END
 /*
 **      SWISH++
 **      src/init_mod_vars.c
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -50,37 +50,29 @@ cat <<!
 // local
 #include "conf_var.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* static */ void conf_var::init_mod_vars()
-//
-// DESCRIPTION
-//
-//      This function is a place to bundle together the construction of the
-//      singleton instances of indexer modules.  The base indexer() constructor
-//      will add pointers to them into the static mod_name-to-instance map.
-//
-//*****************************************************************************
-{
-!
+/**
+ * This function is a place to bundle together the construction of the
+ * singleton instances of indexer modules.  The base indexer() constructor will
+ * add pointers to them into the static mod_name-to-instance map.
+ */
+void conf_var::init_mod_vars() {
+END
 
 for header in mod/*/mod_*.h
 do
-    VARS_FILE=`dirname $header`/vars
-    [ -f $VARS_FILE ] || continue
-    cat $VARS_FILE | while read var_name
-    do cat <<!
-#ifdef  `basename $header | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
-    conf_var::register_var( "$var_name" );
+  VARS_FILE=`dirname $header`/vars
+  [ -f $VARS_FILE ] || continue
+  cat $VARS_FILE | while read var_name
+  do cat <<END
+#ifdef `basename $header | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
+  conf_var::register_var( "$var_name" );
 #endif
-!
-    done
+END
+  done
 done
 
-cat <<!
+cat <<END
 }
-!
+END
 
-# vim:set et sw=4 ts=4:
+# vim:set et sw=2 ts=2:

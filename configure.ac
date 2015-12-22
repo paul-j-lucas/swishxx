@@ -80,7 +80,6 @@ AC_CONFIG_FILES([
     man/man1/Makefile
     man/man4/Makefile
     man/man8/Makefile
-    scripts/Makefile
     src/Makefile
     src/charsets/Makefile
     src/encodings/Makefile
