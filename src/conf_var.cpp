@@ -30,7 +30,6 @@
 #include "conf_var.h"
 #include "exit_codes.h"
 #include "pjl/mmap_file.h"
-#include "platform.h"
 #include "util.h"
 
 using namespace std;

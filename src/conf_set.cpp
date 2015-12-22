@@ -24,7 +24,6 @@
 
 // local
 #include "conf_set.h"
-#include "platform.h"
 
 using namespace std;
 

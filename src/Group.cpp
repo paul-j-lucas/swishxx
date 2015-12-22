@@ -25,7 +25,6 @@
 #include <grp.h>                        /* for getgrnam(3) */
 
 // local
-#include "platform.h"
 #include "Group.h"
 #include "exit_codes.h"
 #include "util.h"

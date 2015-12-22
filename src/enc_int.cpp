@@ -24,7 +24,6 @@
 
 // local
 #include "enc_int.h"
-#include "platform.h"
 
 using namespace std;
 

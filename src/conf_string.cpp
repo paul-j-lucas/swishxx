@@ -27,7 +27,6 @@
 // local
 #include "conf_string.h"
 #include "exit_codes.h"
-#include "platform.h"
 #include "util.h"                       /* for error() */
 
 using namespace std;

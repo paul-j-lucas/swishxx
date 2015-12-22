@@ -24,7 +24,6 @@
 
 // local
 #include "pjl/char_buffer_pool.h"
-#include "platform.h"
 #include "util.h"
 
 using namespace PJL;

@@ -27,7 +27,6 @@
 // local
 #include "config.h"
 #include "filter.h"
-#include "platform.h"
 #include "util.h"
 
 using namespace std;

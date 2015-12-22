@@ -26,7 +26,6 @@
 // local
 #include "exit_codes.h"
 #include "conf_filter.h"
-#include "platform.h"
 
 using namespace std;
 

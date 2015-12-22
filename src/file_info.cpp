@@ -28,7 +28,6 @@
 #include "enc_int.h"
 #include "FilesReserve.h"
 #include "file_info.h"
-#include "platform.h"
 #include "util.h"                       /* for new_strdup() */
 
 using namespace std;

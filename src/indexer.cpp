@@ -19,9 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstring>
-
 // local
 #include "config.h"
 #include "encoded_char.h"
@@ -31,12 +28,14 @@
 #include "indexer.h"
 #include "iso8859-1.h"
 #include "meta_map.h"
-#include "platform.h"
 #include "stop_words.h"
 #include "StoreWordPositions.h"
 #include "util.h"
 #include "word_info.h"
 #include "word_util.h"
+
+// standard
+#include <cstring>
 
 using namespace PJL;
 using namespace std;

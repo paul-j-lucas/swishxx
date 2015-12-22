@@ -26,7 +26,6 @@
 
 // local
 #include "encoded_char.h"
-#include "platform.h"
 #include "util.h"
 
 using namespace std;

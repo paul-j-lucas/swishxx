@@ -31,7 +31,6 @@
 #include "encoded_char.h"
 #include "iso8859-1.h"
 #include "mod_man.h"
-#include "platform.h"
 #include "TitleLines.h"
 #include "util.h"
 #include "word_util.h"

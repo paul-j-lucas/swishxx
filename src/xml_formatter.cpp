@@ -26,7 +26,6 @@
 // local
 #include "file_info.h"
 #include "index_segment.h"
-#include "platform.h"
 #include "util.h"
 #include "xml_formatter.h"
 

@@ -53,7 +53,6 @@ int const		    PATH_MAX = 1024;
 // local
 #include "exit_codes.h"
 #include "pjl/omanip.h"
-#include "platform.h"			        /* for PJL_NO_SYMBOLIC_LINKS */
 
 extern char const*	me;
 

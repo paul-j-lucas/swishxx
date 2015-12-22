@@ -25,7 +25,6 @@
 
 // local
 #include "exit_codes.h"
-#include "platform.h"
 #include "User.h"
 #include "util.h"
 

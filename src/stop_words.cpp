@@ -29,7 +29,6 @@
 #include "index_segment.h"
 #include "iso8859-1.h"
 #include "pjl/mmap_file.h"
-#include "platform.h"
 #include "stop_words.h"
 #include "util.h"
 #include "word_util.h"

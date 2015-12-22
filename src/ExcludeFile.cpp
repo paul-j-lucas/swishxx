@@ -24,7 +24,6 @@
 
 // local
 #include "ExcludeFile.h"
-#include "platform.h"
 #include "util.h"                               /* for new_strdup() */
 
 using namespace std;

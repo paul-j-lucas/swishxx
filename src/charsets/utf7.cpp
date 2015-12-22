@@ -21,14 +21,14 @@
 
 #ifdef  CHARSET_utf7
 
+// local
+#include "config.h"
+#include "encoded_char.h"
+#include "unicode.h"
+
 // standard
 #include <cstring>
 #include <iostream>
-
-// local
-#include "encoded_char.h"
-#include "platform.h"
-#include "unicode.h"
 
 using namespace std;
 

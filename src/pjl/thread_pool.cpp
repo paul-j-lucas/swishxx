@@ -29,7 +29,6 @@
 #endif
 
 // local
-#include "platform.h"
 #include "thread_pool.h"
 #include "util.h"
 

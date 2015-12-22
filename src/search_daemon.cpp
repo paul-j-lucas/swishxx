@@ -45,7 +45,6 @@
 #include "exit_codes.h"
 #include "Group.h"
 #include "PidFile.h"
-#include "platform.h"
 #ifdef  __APPLE__
 #include "LaunchdCooperation.h"
 #endif

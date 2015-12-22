@@ -21,13 +21,6 @@
 
 #ifdef  MOD_html
 
-// standard
-#include <cctype>
-#include <cstdlib>                      /* for exit(3) */
-#include <cstring>
-#include <utility>                      /* for pair<> */
-#include <vector>
-
 // local
 #include "AssociateMeta.h"
 #include "charsets/unicode.h"
@@ -38,10 +31,16 @@
 #include "html_config.h"
 #include "iso8859-1.h"
 #include "mod_html.h"
-#include "platform.h"
 #include "TitleLines.h"
 #include "util.h"
 #include "word_util.h"
+
+// standard
+#include <cctype>
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
+#include <utility>                      /* for pair<> */
+#include <vector>
 
 using namespace PJL;
 using namespace std;

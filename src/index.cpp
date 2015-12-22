@@ -19,24 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cmath>                        /* for log(3) */
-#include <cstdlib>                      /* for exit(3) */
-#include <cstring>
-#include <fstream>
-#include <iomanip>                      /* for setfill(), setw() */
-#include <iostream>
-#include <iterator>
-#include <string>
-#include <time.h>
-#include <sys/time.h>                   /* needed by FreeBSD systems */
-#include <sys/resource.h>               /* for RLIMIT_* */
-#include <sys/types.h>
-#include <unistd.h>                     /* for unlink(2) */
-#include <vector>
-
 // local
-#include "platform.h"
 #include "AssociateMeta.h"
 #include "config.h"
 #include "enc_int.h"
@@ -78,6 +61,22 @@
 #include "WordPercentMax.h"
 #include "WordThreshold.h"
 #include "word_util.h"
+
+// standard
+#include <cmath>                        /* for log(3) */
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
+#include <fstream>
+#include <iomanip>                      /* for setfill(), setw() */
+#include <iostream>
+#include <iterator>
+#include <string>
+#include <time.h>
+#include <sys/time.h>                   /* needed by FreeBSD systems */
+#include <sys/resource.h>               /* for RLIMIT_* */
+#include <sys/types.h>
+#include <unistd.h>                     /* for unlink(2) */
+#include <vector>
 
 using namespace PJL;
 using namespace std;

@@ -27,7 +27,6 @@
 #include "conf_enum.h"
 #include "exit_codes.h"
 #include "pjl/auto_vec.h"
-#include "platform.h"
 #include "util.h"
 
 using namespace PJL;

@@ -27,7 +27,6 @@
 
 // local
 #include "config.h"
-#include "platform.h"
 #include "word_util.h"
 
 using namespace std;

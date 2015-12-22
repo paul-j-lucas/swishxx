@@ -27,7 +27,6 @@
 #include "IncludeMeta.h"
 #include "exit_codes.h"
 #include "pjl/auto_vec.h"
-#include "platform.h"
 #include "util.h"                       /* for error(), new_strdup() */
 
 using namespace PJL;

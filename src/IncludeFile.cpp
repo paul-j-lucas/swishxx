@@ -26,7 +26,6 @@
 // local
 #include "exit_codes.h"
 #include "IncludeFile.h"
-#include "platform.h"
 #include "util.h"                       /* for error(), new_strdup() */
 
 using namespace std;

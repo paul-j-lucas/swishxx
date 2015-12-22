@@ -33,7 +33,6 @@
 #endif
 
 // local
-#include "platform.h"
 #include "stem_word.h"
 #include "word_util.h"
 #include "util.h"                               /* for new_strdup() */

@@ -31,10 +31,9 @@
 #endif
 
 // zlib
-#include "platform.h"                   /* needs to go before zlib.h */
-#ifdef  HAVE_ZLIB
+#ifdef HAVE_ZLIB
 #include <zlib.h>
-#endif
+#endif /* HAVE_ZLIB */
 
 // local
 #include "AssociateMeta.h"

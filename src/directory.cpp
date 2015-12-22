@@ -34,7 +34,6 @@
 // local
 #include "directory.h"
 #include "pjl/pjl_set.h"
-#include "platform.h"
 #include "RecurseSubdirs.h"
 #include "util.h"
 #include "Verbosity.h"

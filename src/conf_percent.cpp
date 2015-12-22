@@ -26,7 +26,6 @@
 // local
 #include "conf_percent.h"
 #include "exit_codes.h"
-#include "platform.h"
 
 using namespace std;
 

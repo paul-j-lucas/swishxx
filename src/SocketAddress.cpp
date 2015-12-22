@@ -29,7 +29,6 @@
 
 // local
 #include "exit_codes.h"
-#include "platform.h"
 #include "SocketAddress.h"
 
 using namespace std;

@@ -23,7 +23,6 @@
 #include "classic_formatter.h"
 #include "file_info.h"
 #include "index_segment.h"
-#include "platform.h"
 #include "ResultSeparator.h"
 #include "util.h"                       /* for FOR_EACH */
 

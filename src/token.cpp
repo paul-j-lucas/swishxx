@@ -26,7 +26,6 @@
 // local
 #include "config.h"
 #include "iso8859-1.h"
-#include "platform.h"
 #include "token.h"
 #include "util.h"
 #include "word_util.h"

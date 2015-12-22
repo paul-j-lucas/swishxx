@@ -46,9 +46,6 @@
 #undef  close
 #endif
 
-// local
-#include "platform.h"
-
 namespace PJL {
 
 //*****************************************************************************

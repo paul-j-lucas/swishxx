@@ -51,7 +51,6 @@
 #ifdef  __SUNPRO_CC
 #include "pjl/vector_adapter.h"
 #endif
-#include "platform.h"
 #include "query.h"
 #include "ResultSeparator.h"
 #include "ResultsFormat.h"

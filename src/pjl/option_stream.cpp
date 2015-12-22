@@ -27,7 +27,6 @@
 #include <iostream>
 
 // local
-#include "platform.h"
 #include "option_stream.h"
 
 using namespace std;

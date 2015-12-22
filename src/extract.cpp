@@ -19,18 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                              /* for exit(3) */
-#include <cstring>
-#include <fstream>
-#include <iomanip>                              /* for setfill(), setw() */
-#include <iostream>
-#include <string>
-#include <sys/types.h>
-#include <time.h>
-
 // local
-#include "platform.h"
 #include "config.h"
 #include "ExcludeFile.h"
 #include "exit_codes.h"
@@ -51,6 +40,16 @@
 #include "Verbosity.h"
 #include "version.h"
 #include "word_util.h"
+
+// standard
+#include <cstdlib>                              /* for exit(3) */
+#include <cstring>
+#include <fstream>
+#include <iomanip>                              /* for setfill(), setw() */
+#include <iostream>
+#include <string>
+#include <sys/types.h>
+#include <time.h>
 
 using namespace PJL;
 using namespace std;

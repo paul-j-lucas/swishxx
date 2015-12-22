@@ -22,7 +22,6 @@
 // local
 #include "char_buffer_pool.h"
 #include "itoa.h"
-#include "platform.h"
 
 using namespace std;
 

@@ -33,7 +33,6 @@
 
 // local
 #include "mmap_file.h"
-#include "platform.h"
 
 using namespace PJL;
 using namespace std;

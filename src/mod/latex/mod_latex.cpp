@@ -28,7 +28,6 @@
 #include "iso8859-1.h"
 #include "latex_config.h"
 #include "mod_latex.h"
-#include "platform.h"
 #include "TitleLines.h"
 #include "util.h"
 #include "word_util.h"

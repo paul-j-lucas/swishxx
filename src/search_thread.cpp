@@ -56,7 +56,6 @@
 
 // local
 #include "pjl/fdbuf.h"
-#include "platform.h"
 #include "search.h"
 #include "search_thread.h"
 #include "util.h"

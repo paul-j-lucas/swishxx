@@ -24,7 +24,6 @@
 
 // local
 #include "config.h"
-#include "platform.h"
 #include "TempDirectory.h"
 
 using namespace std;
