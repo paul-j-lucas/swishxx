@@ -55,6 +55,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module snippet/arg-nonnull:
   # Code from module snippet/c++defs:
   # Code from module snippet/warn-on-use:
+  # Code from module socklen:
   # Code from module stdbool:
   # Code from module stddef:
   # Code from module streq:
@@ -117,6 +118,7 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_MEMCHR
   fi
   gl_STRING_MODULE_INDICATOR([memchr])
+  gl_TYPE_SOCKLEN_T
   AM_STDBOOL_H
   gl_STDDEF_H
   gl_HEADER_STRING_H
@@ -315,6 +317,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/memchr.m4
   m4/mmap-anon.m4
   m4/onceonly.m4
+  m4/socklen.m4
   m4/stdbool.m4
   m4/stddef_h.m4
   m4/string_h.m4

@@ -263,12 +263,12 @@ static void set_signal_handlers();
         //
         if ( is_tcp && FD_ISSET( tcp_fd, &rset ) ) {
             struct sockaddr_in addr;
-            PJL_SOCKLEN_TYPE len = sizeof addr;
+            socklen_t len = sizeof addr;
             handle_accept( ::accept( tcp_fd, (struct sockaddr*)&addr, &len ) );
         }
         if ( is_unix && FD_ISSET( unix_fd, &rset ) ) {
             struct sockaddr_un addr;
-            PJL_SOCKLEN_TYPE len = sizeof addr;
+            socklen_t len = sizeof addr;
             handle_accept( ::accept( unix_fd, (struct sockaddr*)&addr, &len ) );
         }
     }
