@@ -1,6 +1,7 @@
 /*.alias
 /*.sed
 /alloca.h
+/configmake.h
 /fnmatch.h
 /stdbool.h
 /stddef.h
