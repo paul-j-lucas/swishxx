@@ -1,0 +1,9 @@
+/*.alias
+/*.sed
+/alloca.h
+/fnmatch.h
+/stdbool.h
+/stddef.h
+/string.h
+/wchar.h
+/wctype.h
