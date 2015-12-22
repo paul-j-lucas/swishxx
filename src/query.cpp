@@ -25,7 +25,6 @@
 #ifdef  DEBUG_parse_query
 #include <iostream>
 #endif
-#include <memory>                       /* for auto_ptr<T> */
 #include <vector>
 
 // local
