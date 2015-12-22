@@ -76,11 +76,9 @@ AH_BOTTOM([#endif /* swishpp_config_H */])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
     Makefile
-    man/Makefile
-    man/man1/Makefile
-    man/man4/Makefile
-    man/man8/Makefile
+    lib/Makefile
     src/Makefile
+    src/pjl/Makefile
     src/charsets/Makefile
     src/encodings/Makefile
     src/mod/html/Makefile
@@ -89,7 +87,10 @@ AC_CONFIG_FILES([
     src/mod/mail/Makefile
     src/mod/man/Makefile
     src/mod/rtf/Makefile
-    src/pjl/Makefile
+    man/Makefile
+    man/man1/Makefile
+    man/man4/Makefile
+    man/man8/Makefile
 ])
 AC_OUTPUT
 
