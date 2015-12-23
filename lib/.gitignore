@@ -4,6 +4,7 @@
 /arg-nonnull.h
 /c++defs.h
 /configmake.h
+/errno.h
 /fnmatch.h
 /stdbool.h
 /stddef.h
