@@ -49,5 +49,5 @@ private:
 
 extern ResultsFormat results_format;
 
-#endif  /* ResultsFormat_H */
+#endif /* ResultsFormat_H */
 /* vim:set et sw=4 ts=4: */

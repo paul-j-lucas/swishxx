@@ -22,12 +22,12 @@
 #ifndef IncludeMeta_H
 #define IncludeMeta_H
 
-// standard
-#include <map>
-
 // local
 #include "conf_var.h"
 #include "pjl/less.h"
+
+// standard
+#include <map>
 
 //*****************************************************************************
 //
@@ -55,5 +55,5 @@ private:
 
 extern IncludeMeta include_meta_names;
 
-#endif  /* IncludeMeta_H */
+#endif /* IncludeMeta_H */
 /* vim:set et sw=4 ts=4: */

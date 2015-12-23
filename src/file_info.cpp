@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/file_info.c
+**      src/file_info.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,9 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstring>
-
 // local
 #include "config.h"
 #include "directory.h"
@@ -29,6 +26,9 @@
 #include "FilesReserve.h"
 #include "file_info.h"
 #include "util.h"                       /* for new_strdup() */
+
+// standard
+#include <cstring>
 
 using namespace std;
 

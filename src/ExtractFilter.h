@@ -48,5 +48,5 @@ public:
 
 extern ExtractFilter extract_as_filter;
 
-#endif  /* ExtractFilter_H */
+#endif /* ExtractFilter_H */
 /* vim:set et sw=4 ts=4: */

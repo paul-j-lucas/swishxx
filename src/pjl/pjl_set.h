@@ -47,7 +47,7 @@ namespace PJL {
 //*****************************************************************************
 {
 public:
-    bool contains( T const &s ) const { return find( s ) != this->end(); }
+    bool contains( T const &s ) const { return this->find( s ) != this->end(); }
 };
 
 //*****************************************************************************
@@ -72,5 +72,5 @@ typedef pjl_set<std::string> string_set;
 
 } // namespace PJL
 
-#endif  /* pjl_set_H */
+#endif /* pjl_set_H */
 /* vim:set et sw=4 ts=4: */

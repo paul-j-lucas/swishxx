@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_enum.c
+**      src/conf_enum.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,15 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <iostream>
-
 // local
 #include "conf_enum.h"
 #include "exit_codes.h"
 #include "pjl/auto_vec.h"
 #include "util.h"
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <iostream>
 
 using namespace PJL;
 using namespace std;

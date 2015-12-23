@@ -46,5 +46,5 @@
 
 extern stop_word_set*   stop_words;
 
-#endif  /* stop_words_H */
+#endif /* stop_words_H */
 /* vim:set et sw=4 ts=4: */

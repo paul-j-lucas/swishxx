@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/token.c
+**      src/token.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,16 +19,16 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cctype>
-#include <cstring>
-
 // local
 #include "config.h"
 #include "iso8859-1.h"
 #include "token.h"
 #include "util.h"
 #include "word_util.h"
+
+// standard
+#include <cctype>
+#include <cstring>
 
 using namespace std;
 
@@ -127,7 +127,7 @@ using namespace std;
             t.type_ = token::tt_and;
         else if ( !::strcmp( t.lower_buf_, "or"  ) )
             t.type_ = token::tt_or;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
         else if ( !::strcmp( t.lower_buf_, "near" ) )
             t.type_ = token::tt_near;
 #endif

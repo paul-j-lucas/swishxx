@@ -61,5 +61,5 @@ private:
 
 } // namespace PJL
 
-#endif  /* omanip_H */
+#endif /* omanip_H */
 /* vim:set et sw=4 ts=4: */

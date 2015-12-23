@@ -22,11 +22,11 @@
 #ifndef WordFilesMax_H
 #define WordFilesMax_H
 
-// standard
-#include <climits>
-
 // local
 #include "conf_int.h"
+
+// standard
+#include <climits>
 
 //*****************************************************************************
 //
@@ -50,5 +50,5 @@ public:
 
 extern WordFilesMax word_files_max;
 
-#endif  /* WordFilesMax_H */
+#endif /* WordFilesMax_H */
 /* vim:set et sw=4 ts=4: */

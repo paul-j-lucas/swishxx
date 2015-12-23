@@ -22,14 +22,14 @@
 #ifndef encoded_char_H
 #define encoded_char_H
 
-// standard
-#include <iterator>
-#include <set>
-
 // local
 #include "iso8859-1.h"
 #include "pjl/char_buffer_pool.h"
-#include "util.h"           /* for to_lower() */
+#include "util.h"                       /* for to_lower() */
+
+// standard
+#include <iterator>
+#include <set>
 
 //*****************************************************************************
 //
@@ -85,7 +85,7 @@ public:
     void            end_pos( const_pointer p )      { end_ = p; }
     void            end_pos( const_iterator const& );
 
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     class decoder;
 #endif
 protected:
@@ -93,7 +93,7 @@ protected:
 
     const_pointer   begin_;
     const_pointer   end_;
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     charset_type    charset_;
     encoding_type   encoding_;
 #endif
@@ -150,19 +150,19 @@ public:
 private:
     mutable const_pointer pos_;
     mutable const_pointer prev_;
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     mutable value_type  ch_;
     mutable bool        decoded_;
     mutable ptrdiff_t   delta_;
 #endif
     const_iterator( encoded_char_range const*, const_pointer start_pos );
     friend class    encoded_char_range; // for access to c'tor above
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     void        decode() const;
 #endif
 };
 
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -192,7 +192,7 @@ private:
     typedef std::set< decoder* > set_type;
     static set_type set_;
 };
-#endif  /* IMPLEMENT_DECODING */
+#endif /* IMPLEMENT_DECODING */
 
 ////////// encoded_char_range inlines /////////////////////////////////////////
 
@@ -205,7 +205,7 @@ inline ECR::ECR(
     charset_type charset, encoding_type encoding
 ) :
     begin_( begin ), end_( end )
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     , charset_( charset ), encoding_( encoding )
 #endif
 {
@@ -213,7 +213,7 @@ inline ECR::ECR(
 
 inline ECR::ECR( const_iterator const &i ) :
     begin_( i.pos_ ), end_( i.end_ )
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     , charset_( i.charset_ ), encoding_( i.encoding_ )
 #endif
 {
@@ -221,7 +221,7 @@ inline ECR::ECR( const_iterator const &i ) :
 
 inline ECR::ECR( const_iterator const &begin, const_iterator const &end ) :
     begin_( begin.pos_ ), end_( end.pos_ )
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     , charset_( begin.charset_ ), encoding_( begin.encoding_ )
 #endif
 {
@@ -250,7 +250,7 @@ inline ECR_CI::const_iterator(
     charset_type charset, encoding_type encoding
 ) :
     encoded_char_range( begin, end, charset, encoding ), pos_( begin )
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     , decoded_( false )
 #endif
 {
@@ -259,18 +259,18 @@ inline ECR_CI::const_iterator(
 inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
     encoded_char_range(
         start_pos, ecr->end_
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
         , ecr->charset_, ecr->encoding_
 #endif
     ),
     pos_( start_pos )
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     , decoded_( false )
 #endif
 {
 }
 
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -317,7 +317,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
         ch_ = iso8859_1_to_ascii( *c++ );
     delta_ = c - pos_;
 }
-#endif  /* IMPLEMENT_DECODING */
+#endif /* IMPLEMENT_DECODING */
 
 //*****************************************************************************
 //
@@ -336,7 +336,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
 //
 //*****************************************************************************
 {
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     if ( !decoded_ ) {
         decode();
         decoded_ = true;
@@ -363,7 +363,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
 //
 //*****************************************************************************
 {
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     if ( decoded_ ) {
         //
         // The character at the current position has previously been decoded so
@@ -384,7 +384,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
     }
 #endif
     prev_ = pos_;
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     pos_ += delta_;
 #else
     ++pos_;
@@ -478,5 +478,5 @@ inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
 #undef  ECR_CI
 #undef  ECR
 
-#endif  /* encoded_char_H */
+#endif /* encoded_char_H */
 /* vim:set et sw=4 ts=4: */

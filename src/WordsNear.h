@@ -19,17 +19,17 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 
 #ifndef WordsNear_H
 #define WordsNear_H
 
-// standard
-#include <climits>
-
 // local
 #include "conf_int.h"
 #include "config.h"
+
+// standard
+#include <climits>
 
 //*****************************************************************************
 //
@@ -53,7 +53,7 @@ public:
 
 extern WordsNear words_near;
 
-#endif  /* WordsNear_H */
+#endif /* WordsNear_H */
 
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 /* vim:set et sw=4 ts=4: */

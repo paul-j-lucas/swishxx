@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_int.h"
+#include "swishpp-config.h"
 
 //*****************************************************************************
 //
@@ -48,5 +49,5 @@ public:
 
 extern FilesReserve files_reserve;
 
-#endif  /* FilesReserve_H */
+#endif /* FilesReserve_H */
 /* vim:set et sw=4 ts=4: */

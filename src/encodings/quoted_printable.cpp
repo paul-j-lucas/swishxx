@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/encodings/quoted_printable.c
+**      src/encodings/quoted_printable.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,14 +19,14 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  ENCODING_quoted_printable
-
-// standard
-#include <cstring>
+#ifdef ENCODING_quoted_printable
 
 // local
 #include "encoded_char.h"
 #include "util.h"
+
+// standard
+#include <cstring>
 
 using namespace std;
 
@@ -144,5 +144,5 @@ using namespace std;
         ( is_digit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
     );
 }
-#endif  /* ENCODING_quoted_printable */
+#endif /* ENCODING_quoted_printable */
 /* vim:set et sw=4 ts=4: */

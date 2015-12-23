@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/WordThreshold.c
+**      src/WordThreshold.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **
@@ -19,15 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <sys/types.h>                  /* needed by FreeBSD systems */
-#include <cstdlib>                      /* for atoi(3), exit(3) */
-#include <unistd.h>                     /* for geteuid(2) */
-
 // local
 #include "exit_codes.h"
 #include "util.h"
 #include "WordThreshold.h"
+
+// standard
+#include <sys/types.h>                  /* needed by FreeBSD systems */
+#include <cstdlib>                      /* for atoi(3), exit(3) */
+#include <unistd.h>                     /* for geteuid(2) */
 
 using namespace std;
 

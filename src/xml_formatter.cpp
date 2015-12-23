@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/xml_formatter.c
+**      src/xml_formatter.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **
@@ -19,15 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstring>                      /* for strpbrk(3) */
-#include <string>
-
 // local
 #include "file_info.h"
 #include "index_segment.h"
 #include "util.h"
 #include "xml_formatter.h"
+
+// standard
+#include <cstring>                      /* for strpbrk(3) */
+#include <string>
 
 using namespace std;
 
@@ -71,7 +71,7 @@ extern index_segment directories;
 //*****************************************************************************
 {
     string result = s;
-    register string::size_type i;
+    string::size_type i;
 
     for ( i = 0; (i = result.find( '&', i )) != string::npos; i += 5 )
         result.replace( i, 1, "&amp;" );

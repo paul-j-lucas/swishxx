@@ -22,13 +22,13 @@
 #ifndef conf_var_H
 #define conf_var_H
 
+// local
+#include "pjl/less.h"
+
 // standard
 #include <iostream>
 #include <map>
 #include <string>
-
-// local
-#include "pjl/less.h"
 
 //*****************************************************************************
 //
@@ -115,5 +115,5 @@ inline std::ostream& conf_var::warning( std::ostream &o ) {
 //
 template<typename T> class conf;
 
-#endif  /* conf_var_H */
+#endif /* conf_var_H */
 /* vim:set et sw=4 ts=4: */

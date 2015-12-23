@@ -22,11 +22,12 @@
 #ifndef conf_string_H
 #define conf_string_H
 
+// local
+#include "config.h"
+#include "conf_var.h"
+
 // standard
 #include <string>
-
-// local
-#include "conf_var.h"
 
 //*****************************************************************************
 //
@@ -131,5 +132,5 @@ private:
             return *this;                       \
         }
 
-#endif  /* conf_string_H */
+#endif /* conf_string_H */
 /* vim:set et sw=4 ts=4: */

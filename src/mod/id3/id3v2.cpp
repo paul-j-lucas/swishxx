@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/id3/id3v2.c
+**      src/mod/id3/id3v2.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,21 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_id3
-
-// standard
-#include <cstdlib>
-#include <cstring>
-#include <map>
-#ifdef  DEBUG_id3v2
-#include <iostream>
-#include <iomanip>
-#endif
-
-// zlib
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif /* HAVE_ZLIB */
+#ifdef MOD_id3
 
 // local
 #include "AssociateMeta.h"
@@ -44,6 +30,20 @@
 #include "indexer.h"
 #include "pjl/less.h"
 #include "util.h"
+
+// standard
+#include <cstdlib>
+#include <cstring>
+#include <map>
+#ifdef DEBUG_id3v2
+#include <iostream>
+#include <iomanip>
+#endif /* DEBUG_id3v2 */
+
+// zlib
+#ifdef HAVE_ZLIB
+#include <zlib.h>
+#endif /* HAVE_ZLIB */
 
 using namespace std;
 
@@ -182,9 +182,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     static map_type m;
 
     if ( m.empty() )
-        for (   register frame_parser const *f = frame_parser_table;
-                f->frame_id; ++f
-        )
+        for ( frame_parser const *f = frame_parser_table; f->frame_id; ++f )
             m[ f->frame_id ] = f->parser;
 
     map_type::const_iterator const found = m.find( frame_id );
@@ -247,7 +245,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     size_ = header.version_ > 0x0200 ? unsynchsafe( c ) : parse_int( c, 3 );
     flags_ = header.version_ > 0x0200 ? parse_int( c, 2 ) : 0;
 
-#ifdef  DEBUG_id3v2
+#ifdef DEBUG_id3v2
     cerr << "frame_id='" << id_ << '\'' << endl;
     cerr << "frame_size=" << dec << size_ << endl;
     cerr << "frame_flags=0x" << hex << flags_ << endl;
@@ -284,7 +282,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     if ( (flags_ & Flag_Unsynchronized)
          || header.flags_ & id3v2_header::Flag_Unsynchronized
     ) {
-#ifdef  DEBUG_id3v2
+#ifdef DEBUG_id3v2
         cerr << "resynchronizing frame..." << endl;
 #endif
         resynchronize(
@@ -296,8 +294,8 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     ////////// Handle compression /////////////////////////////////////////////
 
     if ( flags_ & Flag_Compressed ) {
-#ifdef  HAVE_ZLIB
-#ifdef  DEBUG_id3v2
+#ifdef HAVE_ZLIB
+#ifdef DEBUG_id3v2
         cerr << "uncompressing frame..." << endl;
 #endif
         unsigned long buf_len = sizeof uncompressed_buf_;
@@ -315,7 +313,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
         // c'est la vie.
         //
         return hr_failure;
-#endif  /* HAVE_ZLIB */
+#endif /* HAVE_ZLIB */
     }
 
     content_end_ = content_begin_ + content_size;
@@ -446,7 +444,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 
     char const *c = content_begin_;
     while ( c != content_end_ ) {
-        register char const ch = *c++;
+        char const ch = *c++;
 
         ////////// Collect a word /////////////////////////////////////////////
 
@@ -564,7 +562,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
         return false;
 
     version_ = parse_int( c, 2 );
-#ifdef  DEBUG_id3v2
+#ifdef DEBUG_id3v2
     cerr << "header_version=0x" << hex << version_ << endl;
 #endif
     if ( version_ < Version_Min || version_ > Version_Max )
@@ -572,7 +570,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 
     flags_ = *c++;
     tag_size_ = unsynchsafe( c );
-#ifdef  DEBUG_id3v2
+#ifdef DEBUG_id3v2
     cerr << "header_flags=0x" << hex << flags_ << endl;
     cerr << "tag_size=" << dec << tag_size_ << endl;
 #endif
@@ -582,7 +580,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
         //
         unsigned const ext_size = version_ > 0x0300 ?
             unsynchsafe( c ) : parse_int( c, 4 );
-#ifdef  DEBUG_id3v2
+#ifdef DEBUG_id3v2
         cerr << "ext_size=" << dec << ext_size << endl;
 #endif
         c += ext_size;
@@ -595,7 +593,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 //
 // SYNOPSIS
 //
-        unsigned parse_int( register char const *&c, int bytes )
+        unsigned parse_int( char const *&c, int bytes )
 //
 // DESCRIPTION
 //
@@ -613,7 +611,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 //
 //*****************************************************************************
 {
-    register unsigned n = 0;
+    unsigned n = 0;
     while ( bytes-- > 0 )
         n = (n << 8) | static_cast<unsigned char>( *c++ );
     return n;
@@ -665,11 +663,11 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     switch ( *c++ ) {
         case ID3v2_ISO_8859_1:
             return ISO_8859_1;
-#ifdef  CHARSET_utf8
+#ifdef CHARSET_utf8
         case ID3v2_UTF8:
             return charset_utf8;
 #endif
-#ifdef  CHARSET_utf16
+#ifdef CHARSET_utf16
         case ID3v2_UTF16BE:
             return charset_utf16be;
         case ID3v2_UTF16: {
@@ -695,8 +693,8 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 // SYNOPSIS
 //
         void resynchronize(
-            register char *dest, int dest_len,
-            register char const *src, unsigned *src_len
+            char *dest, int dest_len,
+            char const *src, unsigned *src_len
         )
 //
 // DESCRIPTION
@@ -761,11 +759,11 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     int const bits = 7;
     int const mask = (1 << bits) - 1;
 
-    register unsigned n = 0;
+    unsigned n = 0;
     while ( bytes-- > 0 )
         n = (n << bits) | (*c++ & mask);
     return n;
 }
 
-#endif  /* MOD_id3 */
+#endif /* MOD_id3 */
 /* vim:set et sw=4 ts=4: */

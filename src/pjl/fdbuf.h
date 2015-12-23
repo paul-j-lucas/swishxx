@@ -88,5 +88,5 @@ inline void fdbuf::attach( int fd ) {
 
 } // namespace PJL
 
-#endif  /* fdbuf_H */
+#endif /* fdbuf_H */
 /* vim:set et sw=2 ts=2: */

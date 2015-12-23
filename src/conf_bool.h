@@ -22,11 +22,11 @@
 #ifndef conf_bool_H
 #define conf_bool_H
 
-// standard
-#include <string>
-
 // local
 #include "conf_var.h"
+
+// standard
+#include <string>
 
 //*****************************************************************************
 //
@@ -73,5 +73,5 @@ private:
             return *this;                       \
         }
 
-#endif  /* conf_bool_H */
+#endif /* conf_bool_H */
 /* vim:set et sw=4 ts=4: */

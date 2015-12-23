@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/file_list.c
+**      src/file_list.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "enc_int.h"
 #include "file_list.h"
 #include "word_markers.h"
@@ -52,7 +53,7 @@ file_list::byte const file_list::const_iterator::end_value = 0;
     // actual numbers are, so there's no point in computing them, so we save
     // having to do two shifts, and logical or for each file.)
     //
-    register byte const *p = ptr_;
+    byte const *p = ptr_;
     while ( true ) {
         ++size_;
         while ( *p++ & 0x80 ) ;         // skip file index
@@ -116,7 +117,7 @@ file_list::byte const file_list::const_iterator::end_value = 0;
     if ( !v_.meta_ids_.empty() )
         v_.meta_ids_.clear();
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     if ( v_.pos_deltas_.empty() )
         v_.pos_deltas_.reserve( v_.occurrences_ );
     else
@@ -143,7 +144,7 @@ file_list::byte const file_list::const_iterator::end_value = 0;
                 while ( *c_ != Stop_Marker )
                     v_.meta_ids_.insert( dec_int( c_ ) );
                 break;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
             case Word_Pos_List_Marker:
                 while ( *c_ != Stop_Marker )
                     v_.pos_deltas_.push_back( dec_int(c_) );

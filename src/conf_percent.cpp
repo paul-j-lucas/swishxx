@@ -1,6 +1,6 @@
 /*
 **	    SWISH++
-**	    src/conf_percent.c
+**	    src/conf_percent.cpp
 **
 **	    Copyright (C) 2001  Paul J. Lucas
 **
@@ -19,13 +19,14 @@
 **	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "conf_percent.h"
+#include "exit_codes.h"
+
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-
-// local
-#include "conf_percent.h"
-#include "exit_codes.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ using namespace std;
 //*****************************************************************************
 {
 	conf<int>::parse_value( line );
-	if ( is_percentage_ = !!::strchr( line, '%' ) ) {
+	if ( (is_percentage_ = !!::strchr( line, '%' )) ) {
 		int const value = *this;
 		if ( value < 0 || value > 101 ) {
 			error()	<< '"' << name() << "\" value \"" << value

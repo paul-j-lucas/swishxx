@@ -58,5 +58,5 @@ private:
             return *this;                       \
         }
 
-#endif  /* conf_set_H */
+#endif /* conf_set_H */
 /* vim:set et sw=4 ts=4: */

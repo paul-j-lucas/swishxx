@@ -50,5 +50,5 @@ private:
     static char const*  stem_word( char const *word );
 };
 
-#endif  /* stem_word_H */
+#endif /* stem_word_H */
 /* vim:set et sw=4 ts=4: */

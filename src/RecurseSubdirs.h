@@ -48,5 +48,5 @@ public:
 
 extern RecurseSubdirs recurse_subdirectories;
 
-#endif  /* RecurseSubdirs_H */
+#endif /* RecurseSubdirs_H */
 /* vim:set et sw=4 ts=4: */

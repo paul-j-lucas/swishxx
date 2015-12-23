@@ -90,5 +90,5 @@ private:
 
 } // namespace std
 
-#endif  /* less_H */
+#endif /* less_H */
 /* vim:set et sw=4 ts=4: */

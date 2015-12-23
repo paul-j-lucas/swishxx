@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_int.c
+**      src/conf_int.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,16 +19,17 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for atoi(3), exit(3) */
-#include <cstring>
-#include <iostream>
-
 // local
+#include "config.h"
 #include "conf_int.h"
 #include "exit_codes.h"
 #include "pjl/auto_vec.h"
 #include "util.h"
+
+// standard
+#include <cstdlib>                      /* for atoi(3), exit(3) */
+#include <cstring>
+#include <iostream>
 
 using namespace PJL;
 using namespace std;

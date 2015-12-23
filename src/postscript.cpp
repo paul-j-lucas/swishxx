@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/postscript.c
+**      src/postscript.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -306,7 +306,7 @@
         0
     };
 
-    for ( register char const *const *p = postscript_table; *p; ++p )
+    for ( char const *const *p = postscript_table; *p; ++p )
         insert( *p );
 }
 /* vim:set et sw=4 ts=4: */

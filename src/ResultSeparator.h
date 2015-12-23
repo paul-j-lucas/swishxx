@@ -47,5 +47,5 @@ public:
 
 extern ResultSeparator result_separator;
 
-#endif  /* ResultSeparator_H */
+#endif /* ResultSeparator_H */
 /* vim:set et sw=4 ts=4: */

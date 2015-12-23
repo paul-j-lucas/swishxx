@@ -47,5 +47,5 @@ public:
 
 extern Verbosity verbosity;
 
-#endif  /* Verbosity_H */
+#endif /* Verbosity_H */
 /* vim:set et sw=4 ts=4: */

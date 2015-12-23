@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/rtf/mod_rtf.c
+**      src/mod/rtf/mod_rtf.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_rtf
+#ifdef MOD_rtf
 
 // local
 #include "config.h"
@@ -70,7 +70,7 @@ using namespace std;
 
     encoded_char_range::const_iterator c = e.begin();
     while ( !c.at_end() ) {
-        register char ch = iso8859_1_to_ascii( *c++ );
+        char ch = iso8859_1_to_ascii( *c++ );
 
         ////////// Collect a word /////////////////////////////////////////////
 
@@ -123,5 +123,5 @@ using namespace std;
     }
 }
 
-#endif  /* MOD_rtf */
+#endif /* MOD_rtf */
 /* vim:set et sw=4 ts=4: */

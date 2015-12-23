@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/IncludeMeta.c
+**      src/IncludeMeta.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,15 +19,16 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <cstring>
-
 // local
+#include "config.h"
 #include "IncludeMeta.h"
 #include "exit_codes.h"
 #include "pjl/auto_vec.h"
 #include "util.h"                       /* for error(), new_strdup() */
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
 
 using namespace PJL;
 using namespace std;
@@ -54,7 +55,7 @@ using namespace std;
 {
     auto_vec<char> lower( to_lower_r( line ) );
     char *p = lower;
-    for ( char const *meta_name; meta_name = ::strtok( p, " \r\t" ); p = 0 ) {
+    for ( char const *meta_name; (meta_name = ::strtok( p, " \r\t" )); p = 0 ) {
         //
         // See if the meta name contains a reassignment: if so, chop it at the
         // '='.

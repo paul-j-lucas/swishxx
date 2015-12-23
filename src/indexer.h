@@ -22,17 +22,17 @@
 #ifndef indexer_H
 #define indexer_H
 
-// standard
-#include <iostream>
-#include <map>
-#include <string>
-
 // local
 #include "encoded_char.h"
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
 #include "util.h"
 #include "word_util.h"
+
+// standard
+#include <iostream>
+#include <map>
+#include <string>
 
 enum {
     Meta_ID_None        = -1,
@@ -192,5 +192,5 @@ inline void indexer::resume_indexing () {
         --suspend_indexing_count_;
 }
 
-#endif  /* indexer_H */
+#endif /* indexer_H */
 /* vim:set et sw=4 ts=4: */

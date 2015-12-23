@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/do_file.c
+**      src/do_file.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -24,17 +24,17 @@
 **      it generates different code depending on which one it's compiled into.
 */
 
-// standard
-#include <vector>
-
 // local
 #include "encoded_char.h"
+
+// standard
+#include <vector>
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-#ifdef  INDEX
+#ifdef INDEX
         void do_file( char const *file_name, int dir_index )
 #else
         void do_file( char const *file_name )
@@ -76,13 +76,13 @@
         return;
     }
 
-#ifdef  INDEX
+#ifdef INDEX
     //
     // Record the size of the original (non-filtered) file here before we call
     // is_symbolic_link() below.  This is the size that is stored in the index.
     //
     off_t const orig_file_size = file_size();
-#endif  /* INDEX */
+#endif /* INDEX */
 
 #ifndef PJL_NO_SYMBOLIC_LINKS
     if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
@@ -95,9 +95,9 @@
             cout << " (skipped: symbolic link)\n";
         return;
     }
-#endif  /* PJL_NO_SYMBOLIC_LINKS */
+#endif /* PJL_NO_SYMBOLIC_LINKS */
 
-#ifdef  INDEX
+#ifdef INDEX
     //
     // If incrementally indexing, it's possible that we've encountered the file
     // before.
@@ -107,13 +107,13 @@
             cout << " (skipped: encountered before)\n";
         return;
     }
-#endif  /* INDEX */
+#endif /* INDEX */
 
     ////////// Perform filter name substitution(s) ////////////////////////////
 
     typedef vector<filter> filter_list_type;
     filter_list_type filter_list;
-#ifdef  INDEX
+#ifdef INDEX
     char const *const orig_file_name = file_name;
 #endif
 
@@ -142,7 +142,7 @@
     //
     // See if the filename pattern is included.
     //
-#ifdef  INDEX
+#ifdef INDEX
     IncludeFile::const_iterator const
 #else
     ExtractFile::const_iterator const
@@ -160,7 +160,7 @@
         return;
     }
 
-#ifdef  EXTRACT
+#ifdef EXTRACT
     ostream *out;
     ofstream extracted_file;
     if ( extract_as_filter ) {
@@ -198,7 +198,7 @@
         }
         out = &extracted_file;
     }
-#endif  /* EXTRACT */
+#endif /* EXTRACT */
 
     //
     // Execute the filter(s) on the file.
@@ -224,7 +224,7 @@
     if ( verbosity == 3 )                       // print base name of file
         cout << "  " << orig_base_name << flush;
 
-#ifdef  INDEX
+#ifdef INDEX
     if ( file.empty() ) {
         //
         // Don't waste a file_info entry on it.
@@ -236,7 +236,7 @@
 
     ////////// Index the file /////////////////////////////////////////////////
 
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
     encoded_char_range::decoder::reset_all();
 #endif
     indexer *const i = found_pattern ?
@@ -244,7 +244,7 @@
     file_info *const fi = new file_info(
         orig_file_name, dir_index, orig_file_size, i->find_title( file )
     );
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     word_pos = 0;
 #endif
     i->index_file( file );
@@ -254,13 +254,13 @@
 
     if ( words.size() >= word_threshold )
         write_partial_index();
-#endif  /* INDEX */
+#endif /* INDEX */
 
-#ifdef  EXTRACT
+#ifdef EXTRACT
     ////////// Extract the file ///////////////////////////////////////////////
 
     ++num_extracted_files;
     extract_words( file.begin(), file.end(), *out );
-#endif  /* EXTRACT */
+#endif /* EXTRACT */
 }
 /* vim:set et sw=4 ts=4: */

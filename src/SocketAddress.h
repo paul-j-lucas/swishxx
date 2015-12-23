@@ -19,18 +19,18 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
 
 #ifndef SocketAddress_H
 #define SocketAddress_H
 
-// standard
-#include <arpa/inet.h>                          /* for htonl(3), INADDR_ANY */
-#include <netinet/in.h>                         /* for struct in_addr */
-
 // local
 #include "config.h"
 #include "conf_string.h"
+
+// standard
+#include <arpa/inet.h>                  /* for htonl(3), INADDR_ANY */
+#include <netinet/in.h>                 /* for struct in_addr */
 
 //*****************************************************************************
 //
@@ -69,7 +69,7 @@ private:
 
 extern SocketAddress socket_address;
 
-#endif  /* SocketAddress_H */
+#endif /* SocketAddress_H */
 
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

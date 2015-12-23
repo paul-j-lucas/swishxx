@@ -47,5 +47,5 @@ public:
     virtual void result( int rank, file_info const& ) const;
 };
 
-#endif  /* classic_formatter_H */
+#endif /* classic_formatter_H */
 /* vim:set et sw=4 ts=4: */

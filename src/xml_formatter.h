@@ -48,5 +48,5 @@ public:
     virtual void post() const;
 };
 
-#endif  /* xml_formatter_H */
+#endif /* xml_formatter_H */
 /* vim:set et sw=4 ts=4: */

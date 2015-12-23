@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/filter.c
+**      src/filter.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,15 +19,16 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "filter.h"
+#include "swishpp-config.h"
+#include "util.h"
+
 // standard
 #include <cstdlib>                      /* for system(3) */
 #include <cstring>
 #include <unistd.h>                     /* for sleep(3) */
-
-// local
-#include "config.h"
-#include "filter.h"
-#include "util.h"
 
 using namespace std;
 
@@ -48,7 +49,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    register string::size_type pos = 0;
+    string::size_type pos = 0;
     while (
         (pos = s.find_first_of( ShellFilenameEscapeChars, pos )) != string::npos
     ) {
@@ -74,7 +75,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    register string::size_type pos = 0;
+    string::size_type pos = 0;
     while ( (pos = s.find( '\\', pos )) != string::npos )
         s.erase( pos++, 1 );
 }
@@ -156,7 +157,7 @@ using namespace std;
     string::size_type target_pos = string::npos;
 
     command_ = command_template_;
-    register string::size_type pos = 0;
+    string::size_type pos = 0;
     while ( (pos = command_.find_first_of( "%@", pos )) != string::npos ) {
         if ( pos + 1 >= command_.length() ) {
             //

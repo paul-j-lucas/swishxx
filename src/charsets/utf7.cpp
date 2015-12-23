@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/charsets/utf7.c
+**      src/charsets/utf7.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  CHARSET_utf7
+#ifdef CHARSET_utf7
 
 // local
 #include "config.h"
@@ -241,8 +241,8 @@ return_decoded_char:
     //
     // Calculate a combined value of the encoded 6-bit characters.
     //
-    register ucs4 value = 0;
-    register int i;
+    ucs4 value = 0;
+    int i;
     for ( i = 0; i <= 3; ++i ) {
         //
         // Find the character in set B.
@@ -291,5 +291,5 @@ return_decoded_char:
     goto return_decoded_char;
 }
 
-#endif  /* CHARSET_utf7 */
+#endif /* CHARSET_utf7 */
 /* vim:set et sw=4 ts=4: */

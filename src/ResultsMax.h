@@ -48,5 +48,5 @@ public:
 
 extern ResultsMax max_results;
 
-#endif  /* ResultsMax_H */
+#endif /* ResultsMax_H */
 /* vim:set et sw=4 ts=4: */

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_set.c
+**      src/conf_set.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,11 +19,12 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "conf_set.h"
+
 // standard
 #include <cstring>
-
-// local
-#include "conf_set.h"
 
 using namespace std;
 
@@ -44,7 +45,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
+    for ( char const *s; (s = ::strtok( line, " \r\t" )); line = 0 )
         insert( s );
 }
 /* vim:set et sw=4 ts=4: */

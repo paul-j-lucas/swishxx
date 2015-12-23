@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/stem_word.c
+**      src/stem_word.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -24,18 +24,18 @@
 **      C. Cox, 1986.
 */
 
+// local
+#include "stem_word.h"
+#include "word_util.h"
+#include "util.h"                       /* for new_strdup() */
+
 // standard
 #include <cctype>
 #include <cstring>
 #include <map>
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
 #include <pthread.h>
 #endif
-
-// local
-#include "stem_word.h"
-#include "word_util.h"
-#include "util.h"                               /* for new_strdup() */
 
 using namespace std;
 
@@ -114,7 +114,7 @@ static int  word_size( char const *word );
     if ( end - word < 3 )
         return false;
 
-    register char const *c = end;
+    char const *c = end;
     return !(is_vowel( *--c ) || *c == 'w' || *c == 'x' || *c == 'y' ) &&
             (is_vowel( *--c ) || *c == 'y') && !is_vowel( *--c );
 }
@@ -180,9 +180,7 @@ static int  word_size( char const *word );
 //
 // SYNOPSIS
 //
-        int replace_suffix(
-            register char *word, register rule_list const *rule
-        )
+        int replace_suffix( char *word, rule_list const *rule )
 //
 // DESCRIPTION
 //
@@ -205,7 +203,7 @@ static int  word_size( char const *word );
 #   endif
 
     for ( ; rule->id; ++rule ) {
-        register char *const suffix = end - rule->old_suffix_len;
+        char *const suffix = end - rule->old_suffix_len;
         if ( suffix < word )
             continue;
 
@@ -376,13 +374,13 @@ static int  word_size( char const *word );
 
     typedef map< char const*, char const* > stem_cache;
     static stem_cache cache;
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
     static pthread_mutex_t cache_lock = PTHREAD_MUTEX_INITIALIZER;
     ::pthread_mutex_lock( &cache_lock );
 #endif
     stem_cache::const_iterator const found = cache.find( word );
     if ( found != cache.end() ) {
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
         ::pthread_mutex_unlock( &cache_lock );
 #endif
         return found->second;
@@ -416,7 +414,7 @@ static int  word_size( char const *word );
     char const *const new_word = new_strdup( word_buf );
     cache[ new_strdup( word ) ] = new_word;
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
     ::pthread_mutex_unlock( &cache_lock );
 #endif
     return new_word;
@@ -426,7 +424,7 @@ static int  word_size( char const *word );
 //
 // SYNOPSIS
 //
-        int word_size( register char const *word )
+        int word_size( char const *word )
 //
 // DESCRIPTION
 //
@@ -457,7 +455,7 @@ static int  word_size( char const *word );
 {
     int size = 0;
     enum state_type { st_initial, st_vowel, st_consonant };
-    register state_type state = st_initial;
+    state_type state = st_initial;
 
     for ( ; *word; ++word )
         switch ( state ) {

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_var.c
+**      src/conf_var.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,18 +19,19 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cctype>
-#include <cstdlib>                      /* for exit(3) */
-#include <cstring>
-#include <iostream>
-
 // local
 #include "config.h"
 #include "conf_var.h"
 #include "exit_codes.h"
 #include "pjl/mmap_file.h"
+#include "swishpp-config.h"
 #include "util.h"
+
+// standard
+#include <cctype>
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
+#include <iostream>
 
 using namespace std;
 using namespace PJL;
@@ -145,15 +146,15 @@ int conf_var::current_config_file_line_no_ = 0;
             "wordfilesmax",
             "wordpercentmax",
             "wordthreshold",
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
             "storewordpositions",
             "wordsnear",
 #endif
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
             "group",
-#ifdef  __APPLE__
+#ifdef __APPLE__
             "launchdcooperation",
-#endif
+#endif /* __APPLE__ */
             "pidfile",
             "searchbackground",
             "searchdaemon",
@@ -165,10 +166,10 @@ int conf_var::current_config_file_line_no_ = 0;
             "threadsmin",
             "threadtimeout",
             "user",
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
             0,
         };
-        for ( register char const *const *v = var_name_table; *v; ++v )
+        for ( char const *const *v = var_name_table; *v; ++v )
             m[ *v ] = 0;
     }
     return m;
@@ -260,8 +261,8 @@ int conf_var::current_config_file_line_no_ = 0;
     }
     conf_file.behavior( mmap_file::bt_sequential );
 
-    register int line_no = 0;
-    register mmap_file::const_iterator c = conf_file.begin();
+    int line_no = 0;
+    mmap_file::const_iterator c = conf_file.begin();
 
     while ( c != conf_file.end() ) {
         //
@@ -338,7 +339,7 @@ next_line:
         //
         // Chop off trailing newline and remove leading whitespace from value.
         //
-        register char *value = ::strtok( 0, "\r\n" );
+        char *value = ::strtok( 0, "\r\n" );
         while ( *value && is_space( *value ) )
             ++value;
         i->second->parse_value( value );

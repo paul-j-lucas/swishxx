@@ -22,13 +22,13 @@
 #ifndef conf_filter_H
 #define conf_filter_H
 
-// standard
-#include <string>
-
 // local
 #include "conf_var.h"
 #include "filter.h"
 #include "pattern_map.h"
+
+// standard
+#include <string>
 
 //*****************************************************************************
 //
@@ -66,5 +66,5 @@ protected:
     virtual void    reset() { map_.clear(); }
 };
 
-#endif  /* conf_filter_H */
+#endif /* conf_filter_H */
 /* vim:set et sw=4 ts=4: */

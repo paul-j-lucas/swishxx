@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/query.c
+**      src/query.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,14 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <algorithm>                    /* for binary_search(), etc */
-#include <cstdlib>                      /* for exit(3) */
-#ifdef  DEBUG_parse_query
-#include <iostream>
-#endif
-#include <vector>
-
 // local
 #include "enc_int.h"
 #include "exit_codes.h"
@@ -38,6 +30,14 @@
 #include "StemWords.h"
 #include "util.h"
 #include "word_util.h"
+
+// standard
+#include <algorithm>                    /* for binary_search(), etc */
+#include <cstdlib>                      /* for exit(3) */
+#ifdef DEBUG_parse_query
+#include <iostream>
+#endif
+#include <vector>
 
 using namespace PJL;
 using namespace std;
@@ -53,13 +53,13 @@ struct parse_q_args {
     node_pool_type&     node_pool;
     token_stream&       query;
     stop_word_set&      stop_words_found;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     bool                got_near;
 #endif
 
     parse_q_args( node_pool_type &p, token_stream &q, stop_word_set &s ) :
         node_pool( p ), query( q ), stop_words_found( s )
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
         , got_near( false )
 #endif
     {
@@ -130,7 +130,7 @@ static bool parse_relop  ( token_stream&, token::type& );
     return dec_int( p );
 }
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -161,7 +161,7 @@ static bool parse_relop  ( token_stream&, token::type& );
         ::exit( Exit_No_Word_Pos_Data );
     }
 }
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 
 //*****************************************************************************
 //
@@ -200,7 +200,7 @@ static bool parse_relop  ( token_stream&, token::type& );
     if ( !parse_query2( q_args, r_args, v_args ) )
         return false;
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     if ( q_args.got_near ) {
         assert_index_has_word_pos_data();
         //
@@ -214,7 +214,7 @@ static bool parse_relop  ( token_stream&, token::type& );
         cerr << endl;
 #       endif
     }
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
     r_args.node->eval( results );
     return true;
 }
@@ -311,7 +311,7 @@ static bool parse_relop  ( token_stream&, token::type& );
                 r_args.and_nodes.push_back( r_args_rhs.node );
                 break;
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
             case token::tt_near:
             case token::tt_not_near: {
                 //
@@ -344,7 +344,7 @@ static bool parse_relop  ( token_stream&, token::type& );
                                    r_args_rhs.node );
                 break;
             }
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 
             case token::tt_or:
                 r_args.node = new or_node(
@@ -454,7 +454,7 @@ parsed_meta_id:
         case token::tt_none:
             return false;
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
         case token::tt_not: {
             token const t2( query );
             if ( t2 != token::tt_near ) {
@@ -464,7 +464,7 @@ parsed_meta_id:
             t_type = token::tt_not_near;
         }
         case token::tt_near:
-#endif
+#endif /* FEATURE_word_pos */
         case token::tt_and:
         case token::tt_or:
 #           ifdef DEBUG_parse_query
@@ -473,20 +473,20 @@ parsed_meta_id:
                 case token::tt_and:
                     cerr << "and";
                     break;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
                 case token::tt_not_near:
                     cerr << "not ";
                     // no break;
                 case token::tt_near:
                     cerr << "near";
                     break;
-#endif
+#endif /* FEATURE_word_pos */
                 case token::tt_or:
                     cerr << "or";
                     break;
             }
             cerr << "\"\n";
-#           endif
+#           endif /* DEBUG_parse_query */
             relop = t_type;
             return true;
     }
@@ -495,7 +495,7 @@ parsed_meta_id:
         return false;
 #   ifdef DEBUG_parse_query
     cerr << "---> relop \"and\" (implicit)\n";
-#   endif
+#   endif /* DEBUG_parse_query */
     relop = token::tt_and;
     return true;
 }
@@ -548,7 +548,7 @@ parsed_meta_id:
                 q_args.stop_words_found.insert( t.str() );
 #               ifdef DEBUG_parse_query
                 cerr << "---> word \"" << t.str() << "\" (ignored: not OK)\n";
-#               endif
+#               endif /* DEBUG_parse_query */
                 //
                 // The following "return true" indicates that a word was parsed
                 // successfully, not that we found the word.
@@ -594,26 +594,26 @@ parsed_meta_id:
         case token::tt_lparen:
 #           ifdef DEBUG_parse_query
             cerr << "---> '('\n";
-#           endif
+#           endif /* DEBUG_parse_query */
             if ( !parse_query2( q_args, r_args, v_args ) )
                 return false;
             q_args.query >> t;
 #           ifdef DEBUG_parse_query
             if ( t == token::tt_rparen )
                 cerr << "---> ')'\n";
-#           endif
+#           endif /* DEBUG_parse_query */
             return t == token::tt_rparen;
 
         case token::tt_not: {
 #           ifdef DEBUG_parse_query
             cerr << "---> begin not\n";
-#           endif
+#           endif /* DEBUG_parse_query */
             parse_r_args r_temp;
             if ( !parse_meta( q_args, r_temp, v_args ) )
                 return false;
 #           ifdef DEBUG_parse_query
             cerr << "---> end not\n";
-#           endif
+#           endif /* DEBUG_parse_query */
             if ( r_temp.node )
                 r_args.node = new not_node( q_args.node_pool, r_temp.node );
             return true;
@@ -625,7 +625,7 @@ parsed_meta_id:
 
 #   ifdef DEBUG_parse_query
     cerr << "---> word \"" << t.str() << "\", meta-ID=" << v_args.meta_id << "\n";
-#   endif
+#   endif /* DEBUG_parse_query */
     //
     // Found a word or set of words matching a wildcard: iterate over all files
     // the word(s) is/are in and add their ranks together, but only if the
@@ -641,7 +641,7 @@ parsed_meta_id:
             q_args.stop_words_found.insert( t.lower_str() );
 #           ifdef DEBUG_parse_query
             cerr << "---> word \"" << t.str() << "\" (ignored: too frequent)\n";
-#           endif
+#           endif /* DEBUG_parse_query */
         } else
             r_args.ignore = false;
     }

@@ -22,14 +22,14 @@
 #ifndef word_util_H
 #define word_util_H
 
+// local
+#include "encoded_char.h"
+#include "swishpp-config.h"
+#include "util.h"
+
 // standard
 #include <cctype>
 #include <cstring>
-
-// local
-#include "config.h"
-#include "encoded_char.h"
-#include "util.h"
 
 //*****************************************************************************
 //
@@ -166,5 +166,5 @@ extern bool move_if_match(
                 bool ignore_case = false
             );
 
-#endif  /* word_util_H */
+#endif /* word_util_H */
 /* vim:set et sw=4 ts=4: */

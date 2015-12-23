@@ -49,5 +49,5 @@ public:
 
 extern FilesGrow files_grow;
 
-#endif  /* FilesGrow_H */
+#endif /* FilesGrow_H */
 /* vim:set et sw=4 ts=4: */

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/mail/mod_mail.c
+**      src/mod/mail/mod_mail.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,15 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_mail
-
-// standard
-#include <algorithm>                            /* for copy() */
-#include <cctype>
-#include <cstring>
-#include <string>
-#include <unistd.h>                             /* for unlink(2) */
-#include <vector>
+#ifdef MOD_mail
 
 // local
 #include "AssociateMeta.h"
@@ -37,11 +29,11 @@
 #include "IncludeMeta.h"
 #include "iso8859-1.h"
 #include "meta_map.h"
-#ifdef  MOD_html
+#ifdef MOD_html
 #include "mod/html/mod_html.h"
 #endif
 #include "mod_mail.h"
-#ifdef  MOD_rtf
+#ifdef MOD_rtf
 #include "mod/rtf/mod_rtf.h"
 #endif
 #include "pjl/auto_vec.h"
@@ -50,6 +42,14 @@
 #include "util.h"
 #include "Verbosity.h"
 #include "word_util.h"
+
+// standard
+#include <algorithm>                    /* for copy() */
+#include <cctype>
+#include <cstring>
+#include <string>
+#include <unistd.h>                     /* for unlink(2) */
+#include <vector>
 
 using namespace PJL;
 using namespace std;
@@ -80,8 +80,8 @@ bool                                mail_indexer::did_last_header_;
 // SYNOPSIS
 //
         bool mail_indexer::boundary_cmp(
-            register char const *c, register char const *end,
-            register char const *boundary
+            char const *c, char const *end,
+            char const *boundary
         )
 //
 // DESCRIPTION
@@ -282,7 +282,7 @@ could_not_filter:
 // SYNOPSIS
 //
         mail_indexer::message_type mail_indexer::index_headers(
-            register char const *&c, register char const *end
+            char const *&c, char const *end
         )
 //
 // DESCRIPTION
@@ -330,7 +330,7 @@ could_not_filter:
             if ( ::strstr( value, "binary" ) )
                 type.encoding_ = Binary;
             else if ( ::strstr( value, "base64" ) )
-#ifdef  ENCODING_base64
+#ifdef ENCODING_base64
                 type.encoding_ = encoding_base64;
 #else
                 // Since Base64 encoding wasn't compiled in, we need to make it
@@ -338,7 +338,7 @@ could_not_filter:
                 //
                 type.encoding_ = Binary;
 #endif
-#ifdef  ENCODING_quoted_printable
+#ifdef ENCODING_quoted_printable
             else if ( ::strstr( value, "quoted-printable" ) )
                 type.encoding_ = encoding_quoted_printable;
 #else
@@ -377,11 +377,11 @@ could_not_filter:
                     type.charset_ = US_ASCII;
                 else if ( !::strncmp( charset, "iso8859-1", 9 ) )
                     type.charset_ = ISO_8859_1;
-#ifdef  CHARSET_utf7
+#ifdef CHARSET_utf7
                 else if ( !::strncmp( charset, "utf-7", 5 ) )
                     type.charset_ = charset_utf7;
 #endif
-#ifdef  CHARSET_utf8
+#ifdef CHARSET_utf8
                 else if ( !::strncmp( charset, "utf-8", 5 ) )
                     type.charset_ = charset_utf8;
 #endif
@@ -531,14 +531,14 @@ not_indexable:  type.content_type_ = ct_unknown;
             boundary_stack_.pop_back();
             break;
 
-#ifdef  MOD_rtf
+#ifdef MOD_rtf
         case ct_text_enriched: {
             static indexer &rtf = *indexer::find_indexer( "RTF" );
             rtf.index_words( e2 );
             break;
         }
 #endif
-#ifdef  MOD_html
+#ifdef MOD_html
         case ct_text_html: {
             static indexer &html = *indexer::find_indexer( "HTML" );
             html.index_words( e2 );
@@ -564,7 +564,7 @@ not_indexable:  type.content_type_ = ct_unknown;
 // SYNOPSIS
 //
         bool mail_indexer::parse_header(
-            register char const *&c, register char const *end, key_value *kv
+            char const *&c, char const *end, key_value *kv
         )
 //
 // DESCRIPTION
@@ -676,5 +676,5 @@ more_headers:
     return true;
 }
 
-#endif  /* MOD_mail */
+#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

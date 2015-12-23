@@ -27,75 +27,64 @@
 
 namespace PJL {
 
+///////////////////////////////////////////////////////////////////////////////
+
 template<class T> class auto_delete_obj;
 
-//*****************************************************************************
-//
-// SYNOPSYS
-//
-        template<typename T> class auto_delete_pool
-//
-// DESCRIPTION
-//
-//      An auto_delete_pool is an object that is used to keep track of
-//      dynamically allocated objects derived from auto_delete_obj for the
-//      purpose of ensuring that they are all deleted when the pool is deleted.
-//      It's a "poor man's garbage collector."
-//
-//*****************************************************************************
-{
+/**
+ * An auto_delete_pool is an object that is used to keep track of dynamically
+ * allocated objects derived from auto_delete_obj for the purpose of ensuring
+ * that they are all deleted when the pool is deleted.  It's a "poor man's
+ * garbage collector."
+ */
+template<typename T> class auto_delete_pool {
 public:
-    ~auto_delete_pool() {
-        for ( list_type::const_iterator i = list_.begin(); i != list_.end(); ++i )
-            delete static_cast<T*>( *i );
-    }
+  ~auto_delete_pool() {
+    for ( list_type::const_iterator i = list_.begin(); i != list_.end(); ++i )
+      delete static_cast<T*>( *i );
+  }
+
 private:
-    typedef std::vector<void*> list_type;
-    list_type list_;
+  typedef std::vector<void*> list_type;
+  list_type list_;
 
-    void add( void *obj ) {
-        list_.push_back( obj );
-    }
+  void add( void *obj ) {
+      list_.push_back( obj );
+  }
 
-    friend class auto_delete_obj<T>;
+  friend class auto_delete_obj<T>;
 };
 
-//*****************************************************************************
-//
-// SYNOPSYS
-//
-        template<typename Derived> class auto_delete_obj
-//
-// DESCRIPTION
-//
-//      An auto_delete_obj is the base class for another that should be
-//      "pooled" such that it, and others like it in the same pool, are deleted
-//      when the pool is deleted.
-//
-//*****************************************************************************
-{
+/**
+ * An auto_delete_obj is the base class for another that should be
+ * "pooled" such that it, and others like it in the same pool, are deleted
+ */
+template<typename Derived> class auto_delete_obj {
 public:
-    typedef auto_delete_obj<Derived> pool_object_type;
-    typedef auto_delete_pool<Derived> pool_type;
+  typedef auto_delete_obj<Derived> pool_object_type;
+  typedef auto_delete_pool<Derived> pool_type;
 
-    virtual ~auto_delete_obj() { }
+  virtual ~auto_delete_obj() { }
 
-    pool_type* pool() const             { return pool_; }
+  pool_type* pool() const               { return pool_; }
 
 protected:
-    auto_delete_obj( pool_type *pool = 0 ) : pool_( pool ) {
-        if ( pool_ )
-            pool_->add( this );
-    }
-    auto_delete_obj( pool_type &pool ) : pool_( &pool ) {
-        pool_->add( this );
-    }
+  auto_delete_obj( pool_type *pool = 0 ) : pool_( pool ) {
+    if ( pool_ )
+      pool_->add( this );
+  }
+
+  auto_delete_obj( pool_type &pool ) : pool_( &pool ) {
+    pool_->add( this );
+  }
 
 private:
-    pool_type *const pool_;
+  pool_type *const pool_;
 };
+
+///////////////////////////////////////////////////////////////////////////////
 
 } // namespace PJL
 
-#endif  /* auto_delete_pool_H */
-/* vim:set et sw=4 ts=4: */
+#endif /* auto_delete_pool_H */
+/* vim:set et sw=2 ts=2: */

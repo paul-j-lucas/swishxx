@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/mail/vcard.c
+**      src/mod/mail/vcard.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,13 +19,13 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_mail
-
-// standard
-#include <cstring>
+#ifdef MOD_mail
 
 // local
 #include "mod_mail.h"
+
+// standard
+#include <cstring>
 
 using namespace std;
 
@@ -34,7 +34,7 @@ using namespace std;
 // SYNOPSIS
 //
         void mail_indexer::index_vcard(
-            register char const *&c, char const *end
+            char const *&c, char const *end
         )
 //
 // DESCRIPTION
@@ -81,5 +81,5 @@ using namespace std;
     }
 }
 
-#endif  /* MOD_mail */
+#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

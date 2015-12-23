@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_string.c
+**      src/conf_string.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,15 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <cstring>
-#include <iostream>
-
 // local
 #include "conf_string.h"
 #include "exit_codes.h"
 #include "util.h"                       /* for error() */
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
+#include <iostream>
 
 using namespace std;
 

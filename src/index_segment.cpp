@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/index_segment.c
+**      src/index_segment.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -49,8 +49,8 @@ using namespace PJL;
 //
 //*****************************************************************************
 {
-    register mmap_file::const_iterator c = begin_ = file.begin();
-    register size_type const *p = reinterpret_cast<size_type const*>( c );
+    mmap_file::const_iterator c = begin_ = file.begin();
+    size_type const *p = reinterpret_cast<size_type const*>( c );
     num_entries_ = p[ 0 ];
     for ( int i = id; i > 0; --i ) {
         c += sizeof( num_entries_ ) + num_entries_ * sizeof( off_t );

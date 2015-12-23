@@ -70,9 +70,9 @@ AX_CHECK_COMPILE_FLAG([-Wredundant-decls],[CFLAGS="$CFLAGS -Wredundant-decls"])
 AX_CHECK_COMPILE_FLAG([-Wwrite-strings],[CFLAGS="$CFLAGS -Wwrite-strings"])
 
 # Generate files.
-AH_TOP([#ifndef swishpp_config_H
-#define swishpp_config_H])
-AH_BOTTOM([#endif /* swishpp_config_H */])
+AH_TOP([#ifndef config_H
+#define config_H])
+AH_BOTTOM([#endif /* config_H */])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
     Makefile
@@ -81,6 +81,7 @@ AC_CONFIG_FILES([
     src/pjl/Makefile
     src/charsets/Makefile
     src/encodings/Makefile
+    src/mod/Makefile
     src/mod/html/Makefile
     src/mod/id3/Makefile
     src/mod/latex/Makefile

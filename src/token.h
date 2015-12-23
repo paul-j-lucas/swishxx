@@ -22,11 +22,11 @@
 #ifndef token_H
 #define token_H
 
+// local
+#include "swishpp-config.h"
+
 // standard
 #include <sstream>
-
-// local
-#include "config.h"
 
 class token_stream;
 
@@ -48,7 +48,7 @@ public:
         tt_and,
         tt_equal,
         tt_lparen,
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
         tt_near,
         //
         // The "tt_not_near" token isn't a real token in that it's not parsed
@@ -111,5 +111,5 @@ private:
     token*  put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
 };
 
-#endif  /* token_H */
+#endif /* token_H */
 /* vim:set et sw=4 ts=4: */

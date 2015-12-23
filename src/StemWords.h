@@ -47,5 +47,5 @@ public:
 
 extern StemWords stem_words;
 
-#endif  /* StemWords_H */
+#endif /* StemWords_H */
 /* vim:set et sw=4 ts=4: */

@@ -73,5 +73,5 @@ inline char const* filter::substitute( std::string const &file_name ) {
     return substitute( file_name.c_str() );
 }
 
-#endif  /* filter_H */
+#endif /* filter_H */
 /* vim:set et sw=4 ts=4: */

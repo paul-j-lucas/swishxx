@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/indexer.c
+**      src/indexer.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -42,7 +42,7 @@ using namespace std;
 
 extern unsigned long    num_indexed_words;
 extern unsigned long    num_total_words;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 extern int              word_pos;
 #endif
 extern word_map         words;
@@ -125,7 +125,7 @@ indexer*                indexer::text_indexer_ = 0;
     for ( s = main_spec; s->long_name; ++s )
         ++option_count;
     FOR_EACH( map_type, map_ref(), mod )
-        if ( s = mod->second->option_spec() )
+        if ( (s = mod->second->option_spec()) )
             while ( s->long_name )
                 ++option_count, ++s;
 
@@ -138,7 +138,7 @@ indexer*                indexer::text_indexer_ = 0;
     for ( s = main_spec; s->long_name; ++s )
         *c++ = *s;
     FOR_EACH( map_type, map_ref(), mod )
-        if ( s = mod->second->option_spec() )
+        if ( (s = mod->second->option_spec()) )
             while ( s->long_name )
                 *c++ = *s++;
     c->long_name  = 0;
@@ -312,9 +312,7 @@ indexer*                indexer::text_indexer_ = 0;
 //
 // SYNOPSIS
 //
-        /* static */ void indexer::index_word(
-            register char *word, register int len, int meta_id
-        )
+        void indexer::index_word( char *word, int len, int meta_id )
 //
 // DESCRIPTION
 //
@@ -332,7 +330,7 @@ indexer*                indexer::text_indexer_ = 0;
 //*****************************************************************************
 {
     ++num_total_words;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     ++word_pos;
 #endif
 
@@ -354,7 +352,7 @@ indexer*                indexer::text_indexer_ = 0;
 
     ////////// Strip chars not in Word_Begin_Chars/Word_End_Chars /////////////
 
-    for ( register int i = len - 1; i >= 0; --i ) {
+    for ( int i = len - 1; i >= 0; --i ) {
         if ( is_word_end_char( word[ i ] ) )
             break;
         --len;
@@ -410,7 +408,7 @@ skip_push_back:
     word_info::file &last_file = wi.files_.back();
     if ( meta_id != Meta_ID_None )
         last_file.meta_ids_.insert( meta_id );
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     if ( store_word_positions )
         last_file.add_word_pos( word_pos );
 #endif
@@ -444,7 +442,7 @@ skip_push_back:
 
     encoded_char_range::const_iterator c = e.begin();
     while ( !c.at_end() ) {
-        register char const ch = iso8859_1_to_ascii( *c++ );
+        char const ch = iso8859_1_to_ascii( *c++ );
 
         ////////// Collect a word /////////////////////////////////////////////
 

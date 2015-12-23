@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/word_util.c
+**      src/word_util.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,15 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "word_util.h"
+
 // standard
 #include <cctype>
 #ifdef DEBUG_is_ok_word
 #include <iostream>
 #endif
-
-// local
-#include "config.h"
-#include "word_util.h"
 
 using namespace std;
 
@@ -83,7 +83,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    register char const *c;
+    char const *c;
 
 #   ifdef DEBUG_is_ok_word
     cerr << '\t' << word << ' ';
@@ -138,7 +138,7 @@ using namespace std;
     int consec_vowels = 0;
     int consec_same = 0;
     int consec_puncts = 0;
-    register char last_c = '\0';
+    char last_c = '\0';
 
     for ( c = word; *c; ++c ) {
 
@@ -234,7 +234,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    register char const *d = c;
+    char const *d = c;
     if ( ignore_case )
         while ( *s && d != end && *s == to_lower( *d ) )
             ++s, ++d;

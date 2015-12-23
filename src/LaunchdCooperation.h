@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/LaunchdCooperation.h
 **
-**      Copyright (C) 2005  Paul J. Lucas
+**      Copyright (C) 2005-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,29 +27,24 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class LaunchdCooperation : public conf<bool>
-//
-// DESCRIPTION
-//
-//      A LaunchdCooperation is-a conf<bool> containing the Boolean value
-//      indicating whether to cooperate with Mac OS X's launchd.
-//
-//      This is the same as search's -l command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %LaunchdCooperation is-a \c conf<bool> containing the Boolean value
+ * indicating whether to cooperate with Mac OS X's launchd.
+ *
+ * This is the same as search's \c -l command-line option.
+ */
+class LaunchdCooperation : public conf<bool> {
 public:
-    LaunchdCooperation() : conf<bool>( "LaunchdCooperation", false ) { }
-    CONF_BOOL_ASSIGN_OPS( LaunchdCooperation )
+  LaunchdCooperation() : conf<bool>( "LaunchdCooperation", false ) { }
+  CONF_BOOL_ASSIGN_OPS( LaunchdCooperation )
 };
 
 extern LaunchdCooperation launchd_cooperation;
 
-#endif  /* LaunchdCooperation_H */
+///////////////////////////////////////////////////////////////////////////////
 
-#endif  /* SEARCH_DAEMON && __APPLE__ */
-/* vim:set et sw=4 ts=4: */
+#endif /* LaunchdCooperation_H */
+#endif /* SEARCH_DAEMON && __APPLE__ */
+/* vim:set et sw=2 ts=2: */

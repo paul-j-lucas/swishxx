@@ -22,11 +22,11 @@
 #ifndef	enc_int_H
 #define	enc_int_H
 
-// standard
-#include <iostream>
-
 // local
 #include "pjl/omanip.h"
+
+// standard
+#include <iostream>
 
 int		        dec_int( unsigned char const*& );
 std::ostream&	enc_int( std::ostream&, unsigned long );

@@ -45,5 +45,5 @@ public:
     CONF_STRING_ASSIGN_OPS( StopWordFile )
 };
 
-#endif  /* StopWordFile_H */
+#endif /* StopWordFile_H */
 /* vim:set et sw=4 ts=4: */

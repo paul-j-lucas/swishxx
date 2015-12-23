@@ -22,13 +22,13 @@
 #ifndef file_list_H
 #define file_list_H
 
-// standard
-#include <cstddef>                  /* for ptrdiff_t */
-#include <iterator>
-
 // local
 #include "index_segment.h"
 #include "word_info.h"
+
+// standard
+#include <cstddef>                  /* for ptrdiff_t */
+#include <iterator>
 
 //*****************************************************************************
 //
@@ -133,5 +133,5 @@ inline file_list::size_type file_list::size() const {
     return size_ != -1 ? size_ : calc_size();
 }
 
-#endif  /* file_list_H */
+#endif /* file_list_H */
 /* vim:set et sw=4 ts=4: */

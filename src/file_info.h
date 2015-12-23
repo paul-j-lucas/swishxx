@@ -22,12 +22,12 @@
 #ifndef file_info_H
 #define file_info_H
 
+// local
+#include "pjl/pjl_set.h"
+
 // standard
 #include <cstddef>                      /* for size_t */
 #include <vector>
-
-// local
-#include "pjl/pjl_set.h"
 
 //*****************************************************************************
 //
@@ -114,5 +114,5 @@ private:
     static name_set_type    name_set_;
 };
 
-#endif  /* file_info_H */
+#endif /* file_info_H */
 /* vim:set et sw=4 ts=4: */

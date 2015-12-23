@@ -22,23 +22,14 @@
 #ifndef pattern_map_H
 #define pattern_map_H
 
+// local
+#include "config.h"
+#include "pjl/less.h"
+
 // standard
 #include <algorithm>                    /* for find_if() */
-#ifndef __CYGWIN__
 #include <fnmatch.h>                    /* for fnmatch(3) */
-#endif
 #include <map>
-
-// local
-#ifdef  __CYGWIN__
-//
-// The fnmatch() function, for whatever reason, isn't currently available in
-// the Unix-like environment being used to compile SWISH++ under Windows, so
-// we use a local copy.
-//
-#include "fnmatch.h"
-#endif
-#include "pjl/less.h"
 
 //*****************************************************************************
 //
@@ -115,5 +106,5 @@ private:
     };
 };
 
-#endif  /* pattern_map_H */
+#endif /* pattern_map_H */
 /* vim:set et sw=4 ts=4: */

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/search_thread.c
+**      src/search_thread.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,7 +19,13 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
+
+// local
+#include "pjl/fdbuf.h"
+#include "search.h"
+#include "search_thread.h"
+#include "util.h"
 
 // standard
 #include <cctype>
@@ -45,20 +51,14 @@
 // Environment," Addison-Wesley, Reading, MA, 1993.  pp. 32-40.
 //
 #define REASONABLE_ARG_MAX 50
-#ifdef  ARG_MAX
-#   if ARG_MAX > REASONABLE_ARG_MAX
-#       undef ARG_MAX
-#   endif
+#ifdef ARG_MAX
+# if ARG_MAX > REASONABLE_ARG_MAX
+#   undef ARG_MAX
+# endif
 #endif
 #ifndef ARG_MAX
-#   define ARG_MAX REASONABLE_ARG_MAX
+# define ARG_MAX REASONABLE_ARG_MAX
 #endif
-
-// local
-#include "pjl/fdbuf.h"
-#include "search.h"
-#include "search_thread.h"
-#include "util.h"
 
 using namespace PJL;
 using namespace std;
@@ -141,7 +141,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
 //
 // SYNOPSIS
 //
-        int split_args( register char *s, char *argv[], int arg_max )
+        int split_args( char *s, char *argv[], int arg_max )
 //
 // DESCRIPTION
 //
@@ -177,7 +177,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
     if ( !*s )
         return 0;
 
-    register int argc = 0;
+    int argc = 0;
 
     while ( argv[ argc++ ] = s ) {
         if ( argc >= arg_max - 1 )      // -1 to allow for null at end
@@ -272,5 +272,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
     return false;
 }
 
-#endif  /* SEARCH_DAEMON */
+///////////////////////////////////////////////////////////////////////////////
+
+#endif /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

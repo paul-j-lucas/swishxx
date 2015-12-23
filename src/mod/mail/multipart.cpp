@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/mail/multipart.c
+**      src/mod/mail/multipart.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_mail
+#ifdef MOD_mail
 
 // local
 #include "encoded_char.h"
@@ -35,7 +35,7 @@ using namespace std;
 // SYNOPSIS
 //
         void mail_indexer::index_multipart(
-            register char const *&c, register char const *end
+            char const *&c, char const *end
         )
 //
 // DESCRIPTION
@@ -58,7 +58,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    register char const *nl;
+    char const *nl;
     //
     // Find the beginning boundary string.
     //
@@ -101,5 +101,5 @@ using namespace std;
     }
 }
 
-#endif  /* MOD_mail */
+#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

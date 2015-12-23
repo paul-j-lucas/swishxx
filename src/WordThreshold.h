@@ -56,5 +56,5 @@ private:
 
 extern WordThreshold word_threshold;
 
-#endif  /* WordThreshold_H */
+#endif /* WordThreshold_H */
 /* vim:set et sw=4 ts=4: */

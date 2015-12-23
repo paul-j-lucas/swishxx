@@ -22,12 +22,12 @@
 #ifndef conf_int_H
 #define conf_int_H
 
+// local
+#include "conf_var.h"
+
 // system
 #include <climits>                      /* for INT_MAX */
 #include <string>
-
-// local
-#include "conf_var.h"
 
 //*****************************************************************************
 //
@@ -89,5 +89,5 @@ private:
             return *this;                       \
         }
 
-#endif  /* conf_int_H */
+#endif /* conf_int_H */
 /* vim:set et sw=4 ts=4: */

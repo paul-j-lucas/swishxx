@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/index_header.c
+**      src/index_header.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **
@@ -24,7 +24,7 @@
 **      annoying to make a function out of it.
 */
 
-#ifdef  WRITE_HEADER
+#ifdef WRITE_HEADER
     long const num_dirs           = dir_set.size();
     long const num_files          = file_info::num_files();
     long const num_stop_words     = stop_words->size();
@@ -64,7 +64,7 @@
             num_meta_names * sizeof( meta_name_offset[0] )
         );
 #endif
-#ifdef  REWRITE_HEADER
+#ifdef REWRITE_HEADER
     o.seekp( word_offset_pos );
     my_write( o, word_offset, num_unique_words * sizeof( word_offset[0] ) );
     if ( num_stop_words ) {

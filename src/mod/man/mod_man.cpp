@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/man/mod_man.c
+**      src/mod/man/mod_man.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **
@@ -19,11 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_man
-
-// standard
-#include <cctype>
-#include <cstring>
+#ifdef MOD_man
 
 // local
 #include "AssociateMeta.h"
@@ -34,6 +30,10 @@
 #include "TitleLines.h"
 #include "util.h"
 #include "word_util.h"
+
+// standard
+#include <cctype>
+#include <cstring>
 
 using namespace PJL;
 using namespace std;
@@ -115,7 +115,7 @@ static void parse_backslash( char const *&pos, char const *end );
         // case there are things like \fBword\fP in it so they can be stripped
         // out.
         //
-        register char *d = title;
+        char *d = title;
         for ( c = title; *c; ++c ) {
             if ( *c == '\\' )
                 parse_backslash( ++c, file.end() );
@@ -163,7 +163,7 @@ static void parse_backslash( char const *&pos, char const *end );
 
     char const* c = e.begin_pos();
     while ( c != e.end_pos() ) {
-        register char const ch = iso8859_1_to_ascii( *c++ );
+        char const ch = iso8859_1_to_ascii( *c++ );
 
         ////////// Collect a word /////////////////////////////////////////////
 
@@ -263,7 +263,7 @@ next_c: if ( c == e.end_pos() )
 //
 // SYNOPSIS
 //
-        void parse_backslash( register char const *&c, char const *end )
+        void parse_backslash( char const *&c, char const *end )
 //
 // DESCRIPTION
 //
@@ -348,7 +348,7 @@ next_c: if ( c == e.end_pos() )
 // SYNOPSIS
 //
         void man_indexer::parse_man_macro(
-            register char const *&c, char const *end
+            char const *&c, char const *end
         )
 //
 // DESCRIPTION
@@ -387,7 +387,7 @@ next_c: if ( c == e.end_pos() )
     int     len = 0;
 
     while ( c != nl ) {
-        register char ch = *c++;
+        char ch = *c++;
         if ( ch == ' ' )
             ch = '-';
         if ( !is_word_char( ch ) )
@@ -456,5 +456,5 @@ next_c: if ( c == e.end_pos() )
     index_words( encoded_char_range( begin, c ), meta_id );
 }
 
-#endif  /* MOD_man */
+#endif /* MOD_man */
 /* vim:set et sw=4 ts=4: */

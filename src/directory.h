@@ -22,11 +22,11 @@
 #ifndef directory_H
 #define directory_H
 
-// standard
-#include <map>
-
 // local
 #include "pjl/less.h"
+
+// standard
+#include <map>
 
 typedef std::map<char const*, int> dir_set_type;
 extern dir_set_type dir_set;
@@ -34,5 +34,5 @@ extern dir_set_type dir_set;
 //      This contains a map of all directory paths and an int that gives its
 //      index (the directory number in the order encountered).
 
-#endif  /* directory_H */
+#endif /* directory_H */
 /* vim:set et sw=4 ts=4: */

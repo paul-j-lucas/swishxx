@@ -62,5 +62,5 @@ typedef unsigned long ucs4;
             iso8859_1_to_ascii( c ) : ' ';
 }
 
-#endif  /* unicode_H */
+#endif /* unicode_H */
 /* vim:set et sw=4 ts=4: */

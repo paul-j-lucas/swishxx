@@ -46,5 +46,5 @@ public:
 
 extern FilterFile file_filters;
 
-#endif  /* FilterFile_H */
+#endif /* FilterFile_H */
 /* vim:set et sw=4 ts=4: */

@@ -72,5 +72,5 @@ private:
 
 } // namespace PJL
 
-#endif  /* auto_vec_H */
+#endif /* auto_vec_H */
 /* vim:set et sw=4 ts=4: */

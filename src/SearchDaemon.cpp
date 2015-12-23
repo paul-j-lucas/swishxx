@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/SearchDaemon.c
+**      src/SearchDaemon.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
 
 // local
 #include "SearchDaemon.h"
@@ -32,5 +32,5 @@ char const *const SearchDaemon::legal_values_[] = {
     0
 };
 
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

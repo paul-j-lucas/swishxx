@@ -49,5 +49,5 @@ public:
 
 extern WordPercentMax word_percent_max;
 
-#endif  /* WordPercentMax_H */
+#endif /* WordPercentMax_H */
 /* vim:set et sw=4 ts=4: */

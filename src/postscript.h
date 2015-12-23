@@ -64,5 +64,5 @@
     postscript_operator_set();
 };
 
-#endif  /* postscript_H */
+#endif /* postscript_H */
 /* vim:set et sw=4 ts=4: */

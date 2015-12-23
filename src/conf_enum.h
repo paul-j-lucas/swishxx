@@ -59,5 +59,5 @@ private:
             return *this;                       \
         }
 
-#endif  /* conf_enum_H */
+#endif /* conf_enum_H */
 /* vim:set et sw=4 ts=4: */

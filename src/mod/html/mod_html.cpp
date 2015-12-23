@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/html/mod_html.c
+**      src/mod/html/mod_html.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_html
+#ifdef MOD_html
 
 // local
 #include "AssociateMeta.h"
@@ -122,7 +122,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 //
 // SYNOPSIS
 //
-        char entity_to_ascii( register encoded_char_range::const_iterator &c )
+        char entity_to_ascii( encoded_char_range::const_iterator &c )
 //
 // DESCRIPTION
 //
@@ -207,8 +207,8 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 
     ////////// Parse a numeric character reference ////////////////////////////
 
-    register unsigned n = 0;
-    for ( register char const *e = entity_buf; *e; ++e ) {
+    unsigned n = 0;
+    for ( char const *e = entity_buf; *e; ++e ) {
         if ( is_hex ) {
             if ( !is_xdigit( *e ) )             // bad hex num
                 return ' ';
@@ -286,7 +286,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
         // We just found the start of a potentially matching attribute name:
         // now try to find its end.
         //
-        register char const *a = attribute;
+        char const *a = attribute;
         while ( !c.at_end() && to_lower( *c ) == *a )
             ++c, ++a;
         while ( !c.at_end() && ( is_alpha( *c ) || *c == '-' ) )
@@ -460,7 +460,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 
     encoded_char_range::const_iterator c = e.begin();
     while ( !c.at_end() ) {
-        register char ch = iso8859_1_to_ascii( *c++ );
+        char ch = iso8859_1_to_ascii( *c++ );
         //
         // If the character is an '&' (the start of a entity reference),
         // convert the entity reference to ASCII.
@@ -520,7 +520,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 //
 // SYNOPSIS
 //
-        bool is_html_comment( register encoded_char_range::const_iterator &c )
+        bool is_html_comment( encoded_char_range::const_iterator &c )
 //
 // DESCRIPTION
 //
@@ -575,7 +575,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 // SYNOPSIS
 //
         void HTML_indexer::parse_html_tag(
-            register encoded_char_range::const_iterator &c
+            encoded_char_range::const_iterator &c
         )
 //
 // DESCRIPTION
@@ -671,7 +671,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
         // (We don't call to_lower() in util.c so as not to waste time copying
         // the entire tag with its attributes since we only want the tag name.)
         //
-        register char *to = tag_buf;
+        char *to = tag_buf;
         encoded_char_range::const_iterator from = name;
         while ( !from.at_end() && !is_space( *from ) ) {
             //
@@ -735,7 +735,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
             // them is among the set not to index.
             //
             char *names = to_lower( class_att );
-            register char const *name;
+            char const *name;
             while ( name = ::strtok( names, " \f\n\r\t\v" ) ) {
                 if ( exclude_class_names.contains( name ) ) {
                     is_no_index_class = true;
@@ -921,7 +921,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
 //
 // SYNOPSIS
 //
-        bool skip_html_tag( register encoded_char_range::const_iterator &c )
+        bool skip_html_tag( encoded_char_range::const_iterator &c )
 //
 // DESCRIPTION
 //
@@ -945,7 +945,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
     if ( is_html_comment( c ) )
         return true;
 
-    register char quote = '\0';
+    char quote = '\0';
     while ( !c.at_end() ) {
         if ( quote ) {                          // ignore everything...
             if ( *c++ == quote )                // ...until matching quote
@@ -985,5 +985,5 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
     "-H     | --dump-html        : Dump built-in recognized HTML/XHTML elements, exit\n";
 }
 
-#endif  /* MOD_html */
+#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

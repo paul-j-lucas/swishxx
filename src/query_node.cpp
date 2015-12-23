@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/query_node.c
+**      src/query_node.cpp
 **
 **      Copyright (C) 2004  Paul J. Lucas
 **
@@ -19,16 +19,16 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <iostream>
-#include <vector>
-
 // local
 #include "file_list.h"
 #include "index_segment.h"
 #include "query_node.h"
 #include "WordsNear.h"
 #include "util.h"
+
+// standard
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -44,7 +44,7 @@ and_node::and_node( pool_type &p, child_node_list &nodes ) : query_node( p ) {
     child_nodes_.swap( nodes );
 }
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 near_node::near_node( pool_type &p, query_node *left, query_node *right ) :
     query_node( p ), left_child_ ( left  ), right_child_( right )
 {
@@ -71,7 +71,7 @@ and_node::~and_node() {
     //
 }
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 near_node     ::~near_node    () { /* See comment in ~and_node(). */ }
 not_near_node ::~not_near_node() { /* See comment in ~and_node(). */ }
 #endif
@@ -91,7 +91,7 @@ query_node* and_node::visit( visitor const &v ) {
     return result;
 }
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 query_node* near_node::visit( visitor const &v ) {
     query_node *const result = v( this );
     if ( result == this ) {
@@ -232,7 +232,7 @@ query_node* query_node::visit( visitor const &v ) {
         result->second /= num_ands;
 }
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 //*****************************************************************************
 //
 // SYNOPSYS
@@ -523,7 +523,7 @@ found_near:     ++file[0];
         }
     }
 }
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 
 //*****************************************************************************
 //
@@ -603,7 +603,7 @@ found_near:     ++file[0];
     }
 }
 
-#ifdef  DEBUG_eval_query
+#ifdef DEBUG_eval_query
 ////////// print //////////////////////////////////////////////////////////////
 
 ostream& and_node::print( ostream &o ) const {
@@ -647,5 +647,5 @@ ostream& or_node::print( ostream &o ) const {
 ostream& word_node::print( ostream &o ) const {
     return o << '"' << word_ << '"';
 }
-#endif  /* DEBUG_eval_query */
+#endif /* DEBUG_eval_query */
 /* vim:set et sw=4 ts=4: */

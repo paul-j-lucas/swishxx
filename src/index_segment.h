@@ -22,13 +22,13 @@
 #ifndef index_segment_H
 #define index_segment_H
 
-// standard
-#include <cstddef>                              /* for ptrdiff_t */
-#include <iterator>
-#include <sys/types.h>                          /* for off_t */
-
 // local
 #include "pjl/mmap_file.h"
+
+// standard
+#include <cstddef>                      /* for ptrdiff_t */
+#include <iterator>
+#include <sys/types.h>                  /* for off_t */
 
 //*****************************************************************************
 //
@@ -157,5 +157,5 @@ private:
     off_t const                     *offset_;
 };
 
-#endif  /* index_segment_H */
+#endif /* index_segment_H */
 /* vim:set et sw=4 ts=4: */

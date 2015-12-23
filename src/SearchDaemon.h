@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
 
 #ifndef SearchDaemon_H
 #define SearchDaemon_H
@@ -51,7 +51,7 @@ private:
 
 extern SearchDaemon daemon_type;
 
-#endif  /* SearchDaemon_H */
+#endif /* SearchDaemon_H */
 
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/directory.c
+**      src/directory.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -24,13 +24,6 @@
 **      it generates different code depending on which one it's compiled into.
 */
 
-// standard
-#include <cstring>
-#include <iostream>
-#include <queue>
-#include <sys/types.h>                  /* needed by dirent.h */
-#include <dirent.h>
-
 // local
 #include "directory.h"
 #include "pjl/pjl_set.h"
@@ -38,12 +31,19 @@
 #include "util.h"
 #include "Verbosity.h"
 
+// standard
+#include <cstring>
+#include <iostream>
+#include <queue>
+#include <sys/types.h>                  /* needed by dirent.h */
+#include <dirent.h>
+
 using namespace PJL;
 using namespace std;
 
 extern void     do_file( char const *file_name, int dir_index );
 
-#ifdef  __CYGWIN__
+#ifdef __CYGWIN__
 //
 // The directory separator character ('/' for Unix) is apparantly transformed
 // into '\' for Windows by the intermediate Windows port of POSIX functions.
@@ -55,9 +55,9 @@ extern void     do_file( char const *file_name, int dir_index );
 char const      Dir_Sep_Char = '\\';
 #else
 char const      Dir_Sep_Char = '/';
-#endif  /* __CYGWIN__ */
+#endif /* __CYGWIN__ */
 
-#ifdef  INDEX
+#ifdef INDEX
 dir_set_type    dir_set;
 #endif
 
@@ -66,7 +66,7 @@ dir_set_type    dir_set;
 FollowLinks     follow_symbolic_links;
 #endif
 
-#ifdef  INDEX
+#ifdef INDEX
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -130,7 +130,7 @@ FollowLinks     follow_symbolic_links;
     }
     do_file( file_name, dir_index );
 }
-#endif  /* INDEX */
+#endif /* INDEX */
 
 //*****************************************************************************
 //
@@ -189,7 +189,7 @@ FollowLinks     follow_symbolic_links;
         cout << '\n';
     }
 
-#ifdef  INDEX
+#ifdef INDEX
     int const dir_index = check_add_directory( dir_path );
 #endif
     //
@@ -224,7 +224,7 @@ FollowLinks     follow_symbolic_links;
             // desirable to call do_file() so we don't have to repeat the code
             // to print verbose information for 'path'.
             //
-#ifdef  INDEX
+#ifdef INDEX
             do_file( path, dir_index );
 #else
             do_file( path );

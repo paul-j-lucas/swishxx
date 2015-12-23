@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/index.c
+**      src/index.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -47,7 +47,7 @@
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
 #include "stop_words.h"
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 #include "StoreWordPositions.h"
 #endif
 #include "TempDirectory.h"
@@ -111,7 +111,7 @@ WordFilesMax            word_files_max;
 WordPercentMax          word_percent_max;
 WordThreshold           word_threshold;
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 StoreWordPositions      store_word_positions;
 int                     word_pos;               // ith word in file
 #endif
@@ -190,32 +190,32 @@ static void             write_word_index( ostream&, off_t* );
 
     ////////// Max-out various system resources ///////////////////////////////
 
-#ifdef  RLIMIT_AS                       /* SVR4 */
+#ifdef RLIMIT_AS                       /* SVR4 */
     //
     // Max-out out out total memory potential.
     //
     max_out_limit( RLIMIT_AS );
 #endif
-#ifdef  RLIMIT_CPU                      /* SVR4, 4.3+BSD */
+#ifdef RLIMIT_CPU                      /* SVR4, 4.3+BSD */
     //
     // Max-out the amount of CPU time we can run since indexing can take a
     // while.
     //
     max_out_limit( RLIMIT_CPU );
 #endif
-#ifdef  RLIMIT_DATA                     /* SVR4, 4.3+BSD */
+#ifdef RLIMIT_DATA                     /* SVR4, 4.3+BSD */
     //
     // Max-out our heap allocation potential.
     //
     max_out_limit( RLIMIT_DATA );
 #endif
-#ifdef  RLIMIT_FSIZE
+#ifdef RLIMIT_FSIZE
     //
     // Max-out the file-size creation potential.
     //
     max_out_limit( RLIMIT_FSIZE );
 #endif
-#ifdef  RLIMIT_NOFILE                   /* SVR4 */
+#ifdef RLIMIT_NOFILE                   /* SVR4 */
     //
     // Max-out the number of file descriptors we can have open to be able to
     // merge as many partial indicies as possible.
@@ -243,7 +243,7 @@ static void             write_word_index( ostream&, off_t* );
         "meta",             1, 'm',
         "no-meta",          1, 'M',
         "percent-max",      1, 'p',
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
         "no-pos-data",      0, 'P',
 #endif
         "no-recurse",       0, 'r',
@@ -359,7 +359,7 @@ static void             write_word_index( ostream&, off_t* );
             case 'p': // Specify the word/file percentage.
                 word_percent_max_arg = opt.arg();
                 break;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
             case 'P': // Don't store word position data.
                 no_word_pos_opt = true;
                 break;
@@ -423,7 +423,7 @@ static void             write_word_index( ostream&, off_t* );
         index_file_name = index_file_name_arg;
     if ( no_associate_meta_opt )
         associate_meta = false;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     if ( no_word_pos_opt )
         store_word_positions = false;
 #endif
@@ -738,7 +738,7 @@ static void             write_word_index( ostream&, off_t* );
     vector< index_segment > words( partial_index_file_names.size() );
     vector< index_segment::const_iterator >
         word( partial_index_file_names.size() );
-    register int i, j;
+    int i, j;
 
     ////////// Reopen all the partial indicies ////////////////////////////////
 
@@ -768,7 +768,7 @@ static void             write_word_index( ostream&, off_t* );
     while ( true ) {
 
         // Find at least two non-exhausted indicies noting the first.
-        register int n = 0;
+        int n = 0;
         for ( j = 0; j < partial_index_file_names.size(); ++j )
             if ( word[ j ] != words[ j ].end() )
                 if ( !n++ )
@@ -831,7 +831,7 @@ static void             write_word_index( ostream&, off_t* );
         ////////// Find the next word /////////////////////////////////////////
 
         // Find at least two non-exhausted indicies noting the first.
-        register int n = 0;
+        int n = 0;
         for ( j = 0; j < partial_index_file_names.size(); ++j ) {
             for ( ; word[ j ] != words[ j ].end(); ++word[ j ] )
                 if ( !stop_words->contains( *word[ j ] ) )
@@ -888,7 +888,7 @@ static void             write_word_index( ostream&, off_t* );
                   << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
                 if ( !file->pos_deltas_.empty() )
                     file->write_word_pos( o );
 #endif
@@ -936,7 +936,7 @@ static void             write_word_index( ostream&, off_t* );
                   << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
                 if ( !file->pos_deltas_.empty() )
                     file->write_word_pos( o );
 #endif
@@ -1034,7 +1034,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-        void write_dir_index( ostream &o, register off_t *offset )
+        void write_dir_index( ostream &o, off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1059,7 +1059,7 @@ static void             write_word_index( ostream&, off_t* );
     //
     // Now write them out in order.
     //
-    register int dir_index = 0;
+    int dir_index = 0;
     FOR_EACH( dir_list_type, dir_list, dir ) {
         offset[ dir_index++ ] = o.tellp();
         o << *dir << '\0' << assert_stream;
@@ -1070,7 +1070,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-        void write_file_index( ostream &o, register off_t *offset )
+        void write_file_index( ostream &o, off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1085,7 +1085,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-    register int file_index = 0;
+    int file_index = 0;
     for ( file_info::const_iterator
           i = file_info::begin(); i != file_info::end(); ++i
     ) {
@@ -1149,7 +1149,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-        void write_meta_name_index( ostream &o, register off_t *offset )
+        void write_meta_name_index( ostream &o, off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1164,7 +1164,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-    register int meta_index = 0;
+    int meta_index = 0;
     FOR_EACH( meta_map, meta_names, m ) {
         offset[ meta_index++ ] = o.tellp();
         o << m->first << '\0' << enc_int( m->second ) << assert_stream;
@@ -1227,7 +1227,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-        void write_stop_word_index( ostream &o, register off_t *offset )
+        void write_stop_word_index( ostream &o, off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1242,7 +1242,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-    register int word_index = 0;
+    int word_index = 0;
     FOR_EACH( stop_word_set, *stop_words, word ) {
         offset[ word_index++ ] = o.tellp();
         o << *word << '\0' << assert_stream;
@@ -1253,7 +1253,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-        void write_word_index( ostream &o, register off_t *offset )
+        void write_word_index( ostream &o, off_t *offset )
 //
 // DESCRIPTION
 //
@@ -1268,7 +1268,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 //*****************************************************************************
 {
-    register int word_index = 0;
+    int word_index = 0;
     FOR_EACH( word_map, words, w ) {
         offset[ word_index++ ] = o.tellp();
         o << w->first << '\0' << assert_stream;
@@ -1285,7 +1285,7 @@ static void             write_word_index( ostream&, off_t* );
               << assert_stream;
             if ( !file->meta_ids_.empty() )
                 file->write_meta_ids( o );
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
             if ( !file->pos_deltas_.empty() )
                 file->write_word_pos( o );
 #endif

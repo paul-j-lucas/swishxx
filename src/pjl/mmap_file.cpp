@@ -1,6 +1,6 @@
 /*
 **      PJL C++ Library
-**      mmap_file.c
+**      mmap_file.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,6 +19,9 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "mmap_file.h"
+
 // standard
 #include <cerrno>
 #include <fcntl.h>                      /* for open(2), O_RDONLY, etc */
@@ -31,13 +34,10 @@
 #include <pthread.h>
 #endif
 
-// local
-#include "mmap_file.h"
-
 using namespace PJL;
 using namespace std;
 
-#ifdef  RLIMIT_VMEM                     /* SVR4 */
+#ifdef RLIMIT_VMEM                     /* SVR4 */
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -62,7 +62,7 @@ using namespace std;
     r.rlim_cur = r.rlim_max;
     ::setrlimit( RLIMIT_VMEM, &r );
 }
-#endif  /* RLIMIT_VMEM */
+#endif /* RLIMIT_VMEM */
 
 //*****************************************************************************
 //
@@ -133,13 +133,13 @@ using namespace std;
 //
 //*****************************************************************************
 {
-#ifdef  RLIMIT_VMEM                     /* SVR4 */
+#ifdef RLIMIT_VMEM                     /* SVR4 */
     //
     // This OS defines a separate resource limit for memory-mapped address
     // space as opposed to data, stack, or heap space.  Anyway, we want to max
     // it out so we can mmap(2) very large files.
     //
-#ifdef  MULTI_THREADED
+#ifdef MULTI_THREADED
     static pthread_once_t max_out = PTHREAD_ONCE_INIT;
     ::pthread_once( &max_out, max_out_limits );
 #else
@@ -148,8 +148,8 @@ using namespace std;
         max_out_limits();
         maxed_out = true;
     }
-#endif  /* MULTI_THREADED */
-#endif  /* RLIMIT_VMEM */
+#endif /* MULTI_THREADED */
+#endif /* RLIMIT_VMEM */
 
     size_ = 0;
     fd_ = 0;
@@ -200,7 +200,7 @@ using namespace std;
     if ( mode & ios::out )  prot |= PROT_WRITE;
 
     if ( !( size_ = stat_buf.st_size ) ) {
-#ifdef  ENODATA
+#ifdef ENODATA
         errno_ = ENODATA;
 #else
         //
@@ -209,7 +209,7 @@ using namespace std;
         // to use: EINVAL is the least bad.
         //
         errno_ = EINVAL;
-#endif  /* ENODATA */
+#endif /* ENODATA */
         return false;
     }
 

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/util.c
+**      src/util.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,12 +19,12 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstring>
-
 // local
 #include "pjl/char_buffer_pool.h"
 #include "util.h"
+
+// standard
+#include <cstring>
 
 using namespace PJL;
 using namespace std;
@@ -55,7 +55,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-    register char *p = buf;
+    char *p = buf;
     while ( *p++ = to_lower( *s++ ) ) ;
     return buf;
 }
@@ -64,7 +64,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
-        char *to_lower( register char const *s )
+        char *to_lower( char const *s )
 //
 // DESCRIPTION
 //
@@ -84,7 +84,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-    for ( register char *p = lower_buf.next(); *p++ = to_lower( *s++ ); ) ;
+    for ( char *p = lower_buf.next(); *p++ = to_lower( *s++ ); ) ;
     return lower_buf.current();
 }
 
@@ -92,7 +92,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
-        char *to_lower( register char const *begin, register char const *end )
+        char *to_lower( char const *begin, char const *end )
 //
 // DESCRIPTION
 //
@@ -115,7 +115,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-    register char *p = lower_buf.next();
+    char *p = lower_buf.next();
     while ( begin != end )
         *p++ = to_lower( *begin++ );
     *p = '\0';
@@ -126,7 +126,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
-        char *to_lower_r( register char const *s )
+        char *to_lower_r( char const *s )
 //
 // DESCRIPTION
 //
@@ -145,7 +145,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //*****************************************************************************
 {
     char *const buf = new char[ ::strlen( s ) + 1 ];
-    for ( register char *p = buf; *p++ = to_lower( *s++ ); ) ;
+    for ( char *p = buf; *p++ = to_lower( *s++ ); ) ;
     return buf;
 }
 
@@ -153,7 +153,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 // SYNOPSIS
 //
-        char *to_lower_r( register char const *begin, register char const *end )
+        char *to_lower_r( char const *begin, char const *end )
 //
 // DESCRIPTION
 //
@@ -175,7 +175,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //*****************************************************************************
 {
     char *const buf = new char[ end - begin + 1 ];
-    register char *p = buf;
+    char *p = buf;
     while ( begin != end )
         *p++ = to_lower( *begin++ );
     *p = '\0';

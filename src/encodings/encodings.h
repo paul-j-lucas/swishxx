@@ -30,7 +30,7 @@ encoded_char_range::encoding_type const Eight_Bit = 0; // treaded like Seven_Bit
 encoded_char_range::encoding_type const Binary =
     reinterpret_cast<encoded_char_range::encoding_type>( ~0 );
 
-#ifdef  ENCODING_base64
+#ifdef ENCODING_base64
 encoded_char_range::value_type encoding_base64(
     encoded_char_range::const_pointer begin,
     encoded_char_range::const_pointer &pos,
@@ -38,7 +38,7 @@ encoded_char_range::value_type encoding_base64(
 );
 #endif
 
-#ifdef  ENCODING_quoted_printable
+#ifdef ENCODING_quoted_printable
 encoded_char_range::value_type encoding_quoted_printable(
     encoded_char_range::const_pointer begin,
     encoded_char_range::const_pointer &pos,
@@ -46,5 +46,5 @@ encoded_char_range::value_type encoding_quoted_printable(
 );
 #endif
 
-#endif  /* encodings_H */
+#endif /* encodings_H */
 /* vim:set et sw=4 ts=4: */

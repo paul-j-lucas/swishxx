@@ -49,7 +49,7 @@ public:
 
 extern FollowLinks follow_symbolic_links;
 
-#endif  /* FollowLinks_H */
+#endif /* FollowLinks_H */
 
-#endif  /* PJL_NO_SYMBOLIC_LINKS */
+#endif /* PJL_NO_SYMBOLIC_LINKS */
 /* vim:set et sw=4 ts=4: */

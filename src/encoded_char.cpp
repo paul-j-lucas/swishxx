@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/encoded_char.c
+**      src/encoded_char.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  IMPLEMENT_DECODING
+#ifdef IMPLEMENT_DECODING
 
 // local
 #include "encoded_char.h"
@@ -61,5 +61,5 @@ encoded_char_range::decoder::set_type encoded_char_range::decoder::set_;
         (*i)->reset();
 }
 
-#endif  /* IMPLEMENT_DECODING */
+#endif /* IMPLEMENT_DECODING */
 /* vim:set et sw=4 ts=4: */

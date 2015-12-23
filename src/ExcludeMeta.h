@@ -47,5 +47,5 @@ public:
 
 extern ExcludeMeta exclude_meta_names;
 
-#endif  /* ExcludeMeta_H */
+#endif /* ExcludeMeta_H */
 /* vim:set et sw=4 ts=4: */

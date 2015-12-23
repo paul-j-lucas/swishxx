@@ -65,5 +65,5 @@ private:
 
 } // namespace PJL
 
-#endif  /* vector_adapter_H */
+#endif /* vector_adapter_H */
 /* vim:set et sw=4 ts=4: */

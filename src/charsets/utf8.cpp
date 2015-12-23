@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/charsets/utf8.c
+**      src/charsets/utf8.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  CHARSET_utf8
+#ifdef CHARSET_utf8
 
 // local
 #include "encoded_char.h"
@@ -122,7 +122,7 @@
         static_cast<unsigned char>( *c )
     ];
 
-    register ucs4 u = 0;
+    ucs4 u = 0;
     switch ( trailing_bytes ) {
         case 5: u += static_cast<unsigned char>( *c++ ); u <<= 6;
             if ( c == end ) break;
@@ -145,5 +145,5 @@
     return unicode_to_ascii( u );
 }
 
-#endif  /* CHARSET_utf8 */
+#endif /* CHARSET_utf8 */
 /* vim:set et sw=4 ts=4: */

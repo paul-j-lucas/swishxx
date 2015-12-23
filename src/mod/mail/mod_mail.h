@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_mail
+#ifdef MOD_mail
 
 #ifndef mod_mail_H
 #define mod_mail_H
@@ -100,7 +100,7 @@ private:
         ct_multipart
     };
 
-#ifdef  __SUNPRO_CC
+#ifdef __SUNPRO_CC
     //
     // Sun's CC compiler doesn't implement the latest ANSI/ISO C++ standard
     // with regard to section 11.8.
@@ -174,7 +174,7 @@ inline mail_indexer::message_type::message_type( message_type const &mt ) :
     mt.filter_ = 0;
 }
 
-#endif  /* mod_mail_H */
+#endif /* mod_mail_H */
 
-#endif  /* MOD_mail */
+#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

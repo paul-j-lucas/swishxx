@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_filter.c
+**      src/conf_filter.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,13 +19,14 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "exit_codes.h"
+#include "conf_filter.h"
+
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-
-// local
-#include "exit_codes.h"
-#include "conf_filter.h"
 
 using namespace std;
 
@@ -73,15 +74,13 @@ using namespace std;
     bool found_target = false;
     int num_substitutions = 0;
 
-    for ( register char const*
-          s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s
-    ) {
+    for ( char const* s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s ) {
         if ( s[0] == s[1] ) {           // %% or @@ ...
             ++s;                        // ... skip past it
             continue;
         }
 
-        if ( *s == '@' )
+        if ( *s == '@' ) {
             if ( found_target ) {
                 error() << "more than one @\n";
                 ::exit( Exit_Config_File );
@@ -89,6 +88,7 @@ using namespace std;
                 found_target = true;
                 continue;
             }
+        }
 
         switch ( s[1] ) {
             case 'b':

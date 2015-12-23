@@ -22,6 +22,10 @@
 #ifndef	util_H
 #define	util_H
 
+// local
+#include "exit_codes.h"
+#include "pjl/omanip.h"
+
 // standard
 #include <cctype>
 #include <cerrno>
@@ -49,10 +53,6 @@
 #undef	PATH_MAX
 #endif
 int const		    PATH_MAX = 1024;
-
-// local
-#include "exit_codes.h"
-#include "pjl/omanip.h"
 
 extern char const*	me;
 

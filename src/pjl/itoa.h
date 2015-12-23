@@ -24,13 +24,33 @@
 
 namespace PJL {
 
-//
-// Conversion from long and int to string: opposite of atol and atoi.
-//
-extern char const*  ltoa( long );
-inline char const*  itoa( int n )       { return PJL::ltoa( n ); }
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Converts a long integer to a string.  The string returned is from an
+ * internal pool of string buffers.  The time you get into trouble is if you
+ * hang on to more than Num_Buffers strings.  This doesn't normally happen in
+ * practice, however.
+ *
+ * This function is NOT thread-safe because it uses char_buffer_pool which
+ * isn't.
+ *
+ * See also:
+ *    Brian W. Kernighan, Dennis M. Ritchie.  "The C Programming Language,
+ *    2nd ed."  Addison-Wesley, Reading, MA, 1988.  pp. 63-64.
+ *
+ * @param n The long integer to be converted.
+ * @return A pointer to the string.
+ */
+char const* ltoa( long );
+
+inline char const* itoa( int n ) {
+  return PJL::ltoa( n );
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 } // namespace PJL
 
-#endif  /* itoa_H */
-/* vim:set et sw=4 ts=4: */
+#endif /* itoa_H */
+/* vim:set et sw=2 ts=2: */

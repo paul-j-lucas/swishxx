@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/extract.c
+**      src/extract.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -107,7 +107,7 @@ static ostream&     usage( ostream& = cerr );
     me = ::strrchr( argv[0], '/' );             // determine base name...
     me = me ? me + 1 : argv[0];                 // ...of executable
 
-#ifdef  RLIMIT_CPU                              /* SVR4, 4.2+BSD */
+#ifdef RLIMIT_CPU                              /* SVR4, 4.2+BSD */
     //
     // Max-out the amount of CPU time we can run since extraction can take a
     // while.
@@ -332,7 +332,7 @@ static ostream&     usage( ostream& = cerr );
 //
 // SYNOPSIS
 //
-        bool extract_word( register char *word, register int len, ostream &out )
+        bool extract_word( char *word, int len, ostream &out )
 //
 // DESCRIPTION
 //
@@ -375,7 +375,7 @@ static ostream&     usage( ostream& = cerr );
 
     ////////// Strip chars not in Word_Begin_Chars/Word_End_Chars /////////////
 
-    for ( register int i = len - 1; i >= 0; --i ) {
+    for ( int i = len - 1; i >= 0; --i ) {
         if ( is_word_end_char( word[ i ] ) )
             break;
         --len;
@@ -414,8 +414,8 @@ static ostream&     usage( ostream& = cerr );
 // SYNOPSIS
 //
         void extract_words(
-            register mmap_file::const_iterator c,
-            register mmap_file::const_iterator end,
+            mmap_file::const_iterator c,
+            mmap_file::const_iterator end,
             ostream &out
         )
 //
@@ -441,7 +441,7 @@ static ostream&     usage( ostream& = cerr );
     in_postscript = false;
 
     while ( c != end ) {
-        register char const ch = *c++;
+        char const ch = *c++;
 
         ////////// Collect a word /////////////////////////////////////////////
 

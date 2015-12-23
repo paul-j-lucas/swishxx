@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "fdbuf.h"
 
 // standard

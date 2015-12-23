@@ -53,5 +53,5 @@ private:
 
 extern IncludeFile include_patterns;
 
-#endif  /* IncludeFile_H */
+#endif /* IncludeFile_H */
 /* vim:set et sw=4 ts=4: */

@@ -57,5 +57,5 @@ extern char const iso8859_1_map[ 256 ];
     return iso8859_1_map[ static_cast<unsigned char>( c ) ];
 }
 
-#endif  /* iso8859_1_H */
+#endif /* iso8859_1_H */
 /* vim:set et sw=4 ts=4: */

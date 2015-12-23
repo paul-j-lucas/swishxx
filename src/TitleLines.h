@@ -48,5 +48,5 @@ public:
 
 extern TitleLines num_title_lines;
 
-#endif  /* TitleLines_H */
+#endif /* TitleLines_H */
 /* vim:set et sw=4 ts=4: */

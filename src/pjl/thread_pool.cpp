@@ -1,6 +1,6 @@
 /*
 **      PJL C++ Library
-**      thread_pool.c
+**      thread_pool.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,18 +19,18 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MULTI_THREADED
-
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <time.h>
-#ifdef  DEBUG_threads
-#include <iostream>
-#endif
+#ifdef MULTI_THREADED
 
 // local
 #include "thread_pool.h"
 #include "util.h"
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <time.h>
+#ifdef DEBUG_threads
+#include <iostream>
+#endif
 
 extern char const   *me;
 
@@ -186,8 +186,7 @@ pthread_key_t       thread_pool::thread::thread_obj_key_;
         error() << "could not detach thread" << error_string( result );
         ::exit( Exit_No_Detach_Thread );
     }
-    register thread_pool::thread *const t =
-        static_cast<thread_pool::thread*>( p );
+    thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
 
     //
     // Put a copy of the pointer to the thread object into thread-specific data
@@ -607,5 +606,5 @@ pthread_key_t       thread_pool::thread::thread_obj_key_;
 
 } // namespace PJL
 
-#endif  /* MULTI_THREADED */
+#endif /* MULTI_THREADED */
 /* vim:set et sw=4 ts=4: */

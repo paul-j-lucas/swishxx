@@ -47,5 +47,5 @@ private:
     static char const* default_value();
 };
 
-#endif  /* TempDirectory_H */
+#endif /* TempDirectory_H */
 /* vim:set et sw=4 ts=4: */

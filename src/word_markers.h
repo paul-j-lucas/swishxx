@@ -31,15 +31,15 @@ unsigned char const Meta_Name_List_Marker       = '\x01';
 //                  This byte marks the beginning of a meta name list for a
 //                  word entry in an index file.
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 unsigned char const Word_Pos_List_Marker        = '\x02';
 //                  This byte marks the beginning of a word position delta list
 //                  for a word entry in an index file.
-#endif
+#endif /* FEATURE_word_pos */
 
 unsigned char const Word_Entry_Continues_Marker = '\x00';
 //                  This byte marks that a word entry continues (the opposite
 //                  of the Stop_Marker).
 
-#endif  /* word_markers_H */
+#endif /* word_markers_H */
 /* vim:set et sw=4 ts=4: */

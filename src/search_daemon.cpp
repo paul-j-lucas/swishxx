@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/search_daemon.c
+**      src/search_daemon.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,7 +19,27 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
+
+// local
+#include "exit_codes.h"
+#include "Group.h"
+#include "PidFile.h"
+#ifdef __APPLE__
+#include "LaunchdCooperation.h"
+#endif /* __APPLE__ */
+#include "SearchBackground.h"
+#include "SearchDaemon.h"
+#include "SocketAddress.h"
+#include "SocketFile.h"
+#include "SocketQueueSize.h"
+#include "SocketTimeout.h"
+#include "ThreadsMax.h"
+#include "ThreadsMin.h"
+#include "ThreadTimeout.h"
+#include "search_thread.h"
+#include "User.h"
+#include "util.h"                       /* for max_out_limit() */
 
 // standard
 #include <algorithm>                    /* for max() */
@@ -40,26 +60,6 @@
 #ifndef AF_LOCAL
 #define AF_LOCAL AF_UNIX
 #endif
-
-// local
-#include "exit_codes.h"
-#include "Group.h"
-#include "PidFile.h"
-#ifdef  __APPLE__
-#include "LaunchdCooperation.h"
-#endif
-#include "SearchBackground.h"
-#include "SearchDaemon.h"
-#include "SocketAddress.h"
-#include "SocketFile.h"
-#include "SocketQueueSize.h"
-#include "SocketTimeout.h"
-#include "ThreadsMax.h"
-#include "ThreadsMin.h"
-#include "ThreadTimeout.h"
-#include "search_thread.h"
-#include "User.h"
-#include "util.h"                       /* for max_out_limit() */
 
 using namespace PJL;
 using namespace std;
@@ -129,19 +129,19 @@ static void set_signal_handlers();
 //
 //*****************************************************************************
 {
-#ifdef  __APPLE__
+#ifdef __APPLE__
     if ( !launchd_cooperation ) {
 #endif
         ////////// Increase resource limits (hopefully) ///////////////////////
 
-#ifdef  RLIMIT_CPU                      /* SVR4, 4.3+BSD */
+#ifdef RLIMIT_CPU                      /* SVR4, 4.3+BSD */
         //
         // Max-out the amount of CPU time we can run since we will be a daemon
         // and will run indefinitely.
         //
         max_out_limit( RLIMIT_CPU );
 #endif
-#ifdef  RLIMIT_NOFILE                   /* SVR4 */
+#ifdef RLIMIT_NOFILE                   /* SVR4 */
         //
         // Max-out the number of file descriptors we can have open to be able
         // to service as many clients concurrently as possible.
@@ -150,7 +150,7 @@ static void set_signal_handlers();
 #elif   defined( RLIMIT_OFILE )         /* 4.3+BSD name for NOFILE */
         max_out_limit( RLIMIT_OFILE );
 #endif
-#ifdef  __APPLE__
+#ifdef __APPLE__
     }
 #endif
 
@@ -181,7 +181,7 @@ static void set_signal_handlers();
         pid_file << ::getpid() << endl;
     }
 
-#ifdef  __APPLE__
+#ifdef __APPLE__
     if ( !launchd_cooperation ) {
 #endif
         //
@@ -222,10 +222,10 @@ static void set_signal_handlers();
             error() << "chdir() failed" << error_string;
             ::exit( Exit_No_Change_Dir );
         }
-#ifdef  __APPLE__
+#ifdef __APPLE__
     }
 #endif
-#endif  /* DEBUG_threads */
+#endif /* DEBUG_threads */
 
     set_signal_handlers();
 
@@ -331,7 +331,7 @@ static void set_signal_handlers();
         switch ( errno ) {
             case ECONNABORTED:          // POSIX.1g
             case EINTR:
-#ifdef  EPROTO
+#ifdef EPROTO
             case EPROTO:                // SVR4
 #endif
                 return;
@@ -473,5 +473,5 @@ static void set_signal_handlers();
     ::sigaction( SIGPIPE, &sa, 0 );
 }
 
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

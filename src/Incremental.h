@@ -47,5 +47,5 @@ public:
 
 extern Incremental incremental;
 
-#endif  /* Incremental_H */
+#endif /* Incremental_H */
 /* vim:set et sw=4 ts=4: */

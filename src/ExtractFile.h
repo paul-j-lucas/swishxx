@@ -51,5 +51,5 @@ private:
 
 extern ExtractFile include_patterns;
 
-#endif  /* ExtractFile_H */
+#endif /* ExtractFile_H */
 /* vim:set et sw=4 ts=4: */

@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_html
+#ifdef MOD_html
 
 #ifndef mod_html_H
 #define mod_html_H
@@ -63,7 +63,7 @@ private:
     virtual void    usage( std::ostream& ) const;
 };
 
-#endif  /* mod_html_H */
+#endif /* mod_html_H */
 
-#endif  /* mod_html */
+#endif /* mod_html */
 /* vim:set et sw=4 ts=4: */

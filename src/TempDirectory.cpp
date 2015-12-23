@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/TempDirectory.c
+**      src/TempDirectory.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,12 +19,12 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                              /* for getenv(3) */
-
 // local
 #include "config.h"
 #include "TempDirectory.h"
+
+// standard
+#include <cstdlib>                              /* for getenv(3) */
 
 using namespace std;
 

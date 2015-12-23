@@ -19,8 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef config_H
-#define config_H
+#ifndef swishpp_config_H
+#define swishpp_config_H
 
 ////////// Word determination /////////////////////////////////////////////////
 
@@ -88,7 +88,7 @@ char const  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 #define     OPTIMIZE_WORD_END_CHARS     1
 //          Same deal as with OPTIMIZE_WORD_CHARS.
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
 
 char const  SocketFile_Default[]        = "/tmp/search.socket";
@@ -196,7 +196,7 @@ char const  ShellFilenameEscapeChars[]  = " !\"#$&'()*/;<>?[\\]^`{|}~";
 //          "meta-characers" because the space and tab characters are included.
 //          Note again that this says "file" (not "path") name.
 
-#ifdef  __CYGWIN__
+#ifdef __CYGWIN__
 char const  TempDirectory_Default[]     = "/temp";
 #else
 #/*#error      You have not set TempDirectory_Default for your system.*/
@@ -223,7 +223,7 @@ int const   Title_Max_Size              = 200;
 //          Maximum length of a file "title" (whatever that means for a given
 //          file format).
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 int const   WordsNear_Default           = 10;
 //          The maximum number of words apart two words can be to be considered
 //          "near" each other; this can be overridden either in a config. file
@@ -249,5 +249,5 @@ int const   WordThreshold_Default       = 250000;
 //          You simply have to experiment.  Only the super-user can increase
 //          this either in a config. file or on the command line.
 
-#endif  /* config_H */
+#endif /* swishpp_config_H */
 /* vim:set et sw=4 ts=4: */

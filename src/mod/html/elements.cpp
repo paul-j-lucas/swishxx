@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/html/elements.c
+**      src/mod/html/elements.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_html
+#ifdef MOD_html
 
 // local
 #include "elements.h"
@@ -289,7 +289,7 @@
         0
     };
 
-    for ( register char const *const *p = end_tag_table; *p; ++p ) {
+    for ( char const *const *p = end_tag_table; *p; ++p ) {
         //
         // The ugly double, old-style casts below are necessary because C++ has
         // become overly pedantic about casting to enums.
@@ -354,5 +354,5 @@
     return m;
 }
 
-#endif  /* MOD_html */
+#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

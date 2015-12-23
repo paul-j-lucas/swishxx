@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/IncludeFile.c
+**      src/IncludeFile.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,14 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <cstring>
-
 // local
+#include "config.h"
 #include "exit_codes.h"
 #include "IncludeFile.h"
 #include "util.h"                       /* for error(), new_strdup() */
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
 
 using namespace std;
 
@@ -59,7 +60,7 @@ using namespace std;
         ::exit( Exit_Config_File );
     }
 
-    for ( register char const *s; s = ::strtok( 0, " \r\t" ); )
+    for ( char const *s; (s = ::strtok( 0, " \r\t" )); )
         insert( new_strdup( s ), i );
 }
 /* vim:set et sw=4 ts=4: */

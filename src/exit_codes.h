@@ -47,10 +47,10 @@ enum {
 
     // unique to search
     Exit_Malformed_Query            = 50,
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     Exit_No_Word_Pos_Data           = 51,
 #endif
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
     Exit_No_Write_PID               = 60,
     Exit_No_Host_or_IP              = 61,
     Exit_No_TCP_Socket              = 62,
@@ -76,5 +76,5 @@ enum {
     Exit_End_Enum_Marker
 };
 
-#endif  /* exit_codes_H */
+#endif /* exit_codes_H */
 /* vim:set et sw=4 ts=4: */

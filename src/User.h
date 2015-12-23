@@ -19,18 +19,18 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
 
 #ifndef User_H
 #define User_H
 
-// standard
-#include <sys/types.h>
-#include <unistd.h>
-
 // local
 #include "config.h"
 #include "conf_string.h"
+
+// standard
+#include <sys/types.h>
+#include <unistd.h>
 
 //*****************************************************************************
 //
@@ -73,7 +73,7 @@ inline bool User::change_to_uid() const {
     return true;
 }
 
-#endif  /* User_H */
+#endif /* User_H */
 
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

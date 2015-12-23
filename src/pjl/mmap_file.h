@@ -39,11 +39,11 @@
 // them and live with the consequence of not being able to deal with large
 // files on such (brain-damaged) implementations.
 //
-#ifdef  open
-#undef  open
+#ifdef open
+#undef open
 #endif
-#ifdef  close
-#undef  close
+#ifdef close
+#undef close
 #endif
 
 namespace PJL {
@@ -86,10 +86,10 @@ public:
         bt_normal       = MADV_NORMAL,
         bt_random       = MADV_RANDOM,
         bt_sequential   = MADV_SEQUENTIAL
-        bt_sequential
 #else
         bt_normal,
         bt_random,
+        bt_sequential
 #endif /* HAVE_MADVISE */
     };
 
@@ -134,7 +134,7 @@ public:
     const_reverse_iterator rend() const {
         return const_reverse_iterator( begin() );
     }
-#endif  /* __SUNPRO_CC */
+#endif /* __SUNPRO_CC */
 
     ////////// member functions ///////////////////////////////////////////////
 
@@ -168,5 +168,5 @@ private:
 
 } // namespace PJL
 
-#endif  /* mmap_file_H */
+#endif /* mmap_file_H */
 /* vim:set et sw=4 ts=4: */

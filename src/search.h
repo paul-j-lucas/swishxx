@@ -22,11 +22,11 @@
 #ifndef search_H
 #define search_H
 
-// standard
-#include <iostream>
-
 // local
 #include "pjl/option_stream.h"
+
+// standard
+#include <iostream>
 
 //*****************************************************************************
 //
@@ -65,13 +65,13 @@
     bool        stem_words_opt;
     char const* word_files_max_arg;
     char const* word_percent_max_arg;
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     int         words_near_arg;
 #endif
-#ifdef  SEARCH_DAEMON
+#ifdef SEARCH_DAEMON
     char const* daemon_type_arg;
     char const* group_arg;
-#ifdef  __APPLE__
+#ifdef __APPLE__
     bool        launchd_opt;
 #endif
     int         max_threads_arg;
@@ -84,7 +84,7 @@
     int         socket_timeout_arg;
     int         thread_timeout_arg;
     char const* user_arg;
-#endif  /* SEARCH_DAEMON */
+#endif /* SEARCH_DAEMON */
     search_options(
         int *argc, char ***argv,
         PJL::option_stream::spec const[],
@@ -103,5 +103,5 @@ bool            service_request(
 
 std::ostream&   usage( std::ostream& );
 
-#endif  /* search_H */
+#endif /* search_H */
 /* vim:set et sw=4 ts=4: */

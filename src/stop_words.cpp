@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/stop_words.c
+**      src/stop_words.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,10 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cctype>
-#include <cstdlib>                      /* for exit(3) */
-
 // local
 #include "config.h"
 #include "exit_codes.h"
@@ -32,6 +28,10 @@
 #include "stop_words.h"
 #include "util.h"
 #include "word_util.h"
+
+// standard
+#include <cctype>
+#include <cstdlib>                      /* for exit(3) */
 
 using namespace PJL;
 using namespace std;
@@ -380,7 +380,7 @@ stop_word_set*      stop_words;         // pointer to global set
     };
 
     if ( !file_name || !*file_name ) {          // no file: use default
-        for ( register char const *const *w = default_stop_word_table; *w; ++w )
+        for ( char const *const *w = default_stop_word_table; *w; ++w )
             insert( *w );
         return;
     }
@@ -397,10 +397,10 @@ stop_word_set*      stop_words;         // pointer to global set
     int     len;
     bool    in_word = false;
 
-    register mmap_file::const_iterator c = file.begin();
+    mmap_file::const_iterator c = file.begin();
     while ( true ) {
         if ( c != file.end() ) {
-            register char const ch = tolower( iso8859_1_to_ascii( *c++ ) );
+            char const ch = tolower( iso8859_1_to_ascii( *c++ ) );
 
             ////////// Collect a word /////////////////////////////////////////
 

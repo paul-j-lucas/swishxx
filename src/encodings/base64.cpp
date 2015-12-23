@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/encodings/base64.c
+**      src/encodings/base64.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,14 +19,14 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  ENCODING_base64
-
-// standard
-#include <cstring>
+#ifdef ENCODING_base64
 
 // local
 #include "encoded_char.h"
 #include "util.h"
+
+// standard
+#include <cstring>
 
 using namespace std;
 
@@ -179,8 +179,8 @@ reached_end:    c = end;
     //
     // Calculate a combined value of the encoded 6-bit characters.
     //
-    register unsigned value = 0;
-    register int i;
+    unsigned value = 0;
+    int i;
     for ( i = 0; i <= num_chars; ++i ) {
         static char const alphabet[] =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -223,5 +223,5 @@ reached_end:    c = end;
     delta -= delta4;
     goto return_decoded_char;
 }
-#endif  /* ENCODING_base64 */
+#endif /* ENCODING_base64 */
 /* vim:set et sw=4 ts=4: */

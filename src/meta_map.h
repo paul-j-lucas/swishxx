@@ -22,11 +22,11 @@
 #ifndef meta_map_H
 #define meta_map_H
 
-// standard
-#include <map>
-
 // local
 #include "pjl/less.h"
+
+// standard
+#include <map>
 
 //*****************************************************************************
 //
@@ -48,5 +48,5 @@
 
 extern meta_map meta_names;
 
-#endif  /* meta_map_H */
+#endif /* meta_map_H */
 /* vim:set et sw=4 ts=4: */

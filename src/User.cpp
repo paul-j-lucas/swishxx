@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/User.c
+**      src/User.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **
@@ -19,14 +19,14 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <pwd.h>                        /* for getpwnam(3) */
-
 // local
 #include "exit_codes.h"
 #include "User.h"
 #include "util.h"
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <pwd.h>                        /* for getpwnam(3) */
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/latex/mod_latex.c
+**      src/mod/latex/mod_latex.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_latex
+#ifdef MOD_latex
 
 // local
 #include "commands.h"
@@ -202,7 +202,7 @@ using namespace std;
 
     encoded_char_range::const_iterator c = e.begin();
     while ( !c.at_end() ) {
-        register char ch;
+        char ch;
 
         if ( substitution ) {
             if ( *substitution ) {
@@ -294,7 +294,7 @@ collect:    if ( is_word_char( ch ) ) {
 // SYNOPSIS
 //
         char const* LaTeX_indexer::parse_latex_command(
-            register encoded_char_range::const_iterator &c
+            encoded_char_range::const_iterator &c
         )
 //
 // DESCRIPTION
@@ -320,7 +320,7 @@ collect:    if ( is_word_char( ch ) ) {
     // Copy only the command name by stopping at a whitespace character (or
     // running into the end of the tag).
     //
-    register char *to = command_buf;
+    char *to = command_buf;
     encoded_char_range::const_iterator from = c;
     while ( !from.at_end() && is_alnum( *from ) ) {
         //
@@ -380,5 +380,5 @@ skip:
     return 0;
 }
 
-#endif  /* MOD_latex */
+#endif /* MOD_latex */
 /* vim:set et sw=4 ts=4: */

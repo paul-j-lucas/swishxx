@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/html/entities.c
+**      src/mod/html/entities.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_html
+#ifdef MOD_html
 
 // local
 #include "entities.h"
@@ -87,7 +87,7 @@
         0
     };
 
-    for ( register char_entity const *e = char_entity_table; e->name; ++e )
+    for ( char_entity const *e = char_entity_table; e->name; ++e )
         map_[ e->name ] = e->char_equiv;
 }
 
@@ -122,5 +122,5 @@
     return m;
 }
 
-#endif  /* MOD_html */
+#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

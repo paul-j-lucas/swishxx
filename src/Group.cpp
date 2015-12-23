@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/Group.c
+**      src/Group.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **
@@ -19,15 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <sys/types.h>                  /* needed by FreeBSD systems */
-#include <cstdlib>                      /* for exit(3) */
-#include <grp.h>                        /* for getgrnam(3) */
-
 // local
 #include "Group.h"
 #include "exit_codes.h"
 #include "util.h"
+
+// standard
+#include <sys/types.h>                  /* needed by FreeBSD systems */
+#include <cstdlib>                      /* for exit(3) */
+#include <grp.h>                        /* for getgrnam(3) */
 
 using namespace std;
 

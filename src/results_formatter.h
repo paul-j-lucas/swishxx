@@ -22,12 +22,12 @@
 #ifndef results_formatter_H
 #define results_formatter_H
 
-// standard
-#include <iostream>
-
 // local
 class file_info;
 #include "query.h"
+
+// standard
+#include <iostream>
 
 //*****************************************************************************
 //
@@ -64,5 +64,5 @@ protected:
     int const       results_;
 };
 
-#endif  /* results_formatter_H */
+#endif /* results_formatter_H */
 /* vim:set et sw=4 ts=4: */

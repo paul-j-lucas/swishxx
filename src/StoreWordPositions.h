@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 
 #ifndef StoreWordPositions_H
 #define StoreWordPositions_H
@@ -50,7 +50,7 @@ public:
 
 extern StoreWordPositions store_word_positions;
 
-#endif  /* StoreWordPositions_H */
+#endif /* StoreWordPositions_H */
 
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 /* vim:set et sw=4 ts=4: */

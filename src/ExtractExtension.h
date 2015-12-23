@@ -49,5 +49,5 @@ public:
 
 extern ExtractExtension extract_extension;
 
-#endif  /* ExtractExtension_H */
+#endif /* ExtractExtension_H */
 /* vim:set et sw=4 ts=4: */

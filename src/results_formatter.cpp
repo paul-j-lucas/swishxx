@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/results_formatter.c
+**      src/results_formatter.cpp
 **
 **      Copyright (C) 2001  Paul J. Lucas
 **

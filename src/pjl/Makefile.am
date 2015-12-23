@@ -20,9 +20,8 @@
 
 lib_LIBRARIES = libpjl.a
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -L$(top_srcdir)/lib
+AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 
 libpjl_a_SOURCES = fdbuf.cpp itoa.cpp mmap_file.cpp option_stream.cpp thread_pool.cpp
-libpjl_a_LIBADD = $(top_builddir)/lib/libgnu.a
 
 # vim:set noet sw=8 ts=8:

@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/word_info.c
+**      src/word_info.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -32,7 +32,7 @@ word_info::file::file() {
 }
 
 word_info::file::file( int index ) :
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
     last_absolute_word_pos_( 0 ),
 #endif
     index_( index ), occurrences_( 1 ), rank_( 0 )
@@ -47,12 +47,12 @@ void word_info::file::write_meta_ids( ostream &o ) const {
     o << Stop_Marker << assert_stream;
 }
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 void word_info::file::write_word_pos( ostream &o ) const {
     o << Word_Pos_List_Marker << assert_stream;
     FOR_EACH( pos_delta_list, pos_deltas_, pos_delta )
         o << enc_int( *pos_delta ) << assert_stream;
     o << Stop_Marker << assert_stream;
 }
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 /* vim:set et sw=4 ts=4: */

@@ -22,16 +22,16 @@
 #ifndef query_node_H
 #define query_node_H
 
+// local
+#include "pjl/auto_delete_pool.h"
+#include "query.h"
+
 // standard
-#ifdef  DEBUG_eval_query
+#ifdef DEBUG_eval_query
 #include <iostream>
 #endif
 #include <new>
 #include <vector>
-
-// local
-#include "pjl/auto_delete_pool.h"
-#include "query.h"
 
 //*****************************************************************************
 //
@@ -133,7 +133,7 @@ private:
     static empty_node singleton_;
 };
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 //*****************************************************************************
 //
 // SYNOPSYS
@@ -212,7 +212,7 @@ public:
     std::ostream&   print( std::ostream& ) const;
 #   endif
 };
-#endif  /* FEATURE_word_pos */
+#endif /* FEATURE_word_pos */
 
 //*****************************************************************************
 //
@@ -300,7 +300,7 @@ private:
 
 ////////// inlines ////////////////////////////////////////////////////////////
 
-#ifdef  FEATURE_word_pos
+#ifdef FEATURE_word_pos
 inline near_node* near_node::distributor::make_node(
     pool_type &pool, query_node *left, query_node *right
 ) const {
@@ -310,5 +310,5 @@ inline near_node* near_node::distributor::make_node(
 }
 #endif
 
-#endif  /* query_node_H */
+#endif /* query_node_H */
 /* vim:set et sw=4 ts=4: */

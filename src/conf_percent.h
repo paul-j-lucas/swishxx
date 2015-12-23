@@ -76,5 +76,5 @@ inline conf_percent::conf_percent( char const *name,
             return *this;                       \
         }
 
-#endif  /* conf_percent_H */
+#endif /* conf_percent_H */
 /* vim:set et sw=4 ts=4: */

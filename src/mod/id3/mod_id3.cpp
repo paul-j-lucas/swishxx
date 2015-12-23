@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/id3/mod_id3.c
+**      src/mod/id3/mod_id3.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_id3
+#ifdef MOD_id3
 
 // local
 #include "AssociateMeta.h"
@@ -228,5 +228,5 @@ id3v1:
         index_id3v1_tags( c.pos(), c.end_pos() );
 }
 
-#endif  /* MOD_id3 */
+#endif /* MOD_id3 */
 /* vim:set et sw=4 ts=4: */

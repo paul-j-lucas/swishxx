@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/mod/latex/commands.c
+**      src/mod/latex/commands.cpp
 **
 **      Copyright (C) 2002  Paul J. Lucas
 **
@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_latex
+#ifdef MOD_latex
 
 // local
 #include "commands.h"
@@ -117,7 +117,7 @@
         0
     };
 
-    for ( register command const *c = command_table; c->name; ++c )
+    for ( command const *c = command_table; c->name; ++c )
         operator[]( c->name ).action = c->action;
 }
 
@@ -151,5 +151,5 @@
     return m;
 }
 
-#endif  /* MOD_latex */
+#endif /* MOD_latex */
 /* vim:set et sw=4 ts=4: */

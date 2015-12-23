@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_latex
+#ifdef MOD_latex
 
 #ifndef latex_command_map_H
 #define latex_command_map_H
@@ -81,7 +81,7 @@ private:
     command_map();
 };
 
-#endif  /* latex_command_map_H */
+#endif /* latex_command_map_H */
 
-#endif  /* MOD_latex */
+#endif /* MOD_latex */
 /* vim:set et sw=4 ts=4: */

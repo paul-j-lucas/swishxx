@@ -22,17 +22,17 @@
 #ifndef query_H
 #define query_H
 
-// standard
-#include <map>
-#include <set>
-#include <string>
-#include <utility>                      /* for pair<> */
-
 // local
 #include "index_segment.h"
 #include "token.h"
 #include "WordFilesMax.h"
 #include "WordPercentMax.h"
+
+// standard
+#include <map>
+#include <set>
+#include <string>
+#include <utility>                      /* for pair<> */
 
 typedef std::map<int, int> search_results;
 //
@@ -75,5 +75,5 @@ typedef std::set<std::string> stop_word_set;
 
 bool    parse_query( token_stream&, search_results&, stop_word_set& );
 
-#endif  /* query_H */
+#endif /* query_H */
 /* vim:set et sw=4 ts=4: */

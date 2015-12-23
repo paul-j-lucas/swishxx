@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/enc_int.c
+**      src/enc_int.cpp
 **
 **      Copyright (C) 2003  Paul J. Lucas
 **
@@ -19,11 +19,12 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "enc_int.h"
+
 // standard
 #include <iostream>
-
-// local
-#include "enc_int.h"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ using namespace std;
 //
 // SYNOPSIS
 //
-        int dec_int( register unsigned char const *&p )
+        int dec_int( unsigned char const *&p )
 //
 // DESCRIPTION
 //
@@ -49,7 +50,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    register unsigned n = 0;
+    unsigned n = 0;
     do {
         n = (n << 7) | (*p & 0x7Fu);
     } while ( *p++ & 0x80u );
@@ -60,7 +61,7 @@ using namespace std;
 //
 // SYNOPSIS
 //
-        ostream& enc_int( ostream &o, register unsigned long n )
+        ostream& enc_int( ostream &o, unsigned long n )
 //
 // DESCRIPTION
 //
@@ -87,7 +88,7 @@ using namespace std;
     //
     // Encode the long (in reverse because it's easier) just like atoi().
     //
-    register unsigned char *p = buf + sizeof buf;
+    unsigned char *p = buf + sizeof buf;
     do {
         *--p = 0x80u | (n & 0x7Fu);
     } while ( n >>= 7 );

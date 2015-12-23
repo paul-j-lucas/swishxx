@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef  MOD_latex
+#ifdef MOD_latex
 
 #ifndef latex_config_H
 #define latex_config_H
@@ -29,7 +29,7 @@
 int const   Command_Name_Max_Size   = 13;
 //          The maximum size of a LaTeX command name, e.g., "subsubsection".
 
-#endif  /* latex_config_H */
+#endif /* latex_config_H */
 
-#endif  /* MOD_latex */
+#endif /* MOD_latex */
 /* vim:set et sw=4 ts=4: */

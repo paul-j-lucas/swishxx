@@ -60,5 +60,5 @@ private:
 
 extern ExcludeFile exclude_patterns;
 
-#endif  /* ExcludeFile_H */
+#endif /* ExcludeFile_H */
 /* vim:set et sw=4 ts=4: */

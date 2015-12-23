@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/SocketAddress.c
+**      src/SocketAddress.cpp
 **
 **      Copyright (C) 2000  Paul J. Lucas
 **
@@ -19,6 +19,10 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "exit_codes.h"
+#include "SocketAddress.h"
+
 // standard
 #include <iostream>
 #include <netdb.h>                      /* for gethostbyname(3), etc */
@@ -26,10 +30,6 @@
 #include <netinet/in.h>
 #include <cstring>
 #include <cstdlib>                      /* for atoi(3), exit(3) */
-
-// local
-#include "exit_codes.h"
-#include "SocketAddress.h"
 
 using namespace std;
 

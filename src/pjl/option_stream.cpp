@@ -1,6 +1,6 @@
 /*
 **      PJL C++ Library
-**      option_stream.c
+**      option_stream.cpp
 **
 **      Copyright (C) 1999  Paul J. Lucas
 **
@@ -19,15 +19,16 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+// local
+#include "config.h"
+#include "option_stream.h"
+
 // standard
 #include <algorithm>                            /* for copy() */
 #include <cstdlib>                              /* for abort(3) */
 #include <cstring>
 #include <iterator>
 #include <iostream>
-
-// local
-#include "option_stream.h"
 
 using namespace std;
 
@@ -104,8 +105,8 @@ namespace PJL {
 //
 //*****************************************************************************
 {
-    register char *arg;
-    register option_stream::spec const *s, *found = 0;
+    char *arg;
+    option_stream::spec const *s, *found = 0;
     bool was_short_option = false;
 
     o.short_name_ = '\0';
@@ -268,7 +269,7 @@ check_arg:
     os.err_ << "\" requires an argument\n";
     // fall through
 option_error:
-    o.arg_ = '\0';
+    o.arg_ = 0;
     return os;
 the_end:
     os.end_ = true;
@@ -283,7 +284,7 @@ bad_spec:
 //*****************************************************************************
 
 /*#define TEST_OPTION_STREAM /**/
-#ifdef  TEST_OPTION_STREAM
+#ifdef TEST_OPTION_STREAM
 
 using namespace PJL;
 
@@ -325,5 +326,5 @@ int main( int argc, char *argv[] ) {
     cout << "first non-option=" << (argv[0] ? argv[0] : "(null)") << endl;
 }
 
-#endif  /* TEST_OPTION_STREAM */
+#endif /* TEST_OPTION_STREAM */
 /* vim:set et sw=4 ts=4: */

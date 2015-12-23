@@ -168,5 +168,5 @@ private:
 
 } // namespace PJL
 
-#endif  /* option_stream_H */
+#endif /* option_stream_H */
 /* vim:set et sw=4 ts=4: */

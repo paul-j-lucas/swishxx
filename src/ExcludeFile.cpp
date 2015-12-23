@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/ExcludeFile.c
+**      src/ExcludeFile.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,12 +19,13 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstring>
-
 // local
+#include "config.h"
 #include "ExcludeFile.h"
 #include "util.h"                               /* for new_strdup() */
+
+// standard
+#include <cstring>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    for ( register char const *s; s = ::strtok( line, " \r\t" ); line = 0 )
+    for ( char const *s; (s = ::strtok( line, " \r\t" )); line = 0 )
         insert( new_strdup( s ) );
 }
 /* vim:set et sw=4 ts=4: */

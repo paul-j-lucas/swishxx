@@ -47,5 +47,5 @@ public:
 
 extern AssociateMeta associate_meta;
 
-#endif  /* AssociateMeta_H */
+#endif /* AssociateMeta_H */
 /* vim:set et sw=4 ts=4: */

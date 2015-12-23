@@ -20,9 +20,8 @@
 
 lib_LIBRARIES = libcharsets.a
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src -L$(top_srcdir)/lib -L$(top_srcdir)/src/pjl
+AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
 libcharsets_a_SOURCES = utf16.cpp utf7.cpp utf8.cpp
-libcharsets_a_LIBADD = $(top_builddir)/lib/libgnu.a
 
 # vim:set noet sw=8 ts=8:

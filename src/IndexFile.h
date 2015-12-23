@@ -46,5 +46,5 @@ public:
     CONF_STRING_ASSIGN_OPS( IndexFile )
 };
 
-#endif  /* IndexFile_H */
+#endif /* IndexFile_H */
 /* vim:set et sw=4 ts=4: */

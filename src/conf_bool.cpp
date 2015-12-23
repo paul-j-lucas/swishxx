@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_bool.c
+**      src/conf_bool.cpp
 **
 **      Copyright (C) 1998  Paul J. Lucas
 **
@@ -19,15 +19,16 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-// standard
-#include <cstdlib>                      /* for exit(3) */
-#include <iostream>
-
 // local
+#include "config.h"
 #include "conf_bool.h"
 #include "exit_codes.h"
 #include "pjl/auto_vec.h"
 #include "util.h"
+
+// standard
+#include <cstdlib>                      /* for exit(3) */
+#include <iostream>
 
 using namespace PJL;
 using namespace std;
