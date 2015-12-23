@@ -26,14 +26,24 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -L$(top_srcdir)/lib
 
 index_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_percent.cpp conf_set.cpp conf_string.cpp encoded_char.cpp ExcludeFile.cpp file_info.cpp file_list.cpp filter.cpp IncludeFile.cpp IncludeMeta.cpp indexer.cpp index_segment.cpp init_modules.cpp init_mod_vars.cpp iso8859-1.cpp stop_words.cpp TempDirectory.cpp util.cpp word_info.cpp WordThreshold.cpp word_util.cpp index.cpp
 
-index_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/lib/libcharsets.a $(top_builddir)/src/libencodings.a $(top_builddir)/src/libpjl.a
+index_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a
 
 search_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_enum.cpp conf_int.cpp conf_string.cpp index_segment.cpp init_mod_vars.cpp file_info.cpp file_list.cpp iso8859-1.cpp query_node.cpp query.cpp ResultsFormat.cpp results_formatter.cpp classic_formatter.cpp xml_formatter.cpp token.cpp stem_word.cpp util.cpp word_info.cpp word_util.cpp search.cpp Group.cpp search_thread.cpp search_daemon.cpp SearchDaemon.cpp SocketAddress.cpp User.cpp
 
-search_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/lib/libcharsets.a $(top_builddir)/src/libencodings.a $(top_builddir)/src/libpjl.a
+search_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a
 
 extract_SOURCES = conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp ExtractFile.cpp filter.cpp index_segment.cpp init_mod_vars.cpp iso8859-1.cpp postscript.cpp stop_words.cpp util.cpp word_util.cpp extract.cpp
 
-extract_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/lib/libcharsets.a $(top_builddir)/src/libencodings.a $(top_builddir)/src/libpjl.a
+extract_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a
+
+INIT_MODULES_SH = $(top_srcdir)/config/init_modules-sh
+
+init_modules.cpp: mod/*/mod_*.h $(INIT_MODULES_SH)
+	$(INIT_MODULES_SH) > $@ || { rm -f $@; exit 1; }
+
+INIT_MOD_VARS_SH = $(top_srcdir)/config/init_mod_vars-sh
+
+init_mod_vars.cpp: mod/*/vars $(INIT_MOD_VARS_SH)
+	$(INIT_MOD_VARS_SH) > $@ || { rm -f $@; exit 1; }
 
 # vim:set noet sw=8 ts=8:

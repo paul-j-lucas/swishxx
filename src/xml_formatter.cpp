@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "file_info.h"
 #include "index_segment.h"
 #include "util.h"

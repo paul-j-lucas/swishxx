@@ -26,35 +26,31 @@
 #include "config.h"
 #include "conf_int.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class WordThreshold : public conf<int>
-//
-// DESCRIPTION
-//
-//      A WordThreshold is-a conf<int> containing the word count past which
-//      partial indicies are generated and merged since all the words are too
-//      big to fit into memory at the same time.  See also the comment in
-//      config.h for WordThreshold_Default.
-//
-//      Only the super-user can specify a value larger than the compiled-in
-//      default.
-//
-//      This is the same as index's -W command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %WordThreshold is-a \c conf<int> containing the word count past which
+ * partial indicies are generated and merged since all the words are too big to
+ * fit into memory at the same time.  See also the comment in config.h for
+ * WordThreshold_Default.
+ *
+ * Only the super-user can specify a value larger than the compiled-in default.
+ *
+ * This is the same as index's \c -W command-line option.
+ */
+class WordThreshold : public conf<int> {
 public:
-    WordThreshold() :
-        conf<int>( "WordThreshold", WordThreshold_Default, 100 ) { }
-    CONF_INT_ASSIGN_OPS( WordThreshold );
+  WordThreshold() : conf<int>( "WordThreshold", WordThreshold_Default, 100 ) { }
+  CONF_INT_ASSIGN_OPS( WordThreshold );
+
 private:
-    virtual void    parse_value( char *line );
+  // inherited
+  virtual void parse_value( char *line );
 };
 
 extern WordThreshold word_threshold;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* WordThreshold_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

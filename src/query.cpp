@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "enc_int.h"
 #include "exit_codes.h"
 #include "file_list.h"

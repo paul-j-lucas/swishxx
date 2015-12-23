@@ -48,6 +48,7 @@ cat <<END
 */
 
 // local
+#include "config.h"
 #include "conf_var.h"
 
 /**
@@ -58,18 +59,20 @@ cat <<END
 void conf_var::init_mod_vars() {
 END
 
-for header in mod/*/mod_*.h
+for HEADER in mod/*/mod_*.h
 do
-  VARS_FILE=`dirname $header`/vars
+  VARS_FILE=`dirname $HEADER`/vars
   [ -f $VARS_FILE ] || continue
   cat $VARS_FILE | while read var_name
-  do cat <<END
-#ifdef `basename $header | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
+  do
+    IDENT=`basename $HEADER | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
+    cat <<END
+#ifdef $IDENT
   conf_var::register_var( "$var_name" );
-#endif
+#endif /* $IDENT */
 END
-  done
-done
+  done # while
+done # for
 
 cat <<END
 }

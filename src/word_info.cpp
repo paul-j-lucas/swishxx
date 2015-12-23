@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "enc_int.h"
 #include "word_info.h"
 #include "word_markers.h"
@@ -27,32 +28,36 @@
 
 using namespace std;
 
+///////////////////////////////////////////////////////////////////////////////
+
 word_info::file::file() {
-    // do nothing
+  // do nothing
 }
 
 word_info::file::file( int index ) :
 #ifdef FEATURE_word_pos
-    last_absolute_word_pos_( 0 ),
+  last_absolute_word_pos_( 0 ),
 #endif
-    index_( index ), occurrences_( 1 ), rank_( 0 )
+  index_( index ), occurrences_( 1 ), rank_( 0 )
 {
-    // do nothing else
+  // do nothing else
 }
 
 void word_info::file::write_meta_ids( ostream &o ) const {
-    o << Meta_Name_List_Marker << assert_stream;
-    FOR_EACH( meta_set, meta_ids_, meta_id )
-        o << enc_int( *meta_id ) << assert_stream;
-    o << Stop_Marker << assert_stream;
+  o << Meta_Name_List_Marker << assert_stream;
+  FOR_EACH( meta_set, meta_ids_, meta_id )
+    o << enc_int( *meta_id ) << assert_stream;
+  o << Stop_Marker << assert_stream;
 }
 
 #ifdef FEATURE_word_pos
 void word_info::file::write_word_pos( ostream &o ) const {
-    o << Word_Pos_List_Marker << assert_stream;
-    FOR_EACH( pos_delta_list, pos_deltas_, pos_delta )
-        o << enc_int( *pos_delta ) << assert_stream;
-    o << Stop_Marker << assert_stream;
+  o << Word_Pos_List_Marker << assert_stream;
+  FOR_EACH( pos_delta_list, pos_deltas_, pos_delta )
+    o << enc_int( *pos_delta ) << assert_stream;
+  o << Stop_Marker << assert_stream;
 }
 #endif /* FEATURE_word_pos */
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

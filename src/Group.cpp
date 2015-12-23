@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "Group.h"
 #include "exit_codes.h"
 #include "util.h"

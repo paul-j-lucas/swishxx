@@ -203,7 +203,7 @@ FollowLinks     follow_symbolic_links;
     *file++ = Dir_Sep_Char;
 
     struct dirent const *dir_ent;
-    while ( dir_ent = ::readdir( dir_p ) ) {
+    while ( (dir_ent = ::readdir( dir_p )) ) {
         //
         // See if the name is "." or "..": if so, skip it.
         //

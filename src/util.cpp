@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "pjl/char_buffer_pool.h"
 #include "util.h"
 
@@ -56,7 +57,8 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //*****************************************************************************
 {
     char *p = buf;
-    while ( *p++ = to_lower( *s++ ) ) ;
+    while ( (*p++ = to_lower( *s++ )) != '\0' )
+        ;
     return buf;
 }
 
@@ -84,7 +86,7 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //
 //*****************************************************************************
 {
-    for ( char *p = lower_buf.next(); *p++ = to_lower( *s++ ); ) ;
+    for ( char *p = lower_buf.next(); (*p++ = to_lower( *s++ )) != '\0'; ) ;
     return lower_buf.current();
 }
 
@@ -145,7 +147,8 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 //*****************************************************************************
 {
     char *const buf = new char[ ::strlen( s ) + 1 ];
-    for ( char *p = buf; *p++ = to_lower( *s++ ); ) ;
+    for ( char *p = buf; (*p++ = to_lower( *s++ )); )
+        ;
     return buf;
 }
 

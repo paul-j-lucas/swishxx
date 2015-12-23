@@ -75,7 +75,7 @@ static void         extract_words(
 static ostream&     usage( ostream& = cerr );
 
 #define EXTRACT
-#include "do_file.c"
+#include "do_file.cpp"
 #include "directory.c"
 
 //*****************************************************************************

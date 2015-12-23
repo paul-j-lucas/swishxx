@@ -187,7 +187,7 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-#include "search_options.c"             /* defines opt_spec */
+#include "search_options.cpp"           /* defines opt_spec */
 
     me = ::strrchr( argv[0], '/' );     // determine base name ...
     me = me ? me + 1 : argv[0];         // ... of executable

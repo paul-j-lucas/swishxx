@@ -25,6 +25,7 @@
 */
 
 // local
+#include "config.h"
 #include "stem_word.h"
 #include "word_util.h"
 #include "util.h"                       /* for new_strdup() */
@@ -47,7 +48,7 @@ struct rule_list {
     bool        (*condition)( char const *word );
 };
 
-static char *end; // iterator at end of word being stemmed
+static char *word_end; // iterator at end of word being stemmed
 // Acess to this global variable is protected by the cache_lock mutex in
 // stem_word().
 
@@ -111,10 +112,10 @@ static int  word_size( char const *word );
 //
 //*****************************************************************************
 {
-    if ( end - word < 3 )
+    if ( word_end - word < 3 )
         return false;
 
-    char const *c = end;
+    char const *c = word_end;
     return !(is_vowel( *--c ) || *c == 'w' || *c == 'x' || *c == 'y' ) &&
             (is_vowel( *--c ) || *c == 'y') && !is_vowel( *--c );
 }
@@ -203,7 +204,7 @@ static int  word_size( char const *word );
 #   endif
 
     for ( ; rule->id; ++rule ) {
-        char *const suffix = end - rule->old_suffix_len;
+        char *const suffix = word_end - rule->old_suffix_len;
         if ( suffix < word )
             continue;
 
@@ -223,7 +224,7 @@ static int  word_size( char const *word );
 #           ifdef DEBUG_stem_word
             cerr << "---> replaced word=" << word << "\n";
 #           endif
-            end = suffix + rule->new_suffix_len;
+            word_end = suffix + rule->new_suffix_len;
             break;
         }
         *suffix = ch;                           // no match: put back
@@ -394,7 +395,7 @@ static int  word_size( char const *word );
 
     char word_buf[ Word_Hard_Max_Size ];
     ::strcpy( word_buf, word );
-    end = word_buf + len;
+    word_end = word_buf + len;
 
     replace_suffix( word_buf, rules_1a );
     int const rule = replace_suffix( word_buf, rules_1b );

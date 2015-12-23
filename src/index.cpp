@@ -20,8 +20,8 @@
 */
 
 // local
-#include "AssociateMeta.h"
 #include "config.h"
+#include "AssociateMeta.h"
 #include "enc_int.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
@@ -130,8 +130,8 @@ static void             write_stop_word_index( ostream&, off_t* );
 static void             write_word_index( ostream&, off_t* );
 
 #define INDEX
-#include "do_file.c"
-#include "directory.c"
+#include "do_file.cpp"
+#include "directory.cpp"
 
 //*****************************************************************************
 //
@@ -308,14 +308,14 @@ static void             write_word_index( ostream&, off_t* );
                         "no such indexing module\n";
                     ::exit( Exit_Usage );
                 }
-                for ( char *pat; pat = ::strtok( 0, "," ); )
+                for ( char *pat; (pat = ::strtok( 0, "," )); )
                     include_patterns.insert( pat, i );
                 break;
             }
 
             case 'E': { // Filename pattern(s) not to index.
                 char *a = opt.arg();
-                for ( char *pat; pat = ::strtok( a, "," ); ) {
+                for ( char *pat; (pat = ::strtok( a, "," )); ) {
                     exclude_patterns.insert( pat );
                     a = 0;
                 }
@@ -674,7 +674,7 @@ static void             write_word_index( ostream&, off_t* );
 //
 // SYNOPSIS
 //
-        inline int rank( int file_index, int occurences_in_file, double factor )
+        inline int rank_word( int file_index, int occurences_in_file, double factor )
 //
 // DESCRIPTION
 //
@@ -770,11 +770,12 @@ static void             write_word_index( ostream&, off_t* );
         // Find at least two non-exhausted indicies noting the first.
         int n = 0;
         for ( j = 0; j < partial_index_file_names.size(); ++j )
-            if ( word[ j ] != words[ j ].end() )
+            if ( word[ j ] != words[ j ].end() ) {
                 if ( !n++ )
                     i = j;
                 else if ( n >= 2 )
                     break;
+            }
         if ( n < 2 )                    // couldn't find at least 2
             break;
 
@@ -815,7 +816,7 @@ static void             write_word_index( ostream&, off_t* );
     ////////// Write index file header ////////////////////////////////////////
 
 #define WRITE_HEADER
-#include "index_header.c"
+#include "index_header.cpp"
 #undef  WRITE_HEADER
 
     ////////// Merge the indicies /////////////////////////////////////////////
@@ -836,12 +837,13 @@ static void             write_word_index( ostream&, off_t* );
             for ( ; word[ j ] != words[ j ].end(); ++word[ j ] )
                 if ( !stop_words->contains( *word[ j ] ) )
                     break;
-            if ( word[ j ] != words[ j ].end() )
+            if ( word[ j ] != words[ j ].end() ) {
                 if ( !n++ )
                     i = j;
                 else if ( n >= 2 )
                     break;
-        }
+            }
+        } // for
         if ( n < 2 )                    // couldn't find at least 2
             break;
 
@@ -865,7 +867,7 @@ static void             write_word_index( ostream&, off_t* );
             file_list const list( word[ j ] );
             FOR_EACH( file_list, list, file )
                 total_occurrences += file->occurrences_;
-        }
+        } // for
         double const factor = (double)Rank_Factor / total_occurrences;
 
         ////////// Copy all index info and compute ranks //////////////////////
@@ -884,7 +886,7 @@ static void             write_word_index( ostream&, off_t* );
                     continues = true;
                 o << enc_int( file->index_ )
                   << enc_int( file->occurrences_ )
-                  << enc_int( rank(file->index_, file->occurrences_, factor) )
+                  << enc_int( rank_word(file->index_, file->occurrences_, factor) )
                   << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
@@ -932,7 +934,7 @@ static void             write_word_index( ostream&, off_t* );
                     continues = true;
                 o << enc_int( file->index_ )
                   << enc_int( file->occurrences_ )
-                  << enc_int( rank(file->index_, file->occurrences_, factor) )
+                  << enc_int( rank_word(file->index_, file->occurrences_, factor) )
                   << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
@@ -953,7 +955,7 @@ static void             write_word_index( ostream&, off_t* );
     ////////// Go back and write the computed offsets /////////////////////////
 
 #define REWRITE_HEADER
-#include "index_header.c"
+#include "index_header.cpp"
 #undef  REWRITE_HEADER
 
     if ( verbosity > 1 )
@@ -998,7 +1000,7 @@ static void             write_word_index( ostream&, off_t* );
         //
         double const factor = (double)Rank_Factor / info.occurrences_;
         TRANSFORM_EACH( word_info::file_list, info.files_, file )
-            file->rank_ = rank( file->index_, file->occurrences_, factor );
+            file->rank_ = rank_word( file->index_, file->occurrences_, factor );
     }
 
     if ( verbosity > 1 )
@@ -1128,7 +1130,7 @@ static void             write_word_index( ostream&, off_t* );
         cout << me << ": writing index..." << flush;
 
 #define WRITE_HEADER
-#include "index_header.c"
+#include "index_header.cpp"
 #undef  WRITE_HEADER
 
     write_word_index     ( o, word_offset );
@@ -1138,7 +1140,7 @@ static void             write_word_index( ostream&, off_t* );
     write_meta_name_index( o, meta_name_offset );
 
 #define REWRITE_HEADER
-#include "index_header.c"
+#include "index_header.cpp"
 #undef  REWRITE_HEADER
 
     if ( verbosity > 1 )

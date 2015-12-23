@@ -20,7 +20,9 @@
 */
 
 // local
+#include "config.h"
 #include "exit_codes.h"
+#include "swishpp-config.h"
 #include "util.h"
 #include "WordThreshold.h"
 
@@ -31,28 +33,15 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void WordThreshold::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse a word threshold value, but allow only the super-user to specify
-//      a value larger than the default.
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    conf<int>::parse_value( line );
-    if ( operator int() > WordThreshold_Default && ::geteuid() != 0 ) {
-        error() << "value may be increased only by root: permission denied"
-                << endl;
-        ::exit( Exit_Not_Root );
-    }
+///////////////////////////////////////////////////////////////////////////////
+
+void WordThreshold::parse_value( char *line ) {
+  conf<int>::parse_value( line );
+  if ( operator int() > WordThreshold_Default && ::geteuid() != 0 ) {
+    error() << "value may be increased only by root: permission denied" << endl;
+    ::exit( Exit_Not_Root );
+  }
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */
