@@ -82,7 +82,8 @@ AC_ARG_ENABLE([base64],
 )
 AC_MSG_RESULT([$enable_base64])
 AS_IF([test "x$enable_base64" = "xyes"],
-  [AC_DEFINE([WITH_BASE64],[1],[with Base64 support])]
+  [AC_DEFINE([WITH_BASE64],[1],[with Base64 support])
+   AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
 AC_MSG_CHECKING([whether to enable quoted-printable support])
@@ -93,7 +94,8 @@ AC_ARG_ENABLE([quoted-printable],
 )
 AC_MSG_RESULT([$enable_quoted_printable])
 AS_IF([test "x$enable_quoted_printable" = "xyes"],
-  [AC_DEFINE([WITH_QUOTED_PRINTABLE],[1],[with quoted-printable support])]
+  [AC_DEFINE([WITH_QUOTED_PRINTABLE],[1],[with quoted-printable support])
+   AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
 AC_MSG_CHECKING([whether to enable UTF-7 support])
@@ -104,7 +106,8 @@ AC_ARG_ENABLE([utf7],
 )
 AC_MSG_RESULT([$enable_utf7])
 AS_IF([test "x$enable_utf7" = "xyes"],
-  [AC_DEFINE([WITH_UTF7],[1],[with UTF-7 support])]
+  [AC_DEFINE([WITH_UTF7],[1],[with UTF-7 support])
+   AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
 AC_MSG_CHECKING([whether to enable UTF-8 support])
@@ -115,7 +118,8 @@ AC_ARG_ENABLE([utf8],
 )
 AC_MSG_RESULT([$enable_utf8])
 AS_IF([test "x$enable_utf8" = "xyes"],
-  [AC_DEFINE([WITH_UTF8],[1],[with UTF-8 support])]
+  [AC_DEFINE([WITH_UTF8],[1],[with UTF-8 support])
+   AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
 AC_MSG_CHECKING([whether to enable UTF-16 support])
@@ -126,7 +130,8 @@ AC_ARG_ENABLE([utf16],
 )
 AC_MSG_RESULT([$enable_utf16])
 AS_IF([test "x$enable_utf16" = "xyes"],
-  [AC_DEFINE([WITH_UTF16],[1],[with UTF-16 support])]
+  [AC_DEFINE([WITH_UTF16],[1],[with UTF-16 support])
+   AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
 AC_MSG_CHECKING([whether to enable word position data])

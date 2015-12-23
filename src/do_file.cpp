@@ -236,7 +236,7 @@
 
     ////////// Index the file /////////////////////////////////////////////////
 
-#ifdef IMPLEMENT_DECODING
+#ifdef WITH_DECODING
     encoded_char_range::decoder::reset_all();
 #endif
     indexer *const i = found_pattern ?
