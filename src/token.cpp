@@ -127,7 +127,7 @@ using namespace std;
             t.type_ = token::tt_and;
         else if ( !::strcmp( t.lower_buf_, "or"  ) )
             t.type_ = token::tt_or;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
         else if ( !::strcmp( t.lower_buf_, "near" ) )
             t.type_ = token::tt_near;
 #endif

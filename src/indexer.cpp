@@ -42,7 +42,7 @@ using namespace std;
 
 extern unsigned long    num_indexed_words;
 extern unsigned long    num_total_words;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 extern int              word_pos;
 #endif
 extern word_map         words;
@@ -330,7 +330,7 @@ indexer*                indexer::text_indexer_ = 0;
 //*****************************************************************************
 {
     ++num_total_words;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     ++word_pos;
 #endif
 
@@ -408,7 +408,7 @@ skip_push_back:
     word_info::file &last_file = wi.files_.back();
     if ( meta_id != Meta_ID_None )
         last_file.meta_ids_.insert( meta_id );
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     if ( store_word_positions )
         last_file.add_word_pos( word_pos );
 #endif

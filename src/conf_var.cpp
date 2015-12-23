@@ -146,11 +146,11 @@ int conf_var::current_config_file_line_no_ = 0;
             "wordfilesmax",
             "wordpercentmax",
             "wordthreshold",
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
             "storewordpositions",
             "wordsnear",
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
             "group",
 #ifdef __APPLE__
             "launchdcooperation",
@@ -166,7 +166,7 @@ int conf_var::current_config_file_line_no_ = 0;
             "threadsmin",
             "threadtimeout",
             "user",
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
             0,
         };
         for ( char const *const *v = var_name_table; *v; ++v )

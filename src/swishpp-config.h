@@ -88,7 +88,7 @@ char const  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 #define     OPTIMIZE_WORD_END_CHARS     1
 //          Same deal as with OPTIMIZE_WORD_CHARS.
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
 
 char const  SocketFile_Default[]        = "/tmp/search.socket";
@@ -223,7 +223,7 @@ int const   Title_Max_Size              = 200;
 //          Maximum length of a file "title" (whatever that means for a given
 //          file format).
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 int const   WordsNear_Default           = 10;
 //          The maximum number of words apart two words can be to be considered
 //          "near" each other; this can be overridden either in a config. file

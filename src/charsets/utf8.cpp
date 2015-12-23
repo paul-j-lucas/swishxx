@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef CHARSET_utf8
+#ifdef WITH_UTF8
 
 // local
 #include "encoded_char.h"
@@ -145,5 +145,5 @@
     return unicode_to_ascii( u );
 }
 
-#endif /* CHARSET_utf8 */
+#endif /* WITH_UTF8 */
 /* vim:set et sw=4 ts=4: */

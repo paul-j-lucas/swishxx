@@ -31,7 +31,7 @@
 #include <map>
 #include <set>
 #include <string>
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 #include <vector>
 #endif
 
@@ -58,7 +58,7 @@ public:
         bool            has_meta_id( int ) const;
         void            write_meta_ids( std::ostream& ) const;
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
         typedef std::vector<short> pos_delta_list;
         int             last_absolute_word_pos_;
         pos_delta_list  pos_deltas_;
@@ -88,7 +88,7 @@ typedef std::map< std::string, word_info > word_map;
 
 ////////// inlines ////////////////////////////////////////////////////////////
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 inline void word_info::file::add_word_pos( int absolute_pos ) {
     if ( pos_deltas_.empty() )
         pos_deltas_.push_back( absolute_pos );
@@ -102,7 +102,7 @@ inline void word_info::file::add_word_pos( int absolute_pos ) {
     }
     last_absolute_word_pos_ = absolute_pos;
 }
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
 
 inline bool word_info::file::has_meta_id( int meta_id ) const {
     return meta_id == Meta_ID_None || meta_ids_.contains( meta_id );

@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 
 #ifndef SocketFile_H
 #define SocketFile_H
@@ -52,5 +52,5 @@ extern SocketFile socket_file_name;
 
 #endif /* SocketFile_H */
 
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

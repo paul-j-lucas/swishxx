@@ -48,7 +48,7 @@ public:
         tt_and,
         tt_equal,
         tt_lparen,
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
         tt_near,
         //
         // The "tt_not_near" token isn't a real token in that it's not parsed

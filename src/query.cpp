@@ -54,13 +54,13 @@ struct parse_q_args {
     node_pool_type&     node_pool;
     token_stream&       query;
     stop_word_set&      stop_words_found;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     bool                got_near;
 #endif
 
     parse_q_args( node_pool_type &p, token_stream &q, stop_word_set &s ) :
         node_pool( p ), query( q ), stop_words_found( s )
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
         , got_near( false )
 #endif
     {
@@ -131,7 +131,7 @@ static bool parse_relop  ( token_stream&, token::type& );
     return dec_int( p );
 }
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 //*****************************************************************************
 //
 // SYNOPSIS
@@ -162,7 +162,7 @@ static bool parse_relop  ( token_stream&, token::type& );
         ::exit( Exit_No_Word_Pos_Data );
     }
 }
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
 
 //*****************************************************************************
 //
@@ -201,7 +201,7 @@ static bool parse_relop  ( token_stream&, token::type& );
     if ( !parse_query2( q_args, r_args, v_args ) )
         return false;
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     if ( q_args.got_near ) {
         assert_index_has_word_pos_data();
         //
@@ -215,7 +215,7 @@ static bool parse_relop  ( token_stream&, token::type& );
         cerr << endl;
 #       endif
     }
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
     r_args.node->eval( results );
     return true;
 }
@@ -312,7 +312,7 @@ static bool parse_relop  ( token_stream&, token::type& );
                 r_args.and_nodes.push_back( r_args_rhs.node );
                 break;
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
             case token::tt_near:
             case token::tt_not_near: {
                 //
@@ -345,7 +345,7 @@ static bool parse_relop  ( token_stream&, token::type& );
                                    r_args_rhs.node );
                 break;
             }
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
 
             case token::tt_or:
                 r_args.node = new or_node(
@@ -455,7 +455,7 @@ parsed_meta_id:
         case token::tt_none:
             return false;
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
         case token::tt_not: {
             token const t2( query );
             if ( t2 != token::tt_near ) {
@@ -465,7 +465,7 @@ parsed_meta_id:
             t_type = token::tt_not_near;
         }
         case token::tt_near:
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
         case token::tt_and:
         case token::tt_or:
 #           ifdef DEBUG_parse_query
@@ -474,14 +474,14 @@ parsed_meta_id:
                 case token::tt_and:
                     cerr << "and";
                     break;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
                 case token::tt_not_near:
                     cerr << "not ";
                     // no break;
                 case token::tt_near:
                     cerr << "near";
                     break;
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
                 case token::tt_or:
                     cerr << "or";
                     break;

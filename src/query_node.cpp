@@ -44,14 +44,14 @@ and_node::and_node( pool_type &p, child_node_list &nodes ) : query_node( p ) {
     child_nodes_.swap( nodes );
 }
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 near_node::near_node( pool_type &p, query_node *left, query_node *right ) :
     query_node( p ), left_child_ ( left  ), right_child_( right )
 {
     // do nothing else
 
 }
-#endif
+#endif /* WITH_WORD_POS */
 
 word_node::word_node(
     pool_type &p, char const *word, word_range const &range, int meta_id
@@ -71,7 +71,7 @@ and_node::~and_node() {
     //
 }
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 near_node     ::~near_node    () { /* See comment in ~and_node(). */ }
 not_near_node ::~not_near_node() { /* See comment in ~and_node(). */ }
 #endif
@@ -91,7 +91,7 @@ query_node* and_node::visit( visitor const &v ) {
     return result;
 }
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 query_node* near_node::visit( visitor const &v ) {
     query_node *const result = v( this );
     if ( result == this ) {
@@ -232,7 +232,7 @@ query_node* query_node::visit( visitor const &v ) {
         result->second /= num_ands;
 }
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 //*****************************************************************************
 //
 // SYNOPSYS
@@ -523,7 +523,7 @@ found_near:     ++file[0];
         }
     }
 }
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
 
 //*****************************************************************************
 //

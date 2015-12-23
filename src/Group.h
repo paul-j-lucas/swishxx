@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 
 #ifndef Group_H
 #define Group_H
@@ -76,5 +76,5 @@ inline bool Group::change_to_gid() const {
 
 #endif /* Group_H */
 
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

@@ -30,7 +30,7 @@ encoded_char_range::charset_type const ISO_8859_1       = 0;
 encoded_char_range::charset_type const CHARSET_UNKNOWN  =
     reinterpret_cast<encoded_char_range::charset_type>( ~0 );
 
-#ifdef CHARSET_utf7
+#ifdef WITH_UTF7
 encoded_char_range::value_type charset_utf7(
     encoded_char_range::const_pointer begin,
     encoded_char_range::const_pointer &pos,
@@ -38,7 +38,7 @@ encoded_char_range::value_type charset_utf7(
 );
 #endif
 
-#ifdef CHARSET_utf8
+#ifdef WITH_UTF8
 encoded_char_range::value_type charset_utf8(
     encoded_char_range::const_pointer begin,
     encoded_char_range::const_pointer &pos,
@@ -46,7 +46,7 @@ encoded_char_range::value_type charset_utf8(
 );
 #endif
 
-#ifdef CHARSET_utf16
+#ifdef WITH_UTF16
 encoded_char_range::value_type charset_utf16be(
     encoded_char_range::const_pointer begin,
     encoded_char_range::const_pointer &pos,

@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 
 #ifndef search_thread_H
 #define search_thread_H
@@ -53,5 +53,5 @@ private:
 
 #endif /* search_thread_H */
 
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

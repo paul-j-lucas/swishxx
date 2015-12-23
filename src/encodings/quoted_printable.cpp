@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef ENCODING_quoted_printable
+#ifdef WITH_QUOTED_PRINTABLE
 
 // local
 #include "encoded_char.h"
@@ -144,5 +144,5 @@ using namespace std;
         ( is_digit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
     );
 }
-#endif /* ENCODING_quoted_printable */
+#endif /* WITH_QUOTED_PRINTABLE */
 /* vim:set et sw=4 ts=4: */

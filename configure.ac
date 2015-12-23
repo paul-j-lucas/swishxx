@@ -61,6 +61,85 @@ AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([madvise select socket strchr strrchr])
 
+# Program features.
+AC_MSG_CHECKING([whether to enable the search daemon])
+AC_ARG_ENABLE([daemon],
+  [AS_HELP_STRING([--disable-daemon], [disable search daemon])],
+  [],
+  [enable_daemon="yes"]
+)
+AC_MSG_RESULT([$enable_daemon])
+AS_IF([test "x$enable_daemon" = "xyes"],
+  [AC_DEFINE([WITH_SEARCH_DAEMON],[1],[with search daemon]),
+   AC_DEFINE([MULTI_THREADED],[1],[multithreaded])]
+)
+
+AC_MSG_CHECKING([whether to enable Base64 support])
+AC_ARG_ENABLE([base64],
+  [AS_HELP_STRING([--disable-base64], [disable Base64 support])],
+  [],
+  [enable_base64="yes"]
+)
+AC_MSG_RESULT([$enable_base64])
+AS_IF([test "x$enable_base64" = "xyes"],
+  [AC_DEFINE([WITH_BASE64],[1],[with Base64 support])]
+)
+
+AC_MSG_CHECKING([whether to enable quoted-printable support])
+AC_ARG_ENABLE([quoted-printable],
+  [AS_HELP_STRING([--disable-quoted-printable], [disable quoted-printable support])],
+  [],
+  [enable_quoted_printable="yes"]
+)
+AC_MSG_RESULT([$enable_quoted_printable])
+AS_IF([test "x$enable_quoted_printable" = "xyes"],
+  [AC_DEFINE([WITH_QUOTED_PRINTABLE],[1],[with quoted-printable support])]
+)
+
+AC_MSG_CHECKING([whether to enable UTF-7 support])
+AC_ARG_ENABLE([utf7],
+  [AS_HELP_STRING([--disable-utf7], [disable UTF-7 support])],
+  [],
+  [enable_utf7="yes"]
+)
+AC_MSG_RESULT([$enable_utf7])
+AS_IF([test "x$enable_utf7" = "xyes"],
+  [AC_DEFINE([WITH_UTF7],[1],[with UTF-7 support])]
+)
+
+AC_MSG_CHECKING([whether to enable UTF-8 support])
+AC_ARG_ENABLE([utf8],
+  [AS_HELP_STRING([--disable-utf8], [disable UTF-8 support])],
+  [],
+  [enable_utf8="yes"]
+)
+AC_MSG_RESULT([$enable_utf8])
+AS_IF([test "x$enable_utf8" = "xyes"],
+  [AC_DEFINE([WITH_UTF8],[1],[with UTF-8 support])]
+)
+
+AC_MSG_CHECKING([whether to enable UTF-16 support])
+AC_ARG_ENABLE([utf16],
+  [AS_HELP_STRING([--disable-utf16], [disable UTF-16 support])],
+  [],
+  [enable_utf16="yes"]
+)
+AC_MSG_RESULT([$enable_utf16])
+AS_IF([test "x$enable_utf16" = "xyes"],
+  [AC_DEFINE([WITH_UTF16],[1],[with UTF-16 support])]
+)
+
+AC_MSG_CHECKING([whether to enable word position data])
+AC_ARG_ENABLE([word_pos],
+  [AS_HELP_STRING([--disable-word-pos], [disable word position data])],
+  [],
+  [enable_word_pos="yes"]
+)
+AC_MSG_RESULT([$enable_word_pos])
+AS_IF([test "x$enable_word_pos" = "xyes"],
+  [AC_DEFINE([WITH_WORD_POS],[1],[with word position data])]
+)
+
 # Miscellaneous.
 AC_LANG(C++)
 AX_CFLAGS_WARN_ALL

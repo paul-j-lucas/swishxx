@@ -133,7 +133,7 @@ private:
     static empty_node singleton_;
 };
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 //*****************************************************************************
 //
 // SYNOPSYS
@@ -212,7 +212,7 @@ public:
     std::ostream&   print( std::ostream& ) const;
 #   endif
 };
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
 
 //*****************************************************************************
 //
@@ -300,7 +300,7 @@ private:
 
 ////////// inlines ////////////////////////////////////////////////////////////
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 inline near_node* near_node::distributor::make_node(
     pool_type &pool, query_node *left, query_node *right
 ) const {

@@ -663,11 +663,11 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     switch ( *c++ ) {
         case ID3v2_ISO_8859_1:
             return ISO_8859_1;
-#ifdef CHARSET_utf8
+#ifdef WITH_UTF8
         case ID3v2_UTF8:
             return charset_utf8;
-#endif
-#ifdef CHARSET_utf16
+#endif /* WITH_UTF8 */
+#ifdef WITH_UTF16
         case ID3v2_UTF16BE:
             return charset_utf16be;
         case ID3v2_UTF16: {
@@ -682,7 +682,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
                 return charset_utf16le;
             // no break;
         }
-#endif
+#endif /* WITH_UTF16 */
         default:
             return CHARSET_UNKNOWN;
     }

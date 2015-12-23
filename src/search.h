@@ -65,10 +65,10 @@
     bool        stem_words_opt;
     char const* word_files_max_arg;
     char const* word_percent_max_arg;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     int         words_near_arg;
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     char const* daemon_type_arg;
     char const* group_arg;
 #ifdef __APPLE__
@@ -84,7 +84,7 @@
     int         socket_timeout_arg;
     int         thread_timeout_arg;
     char const* user_arg;
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
     search_options(
         int *argc, char ***argv,
         PJL::option_stream::spec const[],

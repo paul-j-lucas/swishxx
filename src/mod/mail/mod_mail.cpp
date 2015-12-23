@@ -330,15 +330,15 @@ could_not_filter:
             if ( ::strstr( value, "binary" ) )
                 type.encoding_ = Binary;
             else if ( ::strstr( value, "base64" ) )
-#ifdef ENCODING_base64
+#ifdef WITH_BASE64
                 type.encoding_ = encoding_base64;
 #else
                 // Since Base64 encoding wasn't compiled in, we need to make it
                 // not indexable: set the encoding to binary.
                 //
                 type.encoding_ = Binary;
-#endif
-#ifdef ENCODING_quoted_printable
+#endif /* WITH_BASE64 */
+#ifdef WITH_QUOTED_PRINTABLE
             else if ( ::strstr( value, "quoted-printable" ) )
                 type.encoding_ = encoding_quoted_printable;
 #else
@@ -346,7 +346,8 @@ could_not_filter:
             // text.  (This is the best that can be done if the encoding isn't
             // compiled in and it's better than treating the text as binary and
             // not indexing it at all.)
-#endif
+            //
+#endif /* WITH_QUOTED_PRINTABLE */
             continue;
         }
 
@@ -377,11 +378,11 @@ could_not_filter:
                     type.charset_ = US_ASCII;
                 else if ( !::strncmp( charset, "iso8859-1", 9 ) )
                     type.charset_ = ISO_8859_1;
-#ifdef CHARSET_utf7
+#ifdef WITH_UTF7
                 else if ( !::strncmp( charset, "utf-7", 5 ) )
                     type.charset_ = charset_utf7;
 #endif
-#ifdef CHARSET_utf8
+#ifdef WITH_UTF8
                 else if ( !::strncmp( charset, "utf-8", 5 ) )
                     type.charset_ = charset_utf8;
 #endif

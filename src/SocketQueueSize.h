@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 
 #ifndef SocketQueueSize_H
 #define SocketQueueSize_H
@@ -58,5 +58,5 @@ extern SocketQueueSize socket_queue_size;
 
 #endif /* SocketQueueSize_H */
 
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

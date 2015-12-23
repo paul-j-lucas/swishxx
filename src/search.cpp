@@ -49,12 +49,12 @@
 #include "version.h"
 #include "WordFilesMax.h"
 #include "WordPercentMax.h"
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 #include "WordsNear.h"
 #endif
 #include "word_util.h"
 #include "xml_formatter.h"
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 #include "Group.h"
 #ifdef __APPLE__
 #include "LaunchdCooperation.h"
@@ -70,7 +70,7 @@
 #include "ThreadsMin.h"
 #include "ThreadTimeout.h"
 #include "User.h"
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 
 // standard
 #include <algorithm>                            /* for binary_search(), etc */
@@ -129,10 +129,10 @@ ResultsFormat       results_format;
 StemWords           stem_words;
 WordFilesMax        word_files_max;
 WordPercentMax      word_percent_max;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 WordsNear           words_near;
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
 SearchDaemon        daemon_type;
 Group               group;
 #ifdef __APPLE__
@@ -150,7 +150,7 @@ ThreadTimeout       thread_timeout;
 User                user;
 
 void                become_daemon();
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 static void         dump_single_word( char const*, ostream& = cout );
 static void         dump_word_window( char const*, int, int, ostream& = cout );
 static ostream&     write_file_info( ostream&, char const* );
@@ -218,11 +218,11 @@ inline omanip< char const* > index_file_info( int index ) {
         word_files_max = opt.word_files_max_arg;
     if ( opt.word_percent_max_arg )
         word_percent_max = opt.word_percent_max_arg;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     if ( opt.words_near_arg )
         words_near = opt.words_near_arg;
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     if ( opt.daemon_type_arg )
         daemon_type = opt.daemon_type_arg;
     if ( opt.group_arg )
@@ -255,7 +255,7 @@ inline omanip< char const* > index_file_info( int index ) {
         thread_timeout = opt.thread_timeout_arg;
     if ( opt.user_arg )
         user = opt.user_arg;
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 
     //
     // If there were no arguments, see if that's OK given the config. file
@@ -267,7 +267,7 @@ inline omanip< char const* > index_file_info( int index ) {
         opt.dump_stop_words_opt   ||
         opt.dump_word_index_opt;
     if ( !( argc || dump_something
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
          || daemon_type != "none"
 #endif
     ) ) {
@@ -278,7 +278,7 @@ inline omanip< char const* > index_file_info( int index ) {
     /////////// Load index file ///////////////////////////////////////////////
 
 #ifdef RLIMIT_AS                       /* SVR4 */
-#if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
+#if defined( WITH_SEARCH_DAEMON ) && defined( __APPLE__ )
     if ( daemon_type != "none" && !launchd_cooperation )
 #endif
         max_out_limit( RLIMIT_AS );     // max-out total avail. memory
@@ -297,7 +297,7 @@ inline omanip< char const* > index_file_info( int index ) {
     files      .set_index_file( the_index, index_segment::isi_file      );
     meta_names .set_index_file( the_index, index_segment::isi_meta_name );
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     ////////// Become a daemon ////////////////////////////////////////////////
 
     if ( !dump_something && daemon_type != "none" )
@@ -465,7 +465,7 @@ inline omanip< char const* > index_file_info( int index ) {
          && query_stream.eof()
     ) ) {
         err << error << "malformed query\n";
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
         if ( daemon_type != "none" )
             return false;
 #endif
@@ -582,10 +582,10 @@ inline omanip< char const* > index_file_info( int index ) {
     stem_words_opt          = false;
     word_files_max_arg      = 0;
     word_percent_max_arg    = 0;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     words_near_arg          = 0;
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     daemon_type_arg         = 0;
     group_arg               = 0;
 #ifdef __APPLE__
@@ -601,12 +601,12 @@ inline omanip< char const* > index_file_info( int index ) {
     socket_timeout_arg      = 0;
     thread_timeout_arg      = 0;
     user_arg                = 0;
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
     option_stream opt_in( *argc, *argv, opt_spec );
     for ( option_stream::option opt; opt_in >> opt; )
         switch ( opt ) {
 
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
             case 'a': // TCP socket address.
                 socket_address_arg = opt.arg();
                 break;
@@ -641,7 +641,7 @@ inline omanip< char const* > index_file_info( int index ) {
                 else
                     bad_ = true;
                 break;
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
             case 'G': // Group.
                 group_arg = opt.arg();
                 break;
@@ -656,12 +656,12 @@ inline omanip< char const* > index_file_info( int index ) {
             case 'M': // Dump meta-name list.
                 dump_meta_names_opt = true;
                 break;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
             case 'n': // Words near.
                 words_near_arg = ::atoi( opt.arg() );
                 break;
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
             case 'o': // Socket timeout.
                 socket_timeout_arg = ::atoi( opt.arg() );
                 break;
@@ -673,7 +673,7 @@ inline omanip< char const* > index_file_info( int index ) {
             case 'p': // Word/file percentage.
                 word_percent_max_arg = opt.arg();
                 break;
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
             case 'P': // PID file.
                 pid_file_name_arg = opt.arg();
                 break;
@@ -701,7 +701,7 @@ inline omanip< char const* > index_file_info( int index ) {
             case 'S': // Dump stop-word list.
                 dump_stop_words_opt = true;
                 break;
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
             case 't': // Minimum number of concurrent threads.
                 min_threads_arg = ::atoi( opt.arg() );
                 break;
@@ -720,11 +720,11 @@ inline omanip< char const* > index_file_info( int index ) {
 #endif
             case 'V': // Display version and exit.
                 err << "SWISH++ " << version << endl;
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
                 if ( daemon_type == "none" )
 #endif
                     ::exit( Exit_Success );
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
                 bad_ = true;
                 return;
 #endif
@@ -740,7 +740,7 @@ inline omanip< char const* > index_file_info( int index ) {
                     dump_match_arg = 0;
                 break;
             }
-#if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
+#if defined( WITH_SEARCH_DAEMON ) && defined( __APPLE__ )
             case 'X': // Cooperate with Mac OS X's launchd.
                 launchd_opt = true;
                 break;
@@ -886,7 +886,7 @@ ostream& usage( ostream &err ) {
     "options: (unambiguous abbreviations may be used for long options)\n"
     "========\n"
     "-?   | --help             : Print this help message\n"
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     "-a a | --socket-address a : Socket address [default: *:" << SocketPort_Default << "]\n"
     "-b t | --daemon-type t    : Daemon type to run as [default: none]\n"
     "-B   | --no-background    : Don't run daemon in the background [default: do]\n"
@@ -896,21 +896,21 @@ ostream& usage( ostream &err ) {
     "-D   | --dump-index       : Dump entire word index, exit\n"
     "-f n | --word-files n     : Word/file maximum [default: infinity]\n"
     "-F f | --format f         : Results format [default: classic]\n"
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     "-G s | --group s          : Daemon group to run as [default: " << Group_Default << "]\n"
 #endif
     "-i f | --index-file f     : Name of index file [default: " << IndexFile_Default << "]\n"
     "-m n | --max-results n    : Maximum number of results [default: " << ResultsMax_Default << "]\n"
     "-M   | --dump-meta        : Dump meta-name index, exit\n"
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     "-n n | --near n           : Maximum number of words apart [default: " << WordsNear_Default << "]\n"
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     "-o s | --socket-timeout s : Search client request timeout [default: " << SocketTimeout_Default << "]\n"
     "-O s | --thread-timeout s : Idle spare thread timeout [default: " << ThreadTimeout_Default << "]\n"
 #endif
     "-p n | --word-percent n   : Word/file percentage [default: 100]\n"
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     "-P f | --pid-file f       : Name of file to record daemon PID in [default: none]\n"
     "-q n | --queue-size n     : Maximum queued socket connections [default: " << SocketQueueSize_Default << "]\n"
 #endif
@@ -918,7 +918,7 @@ ostream& usage( ostream &err ) {
     "-R s | --separator s      : Result separator string [default: \" \"]\n"
     "-s   | --stem-words       : Stem words prior to search [default: no]\n"
     "-S   | --dump-stop        : Dump stop-word index, exit\n"
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     "-t n | --min-threads n    : Minimum number of threads [default: " << ThreadsMin_Default << "] \n"
     "-T n | --max-threads n    : Maximum number of threads [default: " << ThreadsMax_Default << "] \n"
     "-u f | --socket-file f    : Name of socket file [default: " << SocketFile_Default << "]\n"
@@ -926,7 +926,7 @@ ostream& usage( ostream &err ) {
 #endif
     "-V   | --version          : Print version number, exit\n"
     "-w n[,m] | --window n[,m] : Dump window of words around query words [default: 0]\n"
-#if defined( SEARCH_DAEMON ) && defined( __APPLE__ )
+#if defined( WITH_SEARCH_DAEMON ) && defined( __APPLE__ )
     "-X   | --launchd          : If a daemon, cooperate with Mac OS X's launchd\n"
 #endif
     ;

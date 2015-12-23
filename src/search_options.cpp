@@ -35,9 +35,9 @@ static option_stream::spec const opt_spec[] = {
   "format",         1, 'F',
   "max-results",    1, 'm',
   "dump-meta",      0, 'M',
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
   "near",           1, 'n',
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
   "word-percent",   1, 'p',
   "skip-results",   1, 'r',
   "separator",      1, 'R',
@@ -52,7 +52,7 @@ static option_stream::spec const opt_spec[] = {
   //
   "config-file",    1, 'c',
   "index-file",     1, 'i',
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
   "daemon-type",    1, 'b',
 #ifdef __APPLE__
   "launchd",        0, 'X',
@@ -68,7 +68,7 @@ static option_stream::spec const opt_spec[] = {
   "socket-address", 1, 'a',
   "socket-file",    1, 'u',
   "user",           1, 'U',
-#endif /* SEARCH_DAEMON */
+#endif /* WITH_SEARCH_DAEMON */
 #endif /* SEARCH_DAEMON_OPTIONS_ONLY */
   0
 };

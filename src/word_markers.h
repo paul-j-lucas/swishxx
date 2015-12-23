@@ -22,6 +22,9 @@
 #ifndef word_markers_H
 #define word_markers_H
 
+// local
+#include "config.h"
+
 unsigned char const Stop_Marker                 = '\x80';
 //                  This byte marks the end of a list of numbers (such as a
 //                  meta name list) for a word entry in an index file.  It also
@@ -31,11 +34,11 @@ unsigned char const Meta_Name_List_Marker       = '\x01';
 //                  This byte marks the beginning of a meta name list for a
 //                  word entry in an index file.
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 unsigned char const Word_Pos_List_Marker        = '\x02';
 //                  This byte marks the beginning of a word position delta list
 //                  for a word entry in an index file.
-#endif /* FEATURE_word_pos */
+#endif /* WITH_WORD_POS */
 
 unsigned char const Word_Entry_Continues_Marker = '\x00';
 //                  This byte marks that a word entry continues (the opposite

@@ -47,10 +47,10 @@ enum {
 
     // unique to search
     Exit_Malformed_Query            = 50,
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     Exit_No_Word_Pos_Data           = 51,
 #endif
-#ifdef SEARCH_DAEMON
+#ifdef WITH_SEARCH_DAEMON
     Exit_No_Write_PID               = 60,
     Exit_No_Host_or_IP              = 61,
     Exit_No_TCP_Socket              = 62,

@@ -19,7 +19,7 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef ENCODING_base64
+#ifdef WITH_BASE64
 
 // local
 #include "encoded_char.h"
@@ -223,5 +223,5 @@ reached_end:    c = end;
     delta -= delta4;
     goto return_decoded_char;
 }
-#endif /* ENCODING_base64 */
+#endif /* WITH_BASE64 */
 /* vim:set et sw=4 ts=4: */

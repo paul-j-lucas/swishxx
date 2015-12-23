@@ -47,7 +47,7 @@
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
 #include "stop_words.h"
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 #include "StoreWordPositions.h"
 #endif
 #include "TempDirectory.h"
@@ -111,7 +111,7 @@ WordFilesMax            word_files_max;
 WordPercentMax          word_percent_max;
 WordThreshold           word_threshold;
 
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
 StoreWordPositions      store_word_positions;
 int                     word_pos;               // ith word in file
 #endif
@@ -243,7 +243,7 @@ static void             write_word_index( ostream&, off_t* );
         "meta",             1, 'm',
         "no-meta",          1, 'M',
         "percent-max",      1, 'p',
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
         "no-pos-data",      0, 'P',
 #endif
         "no-recurse",       0, 'r',
@@ -359,7 +359,7 @@ static void             write_word_index( ostream&, off_t* );
             case 'p': // Specify the word/file percentage.
                 word_percent_max_arg = opt.arg();
                 break;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
             case 'P': // Don't store word position data.
                 no_word_pos_opt = true;
                 break;
@@ -423,7 +423,7 @@ static void             write_word_index( ostream&, off_t* );
         index_file_name = index_file_name_arg;
     if ( no_associate_meta_opt )
         associate_meta = false;
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
     if ( no_word_pos_opt )
         store_word_positions = false;
 #endif
@@ -890,7 +890,7 @@ static void             write_word_index( ostream&, off_t* );
                   << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
                 if ( !file->pos_deltas_.empty() )
                     file->write_word_pos( o );
 #endif
@@ -938,7 +938,7 @@ static void             write_word_index( ostream&, off_t* );
                   << assert_stream;
                 if ( !file->meta_ids_.empty() )
                     file->write_meta_ids( o );
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
                 if ( !file->pos_deltas_.empty() )
                     file->write_word_pos( o );
 #endif
@@ -1287,7 +1287,7 @@ static void             write_word_index( ostream&, off_t* );
               << assert_stream;
             if ( !file->meta_ids_.empty() )
                 file->write_meta_ids( o );
-#ifdef FEATURE_word_pos
+#ifdef WITH_WORD_POS
             if ( !file->pos_deltas_.empty() )
                 file->write_word_pos( o );
 #endif
@@ -1323,7 +1323,7 @@ ostream& usage( ostream &err ) {
     "-m m   | --meta m           : Meta name to index [default: all]\n"
     "-M m   | --no-meta m        : Meta name not to index [default: none]\n"
     "-p n   | --word-percent n   : Word/file percentage [default: 100]\n"
-#ifndef FEATURE_word_pos
+#ifndef WITH_WORD_POS
     "-P     | --no-pos-data      : Don't store word position data [default: do]\n"
 #endif
     "-r     | --no-recurse       : Don't index subdirectories [default: do]\n"
