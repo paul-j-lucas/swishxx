@@ -23,11 +23,11 @@
 #include "config.h"
 #include "conf_bool.h"
 #include "exit_codes.h"
-#include "pjl/auto_vec.h"
 #include "util.h"
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
+#include <memory>                       /* for unique_ptr */
 #include <iostream>
 
 using namespace PJL;
@@ -35,69 +35,43 @@ using namespace std;
 
 extern char const*  me;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        conf<bool>::conf( char const *name, bool default_value ) :
-//
-// DESCRIPTION
-//
-//      Construct (initialize) a conf<bool>.
-//
-// PARAMETERS
-//
-//      name            The name of the configuration variable.
-//
-//      default_value   The default value for the configuration variable.
-//
-//*****************************************************************************
-    conf_var( name ),
-    default_value_( default_value ),
-    value_( default_value )
+///////////////////////////////////////////////////////////////////////////////
+
+conf<bool>::conf( char const *name, bool default_value ) :
+  conf_var( name ),
+  default_value_( default_value ),
+  value_( default_value )
 {
-    // do nothing else
+  // do nothing else
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* virtual */ void conf<bool>::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse a Boolean value from the line of text.  Acceptable values
-//      (regardless of case) are: f, false, n, no, off, on, t, true, y, yes
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    auto_vec<char> const lower( to_lower_r( line ) );
-    if ( *lower ) {
-        if ( !::strcmp( lower, "false" ) ||
-             !::strcmp( lower, "no" ) ||
-             !::strcmp( lower, "off" ) ||
-             ( lower[1] == '\0' && (*lower == 'f' || *lower == 'n') )
-        ) {
-            operator=( false );
-            return;
-        }
-        if ( !::strcmp( lower, "true" ) ||
-             !::strcmp( lower, "on" ) ||
-             !::strcmp( lower, "yes" ) ||
-             ( lower[1] == '\0' && (*lower == 't' || *lower == 'y') )
-        ) {
-            operator=( true );
-            return;
-        }
+void conf<bool>::parse_value( char *line ) {
+  unique_ptr<char[]> const lower_ptr( to_lower_r( line ) );
+  char const *const lower = lower_ptr.get();
+  if ( *lower ) {
+    if ( !::strcmp( lower, "false" ) ||
+         !::strcmp( lower, "no" ) ||
+         !::strcmp( lower, "off" ) ||
+         ( lower[1] == '\0' && (*lower == 'f' || *lower == 'n') ) ) {
+      operator=( false );
+      return;
     }
-    error() << '"' << name() << "\" is not one of: "
-            "f, false, n, no, off, on, t, true, y, yes\n";
-    ::exit( Exit_Config_File );
+    if ( !::strcmp( lower, "true" ) ||
+         !::strcmp( lower, "on" ) ||
+         !::strcmp( lower, "yes" ) ||
+         ( lower[1] == '\0' && (*lower == 't' || *lower == 'y') ) ) {
+      operator=( true );
+      return;
+    }
+  }
+  error() << '"' << name() << "\" is not one of: "
+             "f, false, n, no, off, on, t, true, y, yes\n";
+  ::exit( Exit_Config_File );
 }
 
-/* vim:set et sw=4 ts=4: */
+void conf<bool>::reset() {
+  value_ = default_value_;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

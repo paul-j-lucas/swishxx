@@ -28,7 +28,6 @@
 #include "indexer.h"
 #include "IndexFile.h"
 #include "index_segment.h"
-#include "pjl/auto_vec.h"
 #include "pjl/less.h"
 #include "pjl/mmap_file.h"
 #include "pjl/omanip.h"
@@ -72,17 +71,18 @@
 #endif /* WITH_SEARCH_DAEMON */
 
 // standard
-#include <algorithm>                            /* for binary_search(), etc */
-#include <cstdlib>                              /* for exit(3) */
+#include <algorithm>                    /* for binary_search(), etc */
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-#include <functional>                           /* for binary_function<> */
+#include <functional>                   /* for binary_function<> */
 #include <iostream>
 #include <iterator>
+#include <memory>                       /* for unique_ptr */
 #include <string>
-#include <time.h>                               /* needed by sys/resource.h */
-#include <sys/time.h>                           /* needed by FreeBSD systems */
-#include <sys/resource.h>                       /* for RLIMIT_* */
-#include <utility>                              /* for pair<> */
+#include <sys/resource.h>               /* for RLIMIT_* */
+#include <sys/time.h>                   /* needed by FreeBSD systems */
+#include <time.h>                       /* needed by sys/resource.h */
+#include <utility>                      /* for pair<> */
 #include <vector>
 
 using namespace PJL;
@@ -327,8 +327,9 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-    auto_vec<char> const lower_word( to_lower_r( word ) );
-    less< char const* > const comparator;
+    unique_ptr<char[]> const lower_ptr( to_lower_r( word ) );
+    char const *const lower_word = lower_ptr.get();
+    less<char const*> const comparator;
 
     if ( !is_ok_word( word ) ||
         ::binary_search(
@@ -384,8 +385,9 @@ inline omanip< char const* > index_file_info( int index ) {
 //
 //*****************************************************************************
 {
-    auto_vec< char > const lower_word( to_lower_r( word ) );
-    less< char const* > const comparator;
+    unique_ptr<char[]> const lower_ptr( to_lower_r( word ) );
+    char const *const lower_word = lower_ptr.get();
+    less<char const*> const comparator;
 
     if ( !is_ok_word( word ) ||
         ::binary_search(

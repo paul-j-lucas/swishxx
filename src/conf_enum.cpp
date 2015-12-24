@@ -22,12 +22,12 @@
 // local
 #include "conf_enum.h"
 #include "exit_codes.h"
-#include "pjl/auto_vec.h"
 #include "util.h"
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <iostream>
+#include <memory>                       /* for unique_ptr */
 
 using namespace PJL;
 using namespace std;
@@ -83,9 +83,9 @@ extern char const*  me;
 //*****************************************************************************
 {
     if ( *value ) {
-        auto_vec<char> const lower( to_lower_r( value ) );
+        unique_ptr<char[]> const lower( to_lower_r( value ) );
         for ( char const *const *v = legal_values_; *v; ++v )
-            if ( !::strcmp( lower, *v ) )
+            if ( !::strcmp( lower.get(), *v ) )
                 return true;
     }
     err << error << '"' << name() << "\" is not one of: ";
@@ -120,7 +120,7 @@ extern char const*  me;
 {
     if ( !is_legal( line ) )
         ::exit( Exit_Config_File );
-    auto_vec<char> lower( to_lower_r( line ) );
-    conf<string>::parse_value( lower );
+    unique_ptr<char[]> lower( to_lower_r( line ) );
+    conf<string>::parse_value( lower.get() );
 }
 /* vim:set et sw=4 ts=4: */

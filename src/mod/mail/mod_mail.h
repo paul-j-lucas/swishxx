@@ -24,17 +24,17 @@
 #ifndef mod_mail_H
 #define mod_mail_H
 
-// standard
-#include <string>
-#include <vector>
-
 // local
 #include "charsets/charsets.h"
 #include "encoded_char.h"
 #include "encodings/encodings.h"
 #include "filter.h"
 #include "indexer.h"
-#include "pjl/auto_vec.h"
+
+// standard
+#include <memory>                       /* for unique_ptr */
+#include <string>
+#include <vector>
 
 //*****************************************************************************
 //
@@ -124,7 +124,7 @@ private:
     };
 
     struct key_value {
-        PJL::auto_vec<char> key;
+        PJL::unique_ptr<char[]> key;
         char const *value_begin, *value_end;
     };
 

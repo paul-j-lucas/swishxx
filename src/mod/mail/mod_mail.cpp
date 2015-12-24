@@ -36,7 +36,6 @@
 #ifdef MOD_rtf
 #include "mod/rtf/mod_rtf.h"
 #endif
-#include "pjl/auto_vec.h"
 #include "pjl/less.h"
 #include "TitleLines.h"
 #include "util.h"
@@ -47,6 +46,7 @@
 #include <algorithm>                    /* for copy() */
 #include <cctype>
 #include <cstring>
+#include <memory>                       /* for unique_ptr */
 #include <string>
 #include <unistd.h>                     /* for unlink(2) */
 #include <vector>
@@ -324,9 +324,10 @@ could_not_filter:
         ////////// Deal with Content-Transfer-Encoding ////////////////////////
 
         if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
-            auto_vec<char> const value(
+            unique_ptr<char[]> const lower_ptr(
                 to_lower_r( kv.value_begin, kv.value_end )
             );
+            char const *const value = lower_ptr.get();
             if ( ::strstr( value, "binary" ) )
                 type.encoding_ = Binary;
             else if ( ::strstr( value, "base64" ) )
@@ -354,9 +355,10 @@ could_not_filter:
         ////////// Deal with Content-Type /////////////////////////////////////
 
         if ( !::strcmp( kv.key, "content-type" ) ) {
-            auto_vec<char> const value(
+            unique_ptr<char[]> const lower_ptr(
                 to_lower_r( kv.value_begin, kv.value_end )
             );
+            char const *const value = lower_ptr.get();
 
             //
             // Extract the MIME type.
@@ -381,11 +383,11 @@ could_not_filter:
 #ifdef WITH_UTF7
                 else if ( !::strncmp( charset, "utf-7", 5 ) )
                     type.charset_ = charset_utf7;
-#endif
+#endif /* WITH_UTF7 */
 #ifdef WITH_UTF8
                 else if ( !::strncmp( charset, "utf-8", 5 ) )
                     type.charset_ = charset_utf8;
-#endif
+#endif /* WITH_UTF8 */
                 else {
                     type.charset_ = CHARSET_UNKNOWN;
                     goto not_indexable;

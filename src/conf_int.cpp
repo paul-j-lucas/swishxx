@@ -23,13 +23,13 @@
 #include "config.h"
 #include "conf_int.h"
 #include "exit_codes.h"
-#include "pjl/auto_vec.h"
 #include "util.h"
 
 // standard
 #include <cstdlib>                      /* for atoi(3), exit(3) */
 #include <cstring>
 #include <iostream>
+#include <memory>                       /* for unique_ptr */
 
 using namespace PJL;
 using namespace std;
@@ -116,8 +116,8 @@ extern char const*  me;
         error() << '"' << name() << "\" has no value\n";
         ::exit( Exit_Config_File );
     }
-    auto_vec<char> const lower( to_lower_r( line ) );
-    if ( !::strcmp( lower, "infinity" ) ) {
+    unique_ptr<char[]> const lower( to_lower_r( line ) );
+    if ( !::strcmp( lower.get(), "infinity" ) ) {
         operator=( INT_MAX );
         return;
     }

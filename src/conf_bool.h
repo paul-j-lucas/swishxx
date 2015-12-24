@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_bool.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,50 +28,53 @@
 // standard
 #include <string>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<> class conf<bool> : public conf_var
-//
-// DESCRIPTION
-//
-//      A conf<bool> is-a conf_var for containing the value of a Boolean
-//      configuration variable.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %conf<bool> is-a conf_var for containing the value of a Boolean
+ * configuration variable.
+ *
+ * Acceptable values (regardless of case) are: f, false, n, no, off, on, t,
+ * true, y, yes.
+ */
+template<> class conf<bool> : public conf_var {
 public:
-    operator bool() const { return value_; }
+  operator bool() const { return value_; }
+
 protected:
-    conf( char const *name, bool default_value );
-    conf<bool>& operator=( bool new_value ) {
-        value_ = new_value;
-        return *this;
-    }
-    CONF_VAR_ASSIGN_OPS( conf<bool> )
+  conf( char const *name, bool default_value );
+  conf<bool>& operator=( bool new_value ) {
+    value_ = new_value;
+    return *this;
+  }
+  CONF_VAR_ASSIGN_OPS( conf<bool> )
 
-    virtual void    parse_value( char *line );
+  // inherited
+  virtual void parse_value( char *line );
+
 private:
-    bool const      default_value_;
-    bool            value_;
+  bool const default_value_;
+  bool value_;
 
-    virtual void    reset() { value_ = default_value_; }
+  // inherited
+  virtual void reset();
 };
 
-#define CONF_BOOL_ASSIGN_OPS(T)                 \
-        T& operator=( bool b ) {                \
-            conf<bool>::operator=( b );         \
-            return *this;                       \
-        }                                       \
-        T& operator=( std::string const &s ) {  \
-            conf<bool>::operator=( s );         \
-            return *this;                       \
-        }                                       \
-        T& operator=( char const *s ) {         \
-            conf<bool>::operator=( s );         \
-            return *this;                       \
-        }
+#define CONF_BOOL_ASSIGN_OPS(T)           \
+  T& operator=( bool b ) {                \
+    conf<bool>::operator=( b );           \
+    return *this;                         \
+  }                                       \
+  T& operator=( std::string const &s ) {  \
+    conf<bool>::operator=( s );           \
+    return *this;                         \
+  }                                       \
+  T& operator=( char const *s ) {         \
+    conf<bool>::operator=( s );           \
+    return *this;                         \
+  }
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* conf_bool_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

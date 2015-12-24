@@ -23,12 +23,12 @@
 #include "config.h"
 #include "IncludeMeta.h"
 #include "exit_codes.h"
-#include "pjl/auto_vec.h"
 #include "util.h"                       /* for error(), new_strdup() */
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
+#include <memory>                       /* for unique_ptr */
 
 using namespace PJL;
 using namespace std;
@@ -53,8 +53,8 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    auto_vec<char> lower( to_lower_r( line ) );
-    char *p = lower;
+    unique_ptr<char[]> lower( to_lower_r( line ) );
+    char *p = lower.get();
     for ( char const *meta_name; (meta_name = ::strtok( p, " \r\t" )); p = 0 ) {
         //
         // See if the meta name contains a reassignment: if so, chop it at the
@@ -76,4 +76,6 @@ using namespace std;
         insert( value_type( m, reassign ? new_strdup( reassign ) : m ));
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=4 ts=4: */
