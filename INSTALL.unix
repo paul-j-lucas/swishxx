@@ -1,41 +1,4 @@
 ===============================================================================
-Prerequisites for building SWISH++ for Unix
-===============================================================================
-
-SWISH++ has the following software as prerequisites:
-
-1. A C++ compiler.  SWISH++ has been built using g++ 3.4.x (earlier 3.x
-   versions may work also); g++ 2.95.x and earlier versions are no longer
-   supported.  Other non-g++, ANSI C++ compilers should work also.
-
-2. A version of STL, the ANSI/ISO C++ Standard Template Library.  If you are
-   using g++ or egcs, then you also need (the matching version of) libstd++.
-
-   If you are not using g++, then you need to have a port of STL that works
-   with your compiler.  Ports for various platforms are available from:
-
-	http://www.stlport.org/
-
-   For more about STL in general, see:
-
-	http://www.cs.rpi.edu/~musser/stl.html
-	http://www.sgi.com/Technology/STL/
-
-3. GNU make 3.79.1 or later.
-
-4. Perl 5 (or later), but only if you intend on using either httpindex,
-   splitmail, or WWW.pm.
-
-5. The GNU wget command, but only if you intend on using httpindex.
-
-All GNU software is freely available from:
-
-	ftp://prep.ai.mit.edu/pub/gnu/
-
-as well as many other mirror sites.
-
-
-===============================================================================
 Building SWISH++ for Unix
 ===============================================================================
 
