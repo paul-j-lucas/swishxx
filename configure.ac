@@ -151,10 +151,93 @@ AS_IF([test x$enable_word_pos = xyes],
   [AC_DEFINE([WITH_WORD_POS],[1],[with word position data])]
 )
 
+# Program feature: HTML Indexing (--disable-html)
+AC_MSG_CHECKING([whether to enable HTML indexing])
+AC_ARG_ENABLE([html],
+  [AS_HELP_STRING([--disable-html], [disable HTML indexing])],
+  [],
+  [enable_html="yes"]
+)
+AC_MSG_RESULT([$enable_html])
+AS_IF([test x$enable_html = xyes],
+  [AC_DEFINE([WITH_HTML],[1],[with HTML indexing])]
+)
+
+# Program feature: ID3 Indexing (--disable-id3)
+AC_MSG_CHECKING([whether to enable ID3 (music file) indexing])
+AC_ARG_ENABLE([id3],
+  [AS_HELP_STRING([--disable-id3], [disable ID3 indexing])],
+  [],
+  [enable_id3="yes"]
+)
+AC_MSG_RESULT([$enable_id3])
+AS_IF([test x$enable_id3 = xyes],
+  [AC_DEFINE([WITH_ID3],[1],[with ID3 indexing])]
+)
+
+# Program feature: LaTeX Indexing (--disable-latex)
+AC_MSG_CHECKING([whether to enable LaTeX indexing])
+AC_ARG_ENABLE([latex],
+  [AS_HELP_STRING([--disable-latex], [disable LaTex indexing])],
+  [],
+  [enable_latex="yes"]
+)
+AC_MSG_RESULT([$enable_latex])
+AS_IF([test x$enable_latex = xyes],
+  [AC_DEFINE([WITH_LATEX],[1],[with LaTeX indexing])]
+)
+
+# Program feature: Mail Indexing (--disable-mail)
+AC_MSG_CHECKING([whether to enable mail indexing])
+AC_ARG_ENABLE([mail],
+  [AS_HELP_STRING([--disable-mail], [disable mail indexing])],
+  [],
+  [enable_mail="yes"]
+)
+AC_MSG_RESULT([$enable_mail])
+AS_IF([test x$enable_mail = xyes],
+  [AC_DEFINE([WITH_MAIL],[1],[with mail indexing])]
+)
+
+# Program feature: Man(ual page) Indexing (--disable-man)
+AC_MSG_CHECKING([whether to enable man(ual page) indexing])
+AC_ARG_ENABLE([man],
+  [AS_HELP_STRING([--disable-man], [disable man indexing])],
+  [],
+  [enable_man="yes"]
+)
+AC_MSG_RESULT([$enable_man])
+AS_IF([test x$enable_man = xyes],
+  [AC_DEFINE([WITH_MAN],[1],[with man indexing])]
+)
+
+# Program feature: RTF Indexing (--disable-rtf)
+AC_MSG_CHECKING([whether to enable RTF (Rich Text Format) indexing])
+AC_ARG_ENABLE([rtf],
+  [AS_HELP_STRING([--disable-rtf], [disable RTF indexing])],
+  [],
+  [enable_rtf="yes"]
+)
+AC_MSG_RESULT([$enable_rtf])
+AS_IF([test x$enable_rtf = xyes],
+  [AC_DEFINE([WITH_RTF],[1],[with RTF indexing])]
+)
+
 # Makefile conditionals.
 AM_CONDITIONAL([MULTI_THREADED], [test x$enable_daemon = xyes])
+AM_CONDITIONAL([WITH_BASE64], [test x$enable_base64 = xyes])
 AM_CONDITIONAL([WITH_DECODING], [test x$enable_decoding = xyes])
+AM_CONDITIONAL([WITH_HTML], [test x$enable_html = xyes])
+AM_CONDITIONAL([WITH_ID3], [test x$enable_id3 = xyes])
+AM_CONDITIONAL([WITH_LATEX], [test x$enable_latex = xyes])
+AM_CONDITIONAL([WITH_MAIL], [test x$enable_mail = xyes])
+AM_CONDITIONAL([WITH_MAN], [test x$enable_man = xyes])
+AM_CONDITIONAL([WITH_QUOTED_PRINTABLE], [test x$enable_quoted_printable = xyes])
+AM_CONDITIONAL([WITH_RTF], [test x$enable_rtf = xyes])
 AM_CONDITIONAL([WITH_SEARCH_DAEMON], [test x$enable_daemon = xyes])
+AM_CONDITIONAL([WITH_UTF16], [test x$enable_utf16 = xyes])
+AM_CONDITIONAL([WITH_UTF7], [test x$enable_utf7 = xyes])
+AM_CONDITIONAL([WITH_UTF8], [test x$enable_utf8 = xyes])
 
 # Miscellaneous.
 AC_LANG(C++)
