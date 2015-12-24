@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_latex
-
 #ifndef mod_latex_H
 #define mod_latex_H
 
@@ -58,6 +56,4 @@ private:
 };
 
 #endif /* mod_latex_H */
-
-#endif /* MOD_latex */
 /* vim:set et sw=4 ts=4: */

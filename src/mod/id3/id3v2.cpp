@@ -19,9 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_id3
-
 // local
+#include "config.h"
 #include "AssociateMeta.h"
 #include "charsets/charsets.h"
 #include "encoded_char.h"
@@ -229,8 +228,8 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 {
     ////////// Check for padding or footer ////////////////////////////////////
 
-    if ( c[0] ==  0  && c[1] ==  0  && c[2] ==  0 ||
-         c[0] == '3' && c[1] == 'D' && c[2] == 'I'
+    if ( (c[0] ==  0  && c[1] ==  0  && c[2] ==  0) ||
+         (c[0] == '3' && c[1] == 'D' && c[2] == 'I')
     )
         return hr_end_of_frames;
 
@@ -765,5 +764,4 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     return n;
 }
 
-#endif /* MOD_id3 */
 /* vim:set et sw=4 ts=4: */

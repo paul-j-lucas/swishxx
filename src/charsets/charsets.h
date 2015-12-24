@@ -23,41 +23,46 @@
 #define charsets_H
 
 // local
+#include "config.h"
 #include "encoded_char.h"
+
+///////////////////////////////////////////////////////////////////////////////
 
 encoded_char_range::charset_type const US_ASCII         = 0;
 encoded_char_range::charset_type const ISO_8859_1       = 0;
 encoded_char_range::charset_type const CHARSET_UNKNOWN  =
-    reinterpret_cast<encoded_char_range::charset_type>( ~0 );
+  reinterpret_cast<encoded_char_range::charset_type>( ~0 );
 
 #ifdef WITH_UTF7
 encoded_char_range::value_type charset_utf7(
-    encoded_char_range::const_pointer begin,
-    encoded_char_range::const_pointer &pos,
-    encoded_char_range::const_pointer end
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
 );
-#endif
+#endif /* WITH_UTF7 */
 
 #ifdef WITH_UTF8
 encoded_char_range::value_type charset_utf8(
-    encoded_char_range::const_pointer begin,
-    encoded_char_range::const_pointer &pos,
-    encoded_char_range::const_pointer end
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
 );
-#endif
+#endif /* WITH_UTF8 */
 
 #ifdef WITH_UTF16
 encoded_char_range::value_type charset_utf16be(
-    encoded_char_range::const_pointer begin,
-    encoded_char_range::const_pointer &pos,
-    encoded_char_range::const_pointer end
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
 );
 encoded_char_range::value_type charset_utf16le(
-    encoded_char_range::const_pointer begin,
-    encoded_char_range::const_pointer &pos,
-    encoded_char_range::const_pointer end
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
 );
-#endif
+#endif /* WITH_UTF16 */
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* charsets_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

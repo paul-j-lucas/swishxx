@@ -19,12 +19,10 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_html
-
 // local
+#include "config.h"
 #include "AssociateMeta.h"
 #include "charsets/unicode.h"
-#include "config.h"
 #include "encoded_char.h"
 #include "entities.h"
 #include "ExcludeClass.h"
@@ -736,7 +734,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
             //
             char *names = to_lower( class_att );
             char const *name;
-            while ( name = ::strtok( names, " \f\n\r\t\v" ) ) {
+            while ( (name = ::strtok( names, " \f\n\r\t\v" )) ) {
                 if ( exclude_class_names.contains( name ) ) {
                     is_no_index_class = true;
                     break;
@@ -985,5 +983,4 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
     "-H     | --dump-html        : Dump built-in recognized HTML/XHTML elements, exit\n";
 }
 
-#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

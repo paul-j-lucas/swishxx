@@ -19,8 +19,6 @@
 **	    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef	MOD_html
-
 #ifndef ExcludeClass_H
 #define ExcludeClass_H
 
@@ -50,6 +48,4 @@ public:
 extern ExcludeClass exclude_class_names;
 
 #endif	/* ExcludeClass_H */
-
-#endif	/* MOD_html */
 /* vim:set et sw=4 ts=4: */

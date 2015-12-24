@@ -19,9 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_mail
-
 // local
+#include "config.h"
 #include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
@@ -29,13 +28,13 @@
 #include "IncludeMeta.h"
 #include "iso8859-1.h"
 #include "meta_map.h"
-#ifdef MOD_html
+#ifdef WITH_HTML
 #include "mod/html/mod_html.h"
-#endif
+#endif /* WITH_HTML */
 #include "mod_mail.h"
-#ifdef MOD_rtf
+#ifdef WITH_RTF
 #include "mod/rtf/mod_rtf.h"
-#endif
+#endif /* WITH_RTF */
 #include "pjl/less.h"
 #include "TitleLines.h"
 #include "util.h"
@@ -323,7 +322,7 @@ could_not_filter:
 
         ////////// Deal with Content-Transfer-Encoding ////////////////////////
 
-        if ( !::strcmp( kv.key, "content-transfer-encoding" ) ) {
+        if ( !::strcmp( kv.key.get(), "content-transfer-encoding" ) ) {
             unique_ptr<char[]> const lower_ptr(
                 to_lower_r( kv.value_begin, kv.value_end )
             );
@@ -354,7 +353,7 @@ could_not_filter:
 
         ////////// Deal with Content-Type /////////////////////////////////////
 
-        if ( !::strcmp( kv.key, "content-type" ) ) {
+        if ( !::strcmp( kv.key.get(), "content-type" ) ) {
             unique_ptr<char[]> const lower_ptr(
                 to_lower_r( kv.value_begin, kv.value_end )
             );
@@ -475,7 +474,7 @@ not_indexable:  type.content_type_ = ct_unknown;
             // name of the header (canonicalized to lower case) is among the
             // set of meta names to exclude or not among the set to include.
             //
-            if ( (meta_id = find_meta( kv.key )) == Meta_ID_None )
+            if ( (meta_id = find_meta( kv.key.get() )) == Meta_ID_None )
                 continue;
         }
         encoded_char_range const e( kv.value_begin, kv.value_end );
@@ -534,20 +533,20 @@ not_indexable:  type.content_type_ = ct_unknown;
             boundary_stack_.pop_back();
             break;
 
-#ifdef MOD_rtf
+#ifdef WITH_RTF
         case ct_text_enriched: {
             static indexer &rtf = *indexer::find_indexer( "RTF" );
             rtf.index_words( e2 );
             break;
         }
-#endif
-#ifdef MOD_html
+#endif /* WITH_RTF */
+#ifdef WITH_HTML
         case ct_text_html: {
             static indexer &html = *indexer::find_indexer( "HTML" );
             html.index_words( e2 );
             break;
         }
-#endif
+#endif /* WITH_HTML */
         case ct_text_plain:
             indexer::index_words( e2 );
             break;
@@ -675,9 +674,8 @@ more_headers:
     //
     // Canonicalize the name of the header to lower case.
     //
-    kv->key = to_lower_r( header_begin, header_end );
+    kv->key.reset( to_lower_r( header_begin, header_end ) );
     return true;
 }
 
-#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

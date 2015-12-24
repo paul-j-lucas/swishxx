@@ -24,25 +24,13 @@ bin_PROGRAMS = index search extract
 
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -L$(top_srcdir)/lib
 
+########## index ##############################################################
+
 index_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_percent.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp file_info.cpp file_list.cpp filter.cpp IncludeFile.cpp IncludeMeta.cpp indexer.cpp index_segment.cpp init_modules.cpp init_mod_vars.cpp iso8859-1.cpp stop_words.cpp TempDirectory.cpp util.cpp word_info.cpp WordThreshold.cpp word_util.cpp index.cpp
 
 if WITH_DECODING
 index_SOURCES += encoded_char.cpp
 endif
-
-index_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a
-
-search_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_enum.cpp conf_int.cpp conf_string.cpp index_segment.cpp init_mod_vars.cpp file_info.cpp file_list.cpp iso8859-1.cpp query_node.cpp query.cpp ResultsFormat.cpp results_formatter.cpp classic_formatter.cpp xml_formatter.cpp token.cpp stem_word.cpp util.cpp word_info.cpp word_util.cpp search.cpp
-
-if WITH_SEARCH_DAEMON
-search_SOURCES += Group.cpp search_daemon.cpp search_thread.cpp SearchDaemon.cpp SocketAddress.cpp User.cpp
-endif
-
-search_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a
-
-extract_SOURCES = conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp ExtractFile.cpp filter.cpp index_segment.cpp init_mod_vars.cpp iso8859-1.cpp postscript.cpp stop_words.cpp util.cpp word_util.cpp extract.cpp
-
-extract_LDADD = $(top_builddir)/lib/libgnu.a $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a
 
 INIT_MODULES_SH = $(top_srcdir)/config/init_modules-sh
 
@@ -53,5 +41,44 @@ INIT_MOD_VARS_SH = $(top_srcdir)/config/init_mod_vars-sh
 
 init_mod_vars.cpp: mod/*/vars $(INIT_MOD_VARS_SH)
 	$(INIT_MOD_VARS_SH) > $@ || { rm -f $@; exit 1; }
+
+index_LDADD =
+
+if WITH_HTML
+index_LDADD += $(top_builddir)/src/mod/html/libhtml.a
+endif
+if WITH_ID3
+index_LDADD += $(top_builddir)/src/mod/id3/libid3.a
+endif
+if WITH_LATEX
+index_LDADD += $(top_builddir)/src/mod/latex/liblatex.a
+endif
+if WITH_MAIL
+index_LDADD += $(top_builddir)/src/mod/mail/libmail.a
+endif
+if WITH_MAN
+index_LDADD += $(top_builddir)/src/mod/man/libman.a
+endif
+if WITH_RTF
+index_LDADD += $(top_builddir)/src/mod/rtf/librtf.a
+endif
+
+index_LDADD += $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a $(top_builddir)/lib/libgnu.a
+
+########## search #############################################################
+
+search_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_enum.cpp conf_int.cpp conf_string.cpp index_segment.cpp init_mod_vars.cpp file_info.cpp file_list.cpp iso8859-1.cpp query_node.cpp query.cpp ResultsFormat.cpp results_formatter.cpp classic_formatter.cpp xml_formatter.cpp token.cpp stem_word.cpp util.cpp word_info.cpp word_util.cpp search.cpp
+
+if WITH_SEARCH_DAEMON
+search_SOURCES += Group.cpp search_daemon.cpp search_thread.cpp SearchDaemon.cpp SocketAddress.cpp User.cpp
+endif
+
+search_LDADD = $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a $(top_builddir)/lib/libgnu.a
+
+########## extract ############################################################
+
+extract_SOURCES = conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp ExtractFile.cpp filter.cpp index_segment.cpp init_mod_vars.cpp iso8859-1.cpp postscript.cpp stop_words.cpp util.cpp word_util.cpp extract.cpp
+
+extract_LDADD = $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/encodings/libencodings.a $(top_builddir)/src/pjl/libpjl.a $(top_builddir)/lib/libgnu.a
 
 # vim:set noet sw=8 ts=8:

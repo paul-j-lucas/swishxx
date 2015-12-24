@@ -19,9 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_man
-
 // local
+#include "config.h"
 #include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
@@ -456,5 +455,4 @@ next_c: if ( c == e.end_pos() )
     index_words( encoded_char_range( begin, c ), meta_id );
 }
 
-#endif /* MOD_man */
 /* vim:set et sw=4 ts=4: */

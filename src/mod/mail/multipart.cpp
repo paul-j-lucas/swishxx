@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_mail
-
 // local
 #include "encoded_char.h"
 #include "mod_mail.h"
@@ -96,10 +94,9 @@ using namespace std;
         //
         // See if the boundary string is the final one, i.e., followed by "--".
         //
-        if ( part_end == end || nl[-1] == '-' && nl[-2] == '-' )
+        if ( part_end == end || (nl[-1] == '-' && nl[-2] == '-') )
             break;
     }
 }
 
-#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

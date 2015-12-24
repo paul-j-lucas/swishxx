@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_QUOTED_PRINTABLE
-
 // local
 #include "encoded_char.h"
 #include "util.h"
@@ -92,7 +90,7 @@ using namespace std;
             // entirely making things appear as though it's not even there by
             // returning the character after the break.
             //
-            if ( c == end  || *c == '\n' && ++c == end )
+            if ( c == end  || (*c == '\n' && ++c == end) )
                 return ' ';
             if ( *c != '=' )
                 return *c++;
@@ -144,5 +142,5 @@ using namespace std;
         ( is_digit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
     );
 }
-#endif /* WITH_QUOTED_PRINTABLE */
+
 /* vim:set et sw=4 ts=4: */

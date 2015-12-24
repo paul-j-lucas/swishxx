@@ -59,13 +59,17 @@ cat <<END
 void conf_var::init_mod_vars() {
 END
 
+ident() {
+  basename $HEADER | sed -e 's/\.h$//' -e 's/mod_/WITH_/' | tr '[a-z]' '[A-Z]'
+}
+
 for HEADER in mod/*/mod_*.h
 do
   VARS_FILE=`dirname $HEADER`/vars
   [ -f $VARS_FILE ] || continue
   cat $VARS_FILE | while read var_name
   do
-    IDENT=`basename $HEADER | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
+    IDENT=`ident $HEADER`
     cat <<END
 #ifdef $IDENT
   conf_var::register_var( "$var_name" );

@@ -19,16 +19,14 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_html
-
 #ifndef entities_H
 #define entities_H
 
-// standard
-#include <map>
-
 // local
 #include "pjl/less.h"
+
+// standard
+#include <map>
 
 //*****************************************************************************
 //
@@ -75,6 +73,4 @@ private:
 };
 
 #endif /* entities_H */
-
-#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

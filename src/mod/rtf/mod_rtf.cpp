@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_rtf
-
 // local
 #include "config.h"
 #include "iso8859-1.h"
@@ -123,5 +121,4 @@ using namespace std;
     }
 }
 
-#endif /* MOD_rtf */
 /* vim:set et sw=4 ts=4: */

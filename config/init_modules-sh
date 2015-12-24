@@ -52,9 +52,13 @@ cat <<END
 #include "indexer.h"
 END
 
+ident() {
+  basename $HEADER | sed -e 's/\.h$//' -e 's/mod_/WITH_/' | tr '[a-z]' '[A-Z]'
+}
+
 for HEADER in mod/*/mod_*.h
 do
-  IDENT=`basename $HEADER | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
+  IDENT=`ident $HEADER`
   cat <<END
 #ifdef $IDENT
 #include "$HEADER"
@@ -75,7 +79,7 @@ END
 for HEADER in mod/*/mod_*.h
 do
   CLASS=`fgrep " : public indexer" $HEADER | sed 's/.*class  *\([A-Za-z_][A-Za-z0-9_]*\).*/\1/'`
-  IDENT=`basename $HEADER | sed -e 's/\.h$//' -e 's/mod_/MOD_/'`
+  IDENT=`ident $HEADER`
   cat <<END
 #ifdef $IDENT
   static $CLASS ${CLASS}_instance;

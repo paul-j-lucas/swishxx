@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_mail
-
 #ifndef mod_mail_H
 #define mod_mail_H
 
@@ -124,7 +122,7 @@ private:
     };
 
     struct key_value {
-        PJL::unique_ptr<char[]> key;
+        std::unique_ptr<char[]> key;
         char const *value_begin, *value_end;
     };
 
@@ -175,6 +173,4 @@ inline mail_indexer::message_type::message_type( message_type const &mt ) :
 }
 
 #endif /* mod_mail_H */
-
-#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

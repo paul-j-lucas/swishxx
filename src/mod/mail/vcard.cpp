@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_mail
-
 // local
 #include "mod_mail.h"
 
@@ -67,7 +65,7 @@ using namespace std;
         // Reuse parse_header() to parse vCard types, but trim them at
         // semicolons.
         //
-        int const meta_id = find_meta( ::strtok( kv.key, ";" ) );
+        int const meta_id = find_meta( ::strtok( kv.key.get(), ";" ) );
         if ( meta_id == Meta_ID_None )
             continue;
         //
@@ -81,5 +79,4 @@ using namespace std;
     }
 }
 
-#endif /* MOD_mail */
 /* vim:set et sw=4 ts=4: */

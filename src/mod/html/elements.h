@@ -19,17 +19,15 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_html
-
 #ifndef element_map_H
 #define element_map_H
+
+// local
+#include "pjl/pjl_set.h"
 
 // standard
 #include <iostream>
 #include <map>
-
-// local
-#include "pjl/pjl_set.h"
 
 class element_map;
 
@@ -125,6 +123,4 @@ private:
 }
 
 #endif /* element_map_H */
-
-#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

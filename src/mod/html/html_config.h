@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_html
-
 #ifndef html_config_H
 #define html_config_H
 
@@ -38,6 +36,4 @@ int const   Tag_Name_Max_Size       = 10;
 //          is longer than the above.
 
 #endif /* html_config_H */
-
-#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */

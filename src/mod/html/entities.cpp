@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MOD_html
-
 // local
 #include "entities.h"
 
@@ -122,5 +120,4 @@
     return m;
 }
 
-#endif /* MOD_html */
 /* vim:set et sw=4 ts=4: */
