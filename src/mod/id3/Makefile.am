@@ -20,7 +20,7 @@
 
 lib_LIBRARIES = libid3.a
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src -L$(top_srcdir)/lib -L$(top_srcdir)/src/pjl
+AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
 libid3_a_SOURCES = id3v1.cpp id3v2.cpp mod_id3.cpp
 libid3_a_LIBADD = $(top_builddir)/lib/libgnu.a
