@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      less.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,72 +23,48 @@
 #define less_H
 
 // standard
+#include <cstddef>                      /* for size_t */
 #include <cstring>
 #include <functional>
 
 namespace std {
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<> struct less<char const*> :
-            std::binary_function<char const*, char const*, bool>
-//
-// DESCRIPTION
-//
-//      Specialize the binary_function "less" so that C-style strings (char
-//      const*) will work properly with STL containers.
-//
-// SEE ALSO
-//
-//      binary_function(3), less(3), strcmp(3)
-//
-//      Bjarne Stroustrup.  "The C++ Programming Language, 3rd ed."
-//      Addison-Wesley, Reading, MA, 1997.  p. 468.
-//
-//*****************************************************************************
-{
-    less() { }
-    // This default constructor doesn't need to be defined, but g++ complains
-    // if it isn't and you try to define a "const less" object.
+///////////////////////////////////////////////////////////////////////////////
 
-    result_type
-    operator()( first_argument_type a, second_argument_type b ) const {
-        return std::strcmp( a, b ) < 0;
-    }
+/**
+ * Specialize the binary_function %less so that C-style strings (char const*)
+ * will work properly with STL containers.
+ */
+template<>
+struct less<char const*> : std::binary_function<char const*,char const*,bool> {
+  less() { }
+
+  result_type
+  operator()( first_argument_type a, second_argument_type b ) const {
+      return std::strcmp( a, b ) < 0;
+  }
 };
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<class T> struct less_n;
+template<class T> struct less_n;
 
-        template<> struct less_n<char const*> : less<char const*>
-//
-// DESCRIPTION
-//
-//      A less_n is-a less< char const* > that compares C-style strings, but
-//      only for a certain maximum length.
-//
-// SEE ALSO
-//
-//      less(3), strncmp(3)
-//
-//*****************************************************************************
-{
-    less_n<char const*>( int len ) : n_( len ) { }
+/**
+ * A %less_n is-a less<char const*> that compares C-style strings, but only for
+ * a certain maximum length.
+ */
+template<> struct less_n<char const*> : less<char const*> {
+  less_n<char const*>( size_t max_len ) : n_( max_len ) { }
 
-    result_type
-    operator()( first_argument_type a, second_argument_type b ) const {
-        return std::strncmp( a, b, n_ ) < 0;
-    }
+  result_type
+  operator()( first_argument_type a, second_argument_type b ) const {
+      return std::strncmp( a, b, n_ ) < 0;
+  }
 private:
-    int const n_;
+  size_t const n_;
 };
+
+///////////////////////////////////////////////////////////////////////////////
 
 } // namespace std
 
 #endif /* less_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

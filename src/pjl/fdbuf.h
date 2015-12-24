@@ -45,8 +45,14 @@ namespace PJL {
 class fdbuf : public std::streambuf {
   enum { buf_size = 1024 };
 public:
-  explicit fdbuf( int fd = -1 )         { init( fd ); }
-  ~fdbuf()                              { if ( fd_ > -1 ) sync(); }
+  explicit fdbuf( int fd = -1 ) {
+    init( fd );
+  }
+
+  ~fdbuf() {
+    if ( fd_ > -1 )
+      sync();
+  }
 
   // default copy constructor is fine
   // default assignment is fine
@@ -63,16 +69,18 @@ public:
 protected:
   typedef int int_type;
 
-  virtual int_type        overflow( int_type c );
-  virtual int             sync();
-  virtual int_type        underflow();
-  std::streamsize         write_buf( char const*, std::streamsize );
+  std::streamsize write_buf( char const*, std::streamsize );
+
+  // inherited
+  virtual int_type overflow( int_type c );
+  virtual int sync();
+  virtual int_type underflow();
   virtual std::streamsize xsputn( char const *buf, std::streamsize len );
 
 private:
-  int   fd_;
-  char  rbuf_[ buf_size ];
-  char  wbuf_[ buf_size ];
+  int fd_;
+  char rbuf_[ buf_size ];
+  char wbuf_[ buf_size ];
 
   void init( int fd );
 };

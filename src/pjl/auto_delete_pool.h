@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      auto_delete_pool.h
 **
-**      Copyright (C) 2004  Paul J. Lucas
+**      Copyright (C) 2004-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -32,12 +32,13 @@ namespace PJL {
 template<class T> class auto_delete_obj;
 
 /**
- * An auto_delete_pool is an object that is used to keep track of dynamically
+ * An %auto_delete_pool is an object that is used to keep track of dynamically
  * allocated objects derived from auto_delete_obj for the purpose of ensuring
  * that they are all deleted when the pool is deleted.  It's a "poor man's
  * garbage collector."
  */
-template<typename T> class auto_delete_pool {
+template<typename T>
+class auto_delete_pool {
 public:
   ~auto_delete_pool() {
     for ( list_type::const_iterator i = list_.begin(); i != list_.end(); ++i )
@@ -49,24 +50,28 @@ private:
   list_type list_;
 
   void add( void *obj ) {
-      list_.push_back( obj );
+    list_.push_back( obj );
   }
 
   friend class auto_delete_obj<T>;
 };
 
 /**
- * An auto_delete_obj is the base class for another that should be
- * "pooled" such that it, and others like it in the same pool, are deleted
+ * An %auto_delete_obj is the base class for another that should be "pooled"
+ * such that it, and others like it in the same pool, are deleted
  */
-template<typename Derived> class auto_delete_obj {
+template<typename Derived>
+class auto_delete_obj {
 public:
   typedef auto_delete_obj<Derived> pool_object_type;
   typedef auto_delete_pool<Derived> pool_type;
 
-  virtual ~auto_delete_obj() { }
+  virtual ~auto_delete_obj() {
+  }
 
-  pool_type* pool() const               { return pool_; }
+  pool_type* pool() const {
+    return pool_;
+  }
 
 protected:
   auto_delete_obj( pool_type *pool = 0 ) : pool_( pool ) {
