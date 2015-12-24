@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MULTI_THREADED
-
 // local
 #include "thread_pool.h"
 #include "util.h"
@@ -606,5 +604,5 @@ pthread_key_t       thread_pool::thread::thread_obj_key_;
 
 } // namespace PJL
 
-#endif /* MULTI_THREADED */
+///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=4 ts=4: */

@@ -19,14 +19,13 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 #ifndef User_H
 #define User_H
 
 // local
 #include "config.h"
 #include "conf_string.h"
+#include "swishpp-config.h"
 
 // standard
 #include <sys/types.h>
@@ -74,6 +73,4 @@ inline bool User::change_to_uid() const {
 }
 
 #endif /* User_H */
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

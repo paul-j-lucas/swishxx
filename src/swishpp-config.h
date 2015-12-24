@@ -22,6 +22,9 @@
 #ifndef swishpp_config_H
 #define swishpp_config_H
 
+// local
+#include "config.h"
+
 ////////// Word determination /////////////////////////////////////////////////
 
 int const   Word_Hard_Min_Size          = 3;

@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 #ifndef SocketTimeout_H
 #define SocketTimeout_H
 
@@ -53,6 +51,4 @@ public:
 extern SocketTimeout socket_timeout;
 
 #endif /* SocketTimeout_H */
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

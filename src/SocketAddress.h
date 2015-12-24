@@ -19,14 +19,13 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 #ifndef SocketAddress_H
 #define SocketAddress_H
 
 // local
 #include "config.h"
 #include "conf_string.h"
+#include "swishpp-config.h"
 
 // standard
 #include <arpa/inet.h>                  /* for htonl(3), INADDR_ANY */
@@ -70,6 +69,4 @@ private:
 extern SocketAddress socket_address;
 
 #endif /* SocketAddress_H */
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

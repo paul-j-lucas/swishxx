@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 #ifndef PidFile_H
 #define PidFile_H
 
@@ -50,6 +48,4 @@ public:
 extern PidFile pid_file_name;
 
 #endif /* PidFile_H */
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

@@ -54,7 +54,6 @@
 #include "TitleLines.h"
 #include "util.h"
 #include "Verbosity.h"
-#include "version.h"
 #include "WordFilesMax.h"
 #include "word_info.h"
 #include "word_markers.h"
@@ -389,7 +388,7 @@ static void             write_word_index( ostream&, off_t* );
                 break;
 
             case 'V': // Display version and exit.
-                cout << "SWISH++ " << version << endl;
+                cout << PACKAGE_STRING << endl;
                 ::exit( Exit_Success );
 
             case 'W': // Word threshold.

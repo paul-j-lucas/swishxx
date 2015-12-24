@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef MULTI_THREADED
-
 #ifndef thread_pool_H
 #define thread_pool_H
 
@@ -196,6 +194,4 @@ private:
 } // namespace PJL
 
 #endif /* thread_pool_H */
-
-#endif /* MULTI_THREADED */
 /* vim:set et sw=4 ts=4: */

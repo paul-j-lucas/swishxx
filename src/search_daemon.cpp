@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 // local
 #include "exit_codes.h"
 #include "Group.h"
@@ -473,5 +471,4 @@ static void set_signal_handlers();
     ::sigaction( SIGPIPE, &sa, 0 );
 }
 
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

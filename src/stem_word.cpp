@@ -36,7 +36,7 @@
 #include <map>
 #ifdef WITH_SEARCH_DAEMON
 #include <pthread.h>
-#endif
+#endif /* WITH_SEARCH_DAEMON */
 
 using namespace std;
 
@@ -378,12 +378,12 @@ static int  word_size( char const *word );
 #ifdef WITH_SEARCH_DAEMON
     static pthread_mutex_t cache_lock = PTHREAD_MUTEX_INITIALIZER;
     ::pthread_mutex_lock( &cache_lock );
-#endif
+#endif /* WITH_SEARCH_DAEMON */
     stem_cache::const_iterator const found = cache.find( word );
     if ( found != cache.end() ) {
 #ifdef WITH_SEARCH_DAEMON
         ::pthread_mutex_unlock( &cache_lock );
-#endif
+#endif /* WITH_SEARCH_DAEMON */
         return found->second;
     }
 
@@ -417,7 +417,7 @@ static int  word_size( char const *word );
 
 #ifdef WITH_SEARCH_DAEMON
     ::pthread_mutex_unlock( &cache_lock );
-#endif
+#endif /* WITH_SEARCH_DAEMON */
     return new_word;
 }
 

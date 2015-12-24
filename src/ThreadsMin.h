@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 #ifndef ThreadsMin_H
 #define ThreadsMin_H
 
@@ -51,6 +49,4 @@ public:
 extern ThreadsMin min_threads;
 
 #endif /* ThreadsMin_H */
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

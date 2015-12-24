@@ -19,9 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 // local
+#include "config.h"
 #include "pjl/fdbuf.h"
 #include "search.h"
 #include "search_thread.h"
@@ -87,7 +86,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
 //*****************************************************************************
 {
 #define SEARCH_DAEMON_OPTIONS_ONLY
-#include "search_options.c"             /* defines opt_spec */
+#include "search_options.cpp"           /* defines opt_spec */
 
 #   ifdef DEBUG_threads
     cerr << "in search_thread::main()\n";
@@ -179,10 +178,10 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
 
     int argc = 0;
 
-    while ( argv[ argc++ ] = s ) {
+    while ( (argv[ argc++ ] = s) ) {
         if ( argc >= arg_max - 1 )      // -1 to allow for null at end
             return arg_max;
-        if ( s = ::strpbrk( s, " \t\n\r" ) ) {
+        if ( (s = ::strpbrk( s, " \t\n\r" )) ) {
             *s = '\0';
             //
             // We must skip *ALL* whitespace characters separating arguments.
@@ -273,6 +272,4 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

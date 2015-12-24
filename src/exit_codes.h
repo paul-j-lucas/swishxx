@@ -22,6 +22,9 @@
 #ifndef exit_codes_H
 #define exit_codes_H
 
+// local
+#include "config.h"
+
 // exit(3) status codes
 enum {
     // common to all executables
@@ -49,7 +52,7 @@ enum {
     Exit_Malformed_Query            = 50,
 #ifdef WITH_WORD_POS
     Exit_No_Word_Pos_Data           = 51,
-#endif
+#endif /* WITH_WORD_POS */
 #ifdef WITH_SEARCH_DAEMON
     Exit_No_Write_PID               = 60,
     Exit_No_Host_or_IP              = 61,
@@ -71,7 +74,7 @@ enum {
     Exit_No_Init_Thread_Mutex       = 77,
     Exit_No_User                    = 78,
     Exit_No_Group                   = 79,
-#endif
+#endif /* WITH_SEARCH_DAEMON */
 
     Exit_End_Enum_Marker
 };

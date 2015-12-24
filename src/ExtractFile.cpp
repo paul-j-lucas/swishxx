@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "ExtractFile.h"
 #include "util.h"                               /* for new_strdup() */
 

@@ -19,18 +19,18 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 // local
 #include "SearchDaemon.h"
 
+///////////////////////////////////////////////////////////////////////////////
+
 char const *const SearchDaemon::legal_values_[] = {
-    "none",
-    "tcp",
-    "unix",
-    "both",
-    0
+  "none",
+  "tcp",
+  "unix",
+  "both",
+  0
 };
 
-#endif /* WITH_SEARCH_DAEMON */
+///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=4 ts=4: */

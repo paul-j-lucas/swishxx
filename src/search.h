@@ -23,6 +23,7 @@
 #define search_H
 
 // local
+#include "config.h"
 #include "pjl/option_stream.h"
 
 // standard

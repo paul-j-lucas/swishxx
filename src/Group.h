@@ -19,14 +19,12 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifdef WITH_SEARCH_DAEMON
-
 #ifndef Group_H
 #define Group_H
 
 // local
-#include "config.h"
 #include "conf_string.h"
+#include "swishpp-config.h"
 
 // standard
 #include <sys/types.h>
@@ -75,6 +73,4 @@ inline bool Group::change_to_gid() const {
 }
 
 #endif /* Group_H */
-
-#endif /* WITH_SEARCH_DAEMON */
 /* vim:set et sw=4 ts=4: */

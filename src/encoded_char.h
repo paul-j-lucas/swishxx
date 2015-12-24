@@ -23,6 +23,7 @@
 #define encoded_char_H
 
 // local
+#include "config.h"
 #include "iso8859-1.h"
 #include "pjl/char_buffer_pool.h"
 #include "util.h"                       /* for to_lower() */

@@ -25,6 +25,7 @@
 */
 
 // local
+#include "config.h"
 #include "encoded_char.h"
 
 // standard

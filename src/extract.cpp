@@ -38,7 +38,6 @@
 #include "stop_words.h"
 #include "util.h"
 #include "Verbosity.h"
-#include "version.h"
 #include "word_util.h"
 
 // standard
@@ -76,7 +75,7 @@ static ostream&     usage( ostream& = cerr );
 
 #define EXTRACT
 #include "do_file.cpp"
-#include "directory.c"
+#include "directory.cpp"
 
 //*****************************************************************************
 //
@@ -159,7 +158,7 @@ static ostream&     usage( ostream& = cerr );
 
             case 'e': { // Filename pattern(s) to extract.
                 char *a = opt.arg();
-                for ( char *pat; pat = ::strtok( a, "," ); ) {
+                for ( char *pat; (pat = ::strtok( a, "," )); ) {
                     include_patterns.insert( pat, 0 );
                     a = 0;
                 }
@@ -168,7 +167,7 @@ static ostream&     usage( ostream& = cerr );
 
             case 'E': { // Filename pattern(s) not to extract.
                 char *a = opt.arg();
-                for ( char *pat; pat = ::strtok( a, "," ); ) {
+                for ( char *pat; (pat = ::strtok( a, "," )); ) {
                     exclude_patterns.insert( pat );
                     a = 0;
                 }
@@ -200,7 +199,7 @@ static ostream&     usage( ostream& = cerr );
                 break;
 
             case 'V': // Display version and exit.
-                cout << "SWISH++ " << version << endl;
+                cout << PACKAGE_STRING << endl;
                 ::exit( Exit_Success );
 
             case 'x': // Specify filename extension to append.

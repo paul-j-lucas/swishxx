@@ -46,7 +46,6 @@
 #include "StemWords.h"
 #include "token.h"
 #include "util.h"
-#include "version.h"
 #include "WordFilesMax.h"
 #include "WordPercentMax.h"
 #ifdef WITH_WORD_POS
@@ -58,7 +57,7 @@
 #include "Group.h"
 #ifdef __APPLE__
 #include "LaunchdCooperation.h"
-#endif
+#endif /* __APPLE__ */
 #include "PidFile.h"
 #include "SearchBackground.h"
 #include "SearchDaemon.h"
@@ -719,7 +718,7 @@ inline omanip< char const* > index_file_info( int index ) {
                 break;
 #endif
             case 'V': // Display version and exit.
-                err << "SWISH++ " << version << endl;
+                err << PACKAGE_STRING << endl;
 #ifdef WITH_SEARCH_DAEMON
                 if ( daemon_type == "none" )
 #endif

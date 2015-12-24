@@ -20,7 +20,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([swish++], [7.0], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/swish++])
+AC_INIT([SWISH++], [7.0], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/swish-pp])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -61,7 +61,7 @@ AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([madvise select socket strchr strrchr])
 
-# Program features.
+# Program feature: Search Daemon (--disable-daemon)
 AC_MSG_CHECKING([whether to enable the search daemon])
 AC_ARG_ENABLE([daemon],
   [AS_HELP_STRING([--disable-daemon], [disable search daemon])],
@@ -69,71 +69,77 @@ AC_ARG_ENABLE([daemon],
   [enable_daemon="yes"]
 )
 AC_MSG_RESULT([$enable_daemon])
-AS_IF([test "x$enable_daemon" = "xyes"],
-  [AC_DEFINE([WITH_SEARCH_DAEMON],[1],[with search daemon]),
+AS_IF([test x$enable_daemon = xyes],
+  [AC_DEFINE([WITH_SEARCH_DAEMON],[1],[with search daemon])
    AC_DEFINE([MULTI_THREADED],[1],[multithreaded])]
 )
 
+# Program feature: Base64 Decoding (--disable-base64)
 AC_MSG_CHECKING([whether to enable Base64 support])
 AC_ARG_ENABLE([base64],
   [AS_HELP_STRING([--disable-base64], [disable Base64 support])],
   [],
-  [enable_base64="yes"]
+  [enable_base64="yes" enable_decoding="yes"]
 )
 AC_MSG_RESULT([$enable_base64])
-AS_IF([test "x$enable_base64" = "xyes"],
+AS_IF([test x$enable_base64 = xyes],
   [AC_DEFINE([WITH_BASE64],[1],[with Base64 support])
    AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
+# Program feature: Quoted-Printable Decoding (--disable-quoted-printable)
 AC_MSG_CHECKING([whether to enable quoted-printable support])
 AC_ARG_ENABLE([quoted-printable],
   [AS_HELP_STRING([--disable-quoted-printable], [disable quoted-printable support])],
   [],
-  [enable_quoted_printable="yes"]
+  [enable_quoted_printable="yes" enable_decoding="yes"]
 )
 AC_MSG_RESULT([$enable_quoted_printable])
-AS_IF([test "x$enable_quoted_printable" = "xyes"],
+AS_IF([test x$enable_quoted_printable = xyes],
   [AC_DEFINE([WITH_QUOTED_PRINTABLE],[1],[with quoted-printable support])
    AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
+# Program feature: UTF-7 Decoding (--disable-utf7)
 AC_MSG_CHECKING([whether to enable UTF-7 support])
 AC_ARG_ENABLE([utf7],
   [AS_HELP_STRING([--disable-utf7], [disable UTF-7 support])],
   [],
-  [enable_utf7="yes"]
+  [enable_utf7="yes" enable_decoding="yes"]
 )
 AC_MSG_RESULT([$enable_utf7])
-AS_IF([test "x$enable_utf7" = "xyes"],
+AS_IF([test x$enable_utf7 = xyes],
   [AC_DEFINE([WITH_UTF7],[1],[with UTF-7 support])
    AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
+# Program feature: UTF-8 Decoding (--disable-utf8)
 AC_MSG_CHECKING([whether to enable UTF-8 support])
 AC_ARG_ENABLE([utf8],
   [AS_HELP_STRING([--disable-utf8], [disable UTF-8 support])],
   [],
-  [enable_utf8="yes"]
+  [enable_utf8="yes" enable_decoding="yes"]
 )
 AC_MSG_RESULT([$enable_utf8])
-AS_IF([test "x$enable_utf8" = "xyes"],
+AS_IF([test x$enable_utf8 = xyes],
   [AC_DEFINE([WITH_UTF8],[1],[with UTF-8 support])
    AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
+# Program feature: UTF-16 Decoding (--disable-utf16)
 AC_MSG_CHECKING([whether to enable UTF-16 support])
 AC_ARG_ENABLE([utf16],
   [AS_HELP_STRING([--disable-utf16], [disable UTF-16 support])],
   [],
-  [enable_utf16="yes"]
+  [enable_utf16="yes" enable_decoding="yes"]
 )
 AC_MSG_RESULT([$enable_utf16])
-AS_IF([test "x$enable_utf16" = "xyes"],
+AS_IF([test x$enable_utf16 = xyes],
   [AC_DEFINE([WITH_UTF16],[1],[with UTF-16 support])
    AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
+# Program feature: Word Position Data (--disable-word-pos)
 AC_MSG_CHECKING([whether to enable word position data])
 AC_ARG_ENABLE([word_pos],
   [AS_HELP_STRING([--disable-word-pos], [disable word position data])],
@@ -141,9 +147,14 @@ AC_ARG_ENABLE([word_pos],
   [enable_word_pos="yes"]
 )
 AC_MSG_RESULT([$enable_word_pos])
-AS_IF([test "x$enable_word_pos" = "xyes"],
+AS_IF([test x$enable_word_pos = xyes],
   [AC_DEFINE([WITH_WORD_POS],[1],[with word position data])]
 )
+
+# Makefile conditionals.
+AM_CONDITIONAL([MULTI_THREADED], [test x$enable_daemon = xyes])
+AM_CONDITIONAL([WITH_DECODING], [test x$enable_decoding = xyes])
+AM_CONDITIONAL([WITH_SEARCH_DAEMON], [test x$enable_daemon = xyes])
 
 # Miscellaneous.
 AC_LANG(C++)

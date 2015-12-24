@@ -19,8 +19,6 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#if defined( WITH_SEARCH_DAEMON ) && defined( __APPLE__ )
-
 #ifndef LaunchdCooperation_H
 #define LaunchdCooperation_H
 
@@ -46,5 +44,4 @@ extern LaunchdCooperation launchd_cooperation;
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* LaunchdCooperation_H */
-#endif /* WITH_SEARCH_DAEMON && __APPLE__ */
 /* vim:set et sw=2 ts=2: */

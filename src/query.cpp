@@ -33,6 +33,7 @@
 #include "word_util.h"
 
 // standard
+#include <cassert>
 #include <algorithm>                    /* for binary_search(), etc */
 #include <cstdlib>                      /* for exit(3) */
 #ifdef DEBUG_parse_query
@@ -490,7 +491,10 @@ parsed_meta_id:
 #           endif /* DEBUG_parse_query */
             relop = t_type;
             return true;
-    }
+
+        default:
+            assert( false );
+    } // siwtch
     query.put_back( t );
     if ( t == token::tt_rparen )
         return false;
