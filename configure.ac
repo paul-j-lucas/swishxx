@@ -266,6 +266,7 @@ AC_CONFIG_FILES([
     src/mod/mail/Makefile
     src/mod/man/Makefile
     src/mod/rtf/Makefile
+    test/Makefile
     man/Makefile
     man/man1/Makefile
     man/man4/Makefile

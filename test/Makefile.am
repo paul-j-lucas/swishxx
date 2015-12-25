@@ -1,8 +1,8 @@
 ##
 #	SWISH++
-#	Makefile.am
+#	test/Makefile.am
 #
-#	Copyright (C) 1998-2015  Paul J. Lucas
+#	Copyright (C) 2015  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -18,8 +18,21 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = m4/gnulib-cache.m4
-SUBDIRS = lib src man test
+AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
+
+TESTS =	tests/index-no_options.test
+
+if WITH_HTML
+TESTS += tests/index-H.test
+endif
+
+AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
+TEST_EXTENSIONS = .sh .test
+SH_LOG_DRIVER = $(srcdir)/run_test.sh
+TEST_LOG_DRIVER = $(srcdir)/run_test.sh
+
+EXTRA_DIST = run_test.sh tests data expected
+dist-hook:
+	cd $(distdir)/tests && rm -f *.log *.trs
 
 # vim:set noet sw=8 ts=8:
