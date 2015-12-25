@@ -282,7 +282,7 @@ static void             write_word_index( ostream&, off_t* );
     option_stream::spec *const
         all_options = indexer::all_mods_options( opt_spec );
     option_stream opt_in( argc, argv, all_options );
-    for ( option_stream::option opt; opt_in >> opt; )
+    for ( option_stream::option opt; opt_in >> opt; ) {
         switch ( opt ) {
 
             case '?': // Print help.
@@ -398,7 +398,8 @@ static void             write_word_index( ostream&, off_t* );
             default: // Any indexing module claim the option?
                 if ( !indexer::any_mod_claims_option( opt ) )
                     cerr << usage;
-        }
+        } // switch
+    } // for
     delete[] all_options;
     argc -= opt_in.shift(), argv += opt_in.shift();
 
