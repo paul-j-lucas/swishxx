@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/enc_int.cpp
 **
-**      Copyright (C) 2003  Paul J. Lucas
+**      Copyright (C) 2003-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,72 +28,29 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        int dec_int( unsigned char const *&p )
-//
-// DESCRIPTION
-//
-//      Decode an integer from an encoded byte sequence.  See the comment for
-//      enc_int() for details of the encoding scheme.
-//
-// PARAMETERS
-//
-//      p   A pointer to the start of the encoded integer.  After an integer is
-//          decoded, it is left one past the last byte.
-//
-// RETURN VALUE
-//
-//      The integer.
-//
-//*****************************************************************************
-{
-    unsigned n = 0;
-    do {
-        n = (n << 7) | (*p & 0x7Fu);
-    } while ( *p++ & 0x80u );
-    return n;
+///////////////////////////////////////////////////////////////////////////////
+
+int dec_int( unsigned char const *&p ) {
+  unsigned n = 0;
+  do {
+    n = (n << 7) | (*p & 0x7Fu);
+  } while ( *p++ & 0x80u );
+  return n;
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        ostream& enc_int( ostream &o, unsigned long n )
-//
-// DESCRIPTION
-//
-//      Writes an unsigned long to the given ostream in an encoded format.  The
-//      format uses a varying number of bytes.  For a given byte, only the
-//      lower 7 bits are used for data; the high bit, if set, is used to
-//      indicate whether the integer continues into the next byte.  The encoded
-//      integer is written to the given ostream starting with the most
-//      significant byte.
-//
-// PARAMETERS
-//
-//      o   The ostream to write to.
-//
-//      n   The long to be written.
-//
-// RETURN VALUE
-//
-//      Returns the passed-in ostream.
-//
-//*****************************************************************************
-{
-    unsigned char buf[ 20 ];
-    //
-    // Encode the long (in reverse because it's easier) just like atoi().
-    //
-    unsigned char *p = buf + sizeof buf;
-    do {
-        *--p = 0x80u | (n & 0x7Fu);
-    } while ( n >>= 7 );
-    buf[ sizeof buf - 1 ] &= 0x7Fu;     // clear last "continuation bit"
+ostream& enc_int( ostream &o, unsigned long n ) {
+  unsigned char buf[ 20 ];
+  //
+  // Encode the long (in reverse because it's easier) just like atoi().
+  //
+  unsigned char *p = buf + sizeof buf;
+  do {
+    *--p = 0x80u | (n & 0x7Fu);
+  } while ( n >>= 7 );
+  buf[ sizeof buf - 1 ] &= 0x7Fu;       // clear last "continuation bit"
 
-    return o.write( reinterpret_cast<char*>( p ), buf + sizeof buf - p );
+  return o.write( reinterpret_cast<char*>( p ), buf + sizeof buf - p );
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */
