@@ -41,7 +41,7 @@ struct less<char const*> : std::binary_function<char const*,char const*,bool> {
 
   result_type
   operator()( first_argument_type a, second_argument_type b ) const {
-      return std::strcmp( a, b ) < 0;
+    return std::strcmp( a, b ) < 0;
   }
 };
 
@@ -56,7 +56,7 @@ template<> struct less_n<char const*> : less<char const*> {
 
   result_type
   operator()( first_argument_type a, second_argument_type b ) const {
-      return std::strncmp( a, b, n_ ) < 0;
+    return std::strncmp( a, b, n_ ) < 0;
   }
 private:
   size_t const n_;

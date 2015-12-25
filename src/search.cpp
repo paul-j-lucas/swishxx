@@ -33,9 +33,6 @@
 #include "pjl/omanip.h"
 #include "pjl/option_stream.h"
 #include "pjl/pjl_set.h"
-#ifdef __SUNPRO_CC
-#include "pjl/vector_adapter.h"
-#endif
 #include "query.h"
 #include "ResultSeparator.h"
 #include "ResultsFormat.h"
@@ -49,7 +46,7 @@
 #include "WordPercentMax.h"
 #ifdef WITH_WORD_POS
 #include "WordsNear.h"
-#endif
+#endif /* WITH_WORD_POS */
 #include "word_util.h"
 #include "xml_formatter.h"
 #ifdef WITH_SEARCH_DAEMON
@@ -485,26 +482,10 @@ inline omanip< char const* > index_file_info( int index ) {
     if ( !out )
         return false;
     if ( skip_results < results.size() && max_results ) {
-        //
-        // Copy the results to a vector to sort them by rank.
-        //
-#ifndef __SUNPRO_CC
-        typedef vector< search_result > sorted_results_type;
+        typedef vector<search_result> sorted_results_type;
         sorted_results_type sorted;
         sorted.reserve( results.size() );
         ::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
-#else
-        // Sun's CC compiler and/or their STL implementation seems pretty
-        // broken so we have to do the following things the hard way.
-        //
-        typedef vector_adapter< search_result > sorted_results_type;
-        sorted_results_type sorted( results.size() );
-
-        int i = 0;
-        TRANSFORM_EACH( search_results, results, result )
-            sorted[ i++ ] = *reinterpret_cast<search_result*>( &*result );
-#endif /* __SUNPRO_CC */
-
         ::sort( sorted.begin(), sorted.end(), sort_by_rank() );
         //
         // Compute the highest rank and the normalization factor.

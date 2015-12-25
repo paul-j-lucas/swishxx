@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      omanip.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,39 +27,36 @@
 
 namespace PJL {
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<typename Arg> class omanip
-//
-// DESCRIPTION
-//
-//      An omanip is a class for assisting in the creating of ostream
-//      manipulators by storing a pointer to a function and its argument to be
-//      called later via operator<<().
-//
-// SEE ALSO
-//
-//      Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales."
-//      Addison-Wesley, Reading, MA., pp. 179-191.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %omanip is a class for assisting in the creating of ostream manipulators
+ * by storing a pointer to a function and its argument to be called later via
+ * \c operator<<().
+ *
+ * See also:
+ *    Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales."
+ *    Addison-Wesley, Reading, MA., pp. 179-191.
+ */
+template<typename Arg>
+class omanip {
 public:
-    typedef std::ostream& (*func_type)( std::ostream&, Arg );
+  typedef std::ostream& (*func_type)( std::ostream&, Arg );
 
-    omanip( func_type f, Arg const &arg ) : f_( f ), arg_( arg ) { }
+  omanip( func_type f, Arg const &arg ) : f_( f ), arg_( arg ) { }
 
-    friend std::ostream& operator<<( std::ostream &o, omanip<Arg> const &om ) {
-        return (*om.f_)( o, om.arg_ );
-    }
+  friend std::ostream& operator<<( std::ostream &o, omanip<Arg> const &om ) {
+    return (*om.f_)( o, om.arg_ );
+  }
+
 private:
-    func_type const f_;
-    Arg const arg_;
+  func_type const f_;
+  Arg const arg_;
 };
+
+///////////////////////////////////////////////////////////////////////////////
 
 } // namespace PJL
 
 #endif /* omanip_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

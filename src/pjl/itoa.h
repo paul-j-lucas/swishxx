@@ -32,12 +32,12 @@ namespace PJL {
  * hang on to more than Num_Buffers strings.  This doesn't normally happen in
  * practice, however.
  *
- * This function is NOT thread-safe because it uses char_buffer_pool which
+ * This function is \e not thread-safe because it uses char_buffer_pool which
  * isn't.
  *
  * See also:
- *    Brian W. Kernighan, Dennis M. Ritchie.  "The C Programming Language,
- *    2nd ed."  Addison-Wesley, Reading, MA, 1988.  pp. 63-64.
+ *    Brian W. Kernighan, Dennis M. Ritchie.  "The C Programming Language, 2nd
+ *    ed."  Addison-Wesley, Reading, MA, 1988.  pp. 63-64.
  *
  * @param n The long integer to be converted.
  * @return A pointer to the string.

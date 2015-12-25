@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      mmap_file.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -48,125 +48,117 @@
 
 namespace PJL {
 
-//*****************************************************************************
-//
-// SYNOPSYS
-//
-        class mmap_file
-//
-// DESCRIPTION
-//
-//      An mmap_file is an object that maps a file into memory (via the Unix
-//      system call mmap(2)) allowing it to be accessed via iterators.
-//      Processing a file, especially files accessed randomly, is MUCH faster
-//      than standard I/O.
-//
-// SEE ALSO
-//
-//      mmap(2)
-//
-//      W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
-//      Addison-Wesley, Reading, MA, 1993.  pp. 407-413
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %mmap_file is an object that maps a file into memory (via the Unix system
+ * call mmap(2)) allowing it to be accessed via iterators.  Processing a file,
+ * especially files accessed randomly, is \e much faster than standard I/O.
+ *
+ * See also:
+ *    W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+ *    Addison-Wesley, Reading, MA, 1993.  pp. 407-413
+*/
+class mmap_file {
 public:
-    ////////// typedefs ///////////////////////////////////////////////////////
+  ////////// typedefs /////////////////////////////////////////////////////////
 
-    typedef size_t size_type;
-    typedef ptrdiff_t difference_type;
-    typedef char value_type;
-    typedef value_type* pointer;
-    typedef value_type const* const_pointer;
-    typedef value_type& reference;
-    typedef value_type const& const_reference;
+  typedef size_t size_type;
+  typedef ptrdiff_t difference_type;
+  typedef char value_type;
+  typedef value_type* pointer;
+  typedef value_type const* const_pointer;
+  typedef value_type& reference;
+  typedef value_type const& const_reference;
 
-    enum behavior_type {
+  enum behavior_type {
 #ifdef HAVE_MADVISE
-        bt_normal       = MADV_NORMAL,
-        bt_random       = MADV_RANDOM,
-        bt_sequential   = MADV_SEQUENTIAL
+    bt_normal       = MADV_NORMAL,
+    bt_random       = MADV_RANDOM,
+    bt_sequential   = MADV_SEQUENTIAL
 #else
-        bt_normal,
-        bt_random,
-        bt_sequential
+    bt_normal,
+    bt_random,
+    bt_sequential
 #endif /* HAVE_MADVISE */
-    };
+  };
 
-    ////////// constructors & destructor //////////////////////////////////////
+  ////////// constructors & destructor ////////////////////////////////////////
 
-    mmap_file()                         { init(); }
-    mmap_file( char const *path, std::ios::openmode mode = std::ios::in ) {
-        init();
-        open( path, mode );
-    }
-    ~mmap_file()                        { close(); }
+  mmap_file() {
+    init();
+  }
 
-    ////////// iterators //////////////////////////////////////////////////////
+  mmap_file( char const *path, std::ios::openmode mode = std::ios::in ) {
+    init();
+    open( path, mode );
+  }
 
-    typedef pointer iterator;
-    typedef const_pointer const_iterator;
-#ifndef __SUNPRO_CC
-    //
-    // There's a known bug with the reverse_iterator definition in the STL
-    // headers that Sun's CC compiler uses.  Since we don't actually use
-    // reverse_iterator in SWISH++, just leave it out.
-    //
-    typedef std::reverse_iterator< iterator > reverse_iterator;
-    typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
-#endif
+  ~mmap_file() {
+    close();
+  }
 
-    iterator        begin()             { return (iterator)addr_; }
-    const_iterator  begin() const       { return (const_iterator)addr_; }
-    iterator        end()               { return begin() + size_; }
-    const_iterator  end() const         { return begin() + size_; }
+  ////////// iterators ////////////////////////////////////////////////////////
 
-#ifndef __SUNPRO_CC
-    reverse_iterator rbegin() {
-        return reverse_iterator( end() );
-    }
-    reverse_iterator rend() {
-        return reverse_iterator( begin() );
-    }
-    const_reverse_iterator rbegin() const {
-        return const_reverse_iterator( end() );
-    }
-    const_reverse_iterator rend() const {
-        return const_reverse_iterator( begin() );
-    }
-#endif /* __SUNPRO_CC */
+  typedef pointer iterator;
+  typedef const_pointer const_iterator;
+  typedef std::reverse_iterator< iterator > reverse_iterator;
+  typedef std::reverse_iterator< const_iterator > const_reverse_iterator;
 
-    ////////// member functions ///////////////////////////////////////////////
+  iterator        begin()               { return (iterator)addr_; }
+  const_iterator  begin() const         { return (const_iterator)addr_; }
+  iterator        end()                 { return begin() + size_; }
+  const_iterator  end() const           { return begin() + size_; }
 
-    operator        bool() const        { return !errno_; }
+  reverse_iterator rbegin() {
+    return reverse_iterator( end() );
+  }
+  reverse_iterator rend() {
+    return reverse_iterator( begin() );
+  }
+  const_reverse_iterator rbegin() const {
+    return const_reverse_iterator( end() );
+  }
+  const_reverse_iterator rend() const {
+    return const_reverse_iterator( begin() );
+  }
 
-    reference       back()              { return *( end() - 1 ); }
-    const_reference back() const        { return *( end() - 1 ); }
-    int             behavior( behavior_type ) const;
-    reference       front()             { return *begin(); }
-    const_reference front() const       { return *begin(); }
-    bool            open( char const *path, std::ios::openmode = std::ios::in );
-    void            close();
-    bool            empty() const       { return !size_; }
-    int             error() const       { return errno_; }
-    size_type       max_size() const    { return size_; }
-    size_type       size() const        { return size_; }
+  ////////// member functions /////////////////////////////////////////////////
 
-    reference operator[]( size_type i ) {
-        return *( begin() + i );
-    }
-    const_reference operator[]( size_type i ) const {
-        return *( begin() + i );
-    }
+  operator        bool() const          { return !errno_; }
+
+  reference       back()                { return *( end() - 1 ); }
+  const_reference back() const          { return *( end() - 1 ); }
+  int             behavior( behavior_type ) const;
+  reference       front()               { return *begin(); }
+  const_reference front() const         { return *begin(); }
+  bool            open( char const *path, std::ios::openmode = std::ios::in );
+  void            close();
+  bool            empty() const         { return !size_; }
+  int             error() const         { return errno_; }
+  size_type       max_size() const      { return size_; }
+  size_type       size() const          { return size_; }
+
+  reference operator[]( size_type i ) {
+    return *( begin() + i );
+  }
+
+  const_reference operator[]( size_type i ) const {
+    return *( begin() + i );
+  }
+
 private:
-    size_type   size_;
-    int         fd_;                    // Unix file descriptor
-    void        *addr_;
-    mutable int errno_;
-    void        init();
+  void       *addr_;
+  int         fd_;                      // Unix file descriptor
+  size_type   size_;
+  mutable int errno_;
+
+  void init();
 };
+
+///////////////////////////////////////////////////////////////////////////////
 
 } // namespace PJL
 
 #endif /* mmap_file_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

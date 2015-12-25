@@ -31,38 +31,25 @@
 
 namespace PJL {
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<typename T> class pjl_set : public std::set<T>
-//
-// DESCRIPTION
-//
-//      A pjl_set is-a set but with the addition of a contains() member
-//      function, one that returns a simpler bool result indicating whether a
-//      given element is in the set.  (This is called a lot and I hate lots of
-//      typing.)
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %pjl_set is-a set but with the addition of a \c contains() member
+ * function, one that returns a simpler bool result indicating whether a given
+ * element is in the set.  (This is called a lot and I hate lots of typing.)
+ */
+template<typename T>
+class pjl_set : public std::set<T> {
 public:
     bool contains( T const &s ) const { return this->find( s ) != this->end(); }
 };
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<> class pjl_set<char const*> : public std::set<char const*>
-//
-// DESCRIPTION
-//
-//      Specialize pjl_set for C-stle strings so as not to have a reference
-//      (implemented as a pointer) to a char const*.
-//
-//*****************************************************************************
-{
+/**
+ * Specialize %pjl_set for C-stle strings so as not to have a reference
+ * (implemented as a pointer) to a <code>char const*</code>.
+ */
+template<>
+class pjl_set<char const*> : public std::set<char const*> {
 public:
     bool contains( char const *s ) const { return find( s ) != this->end(); }
 };
@@ -70,7 +57,9 @@ public:
 typedef pjl_set<char const*> char_ptr_set;
 typedef pjl_set<std::string> string_set;
 
+///////////////////////////////////////////////////////////////////////////////
+
 } // namespace PJL
 
 #endif /* pjl_set_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */
