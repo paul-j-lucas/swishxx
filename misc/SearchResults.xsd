@@ -3,7 +3,7 @@
  !	SWISH++
  !	SearchResults.xsd
  !
- !	Copyright (C) 2002  Paul J. Lucas
+ !	Copyright (C) 2002-2015  Paul J. Lucas
  !
  !	This program is free software; you can redistribute it and/or modify
  !	it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 -->
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://www.pauljlucas.org/pauljlucas/software/swish/SearchResults"
+  targetNamespace="http://www.pauljlucas.org/software/swish/SearchResults"
   elementFormDefault="qualified"
   version="1.0">
 
