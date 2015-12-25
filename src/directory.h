@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/directory.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,11 +28,17 @@
 // standard
 #include <map>
 
-typedef std::map<char const*, int> dir_set_type;
+///////////////////////////////////////////////////////////////////////////////
+
+typedef std::map<char const*,int> dir_set_type;
+
+/**
+ * Contains a map of all directory paths and an \c int that gives its index
+ * (the directory number in the order encountered).
+ */
 extern dir_set_type dir_set;
-//
-//      This contains a map of all directory paths and an int that gives its
-//      index (the directory number in the order encountered).
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* directory_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */
