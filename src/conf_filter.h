@@ -25,7 +25,7 @@
 // local
 #include "conf_var.h"
 #include "filter.h"
-#include "pattern_map.h"
+#include "pjl/pattern_map.h"
 
 // standard
 #include <string>
