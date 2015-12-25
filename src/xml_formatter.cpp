@@ -32,9 +32,9 @@
 
 using namespace std;
 
-#define SWISH_PATH              "/pauljlucas/software/swish"
+#define SWISH_PATH              "/software/swish"
 #define SWISH_NS_URI            "http://www.pauljlucas.org" SWISH_PATH
-#define SWISH_PHYS_URI          "http://homepage.mac.com" SWISH_PATH
+#define SWISH_PHYS_URI          "http://www.pauljlucas.org" SWISH_PATH
 #define XSI_URI                 "http://www.w3.org/2001/XMLSchema-instance"
 
 #define SEARCH_RESULTS          "SearchResults"
