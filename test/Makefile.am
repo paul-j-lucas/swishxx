@@ -28,11 +28,17 @@ TESTS =	tests/index-no_options.test \
 	tests/index-pa.test \
 	tests/index-S.test \
 	tests/index-ta.test \
+	tests/index-TitleLines-a.test \
 	tests/index-txt-v1.test \
 	tests/index-txt-v2.test \
 	tests/index-txt-v3.test \
 	tests/index-v5.test \
-	tests/index-va.test
+	tests/index-va.test \
+	tests/index-WordFilesMax-1.test \
+	tests/index-WordFilesMax-a.test \
+	tests/index-WordPercentMax-0.test \
+	tests/index-WordPercentMax-102.test \
+	tests/index-WordPercentMax-a.test
 
 if WITH_HTML
 TESTS += tests/index-H.test

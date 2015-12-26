@@ -176,6 +176,7 @@ esac
 ##
 [ "$srcdir" ] || srcdir="."
 
+CONF_DIR=$srcdir/conf
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
 TEST_NAME=`local_basename "$TEST_NAME"`
@@ -194,7 +195,7 @@ run_test_file() {
   IFS='|' read COMMAND CONFIG OPTIONS INPUT EXPECTED_EXIT < $TEST
   COMMAND=`echo $COMMAND`               # trims whitespace
   CONFIG=`echo $CONFIG`                 # trims whitespace
-  [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
+  [ "$CONFIG" ] && CONFIG="-c $CONF_DIR/$CONFIG"
   INPUT=$DATA_DIR/`echo $INPUT`         # trims whitespace
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
 
