@@ -25,6 +25,7 @@
 #include "util.h"
 
 // standard
+#include <cassert>
 #include <cstring>
 
 using namespace PJL;
@@ -32,6 +33,26 @@ using namespace std;
 
 char_buffer_pool<128,5> lower_buf;
 struct stat             stat_buf;       // someplace to do a stat(2) in
+
+bool parse( char const *s, bool *result ) {
+  assert( s );
+  s = to_lower( s );
+  if ( (!s[1] && (*s == '0' || *s == 'f' || *s == 'n')) ||
+       ::strcmp( s, "false" ) == 0 ||
+       ::strcmp( s, "no" ) == 0 ||
+       ::strcmp( s, "off" ) == 0 ) {
+    *result = false;
+    return true;
+  }
+  if ( (!s[1] && (*s == '1' || *s == 't' || *s == 'y')) ||
+       ::strcmp( s, "true" ) == 0 ||
+       ::strcmp( s, "yes" ) == 0 ||
+       ::strcmp( s, "on" ) == 0 ) {
+    *result = true;
+    return true;
+  }
+  return false;
+}
 
 //*****************************************************************************
 //

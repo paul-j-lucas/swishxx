@@ -27,7 +27,6 @@
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
-#include <memory>                       /* for unique_ptr */
 #include <iostream>
 
 using namespace PJL;
@@ -46,26 +45,13 @@ conf<bool>::conf( char const *name, bool default_value ) :
 }
 
 void conf<bool>::parse_value( char *line ) {
-  unique_ptr<char[]> const lower_ptr( to_lower_r( line ) );
-  char const *const lower = lower_ptr.get();
-  if ( *lower ) {
-    if ( !::strcmp( lower, "false" ) ||
-         !::strcmp( lower, "no" ) ||
-         !::strcmp( lower, "off" ) ||
-         ( lower[1] == '\0' && (*lower == 'f' || *lower == 'n') ) ) {
-      operator=( false );
-      return;
-    }
-    if ( !::strcmp( lower, "true" ) ||
-         !::strcmp( lower, "on" ) ||
-         !::strcmp( lower, "yes" ) ||
-         ( lower[1] == '\0' && (*lower == 't' || *lower == 'y') ) ) {
-      operator=( true );
-      return;
-    }
+  bool value;
+  if ( parse( line, &value ) ) {
+    operator=( value );
+    return;
   }
   error() << '"' << name() << "\" is not one of: "
-             "f, false, n, no, off, on, t, true, y, yes\n";
+             "0, f, false, n, no, off, 1, on, t, true, y, yes\n";
   ::exit( Exit_Config_File );
 }
 

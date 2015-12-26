@@ -122,6 +122,15 @@ extern char const*	me;
 	::setrlimit( resource, &r );
 }
 
+/**
+ * Parses a string into a \c bool.
+ *
+ * @param s The string to parse. Valid values are:
+ * 0, f, false, n, no, off, 1, on, t, true, y, yes.
+ * @return Returns \c true and sets \a result only if \a s is valid.
+ */
+bool parse( char const *s, bool *result );
+
 //*****************************************************************************
 //
 // SYNOPSIS
