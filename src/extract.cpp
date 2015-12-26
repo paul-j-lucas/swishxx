@@ -250,7 +250,7 @@ static ostream&     usage( ostream& = cerr );
     stop_words = new stop_word_set( stop_word_file_name );
     if ( dump_stop_words_opt ) {
         ::copy( stop_words->begin(), stop_words->end(),
-            ostream_iterator< char const* >( cout, "\n" )
+            ostream_iterator<char const*>( cout, "\n" )
         );
         ::exit( Exit_Success );
     }

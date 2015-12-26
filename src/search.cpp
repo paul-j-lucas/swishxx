@@ -85,7 +85,7 @@
 using namespace PJL;
 using namespace std;
 
-typedef pair< int, int > search_result;
+typedef pair<int,int> search_result;
 //
 //  A search_result is an individual search result where the first int is a
 //  file index and the second int is that file's rank.
@@ -151,8 +151,8 @@ static void         dump_single_word( char const*, ostream& = cout );
 static void         dump_word_window( char const*, int, int, ostream& = cout );
 static ostream&     write_file_info( ostream&, char const* );
 
-inline omanip< char const* > index_file_info( int index ) {
-    return omanip< char const* >( write_file_info, files[ index ] );
+inline omanip<char const*> index_file_info( int index ) {
+  return omanip<char const*>( write_file_info, files[ index ] );
 }
 
 //*****************************************************************************

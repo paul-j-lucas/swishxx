@@ -64,7 +64,7 @@ public:
         pos_delta_list  pos_deltas_;
         void            add_word_pos( int );
         void            write_word_pos( std::ostream& ) const;
-#endif
+#endif /* WITH_WORD_POS */
         int             index_;         // occurs in i-th file
         int             occurrences_;   // in this file only
         int             rank_;
@@ -84,7 +84,7 @@ public:
     word_info() : occurrences_( 0 ) { }
 };
 
-typedef std::map< std::string, word_info > word_map;
+typedef std::map<std::string,word_info> word_map;
 
 ////////// inlines ////////////////////////////////////////////////////////////
 

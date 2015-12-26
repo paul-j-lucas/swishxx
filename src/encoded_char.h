@@ -190,7 +190,7 @@ protected:
 
     virtual void reset() = 0;
 private:
-    typedef std::set< decoder* > set_type;
+    typedef std::set<decoder*> set_type;
     static set_type set_;
 };
 #endif /* WITH_DECODING */

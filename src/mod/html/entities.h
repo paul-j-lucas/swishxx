@@ -64,11 +64,11 @@ private:
     char_entity_map();
     //
     // Note that the declaration of std::map has a default "Compare" template
-    // parameter of "less< key_type >" and, since we've included less.h above
-    // that defines "less< char const* >", C-style string comparisons work
+    // parameter of "less<key_type>" and, since we've included less.h above
+    // that defines "less<char const*>", C-style string comparisons work
     // properly.
     //
-    typedef std::map< key_type, value_type > map_type;
+    typedef std::map<key_type,value_type> map_type;
     map_type map_;
 };
 

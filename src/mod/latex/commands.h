@@ -48,7 +48,7 @@
 //
 // SYNOPSIS
 //
-        class command_map : public std::map< char const*, command >
+        class command_map : public std::map<char const*,command>
 //
 // DESCRIPTION
 //
@@ -63,8 +63,8 @@
 // NOTE
 //
 //      Note that the declaration of std::map has a default "Compare" template
-//      parameter of "less< key_type >" and, since we've included less.h above
-//      that defines "less< char const* >", C-style string comparisons work
+//      parameter of "less<key_type>" and, since we've included less.h above
+//      that defines "less<char const*>", C-style string comparisons work
 //      properly.
 //
 // SEE ALSO

@@ -55,7 +55,7 @@ using namespace std;
 // entire stack and, unfortunately, clear() isn't supported for stacks...an
 // oversight in STL, IMHO.
 //
-typedef vector< pair< element_map::value_type const*, bool > > stack_type;
+typedef vector<pair<element_map::value_type const*,bool> > stack_type;
 
 static bool         dump_html_elements_opt;
 static stack_type   element_stack;
@@ -909,7 +909,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
     if ( dump_html_elements_opt ) {
         static element_map const &elements = element_map::instance();
         ::copy( elements.begin(), elements.end(),
-            ostream_iterator< element_map::value_type >( cout,"\n" )
+            ostream_iterator<element_map::value_type>( cout,"\n" )
         );
         ::exit( Exit_Success );
     }

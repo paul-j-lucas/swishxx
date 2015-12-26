@@ -173,11 +173,11 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 
     //
     // Note that the declaration of std::map has a default "Compare" template
-    // parameter of "less< key_type >" and, since we've included less.h above
-    // that defines "less< char const* >", C-style string comparisons work
+    // parameter of "less<key_type>" and, since we've included less.h above
+    // that defines "less<char const*>", C-style string comparisons work
     // properly.
     //
-    typedef map< char const*, id3v2_frame::parser > map_type;
+    typedef map<char const*,id3v2_frame::parser> map_type;
     static map_type m;
 
     if ( m.empty() )

@@ -31,7 +31,7 @@
 //
 // SYNOPSIS
 //
-        class IncludeFile : public conf_var, public pattern_map< indexer* >
+        class IncludeFile : public conf_var, public pattern_map<indexer*>
 //
 // DESCRIPTION
 //

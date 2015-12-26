@@ -30,7 +30,7 @@
 //
 // SYNOPSIS
 //
-        class ExtractFile : public conf_var, public pattern_map< bool >
+        class ExtractFile : public conf_var, public pattern_map<bool>
 //
 // DESCRIPTION
 //

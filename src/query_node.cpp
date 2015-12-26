@@ -156,7 +156,7 @@ query_node* query_node::visit( visitor const &v ) {
     // Evaluate all the child nodes.
     //
     search_results const empty_place_holder;
-    typedef vector< search_results > child_results_type;
+    typedef vector<search_results> child_results_type;
     child_results_type child_results;
     child_results.reserve( child_nodes_.size() );
     FOR_EACH( child_node_list, child_nodes_, child_node ) {

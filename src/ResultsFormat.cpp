@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ResultsFormat.h
 **
-**      Copyright (C) 2000  Paul J. Lucas
+**      Copyright (C) 2000-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -22,9 +22,13 @@
 // local
 #include "ResultsFormat.h"
 
+///////////////////////////////////////////////////////////////////////////////
+
 char const *const ResultsFormat::legal_values_[] = {
-    "classic",
-    "xml",
-    0
+  "classic",
+  "xml",
+  0
 };
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

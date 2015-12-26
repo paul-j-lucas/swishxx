@@ -59,7 +59,7 @@ public:
 protected:
     conf_filter( char const *name ) : conf_var( name ) { }
 
-    typedef pattern_map< value_type > map_type;
+    typedef pattern_map<value_type> map_type;
     map_type map_;
 
     virtual void    parse_value( char *line );

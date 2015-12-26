@@ -250,7 +250,7 @@ could_not_filter:
         return;
     }
     ::copy( e.begin(), e.end(),
-        ostream_iterator< encoded_char_range::value_type >( temp_file )
+        ostream_iterator<encoded_char_range::value_type>( temp_file )
     );
     temp_file.close();
 

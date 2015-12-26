@@ -77,7 +77,7 @@ public:
     friend class const_iterator;
 
     class const_iterator :
-        public std::iterator< std::forward_iterator_tag, value_type > {
+        public std::iterator<std::forward_iterator_tag,value_type> {
     public:
         const_iterator() { }
 

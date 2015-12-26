@@ -44,7 +44,7 @@
 //*****************************************************************************
 {
 public:
-    typedef std::vector< file_info* > list_type;
+    typedef std::vector<file_info*> list_type;
     typedef list_type::const_iterator const_iterator;
     typedef size_t size_type;
     typedef PJL::char_ptr_set name_set_type;

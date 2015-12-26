@@ -29,98 +29,84 @@
 #include <iostream>
 #include <map>
 
+///////////////////////////////////////////////////////////////////////////////
+
 class element_map;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class element
-//
-// DESCRIPTION
-//
-//      An element contains the information we need about HTML elements.  We
-//      only need information about:
-//
-//      1. Whether an element's end tag is forbidden, optional, or required.
-//
-//      2. For elements with optional end tags, what tags, some possibly from
-//         other elements, close them.
-//
-//*****************************************************************************
-{
+/**
+ * An %element contains the information we need about HTML elements.  We only
+ * need information about:
+ *
+ * 1. Whether an element's end tag is forbidden, optional, or required.
+ * 2. For elements with optional end tags, what tags, some possibly from other
+ *    elements, close them.
+ */
+class element {
 public:
-    enum end_tag_type { et_forbidden, et_optional, et_required };
+  enum end_tag_type {
+    et_forbidden,
+    et_optional,
+    et_required
+  };
 
-    PJL::char_ptr_set   close_tags;
-    end_tag_type const  end_tag;
+  PJL::char_ptr_set   close_tags;
+  end_tag_type const  end_tag;
+
 private:
-    explicit element( end_tag_type t ) : end_tag( t ) { }
-    friend class element_map;
+  explicit element( end_tag_type t ) : end_tag( t ) { }
+  friend class element_map;
 };
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class element_map : public std::map< char const*, element >
-//
-// DESCRIPTION
-//
-//      An element_map is-a map from the character strings for HTML elements to
-//      instances of the element class declared above.  The only reason for
-//      having a derived class rather than a typedef is so that we can have a
-//      custom constructor that initializes itself.
-//
-//      The constructor is private, however, to ensure that only instance() can
-//      be called to initialize and access a single, static instance.
-//
-// NOTE
-//
-//      Note that the declaration of std::map has a default "Compare" template
-//      parameter of "less< key_type >" and, since we've included less.h above
-//      that defines "less< char const* >", C-style string comparisons work
-//      properly.
-//
-// SEE ALSO
-//
-//      elements.c  instance()
-//
-//*****************************************************************************
-{
+/**
+ * An %element_map is-a map from the character strings for HTML elements to
+ * instances of the element class declared above.  The only reason for having a
+ * derived class rather than a \c typedef is so that we can have a custom
+ * constructor that initializes itself.
+ *
+ * The constructor is private, however, to ensure that only \c instance() can
+ * be called to initialize and access a single, static instance.
+ */
+class element_map : public std::map<char const*,element> {
 public:
-    static element_map const& instance();
+  static element_map const& instance();
+
 private:
-    element_map();
+  /**
+   * Constructs (initializes) an element_map.
+   *
+   * See also:
+   *    Shane McCarron, et al.  "XHTML 2.0," World Wide Web Consortium,
+   *    August 2002.
+   *      http://www.w3.org/TR/xhtml2/
+   *
+   *    Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "Index of Elements,"
+   *    HTML 4.0 Specification, World Wide Web Consortium, April 1998.
+   *      http://www.w3.org/TR/REC-html40/index/elements.html
+   *
+   *    Marcin Sawicki, et al.  "Ruby Annotation," World Wide Web Consortium,
+   *    April 6, 2001.
+   *      http://www.w3.org/TR/2001/PR-ruby-20010406/
+   *
+   *    Netscape Communications Corporation.  "HTML Tag Reference," January
+   *    1998.
+   *      http://developer.netscape.com/docs/manuals/htmlguid/index.htm
+   */
+  element_map();
 };
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline std::ostream&
-        operator<<( std::ostream &o, element_map::value_type const &e )
-//
-// DESCRIPTION
-//
-//      Write the key of an element_map::value_type (the HTML or XHTML element
-//      name) to an ostream.  This is useful so an ostream_iterator can be used
-//      to dump the entire element_map.
-//
-// PARAMETERS
-//
-//      o   The ostream to write to.
-//
-//      e   The element_map::value_type.
-//
-// RETURN VALUE
-//
-//      The same ostream passed in.
-//
-//*****************************************************************************
-{
-    return o << e.first;
+/**
+ * Writes the key of an \c element_map::value_type (the HTML or XHTML element
+ * name) to an \c ostream.  This is useful so an \c ostream_iterator can be
+ * used to dump the entire \c element_map.
+ *
+ * @param o The ostream to write to.
+ * @param e The element_map::value_type to write.
+ */
+inline std::ostream& operator<<( std::ostream &o,
+                                 element_map::value_type const &e ) {
+  return o << e.first;
 }
 
+///////////////////////////////////////////////////////////////////////////////
 #endif /* element_map_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -373,7 +373,7 @@ static int  word_size( char const *word );
 
     ////////// Stemming is really slow: look in a private cache ///////////////
 
-    typedef map< char const*, char const* > stem_cache;
+    typedef map<char const*,char const*> stem_cache;
     static stem_cache cache;
 #ifdef WITH_SEARCH_DAEMON
     static pthread_mutex_t cache_lock = PTHREAD_MUTEX_INITIALIZER;
