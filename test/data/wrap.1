@@ -1,0 +1,342 @@
+.\"
+.\"	wrap -- text reformatter
+.\"	wrap.1: manual page
+.\"
+.\"	Copyright (C) 1996-2015  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the Licence, or
+.\"	(at your option) any later version.
+.\" 
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\" 
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.if !'\\$1'0' .sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3wrap\f1 1 "October 27, 2015" "PJL TOOLS"
+.SH NAME
+wrap \- text reformatter
+.SH SYNOPSIS
+.B wrap
+.BI [ options ]
+.SH DESCRIPTION
+.B wrap
+is a filter for reformatting text by wrapping and filling lines
+to a given
+.IR line-width ,
+the default for which is 80 characters.
+Lines are wrapped at
+.I white-space
+characters.
+A white-space character is any character for which
+.BR isspace (3)
+returns non-zero
+and always includes:
+space (ASCII 32),
+tab (9),
+line-feed (10),
+vertical-tab (11),
+form-feed (12),
+and
+carriage-return (13).
+.P
+Non-whitespace control characters are discarded.
+A control character is any character for which
+.BR iscntrl (3)
+returns non-zero.
+.SS White-space Folding
+Consecutive white-space characters
+are folded into a single space
+with the following exceptions:
+.IP "1." 3
+Force two spaces after the end of a sentence that ends a line;
+sentences are ended by an ``end-of-sentence'' character, that is, a
+period, question-mark, or an exclamation-point, optionally
+followed by a single-quote, double-quote, or a closing
+parenthesis or bracket.  
+.IP "2." 3
+Allow two spaces after the end of a sentence that does not end a line.
+This distinction is made so as not to put two spaces after
+a period that is an abbreviation and not the end of a sentence;
+periods at the end of a line will hopefully not be abbreviations.
+.IP "3." 3
+If neither the
+.B \-n
+nor the
+.B \-N
+option is specified,
+two consecutive newline characters delimit a paragraph and are not folded;
+more than two are folded.
+If
+.B \-n
+is specified, newlines receive no special treatment.
+If
+.B \-N
+is specified, every newline delimits a paragraph.
+.IP "4." 3
+If the
+.B \-W
+option is specified, a line beginning with white-space
+delimits a paragraph.
+.IP "5." 3
+If the
+.B \-d
+option is specified, a line beginning with a `\f(CW.\f1' (dot),
+presumed to be an
+.BR [nt]roff (1)
+control line,
+is not altered.
+.SS Character Encoding
+Text is assumed to be encoded in UTF-8.
+All multi-byte, UTF-8-encoded characters
+are considered to have a width of 1.
+UTF-8 Byte-Order Marks (BOMs)
+are discarded.
+.SH OPTIONS
+An option argument
+.I f
+means
+.IR file ,
+.I n
+means
+.IR "unsigned integer" ,
+and
+.I s
+means
+.IR string .
+.TP
+.BI \-a " s"
+Specifies the alias name
+.I s
+from the configuration file to be used.
+This overrides any alias
+from a matched pattern
+via either the
+.B \-f
+or
+.B \-F
+options.
+.TP
+.B \-b
+Deprecated.
+Now a synonym for
+.BR \-W .
+.TP
+.BI \-c " f"
+Specifies the configuration file
+.I f
+to read
+(default is
+.BR ~/.wraprc )
+if warranted.
+.TP
+.B \-C
+Suppresses reading of any configuration file,
+even one explicitly specified via
+.BR \-c .
+.TP
+.B \-d
+Does not alter lines that begin with a
+.RB ` . '
+(dot) presumed to be
+.BR [nt]roff (1)
+control lines.
+.TP
+.B \-e
+Treats white-space after an end-of-sentence character as a paragraph delimiter.
+.TP
+.BI \-f " f"
+Reads from file
+.I f
+(default is standard input).
+.TP
+.BI \-F " f"
+Sets the file-name to
+.I f
+as if it were being read from
+but still reads from standard input.
+(This allows the file-name to be matched against a pattern
+in a configuration file to use an alias
+while still allowing
+.B wrap
+to be used as part of a shell pipeline.)
+.TP
+.BI \-h " n"
+Hang-indents
+.I n
+more tabs for all but the first line of each paragraph.
+.TP
+.BI \-H " n"
+Hang-indents
+.I n
+more spaces for all but the first line of each paragraph
+after any tabs.
+.TP
+.BI \-i " n"
+Indents
+.I n
+more tabs for the first line of each paragraph.
+.TP
+.BI \-I " n"
+Indents
+.I n
+more spaces for the first line of each paragraph after any tabs.
+.TP
+.BI \-l " n"
+Deprecated.
+Now a synonym for
+.BR \-w .
+.TP
+.BI \-m " n"
+Mirrors tabs; equivalent to:
+.BI \-t n
+.BI \-q m
+where
+.IR "m = line-width \- tab-spaces * n" .
+.TP
+.BI \-M " n"
+Mirrors spaces; equivalent to:
+.BI \-S n
+.BI \-w m
+where
+.IR "m = line-width \- 2n" .
+.TP
+.B \-n
+Does not treat newlines as paragraph delimeters.
+.TP
+.B \-N
+Treats every newline as a paragraph delimiter.
+This option is useful for line-breaking code prior to printing.
+.TP
+.BI \-o " f"
+Writes to file
+.I f
+(default is standard output).
+.TP
+.BI \-p " s"
+Treats the given characters in
+.I s
+as paragraph delimiters.
+.TP
+.BI \-s " n"
+Sets
+.I tab-spaces
+(the number of spaces a tab character should be considered the same as)
+to
+.I n
+characters
+(default is 8).
+.TP
+.BI \-S " n"
+Prepends
+.I n
+leading spaces to each line after any leading tabs.
+.TP
+.BI \-t " n"
+Prepends
+.I n
+leading tabs to each line.
+.TP
+.B \-T
+Treats the first line of every paragraph as a title
+and puts it on a line by itself.
+.TP
+.B \-v
+Prints the version number to
+.I stderr
+and exit.
+.TP
+.BI \-w " n"
+Sets
+.I line-width
+to
+.I n
+characters
+(default is 80).
+.TP
+.B \-W
+Treats a line beginning with white-space as a paragraph delimiter.
+.SH EXIT STATUS
+.PD 0
+.IP 0
+Success.
+.IP 64
+Command-line usage error.
+.IP 66
+Open file error.
+.IP 71
+System error.
+.IP 73
+Create file error.
+.IP 74
+I/O error.
+.IP 78
+Configuration file error.
+.PD
+.SH ENVIRONMENT
+.TP
+.B HOME
+The user's home directory:
+used to locate the default configuration file.
+If unset,
+the home directory is obtained from the password database entry
+for the effective user.
+If that fails,
+no default configuration file is read.
+.SH FILES
+.TP
+.B ~/.wraprc
+The default configuration file.
+A configuration file,
+even one explicitly specified via
+.BR \-c ,
+is neither actually checked for existence nor read
+unless one of the
+.BR \-a ,
+.BR \-f ,
+or
+.B \-F
+options
+is specified
+since it doesn't affect the result.
+.SH EXAMPLE
+Wrap text into paragraphs having a line width of 72 characters,
+indenting one tab-stop,
+and further indenting the start of each paragraph by 3 spaces:
+.cS
+wrap -m1 -I3
+.cE 0
+.SH AUTHOR
+Paul J. Lucas
+.RI < paul@lucasmail.org >
+.SH SEE ALSO
+.BR fmt (1),
+.BR wrapc (1),
+.BR iscntrl (3),
+.BR isspace (3),
+.BR wraprc (5)
+.P
+.nf
+.I "UTF-8, a transformation format of ISO 10646,"
+RFC 3629, Francois Yergeau, November 2003.

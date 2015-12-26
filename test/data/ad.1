@@ -1,0 +1,710 @@
+.\"
+.\"	ad -- ASCII dump
+.\"	ad.1: manual page
+.\"
+.\"	Copyright (C) 1996-2015  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the Licence, or
+.\"	(at your option) any later version.
+.\" 
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\" 
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.TH \f3ad\f1 1 "October 27, 2015" "PJL TOOLS"
+.SH NAME
+ad \- ASCII dump
+.SH SYNOPSIS
+.B ad
+.RI [ options ]
+[\f3+\f2offset\f1]
+.RI [ infile
+.RI [ outfile ]]
+.br
+.B ad
+.B \-\-reverse
+.RI [ \-dho ]
+.RI [ infile
+.RI [ outfile ]]
+.br
+.B ad
+.B \-\-version
+.SH DESCRIPTION
+.B ad
+dumps a file
+as rows of 16 bytes
+in both hexadecimal
+and also ASCII or UTF-8
+(for those bytes for which
+.BR isprint (3)
+returns true)
+to standard output.
+For those bytes that are not printable,
+prints `\f(CW.\f1' (dot) instead.
+.PP
+.B ad
+is similar to
+.BR hexdump (1),
+.BR od (1),
+and
+.BR xxd (1)
+except that
+.B ad
+can also search for and highlight matching strings or numbers
+similar to
+.BR grep (1).
+Like
+.BR xxd (1),
+.B ad
+can also patch binary files.
+.SH OPTIONS
+An option argument
+.I n
+means
+.I "unsigned integer"
+and
+.I s
+means
+.IR string .
+If
+.I n
+starts with either
+.B 0x
+or
+.BR 0X,
+then
+.I n
+is interpreted as hexedecimal.
+.TP 8
+\f3+\f2n\f1[\f2u\f1]
+Skips reading
+.I n
+bytes of data before dumping.
+If specified, the unit
+.I u
+may be one of
+.B b
+(512-byte blocks),
+.B k
+(kilobytes),
+or
+.B m
+(megabytes),
+and
+.I n
+is interpreted accordingly.
+.TP
+.BI \-\-big-endian \f1=\fPn "\f1 | \fP" "" \-E " n"
+Highlights all occurrences of the unsigned integer
+.I n
+in big-endian byte order.
+.TP
+.B ""
+The number of bytes to search for is automatically calculated
+as the minimum number of bytes needed to represent
+.IR n .
+For example,
+if
+.I n
+were in the range 0\-255,
+the number of bytes would be 1;
+if
+.I n
+were in the range 256\-65535,
+the number of bytes would be 2;
+and so on.
+This can be overridden by either the
+.BR \-\-bits ,
+.BR \-b ,
+.BR \-\-bytes ,
+or
+.B \-B
+options.
+.TP
+.BI \-\-bits \f1=\fPn "\f1 | \fP" "" \-b " n"
+Sets the search number size to
+.I n
+bits
+(and therefore the number of bytes is set to
+.I n
+divided by 8).
+Must be one of 8, 16, 24, 32, 40, 48, 56, or 64.
+The default is automatically calculated
+based on the argument to one of the
+.BR \-\-little-endian ,
+.BR \-e ,
+.BR \-\-big-endian ,
+or
+.B \-E
+options.
+.TP
+.BI \-\-bytes \f1=\fPn "\f1 | \fP" "" \-B " n"
+Same as the
+.B \-\-bits
+or
+.B \-b
+options
+but in
+.I n
+bytes.
+Must be in 1\-8.
+.TP
+.BI \-\-c-array \f1=\fPf "\f1 | \fP" "" \-C " f"
+Dumps bytes as C array and length variable definitions.
+The variable names are derived from the input file name, if any,
+or "\f(CWstdin\f1" otherwise.
+The format
+.I f
+is zero or more of the following letters
+that specify the format of the declarations:
+.RS
+.TP 3
+.B c
+Declares both the array and length as \f(CWconst\f1.
+.TP
+.B i
+Declares the length as \f(CWint\f1.
+.TP
+.B l
+Declares the length as \f(CWlong\f1.
+.TP
+.B s
+Declares both the array and length as \f(CWstatic\f1.
+.TP
+.B t
+Declares the length as \f(CWsize_t\f1.
+.TP
+.B u
+Declares the length as \f(CWunsigned\f1.
+.RE
+.TP
+.B ""
+If none of
+.BR i ,
+.BR l ,
+.BR t ,
+or
+.B u
+is specified,
+then the array length is not dumped.
+.TP
+.BI \-\-color \f1=\fPw "\f1 | \fP" "" \-c " w"
+Sets when to colorize output to
+.I w
+(which is case-insensitive).
+(See the
+.B AD_COLORS
+environment variable about colorization.)
+The choices for
+.I w
+are:
+.RS
+.TP 11
+.B always
+Always colorize.
+.TP
+.B auto
+Same as
+.B isatty
+(for compatibility with
+.BR grep ).
+.TP
+.B isatty
+Colorize only when standard output is connected to a TTY
+(terminal)
+and the TERM environment variable
+is not empty and not equal to
+.BR dumb .
+(This is equivalent to
+.BR grep 's
+.B --color=auto
+option,
+but explicit about what ``auto'' means.)
+.TP
+.B never
+Never colorize.
+Note that this greatly diminishes the usefulness of the
+.BR \-\-little-endian ,
+.BR \-e ,
+.BR \-\-big-endian ,
+.BR \-E ,
+.BR \-\-string ,
+.BR \-s ,
+.BR \-\-string-ignore-case ,
+and
+.B \-S
+options since matches won't be highlighted.
+(However,
+the
+.B \-\-matching-only
+or
+.B \-m
+options
+can be used to dump only rows having matches.)
+.TP
+.B not_file
+Colorize only when
+.I not
+writing to a regular file
+(hence writing to a TTY or pipe)
+and the TERM environment variable
+is not empty and not equal to
+.BR dumb .
+(Specifically,
+.BR fstat (3)
+is called on standard output:
+colorize only if \f(CWS_IFREG\f1 is false.)
+.TP
+.B ""
+This is more useful than
+.B isatty
+since it accomodates the common case of allowing color output to be piped to
+.BR less (1)
+and still display in color since
+.B less
+understands
+.I SGR
+(``Select Graphic Rendition'')
+ASCII terminal escape sequences
+that produce color.
+.TP
+.B not_isreg
+An explicit synonym for
+.BR not_file .
+.TP
+.B tty
+A shorthand synonym for
+.BR isatty .
+.RE
+.TP
+.B ""
+The default is
+.BR not_file .
+.TP
+.BR \-\-decimal " | " \-d
+Prints offsets in decimal.
+For
+.BR \-\-reverse ,
+.BR \-\-revert ,
+or
+.BR \-r ,
+parses offsets in decimal.
+.TP
+.BR \-\-help " | " \-H
+Prints a help message
+to standard error
+and exits.
+.TP
+.BR \-\-hexadecimal " | " \-h
+Prints offsets in hexadecimal
+(the default).
+For
+.BR \-\-reverse ,
+.BR \-\-revert ,
+or
+.BR \-r ,
+parses offsets in hexadecimal
+(also the default).
+.TP
+.BR \-\-ignore-case " | " \-i
+Performs a case-insensitive search
+of the string specified by the
+.B \-\-string
+or
+.B \-s
+options.
+.TP
+.BI \-\-little-endian \f1=\fPn "\f1 | \fP" "" \-e " n"
+Same as the
+.B \-\-big-endian
+or
+.B \-E
+options
+but in little-endian byte order.
+.TP
+.BR \-\-matching-only " | " \-m
+Only dumps rows having matches.
+.TP
+.BI \-\-max-bytes \f1=\fPn "\f1 | \fP" "" \-N " n"
+Reads at most
+.I n
+bytes.
+.TP
+.BR \-\-octal " | " \-o
+Prints offsets in octal.
+For
+.BR \-\-reverse ,
+.BR \-\-revert ,
+or
+.BR \-r ,
+parses offsets in octal.
+.TP
+.BR \-\-printing-only " | " \-p
+Only dumps rows having printable characters.
+.TP
+.BR \-\-reverse " | " \-\-revert " | " \-r
+Reverse dumps a previous dump from
+.B ad
+into a binary file.
+This allows a binary file to be dumped,
+edited using a text editor,
+and reverse dumped back into a binary file.
+(The
+.B \-\-revert
+spelling is for compatibility with
+.BR xxd (1).)
+Note that only the hexedecimal part of the dump is read;
+the ASCII part is ignored.
+.TP
+.B ""
+When an existing output file is used,
+it is not truncated.
+This allows a small dump file
+to patch a subset of bytes in an existing larger binary file.
+The bytes to be patched are given by the offsets.
+.TP
+.B ""
+Elided bytes,
+given by the separator of ``-'' characters
+when none of the
+.BR \-\-matching-only ,
+.BR \-m ,
+.BR \-\-printing-only ,
+.BR \-p ,
+.BR \-\-verbose ,
+or
+.B \-v
+options are used,
+are expanded by copying the preceding row
+as many times as necessary.
+.TP
+\f3\-\-skip-bytes\f1=\f2n\f1[\f2u\f1] | \f3\-j\f1 \f2n\f1[\f2u\f1]
+Same as the
+.B +
+option.
+(If both options are specified,
+their values are added.)
+.TP
+.BI \-\-string \f1=\fPs "\f1 | \fP" "" \-s " s"
+Searches for the string
+.I s
+and highlights matches.
+.TP
+.BI \-\-string-ignore-case \f1=\fPs "\f1 | \fP" "" \-S " s"
+Searches for the string
+.I s
+in a case-insensitive manner
+and highlights matches.
+(This option is the same as specifying both the
+.B \-\-string
+or
+.B \-s
+and
+.B \-\-ignore-case
+or
+.B \-i
+options.)
+.TP
+.BR \-\-total-matches " | " \-t
+Additionally prints the total number of matches
+to standard error.
+.TP
+.BR \-\-total-matches-only " | " \-T
+Only prints the total number of matches
+to standard error.
+.TP
+.BI \-\-utf8 \f1=\fPw "\f1 | \fP" "" \-u " w"
+Sets when to dump in UTF-8 rather than ASCII to
+.I w
+(which is case-insensitive).
+The choices for
+.I w
+are:
+.RS
+.TP 8
+.B always
+Always dump in UTF-8.
+.TP
+.B auto
+Dump in UTF-8 only if the terminal's encoding is UTF-8.
+.TP
+.B never
+Never dump in UTF-8.
+.RE
+.TP
+.B ""
+The default is
+.BR never .
+(Either
+.B always
+or
+.B auto
+should be used
+only if UTF-8 encoded text is expected.)
+.TP
+.B ""
+Because mutli-byte UTF-8 encoded characters
+are displayed as a single character,
+one to five padding characters
+(given by either the
+.B \-\-utf8-padding
+or
+.B \-U
+options)
+are printed to make up the difference.
+.TP
+.BR \-\-utf8-padding \f1=\fPn "\f1 | \fP" "" \-U " n"
+Sets the UTF-8 padding character to
+.I n
+where
+.I n
+is its Unicode code-point.
+As additional special cases,
+the code-point can also be specified
+as either a single character
+or either a \f(CWU+\fP or \f(CWu+\fP
+followed by a hexedecimal integer.
+The default is the ``white square'' U+25A1.
+.TP
+.BR \-\-verbose " | " \-v
+Be verbose by dumping all bytes of data.
+Ordinarily,
+rows of bytes that match
+the previous row
+are elided
+so as not to dump
+possibly many rows of repeated data.
+Instead,
+a separator of ``\f(CW-\f1'' characters is printed
+along with the number of bytes elided
+in both decimal and hexadecimal.
+.TP
+.B ""
+However,
+if none of the
+.BR \-\-matching-only ,
+.BR \-m ,
+.BR \-\-printing-only ,
+nor
+.B \-p
+options are given,
+then the last row of data is dumped
+even if it matches the previous row
+to indicate the end of the file.
+.TP
+.BR \-\-version " | " \-V
+Prints the version number to standard error
+and exits.
+.SH EXIT STATUS
+.PD 0
+.IP 0
+Success.
+.IP 1
+No matches if one of
+.BR \-\-little-endian ,
+.BR \-e ,
+.BR \-\-big-endian ,
+.BR \-E ,
+.BR \-\-string ,
+.BR \-s ,
+or
+.B \-S
+was specified.
+.IP 64
+Command-line usage error.
+.IP 65
+Invalid dump format for
+.BR \-\-reverse ,
+.BR \-\-revert ,
+or
+.B \-r
+options.
+.IP 66
+Open file error.
+.IP 71
+System error.
+.IP 73
+Create file error.
+.IP 74
+I/O error.
+.PD
+.SH ENVIRONMENT
+.TP 4
+.B AD_COLORS
+This variable specifies the colors and other attributes
+used to highlight various parts of the output
+in a manner similar to the
+.B GREP_COLORS
+variable
+used by
+.BR grep .
+.TP
+.B ""
+As with
+.BR grep ,
+the value is comprised of a colon-separated sequence of capabilities.
+Each capability is of the form
+.IR name [= SGR ]
+where
+.I name
+is a two-character capability name
+and
+.IR SGR ,
+if present,
+is a
+``Select Graphic Rendition''
+value
+that is a semicolon-separated list of integers
+in the range 0\-255.
+An example SGR value is \f(CW31;1\f1
+that specifies a bright red foreground
+on the terminal's default background.
+.TP
+.B ""
+Capability names in upper-case are unique to
+.BR ad ;
+those in lower-case are upwards compatibile with
+.BR grep .
+.RS
+.TP 8
+.BI bn= SGR
+SGR for the byte offset
+(as with
+.BR grep ).
+The default is \f(CW36\f1
+(green foreground over current terminal background).
+.TP
+.BI EC= SGR
+SGR for elided rows and byte counts.
+The default is \f(CW35\f1
+(magenta foreground over current terminal background).
+.TP
+.BI MA= SGR
+SGR for matched ASCII characters.
+The default is \f(CW41;1\f1
+(current terminal foreground over a bright red background).
+.TP
+.BI MH= SGR
+SGR for matched hexadecimal.
+The default is \f(CW41;1\f1
+(current terminal foreground over a bright red background).
+.TP
+.BI MB= SGR
+SGR for both matched ASCII and hexadecimal.
+(This capability is the same as specifying both the
+.B MA
+and
+.B MH
+capabilities
+with the same
+.IR SGR ).
+.TP
+.BI mt= SGR
+Same as
+.B MB
+(for compatibility with
+.BR grep ).
+.TP
+.B ne
+Boolean value that,
+when true,
+prevents clearing to the end of a line using the Erase in Line
+(EL)
+SGR escape sequence
+(as with
+.BR grep ).
+.TP
+.B ""
+This is needed on terminals on which EL is not supported.
+It is otherwise useful on terminals for which the
+.B back_color_erase
+(BCE)
+Boolean terminfo capability does not apply,
+when the chosen highlight colors do not affect the background,
+or when EL is too slow or causes too much flicker.
+The default is false
+(i.e., EL is used for clearing to the end of a line).
+.TP
+.BI se= SGR
+SGR for the ``\f(CW:\f1'' and ``\f(CW-\f1'' separators
+(as with
+.BR grep ).
+The default is \f(CW36\f1
+(cyan foreground over current terminal background).
+.RE
+.TP
+.B ""
+Other
+.B grep
+capabilities, if present, are ignored
+because they don't apply in
+.BR ad .
+The term ``color'' is used loosely.
+In addition to colors,
+other character attributes
+such as bold, underlined, reverse video, etc.,
+may be possible depending on the capabilities of the terminal.
+.TP
+.B GREP_COLOR
+This variable is used for compatibility with older versions of
+.BR grep .
+It specifies the colors and other attributes
+used to highlight matched bytes.
+As with
+.BR grep ,
+it is deprecated in favor of
+.BR GREP_COLORS .
+It can only specify the colors used to highlight
+both the matching bytes ASCII and hexadecimal bytes
+(same as the
+.B MB
+capability).
+This variable is used only when it contains a valid SGR value
+and both
+.B AD_COLORS
+and
+.B GREP_COLORS
+are either unset or empty.
+.TP
+.B GREP_COLORS
+This variable is used for compatibility with newer versions of
+.BR grep .
+It is used exactly as
+.B AD_COLORS
+but only when
+.B AD_COLORS
+is either unset or empty.
+Capabilities in
+.B grep
+that are unsupported by
+.B ad
+(because they don't apply)
+are ignored.
+.TP
+.B TERM
+The type of the terminal on which
+.B ad
+is being run.
+.SH AUTHOR
+Paul J. Lucas
+.RI < paul@lucasmail.org >
+.SH SEE ALSO
+.BR grep (1),
+.BR hexdump (1),
+.BR od (1),
+.BR less (1),
+.BR xxd (1),
+.BR fstat (2),
+.BR isatty (3),
+.BR isprint (3)
+.PP
+.nf
+.I "ANSI escape code,"
+<https://en.wikipedia.org/wiki/ANSI_escape_code>

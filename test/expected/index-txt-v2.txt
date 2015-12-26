@@ -1,0 +1,9 @@
+./data/.
+
+index: ranking index...
+index: writing index...
+
+index: done:
+  11 files, 6 indexed
+  95382 words, 34836 indexed, 8091 unique
+

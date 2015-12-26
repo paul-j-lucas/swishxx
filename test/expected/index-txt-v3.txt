@@ -1,0 +1,22 @@
+
+./data/.:
+  Alice's_Adventures_in_Wonderland.txt (9245 words)
+  Christmas_Carol,_A.txt (10596 words)
+  GNU_GPLv2.txt (1244 words)
+  Gutenberg_License.txt (1323 words)
+  Raven,_The.txt (510 words)
+  Time_Machine,_The.txt (11918 words)
+
+index: ranking index...
+  "form" discarded (100%)
+  "hope" discarded (100%)
+  "kind" discarded (100%)
+  "long" discarded (100%)
+  "name" discarded (100%)
+  "wide" discarded (100%)
+index: writing index...
+
+index: done:
+  11 files, 6 indexed
+  95382 words, 34836 indexed, 8091 unique
+

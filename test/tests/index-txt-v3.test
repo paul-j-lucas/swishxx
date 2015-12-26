@@ -1,0 +1,1 @@
+index | | -e text:*.txt -v3 | . | 0
