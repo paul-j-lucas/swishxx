@@ -20,7 +20,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([SWISH++], [7.0], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/swish-pp])
+AC_INIT([SWISH++], [7.0], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/swishxx])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
