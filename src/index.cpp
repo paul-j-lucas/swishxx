@@ -240,6 +240,7 @@ int main( int argc, char *argv[] ) {
   bool          no_associate_meta_opt = false;
   bool          no_word_pos_opt = false;
   char const   *num_title_lines_arg = 0;
+  bool          print_version = false;
   bool          recurse_subdirectories_opt = false;
   StopWordFile  stop_word_file_name;
   char const   *stop_word_file_name_arg = 0;
@@ -333,8 +334,8 @@ int main( int argc, char *argv[] ) {
         break;
 #endif /* WITH_WORD_POS */
       case 'r': // Specify whether to index recursively.
-      recurse_subdirectories_opt = true;
-      break;
+        recurse_subdirectories_opt = true;
+        break;
 
       case 's': // Specify stop-word list.
         stop_word_file_name_arg = opt.arg();
@@ -357,8 +358,8 @@ int main( int argc, char *argv[] ) {
         break;
 
       case 'V': // Display version and exit.
-        cout << PACKAGE_STRING << endl;
-        ::exit( Exit_Success );
+        print_version = true;
+        break;
 
       case 'W': // Word threshold.
         word_threshold_arg = opt.arg();
@@ -371,6 +372,11 @@ int main( int argc, char *argv[] ) {
   } // for
   delete[] all_options;
   argc -= opt_in.shift(), argv += opt_in.shift();
+
+  if ( print_version ) {
+    cout << PACKAGE_STRING << endl;
+    ::exit( Exit_Success );
+  }
 
   //
   // First, parse the config. file (if any); then override variables with
