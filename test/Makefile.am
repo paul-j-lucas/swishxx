@@ -21,9 +21,18 @@
 AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
 TESTS =	tests/index-no_options.test \
+	tests/index-f1.test \
+	tests/index-fa.test \
+	tests/index-p0.test \
+	tests/index-p102.test \
+	tests/index-pa.test \
+	tests/index-S.test \
+	tests/index-ta.test \
 	tests/index-txt-v1.test \
 	tests/index-txt-v2.test \
-	tests/index-txt-v3.test
+	tests/index-txt-v3.test \
+	tests/index-v5.test \
+	tests/index-va.test
 
 if WITH_HTML
 TESTS += tests/index-H.test
