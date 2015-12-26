@@ -60,5 +60,5 @@ private:
 
 } // namespace PJL
 
-#endif  /* char_buffer_pool_H */
+#endif /* char_buffer_pool_H */
 /* vim:set et sw=2 ts=2: */

@@ -87,7 +87,7 @@
     );
 #else
     std::strchr( Word_Chars, tolower( c ) ) != 0;
-#endif
+#endif /* OPTIMIZE_WORD_CHARS */
 }
 
 //*****************************************************************************
@@ -120,7 +120,7 @@
     return is_alnum( c );
 #else
     return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
-#endif
+#endif /* OPTIMIZE_WORD_BEGIN_CHARS */
 }
 
 //*****************************************************************************
@@ -147,7 +147,7 @@
     return is_alnum( c );
 #else
     return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
-#endif
+#endif /* OPTIMIZE_WORD_END_CHARS */
 }
 
 //*****************************************************************************

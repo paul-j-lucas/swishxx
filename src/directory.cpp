@@ -59,16 +59,16 @@ char const Dir_Sep_Char = '\\';
 char const Dir_Sep_Char = '/';
 #endif /* __CYGWIN__ */
 
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
 dir_set_type  dir_set;
-#endif /* INDEX */
+#endif /* SWISHXX_INDEX */
 
 #ifndef PJL_NO_SYMBOLIC_LINKS
 #include "FollowLinks.h"
 FollowLinks   follow_symbolic_links;
 #endif
 
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
 /**
  * Checks to see if the given directory has been added to the list of
  * directories encountered: if not, add it.
@@ -110,7 +110,7 @@ void do_check_add_file( char const *file_name ) {
   }
   do_file( file_name, dir_index );
 }
-#endif /* INDEX */
+#endif /* SWISHXX_INDEX */
 
 /**
  * Calls \c do_file() for every file in the given directory; it will queue
@@ -159,9 +159,9 @@ void do_directory( char const *dir_path ) {
     cout << '\n';
   }
 
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
   int const dir_index = check_add_directory( dir_path );
-#endif
+#endif /* SWISHXX_INDEX */
   //
   // Have a buffer for the full path to a file in a directory.  For each file,
   // simply strcpy() the file name into place one character past the '/'.
@@ -193,11 +193,11 @@ void do_directory( char const *dir_path ) {
       // do_file() so we don't have to repeat the code to print verbose
       // information for 'path'.
       //
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
       do_file( path, dir_index );
 #else
       do_file( path );
-#endif
+#endif /* SWISHXX_INDEX */
     }
   } // while
 

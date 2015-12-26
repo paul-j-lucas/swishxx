@@ -44,7 +44,7 @@ extern unsigned long    num_indexed_words;
 extern unsigned long    num_total_words;
 #ifdef WITH_WORD_POS
 extern int              word_pos;
-#endif
+#endif /* WITH_WORD_POS */
 extern word_map         words;
 
 int                     indexer::suspend_indexing_count_ = 0;
@@ -332,7 +332,7 @@ indexer*                indexer::text_indexer_ = 0;
     ++num_total_words;
 #ifdef WITH_WORD_POS
     ++word_pos;
-#endif
+#endif /* WITH_WORD_POS */
 
     if ( len < Word_Hard_Min_Size )
         return;
@@ -411,7 +411,7 @@ skip_push_back:
 #ifdef WITH_WORD_POS
     if ( store_word_positions )
         last_file.add_word_pos( word_pos );
-#endif
+#endif /* WITH_WORD_POS */
 }
 
 //*****************************************************************************

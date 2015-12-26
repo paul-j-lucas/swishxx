@@ -131,7 +131,7 @@ static void           write_partial_index();
 static void           write_stop_word_index( ostream&, off_t* );
 static void           write_word_index( ostream&, off_t* );
 
-#define INDEX
+#define SWISHXX_INDEX
 #include "do_file.cpp"
 #include "directory.cpp"
 

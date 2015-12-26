@@ -49,9 +49,9 @@
 // See also: W. Richard Stevens.  "Advanced Programming in the Unix
 // Environment," Addison-Wesley, Reading, MA, 1993.  pp. 34-42.
 //
-#ifdef	PATH_MAX
-#undef	PATH_MAX
-#endif
+#ifdef PATH_MAX
+#undef PATH_MAX
+#endif /* PATH_MAX */
 int const		    PATH_MAX = 1024;
 
 extern char const*	me;

@@ -57,7 +57,7 @@
 
 #ifndef AF_LOCAL
 #define AF_LOCAL AF_UNIX
-#endif
+#endif /* AF_LOCAL */
 
 using namespace PJL;
 using namespace std;
@@ -129,7 +129,7 @@ static void set_signal_handlers();
 {
 #ifdef __APPLE__
     if ( !launchd_cooperation ) {
-#endif
+#endif /* __APPLE__ */
         ////////// Increase resource limits (hopefully) ///////////////////////
 
 #ifdef RLIMIT_CPU                      /* SVR4, 4.3+BSD */
@@ -138,7 +138,7 @@ static void set_signal_handlers();
         // and will run indefinitely.
         //
         max_out_limit( RLIMIT_CPU );
-#endif
+#endif /* RLIMIT_CPU */
 #ifdef RLIMIT_NOFILE                   /* SVR4 */
         //
         // Max-out the number of file descriptors we can have open to be able
@@ -147,10 +147,10 @@ static void set_signal_handlers();
         max_out_limit( RLIMIT_NOFILE );
 #elif   defined( RLIMIT_OFILE )         /* 4.3+BSD name for NOFILE */
         max_out_limit( RLIMIT_OFILE );
-#endif
+#endif /* RLIMIT_NOFILE */
 #ifdef __APPLE__
     }
-#endif
+#endif /* __APPLE__ */
 
     ////////// Create socket(s) ///////////////////////////////////////////////
 
@@ -181,7 +181,7 @@ static void set_signal_handlers();
 
 #ifdef __APPLE__
     if ( !launchd_cooperation ) {
-#endif
+#endif /* __APPLE__ */
         //
         // If we're root and we've been requested to change our process
         // user/group, do so.
@@ -222,7 +222,7 @@ static void set_signal_handlers();
         }
 #ifdef __APPLE__
     }
-#endif
+#endif /* __APPLE__ */
 #endif /* DEBUG_threads */
 
     set_signal_handlers();
@@ -331,7 +331,7 @@ static void set_signal_handlers();
             case EINTR:
 #ifdef EPROTO
             case EPROTO:                // SVR4
-#endif
+#endif /* EPROTO */
                 return;
         }
         cerr << error << "accept() failed" << error_string;

@@ -88,7 +88,7 @@ public:
 
 #ifdef WITH_DECODING
     class decoder;
-#endif
+#endif /* WITH_DECODING */
 protected:
     encoded_char_range() { }
 
@@ -97,7 +97,7 @@ protected:
 #ifdef WITH_DECODING
     charset_type    charset_;
     encoding_type   encoding_;
-#endif
+#endif /* WITH_DECODING */
 };
 
 //*****************************************************************************
@@ -155,12 +155,12 @@ private:
     mutable value_type  ch_;
     mutable bool        decoded_;
     mutable ptrdiff_t   delta_;
-#endif
+#endif /* WITH_DECODING */
     const_iterator( encoded_char_range const*, const_pointer start_pos );
     friend class    encoded_char_range; // for access to c'tor above
 #ifdef WITH_DECODING
     void        decode() const;
-#endif
+#endif /* WITH_DECODING */
 };
 
 #ifdef WITH_DECODING
@@ -208,7 +208,7 @@ inline ECR::ECR(
     begin_( begin ), end_( end )
 #ifdef WITH_DECODING
     , charset_( charset ), encoding_( encoding )
-#endif
+#endif /* WITH_DECODING */
 {
 }
 
@@ -216,7 +216,7 @@ inline ECR::ECR( const_iterator const &i ) :
     begin_( i.pos_ ), end_( i.end_ )
 #ifdef WITH_DECODING
     , charset_( i.charset_ ), encoding_( i.encoding_ )
-#endif
+#endif /* WITH_DECODING */
 {
 }
 
@@ -224,7 +224,7 @@ inline ECR::ECR( const_iterator const &begin, const_iterator const &end ) :
     begin_( begin.pos_ ), end_( end.pos_ )
 #ifdef WITH_DECODING
     , charset_( begin.charset_ ), encoding_( begin.encoding_ )
-#endif
+#endif /* WITH_DECODING */
 {
 }
 
@@ -253,7 +253,7 @@ inline ECR_CI::const_iterator(
     encoded_char_range( begin, end, charset, encoding ), pos_( begin )
 #ifdef WITH_DECODING
     , decoded_( false )
-#endif
+#endif /* WITH_DECODING */
 {
 }
 
@@ -262,12 +262,12 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
         start_pos, ecr->end_
 #ifdef WITH_DECODING
         , ecr->charset_, ecr->encoding_
-#endif
+#endif /* WITH_DECODING */
     ),
     pos_( start_pos )
 #ifdef WITH_DECODING
     , decoded_( false )
-#endif
+#endif /* WITH_DECODING */
 {
 }
 
@@ -345,7 +345,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
     return ch_;
 #else
     return iso8859_1_to_ascii( *pos_ );
-#endif
+#endif /* WITH_DECODING */
 }
 
 //*****************************************************************************
@@ -383,13 +383,13 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
         //
         decode();
     }
-#endif
+#endif /* WITH_DECODING */
     prev_ = pos_;
 #ifdef WITH_DECODING
     pos_ += delta_;
 #else
     ++pos_;
-#endif
+#endif /* WITH_DECODING */
     return *this;
 }
 

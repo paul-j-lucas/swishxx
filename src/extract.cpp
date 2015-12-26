@@ -73,7 +73,7 @@ static void         extract_words(
                     );
 static ostream&     usage( ostream& = cerr );
 
-#define EXTRACT
+#define SWISHXX_EXTRACT
 #include "do_file.cpp"
 #include "directory.cpp"
 
@@ -112,7 +112,8 @@ static ostream&     usage( ostream& = cerr );
     // while.
     //
     max_out_limit( RLIMIT_CPU );
-#endif
+#endif /* RLIMIT_CPU */
+
     /////////// Process command-line options //////////////////////////////////
 
     static option_stream::spec const opt_spec[] = {

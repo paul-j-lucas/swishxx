@@ -58,7 +58,7 @@ namespace PJL {
  * See also:
  *    W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
  *    Addison-Wesley, Reading, MA, 1993.  pp. 407-413
-*/
+ */
 class mmap_file {
 public:
   ////////// typedefs /////////////////////////////////////////////////////////

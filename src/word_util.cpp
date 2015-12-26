@@ -27,7 +27,7 @@
 #include <cctype>
 #ifdef DEBUG_is_ok_word
 #include <iostream>
-#endif
+#endif /* DEBUG_is_ok_word */
 
 using namespace std;
 

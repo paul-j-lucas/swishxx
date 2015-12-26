@@ -74,7 +74,7 @@ and_node::~and_node() {
 #ifdef WITH_WORD_POS
 near_node     ::~near_node    () { /* See comment in ~and_node(). */ }
 not_near_node ::~not_near_node() { /* See comment in ~and_node(). */ }
-#endif
+#endif /* WITH_WORD_POS */
 not_node      ::~not_node     () { /* See comment in ~and_node(). */ }
 or_node       ::~or_node      () { /* See comment in ~and_node(). */ }
 query_node    ::~query_node   () { /* Out-of-line because it's virtual. */ }
@@ -100,7 +100,7 @@ query_node* near_node::visit( visitor const &v ) {
     }
     return result;
 }
-#endif
+#endif /* WITH_WORD_POS */
 
 query_node* not_node::visit( visitor const &v ) {
     query_node *const result = v( this );

@@ -130,7 +130,7 @@ using namespace std;
 #ifdef WITH_WORD_POS
         else if ( !::strcmp( t.lower_buf_, "near" ) )
             t.type_ = token::tt_near;
-#endif
+#endif /* WITH_WORD_POS */
         else if ( !::strcmp( t.lower_buf_, "not" ) )
             t.type_ = token::tt_not;
         else

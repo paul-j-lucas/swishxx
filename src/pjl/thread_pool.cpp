@@ -28,7 +28,7 @@
 #include <time.h>
 #ifdef DEBUG_threads
 #include <iostream>
-#endif
+#endif /* DEBUG_threads */
 
 extern char const *me;
 

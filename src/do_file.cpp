@@ -35,11 +35,11 @@
 //
 // SYNOPSIS
 //
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
         void do_file( char const *file_name, int dir_index )
 #else
         void do_file( char const *file_name )
-#endif
+#endif /* SWISHXX_INDEX */
 //
 // DESCRIPTION
 //
@@ -77,13 +77,13 @@
         return;
     }
 
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
     //
     // Record the size of the original (non-filtered) file here before we call
     // is_symbolic_link() below.  This is the size that is stored in the index.
     //
     off_t const orig_file_size = file_size();
-#endif /* INDEX */
+#endif /* SWISHXX_INDEX */
 
 #ifndef PJL_NO_SYMBOLIC_LINKS
     if ( is_symbolic_link( file_name ) && !follow_symbolic_links ) {
@@ -98,7 +98,7 @@
     }
 #endif /* PJL_NO_SYMBOLIC_LINKS */
 
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
     //
     // If incrementally indexing, it's possible that we've encountered the file
     // before.
@@ -108,15 +108,15 @@
             cout << " (skipped: encountered before)\n";
         return;
     }
-#endif /* INDEX */
+#endif /* SWISHXX_INDEX */
 
     ////////// Perform filter name substitution(s) ////////////////////////////
 
     typedef vector<filter> filter_list_type;
     filter_list_type filter_list;
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
     char const *const orig_file_name = file_name;
-#endif
+#endif /* SWISHXX_INDEX */
 
     while ( true ) {
         //
@@ -143,11 +143,11 @@
     //
     // See if the filename pattern is included.
     //
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
     IncludeFile::const_iterator const
 #else
     ExtractFile::const_iterator const
-#endif
+#endif /* SWISHXX_INDEX */
         include_pattern = include_patterns.find( base_name );
     //
     // Skip the file if the set of acceptable patterns doesn't contain the
@@ -161,7 +161,7 @@
         return;
     }
 
-#ifdef EXTRACT
+#ifdef SWISHXX_EXTRACT
     ostream *out;
     ofstream extracted_file;
     if ( extract_as_filter ) {
@@ -199,7 +199,7 @@
         }
         out = &extracted_file;
     }
-#endif /* EXTRACT */
+#endif /* SWISHXX_EXTRACT */
 
     //
     // Execute the filter(s) on the file.
@@ -225,7 +225,7 @@
     if ( verbosity == 3 )                       // print base name of file
         cout << "  " << orig_base_name << flush;
 
-#ifdef INDEX
+#ifdef SWISHXX_INDEX
     if ( file.empty() ) {
         //
         // Don't waste a file_info entry on it.
@@ -239,7 +239,7 @@
 
 #ifdef WITH_DECODING
     encoded_char_range::decoder::reset_all();
-#endif
+#endif /* WITH_DECODING */
     indexer *const i = found_pattern ?
         include_pattern->second : indexer::text_indexer();
     file_info *const fi = new file_info(
@@ -247,7 +247,7 @@
     );
 #ifdef WITH_WORD_POS
     word_pos = 0;
-#endif
+#endif /* WITH_WORD_POS */
     i->index_file( file );
 
     if ( verbosity > 2 )
@@ -255,13 +255,13 @@
 
     if ( words.size() >= word_threshold )
         write_partial_index();
-#endif /* INDEX */
+#endif /* SWISHXX_INDEX */
 
-#ifdef EXTRACT
+#ifdef SWISHXX_EXTRACT
     ////////// Extract the file ///////////////////////////////////////////////
 
     ++num_extracted_files;
     extract_words( file.begin(), file.end(), *out );
-#endif /* EXTRACT */
+#endif /* SWISHXX_EXTRACT */
 }
 /* vim:set et sw=4 ts=4: */

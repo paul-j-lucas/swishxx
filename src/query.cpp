@@ -38,7 +38,7 @@
 #include <cstdlib>                      /* for exit(3) */
 #ifdef DEBUG_parse_query
 #include <iostream>
-#endif
+#endif /* DEBUG_parse_query */
 #include <vector>
 
 using namespace PJL;
@@ -57,13 +57,13 @@ struct parse_q_args {
     stop_word_set&      stop_words_found;
 #ifdef WITH_WORD_POS
     bool                got_near;
-#endif
+#endif /* WITH_WORD_POS */
 
     parse_q_args( node_pool_type &p, token_stream &q, stop_word_set &s ) :
         node_pool( p ), query( q ), stop_words_found( s )
 #ifdef WITH_WORD_POS
         , got_near( false )
-#endif
+#endif /* WITH_WORD_POS */
     {
     }
 private:

@@ -54,10 +54,10 @@
 # if ARG_MAX > REASONABLE_ARG_MAX
 #   undef ARG_MAX
 # endif
-#endif
+#endif /* ARG_MAX */
 #ifndef ARG_MAX
 # define ARG_MAX REASONABLE_ARG_MAX
-#endif
+#endif /* ARG_MAX */
 
 using namespace PJL;
 using namespace std;

@@ -37,7 +37,7 @@ word_info::file::file() {
 word_info::file::file( int index ) :
 #ifdef WITH_WORD_POS
   last_absolute_word_pos_( 0 ),
-#endif
+#endif /* WITH_WORD_POS */
   index_( index ), occurrences_( 1 ), rank_( 0 )
 {
   // do nothing else

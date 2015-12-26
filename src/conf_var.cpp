@@ -149,7 +149,7 @@ int conf_var::current_config_file_line_no_ = 0;
 #ifdef WITH_WORD_POS
             "storewordpositions",
             "wordsnear",
-#endif
+#endif /* WITH_WORD_POS */
 #ifdef WITH_SEARCH_DAEMON
             "group",
 #ifdef __APPLE__

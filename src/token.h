@@ -57,7 +57,7 @@ public:
         // enum value for it here just makes life easier.
         //
         tt_not_near,
-#endif
+#endif /* WITH_WORD_POS */
         tt_not,
         tt_or,
         tt_rparen,

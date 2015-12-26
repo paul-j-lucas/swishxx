@@ -151,7 +151,7 @@ char const  Group_Default[]             = "nobody";
 //          The user and group to switch to after initialization (if root to
 //          begin with).  This can be overridden either in a config.  file or
 //          on the command line.
-#endif
+#endif /* WITH_SEARCH_DAEMON */
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
 
@@ -206,7 +206,7 @@ char const  TempDirectory_Default[]     = "/temp";
 #/*#error      Comment out these lines after you have set it.*/
 
 char const  TempDirectory_Default[]     = "/tmp";
-#endif
+#endif /* __CYGWIN__ */
 //          Default directory to use for temporary files during indexing.  If
 //          your OS mounts swap space via /tmp (e.g., Solaris), as indexing
 //          progresses and more files get created in /tmp, you will have less
@@ -231,7 +231,7 @@ int const   WordsNear_Default           = 10;
 //          The maximum number of words apart two words can be to be considered
 //          "near" each other; this can be overridden either in a config. file
 //          or on the command line.
-#endif
+#endif /* WITH_WORD_POS */
 
 int const   WordPercentMax_Default      = 100;
 //          Default maximum percentage of files a word may occur in before it

@@ -122,7 +122,7 @@ file_list::byte const file_list::const_iterator::end_value = 0;
         v_.pos_deltas_.reserve( v_.occurrences_ );
     else
         v_.pos_deltas_.clear();
-#endif
+#endif /* WITH_WORD_POS */
 
     while ( true ) {
         //
@@ -149,7 +149,7 @@ file_list::byte const file_list::const_iterator::end_value = 0;
                 while ( *c_ != Stop_Marker )
                     v_.pos_deltas_.push_back( dec_int(c_) );
                 break;
-#endif
+#endif /* WITH_WORD_POS */
             default:
                 //
                 // Encountered a list marker we don't know about: we are

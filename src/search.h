@@ -68,13 +68,13 @@
     char const* word_percent_max_arg;
 #ifdef WITH_WORD_POS
     int         words_near_arg;
-#endif
+#endif /* WITH_WORD_POS */
 #ifdef WITH_SEARCH_DAEMON
     char const* daemon_type_arg;
     char const* group_arg;
 #ifdef __APPLE__
     bool        launchd_opt;
-#endif
+#endif /* __APPLE__ */
     int         max_threads_arg;
     int         min_threads_arg;
     char const* pid_file_name_arg;
@@ -93,6 +93,7 @@
     );
 
     operator bool() const               { return !bad_; }
+
 private:
     bool    bad_;
 };

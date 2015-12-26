@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/encodings/encodings.h
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,26 +25,29 @@
 // local
 #include "encoded_char.h"
 
+///////////////////////////////////////////////////////////////////////////////
+
 encoded_char_range::encoding_type const Seven_Bit = 0;
 encoded_char_range::encoding_type const Eight_Bit = 0; // treaded like Seven_Bit
 encoded_char_range::encoding_type const Binary =
-    reinterpret_cast<encoded_char_range::encoding_type>( ~0 );
+  reinterpret_cast<encoded_char_range::encoding_type>( ~0 );
 
 #ifdef WITH_BASE64
 encoded_char_range::value_type encoding_base64(
-    encoded_char_range::const_pointer begin,
-    encoded_char_range::const_pointer &pos,
-    encoded_char_range::const_pointer end
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
 );
-#endif
+#endif /* WITH_BASE64 */
 
 #ifdef WITH_QUOTED_PRINTABLE
 encoded_char_range::value_type encoding_quoted_printable(
-    encoded_char_range::const_pointer begin,
-    encoded_char_range::const_pointer &pos,
-    encoded_char_range::const_pointer end
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
 );
-#endif
+#endif /* WITH_QUOTED_PRINTABLE */
 
+///////////////////////////////////////////////////////////////////////////////
 #endif /* encodings_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

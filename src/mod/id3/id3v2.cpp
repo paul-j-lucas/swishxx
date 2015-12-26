@@ -248,7 +248,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     cerr << "frame_id='" << id_ << '\'' << endl;
     cerr << "frame_size=" << dec << size_ << endl;
     cerr << "frame_flags=0x" << hex << flags_ << endl;
-#endif
+#endif /* DEBUG_id3v2 */
 
     content_begin_ = c;
     c += size_;                                 // move to start of next frame
@@ -283,7 +283,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     ) {
 #ifdef DEBUG_id3v2
         cerr << "resynchronizing frame..." << endl;
-#endif
+#endif /* DEBUG_id3v2 */
         resynchronize(
             unsynchronized_buf_, sizeof unsynchronized_buf_, c, &content_size
         );
@@ -296,7 +296,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 #ifdef HAVE_ZLIB
 #ifdef DEBUG_id3v2
         cerr << "uncompressing frame..." << endl;
-#endif
+#endif /* DEBUG_id3v2 */
         unsigned long buf_len = sizeof uncompressed_buf_;
         int const result = uncompress(
             reinterpret_cast<Bytef*>( uncompressed_buf_ ), &buf_len,
@@ -563,7 +563,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     version_ = parse_int( c, 2 );
 #ifdef DEBUG_id3v2
     cerr << "header_version=0x" << hex << version_ << endl;
-#endif
+#endif /* DEBUG_id3v2 */
     if ( version_ < Version_Min || version_ > Version_Max )
         return false;
 
@@ -572,7 +572,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
 #ifdef DEBUG_id3v2
     cerr << "header_flags=0x" << hex << flags_ << endl;
     cerr << "tag_size=" << dec << tag_size_ << endl;
-#endif
+#endif /* DEBUG_id3v2 */
     if ( flags_ & Flag_Extended ) {
         //
         // We don't care about anything in the extended header so just skip it.
@@ -581,7 +581,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
             unsynchsafe( c ) : parse_int( c, 4 );
 #ifdef DEBUG_id3v2
         cerr << "ext_size=" << dec << ext_size << endl;
-#endif
+#endif /* DEBUG_id3v2 */
         c += ext_size;
     }
 

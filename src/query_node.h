@@ -29,7 +29,7 @@
 // standard
 #ifdef DEBUG_eval_query
 #include <iostream>
-#endif
+#endif /* DEBUG_eval_query */
 #include <new>
 #include <vector>
 
@@ -264,7 +264,8 @@ public:
     query_node*     visit( visitor const& );
 #   ifdef DEBUG_eval_query
     std::ostream&   print( std::ostream& ) const;
-#   endif
+#   endif /* DEBUG_eval_query */
+
 private:
     query_node *const left_child_, *const right_child_;
 };
@@ -291,7 +292,8 @@ public:
     word_range const&   range() const   { return range_; }
 #   ifdef DEBUG_eval_query
     std::ostream&       print( std::ostream& ) const;
-#   endif
+#   endif /* DEBUG_eval_query */
+
 private:
     char *const word_;
     word_range const range_;
@@ -308,7 +310,7 @@ inline near_node* near_node::distributor::make_node(
         new not_near_node( pool, left, right ) :
         new     near_node( pool, left, right ) ;
 }
-#endif
+#endif /* WITH_WORD_POS */
 
 #endif /* query_node_H */
 /* vim:set et sw=4 ts=4: */

@@ -33,7 +33,7 @@
 #include <string>
 #ifdef WITH_WORD_POS
 #include <vector>
-#endif
+#endif /* WITH_WORD_POS */
 
 //*****************************************************************************
 //
