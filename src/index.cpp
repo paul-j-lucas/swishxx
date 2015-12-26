@@ -272,8 +272,8 @@ int main( int argc, char *argv[] ) {
 
       case 'e': { // Filename pattern(s) to index.
         if ( !::strtok( opt.arg(), ":" ) ) {
-            error() << "no indexer module name\n";
-            ::exit( Exit_Usage );
+          error() << "no indexer module name\n";
+          ::exit( Exit_Usage );
         }
         indexer *const i = indexer::find_indexer( opt.arg() );
         if ( !i ) {
@@ -290,7 +290,7 @@ int main( int argc, char *argv[] ) {
         for ( char *pat; (pat = ::strtok( a, "," )); ) {
           exclude_patterns.insert( pat );
           a = 0;
-        }
+        } // for
         break;
       }
 
