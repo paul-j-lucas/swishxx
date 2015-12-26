@@ -69,6 +69,7 @@
 #include <iomanip>                      /* for setfill(), setw() */
 #include <iostream>
 #include <iterator>
+#include <memory>                       /* for unique_ptr */
 #include <string>
 #include <time.h>
 #include <sys/time.h>                   /* needed by FreeBSD systems */
@@ -251,9 +252,10 @@ int main( int argc, char *argv[] ) {
   char const   *word_percent_max_arg = 0;
   char const   *word_threshold_arg = 0;
 
-  option_stream::spec *const
-    all_options = indexer::all_mods_options( opt_spec );
-  option_stream opt_in( argc, argv, all_options );
+  unique_ptr<option_stream::spec> const
+    all_options( indexer::all_mods_options( opt_spec ) );
+  option_stream opt_in( argc, argv, all_options.get() );
+
   for ( option_stream::option opt; opt_in >> opt; ) {
     switch ( opt ) {
 
@@ -328,11 +330,13 @@ int main( int argc, char *argv[] ) {
       case 'p': // Specify the word/file percentage.
         word_percent_max_arg = opt.arg();
         break;
+
 #ifdef WITH_WORD_POS
       case 'P': // Don't store word position data.
         no_word_pos_opt = true;
         break;
 #endif /* WITH_WORD_POS */
+
       case 'r': // Specify whether to index recursively.
         recurse_subdirectories_opt = true;
         break;
@@ -370,7 +374,6 @@ int main( int argc, char *argv[] ) {
           cerr << usage;
     } // switch
   } // for
-  delete[] all_options;
   argc -= opt_in.shift(), argv += opt_in.shift();
 
   if ( print_version ) {
