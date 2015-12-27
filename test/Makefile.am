@@ -48,6 +48,7 @@ TESTS =	tests/index-no_options.test \
 	tests/search-txt-m0.test \
 	tests/search-txt-m3.test \
 	tests/search-txt-ma.test \
+	tests/search-txt-R.test \
 	tests/search-txt-wild-01.test
 
 if WITH_HTML
