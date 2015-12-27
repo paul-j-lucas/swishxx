@@ -1,0 +1,4 @@
+2 502 ./Alice's_Adventures_in_Wonderland.txt 147773 Alice's_Adventures_in_Wonderland.txt
+18 528 ./Christmas_Carol,_A.txt 162261 Christmas_Carol,_A.txt
+3 404 ./Time_Machine,_The.txt 182203 Time_Machine,_The.txt
+

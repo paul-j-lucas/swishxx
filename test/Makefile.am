@@ -40,6 +40,7 @@ TESTS =	tests/index-no_options.test \
 	tests/index-WordPercentMax-102.test \
 	tests/index-WordPercentMax-a.test \
 	tests/search-txt-01.test \
+	tests/search-txt-d-01.test \
 	tests/search-txt-D.test \
 	tests/search-txt-Fbad.test \
 	tests/search-txt-Fclassic.test \
