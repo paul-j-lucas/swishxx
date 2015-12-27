@@ -22,6 +22,7 @@
 // local
 #include "config.h"
 #include "AssociateMeta.h"
+#include "ChangeDirectory.h"
 #include "enc_int.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
@@ -201,6 +202,7 @@ int main( int argc, char *argv[] ) {
     "help",           0, '?',
     "no-assoc-meta",  0, 'A',
     "config-file",    1, 'c',
+    "chdir",          1, 'd',
     "pattern",        1, 'e',
     "no-pattern",     1, 'E',
     "file-max",       1, 'f',
@@ -228,29 +230,31 @@ int main( int argc, char *argv[] ) {
     0
   };
 
-  char const   *config_file_name_arg = ConfigFile_Default;
-  bool          dump_stop_words_opt = false;
-  char const   *files_grow_arg = 0;
-  char const   *files_reserve_arg = 0;
+  ChangeDirectory change_directory;
+  char const     *change_directory_arg = 0;
+  char const     *config_file_name_arg = ConfigFile_Default;
+  bool            dump_stop_words_opt = false;
+  char const     *files_grow_arg = 0;
+  char const     *files_reserve_arg = 0;
 #ifndef PJL_NO_SYMBOLIC_LINKS
-  bool          follow_symbolic_links_opt = false;
+  bool            follow_symbolic_links_opt = false;
 #endif
-  bool          incremental_opt = false;
-  IndexFile     index_file_name;
-  char const   *index_file_name_arg = 0;
-  bool          no_associate_meta_opt = false;
-  bool          no_word_pos_opt = false;
-  char const   *num_title_lines_arg = 0;
-  bool          print_version = false;
-  bool          recurse_subdirectories_opt = false;
-  StopWordFile  stop_word_file_name;
-  char const   *stop_word_file_name_arg = 0;
-  TempDirectory temp_directory;
-  char const   *temp_directory_arg = 0;
-  char const   *verbosity_arg = 0;
-  char const   *word_files_max_arg = 0;
-  char const   *word_percent_max_arg = 0;
-  char const   *word_threshold_arg = 0;
+  bool            incremental_opt = false;
+  IndexFile       index_file_name;
+  char const     *index_file_name_arg = 0;
+  bool            no_associate_meta_opt = false;
+  bool            no_word_pos_opt = false;
+  char const     *num_title_lines_arg = 0;
+  bool            print_version = false;
+  bool            recurse_subdirectories_opt = false;
+  StopWordFile    stop_word_file_name;
+  char const     *stop_word_file_name_arg = 0;
+  TempDirectory   temp_directory;
+  char const     *temp_directory_arg = 0;
+  char const     *verbosity_arg = 0;
+  char const     *word_files_max_arg = 0;
+  char const     *word_percent_max_arg = 0;
+  char const     *word_threshold_arg = 0;
 
   unique_ptr<option_stream::spec> const
     all_options( indexer::all_mods_options( opt_spec ) );
@@ -268,6 +272,10 @@ int main( int argc, char *argv[] ) {
 
       case 'c': // Specify config. file.
         config_file_name_arg = opt.arg();
+        break;
+
+      case 'd': // Change to directory.
+        change_directory_arg = opt.arg();
         break;
 
       case 'e': { // Filename pattern(s) to index.
@@ -467,6 +475,9 @@ int main( int argc, char *argv[] ) {
     error() << "can not write index to \"" << index_file_name << "\"\n";
     ::exit( Exit_No_Write_Index );
   }
+
+  if ( change_directory_arg )
+    change_directory = change_directory_arg;
 
   time_t time = ::time( 0 );            // Go!
 

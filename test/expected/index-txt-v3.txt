@@ -1,5 +1,5 @@
 
-./data/.:
+.:
   Alice's_Adventures_in_Wonderland.txt (9245 words)
   Christmas_Carol,_A.txt (10596 words)
   GNU_GPLv2.txt (1244 words)

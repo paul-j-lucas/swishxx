@@ -195,12 +195,12 @@ run_test_file() {
   COMMAND=`echo $COMMAND`               # trims whitespace
   CONFIG=`echo $CONFIG`                 # trims whitespace
   [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
-  INPUT=$DATA_DIR/`echo $INPUT`         # trims whitespace
+  INPUT=`echo $INPUT`                   # trims whitespace
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
 
   SWISHXX_TEST=true
   export SWISHXX_TEST
-  $COMMAND $CONFIG $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE
+  $COMMAND -d $DATA_DIR $CONFIG $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE
   ACTUAL_EXIT=$?
 
   if [ $ACTUAL_EXIT -eq 0 ]

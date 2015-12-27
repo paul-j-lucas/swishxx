@@ -26,7 +26,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -L$(top_srcdir)/lib
 
 ########## index ##############################################################
 
-index_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_percent.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp file_info.cpp file_list.cpp filter.cpp IncludeFile.cpp IncludeMeta.cpp indexer.cpp index_segment.cpp init_modules.cpp init_mod_vars.cpp iso8859-1.cpp stop_words.cpp TempDirectory.cpp util.cpp word_info.cpp WordThreshold.cpp word_util.cpp index.cpp
+index_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_filter.cpp conf_int.cpp conf_percent.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp file_info.cpp file_list.cpp filter.cpp IncludeFile.cpp IncludeMeta.cpp indexer.cpp index_segment.cpp init_modules.cpp init_mod_vars.cpp iso8859-1.cpp stop_words.cpp ChangeDirectory.cpp TempDirectory.cpp util.cpp word_info.cpp WordThreshold.cpp word_util.cpp index.cpp
 
 if WITH_DECODING
 index_SOURCES += encoded_char.cpp

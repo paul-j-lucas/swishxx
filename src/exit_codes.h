@@ -34,6 +34,7 @@ enum {
   Exit_Success                  = 0,
   Exit_Config_File              = 1,
   Exit_Usage                    = 2,
+  Exit_No_Chdir                 = 3,
 
   // unique to index
   Exit_No_Open_Temp             = 10,
