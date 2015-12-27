@@ -521,18 +521,21 @@ int main( int argc, char *argv[] ) {
 
   if ( verbosity ) {
     time = ::time( 0 ) - time;          // Stop!
-    char const *const swishxx_test = ::getenv( "SWISHXX_TEST" );
+
     bool testing = false;
-    if ( swishxx_test )
+    if ( char const *const swishxx_test = ::getenv( "SWISHXX_TEST" ) )
       parse( swishxx_test, &testing );
+
     cout << '\n' << me << ": done:\n";
     if ( !testing ) {
       cout << "  " << setfill('0')
            << setw(2) << (time / 60) << ':'
            << setw(2) << (time % 60) << " (min:sec) elapsed time\n";
     }
-    cout << "  " << num_examined_files << " files, "
-         << file_info::num_files() << " indexed\n  "
+    cout << "  ";
+    if ( !testing )
+      cout << num_examined_files << " files, ";
+    cout << file_info::num_files() << " indexed\n  "
          << num_total_words << " words, "
          << num_indexed_words << " indexed, "
          << num_unique_words << " unique\n\n";
