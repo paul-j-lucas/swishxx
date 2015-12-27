@@ -38,7 +38,8 @@ TESTS =	tests/index-no_options.test \
 	tests/index-WordFilesMax-a.test \
 	tests/index-WordPercentMax-0.test \
 	tests/index-WordPercentMax-102.test \
-	tests/index-WordPercentMax-a.test
+	tests/index-WordPercentMax-a.test \
+	tests/search-txt-D.test
 
 if WITH_HTML
 TESTS += tests/index-H.test

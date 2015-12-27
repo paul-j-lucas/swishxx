@@ -19,6 +19,9 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+# Uncomment the following the line to echo the command before executing.
+#ECHO=echo
+
 # Uncomment the following line for shell tracing.
 #set -x
 
@@ -191,16 +194,22 @@ run_sh_file() {
 }
 
 run_test_file() {
-  IFS='|' read COMMAND CONFIG OPTIONS INPUT EXPECTED_EXIT < $TEST
-  COMMAND=`echo $COMMAND`               # trims whitespace
-  CONFIG=`echo $CONFIG`                 # trims whitespace
-  [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
-  INPUT=`echo $INPUT`                   # trims whitespace
-  EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
+  IFS='|' read COMMAND CONF OPTIONS INPUT EXPECTED_EXIT < $TEST
 
-  SWISHXX_TEST=true
-  export SWISHXX_TEST
-  $COMMAND -d $DATA_DIR $CONFIG $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE
+  # trim whitespace
+  COMMAND=`echo $COMMAND`
+  CONF=`echo $CONF`
+  INPUT=`echo $INPUT`
+  EXPECTED_EXIT=`echo $EXPECTED_EXIT`
+
+  [ "$COMMAND" = "index" ] && CHDIR="-d $DATA_DIR"
+  [ "$CONF" ] && CONF="-c $DATA_DIR/$CONF"
+
+  [ "$ECHO" ] &&
+    $ECHO "$COMMAND $CHDIR $CONF $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE"
+
+  SWISHXX_TEST=true; export SWISHXX_TEST
+  $COMMAND $CHDIR $CONF $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE
   ACTUAL_EXIT=$?
 
   if [ $ACTUAL_EXIT -eq 0 ]
