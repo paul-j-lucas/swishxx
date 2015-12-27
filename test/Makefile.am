@@ -39,6 +39,8 @@ TESTS =	tests/index-no_options.test \
 	tests/index-WordPercentMax-0.test \
 	tests/index-WordPercentMax-102.test \
 	tests/index-WordPercentMax-a.test \
+	tests/search-ResultSeparator-01.test \
+	tests/search-ResultSeparator-02.test \
 	tests/search-ResultsFormat-bad.test \
 	tests/search-ResultsFormat-classic.test \
 	tests/search-ResultsFormat-xml.test \

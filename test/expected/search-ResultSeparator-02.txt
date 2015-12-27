@@ -1,0 +1,4 @@
+# results: 3
+100 > ./Christmas_Carol,_A.txt > 162261 > Christmas_Carol,_A.txt
+95 > ./Alice's_Adventures_in_Wonderland.txt > 147773 > Alice's_Adventures_in_Wonderland.txt
+76 > ./Time_Machine,_The.txt > 182203 > Time_Machine,_The.txt
