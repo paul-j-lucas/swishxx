@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE SearchResults SYSTEM
+ "http://www.pauljlucas.org/software/swish/SearchResults.dtd">
+<SearchResults
+ xmlns="http://www.pauljlucas.org/software/swish/SearchResults"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.pauljlucas.org/software/swish/SearchResults SearchResults.xsd">
+  <ResultCount>3</ResultCount>
+  <ResultList>
+    <File>
+      <Rank>100</Rank>
+      <Path>./Christmas_Carol,_A.txt</Path>
+      <Size>162261</Size>
+      <Title>Christmas_Carol,_A.txt</Title>
+    </File>
+    <File>
+      <Rank>95</Rank>
+      <Path>./Alice's_Adventures_in_Wonderland.txt</Path>
+      <Size>147773</Size>
+      <Title>Alice's_Adventures_in_Wonderland.txt</Title>
+    </File>
+    <File>
+      <Rank>76</Rank>
+      <Path>./Time_Machine,_The.txt</Path>
+      <Size>182203</Size>
+      <Title>Time_Machine,_The.txt</Title>
+    </File>
+  </ResultList>
+</SearchResults>

@@ -39,7 +39,15 @@ TESTS =	tests/index-no_options.test \
 	tests/index-WordPercentMax-0.test \
 	tests/index-WordPercentMax-102.test \
 	tests/index-WordPercentMax-a.test \
-	tests/search-txt-D.test
+	tests/search-txt-01.test \
+	tests/search-txt-D.test \
+	tests/search-txt-Fbad.test \
+	tests/search-txt-Fclassic.test \
+	tests/search-txt-Fxml.test \
+	tests/search-txt-m0.test \
+	tests/search-txt-m3.test \
+	tests/search-txt-ma.test \
+	tests/search-txt-wild-01.test
 
 if WITH_HTML
 TESTS += tests/index-H.test

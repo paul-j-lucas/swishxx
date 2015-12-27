@@ -1,0 +1,4 @@
+# results: 5
+100 ./GNU_GPLv2.txt 17982 GNU_GPLv2.txt
+94 ./Gutenberg_License.txt 17308 Gutenberg_License.txt
+14 ./Christmas_Carol,_A.txt 162261 Christmas_Carol,_A.txt
