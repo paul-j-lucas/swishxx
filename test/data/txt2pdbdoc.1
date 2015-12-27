@@ -1,0 +1,195 @@
+.\"
+.\"	Text to Doc file converter for Palm Pilots
+.\"	txt2pdbdoc.1
+.\"
+.\"	Copyright (C) 1998  Paul J. Lucas
+.\"
+.\"	This program is free software; you can redistribute it and/or modify
+.\"	it under the terms of the GNU General Public License as published by
+.\"	the Free Software Foundation; either version 2 of the License, or
+.\"	(at your option) any later version.
+.\" 
+.\"	This program is distributed in the hope that it will be useful,
+.\"	but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"	GNU General Public License for more details.
+.\" 
+.\"	You should have received a copy of the GNU General Public License
+.\"	along with this program; if not, write to the Free Software
+.\"	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ---------------------------------------------------------------------------
+.\" define code-start macro
+.de cS
+.sp
+.nf
+.RS 5
+.ft CW
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
+..
+.\" define code-end macro
+.de cE
+.ft 1
+.RE
+.fi
+.sp
+..
+.\" ---------------------------------------------------------------------------
+.TH \f3txt2pdbdoc\fP 1 "August 16, 2015" "txt2pdbdoc"
+.SH NAME
+txt2pdbdoc \- Text to Doc file converter for Palm Pilots
+.SH SYNOPSIS
+.B txt2pdbdoc
+.RB [ \-bctvw ]
+.I document-name
+.I file.txt
+.I file.pdb
+.br
+.B txt2pdbdoc
+.B \-d
+.RB [ \-Dvw ]
+.I file.pdb
+.RI [ file.txt ]
+.br
+.B txt2pdbdoc
+.B \-V
+.SH DESCRIPTION
+.B txt2pdbdoc
+converts a plain text file to a
+.BR Doc (4)
+file in PDB (Pilot Database) format
+used by all models of the Palm Pilot.
+(It can also convert a Doc file to plain text.)
+Resultant PDB files can be downloaded directly to a Pilot during a HotSync.
+.P
+The
+.I document-name
+is used in the Document List view of a Doc reader application on the Pilot.
+.SH OPTIONS
+An option argument
+.I n
+means
+.IR "unsigned integer" .
+If
+.I n
+starts with either
+.B 0x
+or
+.BR 0X,
+then
+.I n
+is interpreted as hexedecimal.
+.TP
+.B \-b
+Ordinarily,
+characters non-printable (binary) characters
+are stripped
+and both carriage-returns and form-feeds are converted to newlines.
+This option suppresses that behavior.
+.TP
+.B \-c
+Ordinarily,
+generated Doc files are compressed.
+This option suppresses compression.
+.TP
+.B \-d
+Decodes the given Doc file to text
+either to a file or to standard output if no file is specified.
+.TP
+.B \-D
+Does not check the file type/creator of the Doc file to decode.
+This option should be specified
+.I only
+if you know for
+.I sure
+that the file is in fact some sort of Doc file.
+Attempting to decode non-Doc files
+will result in undefined behavior.
+.TP
+.B \-t
+Ordinarily,
+the current time is embedded within generated Doc files
+as their creation and modification times.
+This option suppresses that behavior
+and sets both to zero instead.
+.TP
+.BI \-U " n"
+There are six characters used in the PalmOS character set
+that do not map to Unicode.
+Ordinarily,
+if these characters are encountered while decoding a Doc file,
+they are stripped.
+.TP
+.B ""
+This option specifies the Unicode code-point
+.I n
+to substitute for all unmappable characters.
+As additional special cases,
+the code-point can also be specified
+as either a single character
+or either a \f(CWU+\fP or \f(CWu+\fP
+followed by a hexedecimal integer.
+.TP
+.B \-v
+Enables verbose output.
+For encoding, print progress and compression statistics per 4K of text
+to standard error as well as overall statistics when completed;
+for decoding, print progress in a ``countdown'' style.
+.TP
+.B \-V
+Prints the version number of
+.B txt2pdbdoc
+to standard error and exits.
+.TP
+.B \-w
+Suppresses warnings about either
+incompatibilties mapping between PalmOS and Unicode characters
+or unexpected characters.
+.SH EXAMPLE
+To convert a text file to Doc file:
+.cS
+txt2pdbdoc 'Through the Looking Glass' alice.txt alice.pdb
+.cE
+.SH EXIT STATUS
+.PD 0
+.IP 0
+Success.
+.IP 1
+Error in command-line options or use.
+.IP 2
+Out of memory.
+.IP 10
+Open file error.
+.IP 11
+Read error.
+.IP 12
+Write error.
+.IP 13
+Seek error.
+.IP 14
+.B stat
+error.
+.IP 20
+File is not a Doc file.
+.IP 21
+Doc file uses unknown compression type.
+.PD
+.SH CAVEATS
+.TP 4
+1.
+Document names are limited to 31 characters in PDB format.
+Longer names are truncated but have the 29-31st characters replaced
+by ``\f(CW...\fP'' to indicate truncation.
+.TP
+2.
+The command isn't called ``txt2doc'' to avoid confusion about possibly having
+anything to do with Microsoft Word documents that use the \f(CW.doc\f1
+extension.
+.SH SEE ALSO
+.BR html2pdbtxt (1),
+.BR pdbtxt2html (1),
+.BR doc (4),
+.BR pdb (4)
+.SH AUTHOR
+Paul J. Lucas
+.RI < pauljlucas@mac.com >
