@@ -1,0 +1,9 @@
+.
+
+index: ranking index...
+index: writing index...
+
+index: done:
+  4 indexed
+  4878 words, 1838 indexed, 487 unique
+
