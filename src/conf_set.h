@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_set.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,37 +26,36 @@
 #include "conf_var.h"
 #include "pjl/pjl_set.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class conf_set : public conf_var, public PJL::string_set
-//
-// DESCRIPTION
-//
-//      A conf_set is-a conf_var and-a string_set for containing a set of
-//      configuration variable values.
-//
-//*****************************************************************************
-{
-protected:
-    conf_set( char const *name ) : conf_var( name ) { }
-    CONF_VAR_ASSIGN_OPS( conf_set )
+///////////////////////////////////////////////////////////////////////////////
 
-    virtual void    parse_value( char *line );
+/**
+ * A %conf_set is-a conf_var and-a string_set for containing a set of
+ * configuration variable values.
+ */
+class conf_set : public conf_var, public PJL::string_set {
+protected:
+  conf_set( char const *name ) : conf_var( name ) { }
+  CONF_VAR_ASSIGN_OPS( conf_set )
+
+  // inherited
+  virtual void parse_value( char *line );
+
 private:
-    virtual void    reset() { clear(); }
+  // inherited
+  virtual void reset();
 };
 
-#define CONF_SET_ASSIGN_OPS(T)                  \
-        T& operator=( char const *s ) {         \
-            conf_set::operator=( s );           \
-            return *this;                       \
-        }                                       \
-        T& operator=( std::string const &s ) {  \
-            conf_set::operator=( s );           \
-            return *this;                       \
-        }
+#define CONF_SET_ASSIGN_OPS(T)            \
+  T& operator=( char const *s ) {         \
+    conf_set::operator=( s );             \
+    return *this;                         \
+  }                                       \
+  T& operator=( std::string const &s ) {  \
+    conf_set::operator=( s );             \
+    return *this;                         \
+  }
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* conf_set_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

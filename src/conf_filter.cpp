@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_filter.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -30,91 +30,76 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* virtual */ void conf_filter::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse a conf_filter configuration file line.  The format of such a line
-//      is:
-//
-//          pattern command
-//
-//      where "pattern" is a pattern and "command" is the command-line for
-//      executing the filter on a file.
-//
-//      Furthermore, ensure the filter contains % and @ filename substitutions.
-//
-// PARAMETERS
-//
-//      line    The line to be parsed.
-//
-//*****************************************************************************
-{
-    char const *const pattern = ::strtok( line, " \r\t" );
-    if ( !pattern ) {
-        error() << "no pattern\n";
-        ::exit( Exit_Config_File );
-    }
-    char const *const command = ::strtok( 0, "\n" );
-    if ( !command ) {
-        error() << "no filter command\n";
-        ::exit( Exit_Config_File );
+///////////////////////////////////////////////////////////////////////////////
+
+void conf_filter::parse_value( char *line ) {
+  char const *const pattern = ::strtok( line, " \r\t" );
+  if ( !pattern ) {
+    error() << "no pattern\n";
+    ::exit( Exit_Config_File );
+  }
+  char const *const command = ::strtok( 0, "\n" );
+  if ( !command ) {
+    error() << "no filter command\n";
+    ::exit( Exit_Config_File );
+  }
+
+  //
+  // Check a filter command's %@ substitutions to ensure they're valid, that
+  // there are at least two of them, and that exactly one of them is a @
+  // meaning the target filename.  Also ignore %% or @@ respresenting literal @
+  // or %, respectively.
+  //
+  bool found_target = false;
+  int num_substitutions = 0;
+
+  for ( char const* s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s ) {
+    if ( s[0] == s[1] ) {               // %% or @@ ...
+      ++s;                              // ... skip past it
+      continue;
     }
 
-    //
-    // Check a filter command's %@ substitutions to ensure they're valid, that
-    // there are at least two of them, and that exactly one of them is a @
-    // meaning the target filename.  Also ignore %% or @@ respresenting literal
-    // @ or %, respectively.
-    //
-    bool found_target = false;
-    int num_substitutions = 0;
-
-    for ( char const* s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s ) {
-        if ( s[0] == s[1] ) {           // %% or @@ ...
-            ++s;                        // ... skip past it
-            continue;
-        }
-
-        if ( *s == '@' ) {
-            if ( found_target ) {
-                error() << "more than one @\n";
-                ::exit( Exit_Config_File );
-            } else {
-                found_target = true;
-                continue;
-            }
-        }
-
-        switch ( s[1] ) {
-            case 'b':
-            case 'B':
-            case 'e':
-            case 'E':
-            case 'f':
-            case 'F':
-                ++num_substitutions;
-                continue;
-        }
-        error() << "non-[bBeEfF%] character after %\n";
+    if ( *s == '@' ) {
+      if ( found_target ) {
+        error() << "more than one @\n";
         ::exit( Exit_Config_File );
+      } else {
+        found_target = true;
+        continue;
+      }
     }
 
-    if ( num_substitutions < 1 ) {
-        error() << "at least 1 substitution is required\n";
-        ::exit( Exit_Config_File );
+    switch ( s[1] ) {
+      case 'b':
+      case 'B':
+      case 'e':
+      case 'E':
+      case 'f':
+      case 'F':
+        ++num_substitutions;
+        continue;
     }
-    if ( !found_target ) {
-        error() << "filter does not contain required @\n";
-        ::exit( Exit_Config_File );
-    }
+    error() << "non-[bBeEfF%] character after %\n";
+    ::exit( Exit_Config_File );
+  } // for
 
-    map_.insert( map_type::value_type(
-        ::strdup( pattern ), value_type( ::strdup( command ) )
-    ) );
+  if ( num_substitutions < 1 ) {
+    error() << "at least 1 substitution is required\n";
+    ::exit( Exit_Config_File );
+  }
+  if ( !found_target ) {
+    error() << "filter does not contain required @\n";
+    ::exit( Exit_Config_File );
+  }
+
+  map_.insert( map_type::value_type(
+    ::strdup( pattern ), value_type( ::strdup( command ) )
+  ) );
 }
-/* vim:set et sw=4 ts=4: */
+
+void conf_filter::reset() {
+  map_.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

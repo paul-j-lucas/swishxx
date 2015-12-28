@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_set.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,24 +28,16 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* virtual */ void conf_set::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse the line of text by splitting it into words that are separated by
-//      whitespace.
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    for ( char const *s; (s = ::strtok( line, " \r\t" )); line = 0 )
-        insert( s );
+///////////////////////////////////////////////////////////////////////////////
+
+void conf_set::parse_value( char *line ) {
+  for ( char const *s; (s = ::strtok( line, " \r\t" )); line = 0 )
+    insert( s );
 }
-/* vim:set et sw=4 ts=4: */
+
+void conf_set::reset() {
+  clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

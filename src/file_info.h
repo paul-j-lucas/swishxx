@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/file_info.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -29,11 +29,9 @@
 #include <cstddef>                      /* for size_t */
 #include <vector>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class file_info
+///////////////////////////////////////////////////////////////////////////////
+
+class file_info
 //
 // DESCRIPTION
 //
@@ -44,75 +42,96 @@
 //*****************************************************************************
 {
 public:
-    typedef std::vector<file_info*> list_type;
-    typedef list_type::const_iterator const_iterator;
-    typedef size_t size_type;
-    typedef PJL::char_ptr_set name_set_type;
+  typedef std::vector<file_info*> list_type;
+  typedef list_type::const_iterator const_iterator;
+  typedef size_t size_type;
+  typedef PJL::char_ptr_set name_set_type;
 
-    file_info(
-        char const *path_name, int dir_index, size_t file_size,
-        char const *title, int num_words = 0
-    );
-    file_info( unsigned char const *ptr_into_index_file );
+  /**
+   * Constructs a %file_info.  If a title is given, use it; otherwise set the
+   * title to be (just) the file name (not the path name).
+   *
+   * Additionally record its address in a list so the entire list can be
+   * iterated over later in the order encountered.  The first time through,
+   * reserve files_reserve slots for files.  If exceeded, the vector will
+   * automatically grow, but with a slight performance penalty.
+   *
+   * @param path_name The full path name of the file.
+   * @param dir_index The numerical index of the directory.
+   * @param file_size The size of the file in bytes.
+   * @param title     The title of the file only if not null.
+   * @param num_words The number of words in the file.
+   */
+  file_info( char const *path_name, int dir_index, size_t file_size,
+             char const *title, int num_words = 0 );
 
-    int dir_index() const {
-        return dir_index_;
-    }
+  /**
+   * Constructs a %file_info from the raw data inside an index file.
+   *
+   * @param p The pointer to the raw file_info data.
+   */
+  file_info( unsigned char const *ptr_into_index_file );
 
-    char const* file_name() const {
-        return file_name_;
-    }
+  int dir_index() const {
+    return dir_index_;
+  }
 
-    int num_words() const {
-        return num_words_;
-    }
+  char const* file_name() const {
+    return file_name_;
+  }
 
-    size_type size() const {
-        return size_;
-    }
+  int num_words() const {
+    return num_words_;
+  }
 
-    char const* title() const {
-        return title_;
-    }
+  size_type size() const {
+    return size_;
+  }
 
-    static const_iterator begin() {
-        return list_.begin();
-    }
+  char const* title() const {
+    return title_;
+  }
 
-    static const_iterator end() {
-        return list_.end();
-    }
+  static const_iterator begin() {
+    return list_.begin();
+  }
 
-    static int current_index() {
-        return static_cast<int>( list_.size() - 1 );
-    }
+  static const_iterator end() {
+    return list_.end();
+  }
 
-    static void inc_words() {
-        ++list_.back()->num_words_;
-    }
+  static int current_index() {
+    return static_cast<int>( list_.size() - 1 );
+  }
 
-    static file_info* ith_info( int i ) {
-        return list_[ i ];
-    }
+  static void inc_words() {
+    ++list_.back()->num_words_;
+  }
 
-    static int num_files() {
-        return static_cast<int>( list_.size() );
-    }
+  static file_info* ith_info( int i ) {
+    return list_[ i ];
+  }
 
-    static bool seen_file( char const *file_name ) {
-        return name_set_.contains( file_name );
-    }
+  static int num_files() {
+    return static_cast<int>( list_.size() );
+  }
+
+  static bool seen_file( char const *file_name ) {
+    return name_set_.contains( file_name );
+  }
 
 private:
-    int const               dir_index_;
-    char const *const       file_name_;
-    size_type const         size_;
-    int                     num_words_;
-    char const *const       title_;
+  int const             dir_index_;
+  char const *const     file_name_;
+  size_type const       size_;
+  int                   num_words_;
+  char const *const     title_;
 
-    static list_type        list_;
-    static name_set_type    name_set_;
+  static list_type      list_;
+  static name_set_type  name_set_;
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* file_info_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

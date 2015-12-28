@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/encoded_char.cpp
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -24,39 +24,25 @@
 
 encoded_char_range::decoder::set_type encoded_char_range::decoder::set_;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        encoded_char_range::decoder::~decoder()
-//
-// DESCRIPTION
-//
-//      Destroy an encoded_char_range::decoder.
-//
-// NOTE
-//
-//      This is out-of-line only because it's virtual.
-//
-//*****************************************************************************
-{
-    // do nothing
+///////////////////////////////////////////////////////////////////////////////
+
+encoded_char_range::decoder::~decoder() {
+  // do nothing
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void encoded_char_range::decoder::reset_all()
-//
-// SYNOPSIS
-//
-//      Reset all the registered decoders.
-//
-//*****************************************************************************
-{
-    for ( set_type::iterator i = set_.begin(); i != set_.end(); ++i )
-        (*i)->reset();
+void encoded_char_range::decoder::reset_all() {
+  for ( set_type::iterator i = set_.begin(); i != set_.end(); ++i )
+    (*i)->reset();
 }
 
-/* vim:set et sw=4 ts=4: */
+char *to_lower( encoded_char_range const &range ) {
+  extern PJL::char_buffer_pool<128,5> lower_buf;
+  register char *p = lower_buf.next();
+  for ( encoded_char_range::const_iterator c = range.begin(); !c.at_end(); ++c )
+    *p++ = to_lower( *c );
+  *p = '\0';
+  return lower_buf.current();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_enum.cpp
 **
-**      Copyright (C) 2000  Paul J. Lucas
+**      Copyright (C) 2000-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -34,93 +34,41 @@ using namespace std;
 
 extern char const*  me;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        conf_enum::conf_enum(
-            char const *name, char const *const legal_values[]
-        ) :
-//
-// DESCRIPTION
-//
-//      Construct (initialize) a conf_enum.
-//
-// PARAMETERS
-//
-//      name            The name of the configuration variable.
-//
-//      legal_values    The set of legal values.
-//
-//*****************************************************************************
-    conf<std::string>( name, legal_values[0] ),
-    legal_values_( legal_values )
+///////////////////////////////////////////////////////////////////////////////
+
+conf_enum::conf_enum( char const *name, char const *const legal_values[] ) :
+  conf<std::string>( name, legal_values[0] ),
+  legal_values_( legal_values )
 {
-    // do nothing else
+  // do nothing else
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        bool conf_enum::is_legal( char const *value, ostream &err ) const
-//
-// DESCRIPTION
-//
-//      Checks to see if a given value is legal, i.e., among the pre-determined
-//      set of legal values.
-//
-// PARAMETERS
-//
-//      value   The value to be checked.
-//
-//      err     The ostream to write an error message to, if any.
-//
-// RETURN VALUE
-//
-//      Returns true only if the value is legal.
-//
-//*****************************************************************************
-{
-    if ( *value ) {
-        unique_ptr<char[]> const lower( to_lower_r( value ) );
-        for ( char const *const *v = legal_values_; *v; ++v )
-            if ( !::strcmp( lower.get(), *v ) )
-                return true;
-    }
-    err << error << '"' << name() << "\" is not one of: ";
-    bool comma = false;
-    for ( char const *const *v = legal_values_; *v; ++v ) {
-        if ( comma )
-            err << ", ";
-        else
-            comma = true;
-        err << *v;
-    }
-    err << '\n';
-    return false;
+bool conf_enum::is_legal( char const *value, ostream &err ) const {
+  if ( *value ) {
+    unique_ptr<char[]> const lower( to_lower_r( value ) );
+    for ( char const *const *v = legal_values_; *v; ++v )
+      if ( !::strcmp( lower.get(), *v ) )
+        return true;
+  }
+  err << error << '"' << name() << "\" is not one of: ";
+  bool comma = false;
+  for ( char const *const *v = legal_values_; *v; ++v ) {
+    if ( comma )
+      err << ", ";
+    else
+      comma = true;
+    err << *v;
+  } // for
+  err << '\n';
+  return false;
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* virtual */ void conf_enum::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse an enum value from the line of text.  It must be one of the legal
-//      values.
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    if ( !is_legal( line ) )
-        ::exit( Exit_Config_File );
-    unique_ptr<char[]> lower( to_lower_r( line ) );
-    conf<string>::parse_value( lower.get() );
+void conf_enum::parse_value( char *line ) {
+  if ( !is_legal( line ) )
+    ::exit( Exit_Config_File );
+  unique_ptr<char[]> lower( to_lower_r( line ) );
+  conf<string>::parse_value( lower.get() );
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

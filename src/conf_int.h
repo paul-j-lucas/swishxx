@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_int.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -29,65 +29,71 @@
 #include <climits>                      /* for INT_MAX */
 #include <string>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        template<> class conf<int> : public conf_var
-//
-// DESCRIPTION
-//
-//      A conf<int> is-a conf_var for containing the value of an integer
-//      configuration variable.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A conf&lt;int&gt; is-a conf_var for containing the value of an integer
+ * configuration variable.
+ */
+template<>
+class conf<int> : public conf_var {
 public:
-    conf<int>& operator++() {
-        ++value_;
-        return *this;
-    }
-    conf<int> operator++( int ) {
-        conf<int> tmp = *this;
-        ++value_;
-        return tmp;
-    }
-    conf<int>& operator--() {
-        --value_;
-        return *this;
-    }
-    conf<int> operator--( int ) {
-        conf<int> tmp = *this;
-        --value_;
-        return tmp;
-    }
-    operator int() const { return value_; }
+  conf<int>& operator++() {
+    ++value_;
+    return *this;
+  }
+
+  conf<int> operator++( int ) {
+    conf<int> tmp = *this;
+    ++value_;
+    return tmp;
+  }
+
+  conf<int>& operator--() {
+    --value_;
+    return *this;
+  }
+
+  conf<int> operator--( int ) {
+    conf<int> tmp = *this;
+    --value_;
+    return tmp;
+  }
+
+  operator int() const {
+    return value_;
+  }
+
 protected:
-    conf( char const *name, int default_value, int min = 0, int max = INT_MAX );
-    conf<int>& operator=( int );
-    CONF_VAR_ASSIGN_OPS( conf<int> )
+  conf( char const *name, int default_value, int min = 0, int max = INT_MAX );
+  conf<int>& operator=( int );
+  CONF_VAR_ASSIGN_OPS( conf<int> )
 
-    virtual void    parse_value( char *line );
+  // inherited
+  virtual void parse_value( char *line );
+
 private:
-    int const       default_value_, min_, max_;
-    int             value_;
+  int const default_value_, min_, max_;
+  int       value_;
 
-    virtual void    reset() { value_ = default_value_; }
+  virtual void reset();
 };
 
-#define CONF_INT_ASSIGN_OPS(T)                  \
-        T& operator=( int i ) {                 \
-            conf<int>::operator=( i );          \
-            return *this;                       \
-        }                                       \
-        T& operator=( std::string const &s ) {  \
-            conf<int>::operator=( s );          \
-            return *this;                       \
-        }                                       \
-        T& operator=( char const *s ) {         \
-            conf<int>::operator=( s );          \
-            return *this;                       \
-        }
+#define CONF_INT_ASSIGN_OPS(T)            \
+  T& operator=( int i ) {                 \
+    conf<int>::operator=( i );            \
+    return *this;                         \
+  }                                       \
+  T& operator=( std::string const &s ) {  \
+    conf<int>::operator=( s );            \
+    return *this;                         \
+  }                                       \
+  T& operator=( char const *s ) {         \
+    conf<int>::operator=( s );            \
+    return *this;                         \
+  }
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* conf_int_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

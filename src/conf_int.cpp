@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_int.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -36,98 +36,57 @@ using namespace std;
 
 extern char const*  me;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        conf<int>::conf( char const *name,
-            int default_value, int min, int max
-        ) :
-//
-// DESCRIPTION
-//
-//      Constructs (initialize) a conf<int>.
-//
-// PARAMETERS
-//
-//      name    The name of the configuration variable.
-//
-//*****************************************************************************
-    conf_var( name ),
-    default_value_( default_value ), min_( min ), max_( max ),
-    value_( default_value )
+///////////////////////////////////////////////////////////////////////////////
+
+conf<int>::conf( char const *name, int default_value, int min, int max ) :
+  conf_var( name ),
+  default_value_( default_value ), min_( min ), max_( max ),
+  value_( default_value )
 {
-    // do nothing else
+  // do nothing else
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        conf<int>& conf<int>::operator=( int new_value )
-//
-// DESCRIPTION
-//
-//      Assign a new value to the configuration variable, but only if its value
-//      is within the legal range; otherwise complain.
-//
-// PARAMETERS
-//
-//      new_value   The potential new value.
-//
-//*****************************************************************************
-{
-    if ( new_value >= min_ && new_value <= max_ ) {
-        value_ = new_value;
-        return *this;
-    }
+conf<int>& conf<int>::operator=( int new_value ) {
+  if ( new_value >= min_ && new_value <= max_ ) {
+    value_ = new_value;
+    return *this;
+  }
 
-    error() << '"' << name() << "\" value \""
-            << new_value << "\" not in range [" << min_ << '-';
+  error() << '"' << name() << "\" value \""
+          << new_value << "\" not in range [" << min_ << '-';
 
-    if ( max_ == INT_MAX )
-        cerr << "infinity";
-    else
-        cerr << max_;
+  if ( max_ == INT_MAX )
+    cerr << "infinity";
+  else
+    cerr << max_;
 
-    cerr << "]\n";
+  cerr << "]\n";
+  ::exit( Exit_Config_File );
+}
+
+void conf<int>::parse_value( char *line ) {
+  if ( !line || !*line ) {
+    error() << '"' << name() << "\" has no value\n";
     ::exit( Exit_Config_File );
+  }
+  unique_ptr<char[]> const lower( to_lower_r( line ) );
+  if ( !::strcmp( lower.get(), "infinity" ) ) {
+    operator=( INT_MAX );
+    return;
+  }
+  int const n = ::atoi( line );
+  if ( n || *line == '0' ) {
+    operator=( n );
+    return;
+  }
+
+  error() << '"' << name() << "\" has a non-numeric value\n";
+  ::exit( Exit_Config_File );
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* virtual */ void conf<int>::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse an integer value from a configuration file line.  If successful,
-//      assign the value to ourselves; otherwise complain.  The string
-//      "infinity" (regardless of case) is accepted as a legal value.
-//
-// PARAMETERS
-//
-//      line    The line to be parsed.
-//
-//*****************************************************************************
-{
-    if ( !line || !*line ) {
-        error() << '"' << name() << "\" has no value\n";
-        ::exit( Exit_Config_File );
-    }
-    unique_ptr<char[]> const lower( to_lower_r( line ) );
-    if ( !::strcmp( lower.get(), "infinity" ) ) {
-        operator=( INT_MAX );
-        return;
-    }
-    int const n = ::atoi( line );
-    if ( n || *line == '0' ) {
-        operator=( n );
-        return;
-    }
-
-    error() << '"' << name() << "\" has a non-numeric value\n";
-    ::exit( Exit_Config_File );
+void conf<int>::reset() {
+  value_ = default_value_;
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

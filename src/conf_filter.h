@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_filter.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -30,41 +30,40 @@
 // standard
 #include <string>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class conf_filter : public conf_var
-//
-// DESCRIPTION
-//
-//      A conf_filter is-a conf_var for mapping a filename pattern to a filter
-//      (being a Unix process called via command-line).  Certain filename
-//      patterns need to be filtered first, e.g., uncompressed.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %conf_filter is-a conf_var for mapping a filename pattern to a filter
+ * (being a Unix process called via command-line).  Certain filename patterns
+ * need to be filtered first, e.g., uncompressed.
+ */
+class conf_filter : public conf_var {
 public:
-    typedef char const* key_type;
-    typedef filter value_type;
-    typedef value_type const* const_pointer;
+  typedef char const* key_type;
+  typedef filter value_type;
+  typedef value_type const* const_pointer;
 
-    const_pointer operator[]( key_type key ) const {
-        map_type::const_iterator const i = map_.find( key );
-        return i != map_.end() ? &i->second : 0;
-    }
-    const_pointer operator[]( std::string const &key ) const {
-        return operator[]( key.c_str() );
-    }
+  const_pointer operator[]( key_type key ) const {
+    map_type::const_iterator const i = map_.find( key );
+    return i != map_.end() ? &i->second : 0;
+  }
+
+  const_pointer operator[]( std::string const &key ) const {
+    return operator[]( key.c_str() );
+  }
+
 protected:
-    conf_filter( char const *name ) : conf_var( name ) { }
+  conf_filter( char const *name ) : conf_var( name ) { }
 
-    typedef pattern_map<value_type> map_type;
-    map_type map_;
+  typedef pattern_map<value_type> map_type;
+  map_type map_;
 
-    virtual void    parse_value( char *line );
-    virtual void    reset() { map_.clear(); }
+  // inherited
+  virtual void parse_value( char *line );
+  virtual void reset();
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* conf_filter_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

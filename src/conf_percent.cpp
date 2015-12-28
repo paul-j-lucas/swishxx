@@ -2,7 +2,7 @@
 **	    SWISH++
 **	    src/conf_percent.cpp
 **
-**	    Copyright (C) 2001  Paul J. Lucas
+**	    Copyright (C) 2001-2015  Paul J. Lucas
 **
 **	    This program is free software; you can redistribute it and/or modify
 **	    it under the terms of the GNU General Public License as published by
@@ -30,31 +30,19 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-	    /* virtual */ void conf_percent::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//	    Parse an integer value from a configuration file line.  If the value is
-//	    followed by a '%' then it's a percentage.
-//
-// PARAMETERS
-//
-//	    line	The line to be parsed.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+void conf_percent::parse_value( char *line ) {
 	conf<int>::parse_value( line );
 	if ( (is_percentage_ = !!::strchr( line, '%' )) ) {
 		int const value = *this;
 		if ( value < 0 || value > 101 ) {
 			error()	<< '"' << name() << "\" value \"" << value
-				    << "\" not in range [0-101]%\n";
+              << "\" not in range [0-101]%\n";
 			::exit( Exit_Config_File );
 		}
 	}
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

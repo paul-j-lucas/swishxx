@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/conf_string.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -33,61 +33,38 @@ using namespace std;
 
 extern char const*  me;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        conf<std::string>::conf( char const *name, char const *default_value ) :
-//
-// DESCRIPTION
-//
-//      Constructs a conf<std::string> setting its name and default value.
-//
-// PARAMETERS
-//
-//      name        The name of the configuration variable.
-//
-//      default_value   Its default value.
-//
-//*****************************************************************************
-    conf_var( name ),
-    default_value_( default_value ),
-    value_( default_value )
+///////////////////////////////////////////////////////////////////////////////
+
+conf<string>::conf( char const *name, char const *default_value ) :
+  conf_var( name ),
+  default_value_( default_value ),
+  value_( default_value )
 {
-    // do nothing else
+  // do nothing else
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* virtual */ void conf<std::string>::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse a single string value from the line of text.
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    if ( !line || !*line ) {
-        error() << '"' << name() << "\" has no value\n";
-        ::exit( Exit_Config_File );
-    }
+void conf<string>::parse_value( char *line ) {
+  if ( !line || !*line ) {
+    error() << '"' << name() << "\" has no value\n";
+    ::exit( Exit_Config_File );
+  }
 
-    //
-    // If the first non-whitespace character is a quote and the last
-    // non-whitespace character is the SAME quote, strip the quotes.
-    //
-    if ( *line == '\'' || *line == '"' ) {
-        char *const last = line + ::strlen( line ) - 1;
-        if ( *line == *last )
-            ++line, *last = '\0';
-    }
+  //
+  // If the first non-whitespace character is a quote and the last
+  // non-whitespace character is the SAME quote, strip the quotes.
+  //
+  if ( *line == '\'' || *line == '"' ) {
+    char *const last = line + ::strlen( line ) - 1;
+    if ( *line == *last )
+      ++line, *last = '\0';
+  }
 
-    value_ = line;
+  value_ = line;
 }
-/* vim:set et sw=4 ts=4: */
+
+void conf<string>::reset() {
+  value_ = default_value_;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */
