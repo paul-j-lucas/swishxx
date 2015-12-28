@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	splitmail.1
 .\"
-.\"	Copyright (C) 2000  Paul J. Lucas
+.\"	Copyright (C) 2000-2015  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 .de cS
 .sp
 .nf
-.RS 5
+.RS 4
 .ft CW
 .ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
 ..
@@ -35,13 +35,13 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3splitmail\f1 1 "December 29, 2009" "SWISH++"
+.TH \f3splitmail\f1 1 "December 27, 2015" "SWISH++"
 .SH NAME
 splitmail \- split mailbox files prior to indexing
 .SH SYNOPSIS
 .B splitmail -p
 .I prefix
-.BI "[ " file " ]"
+.BI [ file ]
 .SH DESCRIPTION
 .B splitmail
 is a utility to split a mailbox file
@@ -54,7 +54,7 @@ The generated files have 5-digit increasing numbers
 appended to a common prefix.
 .SH OPTIONS
 .TP 12
-.BI \-p prefix
+.BI \-p " prefix"
 Specifies the common prefix.
 .SH EXAMPLE
 The command:

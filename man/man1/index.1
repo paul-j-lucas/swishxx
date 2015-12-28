@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	index.1
 .\"
-.\"	Copyright (C) 2003  Paul J. Lucas
+.\"	Copyright (C) 2003-2015  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 .de cS
 .sp
 .nf
-.RS 5
+.RS 4
 .ft CW
 .ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
 ..
@@ -35,14 +35,12 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "December 29, 2009" "SWISH++"
+.TH \f3index\f1 1 "December 29, 2015" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
 .B index
-[
-.I options
-]
+.RI [ options ]
 .I directory...
 .I file...
 .SH DESCRIPTION
@@ -120,7 +118,7 @@ If a word looks like an acronym, it is indexed and no further checks are done.
 .P
 Second, there are several other checks that are applied.
 A word is not indexed if it:
-.TP 4
+.TP 3
 1.
 Is less than \f(CWWord_Min_Size\f1 letters.
 (Default is 4.)
@@ -221,7 +219,7 @@ as has already been described.
 .SS HTML and XHTML Module
 Additional processing is done for HTML and XHTML files.
 The additional processing is:
-.TP 4
+.TP 3
 1.
 Character and numeric
 (decimal and hexadecimal)
@@ -341,7 +339,7 @@ ID3 tag versions 1.x and 2.x (through 2.4) are supported
 If a file contains both 1.x and 2.x tags,
 only the 2.x tag is indexed.
 The processing done for files containing an ID3 tag is:
-.TP 4
+.TP 3
 1.
 If a title field is found,
 then the value of the title is stored in the generated index file
@@ -471,7 +469,7 @@ leading and trailing spaces are removed.)
 .SS Mail Module
 Additional processing is done for mail and news files.
 The additional processing is:
-.TP 4
+.TP 3
 1.
 If a
 .B Subject
@@ -576,7 +574,7 @@ utility is included in the SWISH++ distribution.
 .SS Manual Module
 Additional processing is done for Unix manual page files.
 The additional processing is:
-.TP 4
+.TP 3
 1.
 If a
 .B NAME
@@ -666,29 +664,17 @@ For a long option that takes an argument,
 the argument is either taken to be the characters after a `\f(CW=\fP', if any,
 or, if not, is taken from the next option unless said option begins with
 a `\f(CW-\fP'.
-.TP 20
-.B \-?
-.br
-.ns
+.TP 8
+.BR \-? " | " \-\-help
+Prints the usage (``help'') message and exits.
 .TP
-.B \-\-help
-Print the usage (``help'') message and exit.
-.TP
-.B \-A
-.br
-.ns
-.TP
-.B \-\-no-assoc-meta
+.BR \-A " | " \-\-no-assoc-meta
 Do not associate words with meta names during indexing
 nor store such associations in the generated index file.
 This sacrifices meta names
 for decreased memory usage and index file size.
 .TP
-.BI \-c f
-.br
-.ns
-.TP
-.BI \-\-config-file= f
+.BI \-c " f" "\f1 | \fP" "" \-\-config-file \f1=\fPf
 The name of the configuration file,
 .IR f ,
 to use.
@@ -697,11 +683,7 @@ A configuration file is not required:
 if none is specified and the default does not exist, none is used;
 however, if one is specified and it does not exist, then this is an error.
 .TP
-.BI \-C c
-.br
-.ns
-.TP
-.BI \-\-no-class= c
+.BI \-C " c" "\f1 | \fP" "" \-\-no-class \f1=\fPc
 For HTML or XHTML files only,
 a class name,
 .IR c ,
@@ -712,11 +694,14 @@ or
 .B \-\-no-class
 options may be specified.
 .TP
-.BI \-e m : p [, p ...]
-.br
-.ns
+.BI \-d " d" "\f1 | \fP" "" \-\-chdir \f1=\fPd
+Changes the current working directory to
+.I d
+just prior to beginning indexing
+(but after a configuration file, if any, is read
+and after the index file is created).
 .TP
-.BI \-\-pattern= m : p [, p ...]
+.BI \-e " m" \f1:\fP p \f1[,\fP p... \f1]\fP "\f1 | \fP" \-\-pattern \f1=\fPm \f1:\fP p \f1[,\fP p... \f1]\fP
 A module name,
 .IR m ,
 and a filename pattern (or set of patterns separated by commas),
@@ -730,12 +715,9 @@ or
 .B \-\-pattern
 options may be specified.
 .TP
-.BI \-E p [, p ...]
-.br
-.ns
-.TP
-.BI \-\-no-pattern= p [, p ...]
-A filename pattern (or set of patterns separated by commas),
+.BI \-E " m" \f1:\fP p \f1[,\fP p... \f1]\fP "\f1 | \fP" \-\-no-pattern \f1=\fPm \f1:\fP p \f1[,\fP p... \f1]\fP
+A filename pattern
+(or set of patterns separated by commas),
 .IR p ,
 of files
 .I not
@@ -747,38 +729,27 @@ or
 .B \-\-no-pattern
 options may be specified.
 .TP
-.BI \-f n
-.br
-.ns
-.TP
-.BI \-\-word-files= n
+.BI \-f " n" "\f1 | \fP" "" \-\-word-files \f1=\fPn
 The maximum number of files,
 .IR n ,
 a word may occur in before it is discarded as being too frequent.
 (Default is infinity.)
 .TP
-.BI \-F n
-.br
-.ns
-.TP
-.BI \-\-files-reserve= n
-Reserve space for this number of files,
+.BI \-F " n" "\f1 | \fP" "" \-\-files-reserve \f1=\fPn
+Reserves space for this number of files,
 .IR n ,
 to start.
 More space will be allocated as necessary,
 but with a slight performance penalty.
 (Default is 1000.)
 .TP
-.BI \-g n
-.br
-.ns
-.TP
-.BI \-\-files-grow= n
-Grow the space for the reserved number of files,
+.BI \-g " n" "\f1 | \fP" "" \-\-files-grow \f1=\fPn
+Grows the space for the reserved number of files,
 .IR n ,
 when incrementally indexing.
 The number can either be an absolute number of files
-or a percentage (when followed by a percent sign \f(CW%\f1).
+or a percentage
+(when followed by a percent sign \f(CW%\f1).
 Just as with the
 .B \-F
 option,
@@ -786,50 +757,29 @@ more space will be allocated as necessary,
 but with a slight performance penalty.
 (Default is 100.)
 .TP
-.B \-H
-.br
-.ns
+.BR \-H " | " \-\-dump-html
+Dumps the built-in set of recognized HTML and XHTML elements
+to standard output and exits.
 .TP
-.B \-\-dump-html
-Dump the built-in set of recognized HTML and XHTML elements
-to standard output and exit.
-.TP
-.BI \-i f
-.br
-.ns
-.TP
-.BI \-\-index-file= f
+.BI \-i " f" "\f1 | \fP" "" \-\-index-file \f1=\fPf
 The name of the generated index file,
 .I f
 (for new indexes;
 default is \f(CWswish++.index\f1 in the current directory)
 or the old index file when doing incremental indexing.
 .TP
-.B \-I
-.br
-.ns
-.TP
-.B \-\-incremental
-Incrementally add the indexed files and words to an existing index.
+.BR \-I " | " \-\-incremental
+Incrementally adds the indexed files and words to an existing index.
 The existing index is not touched;
 instead, a new index is created having the same pathname of the existing index
 with ``\f(CW.new\f1'' appended.
-.TP
-.B \-l
-.br
-.ns
-.TP
-.B \-\-follow-links
-Follow symbolic links during indexing.
+.BR \-l " | " \-\-follow-links
+Follows symbolic links during indexing.
 (Default is not to follow them.)
 This option is not available under Microsoft Windows
 since it doesn't support symbolic links.
 .TP
-.BI \-m m [ =n ]
-.br
-.ns
-.TP
-.BI \-\-meta= m [ =n ]
+.BI \-m " m" \f1[=\fP n \f1]\fP "\f1 | \fP" \-\-meta= m \f1[=\fP n \f1]\fP
 The value of a meta name,
 .IR m ,
 for which words are to be associated when indexed.
@@ -858,11 +808,7 @@ or
 .B \-\-meta
 options are indexed.
 .TP
-.BI \-M m
-.br
-.ns
-.TP
-.BI \-\-no-meta= m
+.BI \-M " m" "\f1 | \fP" "" \-\-no-meta \f1=\fPm
 The value of a meta name,
 .IR m ,
 for which words are not to be indexed.
@@ -873,22 +819,15 @@ or
 .B \-\-no-meta
 options may be specified.
 .TP
-.BI \-p n
-.br
-.ns
-.TP
-.BI \-\-word-percent= n
+.BI \-p " n" "\f1 | \fP" "" \-\-word-percent \f1=\fPn
 The maximum percentage,
 .IR n ,
 of files a word may occur in before it is discarded as being too frequent.
 (Default is 100.)
-If you want to keep all words regardless, specify 101.
+If you want to keep all words regardless,
+specify 101.
 .TP
-.B \-P
-.br
-.ns
-.TP
-.B \-\-no-pos-data
+.BR \-P " | " \-\-no-pos-data
 Do not store word positions in memory during indexing
 nor in the generated index file
 needed to do ``near'' searches later during searching.
@@ -896,11 +835,7 @@ This sacrifices ``near'' searching
 for decreased memory usage and index file size
 (approximately 50%).
 .TP
-.B \-r
-.br
-.ns
-.TP
-.B \-\-no-recurse
+.BR \-r " | " \-\-no-recurse
 Do not recursively index the files in subdirectories,
 that is: when a directory is encountered,
 all the files in that directory are indexed
@@ -920,40 +855,24 @@ This option is most useful when specifying the directories and files to index
 via standard input.
 (Default is to index the files in subdirectories recursively.)
 .TP
-.BI \-s f
-.br
-.ns
-.TP
-.BI \-\-stop-file= f
+.BI \-s " f" "\f1 | \fP" "" \-\-stop-file \f1=\fPf
 The name of a file,
 .IR f ,
 containing the set of stop-words to use instead of the built-in set.
 Whitespace, including blank lines, and characters starting with \f(CW#\f1
 and continuing to the end of the line (comments) are ignored.
 .TP
-.B \-S
-.br
-.ns
+.BR \-S " | " \-\-dump-stop
+Dumps the built-in set of stop-words to standard output and exits.
 .TP
-.B \-\-dump-stop
-Dump the built-in set of stop-words to standard output and exit.
-.TP
-.BI \-t n
-.br
-.ns
-.TP
-.BI \-\-title-lines= n
+.BI \-t " n" "\f1 | \fP" "" \-\-title-lines \f1=\fPn
 The maximum number of lines,
 .IR n ,
 into a file to look at for a file's title.
 (Default is 12.)
 Larger numbers slow indexing.
 .TP
-.BI \-T d
-.br
-.ns
-.TP
-.BI \-\-temp-dir= d
+.BI \-T " d" "\f1 | \fP" "" \-\-temp-dir \f1=\fPd
 The path of the directory,
 .IR d ,
 to use for temporary files.
@@ -963,24 +882,21 @@ or \f(CW/temp\f1 for Windows.)
 .IP ""
 If your OS mounts swap space on \f(CW/tmp\f1,
 as indexing progresses and more files get created in \f(CW/tmp\f1,
-you will have less swap space, indexing will get slower,
+you will have less swap space,
+indexing will get slower,
 and you may run out of memory.
-If this is the case, you should specify a directory on a real filesystem, i.e.,
+If this is the case,
+you should specify a directory on a real filesystem,
+i.e.,
 one on a physical disk.
 .TP
-.BI \-v n
-.br
-.ns
-.TP
-.BI \-\-verbosity= n
+.BI \-n " n" "\f1 | \fP" "" \-\-verbosity \f1=\fPn
 The verbosity level,
 .IR n ,
 for printing additional information to standard output during indexing.
 The verbosity levels, 0-4, are:
-.P
-.RS 20
-.PD 0
-.TP 4
+.RS
+.TP 3
 0
 No output is generated except for errors.
 (This is the default.)
@@ -997,23 +913,13 @@ Directories and files are printed with a word-count for each file.
 4
 Same as 3 but also prints all files that are not indexed and why.
 .RE
-.PD
-.RE
-.TP 20
-.B \-V
-.br
-.ns
-.TP
-.B \-\-version
-Print the version number of
+.TP 8
+.BR \-V " | " \-\-version
+Prints the version number of
 .B SWISH++
-to standard output and exit.
+to standard output and exits.
 .TP
-.BI \-W n
-.br
-.ns
-.TP
-.BI \-\-word-threshold= n
+.BI \-W " n" "\f1 | \fP" "" \-\-word-threshold \f1=\fPn
 The word count past which partial indices are generated and merged
 since all the words are too big to fit into memory at the same time.
 If you index and your machine begins to swap like mad,
@@ -1025,7 +931,7 @@ The following variables can be set in a configuration file.
 Variables and command-line options can be mixed,
 the latter taking priority.
 .P
-.RS 5
+.RS 4
 .PD 0
 .TP 20
 .B AssociateMeta
@@ -1033,6 +939,12 @@ Same as
 .B \-A
 or
 .B \-\-no-assoc-meta
+.TP
+.B ChangeDirectory
+Same as
+.B \-d
+or
+.B \-\-chdir
 .TP
 .B ExcludeClass
 Same as
@@ -1249,44 +1161,30 @@ if the \f(CWCLASS\f1 attribute were not there.
 (See Filters under EXAMPLES in
 .BR swish++.conf (4).)
 .SH EXIT STATUS
-Exits with one of the values given below:
-.P
-.RS 5
 .PD 0
-.TP 5
-0
+.IP 0
 Success.
-.TP
-1
+.IP 1
 Error in configuration file.
-.TP
-2
+.IP 2
 Error in command-line options.
-.TP
-10
+.IP 10
 Unable to open temporary file.
-.TP
-11
+.IP 11
 Unable to write index file.
-.TP
-12
+.IP 12
 Unable to write temporary file.
-.TP
-13
+.IP 13
 Root-only operation attempted.
-.TP
-30
+.IP 30
 Unable to read stop-word file.
-.TP
-40
+.IP 40
 Unable to read index file.
-.TP
-127
+.IP 127
 Internal error.
 .PD
-.RE
 .SH CAVEATS
-.TP 4
+.TP 3
 1.
 Generated index files are machine-dependent
 (size of data types and byte order).

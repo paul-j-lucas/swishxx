@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	httpindex.1
 .\"
-.\"	Copyright (C) 1998  Paul J. Lucas
+.\"	Copyright (C) 1998-2015  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 .de cS
 .sp
 .nf
-.RS 5
+.RS 4
 .ft CW
 .ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
 ..
@@ -35,19 +35,15 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3httpindex\f1 1 "December 29, 2009" "SWISH++"
+.TH \f3httpindex\f1 1 "December 27, 2015" "SWISH++"
 .SH NAME
 httpindex \- HTTP front-end for SWISH++ indexer
 .SH SYNOPSIS
 .B wget
-[
-.I options
-]
+.RI [ options ]
 .I URL...
 .B 2>&1 | httpindex
-[
-.I options
-]
+.RI [ options ]
 .SH DESCRIPTION
 .B httpindex
 is a front-end for
@@ -61,7 +57,7 @@ can be kept, deleted, or replaced with their descriptions after indexing.
 The
 .BR wget (1)
 options that are
-.B required
+.I required
 are:
 .BR \-A ,
 .BR \-nv ,
@@ -69,7 +65,7 @@ are:
 and
 .BR \-x ;
 the ones that are
-.B highly recommended
+.I highly recommended
 are:
 .BR \-l ,
 .BR \-nh ,
@@ -82,6 +78,7 @@ and
 accepts the same short options as
 .BR index (1)
 except for
+.BR \-d ,
 .BR \-H ,
 .BR \-I ,
 .BR \-l ,
@@ -89,7 +86,7 @@ except for
 .BR \-S ,
 and
 .BR \-V .
-.PP
+.P
 The following options are unique to
 .BR httpindex :
 .TP
@@ -136,10 +133,11 @@ options
 (because the Perl script uses the standard \f(CWGetOpt::Std\f1 package
 for processing command-line options that doesn't).
 The last of any of those options ``wins.''
-.PP
+.P
 The work-around is to use multiple values for those options
-seperated by commas to a single one of those options.
-For example, if you want to do:
+separated by commas to a single one of those options.
+For example,
+if you want to do:
 .cS
 httpindex -e'html:*.html' -e'text:*.txt'
 .cE

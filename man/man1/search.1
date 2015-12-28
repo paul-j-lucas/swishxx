@@ -2,7 +2,7 @@
 .\"	SWISH++
 .\"	search.1
 .\"
-.\"	Copyright (C) 2003  Paul J. Lucas
+.\"	Copyright (C) 2003-2015  Paul J. Lucas
 .\"
 .\"	This program is free software; you can redistribute it and/or modify
 .\"	it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 .de cS
 .sp
 .nf
-.RS 5
+.RS 4
 .ft CW
 .ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i 5i 5.5i
 ..
@@ -35,14 +35,12 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3search\fP 1 "December 29, 2009" "SWISH++"
+.TH \f3search\fP 1 "December 27, 2015" "SWISH++"
 .SH NAME
 search \- SWISH++ searcher
 .SH SYNOPSIS
 .B search
-[
-.I options
-]
+.BI [ options ]
 .I query
 .SH DESCRIPTION
 .B search
@@ -54,8 +52,8 @@ functioning as a ``search server.''
 .SH QUERY INPUT
 .SS Query Syntax
 The formal grammar of a query is:
-.RS 5
-.TP 16
+.RS 4
+.TP 12
 .IR query :
 .I query relop meta
 .br
@@ -89,7 +87,7 @@ The formal grammar of a query is:
 .br
 .I (empty)
 .RE
-.PP
+.P
 In practice, however, the query is the set of words sought after,
 possibly restricted to meta data,
 and possibly combined with the operators
@@ -104,7 +102,7 @@ at the end of words.
 Note that an asterisk and parentheses are shell meta-characters
 and as such must either be escaped (backslashed) or quoted
 when passed to a shell.
-.PP
+.P
 Although syntactically legal, it is a semantic error to have
 ``\f(CWnear\fP''
 just before
@@ -126,7 +124,6 @@ are used on queries prior to searching.
 .SS Result Components
 The results are output either in ``classic'' or XML format.
 In either case, the components of the results are:
-
 .TP 12
 .I rank
 An integer from 1 to 100.
@@ -149,9 +146,10 @@ The ``classic'' results format is plain text as:
 .cS
 .I rank path-name file-size file-title
 .cE
-It can be parsed easily in Perl with:
+It can be parsed easily with:
 .cS
-($rank,$path,$size,$title) = split( / /, $_, 4 );
+($rank,$path,$size,$title) = split( / /, $result, 4 ); # Perl
+($rank,$path,$size,$title) = result.split( ' ', 3 )    # Python
 .cE
 (The separator can be changed via the 
 .B \-R
@@ -168,7 +166,7 @@ Comment lines are in the format of:
 # \f2comment-key\fP: \f2comment-value\fP
 .cE
 The keys and values are:
-.RS 5
+.RS 4
 .TP 24
 \f3ignored\fP: \f2stop-words\fP
 The list of stop-words (separated by spaces) ignored in the query.
@@ -194,7 +192,7 @@ The XML results format is given by the DTD:
 .cE
 and by the XML schema located at:
 .cS
-http://homepage.mac.com/pauljlucas/software/swish/SearchResults/SearchResults.xsd
+http://www.paullucas.org/software/swish/SearchResults/SearchResults.xsd
 .cE
 For example:
 .cS
@@ -202,9 +200,9 @@ For example:
 <!DOCTYPE SearchResults SYSTEM
  "http://homepage.mac.com/pauljlucas/software/swish/SearchResults.dtd">
 <SearchResults
- xmlns="http://homepage.mac.com/pauljlucas/software/swish/SearchResults"
+ xmlns="http://www.pauljlucas.orf/software/swish/SearchResults"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://homepage.mac.com/pauljlucas/software/swish/SearchResults
+ xsi:schemaLocation="http://www.pauljlucas.org/software/swish/SearchResults
                      SearchResults.xsd">
   <IgnoredList>
     <Ignored>\f2stop-word\fP</Ignored>
@@ -260,7 +258,7 @@ since the start-up cost
 .BR exec (2),
 and initialization)
 is paid only once.
-.PP
+.P
 If the process was started with root privileges,
 it will give them away immediately after initialization
 and before servicing any requests.
@@ -281,7 +279,7 @@ it ``pre-threads'' meaning that it creates a pool of threads in advance
 that service an indefinite number of requests
 as a further performance improvement
 since a thread is not created and destroyed per request.
-.PP
+.P
 There is an initial, minimum number of threads in the thread pool.
 The number of threads grows dynamically
 when there are more requests than threads,
@@ -308,7 +306,7 @@ or
 options or the
 .B SocketQueueSize
 variable.)
-.PP
+.P
 If there are more than the minimum number of threads
 and some remain idle longer than a specified timeout period
 (because the number of requests per unit time has dropped),
@@ -337,35 +335,27 @@ whereas ``\f(CW--\f1'' is skipped entirely.
 Either short or long options may be used.
 Long option names may be abbreviated
 so long as the abbreviation is unambiguous.
-.PP
+.P
 For a short option that takes an argument,
 the argument is either taken to be the remaining characters of the same option,
 if any, or, if not, is taken from the next option unless said option begins
 with a `\f(CW-\f1'.
-.PP
+.P
 Short options that take no arguments can be grouped
 (but the last option in the group can take an argument), e.g.,
 \f(CW-Bq511\fP
 is equivalent to
 \f(CW-B -q 511\fP.
-.PP
+.P
 For a long option that takes an argument,
 the argument is either taken to be the characters after a `\f(CW=\fP', if any,
 or, if not, is taken from the next option unless said option begins with
 a `\f(CW-\fP'.
-.TP 20
-.B \-?
-.br
-.ns
+.TP 8
+.BR \-? " | " \-\-help
+Prints the usage (``help'') message and exits.
 .TP
-.B \-\-help
-Print the usage (``help'') message and exit.
-.TP
-.BI \-a a
-.br
-.ns
-.TP
-.BI \-\-socket-address= a
+.BI \-a " a" "\f1 | \fP" "" \-\-socket-address \f1=\fPa
 When running as a daemon,
 the address,
 .IR a , 
@@ -373,60 +363,56 @@ to listen to for TCP requests.
 (Default is all IP addresses and port 1967.)
 The address argument is of the form:
 .sp
-.RS 25
+.RS 12
 .ft CW
-\f3[\fP \f2host\fP : \f3]\fP \f2port\fP
+\f3[\fP\f2host\fP:\f3]\fP\f2port\fP
 .ft 1
 .RE
-.TP 20
+.TP 8
 .B ""
 that is: an optional host and colon
 followed by a port number.
 The
 .I host
-may be one of a host name, an IP address, or the \f(CW*\f1 character
+may be one of a host name,
+an IP address,
+or the \f(CW*\f1 character
 meaning ``any IP address.''
 Omitting the
 .I host
 and colon also means ``any IP address.''
 .TP
-.BI \-b t
-.br
-.ns
-.TP
-.BI \-\-daemon-type= t
-Run as a daemon process.
+.BI \-b " t" "\f1 | \fP" "" \-\-daemon-type \f1=\fPt
+Runs as a daemon process.
 (Default is not to.)
 The type,
 .IR t ,
 is one of:
-.RS 20
-.TP 8
-\f(CWnone\f1
+.RS
+.TP 7
+.B none
 Same as not specifying the option at all.
 (This does not purport to be useful,
 but rather consistent with the types that can be specified to the
 .B SearchDaemon
 variable.)
 .TP
-\f(CWtcp\f1
+.B tcp
 Listen on a TCP socket
 (see the
 .B \-a
 option).
 .TP
-\f(CWunix\f1
+.B unix
 Listen on a Unix domain socket
 (see the
 .B \-u
 option).
 .TP
-\f(CWboth\f1
+.B both
 Listen on both.
 .RE
-.PD
-.RE
-.TP 20
+.TP 8
 .B ""
 By default,
 if executed from the command-line,
@@ -438,11 +424,7 @@ and
 put itself into the background.
 There is no need to follow the command with an `\f(CW&\f1'.
 .TP
-.B \-B
-.br
-.ns
-.TP
-.B \-\-no-background
+.BR \-B " | " \-\-no-background
 When running as a daemon process,
 do not detach from the terminal and run in the background.
 (Default does.)
@@ -457,11 +439,7 @@ or
 .B \-\-launchd
 options.
 .TP
-.BI \-c f
-.br
-.ns
-.TP
-.BI \-\-config-file= f
+.BI \-c " f" "\f1 | \fP" "" \-\-config-file \f1=\fPf
 The name of the configuration file,
 .IR f ,
 to use.
@@ -470,85 +448,49 @@ A configuration file is not required:
 if none is specified and the default does not exist, none is used;
 however, if one is specified and it does not exist, then this is an error.
 .TP
-.B \-d
-.br
-.ns
-.TP
-.B \-\-dump-words
-Dump the query word indices to standard output and exit.
+.BR \-d " | " \-\-dump-words
+Dumps the query word indices to standard output and exits.
 Wildcards are not permitted.
 .TP
-.B \-D
-.br
-.ns
+.BR \-D " | " \-\-dump-index
+Dumps the entire word index to standard output and exits.
 .TP
-.B \-\-dump-index
-Dump the entire word index to standard output and exit.
-.TP
-.BI \-F f
-.br
-.ns
-.TP
-.BI \-\-format= f
+.BI \-F " f" "\f1 | \fP" "" \-\-format \f1=\fPf
 The format,
 .IR f ,
 search results are output in.
 The format is either \f(CWclassic\fP or \f(CWXML\f1.
 (Default is \f(CWclassic\f1.)
 .TP
-.BI \-G s
-.br
-.ns
-.TP
-.BI \-\-group= s
+.BI \-G " s" "\f1 | \fP" "" \-\-group \f1=\fPs
 The group,
 .IR s ,
 to switch the process to after starting and only if started as root.
 (Default is \f(CWnobody\f1.)
 .TP
-.BI \-i f
-.br
-.ns
-.TP
-.BI \-\-index-file= f
+.BI \-i " f" "\f1 | \fP" "" \-\-index-file \f1=\fPf
 The name of the index file,
 .IR f ,
 to use.
 (Default is \f(CWswish++.index\fP in the current directory.)
 .TP
-.BI \-m n
-.br
-.ns
-.TP
-.BI \-\-max-results= n
+.BI \-m " n" "\f1 | \fP" "" \-\-max-results \f1=\fPn
 The maximum number of results,
 .IR n ,
 to return.
 (Default is 100.)
 .TP
-.B \-M
-.br
-.ns
+.BR \-M " | " \-\-dump-meta
+Dumps the meta-name index to standard output and exits.
 .TP
-.B \-\-dump-meta
-Dump the meta-name index to standard output and exit.
-.TP
-.BI \-n n
-.br
-.ns
-.TP
-.BI \-\-near= n
+.BI \-n " n" "\f1 | \fP" "" \-\-near \f1=\fPn
 The maximum number of words apart,
 .IR n ,
 two words can be to be considered ``near'' each other
 in queries using \f(CWnear\fP.
 (Default is 10.)
 .TP
-.BI \-o s
-.br
-.ns
-.TP
-.BI \-\-socket-timeout= s
+.BI \-o " s" "\f1 | \fP" "" \-\-socket-timeout \f1=\fPs
 The number of seconds,
 .IR s ,
 a search client has to complete a query request
@@ -557,50 +499,30 @@ before the socket connection is closed.
 This is to prevent a client from connecting, not completing a request,
 and causing the thread servicing the request to wait forever.
 .TP
-.BI \-O s
-.br
-.ns
-.TP
-.BI \-\-thread-timeout= s
+.BI \-O " s" "\f1 | \fP" "" \-\-thread-timeout \f1=\fPs
 The number of seconds,
 .IR s ,
 until an idle spare thread dies while running as a daemon.
 (Default is 30.)
 .TP
-.BI \-p n
-.br
-.ns
-.TP
-.BI \-\-word-percent= n
+.BI \-p " n" "\f1 | \fP" "" \-\-word-percent \f1=\fPn
 The maximum percentage,
 .IR n ,
 of files a word may occur in before it is discarded as being too frequent.
 (Default is 100.)
 If you want to keep all words regardless, specify 101.
 .TP
-.BI \-P f
-.br
-.ns
-.TP
-.BI \-\-pid-file= f
+.BI \-P " f" "\f1 | \fP" "" \-\-pid-file \f1=\fPf
 The name of the file to record the process ID of
 .B search
 if running as a daemon.
 (Default is none.)
 .TP
-.BI \-q n
-.br
-.ns
-.TP
-.BI \-\-queue-size= n
+.BI \-q " n" "\f1 | \fP" "" \-\-queue-size \f1=\fPn
 The maximum number of socket connections to queue.
 (Default is 511.)
 .TP
-.BI \-r n
-.br
-.ns
-.TP
-.BI \-\-skip-results= n
+.BI \-r " n" "\f1 | \fP" "" \-\-skip-results \f1=\fPn
 The initial number of results,
 .IR n ,
 to skip.
@@ -611,77 +533,41 @@ or
 .BR \-\-max-results ,
 results can be returned in ``pages.''
 .TP
-.BI \-R s
-.br
-.ns
-.TP
-.BI \-\-separator= s
+.BI \-R " s" "\f1 | \fP" "" \-\-separator \f1=\fPs
 The classic result separator string.
 (Default is " ".)
 .TP
-.B \-s
-.br
-.ns
-.TP
-.B \-\-stem-words
+.BR \-s " | " \-\-stem-words
 Perform stemming (suffix stripping) on words during the search.
 Words that end in the wildcard character are not stemmed.
 (Default is no.)
 .TP
-.B \-S
-.br
-.ns
+.BR \-S " | " \-\-dump-stop
+Dumps the stop-word index to standard output and exits.
 .TP
-.B \-\-dump-stop
-Dump the stop-word index to standard output and exit.
-.TP
-.BI \-t n
-.br
-.ns
-.TP
-.BI \-\-min-threads= n
+.BI \-t " n" "\f1 | \fP" "" \-\-min-threads \f1=\fPn
 Minimum number of threads to maintain while running as a daemon.
 .TP
-.BI \-T n
-.br
-.ns
-.TP
-.BI \-\-max-threads= n
+.BI \-T " n" "\f1 | \fP" "" \-\-max-threads \f1=\fPn
 Maximum number of threads to allow while running as a daemon.
 .TP
-.BI \-u f
-.br
-.ns
-.TP
-.BI \-\-socket-file= f
+.BI \-u " f" "\f1 | \fP" "" \-\-socket-file \f1=\fPf
 The name of the Unix domain socket file to use while running as a daemon.
 (Default is \f(CW/tmp/search.socket\f1.)
 .TP
-.BI \-U s
-.br
-.ns
-.TP
-.BI \-\-user= s
+.BI \-U " s" "\f1 | \fP" "" \-\-user \f1=\fPs
 The user,
 .IR s ,
 to switch the process to after starting and only if started as root.
 (Default is \f(CWnobody\f1.)
 .TP
-.B \-V
-.br
-.ns
-.TP
-.B \-\-version
-Print the version number of
+.BR \-V " | " \-\-version
+Prints the version number of
 .B SWISH++
-to standard output and exit.
+to standard output and exits.
 .TP
-.BI \-w n [, c ]
-.br
-.ns
-.TP
-.BI \-\-window= n [, c ]
-Dump a ``window'' of at most
+.BI \-w " n" \f1[,\fP c \f1]\fP "\f1 | \fP" \-\-window= n \f1[,\fP c \f1]\fP
+Dumps a ``window'' of at most
 .I n
 lines around each query word matching
 .I c
@@ -692,11 +578,7 @@ Wildcards are not permitted.
 is 0.)
 Every window ends with a blank line.
 .TP
-.B \-X
-.br
-.ns
-.TP
-.B \-\-launchd
+.BR \-X " | " \-\-launchd
 If run as a daemon process,
 cooperate with Mac OS X's
 .BR launchd (8)
@@ -720,8 +602,8 @@ will be started via
 The following variables can be set in a configuration file.
 Variables and command-line options can be mixed,
 the latter taking priority.
-.PP
-.RS 5
+.P
+.RS 4
 .PD 0
 .TP 20
 .B Group
@@ -1030,107 +912,78 @@ print while <SEARCH>;
 close( SEARCH );
 .cE
 .SH EXIT STATUS
-Exits with one of the values given below:
-.PP
-.RS 5
 .PD 0
-.TP 5
-0
+.IP 0
 Success.
-.TP
-1
+.IP 1
 Error in configuration file.
-.TP
-2
+.IP 2
 Error in command-line options.
-.TP
-40
+.IP 40
 Unable to read index file.
-.TP
-50
+.IP 50
 Malformed query.
-.TP
-51
+.IP 51
 Attempted ``near'' search without word-position data.
-.TP
-60
+.IP 60
 Could not write to PID file.
-.TP
-61
+.IP 61
 Host or IP address is invalid or nonexistent.
-.TP
-62
+.IP 62
 Could not open a TCP socket.
-.TP
-63
+.IP 63
 Could not open a Unix domain socket.
-.TP
-64
+.IP 64
 Could not
 .BR unlink (2)
 a Unix domain socket file.
-.TP
-65
+.IP 65
 Could not
 .BR bind (3)
 to a TCP socket.
-.TP
-66
+.IP 66
 Could not
 .BR bind (3)
 to a Unix domain socket.
-.TP
-67
+.IP 67
 Could not
 .BR listen (3)
 to a TCP socket.
-.TP
-68
+.IP 68
 Could not
 .BR listen (3)
 to a Unix domain socket.
-.TP
-69
+.IP 69
 Could not
 .BR select (3).
-.TP
-70
+.IP 70
 Could not
 .BR accept (3)
 a socket connection.
-.TP
-71
+.IP 71
 Could not
 .BR fork (2)
 child process.
-.TP
-72
+.IP 72
 Could not change directory to \f(CW/\f1.
-.TP
-73
+.IP 73
 Could not create thread.
-.TP
-74
+.IP 74
 Could not create thread key.
-.TP
-75
+.IP 75
 Could not detach thread.
-.TP
-76
+.IP 76
 Could not initialize thread condition.
-.TP
-77
+.IP 77
 Could not initialize thread mutex.
-.TP
-78
+.IP 78
 Could not switch to user.
-.TP
-79
+.IP 79
 Could not switch to group.
 .PD
 .RE
 .SH CAVEATS
-.TP 4
+.TP 3
 1.
 Stemming can be done
 .B only
@@ -1168,28 +1021,28 @@ default index file name
 .BR swish++.conf (4),
 .BR launchd (8),
 .BR searchmonitor (8)
-.PP
+.P
 Tim Bray, et al.
 .IR "Extensible Markup Language (XML) 1.0" ,
 February 10, 1998.
-.PP
+.P
 Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
 .IR "Pthreads Programming" ,
 O'Reilly & Associates, Sebastopol, CA,
 1996.
-.PP
+.P
 M.F. Porter.
 ``An Algorithm For Suffix Stripping,''
 .IR Program ,
 14(3),
 July 1980,
 pp. 130-137.
-.PP
+.P
 W. Richard Stevens.
 .IR "Unix Network Programming, Vol 1, 2nd ed." ,
 Prentice-Hall, Upper Saddle River, NJ,
 1998.
-.PP
+.P
 Larry Wall, et al.
 .IR "Programming Perl, 3rd ed." ,
 O'Reilly & Associates, Inc., Sebastopol, CA,
