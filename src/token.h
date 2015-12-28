@@ -23,7 +23,7 @@
 #define token_H
 
 // local
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 
 // standard
 #include <sstream>

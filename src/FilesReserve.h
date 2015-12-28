@@ -25,7 +25,7 @@
 // local
 #include "config.h"
 #include "conf_int.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 
 //*****************************************************************************
 //

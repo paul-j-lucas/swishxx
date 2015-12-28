@@ -24,7 +24,7 @@
 
 // local
 #include "encoded_char.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 #include "util.h"
 
 // standard

@@ -21,7 +21,7 @@
 
 // local
 #include "config.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 #include "TempDirectory.h"
 
 // standard

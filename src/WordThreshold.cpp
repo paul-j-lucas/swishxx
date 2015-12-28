@@ -22,7 +22,7 @@
 // local
 #include "config.h"
 #include "exit_codes.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 #include "util.h"
 #include "WordThreshold.h"
 

@@ -22,7 +22,7 @@
 // local
 #include "config.h"
 #include "filter.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 #include "util.h"
 
 // standard

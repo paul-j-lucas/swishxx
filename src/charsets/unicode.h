@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/charsets/unicode.h
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,42 +25,35 @@
 // local
 #include "iso8859-1.h"
 
-typedef unsigned long ucs4;
+// standard
+#include <cstdint>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline char unicode_to_ascii( ucs4 c )
-//
-// DESCRIPTION
-//
-//      Convert a 32-bit Unicode character to its closest 7-bit ASCII
-//      equivalent.  (This mostly means that accents are stripped.)  If there
-//      is no closest equivalent, ' ' (space) is returned.
-//
-//      This function exists to ensure that the value of the character used
-//      to index iso8859_1_map[] is within range.
-//
-// PARAMETERS
-//
-//      c   The character to be converted.
-//
-// RETURN VALUE
-//
-//      Returns said character.
-//
-// SEE ALSO
-//
-//      International Standards Organization.  "ISO 8859-1: Information
-//      Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
-//      Latin alphabet No. 1," 1987.
-//
-//*****************************************************************************
-{
-    return  c < sizeof( iso8859_1_map ) / sizeof( iso8859_1_map[0] ) ?
-            iso8859_1_to_ascii( c ) : ' ';
+///////////////////////////////////////////////////////////////////////////////
+
+typedef uint32_t ucs4;
+
+/**
+ * Convert a 32-bit Unicode character to its closest 7-bit ASCII equivalent.
+ * (This mostly means that accents are stripped.)  If there is no closest
+ * equivalent, ' ' (space) is returned.
+ *
+ * This function exists to ensure that the value of the character used to index
+ * \c iso8859_1_map[] is within range.
+ *
+ * See also:
+ *    International Standards Organization.  "ISO 8859-1: Information
+ *    Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
+ *    Latin alphabet No. 1," 1987.
+ *
+ * @param c The character to be converted.
+ * @return Returns the equivalent ASCII character.
+ */
+inline char unicode_to_ascii( ucs4 c ) {
+  return  c < sizeof( iso8859_1_map ) / sizeof( iso8859_1_map[0] ) ?
+          iso8859_1_to_ascii( c ) : ' ';
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* unicode_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

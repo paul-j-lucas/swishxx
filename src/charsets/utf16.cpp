@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/charsets/utf16.cpp
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,84 +23,29 @@
 #include "encoded_char.h"
 #include "unicode.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        encoded_char_range::value_type charset_utf16be(
-            encoded_char_range::const_pointer,
-            encoded_char_range::const_pointer &c,
-            encoded_char_range::const_pointer end
-        )
-//
-// DESCRIPTION
-//
-//      Convert a UTF-16-big-endian encoded character sequence to its ASCII
-//      equivalent.
-//
-// PARAMETERS
-//
-//      c       A pointer marking the position of the character to decode.  It
-//              is left after the decoded character.
-//
-//      end     A pointer marking the end of the entire encoded range.
-//
-// RETURN VALUE
-//
-//      Returns the decoded character or ' ' upon error.
-//
-// SEE ALSO
-//
-//      The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
-//      section 2.3, Addison-Wesley, 2000.
-//
-//*****************************************************************************
-{
-    if ( c == end || c+1 == end )
-        return ' ';
-    ucs4 const u = (static_cast<ucs4>( c[0] ) << 8) | c[1];
-    c += 2;
-    return unicode_to_ascii( u );
+///////////////////////////////////////////////////////////////////////////////
+
+encoded_char_range::value_type
+charset_utf16be( encoded_char_range::const_pointer,
+                 encoded_char_range::const_pointer &c,
+                 encoded_char_range::const_pointer end ) {
+  if ( c == end || c+1 == end )
+    return ' ';
+  ucs4 const u = (static_cast<ucs4>( c[0] ) << 8) | c[1];
+  c += 2;
+  return unicode_to_ascii( u );
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        encoded_char_range::value_type charset_utf16le(
-            encoded_char_range::const_pointer,
-            encoded_char_range::const_pointer &c,
-            encoded_char_range::const_pointer end
-        )
-//
-// DESCRIPTION
-//
-//      Convert a UTF-16-little-endian encoded character sequence to its ASCII
-//      equivalent.
-//
-// PARAMETERS
-//
-//      c       A pointer marking the position of the character to decode.  It
-//              is left after the decoded character.
-//
-//      end     A pointer marking the end of the entire encoded range.
-//
-// RETURN VALUE
-//
-//      Returns the decoded character or ' ' upon error.
-//
-// SEE ALSO
-//
-//      The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
-//      section 2.3, Addison-Wesley, 2000.
-//
-//*****************************************************************************
-{
-    if ( c == end || c+1 == end )
-        return ' ';
-    ucs4 const u = (static_cast<ucs4>( c[1] ) << 8) | c[0];
-    c += 2;
-    return unicode_to_ascii( u );
+encoded_char_range::value_type
+charset_utf16le( encoded_char_range::const_pointer,
+                 encoded_char_range::const_pointer &c,
+                 encoded_char_range::const_pointer end ) {
+  if ( c == end || c+1 == end )
+    return ' ';
+  ucs4 const u = (static_cast<ucs4>( c[1] ) << 8) | c[0];
+  c += 2;
+  return unicode_to_ascii( u );
 }
 
-/* vim:set et sw=4 ts=4: */
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

@@ -24,7 +24,7 @@
 
 // local
 #include "conf_string.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 
 // standard
 #include <sys/types.h>

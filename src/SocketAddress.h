@@ -25,7 +25,7 @@
 // local
 #include "config.h"
 #include "conf_string.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 
 // standard
 #include <arpa/inet.h>                  /* for htonl(3), INADDR_ANY */

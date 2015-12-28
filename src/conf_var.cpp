@@ -24,7 +24,7 @@
 #include "conf_var.h"
 #include "exit_codes.h"
 #include "pjl/mmap_file.h"
-#include "swishpp-config.h"
+#include "swishxx-config.h"
 #include "util.h"
 
 // standard
