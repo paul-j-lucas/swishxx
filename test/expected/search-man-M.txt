@@ -1,0 +1,12 @@
+author
+caveat
+caveats
+description
+environment
+example
+exit-status
+files
+name
+options
+see-also
+synopsis

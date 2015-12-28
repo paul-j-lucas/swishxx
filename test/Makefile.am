@@ -66,7 +66,9 @@ endif
 if WITH_MAN
 TESTS+=	tests/index-man-v1.test \
 	tests/index-man-v2.test \
-	tests/index-man-v3.test
+	tests/index-man-v3.test \
+	tests/search-man-meta-01.test \
+	tests/search-man-M.test
 endif
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
