@@ -37,7 +37,7 @@ void encoded_char_range::decoder::reset_all() {
 
 char *to_lower( encoded_char_range const &range ) {
   extern PJL::char_buffer_pool<128,5> lower_buf;
-  register char *p = lower_buf.next();
+  char *p = lower_buf.next();
   for ( encoded_char_range::const_iterator c = range.begin(); !c.at_end(); ++c )
     *p++ = to_lower( *c );
   *p = '\0';
