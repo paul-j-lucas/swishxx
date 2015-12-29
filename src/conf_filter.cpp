@@ -53,7 +53,7 @@ void conf_filter::parse_value( char *line ) {
   bool found_target = false;
   int num_substitutions = 0;
 
-  for ( char const* s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s ) {
+  for ( auto s = command; *s && ( s = ::strpbrk( s, "%@" ) ); ++s ) {
     if ( s[0] == s[1] ) {               // %% or @@ ...
       ++s;                              // ... skip past it
       continue;

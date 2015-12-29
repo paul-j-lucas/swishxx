@@ -138,7 +138,7 @@ conf_var::map_type& conf_var::map_ref() {
 #endif /* WITH_SEARCH_DAEMON */
       0,
     };
-    for ( char const *const *v = var_name_table; *v; ++v )
+    for ( auto v = var_name_table; *v; ++v )
       m[ *v ] = 0;
   }
   return m;

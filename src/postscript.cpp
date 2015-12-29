@@ -307,7 +307,7 @@
         0
     };
 
-    for ( char const *const *p = postscript_table; *p; ++p )
+    for ( auto p = postscript_table; *p; ++p )
         insert( *p );
 }
 /* vim:set et sw=4 ts=4: */

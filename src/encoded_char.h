@@ -160,13 +160,13 @@ public:
   static void reset_all();
 
 protected:
-  decoder() { set_.insert( this ); }
+  decoder() { decoders_.insert( this ); }
 
   virtual void reset() = 0;
 
 private:
   typedef std::set<decoder*> set_type;
-  static set_type set_;
+  static set_type decoders_;
 };
 #endif /* WITH_DECODING */
 

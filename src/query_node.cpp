@@ -196,9 +196,7 @@ query_node* query_node::visit( visitor const &v ) {
     // For each search result, see if it's in each child_result: if it is, sum
     // the ranks; if it isn't, delete the result.
     //
-    for ( search_results::iterator
-        result = results.begin(); result != results.end();
-    ) {
+    for ( auto result = results.begin(); result != results.end(); ) {
         bool increment_result_iterator = true;
         FOR_EACH( child_results_type, child_results, child_result ) {
             search_results::const_iterator const

@@ -206,7 +206,7 @@ static bool skip_html_tag( encoded_char_range::const_iterator& );
     ////////// Parse a numeric character reference ////////////////////////////
 
     unsigned n = 0;
-    for ( char const *e = entity_buf; *e; ++e ) {
+    for ( auto e = entity_buf; *e; ++e ) {
         if ( is_hex ) {
             if ( !is_xdigit( *e ) )             // bad hex num
                 return ' ';

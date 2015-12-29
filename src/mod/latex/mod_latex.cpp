@@ -59,7 +59,7 @@ using namespace std;
 //
 //*****************************************************************************
 {
-    for ( encoded_char_range::const_iterator d = c; !d.at_end(); ++d )
+    for ( auto d = c; !d.at_end(); ++d )
         if ( *d == left ) {
             c = ++d;
             return true;
@@ -100,7 +100,7 @@ using namespace std;
     char const right = left == '{' ? '}' : ']';
     int nesting = 0;
 
-    for ( encoded_char_range::const_iterator d = c; !d.at_end(); ++d )
+    for ( auto d = c; !d.at_end(); ++d )
         if ( *d == left )
             ++nesting;
         else if ( *d == right && --nesting <= 0 ) {

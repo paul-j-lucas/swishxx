@@ -922,7 +922,7 @@ void rank_full_index() {
   if ( verbosity > 1 )
     cout << '\n' << me << ": ranking index..." << flush;
 
-  for ( word_map::iterator w = words.begin(); w != words.end(); ) {
+  for ( auto w = words.begin(); w != words.end(); ) {
     word_info &info = w->second;
 
     if ( is_too_frequent( w->first.c_str(), info.files_.size() ) ) {
@@ -995,14 +995,13 @@ void write_dir_index( ostream &o, off_t *offset ) {
  */
 void write_file_index( ostream &o, off_t *offset ) {
   int file_index = 0;
-  for ( file_info::const_iterator
-        i = file_info::begin(); i != file_info::end(); ++i ) {
+  for ( auto fi = file_info::begin(); fi != file_info::end(); ++fi ) {
     offset[ file_index++ ] = o.tellp();
-    o << enc_int( (*i)->dir_index() )
-      << (*i)->file_name() << '\0'
-      << enc_int( (*i)->size() )
-      << enc_int( (*i)->num_words() )
-      << (*i)->title() << '\0'
+    o << enc_int( (*fi)->dir_index() )
+      << (*fi)->file_name() << '\0'
+      << enc_int( (*fi)->size() )
+      << enc_int( (*fi)->num_words() )
+      << (*fi)->title() << '\0'
       << assert_stream;
   } // for
 }

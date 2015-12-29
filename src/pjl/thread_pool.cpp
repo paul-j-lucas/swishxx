@@ -394,8 +394,8 @@ thread_pool::~thread_pool() {
   destructing_ = true;
 
   MUTEX_LOCK( &t_lock_, false );
-  for ( thread_set::iterator t = threads_.begin(); t != threads_.end(); ++t )
-    delete *t;
+  for ( auto t : threads_ )
+    delete &t;
   MUTEX_UNLOCK();
 
   ::pthread_cond_destroy( &t_idle_ );

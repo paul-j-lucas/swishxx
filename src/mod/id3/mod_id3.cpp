@@ -128,7 +128,7 @@ id3v1:
     if ( !has_id3v1_tag( c, end ) )
         return;
 
-    for ( id3v1_field const *f = field_table; f->name; c += f++->length ) {
+    for ( auto f = field_table; f->name; c += f++->length ) {
         int meta_id = Meta_ID_None;
         if ( associate_meta ) {
             //

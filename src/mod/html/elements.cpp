@@ -260,7 +260,7 @@ element_map::element_map() {
       0
   };
 
-  for ( char const *const *p = end_tag_table; *p; ++p ) {
+  for ( auto p = end_tag_table; *p; ++p ) {
     //
     // The ugly double, old-style casts below are necessary because C++ has
     // become overly pedantic about casting to enums.

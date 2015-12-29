@@ -424,8 +424,7 @@ static bool search( char const *query, int skip_results, int max_results,
     // Print the sorted results skipping some if requested to and not exceeding
     // the maximum.
     //
-    for ( sorted_results_type::const_iterator
-          r  = sorted.begin() + skip_results;
+    for ( auto r = sorted.begin() + skip_results;
           r != sorted.end() && max_results-- > 0 && out; ++r ) {
       int rank = static_cast<int>( r->second * normalize );
       if ( !rank )

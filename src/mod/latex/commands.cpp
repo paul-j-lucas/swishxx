@@ -115,7 +115,7 @@
         0
     };
 
-    for ( command const *c = command_table; c->name; ++c )
+    for ( auto c = command_table; c->name; ++c )
         operator[]( c->name ).action = c->action;
 }
 

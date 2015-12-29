@@ -22,7 +22,7 @@
 // local
 #include "encoded_char.h"
 
-encoded_char_range::decoder::set_type encoded_char_range::decoder::set_;
+encoded_char_range::decoder::set_type encoded_char_range::decoder::decoders_;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -31,14 +31,14 @@ encoded_char_range::decoder::~decoder() {
 }
 
 void encoded_char_range::decoder::reset_all() {
-  for ( set_type::iterator i = set_.begin(); i != set_.end(); ++i )
-    (*i)->reset();
+  for ( auto d : decoders_ )
+    d->reset();
 }
 
-char *to_lower( encoded_char_range const &range ) {
+char* to_lower( encoded_char_range const &range ) {
   extern PJL::char_buffer_pool<128,5> lower_buf;
   char *p = lower_buf.next();
-  for ( encoded_char_range::const_iterator c = range.begin(); !c.at_end(); ++c )
+  for ( auto c = range.begin(); !c.at_end(); ++c )
     *p++ = to_lower( *c );
   *p = '\0';
   return lower_buf.current();

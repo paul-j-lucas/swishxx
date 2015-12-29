@@ -40,7 +40,7 @@ char const* ltoa( long n ) {
   *s = '\0';
 
   // now reverse the string
-  for ( char *t = buf.current(); t < s; ++t ) {
+  for ( auto t = buf.current(); t < s; ++t ) {
     char const tmp = *--s; *s = *t; *t = tmp;
   }
 

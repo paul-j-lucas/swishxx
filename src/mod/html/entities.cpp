@@ -85,7 +85,7 @@
         0
     };
 
-    for ( char_entity const *e = char_entity_table; e->name; ++e )
+    for ( auto e = char_entity_table; e->name; ++e )
         map_[ e->name ] = e->char_equiv;
 }
 

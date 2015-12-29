@@ -181,7 +181,7 @@ static unsigned         unsynchsafe( char const*&, int = 4 );
     static map_type m;
 
     if ( m.empty() )
-        for ( frame_parser const *f = frame_parser_table; f->frame_id; ++f )
+        for ( auto f = frame_parser_table; f->frame_id; ++f )
             m[ f->frame_id ] = f->parser;
 
     map_type::const_iterator const found = m.find( frame_id );

@@ -380,7 +380,7 @@ stop_word_set*      stop_words;         // pointer to global set
     };
 
     if ( !file_name || !*file_name ) {          // no file: use default
-        for ( char const *const *w = default_stop_word_table; *w; ++w )
+        for ( auto w = default_stop_word_table; *w; ++w )
             insert( *w );
         return;
     }

@@ -107,7 +107,8 @@ bool parse( char const *s, bool *result ) {
 //
 //*****************************************************************************
 {
-    for ( char *p = lower_buf.next(); (*p++ = to_lower( *s++ )) != '\0'; ) ;
+    for ( auto p = lower_buf.next(); (*p++ = to_lower( *s++ )) != '\0'; )
+        ;
     return lower_buf.current();
 }
 

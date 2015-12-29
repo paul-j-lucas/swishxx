@@ -46,13 +46,13 @@ conf_enum::conf_enum( char const *name, char const *const legal_values[] ) :
 bool conf_enum::is_legal( char const *value, ostream &err ) const {
   if ( *value ) {
     unique_ptr<char[]> const lower( to_lower_r( value ) );
-    for ( char const *const *v = legal_values_; *v; ++v )
+    for ( auto v = legal_values_; *v; ++v )
       if ( !::strcmp( lower.get(), *v ) )
         return true;
   }
   err << error << '"' << name() << "\" is not one of: ";
   bool comma = false;
-  for ( char const *const *v = legal_values_; *v; ++v ) {
+  for ( auto v = legal_values_; *v; ++v ) {
     if ( comma )
       err << ", ";
     else
