@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/PidFile.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,23 @@
 // local
 #include "conf_string.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class PidFile : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A PidFile is-a conf<std::string> containing the name of the file to
-//      record the search daemon's process ID.
-//
-//      This is the same as search's -P command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %PidFile is-a conf&lt;string&gt; containing the name of the file to
+ * record the search daemon's process ID.
+ *
+ * This is the same as search's -P command-line option.
+ */
+class PidFile : public conf<std::string> {
 public:
-    PidFile() : conf<std::string>( "PidFile" ) { }
-    CONF_STRING_ASSIGN_OPS( PidFile )
+  PidFile() : conf<std::string>( "PidFile" ) { }
+  CONF_STRING_ASSIGN_OPS( PidFile )
 };
 
 extern PidFile pid_file_name;
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* PidFile_H */
 /* vim:set et sw=4 ts=4: */

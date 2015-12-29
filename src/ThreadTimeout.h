@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ThreadTimeout.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,27 +26,23 @@
 #include "config.h"
 #include "conf_int.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ThreadTimeout : public conf<int>
-//
-// DESCRIPTION
-//
-//      A ThreadTimeout is-a conf<int> containing the number of seconds until
-//      an idle spare thread times out and destroys itself.
-//
-//      This is the same as index's -o command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %ThreadTimeout is-a conf&lt;int&gt; containing the number of seconds until
+ * an idle spare thread times out and destroys itself.
+ *
+ * This is the same as index's \c -o command-line option.
+ */
+class ThreadTimeout : public conf<int> {
 public:
-    ThreadTimeout() : conf<int>( "ThreadTimeout", ThreadTimeout_Default ) { }
-    CONF_INT_ASSIGN_OPS( ThreadTimeout )
+  ThreadTimeout() : conf<int>( "ThreadTimeout", ThreadTimeout_Default ) { }
+  CONF_INT_ASSIGN_OPS( ThreadTimeout )
 };
 
 extern ThreadTimeout thread_timeout;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ThreadTimeout_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

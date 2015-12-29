@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/TempDirectory.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,24 @@
 // local
 #include "conf_string.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class TempDirectory : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A TempDirectory is-a conf<std::string> containing the name of the
-//      directory to use for temporary files during indexing.
-//
-//      This is the same as index's -T command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %TempDirectory is-a conf&lt;string&gt; containing the name of the
+ * directory to use for temporary files during indexing.
+ *
+ * This is the same as index's -T command-line option.
+ */
+class TempDirectory : public conf<std::string> {
 public:
-    TempDirectory() : conf<std::string>( "TempDirectory", default_value() ) { }
-    CONF_STRING_ASSIGN_OPS( TempDirectory )
+  TempDirectory() : conf<std::string>( "TempDirectory", default_value() ) { }
+  CONF_STRING_ASSIGN_OPS( TempDirectory )
+
 private:
-    static char const* default_value();
+  static char const* default_value();
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* TempDirectory_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

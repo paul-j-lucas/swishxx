@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/FilesReserve.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,27 +27,23 @@
 #include "conf_int.h"
 #include "swishxx-config.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class FilesReserve : public conf<int>
-//
-// DESCRIPTION
-//
-//      A FilesReserve is-a conf<int> containing the initial number of files to
-//      reserve space for; see file_info.c for details.
-//
-//      This is the same as index's -F command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %FilesReserve is-a conf&lt;int&gt; containing the initial number of files
+ * to reserve space for; see \c file_info.c for details.
+ *
+ * This is the same as index's \c -F command-line option.
+ */
+class FilesReserve : public conf<int> {
 public:
-    FilesReserve() : conf<int>( "FilesReserve", FilesReserve_Default ) { }
-    CONF_INT_ASSIGN_OPS( FilesReserve )
+  FilesReserve() : conf<int>( "FilesReserve", FilesReserve_Default ) { }
+  CONF_INT_ASSIGN_OPS( FilesReserve )
 };
 
 extern FilesReserve files_reserve;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* FilesReserve_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

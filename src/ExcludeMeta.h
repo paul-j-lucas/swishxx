@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ExcludeMeta.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,23 @@
 // local
 #include "conf_set.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ExcludeMeta : public conf_set
-//
-// DESCRIPTION
-//
-//      An ExcludeMeta is-a conf_set containing the set of META names to
-//      exclude during indexing.
-//
-//      This is the same as index's -M command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %ExcludeMeta is-a conf_set containing the set of META names to exclude
+ * during indexing.
+ *
+ * This is the same as index's \c -M command-line option.
+ */
+class ExcludeMeta : public conf_set {
 public:
-    ExcludeMeta() : conf_set( "ExcludeMeta" ) { }
-    CONF_SET_ASSIGN_OPS( ExcludeMeta )
+  ExcludeMeta() : conf_set( "ExcludeMeta" ) { }
+  CONF_SET_ASSIGN_OPS( ExcludeMeta )
 };
 
 extern ExcludeMeta exclude_meta_names;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ExcludeMeta_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/TempDirectory.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,29 +25,16 @@
 #include "TempDirectory.h"
 
 // standard
-#include <cstdlib>                              /* for getenv(3) */
+#include <cstdlib>                      /* for getenv(3) */
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        char const* TempDirectory::default_value()
-//
-// DESCRIPTION
-//
-//      Determine the default value for the temporary directory.  If the
-//      environment variable TMPDIR is set, use that; otherwise use the
-//      compiled-in default.
-//
-// RETURN VALUE
-//
-//      Returns the default value to use for the temporary directory.
-//
-//*****************************************************************************
-{
-    char const *const tmpdir = ::getenv( "TMPDIR" );
-    return tmpdir ? tmpdir : TempDirectory_Default;
+///////////////////////////////////////////////////////////////////////////////
+
+char const* TempDirectory::default_value() {
+  char const *const tmpdir = ::getenv( "TMPDIR" );
+  return tmpdir ? tmpdir : TempDirectory_Default;
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ExtractFilter.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,28 +25,24 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ExtractFilter : public conf<bool>
-//
-// DESCRIPTION
-//
-//      An ExtractFilter is-a conf<bool> containing the Boolean value
-//      indicating whether to extract as a filter, i.e., extract a single file
-//      to standard output.
-//
-//      This is the same as extract's -f command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %ExtractFilter is-a conf&lt;bool&gt; containing the Boolean value
+ * indicating whether to extract as a filter, i.e., extract a single file to
+ * standard output.
+ *
+ * This is the same as extract's \c -f command-line option.
+ */
+class ExtractFilter : public conf<bool> {
 public:
-    ExtractFilter() : conf<bool>( "ExtractFilter", false ) { }
-    CONF_BOOL_ASSIGN_OPS( ExtractFilter )
+  ExtractFilter() : conf<bool>( "ExtractFilter", false ) { }
+  CONF_BOOL_ASSIGN_OPS( ExtractFilter )
 };
 
 extern ExtractFilter extract_as_filter;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ExtractFilter_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/SocketTimeout.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,29 +26,25 @@
 #include "config.h"
 #include "conf_int.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class SocketTimeout : public conf<int>
-//
-// DESCRIPTION
-//
-//      A SocketTimeout is-a conf<int> containing the number of seconds a
-//      client has to complete a search request before being disconnected.
-//      This is to prevent a client from connecting, not completing a request,
-//      and causing the thread servicing the request to wait forever.
-//
-//      This is the same as index's -o command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %SocketTimeout is-a conf&lt;int&gt; containing the number of seconds a
+ * client has to complete a search request before being disconnected.  This is
+ * to prevent a client from connecting, not completing a request, and causing
+ * the thread servicing the request to wait forever.
+ *
+ * This is the same as index's \c -o command-line option.
+ */
+class SocketTimeout : public conf<int> {
 public:
-    SocketTimeout() : conf<int>( "SocketTimeout", SocketTimeout_Default, 2 ) { }
-    CONF_INT_ASSIGN_OPS( SocketTimeout )
+  SocketTimeout() : conf<int>( "SocketTimeout", SocketTimeout_Default, 2 ) { }
+  CONF_INT_ASSIGN_OPS( SocketTimeout )
 };
 
 extern SocketTimeout socket_timeout;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* SocketTimeout_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

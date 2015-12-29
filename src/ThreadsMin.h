@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ThreadsMin.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,27 +26,23 @@
 #include "config.h"
 #include "conf_int.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ThreadsMin : public conf<int>
-//
-// DESCRIPTION
-//
-//      A ThreadsMin is-a conf<int> containing the minimum number of threads
-//      that will exist at any one time to service clients
-//
-//      This is the same as search's -t command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %ThreadsMin is-a conf&lt;int&gt; containing the minimum number of threads
+ * that will exist at any one time to service clients
+ *
+ * This is the same as search's \c -t command-line option.
+ */
+class ThreadsMin : public conf<int> {
 public:
-    ThreadsMin() : conf<int>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
-    CONF_INT_ASSIGN_OPS( ThreadsMin )
+  ThreadsMin() : conf<int>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
+  CONF_INT_ASSIGN_OPS( ThreadsMin )
 };
 
 extern ThreadsMin min_threads;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ThreadsMin_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

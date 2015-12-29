@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/SocketAddress.cpp
 **
-**      Copyright (C) 2000  Paul J. Lucas
+**      Copyright (C) 2000-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -33,74 +33,42 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void SocketAddress::convert_host( char const *hostname_or_ip )
-//
-// DESCRIPTION
-//
-//      Parse either a hostname (foo.bar.com) or an IP address (123.45.67.89)
-//      and convert it to a value suitable for use as an Internet address.  A
-//      value of '*' means "any IP address."
-//
-// PARAMETERS
-//
-//      hostname_or_ip  The host name or IP address to be parsed.
-//
-// SEE ALSO
-//
-//      W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
-//      Prentice-Hall, Upper Saddle River, NJ, 1998, section 9.3.
-//
-//*****************************************************************************
-{
-    if ( *hostname_or_ip == '*' ) {
-        addr_.s_addr = htonl( INADDR_ANY );
-        return;
-    }
+///////////////////////////////////////////////////////////////////////////////
 
-    struct hostent const *const host = ::gethostbyname( hostname_or_ip );
-    if ( !host ) {
-        error() << '"' << hostname_or_ip << "\" is invalid\n";
-        ::exit( Exit_No_Host_or_IP );
-    }
+void SocketAddress::convert_host( char const *hostname_or_ip ) {
+  if ( *hostname_or_ip == '*' ) {
+    addr_.s_addr = htonl( INADDR_ANY );
+    return;
+  }
 
-    //
-    // The h_addr_list member is defined as "char**" even though it is really
-    // "struct in_addr**" (this seems really brain damaged), so we have to do
-    // an ugly cast.
-    //
-    addr_ = *reinterpret_cast<struct in_addr*>( host->h_addr_list[0] );
+  struct hostent const *const host = ::gethostbyname( hostname_or_ip );
+  if ( !host ) {
+    error() << '"' << hostname_or_ip << "\" is invalid\n";
+    ::exit( Exit_No_Host_or_IP );
+  }
+
+  //
+  // The h_addr_list member is defined as "char**" even though it is really
+  // "struct in_addr**" (this seems really brain damaged), so we have to do
+  // an ugly cast.
+  //
+  addr_ = *reinterpret_cast<struct in_addr*>( host->h_addr_list[0] );
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void SocketAddress::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse the IP address (maybe) and port number from the line of text.
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    conf<string>::parse_value( line );
-    char *const colon = ::strchr( line, ':' );
-    if ( colon ) {
-        *colon = '\0';
-        convert_host( line );
-        port_ = ::atoi( colon + 1 );
-    } else
-        port_ = ::atoi( line );
+void SocketAddress::parse_value( char *line ) {
+  conf<string>::parse_value( line );
+  char *const colon = ::strchr( line, ':' );
+  if ( colon ) {
+    *colon = '\0';
+    convert_host( line );
+    port_ = ::atoi( colon + 1 );
+  } else {
+    port_ = ::atoi( line );
+  }
 
-    if ( !port_ )
-        ::exit( Exit_Config_File );
+  if ( !port_ )
+    ::exit( Exit_Config_File );
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

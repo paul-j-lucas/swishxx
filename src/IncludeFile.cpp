@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/IncludeFile.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -31,36 +31,28 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void IncludeFile::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse the line of text of the form:
-//
-//          mod_name pattern1 pattern2 ...
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    char const *const mod_name = ::strtok( line, " \r\t" );
-    if ( !mod_name ) {
-        error() << "no indexer module name\n";
-        ::exit( Exit_Config_File );
-    }
-    indexer *const i = indexer::find_indexer( mod_name );
-    if ( !i ) {
-        error() << '"' << mod_name << "\": no such indexing module\n";
-        ::exit( Exit_Config_File );
-    }
+///////////////////////////////////////////////////////////////////////////////
 
-    for ( char const *s; (s = ::strtok( 0, " \r\t" )); )
-        insert( new_strdup( s ), i );
+void IncludeFile::parse_value( char *line ) {
+  char const *const mod_name = ::strtok( line, " \r\t" );
+  if ( !mod_name ) {
+    error() << "no indexer module name\n";
+    ::exit( Exit_Config_File );
+  }
+
+  indexer *const i = indexer::find_indexer( mod_name );
+  if ( !i ) {
+    error() << '"' << mod_name << "\": no such indexing module\n";
+    ::exit( Exit_Config_File );
+  }
+
+  for ( char const *s; (s = ::strtok( 0, " \r\t" )); )
+    insert( new_strdup( s ), i );
 }
-/* vim:set et sw=4 ts=4: */
+
+void IncludeFile::reset() {
+  clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

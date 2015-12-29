@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/RecurseSubdirs.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,28 +25,24 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class RecurseSubdirs : public conf<bool>
-//
-// DESCRIPTION
-//
-//      A RecurseSubdirs is-a conf<bool> containing the Boolean value
-//      indicating whether to recurse subdirectories either during indexing or
-//      extraction.
-//
-//      This is the same as either index's or extract's -r command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %RecurseSubdirs is-a conf&lt;bool&gt; containing the Boolean value
+ * indicating whether to recurse subdirectories either during indexing or
+ * extraction.
+ *
+ * This is the same as either index's or extract's \c -r command-line option.
+ */
+class RecurseSubdirs : public conf<bool> {
 public:
-    RecurseSubdirs() : conf<bool>( "RecurseSubdirs", true ) { }
-    CONF_BOOL_ASSIGN_OPS( RecurseSubdirs )
+  RecurseSubdirs() : conf<bool>( "RecurseSubdirs", true ) { }
+  CONF_BOOL_ASSIGN_OPS( RecurseSubdirs )
 };
 
 extern RecurseSubdirs recurse_subdirectories;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* RecurseSubdirs_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ExtractExtension.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,28 +27,24 @@
 #include "conf_string.h"
 #include "swishxx-config.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ExtractExtension : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      An ExtractExtension is-a conf<std::string> containing the extension to
-//      append to filenames during extraction.
-//
-//      This is the same as extract's -x command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %ExtractExtension is-a conf&lt;string&gt; containing the extension to
+ * append to filenames during extraction.
+ *
+ * This is the same as extract's \c -x command-line option.
+ */
+class ExtractExtension : public conf<std::string> {
 public:
-    ExtractExtension() :
-        conf<std::string>( "ExtractExtension", ExtractExtension_Default ) { }
-    CONF_STRING_ASSIGN_OPS( ExtractExtension )
+  ExtractExtension() :
+      conf<std::string>( "ExtractExtension", ExtractExtension_Default ) { }
+  CONF_STRING_ASSIGN_OPS( ExtractExtension )
 };
 
 extern ExtractExtension extract_extension;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ExtractExtension_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/SocketAddress.h
 **
-**      Copyright (C) 2000  Paul J. Lucas
+**      Copyright (C) 2000-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -31,42 +31,52 @@
 #include <arpa/inet.h>                  /* for htonl(3), INADDR_ANY */
 #include <netinet/in.h>                 /* for struct in_addr */
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class SocketAddress : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A SocketAddress is-a conf<std::string> containing the IP address
-//      (maybe) and the port number of the TCP socket to use when 'search' is
-//      running as a daemon.
-//
-//      This is the same as search's -a command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %SocketAddress is-a conf&lt;string&gt; containing the IP address (maybe)
+ * and the port number of the TCP socket to use when 'search' is running as a
+ * daemon.
+ *
+ * This is the same as search's \a -a command-line option.
+ */
+class SocketAddress : public conf<std::string> {
 public:
-    SocketAddress() :
-        conf<std::string>( "SocketAddress" ), port_( SocketPort_Default )
-    {
-        addr_.s_addr = htonl( INADDR_ANY );
-    }
+  SocketAddress() :
+    conf<std::string>( "SocketAddress" ), port_( SocketPort_Default )
+  {
+    addr_.s_addr = htonl( INADDR_ANY );
+  }
 
-    CONF_STRING_ASSIGN_OPS( SocketAddress )
+  CONF_STRING_ASSIGN_OPS( SocketAddress )
 
-    struct in_addr  addr() const { return addr_; }
-    int             port() const { return port_; }
+  struct in_addr addr() const { return addr_; }
+  int port() const { return port_; }
+
 private:
-    struct in_addr  addr_;
-    int             port_;
+  struct in_addr addr_;
+  int port_;
 
-    void            convert_host( char const *hostname_or_ip );
-    virtual void    parse_value( char *line );
+  /**
+   * Parse either a hostname (foo.bar.com) or an IP address (123.45.67.89)
+   * and convert it to a value suitable for use as an Internet address.  A
+   * value of \c '*' means "any IP address."
+   *
+   * See also:
+   *    W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
+   *    Prentice-Hall, Upper Saddle River, NJ, 1998, section 9.3.
+   *
+   * @param hostname_or_ip The host name or IP address to be parsed.
+   */
+  void convert_host( char const *hostname_or_ip );
+
+  // inherited
+  virtual void parse_value( char *line );
 };
 
 extern SocketAddress socket_address;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* SocketAddress_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

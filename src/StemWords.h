@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/StemWords.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,23 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class StemWords : public conf<bool>
-//
-// DESCRIPTION
-//
-//      A StemWords is-a conf<bool> containing the Boolean value indicating
-//      whether to stem words prior to a search.
-//
-//      This is the same as search's -s command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %StemWords is-a conf&lt;bool&gt; containing the Boolean value indicating
+ * whether to stem words prior to a search.
+ *
+ * This is the same as search's -s command-line option.
+ */
+class StemWords : public conf<bool> {
 public:
-    StemWords() : conf<bool>( "StemWords", false ) { }
-    CONF_BOOL_ASSIGN_OPS( StemWords )
+  StemWords() : conf<bool>( "StemWords", false ) { }
+  CONF_BOOL_ASSIGN_OPS( StemWords )
 };
 
 extern StemWords stem_words;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* StemWords_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

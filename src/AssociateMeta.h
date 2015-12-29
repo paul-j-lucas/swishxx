@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/AssociateMeta.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,23 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class AssociateMeta : public conf<bool>
-//
-// DESCRIPTION
-//
-//      An AssociateMeta is-a conf<bool> containing the Boolean value
-//      indicating whether to associate words to meta names during indexing.
-//
-//      This is the same as index's -A command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %AssociateMeta is-a conf&lt;bool&gt; containing the Boolean value
+ * indicating whether to associate words to meta names during indexing.
+ *
+ * This is the same as index's \c -A command-line option.
+ */
+class AssociateMeta : public conf<bool> {
 public:
-    AssociateMeta() : conf<bool>( "AssociateMeta", true ) { }
-    CONF_BOOL_ASSIGN_OPS( AssociateMeta )
+  AssociateMeta() : conf<bool>( "AssociateMeta", true ) { }
+  CONF_BOOL_ASSIGN_OPS( AssociateMeta )
 };
 
 extern AssociateMeta associate_meta;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* AssociateMeta_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

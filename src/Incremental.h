@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/Incremental.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,23 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class Incremental : public conf<bool>
-//
-// DESCRIPTION
-//
-//      An Incremental is-a conf<bool> containing the Boolean value indicating
-//      whether to index incrementally.
-//
-//      This is the same as index's -I command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An Incremental is-a conf<bool> containing the Boolean value indicating
+ * whether to index incrementally.
+ *
+ * This is the same as index's \c -I command-line option.
+ */
+class Incremental : public conf<bool> {
 public:
-    Incremental() : conf<bool>( "Incremental", false ) { }
-    CONF_BOOL_ASSIGN_OPS( Incremental )
+  Incremental() : conf<bool>( "Incremental", false ) { }
+  CONF_BOOL_ASSIGN_OPS( Incremental )
 };
 
 extern Incremental incremental;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* Incremental_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

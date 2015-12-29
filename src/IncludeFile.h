@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/IncludeFile.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,31 +27,28 @@
 #include "indexer.h"
 #include "pjl/pattern_map.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class IncludeFile : public conf_var, public pattern_map<indexer*>
-//
-// DESCRIPTION
-//
-//      An IncludeFile is-a conf_var containing the set of filename patterns to
-//      include during indexing.  Additionally, each pattern is mapped to the
-//      indexer that indexes that kind of file.
-//
-//      This is the same as either index's -e command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %IncludeFile is-a conf_var containing the set of filename patterns to
+ * include during indexing.  Additionally, each pattern is mapped to the
+ * indexer that indexes that kind of file.
+ *
+ * This is the same as either index's \c -e command-line option.
+ */
+class IncludeFile : public conf_var, public pattern_map<indexer*> {
 public:
-    IncludeFile() : conf_var( "IncludeFile" ) { }
-    CONF_VAR_ASSIGN_OPS( IncludeFile )
+  IncludeFile() : conf_var( "IncludeFile" ) { }
+  CONF_VAR_ASSIGN_OPS( IncludeFile )
+
 private:
-    virtual void    parse_value( char *line );
-    virtual void    reset() { clear(); }
+  // inherited
+  virtual void parse_value( char *line );
+  virtual void reset();
 };
 
 extern IncludeFile include_patterns;
 
+///////////////////////////////////////////////////////////////////////////////
 #endif /* IncludeFile_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

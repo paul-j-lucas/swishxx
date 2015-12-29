@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/FilterFile.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,26 +25,21 @@
 // local
 #include "conf_filter.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class FilterFile : public conf_filter
-//
-// DESCRIPTION
-//
-//      A FilterFile is-a conf_filter for mapping a filename pattern to a
-//      filter (being a Unix process called via command-line).  Certain
-//      filename patterns need to be filtered first, e.g., converting PDF to
-//      text.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %FilterFile is-a conf_filter for mapping a filename pattern to a filter
+ * (being a Unix process called via command-line).  Certain filename patterns
+ * need to be filtered first, e.g., converting PDF to text.
+ */
+class FilterFile : public conf_filter {
 public:
-    FilterFile() : conf_filter( "FilterFile" ) { }
+  FilterFile() : conf_filter( "FilterFile" ) { }
 };
 
 extern FilterFile file_filters;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* FilterFile_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ExcludeFile.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,39 +26,35 @@
 #include "conf_var.h"
 #include "pjl/pattern_map.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ExcludeFile : public conf_var, public pattern_map<bool>
-//
-// DESCRIPTION
-//
-//      An ExcludeFile is-a conf_var containing the set of filename patterns to
-//      exclude during either indexing or extraction.
-//
-//      This is the same as either index's or extract's -E command-line option.
-//
-// NOTE
-//
-//      The bool template parameter is not used here.  It's simply to reuse
-//      the code for pattern_map as-is.
-//
-//*****************************************************************************
-{
-public:
-    ExcludeFile() : conf_var( "ExcludeFile" ) { }
-    CONF_VAR_ASSIGN_OPS( ExcludeFile )
+///////////////////////////////////////////////////////////////////////////////
 
-    void insert( char const *pattern ) {
-        pattern_map<bool>::insert( pattern, false );
-    }
+/**
+ * An %ExcludeFile is-a conf_var containing the set of filename patterns to
+ * exclude during either indexing or extraction.
+ *
+ * This is the same as either index's or extract's \c -E command-line option.
+ *
+ * The \c bool template parameter is not used here.  It's simply to reuse the
+ * code for pattern_map as-is.
+ */
+class ExcludeFile : public conf_var, public pattern_map<bool> {
+public:
+  ExcludeFile() : conf_var( "ExcludeFile" ) { }
+  CONF_VAR_ASSIGN_OPS( ExcludeFile )
+
+  void insert( char const *pattern ) {
+    pattern_map<bool>::insert( pattern, false );
+  }
+
 private:
-    virtual void    parse_value( char *line );
-    virtual void    reset() { clear(); }
+  // inherited
+  virtual void parse_value( char *line );
+  virtual void reset();
 };
 
 extern ExcludeFile exclude_patterns;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ExcludeFile_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

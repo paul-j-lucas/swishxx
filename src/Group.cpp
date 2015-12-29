@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/Group.cpp
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -32,29 +32,24 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void Group::parse_value( char *line )
-//
-// DESCRIPTION
-//
-//      Parse a group name and look it up to ensure it's valid.
-//
-// PARAMETERS
-//
-//      line    The line of text to be parsed.
-//
-//*****************************************************************************
-{
-    conf<string>::parse_value( line );
-    char const *const group_name = operator char const*();
-    struct group const *const g = ::getgrnam( group_name );
-    if ( !g ) {
-        error() << '"' << group_name << "\" does not exist" << endl;
-        ::exit( Exit_No_Group );
-    }
-    gid_ = g->gr_gid;
+///////////////////////////////////////////////////////////////////////////////
+
+bool Group::change_to_gid() const {
+  if ( ::geteuid() == 0 /* root */ && gid_ != ::getgid() )
+    return ::setgid( gid_ ) == 0;
+  return true;
 }
-/* vim:set et sw=4 ts=4: */
+
+void Group::parse_value( char *line ) {
+  conf<string>::parse_value( line );
+  char const *const group_name = operator char const*();
+  struct group const *const g = ::getgrnam( group_name );
+  if ( !g ) {
+    error() << '"' << group_name << "\" does not exist" << endl;
+    ::exit( Exit_No_Group );
+  }
+  gid_ = g->gr_gid;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

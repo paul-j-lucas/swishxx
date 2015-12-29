@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ResultsFormat.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,29 +25,26 @@
 // local
 #include "conf_enum.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ResultsFormat : public conf_enum
-//
-// DESCRIPTION
-//
-//      A ResultsFormat is-a conf_enum containing the search results format:
-//      classic or XML.
-//
-//      This is the same as search's -F command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %ResultsFormat is-a conf_enum containing the search results format:
+ * classic or XML.
+ *
+ * This is the same as search's \c -F command-line option.
+ */
+class ResultsFormat : public conf_enum {
 public:
-    ResultsFormat() : conf_enum( "ResultsFormat", legal_values_ ) { }
-    CONF_ENUM_ASSIGN_OPS( ResultsFormat )
+  ResultsFormat() : conf_enum( "ResultsFormat", legal_values_ ) { }
+  CONF_ENUM_ASSIGN_OPS( ResultsFormat )
+
 private:
-    static char const *const legal_values_[];
+  static char const *const legal_values_[];
 };
 
 extern ResultsFormat results_format;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ResultsFormat_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

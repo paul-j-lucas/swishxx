@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ResultSeparator.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,23 @@
 // local
 #include "conf_string.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ResultSeparator : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A ResultSeparator is-a conf<std::string> containing the string used to
-//      separate parts of a search result.
-//
-//      This is the same as search's -g command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %ResultSeparator is-a conf&lt;string&gt; containing the string used to
+ * separate parts of a search result.
+ *
+ * This is the same as search's \c -R command-line option.
+ */
+class ResultSeparator : public conf<std::string> {
 public:
-    ResultSeparator() : conf<std::string>( "ResultSeparator", " " ) { }
-    CONF_STRING_ASSIGN_OPS( ResultSeparator )
+  ResultSeparator() : conf<std::string>( "ResultSeparator", " " ) { }
+  CONF_STRING_ASSIGN_OPS( ResultSeparator )
 };
 
 extern ResultSeparator result_separator;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ResultSeparator_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ThreadsMax.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,27 +26,23 @@
 #include "config.h"
 #include "conf_int.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ThreadsMax : public conf<int>
-//
-// DESCRIPTION
-//
-//      A ThreadsMax is-a conf<int> containing the maximum number of threads
-//      that will exist at any one time to service clients
-//
-//      This is the same as search's -T command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %ThreadsMax is-a conf&lt;int&gt; containing the maximum number of threads
+ * that will exist at any one time to service clients
+ *
+ * This is the same as search's \c -T command-line option.
+ */
+class ThreadsMax : public conf<int> {
 public:
-    ThreadsMax() : conf<int>( "ThreadsMax", ThreadsMax_Default, 1 ) { }
-    CONF_INT_ASSIGN_OPS( ThreadsMax )
+  ThreadsMax() : conf<int>( "ThreadsMax", ThreadsMax_Default, 1 ) { }
+  CONF_INT_ASSIGN_OPS( ThreadsMax )
 };
 
 extern ThreadsMax max_threads;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ThreadsMax_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

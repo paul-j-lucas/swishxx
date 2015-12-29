@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/FilesGrow.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,28 +26,23 @@
 #include "config.h"
 #include "conf_percent.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class FilesGrow : public conf_percent
-//
-// DESCRIPTION
-//
-//      A FilesGrow is-a conf_percent containing either the absolute number or
-//      percentage of files to grow reserved space for when incrementally
-//      indexing.
-//
-//      This is the same as index's -g command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %FilesGrow is-a conf_percent containing either the absolute number or
+ * percentage of files to grow reserved space for when incrementally indexing.
+ *
+ * This is the same as index's -g command-line option.
+ */
+class FilesGrow : public conf_percent {
 public:
-    FilesGrow() : conf_percent( "FilesGrow", FilesGrow_Default, 1 ) { }
-    CONF_PERCENT_ASSIGN_OPS( FilesGrow )
+  FilesGrow() : conf_percent( "FilesGrow", FilesGrow_Default, 1 ) { }
+  CONF_PERCENT_ASSIGN_OPS( FilesGrow )
 };
 
 extern FilesGrow files_grow;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* FilesGrow_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

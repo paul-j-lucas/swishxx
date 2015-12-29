@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/IncludeMeta.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -29,31 +29,30 @@
 // standard
 #include <map>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class IncludeMeta :
-            public conf_var, public std::map<char const*, char const*>
-//
-// DESCRIPTION
-//
-//      An IncludeMeta is-a conf_var and a map containing the set of meta names
-//      (and their possible reassigned names) to include during indexing.
-//
-//      This is the same as index's -m command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %IncludeMeta is-a conf_var and a map containing the set of meta names
+ * (and their possible reassigned names) to include during indexing.
+ *
+ * This is the same as index's \c -m command-line option.
+ */
+class IncludeMeta : public conf_var, public std::map<char const*,char const*> {
 public:
-    IncludeMeta() : conf_var( "IncludeMeta" ) { }
-    CONF_VAR_ASSIGN_OPS( IncludeMeta )
-    virtual void    parse_value( char *line );
+  IncludeMeta() : conf_var( "IncludeMeta" ) { }
+  CONF_VAR_ASSIGN_OPS( IncludeMeta )
+
+  // inherited
+  virtual void parse_value( char *line );
+
 private:
-    virtual void    reset() { clear(); }
+  // inherited
+  virtual void reset();
 };
 
 extern IncludeMeta include_meta_names;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* IncludeMeta_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/User.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,49 +28,35 @@
 #include "swishxx-config.h"
 
 // standard
-#include <sys/types.h>
-#include <unistd.h>
+#include <sys/types.h>                  /* for uid_t */
+#include <unistd.h>                     /* for geteuid() */
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class User : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A User is-a conf<string> containing the login name of the user we
-//      should run as after initialization (if we're root to begin with).
-//
-//      This is the same as search's -U command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A User is-a conf<string> containing the login name of the user we
+ * should run as after initialization (if we're root to begin with).
+ *
+ * This is the same as search's \c -U command-line option.
+ */
+class User : public conf<std::string> {
 public:
-    User();
-    CONF_STRING_ASSIGN_OPS( User );
+  User() : conf<std::string>( "User", User_Default ), uid_( ::geteuid() ) { }
+  CONF_STRING_ASSIGN_OPS( User );
 
-    bool            change_to_uid() const;
-    uid_t           uid() const { return uid_; }
+  bool change_to_uid() const;
+  uid_t uid() const { return uid_; }
+
 private:
-    virtual void    parse_value( char *line );
-    uid_t           uid_;
+  uid_t uid_;
+
+  // inherited
+  virtual void  parse_value( char *line );
 };
 
 extern User user;
 
-////////// Inlines ////////////////////////////////////////////////////////////
-
-inline User::User() :
-    conf<std::string>( "User", User_Default ), uid_( ::geteuid() )
-{
-}
-
-inline bool User::change_to_uid() const {
-    if ( ::geteuid() == 0 /* root */ && uid_ != ::getuid() )
-        return ::setuid( uid_ ) == 0;
-    return true;
-}
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* User_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

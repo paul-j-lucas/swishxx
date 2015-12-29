@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/SearchBackground.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,28 +25,24 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class SearchBackground : public conf<bool>
-//
-// DESCRIPTION
-//
-//      A SearchBackground is-a conf<bool> containing the Boolean value
-//      indicating whether to detach from the terminal and run in the
-//      background automatically when running as a daemon.
-//
-//      This is the same as search's -B command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %SearchBackground is-a conf&lt;bool&gt; containing the Boolean value
+ * indicating whether to detach from the terminal and run in the background
+ * automatically when running as a daemon.
+ *
+ * This is the same as search's \c -B command-line option.
+ */
+class SearchBackground : public conf<bool> {
 public:
-    SearchBackground() : conf<bool>( "SearchBackground", true ) { }
-    CONF_BOOL_ASSIGN_OPS( SearchBackground )
+  SearchBackground() : conf<bool>( "SearchBackground", true ) { }
+  CONF_BOOL_ASSIGN_OPS( SearchBackground )
 };
 
 extern SearchBackground search_background;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* SearchBackground_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

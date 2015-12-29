@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/WordsNear.h
 **
-**      Copyright (C) 2004  Paul J. Lucas
+**      Copyright (C) 2004-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -31,29 +31,25 @@
 // standard
 #include <climits>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class WordsNear : public conf<int>
-//
-// DESCRIPTION
-//
-//      A WordsNear is-a conf<int> containing the maximum number of words apart
-//      two words can be to be considered "near" each other.
-//
-//      This is the same as search's -n command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %WordsNear is-a conf&lt;int&gt; containing the maximum number of words
+ * apart two words can be to be considered "near" each other.
+ *
+ * This is the same as search's \c -n command-line option.
+ */
+class WordsNear : public conf<int> {
 public:
-    WordsNear() : conf<int>( "WordsNear", WordsNear_Default, 1, INT_MAX ) { }
-    CONF_INT_ASSIGN_OPS( WordsNear )
+  WordsNear() : conf<int>( "WordsNear", WordsNear_Default, 1, INT_MAX ) { }
+  CONF_INT_ASSIGN_OPS( WordsNear )
 };
 
 extern WordsNear words_near;
 
 #endif /* WordsNear_H */
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* WITH_WORD_POS */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

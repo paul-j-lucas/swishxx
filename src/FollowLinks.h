@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/FollowLinks.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -19,37 +19,29 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef PJL_NO_SYMBOLIC_LINKS
-
 #ifndef FollowLinks_H
 #define FollowLinks_H
 
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class FollowLinks : public conf<bool>
-//
-// DESCRIPTION
-//
-//      A FollowLinks is-a conf<bool> containing the Boolean value indicating
-//      whether to follow symbolic links either during indexing or extraction.
-//
-//      This is the same as either index's or extract's -l command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %FollowLinks is-a conf&lt;bool&gt; containing the Boolean value indicating
+ * whether to follow symbolic links either during indexing or extraction.
+ *
+ * This is the same as either index's or extract's \c -l command-line option.
+ */
+class FollowLinks : public conf<bool> {
 public:
-    FollowLinks() : conf<bool>( "FollowLinks", false ) { }
-    CONF_BOOL_ASSIGN_OPS( FollowLinks )
+  FollowLinks() : conf<bool>( "FollowLinks", false ) { }
+  CONF_BOOL_ASSIGN_OPS( FollowLinks )
 };
 
 extern FollowLinks follow_symbolic_links;
 
-#endif /* FollowLinks_H */
+///////////////////////////////////////////////////////////////////////////////
 
-#endif /* PJL_NO_SYMBOLIC_LINKS */
-/* vim:set et sw=4 ts=4: */
+#endif /* FollowLinks_H */
+/* vim:set et sw=2 ts=2: */

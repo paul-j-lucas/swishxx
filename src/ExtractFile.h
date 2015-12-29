@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/ExtractFile.h
 **
-**      Copyright (C) 2000  Paul J. Lucas
+**      Copyright (C) 2000-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,30 +26,28 @@
 #include "conf_var.h"
 #include "pjl/pattern_map.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class ExtractFile : public conf_var, public pattern_map<bool>
-//
-// DESCRIPTION
-//
-//      An ExtractFile is-a conf_var containing the set of filename patterns to
-//      include during extraction.  The bool template parameter isn't used.
-//
-//      This is the same as extract's -e command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * An %ExtractFile is-a conf_var containing the set of filename patterns to
+ * include during extraction.  The \c bool template parameter isn't used.
+ *
+ * This is the same as extract's \c -e command-line option.
+ */
+class ExtractFile : public conf_var, public pattern_map<bool> {
 public:
-    ExtractFile() : conf_var( "ExtractFile" ) { }
-    CONF_VAR_ASSIGN_OPS( ExtractFile )
+  ExtractFile() : conf_var( "ExtractFile" ) { }
+  CONF_VAR_ASSIGN_OPS( ExtractFile )
+
 private:
-    virtual void    parse_value( char *line );
-    virtual void    reset() { clear(); }
+  // inherited
+  virtual void parse_value( char *line );
+  virtual void reset() { clear(); }
 };
 
 extern ExtractFile include_patterns;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* ExtractFile_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

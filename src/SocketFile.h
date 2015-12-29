@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/SocketFile.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,27 +26,23 @@
 #include "config.h"
 #include "conf_string.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class SocketFile : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A SocketFile is-a conf<std::string> containing the name of the Unix
-//      domain socket file to use when 'search' is running as a daemon.
-//
-//      This is the same search's -u command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %SocketFile is-a conf&lt;string&gt; containing the name of the Unix domain
+ * socket file to use when 'search' is running as a daemon.
+ *
+ * This is the same search's \c -u command-line option.
+ */
+class SocketFile : public conf<std::string> {
 public:
-    SocketFile() : conf<std::string>( "SocketFile", SocketFile_Default ) { }
-    CONF_STRING_ASSIGN_OPS( SocketFile )
+  SocketFile() : conf<std::string>( "SocketFile", SocketFile_Default ) { }
+  CONF_STRING_ASSIGN_OPS( SocketFile )
 };
 
 extern SocketFile socket_file_name;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* SocketFile_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

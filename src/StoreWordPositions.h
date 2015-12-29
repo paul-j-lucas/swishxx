@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/StoreWordPositions.h
 **
-**      Copyright (C) 2004  Paul J. Lucas
+**      Copyright (C) 2004-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,30 +27,26 @@
 // local
 #include "conf_bool.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class StoreWordPositions : public conf<bool>
-//
-// DESCRIPTION
-//
-//      A StoreWordPositions is-a conf<bool> containing the Boolean value
-//      indicating whether to store word positions during indexing needed to do
-//      "near" searches later during searching.
-//
-//      This is the same as index's -P command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %StoreWordPositions is-a conf&lt;bool&gt; containing the Boolean value
+ * indicating whether to store word positions during indexing needed to do
+ * "near" searches later during searching.
+ *
+ * This is the same as index's \c -P command-line option.
+ */
+class StoreWordPositions : public conf<bool> {
 public:
-    StoreWordPositions() : conf<bool>( "StoreWordPositions", true ) { }
-    CONF_BOOL_ASSIGN_OPS( StoreWordPositions )
+  StoreWordPositions() : conf<bool>( "StoreWordPositions", true ) { }
+  CONF_BOOL_ASSIGN_OPS( StoreWordPositions )
 };
 
 extern StoreWordPositions store_word_positions;
 
 #endif /* StoreWordPositions_H */
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* WITH_WORD_POS */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

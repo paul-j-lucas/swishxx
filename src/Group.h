@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/Group.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,49 +28,35 @@
 
 // standard
 #include <sys/types.h>
-#include <unistd.h>                             /* for gid_t */
+#include <unistd.h>                     /* for gid_t */
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class Group : public conf<std::string>
-//
-// DESCRIPTION
-//
-//      A Group is-a conf<string> containing the group name of the user we
-//      should run as after initialization (if we're root to begin with).
-//
-//      This is the same as search's -G command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %Group is-a conf&lt;string&gt; containing the group name of the user we
+ * should run as after initialization (if we're root to begin with).
+ *
+ * This is the same as search's \c -G command-line option.
+ */
+class Group : public conf<std::string> {
 public:
-    Group();
+    Group() : conf<std::string>( "Group", Group_Default ), gid_( ::getegid() ) {
+    }
     CONF_STRING_ASSIGN_OPS( Group );
 
-    bool            change_to_gid() const;
-    gid_t           gid() const { return gid_; }
-private:
-    virtual void    parse_value( char *line );
+    bool change_to_gid() const;
+    gid_t gid() const { return gid_; }
 
-    gid_t           gid_;
+private:
+    // inherited
+    virtual void parse_value( char *line );
+
+    gid_t gid_;
 };
 
 extern Group group;
 
-////////// Inlines ////////////////////////////////////////////////////////////
-
-inline Group::Group() :
-    conf<std::string>( "Group", Group_Default ), gid_( ::getegid() )
-{
-}
-
-inline bool Group::change_to_gid() const {
-    if ( ::geteuid() == 0 /* root */ && gid_ != ::getgid() )
-        return ::setgid( gid_ ) == 0;
-    return true;
-}
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* Group_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

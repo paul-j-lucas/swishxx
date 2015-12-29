@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/WordPercentMax.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,28 +26,24 @@
 #include "config.h"
 #include "conf_int.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class WordPercentMax : public conf<int>
-//
-// DESCRIPTION
-//
-//      A WordPercentMax is-a conf<int> containing the maximum percentage of
-//      files a word may occur in before it is discarded as being too frequent.
-//
-//      This is the same as index's -p command-line option.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %WordPercentMax is-a conf&lt;int&gt; containing the maximum percentage of
+ * files a word may occur in before it is discarded as being too frequent.
+ *
+ * This is the same as index's \c -p command-line option.
+ */
+class WordPercentMax : public conf<int> {
 public:
-    WordPercentMax() :
-        conf<int>( "WordPercentMax", WordPercentMax_Default, 1, 101 ) { }
-    CONF_INT_ASSIGN_OPS( WordPercentMax )
+  WordPercentMax() :
+    conf<int>( "WordPercentMax", WordPercentMax_Default, 1, 101 ) { }
+  CONF_INT_ASSIGN_OPS( WordPercentMax )
 };
 
 extern WordPercentMax word_percent_max;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* WordPercentMax_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */
