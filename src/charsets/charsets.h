@@ -51,7 +51,7 @@ encoded_char_range::charset_type const CHARSET_UNKNOWN  =
  *    Engineering Task Force, May 1997.
  *
  * @param begin A pointer marking the beginning of the entire encoded range.
- * @param c A pointer marking the position of the character to decode.  It is
+ * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  * @return Returns the decoded character or ' ' upon error.
@@ -76,7 +76,7 @@ encoded_char_range::value_type charset_utf7(
  *    January 1998.
  *
  * @param begin A pointer marking the beginning of the entire encoded range.
- * @param c A pointer marking the position of the character to decode.  It is
+ * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  * @return Returns the decoded character or ' ' upon error.
@@ -97,12 +97,13 @@ encoded_char_range::value_type charset_utf8(
  *    The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
  *    section 2.3, Addison-Wesley, 2000.
  *
- * @param c A pointer marking the position of the character to decode.  It is
+ * @param begin A pointer marking the beginning of the entire encoded range.
+ * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  */
 encoded_char_range::value_type charset_utf16be(
-  encoded_char_range::const_pointer,
+  encoded_char_range::const_pointer begin,
   encoded_char_range::const_pointer &pos,
   encoded_char_range::const_pointer end
 );
@@ -115,7 +116,8 @@ encoded_char_range::value_type charset_utf16be(
  *    The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
  *    section 2.3, Addison-Wesley, 2000.
  *
- * @param c A pointer marking the position of the character to decode.  It is
+ * @param begin A pointer marking the beginning of the entire encoded range.
+ * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  */
