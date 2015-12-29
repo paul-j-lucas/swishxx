@@ -31,16 +31,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-class file_info
-//
-// DESCRIPTION
-//
-//      This is used to contain information for every file encountered during
-//      indexing.  A static data member keeps track of all dynamically
-//      allocated instances so thay can be iterated over later.
-//
-//*****************************************************************************
-{
+/**
+ * A %file_info contains information for every file encountered during
+ * indexing.  A static data member keeps track of all dynamically allocated
+ * instances so thay can be iterated over later.
+ */
+class file_info {
 public:
   typedef std::vector<file_info*> list_type;
   typedef list_type::const_iterator const_iterator;

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/word_markers.h
 **
-**      Copyright (C) 2003  Paul J. Lucas
+**      Copyright (C) 2003-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,24 +25,35 @@
 // local
 #include "config.h"
 
-unsigned char const Stop_Marker                 = '\x80';
-//                  This byte marks the end of a list of numbers (such as a
-//                  meta name list) for a word entry in an index file.  It also
-//                  stops a word entry itself.
+///////////////////////////////////////////////////////////////////////////////
 
-unsigned char const Meta_Name_List_Marker       = '\x01';
-//                  This byte marks the beginning of a meta name list for a
-//                  word entry in an index file.
+/**
+ * This byte marks the end of a list of numbers (such as a meta name list) for
+ * a word entry in an index file.  It also stops a word entry itself.
+ */
+unsigned char const Stop_Marker = '\x80';
+
+/**
+ * This byte marks the beginning of a meta name list for a word entry in an
+ * index file.
+ */
+unsigned char const Meta_Name_List_Marker = '\x01';
 
 #ifdef WITH_WORD_POS
-unsigned char const Word_Pos_List_Marker        = '\x02';
-//                  This byte marks the beginning of a word position delta list
-//                  for a word entry in an index file.
+/**
+ * This byte marks the beginning of a word position delta list for a word entry
+ * in an index file.
+ */
+unsigned char const Word_Pos_List_Marker = '\x02';
 #endif /* WITH_WORD_POS */
 
+/**
+ * This byte marks that a word entry continues (the opposite of the
+ * Stop_Marker).
+ */
 unsigned char const Word_Entry_Continues_Marker = '\x00';
-//                  This byte marks that a word entry continues (the opposite
-//                  of the Stop_Marker).
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* word_markers_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

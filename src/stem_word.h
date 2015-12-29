@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/stem_word.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,30 +25,28 @@
 // local
 #include "pjl/less.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        struct less_stem : std::less<char const*>
-//
-// DESCRIPTION
-//
-//      A less_stem is-a less<char const*> that compares C-style strings but
-//      possibly stems (suffix strips) the words before comparison.
-//
-//*****************************************************************************
-{
-    less_stem( bool stem ) : stem_func_( stem ? stem_word : no_stem ) { }
+///////////////////////////////////////////////////////////////////////////////
 
-    result_type
-    operator()( first_argument_type a, second_argument_type b ) const {
-        return std::strcmp( stem_func_( a ), stem_func_( b ) ) < 0;
-    }
+/**
+ * A %less_stem is-a less&lt;char const*&gt; that compares C-style strings but
+ * possibly stems (suffix strips) the words before comparison.
+ */
+struct less_stem : std::less<char const*> {
+  less_stem( bool stem ) : stem_func_( stem ? stem_word : no_stem ) { }
+
+  result_type operator()( first_argument_type a,
+                          second_argument_type b ) const {
+    return std::strcmp( stem_func_( a ), stem_func_( b ) ) < 0;
+  }
+
 private:
-    char const*         (*const stem_func_)( char const *word );
-    static char const*  no_stem( char const *word ) { return word; }
-    static char const*  stem_word( char const *word );
+  char const* (*const stem_func_)( char const *word );
+
+  static char const* no_stem( char const *word ) { return word; }
+  static char const* stem_word( char const *word );
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* stem_word_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

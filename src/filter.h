@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/filter.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,52 +26,43 @@
 #include <string>
 #include <unistd.h>                     /* for unlink(2) */
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class filter
-//
-// DESCRIPTION
-//
-//      A filter is a light-weight class that contains a Unix command-line and
-//      knows how to execute itself on a file to create a filtered file.  The
-//      destructor deletes the filtered file.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %filter is a light-weight class that contains a Unix command-line and
+ * knows how to execute itself on a file to create a filtered file.  The
+ * destructor deletes the filtered file.
+ */
+class filter {
 public:
-    explicit filter( char const *command ) : command_template_( command ) {}
-    ~filter();
+  explicit filter( char const *command ) : command_template_( command ) { }
+  ~filter();
 
-    // default copy constructor is fine
-    // default assignment operator is fine
+  // default copy constructor is fine
+  // default assignment operator is fine
 
-    char const* substitute( char const *file_name );
-    char const* substitute( std::string const &file_name );
-    char const* exec() const;
+  char const* substitute( char const *file_name );
+  char const* substitute( std::string const &file_name );
+  char const* exec() const;
+
 private:
-    char const* command_template_;
-    //
-    // The above really should be const, but then we'd need to define a
-    // non-default operator=().  It's simpler and harmless just to leave the
-    // const out.
-    //
-
-    std::string command_;
-    std::string target_file_name_;
+  char const *command_template_;
+  std::string command_;
+  std::string target_file_name_;
 };
 
 ////////// Inlines ////////////////////////////////////////////////////////////
 
 inline filter::~filter() {
-    if ( !target_file_name_.empty() )
-        ::unlink( target_file_name_.c_str() );
+  if ( !target_file_name_.empty() )
+    ::unlink( target_file_name_.c_str() );
 }
 
 inline char const* filter::substitute( std::string const &file_name ) {
-    return substitute( file_name.c_str() );
+  return substitute( file_name.c_str() );
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* filter_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

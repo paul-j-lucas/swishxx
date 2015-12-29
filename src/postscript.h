@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/postscript.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,44 +25,28 @@
 // local
 #include "pjl/pjl_set.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        struct postscript_comment_set : PJL::char_ptr_set
-//
-// DESCRIPTION
-//
-//      A postscript_comment_set is-a char_ptr_set.  The only reason for having
-//      a derived class rather than a typedef is so that we can have a custom
-//      constructor that initializes itself.
-//
-//*****************************************************************************
-{
-    postscript_comment_set();
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %postscript_comment_set is-a char_ptr_set.  The only reason for having a
+ * derived class rather than a typedef is so that we can have a custom
+ * constructor that initializes itself.
+ */
+struct postscript_comment_set : PJL::char_ptr_set {
+  postscript_comment_set();
 };
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        struct postscript_operator_set : PJL::char_ptr_set
-//
-// DESCRIPTION
-//
-//      A postscript_operator_set is-a char_ptr_set used to contain the entire
-//      set of Level 2 PostScript operators that are not also English words.
-//      The only reason for having a derived class rather than a typedef is so
-//      that we can have a custom constructor that initializes itself.
-//
-// SEE ALSO
-//
-//      extract.c
-//
-//*****************************************************************************
-{
-    postscript_operator_set();
+/**
+ * A %postscript_operator_set is-a char_ptr_set used to contain the entire set
+ * of Level 2 PostScript operators that are not also English words.  The only
+ * reason for having a derived class rather than a typedef is so that we can
+ * have a custom constructor that initializes itself.
+ */
+struct postscript_operator_set : PJL::char_ptr_set {
+  postscript_operator_set();
 };
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* postscript_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

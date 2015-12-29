@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/classic_formatter.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,27 +25,24 @@
 // local
 #include "results_formatter.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class classic_formatter : public results_formatter
-//
-// DESCRIPTION
-//
-//      A classic_formatter is-a results_formatter for formatting search
-//      results in the "classic" SWISH++ format.
-//
-//*****************************************************************************
-{
-public:
-    classic_formatter( std::ostream &o, int results ) :
-        results_formatter( o, results ) { }
-    virtual ~classic_formatter();
+///////////////////////////////////////////////////////////////////////////////
 
-    virtual void pre( stop_word_set const& ) const;
-    virtual void result( int rank, file_info const& ) const;
+/**
+ * A %classic_formatter is-a results_formatter for formatting search results in
+ * the "classic" SWISH++ format.
+ */
+class classic_formatter : public results_formatter {
+public:
+  classic_formatter( std::ostream &o, int results ) :
+      results_formatter( o, results ) { }
+  ~classic_formatter();
+
+  // inherited
+  virtual void pre( stop_word_set const& ) const;
+  virtual void result( int rank, file_info const& ) const;
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* classic_formatter_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

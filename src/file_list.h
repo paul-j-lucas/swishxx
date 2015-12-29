@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/file_list.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -30,108 +30,96 @@
 #include <cstddef>                  /* for ptrdiff_t */
 #include <iterator>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class file_list
-//
-// DESCRIPTION
-//
-//      This class, given a index_segment::const_iterator, accesses the list of
-//      files the word is in.  Once an instance is created, the list of files
-//      can be iterated over.
-//
-// SEE ALSO
-//
-//      index_segment.h
-//      word_info.h
-//      index.c         write_full_index() for a description of the index file
-//                      format.
-//
-//*****************************************************************************
-{
-    typedef unsigned char byte;         // for convenience
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %file_list accesses the list of files the word is in.  Once an instance is
+ * created, the list of files can be iterated over.
+ */
+class file_list {
+  typedef unsigned char byte;         // for convenience
 public:
-    ////////// typedefs ///////////////////////////////////////////////////////
+  ////////// typedefs /////////////////////////////////////////////////////////
 
-    typedef int size_type;
-    typedef ptrdiff_t difference_type;
+  typedef int size_type;
+  typedef ptrdiff_t difference_type;
 
-    typedef word_info::file value_type;
-    typedef value_type const* const_pointer;
-    typedef value_type const& const_reference;
+  typedef word_info::file value_type;
+  typedef value_type const* const_pointer;
+  typedef value_type const& const_reference;
 
-    ////////// constructors ///////////////////////////////////////////////////
+  ////////// constructors /////////////////////////////////////////////////////
 
-    file_list( index_segment::const_iterator const &iter ) :
-        ptr_( reinterpret_cast<byte const*>( *iter ) ),
-        size_( -1 )                     // -1 = "haven't computed yet"
-    {
-        while ( *ptr_++ ) ;             // skip past word
+  file_list( index_segment::const_iterator const &iter ) :
+    ptr_( reinterpret_cast<byte const*>( *iter ) ),
+    size_( -1 )                         // -1 = "haven't computed yet"
+  {
+    while ( *ptr_++ ) ;                 // skip past word
+  }
+
+  ////////// iterators ////////////////////////////////////////////////////////
+
+  class const_iterator;
+  friend class const_iterator;
+
+  class const_iterator :
+    public std::iterator<std::forward_iterator_tag,value_type> {
+  public:
+    const_iterator() { }
+
+    const_reference operator* () const { return  v_; }
+    const_pointer   operator->() const { return &v_; }
+
+    const_iterator& operator++();
+    const_iterator  operator++(int) {
+      const_iterator const temp = *this;
+      return ++*this, temp;
     }
 
-    ////////// iterators //////////////////////////////////////////////////////
+    friend bool operator==( const_iterator const &i, const_iterator const &j ) {
+      return i.c_ == j.c_;
+    }
 
-    class const_iterator;
-    friend class const_iterator;
+    friend bool operator!=( const_iterator const &i, const_iterator const &j ) {
+      return !( i == j );
+    }
 
-    class const_iterator :
-        public std::iterator<std::forward_iterator_tag,value_type> {
-    public:
-        const_iterator() { }
+    // default copy constructor is OK
+    // default assignment operator is OK
 
-        const_reference operator* () const { return  v_; }
-        const_pointer   operator->() const { return &v_; }
+  private:
+      const_iterator( byte const *p ) : c_( p ) {
+        if ( c_ )
+          operator++();
+      }
 
-        const_iterator& operator++();
-        const_iterator  operator++(int) {
-            const_iterator const temp = *this;
-            return ++*this, temp;
-        }
+      byte const *c_;
+      value_type v_;
 
-        friend bool
-        operator==( const_iterator const &i, const_iterator const &j ) {
-            return i.c_ == j.c_;
-        }
+      static byte const end_value;
+      friend class file_list;
+  };
 
-        friend bool
-        operator!=( const_iterator const &i, const_iterator const &j ) {
-            return !( i == j );
-        }
+  ////////// member functions /////////////////////////////////////////////////
 
-        // default copy constructor is OK
-        // default assignment operator is OK
-    private:
-        const_iterator( byte const *p ) : c_( p ) {
-            if ( c_ )
-                operator++();
-        }
+  const_iterator  begin() const       { return const_iterator( ptr_ ); }
+  const_iterator  end() const         { return const_iterator( 0 ); }
+  size_type       size() const;
 
-        byte const *c_;
-        value_type v_;
-
-        static byte const end_value;
-        friend class file_list;
-    };
-
-    ////////// member functions ///////////////////////////////////////////////
-
-    const_iterator  begin() const       { return const_iterator( ptr_ ); }
-    const_iterator  end() const         { return const_iterator( 0 ); }
-    size_type       size() const;
 private:
-    byte const          *ptr_;
-    mutable size_type   size_;
+  byte const       *ptr_;
+  mutable size_type size_;
 
-    size_type calc_size() const;
+  size_type calc_size() const;
 };
 
 ////////// inlines ////////////////////////////////////////////////////////////
 
 inline file_list::size_type file_list::size() const {
-    return size_ != -1 ? size_ : calc_size();
+  return size_ != -1 ? size_ : calc_size();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* file_list_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

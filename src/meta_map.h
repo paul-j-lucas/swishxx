@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/meta_map.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,25 +28,17 @@
 // standard
 #include <map>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        typedef std::map<char const*, int> meta_map;
-//
-// DESCRIPTION
-//
-//      A meta_map is used to map a META name to its unique integer ID. IDs
-//      start at zero.
-//
-//      Note that the declaration of std::map has a default "Compare" template
-//      parameter of "less<key_type>" and, since we've included less.h above
-//      that defines "less<char const*>", C-style string comparisons work
-//      properly.
-//
-//*****************************************************************************
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %meta_map is used to map a META name to its unique integer ID. IDs start
+ * at zero.
+ */
+typedef std::map<char const*,int> meta_map;
 
 extern meta_map meta_names;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* meta_map_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/stop_word.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,25 +26,20 @@
 #include "pjl/mmap_file.h"
 #include "pjl/pjl_set.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        struct stop_word_set : PJL::char_ptr_set
-//
-// DESCRIPTION
-//
-//      A stop_word_set is-a char_ptr_set.  The only reason for having a
-//      derived class rather than a typedef is so that we can have custom
-//      constructors.
-//
-//*****************************************************************************
-{
-    stop_word_set( char const *file_name = 0 );
-    stop_word_set( PJL::mmap_file const &index_file );
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %stop_word_set is-a char_ptr_set.  The only reason for having a derived
+ * class rather than a typedef is so that we can have custom constructors.
+ */
+struct stop_word_set : PJL::char_ptr_set {
+  stop_word_set( char const *file_name = 0 );
+  stop_word_set( PJL::mmap_file const &index_file );
 };
 
-extern stop_word_set*   stop_words;
+extern stop_word_set* stop_words;
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* stop_words_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

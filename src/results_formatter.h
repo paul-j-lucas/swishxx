@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/results_formatter.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -29,40 +29,48 @@ class file_info;
 // standard
 #include <iostream>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class results_formatter
-//
-// DESCRIPTION
-//
-//      A results_formatter is an abstract base class for classes that format
-//      search result output.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %results_formatter is an abstract base class for classes that format
+ * search result output.
+ */
+class results_formatter {
 public:
-    virtual ~results_formatter();
+  virtual ~results_formatter();
 
-    virtual void    pre( stop_word_set const& ) const = 0;
-    //              Output search-result "meta" information before the results
-    //              themselves: the set of stop words found in the query (if
-    //              any) and the number of results.
+  /**
+   * Outputs search-result "meta" information before the results themselves:
+   * the set of stop words found in the query (if any) and the number of
+   * results.
+   *
+   * @param stop_words The stop words to format.
+   */
+  virtual void pre( stop_word_set const &stop_words ) const = 0;
 
-    virtual void    result( int rank, file_info const& ) const = 0;
-    //              Output an individual search result's information: it's
-    //              rank, path, and title.
+  /**
+   * Outputs an individual search result's information: it's rank, path, and
+   * title.
+   *
+   * @param rank The result's rank.
+   * @param finfo The file_info to format.
+   */
+  virtual void result( int rank, file_info const &finfo ) const = 0;
 
-    virtual void    post() const;
-    //              Output any trailing information.
+  /**
+   * Outputs any trailing information.
+   */
+  virtual void post() const;
+
 protected:
-    results_formatter( std::ostream &o, int results ) :
-        out_( o ), results_( results ) { }
+  results_formatter( std::ostream &o, int results ) :
+    out_( o ), results_( results ) { }
 
-    std::ostream&   out_;
-    int const       results_;
+  std::ostream&   out_;
+  int const       results_;
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* results_formatter_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

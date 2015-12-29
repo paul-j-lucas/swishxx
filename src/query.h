@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/query.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -34,46 +34,39 @@
 #include <string>
 #include <utility>                      /* for pair<> */
 
-typedef std::map<int, int> search_results;
-//
-//  A search_results contains a set of search results where the key int is a
-//  file index and the value int is that file's rank.
+/**
+ * A %search_results contains a set of search results where the key int is a
+ * file index and the value int is that file's rank.
+ */
+typedef std::map<int,int> search_results;
 
-typedef std::pair<index_segment::const_iterator, index_segment::const_iterator>
+/**
+ * A %word_range is-a pair of iterators marking the beginning and end of a
+ * range over which a given word matches.
+ */
+typedef std::pair<index_segment::const_iterator,index_segment::const_iterator>
         word_range;
-//
-//  A word_range is-a pair of iterators marking the beginning and end of a
-//  range over which a given word matches.
 
 typedef std::set<std::string> stop_word_set;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline bool is_too_frequent( int file_count )
-//
-// DESCRIPTION
-//
-//      Checks to see if a word is too frequent by either exceeding the maximum
-//      number or percentage of files it can be in.
-//
-// PARAMETERS
-//
-//      file_count  The number of files a word occurs in.
-//
-// RETURN VALUE
-//
-//      Returns true only if a word is too frequent.
-//
-//*****************************************************************************
-{
-    extern index_segment files;
-    return  file_count > word_files_max ||
-            file_count * 100 / files.size() >= word_percent_max;
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Checks to see if a word is too frequent by either exceeding the maximum
+ * number or percentage of files it can be in.
+ *
+ * @param file_count The number of files a word occurs in.
+ * @return Returns \c true only if a word is too frequent.
+ */
+inline bool is_too_frequent( int file_count ) {
+  extern index_segment files;
+  return  file_count > word_files_max ||
+          file_count * 100 / files.size() >= word_percent_max;
 }
 
-bool    parse_query( token_stream&, search_results&, stop_word_set& );
+bool parse_query( token_stream&, search_results&, stop_word_set& );
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* query_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

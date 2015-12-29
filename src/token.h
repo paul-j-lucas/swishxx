@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/token.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -30,65 +30,60 @@
 
 class token_stream;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class token
-//
-// DESCRIPTION
-//
-//      This class is used to contain a token parsed from a token_stream.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %oktne contains a token parsed from a token_stream.
+ */
+class token {
 public:
-    enum type {
-        tt_none,
-        tt_and,
-        tt_equal,
-        tt_lparen,
+  enum type {
+    tt_none,
+    tt_and,
+    tt_equal,
+    tt_lparen,
 #ifdef WITH_WORD_POS
-        tt_near,
-        //
-        // The "tt_not_near" token isn't a real token in that it's not parsed
-        // as a single word.  The parser synthesizes it by using look-ahead,
-        // i.e., a "not" token followed by a "near" token.  Having a distinct
-        // enum value for it here just makes life easier.
-        //
-        tt_not_near,
+    tt_near,
+    //
+    // The "tt_not_near" token isn't a real token in that it's not parsed as a
+    // single word.  The parser synthesizes it by using look-ahead, i.e., a
+    // "not" token followed by a "near" token.  Having a distinct enum value
+    // for it here just makes life easier.
+    //
+    tt_not_near,
 #endif /* WITH_WORD_POS */
-        tt_not,
-        tt_or,
-        tt_rparen,
-        tt_word_star,
-        tt_word
-    };
+    tt_not,
+    tt_or,
+    tt_rparen,
+    tt_word_star,
+    tt_word
+  };
 
-    token() : type_( tt_none )          { }
-    explicit token( token_stream &in )  { in >> *this; }
+  token() : type_( tt_none )            { }
+  explicit token( token_stream &in )    { in >> *this; }
 
-    // default copy constructor is fine
-    // default assignment operator is fine
+  // default copy constructor is fine
+  // default assignment operator is fine
 
-    operator    type() const            { return type_; }
-    int         length() const          { return len_; }
-    char const* str() const             { return buf_; }
-    char const* lower_str() const       { return lower_buf_; }
+  operator    type() const              { return type_; }
+  int         length() const            { return len_; }
+  char const* str() const               { return buf_; }
+  char const* lower_str() const         { return lower_buf_; }
 
-    friend token_stream& operator>>( token_stream&, token& );
+  friend token_stream& operator>>( token_stream&, token& );
+
 private:
-    type        type_;
-    char        buf_[ Word_Hard_Max_Size + 1 ];
-    char        lower_buf_[ Word_Hard_Max_Size + 1 ];
-    int         len_;
+  type type_;
+  char buf_[ Word_Hard_Max_Size + 1 ];
+  char lower_buf_[ Word_Hard_Max_Size + 1 ];
+  int  len_;
 };
 
 //*****************************************************************************
 //
 // SYNOPSIS
 //
-        class token_stream : public std::istringstream
+      class token_stream : public std::istringstream
 //
 // DESCRIPTION
 //
@@ -100,16 +95,18 @@ private:
 //*****************************************************************************
 {
 public:
-    token_stream( char const *s ) : std::istringstream( s ), top_( -1 ) { }
-    void    put_back( token const &t ) { stack_[ ++top_ ] = t; }
-    friend  token_stream& operator>>( token_stream&, token& );
+  token_stream( char const *s ) : std::istringstream( s ), top_( -1 ) { }
+  void    put_back( token const &t ) { stack_[ ++top_ ] = t; }
+  friend  token_stream& operator>>( token_stream&, token& );
 private:
-    // Our query parser needs at most 2 look-ahead tokens.
-    token   stack_[ 2 ];
-    int     top_;
+  // Our query parser needs at most 2 look-ahead tokens.
+  token   stack_[ 2 ];
+  int     top_;
 
-    token*  put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
+  token*  put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* token_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */
