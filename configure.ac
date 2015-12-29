@@ -28,6 +28,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CXX
 AC_PROG_CC
 gl_EARLY
+AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
 AM_PROG_AR
 AC_PROG_INSTALL
 AC_PROG_LN_S
