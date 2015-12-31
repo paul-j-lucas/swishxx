@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/man/mod_man.h
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,33 +23,36 @@
 #define mod_man_H
 
 // local
-#include "encoded_char.h"
 #include "indexer.h"
-#include "pjl/mmap_file.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class man_indexer : public indexer
-//
-// DESCRIPTION
-//
-//      An man_indexer is-an indexer for indexing Unix manual pages.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %man_indexer is-an indexer for indexing Unix manual pages.
+ */
+class man_indexer : public indexer {
 public:
-    man_indexer() : indexer( "man" ) { }
+  man_indexer() : indexer( "man" ) { }
 
-    virtual char const* find_title( PJL::mmap_file const& ) const;
-    virtual void        index_words(
-                            encoded_char_range const&,
-                            int meta_id = Meta_ID_None
-                        );
+  // inherited
+  char const* find_title( PJL::mmap_file const& ) const;
+  void index_words( encoded_char_range const&, int meta_id = Meta_ID_None );
+
 private:
-    void                parse_man_macro( char const *&pos, char const *end );
+  /**
+   * Parses a macro.  If it is "SH" (section heading), parse the name of the
+   * heading and make that a meta name.  Then scan for the next \c .SH to mark
+   * the end of the range and index all the words in between as being
+   * associated with the section heading meta name.
+   *
+   * @param c The iterator to use.  It must be positioned at the character
+   * after the '.'; it is repositioned.
+   * @param end The iterator marking the end of the file.
+   */
+  void parse_man_macro( char const *&c, char const *end );
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* mod_man_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/latex/commands.cpp
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -22,131 +22,98 @@
 // local
 #include "commands.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        command_map::command_map()
-//
-// DESCRIPTION
-//
-//      Construct (initialize) an command_map.
-//
-//*****************************************************************************
-{
-    //
-    // A command maps to an action which is what to do about it when
-    // encountered in a document.  In most cases, the action is simply text to
-    // be substituted.  In cases where the action is either '{' or '[', the
-    // character is to be "balanced" by looking for the closing '}' or ']' and
-    // the words in between are indexed seperately.
-    //
-    static command const command_table[] = {
+///////////////////////////////////////////////////////////////////////////////
 
-    //  \name               action
-    //  ------------------- -------
-        "\"",               "",
-        "#",                "#",
-        "$",                "$",
-        "%",                "%",
-        "&",                "&",
-        "'",                "",
-        ".",                "",
-        "=",                "",
-        "@",                "",
-        "\\",               "\n",
-        "^",                "",
-        "_",                "_",
-        "`",                "",
-        "{",                " ",
-        "}",                " ",
+command_map::command_map() {
+  //
+  // A command maps to an action which is what to do about it when encountered
+  // in a document.  In most cases, the action is simply text to be
+  // substituted.  In cases where the action is either '{' or '[', the
+  // character is to be "balanced" by looking for the closing '}' or ']' and
+  // the words in between are indexed seperately.
+  //
+  static command const command_table[] = {
 
-        "aa",               "a",
-        "AA",               "A",
-        "ae",               "ae",
-        "AE",               "AE",
-        "b",                "",
-        "c",                "",
-        "d",                "",
-        "H",                "",
-        "i",                "i",
-        "j",                "j",
-        "LaTeX",            "LaTeX",
-        "l",                "l",
-        "L",                "L",
-        "OE",               "OE",
-        "ss",               "ss",
-        "t",                "",
-        "TeX",              "TeX",
-        "u",                "",
-        "v",                "",
+  //  \name             action
+  //  ----------------  -------
+      "\"",             "",
+      "#",              "#",
+      "$",              "$",
+      "%",              "%",
+      "&",              "&",
+      "'",              "",
+      ".",              "",
+      "=",              "",
+      "@",              "",
+      "\\",             "\n",
+      "^",              "",
+      "_",              "_",
+      "`",              "",
+      "{",              " ",
+      "}",              " ",
 
-        "author",           "{",
-        "caption",          "{",
-        "chapter",          "{",
-        "emph",             "{",
-        "fbox",             "{",
-        "footnote",         "{",
-        "item",             "[",
-        "mbox",             "{",
-        "paragraph",        "{",
-        "part",             "{",
-        "section",          "{",
-        "sout",             "{",
-        "subparagraph",     "{",
-        "subsection",       "{",
-        "subsubsection",    "{",
-        "textbf",           "{",
-        "textit",           "{",
-        "textmd",           "{",
-        "textnormal",       "{",
-        "textrm",           "{",
-        "textsc",           "{",
-        "textsf",           "{",
-        "textsl",           "{",
-        "texttt",           "{",
-        "textup",           "{",
-        "title",            "{",
-        "uline",            "{",
-        "underline",        "{",
-        "uwave",            "{",
-        "xout",             "{",
+      "aa",             "a",
+      "AA",             "A",
+      "ae",             "ae",
+      "AE",             "AE",
+      "b",              "",
+      "c",              "",
+      "d",              "",
+      "H",              "",
+      "i",              "i",
+      "j",              "j",
+      "LaTeX",          "LaTeX",
+      "l",              "l",
+      "L",              "L",
+      "OE",             "OE",
+      "ss",             "ss",
+      "t",              "",
+      "TeX",            "TeX",
+      "u",              "",
+      "v",              "",
 
-        0
-    };
+      "author",         "{",
+      "caption",        "{",
+      "chapter",        "{",
+      "emph",           "{",
+      "fbox",           "{",
+      "footnote",       "{",
+      "item",           "[",
+      "mbox",           "{",
+      "paragraph",      "{",
+      "part",           "{",
+      "section",        "{",
+      "sout",           "{",
+      "subparagraph",   "{",
+      "subsection",     "{",
+      "subsubsection",  "{",
+      "textbf",         "{",
+      "textit",         "{",
+      "textmd",         "{",
+      "textnormal",     "{",
+      "textrm",         "{",
+      "textsc",         "{",
+      "textsf",         "{",
+      "textsl",         "{",
+      "texttt",         "{",
+      "textup",         "{",
+      "title",          "{",
+      "uline",          "{",
+      "underline",      "{",
+      "uwave",          "{",
+      "xout",           "{",
 
-    for ( auto c = command_table; c->name; ++c )
-        operator[]( c->name ).action = c->action;
+      nullptr
+  };
+
+  for ( auto c = command_table; c->name; ++c )
+    operator[]( c->name ).action = c->action;
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        /* static */ command_map const& command_map::instance()
-//
-// DESCRIPTION
-//
-//      Define and initialize (exactly once) a static instance of command_map
-//      and return a reference to it.  The reason for this function is to
-//      guarantee that there is exactly one instance of it and that it is
-//      initialized before its first use across all translation units,
-//      something that would not guaranteed if it were defined and initialized
-//      at file scope.
-//
-// RETURN VALUE
-//
-//      Returns a reference to a static instance of an initialized command_map.
-//
-// SEE ALSO
-//
-//      Margaret A. Ellis and Bjarne Stroustrup.  "The Annotated C++ Reference
-//      Manual."  Addison-Wesley, Reading, MA, 1990.  p. 19.
-//
-//*****************************************************************************
-{
-    static command_map const m;
-    return m;
+command_map const& command_map::instance() {
+  static command_map const m;
+  return m;
 }
 
-/* vim:set et sw=4 ts=4: */
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

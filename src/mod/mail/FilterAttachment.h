@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/mail/FilterAttachment.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,25 +25,21 @@
 // local
 #include "conf_filter.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class FilterAttachment : public conf_filter
-//
-// DESCRIPTION
-//
-//      A FilterAttachment is-a conf_filter for mapping a MIME types to a
-//      filter (being a Unix process called via command-line).  Certain MIME
-//      types need to be filtered first, e.g., converted to plain text.
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %FilterAttachment is-a conf_filter for mapping a MIME types to a filter
+ * (being a Unix process called via command-line).  Certain MIME types need to
+ * be filtered first, e.g., converted to plain text.
+ */
+class FilterAttachment : public conf_filter {
 public:
-    FilterAttachment() : conf_filter( "FilterAttachment" ) { }
+  FilterAttachment() : conf_filter( "FilterAttachment" ) { }
 };
 
 extern FilterAttachment attachment_filters;
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* FilterAttachment_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

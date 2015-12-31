@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/latex/latex_config.h
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -24,8 +24,10 @@
 
 ////////// LaTeX parameters ///////////////////////////////////////////////////
 
-int const   Command_Name_Max_Size   = 13;
-//          The maximum size of a LaTeX command name, e.g., "subsubsection".
+/**
+ * The maximum size of a LaTeX command name, e.g., "subsubsection".
+ */
+int const Command_Name_Max_Size = 13;
 
 ///////////////////////////////////////////////////////////////////////////////
 

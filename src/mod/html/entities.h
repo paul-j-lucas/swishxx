@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/html/entities.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -28,49 +28,44 @@
 // standard
 #include <map>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class char_entity_map
-//
-// DESCRIPTION
-//
-//      A char_entity_map is used to perform fast look-up of a character entity
-//      reference.  It uses char const* to point directly to the C-strings in
-//      the char_entity_table[] vector; no strings are copied.
-//
-//      The contructor is private, however, to ensure that only instance() can
-//      be called to initialize and access a single, static instance.
-//
-// SEE ALSO
-//
-//      entites.c   char_entity_table[], instance()
-//      mod_html.c  entity_to_ascii()
-//
-//*****************************************************************************
-{
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A %char_entity_map is used to perform fast look-up of a character entity
+ * reference.  It uses <code>char const*</code> to point directly to the
+ * C-strings in the \c char_entity_table[] vector; no strings are copied.
+ *
+ * The contructor is private, however, to ensure that only instance() can
+ * be called to initialize and access a single, static instance.
+ */
+class char_entity_map {
 public:
-    typedef char const* key_type;
-    typedef char value_type;
+  typedef char const* key_type;
+  typedef char value_type;
 
-    static char_entity_map const& instance();
+  static char_entity_map const& instance();
 
-    value_type operator[]( key_type key ) const {
-        map_type::const_iterator const i = map_.find( key );
-        return i != map_.end() ? i->second : ' ';
-    }
+  value_type operator[]( key_type key ) const {
+    map_type::const_iterator const i = map_.find( key );
+    return i != map_.end() ? i->second : ' ';
+  }
+
 private:
-    char_entity_map();
-    //
-    // Note that the declaration of std::map has a default "Compare" template
-    // parameter of "less<key_type>" and, since we've included less.h above
-    // that defines "less<char const*>", C-style string comparisons work
-    // properly.
-    //
-    typedef std::map<key_type,value_type> map_type;
-    map_type map_;
+  /**
+   * Constructs (initializes) a %char_entity_map.  Any entity that isn't listed
+   * below will convert to a space.  Note that is isn't necessary to convert
+   * "&lt;" and "&gt;" since such entities aren't indexed anyway.  However, it
+   * is necessary to convert "&amp;" (so it can be part of an acronym like
+   * "AT&T") and "&apos;" (so it can be part of a contracted word like
+   * "can't").
+   */
+  char_entity_map();
+
+  typedef std::map<key_type,value_type> map_type;
+  map_type map_;
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* entities_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

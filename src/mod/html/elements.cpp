@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/html/elements.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -257,7 +257,7 @@ element_map::element_map() {
       "wbr",        F,                          // nonstandard
       "xmp",        R,      "/xmp",             // deprecated
 
-      0
+      nullptr
   };
 
   for ( auto p = end_tag_table; *p; ++p ) {
@@ -266,7 +266,7 @@ element_map::element_map() {
     // become overly pedantic about casting to enums.
     //
     element::end_tag_type const
-        v = (element::end_tag_type const)(long const)(p[1]);
+      v = (element::end_tag_type const)(long const)(p[1]);
     element &e = insert( value_type( *p++, element( v ) ) ).first->second;
 
     switch ( v ) {

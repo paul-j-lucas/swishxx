@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/mail/vcard.cpp
 **
-**      Copyright (C) 2000  Paul J. Lucas
+**      Copyright (C) 2000-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,56 +27,37 @@
 
 using namespace std;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void mail_indexer::index_vcard(
-            char const *&c, char const *end
-        )
-//
-// DESCRIPTION
-//
-//      Index the words in a vCard attachment.  The vCard "types" are made into
-//      meta names.
-//
-// PARAMETERS
-//
-//      c       The pointer to the start of the vCard.
-//
-//      end     The pointer to the end of the vCard.
-//
-// CAVEAT
-//
-//      Nested vCards via the AGENT type are not handled properly, i.e., the
-//      nested vCards are not treated as a vCards.
-//
-// SEE ALSO
-//
-//      Frank Dawson and Tim Howes.  "RFC 2426: vCard MIME Directory Profile,"
-//      Network Working Group of the Internet Engineering Task Force, September
-//  1998.
-//
-//*****************************************************************************
-{
-    key_value kv;
-    while ( parse_header( c, end, &kv ) ) {
-        //
-        // Reuse parse_header() to parse vCard types, but trim them at
-        // semicolons.
-        //
-        int const meta_id = find_meta( ::strtok( kv.key.get(), ";" ) );
-        if ( meta_id == Meta_ID_None )
-            continue;
-        //
-        // Index the words in the value of the type marking them as being
-        // associated with the name of the type.
-        //
-        encoded_char_range const e(
-            kv.value_begin, kv.value_end, ISO_8859_1, Eight_Bit
-        );
-        indexer::index_words( e, meta_id );
-    }
+///////////////////////////////////////////////////////////////////////////////
+
+void mail_indexer::index_vcard( char const *&c, char const *end ) {
+  //
+  // Caveat:
+  //    Nested vCards via the AGENT type are not handled properly, i.e., the
+  //    nested vCards are not treated as a vCards.
+  //
+  // See also:
+  //    Frank Dawson and Tim Howes.  "RFC 2426: vCard MIME Directory Profile,"
+  //    Network Working Group of the Internet Engineering Task Force, September
+  //    1998.
+  //
+  key_value kv;
+  while ( parse_header( c, end, &kv ) ) {
+    //
+    // Reuse parse_header() to parse vCard types, but trim them at semicolons.
+    //
+    int const meta_id = find_meta( ::strtok( kv.key.get(), ";" ) );
+    if ( meta_id == Meta_ID_None )
+      continue;
+    //
+    // Index the words in the value of the type marking them as being
+    // associated with the name of the type.
+    //
+    encoded_char_range const e(
+      kv.value_begin, kv.value_end, ISO_8859_1, Eight_Bit
+    );
+    indexer::index_words( e, meta_id );
+  } // while
 }
 
-/* vim:set et sw=4 ts=4: */
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/latex/mod_latex.h
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,37 +23,26 @@
 #define mod_latex_H
 
 // local
-#include "encoded_char.h"
 #include "indexer.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        class LaTeX_indexer : public indexer
-//
-// DESCRIPTION
-//
-//      A LaTeX_indexer is-an indexer for indexing LaTeX files.
-//
-// SEE ALSO
-//
-//      Leslie Lamport.  "LaTeX: A Document Preparation System, 2nd ed."
-//      Addison-Wesley, Reading, MA, 1994.
-//
-//*****************************************************************************
-{
-public:
-    LaTeX_indexer() : indexer( "LaTeX" ) { }
+///////////////////////////////////////////////////////////////////////////////
 
-    virtual char const* find_title( PJL::mmap_file const& ) const;
-    virtual void        index_words(
-                            encoded_char_range const&,
-                            int meta_id = Meta_ID_None
-                        );
+/**
+ * A %LaTeX_indexer is-an indexer for indexing LaTeX files.
+ */
+class LaTeX_indexer : public indexer {
+public:
+  LaTeX_indexer() : indexer( "LaTeX" ) { }
+
+  // inherited
+  char const* find_title( PJL::mmap_file const& ) const;
+  void index_words( encoded_char_range const&, int meta_id = Meta_ID_None);
+
 private:
-    char const* parse_latex_command( encoded_char_range::const_iterator& );
+  char const* parse_latex_command( encoded_char_range::const_iterator& );
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #endif /* mod_latex_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

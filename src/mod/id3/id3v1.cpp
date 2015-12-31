@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/id3/id3v1.cpp
 **
-**      Copyright (C) 2002  Paul J. Lucas
+**      Copyright (C) 2002-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 
 // local
 #include "id3v1.h"
+
+///////////////////////////////////////////////////////////////////////////////
 
 extern id3v1_genre const id3v1_genre_table[] = {
   "blues",               5, // 0
@@ -155,5 +157,4 @@ extern id3v1_genre const id3v1_genre_table[] = {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-
 /* vim:set et sw=2 ts=2: */

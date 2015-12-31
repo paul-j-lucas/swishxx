@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/html/elements.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -108,5 +108,6 @@ inline std::ostream& operator<<( std::ostream &o,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
 #endif /* element_map_H */
 /* vim:set et sw=2 ts=2: */
