@@ -71,13 +71,14 @@ static bool find_match( encoded_char_range::const_iterator &c, char left ) {
   char const right = left == '{' ? '}' : ']';
   int nesting = 0;
 
-  for ( auto d = c; !d.at_end(); ++d )
-      if ( *d == left )
-          ++nesting;
-      else if ( *d == right && --nesting <= 0 ) {
-          c = ++d;
-          return true;
-      }
+  for ( auto d = c; !d.at_end(); ++d ) {
+    if ( *d == left )
+      ++nesting;
+    else if ( *d == right && --nesting <= 0 ) {
+      c = ++d;
+      return true;
+    }
+  } // for
   return false;
 }
 

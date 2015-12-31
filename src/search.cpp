@@ -307,7 +307,7 @@ static void dump_single_word( char const *word, ostream &out ) {
   }
 
   file_list const list( range.first );
-  for ( auto file : list ) {
+  for ( auto const &file : list ) {
     out << file.occurrences_ << ' '
         << file.rank_ << result_separator
         << index_file_info( file.index_ ) << '\n';

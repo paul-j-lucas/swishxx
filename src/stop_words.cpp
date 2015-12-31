@@ -428,7 +428,7 @@ stop_word_set::stop_word_set( char const *file_name ) {
 
 stop_word_set::stop_word_set( mmap_file const &index_file ) {
   index_segment stop_words( index_file, index_segment::isi_stop_word );
-  for ( auto stop_word : stop_words )
+  for ( auto const &stop_word : stop_words )
     insert( new_strdup( stop_word ) );
 }
 

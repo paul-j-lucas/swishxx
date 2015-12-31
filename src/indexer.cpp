@@ -124,7 +124,7 @@ indexer*                indexer::text_indexer_ = 0;
     int option_count = 0;
     for ( s = main_spec; s->long_name; ++s )
         ++option_count;
-    for ( auto mod : map_ref() )
+    for ( auto const &mod : map_ref() )
         if ( (s = mod.second->option_spec()) )
             while ( s->long_name )
                 ++option_count, ++s;
@@ -137,7 +137,7 @@ indexer*                indexer::text_indexer_ = 0;
 
     for ( s = main_spec; s->long_name; ++s )
         *c++ = *s;
-    for ( auto mod : map_ref() )
+    for ( auto const &mod : map_ref() )
         if ( (s = mod.second->option_spec()) )
             while ( s->long_name )
                 *c++ = *s++;
@@ -160,7 +160,7 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    for ( auto mod : map_ref() )
+    for ( auto const &mod : map_ref() )
         mod.second->post_options();
 }
 
@@ -182,7 +182,7 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    for ( auto mod : map_ref() )
+    for ( auto const &mod : map_ref() )
         if ( mod.second->claims_option( opt ) )
             return true;
     return false;
@@ -205,7 +205,7 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    for ( auto mod : map_ref() )
+    for ( auto const &mod : map_ref() )
         mod.second->usage( o );
 }
 

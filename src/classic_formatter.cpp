@@ -36,7 +36,7 @@ classic_formatter::~classic_formatter() {
 void classic_formatter::pre( stop_word_set const &stop_words ) const {
   if ( !stop_words.empty() ) {
     out_ << "# ignored:";
-    for ( auto word : stop_words )
+    for ( auto const &word : stop_words )
       out_ << ' ' << word;
     out_ << '\n';
   }

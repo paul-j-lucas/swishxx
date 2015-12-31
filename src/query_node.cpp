@@ -86,7 +86,7 @@ query_node    ::visitor::~visitor() { /* Out-of-line because it's virtual. */ }
 query_node* and_node::visit( visitor const &v ) {
     query_node *const result = v( this );
     if ( result == this )
-        for ( auto child : child_nodes_ )
+        for ( auto const &child : child_nodes_ )
             child->visit( v );
     return result;
 }
@@ -159,7 +159,7 @@ query_node* query_node::visit( visitor const &v ) {
     typedef vector<search_results> child_results_type;
     child_results_type child_results;
     child_results.reserve( child_nodes_.size() );
-    for ( auto child_node : child_nodes_ ) {
+    for ( auto const &child_node : child_nodes_ ) {
         search_results results;
         child_node->eval( results );
         if ( results.empty() ) {
@@ -198,7 +198,7 @@ query_node* query_node::visit( visitor const &v ) {
     //
     for ( auto result = results.begin(); result != results.end(); ) {
         bool increment_result_iterator = true;
-        for ( auto child_result : child_results ) {
+        for ( auto const &child_result : child_results ) {
             search_results::const_iterator const
                 found = child_result.find( result->first );
             if ( found != child_result.end() ) {
@@ -226,7 +226,7 @@ query_node* query_node::visit( visitor const &v ) {
     // include the "results" variable itself.)
     //
     int const num_ands = child_nodes_.size() + 1;
-    for ( auto result : results )
+    for ( auto &result : results )
         result.second /= num_ands;
 }
 
@@ -396,7 +396,7 @@ query_node* query_node::visit( visitor const &v ) {
     distributor const d( 0, not_near_ );
     if ( and_node *const a = dynamic_cast<and_node*>( node ) ) {
         and_node::child_node_list new_child_nodes;
-        for ( auto child : *a ) {
+        for ( auto const &child : *a ) {
             near_node *const new_child = make_node(
                 *node->pool(), other_, child->visit( d )
             );
@@ -458,7 +458,7 @@ query_node* query_node::visit( visitor const &v ) {
             // empty_node), then this case degenerates into doing the same
             // thing that word_node::eval() does.
             //
-            for ( auto file : list0 )
+            for ( auto const &file : list0 )
                 if ( file.has_meta_id( node[0]->meta_id() ) )
                     results[ file.index_ ] += file.rank_;
             continue;
@@ -571,7 +571,7 @@ found_near:     ++file[0];
     left() ->eval( left_results  );
     right()->eval( right_results );
 
-    for ( auto result : right_results )
+    for ( auto const &result : right_results )
         left_results[ result.first ] += result.second;
 }
 
@@ -595,7 +595,7 @@ found_near:     ++file[0];
         file_list const list( i );
         if ( is_too_frequent( list.size() ) )
             continue;
-        for ( auto file : list )
+        for ( auto const &file : list )
             if ( file.has_meta_id( meta_id_ ) )
                 results[ file.index_ ] += file.rank_;
     } // for
@@ -606,7 +606,7 @@ found_near:     ++file[0];
 
 ostream& and_node::print( ostream &o ) const {
     bool flag = false;
-    for ( auto child : child_nodes_ ) {
+    for ( auto const &child : child_nodes_ ) {
         if ( flag )
             o << "and";
         else

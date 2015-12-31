@@ -194,7 +194,7 @@ void do_file( char const *file_name ) {
   //
   // Execute the filter(s) on the file.
   //
-  for ( auto f : filter_list ) {
+  for ( auto const &f : filter_list ) {
     if ( !( file_name = f.exec() ) ) {
       if ( verbosity > 3 )
         cout << " (skipped: could not filter)\n";

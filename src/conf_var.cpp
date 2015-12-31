@@ -136,10 +136,10 @@ conf_var::map_type& conf_var::map_ref() {
       "threadtimeout",
       "user",
 #endif /* WITH_SEARCH_DAEMON */
-      0,
+      nullptr
     };
     for ( auto v = var_name_table; *v; ++v )
-      m[ *v ] = 0;
+      m[ *v ] = nullptr;
   }
   return m;
 }
@@ -256,7 +256,7 @@ void conf_var::parse_line( char *line, int line_no ) {
     //
     // Chop off trailing newline and remove leading whitespace from value.
     //
-    char *value = ::strtok( 0, "\r\n" );
+    char *value = ::strtok( nullptr, "\r\n" );
     while ( *value && is_space( *value ) )
       ++value;
     i->second->parse_value( value );
@@ -275,11 +275,11 @@ void conf_var::register_var( char const *name ) {
       << "conf_var::register_var(): \"" << name
       << "\" registered more than once" << report_error;
   }
-  map_ref()[ name ] = 0;
+  map_ref()[ name ] = nullptr;
 }
 
 void conf_var::reset_all() {
-  for ( auto i : map_ref() )
+  for ( auto const &i : map_ref() )
     if ( i.second )
       i.second->reset();
 }

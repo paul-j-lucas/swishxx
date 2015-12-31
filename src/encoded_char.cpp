@@ -31,7 +31,7 @@ encoded_char_range::decoder::~decoder() {
 }
 
 void encoded_char_range::decoder::reset_all() {
-  for ( auto d : decoders_ )
+  for ( auto const &d : decoders_ )
     d->reset();
 }
 

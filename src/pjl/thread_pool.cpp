@@ -394,7 +394,7 @@ thread_pool::~thread_pool() {
   destructing_ = true;
 
   MUTEX_LOCK( &t_lock_, false );
-  for ( auto t : threads_ )
+  for ( auto &t : threads_ )
     delete &t;
   MUTEX_UNLOCK();
 

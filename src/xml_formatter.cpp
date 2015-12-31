@@ -88,7 +88,7 @@ void xml_formatter::pre( stop_word_set const &stop_words ) const {
 
   if ( !stop_words.empty() ) {
     out_ << "  <IgnoredList>\n";
-    for ( auto word : stop_words )
+    for ( auto const &word : stop_words )
       out_ << "    <Ignored>" << word << "</Ignored>\n";
     out_ << "  </IgnoredList>\n";
   }

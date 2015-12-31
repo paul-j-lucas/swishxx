@@ -600,8 +600,8 @@ void load_old_index( char const *index_file_name ) {
   ////////// Load old directories /////////////////////////////////////////////
 
   index_segment old_dirs( index_file, index_segment::isi_dir );
-  FOR_EACH( index_segment, old_dirs, d )
-    check_add_directory( new_strdup( *d ) );
+  for ( auto const &d : old_dirs )
+    check_add_directory( new_strdup( d ) );
 
   ////////// Load old files ///////////////////////////////////////////////////
 
@@ -613,7 +613,7 @@ void load_old_index( char const *index_file_name ) {
     //
     files_reserve = files_grow( static_cast<int>( old_files.size() ) );
   }
-  FOR_EACH( index_segment, old_files, f ) {
+  FOR_EACH( old_files, f ) {
     unsigned char const* u = reinterpret_cast<unsigned char const*>( *f );
     int const dir_index = dec_int( u );
     char const *const file_name = reinterpret_cast<char const*>(u);
@@ -626,12 +626,12 @@ void load_old_index( char const *index_file_name ) {
     string const path( dir_str + '/' + file_name );
 
     new file_info( path.c_str(), dir_index, size, title, num_words);
-  }
+  } // for
 
   ////////// Load old meta names //////////////////////////////////////////////
 
   index_segment old_meta_names( index_file, index_segment::isi_meta_name );
-  FOR_EACH( index_segment, old_meta_names, m ) {
+  FOR_EACH( old_meta_names, m ) {
     unsigned char const* p = reinterpret_cast<unsigned char const*>( *m );
     while ( *p++ ) ;                    // skip past meta name
     meta_names[ new_strdup( *m ) ] = dec_int( p );
@@ -685,14 +685,14 @@ void merge_indicies( ostream &o ) {
 
   ::atexit( &remove_temp_files );
   i = 0;
-  FOR_EACH( vector<string>, partial_index_file_names, file_name ) {
-    index[ i ].open( file_name->c_str() );
-    if ( !index[ i ] ) {
-      error() << "can not reopen temp. file \"" << *file_name << '"'
+  for ( auto const &file_name : partial_index_file_names ) {
+    index[i].open( file_name.c_str() );
+    if ( !index[i] ) {
+      error() << "can not reopen temp. file \"" << file_name << '"'
               << error_string( index[i].error() );
       ::exit( Exit_No_Open_Temp );
     }
-    words[ i ].set_index_file( index[ i ], index_segment::isi_word );
+    words[i].set_index_file( index[i], index_segment::isi_word );
     ++i;
   } // for
 
@@ -703,8 +703,8 @@ void merge_indicies( ostream &o ) {
 
   for ( i = 0; i < partial_index_file_names.size(); ++i ) {
     // Start off assuming that all the words are unique.
-    num_unique_words += words[ i ].size();
-    word[ i ] = words[ i ].begin();
+    num_unique_words += words[i].size();
+    word[i] = words[i].begin();
   } // for
 
   while ( true ) {
@@ -712,7 +712,7 @@ void merge_indicies( ostream &o ) {
     // Find at least two non-exhausted indicies noting the first.
     int n = 0;
     for ( j = 0; j < partial_index_file_names.size(); ++j ) {
-      if ( word[ j ] != words[ j ].end() ) {
+      if ( word[j] != words[j].end() ) {
         if ( !n++ )
           i = j;
         else if ( n >= 2 )
@@ -724,37 +724,36 @@ void merge_indicies( ostream &o ) {
 
     // Find the lexographically least word.
     for ( j = i + 1; j < partial_index_file_names.size(); ++j )
-      if ( word[ j ] != words[ j ].end() )
-        if ( ::strcmp( *word[ j ], *word[ i ] ) < 0 )
+      if ( word[j] != words[j].end() )
+        if ( ::strcmp( *word[j], *word[i] ) < 0 )
           i = j;
 
-    file_list const list( word[ i ] );
+    file_list const list( word[i] );
     int file_count = list.size();
 
     // See if there are any duplicates and eliminate them.
     for ( j = i + 1; j < partial_index_file_names.size(); ++j ) {
-      if ( word[ j ] != words[ j ].end() &&
-           !::strcmp( *word[ j ], *word[ i ] ) ) {
+      if ( word[j] != words[j].end() && !::strcmp( *word[j], *word[i] ) ) {
         //
         // The two words are the same: add the second word's file count to that
         // of the first.
         //
         --num_unique_words;
-        file_list const list( word[ j ] );
+        file_list const list( word[j] );
         file_count += list.size();
-        ++word[ j ];
+        ++word[j];
       }
     } // for
 
-    if ( is_too_frequent( *word[ i ], file_count ) ) {
+    if ( is_too_frequent( *word[i], file_count ) ) {
       //
       // The word occurs too frequently: consider it a stop word.
       //
-      stop_words->insert( *word[ i ] );
+      stop_words->insert( *word[i] );
       --num_unique_words;
     }
 
-    ++word[ i ];
+    ++word[i];
   } // while
 
   ////////// Write index file header //////////////////////////////////////////
@@ -769,7 +768,7 @@ void merge_indicies( ostream &o ) {
     cout << '\n' << me << ": merging partial indicies..." << flush;
 
   for ( i = 0; i < partial_index_file_names.size(); ++i )
-    word[ i ] = words[ i ].begin();     // reset all iterators
+    word[i] = words[i].begin();         // reset all iterators
   int word_index = 0;
   while ( true ) {
 
@@ -778,10 +777,10 @@ void merge_indicies( ostream &o ) {
     // Find at least two non-exhausted indicies noting the first.
     int n = 0;
     for ( j = 0; j < partial_index_file_names.size(); ++j ) {
-      for ( ; word[ j ] != words[ j ].end(); ++word[ j ] )
-        if ( !stop_words->contains( *word[ j ] ) )
+      for ( ; word[j] != words[j].end(); ++word[j] )
+        if ( !stop_words->contains( *word[j] ) )
             break;
-      if ( word[ j ] != words[ j ].end() ) {
+      if ( word[j] != words[j].end() ) {
         if ( !n++ )
           i = j;
         else if ( n >= 2 )
@@ -793,24 +792,23 @@ void merge_indicies( ostream &o ) {
 
     // Find the lexographically least word.
     for ( j = i + 1; j < partial_index_file_names.size(); ++j )
-      if ( word[ j ] != words[ j ].end() )
-        if ( ::strcmp( *word[ j ], *word[ i ] ) < 0 )
+      if ( word[j] != words[j].end() )
+        if ( ::strcmp( *word[j], *word[i] ) < 0 )
           i = j;
 
     word_offset[ word_index++ ] = o.tellp();
-    o << *word[ i ] << '\0' << assert_stream;
+    o << *word[i] << '\0' << assert_stream;
 
     ////////// Calc. total occurrences in all indicies ////////////////////////
 
     int total_occurrences = 0;
     for ( j = i; j < partial_index_file_names.size(); ++j ) {
-      if ( word[ j ] == words[ j ].end() )
+      if ( word[j] == words[j].end() )
         continue;
-      if ( ::strcmp( *word[ j ], *word[ i ] ) )
+      if ( ::strcmp( *word[j], *word[i] ) )
         continue;
-      file_list const list( word[ j ] );
-      FOR_EACH( file_list, list, file )
-        total_occurrences += file->occurrences_;
+      for ( auto const &file : file_list( word[j] ) )
+        total_occurrences += file.occurrences_;
     } // for
     double const factor = (double)Rank_Factor / total_occurrences;
 
@@ -818,77 +816,76 @@ void merge_indicies( ostream &o ) {
 
     bool continues = false;
     for ( j = i; j < partial_index_file_names.size(); ++j ) {
-      if ( word[ j ] == words[ j ].end() )
+      if ( word[j] == words[j].end() )
         continue;
-      if ( ::strcmp( *word[ j ], *word[ i ] ) )
+      if ( ::strcmp( *word[j], *word[i] ) )
         continue;
-      file_list const list( word[ j ] );
-      FOR_EACH( file_list, list, file ) {
+      for ( auto const &file : file_list( word[j] ) ) {
         if ( continues )
           o << Word_Entry_Continues_Marker << assert_stream;
         else
           continues = true;
 
-        o << enc_int( file->index_ )
-          << enc_int( file->occurrences_ )
-          << enc_int( rank_word(file->index_, file->occurrences_, factor) )
+        o << enc_int( file.index_ )
+          << enc_int( file.occurrences_ )
+          << enc_int( rank_word( file.index_, file.occurrences_, factor ) )
           << assert_stream;
-        if ( !file->meta_ids_.empty() )
-          file->write_meta_ids( o );
+        if ( !file.meta_ids_.empty() )
+          file.write_meta_ids( o );
 #ifdef WITH_WORD_POS
-        if ( !file->pos_deltas_.empty() )
-          file->write_word_pos( o );
+        if ( !file.pos_deltas_.empty() )
+          file.write_word_pos( o );
 #endif /* WITH_WORD_POS */
       } // for
 
       if ( j != i )
-        ++word[ j ];
+        ++word[j];
     } // for
     o << Stop_Marker << assert_stream;
 
-    ++word[ i ];
+    ++word[i];
   } // while
 
   ////////// Copy remaining words from last non-exhausted index ///////////////
 
   for ( j = 0; j < partial_index_file_names.size(); ++j ) {
-    if ( word[ j ] == words[ j ].end() )
+    if ( word[j] == words[j].end() )
       continue;
 
-    for ( ; word[ j ] != words[ j ].end(); ++word[ j ] ) {
-      if ( stop_words->contains( *word[ j ] ) )
+    for ( ; word[j] != words[j].end(); ++word[j] ) {
+      if ( stop_words->contains( *word[j] ) )
         continue;
 
       word_offset[ word_index++ ] = o.tellp();
-      o << *word[ j ] << '\0' << assert_stream;
+      o << *word[j] << '\0' << assert_stream;
 
       ////////// Calc. total occurrences in all indicies //////////////////////
 
       int total_occurrences = 0;
-      file_list const list( word[ j ] );
-      FOR_EACH( file_list, list, file )
-        total_occurrences += file->occurrences_;
+      file_list const list( word[j] );
+      for ( auto const &file : list )
+        total_occurrences += file.occurrences_;
       double const factor = (double)Rank_Factor / total_occurrences;
 
       ////////// Copy all index info and compute ranks ////////////////////////
 
       bool continues = false;
-      FOR_EACH( file_list, list, file ) {
+      for ( auto const &file : list ) {
         if ( continues )
           o << Word_Entry_Continues_Marker << assert_stream;
         else
           continues = true;
 
-        o << enc_int( file->index_ )
-          << enc_int( file->occurrences_ )
-          << enc_int( rank_word(file->index_, file->occurrences_, factor) )
+        o << enc_int( file.index_ )
+          << enc_int( file.occurrences_ )
+          << enc_int( rank_word( file.index_, file.occurrences_, factor ) )
           << assert_stream;
 
-        if ( !file->meta_ids_.empty() )
-          file->write_meta_ids( o );
+        if ( !file.meta_ids_.empty() )
+          file.write_meta_ids( o );
 #ifdef WITH_WORD_POS
-        if ( !file->pos_deltas_.empty() )
-          file->write_word_pos( o );
+        if ( !file.pos_deltas_.empty() )
+          file.write_word_pos( o );
 #endif /* WITH_WORD_POS */
       } // for
       o << Stop_Marker << assert_stream;
@@ -939,8 +936,8 @@ void rank_full_index() {
     // Compute the rank for this word in every file it's in.
     //
     double const factor = (double)Rank_Factor / info.occurrences_;
-    TRANSFORM_EACH( word_info::file_list, info.files_, file )
-      file->rank_ = rank_word( file->index_, file->occurrences_, factor );
+    for ( auto &file : info.files_ )
+      file.rank_ = rank_word( file.index_, file.occurrences_, factor );
   } // for
 
   if ( verbosity > 1 )
@@ -959,7 +956,7 @@ void remove_temp_files( void ) {
   for ( int i = 0; i < num_temp_files; ++i ) {
     string const temp_file_name = temp_file_name_prefix + itoa( i );
     ::unlink( temp_file_name.c_str() );
-  }
+  } // for
 }
 
 /**
@@ -969,21 +966,21 @@ void remove_temp_files( void ) {
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
  */
-void write_dir_index( ostream &o, off_t *offset ) {
+static void write_dir_index( ostream &o, off_t *offset ) {
   //
   // First, order the directories by their index using a temporary vector.
   //
   typedef vector<char const*> dir_list_type;
   dir_list_type dir_list( dir_set.size() );
-  FOR_EACH( dir_set_type, dir_set, dir )
-    dir_list[ dir->second ] = dir->first;
+  for ( auto const &dir : dir_set )
+    dir_list[ dir.second ] = dir.first;
   //
   // Now write them out in order.
   //
   int dir_index = 0;
-  FOR_EACH( dir_list_type, dir_list, dir ) {
+  for ( auto const &dir : dir_list ) {
     offset[ dir_index++ ] = o.tellp();
-    o << *dir << '\0' << assert_stream;
+    o << dir << '\0' << assert_stream;
   } // for
 }
 
@@ -993,7 +990,7 @@ void write_dir_index( ostream &o, off_t *offset ) {
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
  */
-void write_file_index( ostream &o, off_t *offset ) {
+static void write_file_index( ostream &o, off_t *offset ) {
   int file_index = 0;
   for ( auto fi = file_info::begin(); fi != file_info::end(); ++fi ) {
     offset[ file_index++ ] = o.tellp();
@@ -1013,7 +1010,7 @@ void write_file_index( ostream &o, off_t *offset ) {
  *
  * @param o The ostream to write the index to.
  */
-void write_full_index( ostream &o ) {
+static void write_full_index( ostream &o ) {
   if ( !( num_unique_words = words.size() ) )
     return;
 
@@ -1045,25 +1042,25 @@ void write_full_index( ostream &o ) {
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
  */
-void write_meta_name_index( ostream &o, off_t *offset ) {
+static void write_meta_name_index( ostream &o, off_t *offset ) {
   int meta_index = 0;
-  FOR_EACH( meta_map, meta_names, m ) {
+  for ( auto const &m : meta_names ) {
     offset[ meta_index++ ] = o.tellp();
-    o << m->first << '\0' << enc_int( m->second ) << assert_stream;
-  }
+    o << m.first << '\0' << enc_int( m.second ) << assert_stream;
+  } // for
 }
 
 /**
  * Write a partial index to a temporary file.  The format of a partial index
  * file is:
  * \code
- *    long    num_words;
- *    off_t   word_offset[ num_words ];
- *            (word index)
+ *    long  num_words;
+ *    off_t word_offset[ num_words ];
+ *          (word index)
  * \endcode
  * The partial word index is in the same format as the complete index.
  */
-void write_partial_index() {
+static void write_partial_index() {
   string const temp_file_name =
     temp_file_name_prefix + itoa( num_temp_files++ );
   ofstream o( temp_file_name.c_str(), ios::out | ios::binary );
@@ -1104,11 +1101,11 @@ void write_partial_index() {
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
  */
-void write_stop_word_index( ostream &o, off_t *offset ) {
+static void write_stop_word_index( ostream &o, off_t *offset ) {
   int word_index = 0;
-  FOR_EACH( stop_word_set, *stop_words, word ) {
+  for ( auto word : *stop_words ) {
     offset[ word_index++ ] = o.tellp();
-    o << *word << '\0' << assert_stream;
+    o << word << '\0' << assert_stream;
   }
 }
 
@@ -1118,32 +1115,32 @@ void write_stop_word_index( ostream &o, off_t *offset ) {
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
  */
-void write_word_index( ostream &o, off_t *offset ) {
+static void write_word_index( ostream &o, off_t *offset ) {
   int word_index = 0;
-  FOR_EACH( word_map, words, w ) {
+  for ( auto w : words ) {
     offset[ word_index++ ] = o.tellp();
-    o << w->first << '\0' << assert_stream;
+    o << w.first << '\0' << assert_stream;
     bool continues = false;
-    word_info const &info = w->second;
-    FOR_EACH( word_info::file_list, info.files_, file ) {
+    word_info const &info = w.second;
+    for ( auto file : info.files_ ) {
       if ( continues )
         o << Word_Entry_Continues_Marker << assert_stream;
       else
         continues = true;
-      o << enc_int( file->index_ )
-        << enc_int( file->occurrences_ )
-        << enc_int( file->rank_ )
+      o << enc_int( file.index_ )
+        << enc_int( file.occurrences_ )
+        << enc_int( file.rank_ )
         << assert_stream;
-      if ( !file->meta_ids_.empty() )
-        file->write_meta_ids( o );
+      if ( !file.meta_ids_.empty() )
+        file.write_meta_ids( o );
 #ifdef WITH_WORD_POS
-      if ( !file->pos_deltas_.empty() )
-        file->write_word_pos( o );
+      if ( !file.pos_deltas_.empty() )
+        file.write_word_pos( o );
 #endif /* WITH_WORD_POS */
-    }
+    } // for
 
     o << Stop_Marker << assert_stream;
-  }
+  } // for
 }
 
 /**
@@ -1152,7 +1149,7 @@ void write_word_index( ostream &o, off_t *offset ) {
  * @param o The ostream to write to.
  * @return Returns \a o.
  */
-ostream& usage( ostream &o ) {
+static ostream& usage( ostream &o ) {
   o << "usage: " << me << " [options] dir ... file ...\n"
   "options: (unambiguous abbreviations may be used for long options)\n"
   "========\n"
