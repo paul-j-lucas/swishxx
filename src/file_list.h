@@ -88,16 +88,16 @@ public:
     // default assignment operator is OK
 
   private:
-      const_iterator( byte const *p ) : c_( p ) {
-        if ( c_ )
-          operator++();
-      }
+    const_iterator( byte const *p ) : c_( p ) {
+      if ( c_ )
+        operator++();
+    }
 
-      byte const *c_;
-      value_type v_;
+    byte const *c_;
+    value_type v_;
 
-      static byte const end_value;
-      friend class file_list;
+    static byte const end_value;
+    friend class file_list;
   };
 
   ////////// member functions /////////////////////////////////////////////////

@@ -166,8 +166,8 @@ void do_file( char const *file_name ) {
     //
     if ( ::strlen( file_name ) + extract_extension.length() > PATH_MAX ) {
       if ( verbosity > 3 )
-          cout << " (skipped: " << extract_extension
-               << " file-name too long)\n";
+        cout << " (skipped: " << extract_extension
+             << " file-name too long)\n";
       return;
     }
     char extracted_file_name[ PATH_MAX + 1 ];
@@ -183,8 +183,8 @@ void do_file( char const *file_name ) {
     extracted_file.open( extracted_file_name );
     if ( !extracted_file ) {
       if ( verbosity > 3 )
-          cout << " (skipped: can not create "
-               << extract_extension << " file)\n";
+        cout << " (skipped: can not create "
+             << extract_extension << " file)\n";
       return;
     }
     out = &extracted_file;
@@ -194,8 +194,8 @@ void do_file( char const *file_name ) {
   //
   // Execute the filter(s) on the file.
   //
-  FOR_EACH( filter_list_type, filter_list, f ) {
-    if ( !( file_name = f->exec() ) ) {
+  for ( auto f : filter_list ) {
+    if ( !( file_name = f.exec() ) ) {
       if ( verbosity > 3 )
         cout << " (skipped: could not filter)\n";
       return;
@@ -207,9 +207,9 @@ void do_file( char const *file_name ) {
   //
   mmap_file const file( file_name );
   if ( !file ) {
-      if ( verbosity > 3 )
-          cout << " (skipped: can not open)\n";
-      return;
+    if ( verbosity > 3 )
+      cout << " (skipped: can not open)\n";
+    return;
   }
   file.behavior( mmap_file::bt_sequential );
 
