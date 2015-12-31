@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/stop_words.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -36,430 +36,401 @@
 using namespace PJL;
 using namespace std;
 
-extern char const*  me;
+extern char const  *me;
 
-stop_word_set*      stop_words;         // pointer to global set
+stop_word_set      *stop_words;         // pointer to global set
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        stop_word_set::stop_word_set( char const *file_name )
-//
-// DESCRIPTION
-//
-//      Construct (initialize) a stop_word_set either from the built-in list of
-//      stop-words or from a list given in a file.
-//
-// PARAMETERS
-//
-//      file_name   The name of the file containing a list of stop-words.  If
-//                  it's either a null pointer or the string it points to is a
-//                  null string, then the built-in list is used.
-//
-//*****************************************************************************
-{
-    static char const *const default_stop_word_table[] = {
+///////////////////////////////////////////////////////////////////////////////
 
-        // A
+stop_word_set::stop_word_set( char const *file_name ) {
+  static char const *const default_stop_word_table[] = {
 
-        "about",
-        "above",
-        "according",
-        "across",
-        "actually",
-        "adj",
-        "after", "afterwards",
-        "again", "against",
-        "all",
-        "almost",
-        "alone",
-        "along",
-        "already",
-        "alright", "allright",                  // not real words, but common
-        "also",
-        "although",
-        "always",
-        "among", "amongst",
-        "and",
-        "another",
-        "any", "anyhow", "anyone", "anything", "anyway", "anywhere",
-        "are", "aren", "aren't",
-        "around",
+    // A
 
-        // B
+    "about",
+    "above",
+    "according",
+    "across",
+    "actually",
+    "adj",
+    "after", "afterwards",
+    "again", "against",
+    "all",
+    "almost",
+    "alone",
+    "along",
+    "already",
+    "alright", "allright",              // not real words, but common
+    "also",
+    "although",
+    "always",
+    "among", "amongst",
+    "and",
+    "another",
+    "any", "anyhow", "anyone", "anything", "anyway", "anywhere",
+    "are", "aren", "aren't",
+    "around",
 
-        "bad",
-        "became",
-        "because",
-        "become", "becomes", "becoming",
-        "been",
-        "before", "beforehand",
-        "began",
-        "begin", "beginning", "begins",
-        "behind",
-        "being",
-        "below",
-        "beside", "besides",
-        "best",
-        "better",
-        "between",
-        "beyond",
-        "billion", "billions",
-        "both",
-        "but",
+    // B
 
-        // C
+    "bad",
+    "became",
+    "because",
+    "become", "becomes", "becoming",
+    "been",
+    "before", "beforehand",
+    "began",
+    "begin", "beginning", "begins",
+    "behind",
+    "being",
+    "below",
+    "beside", "besides",
+    "best",
+    "better",
+    "between",
+    "beyond",
+    "billion", "billions",
+    "both",
+    "but",
 
-        "came",
-        "can", "can't", "cannot",
-        "caption", "captions",
-        "come", "comes", "coming",
-        "could", "couldn", "couldn't",
+    // C
 
-        // D
+    "came",
+    "can", "can't", "cannot",
+    "caption", "captions",
+    "come", "comes", "coming",
+    "could", "couldn", "couldn't",
 
-        "did", "didn", "didn't",
-        "does", "doesn", "doesn't",
-        "don", "don't",
-        "down",
-        "during",
+    // D
 
-        // E
+    "did", "didn", "didn't",
+    "does", "doesn", "doesn't",
+    "don", "don't",
+    "down",
+    "during",
 
-        "each",
-        "eight", "eighteen", "eighty",
-        "either",
-        "else", "elsewhere",
-        "end", "ended", "ending", "ends",
-        "enough",
-        "etc",
-        "even",
-        "ever", "every", "everyone", "everything", "everywhere",
-        "except",
+    // E
 
-        // F
+    "each",
+    "eight", "eighteen", "eighty",
+    "either",
+    "else", "elsewhere",
+    "end", "ended", "ending", "ends",
+    "enough",
+    "etc",
+    "even",
+    "ever", "every", "everyone", "everything", "everywhere",
+    "except",
 
-        "far", "farther",
-        "few", "fewer",
-        "fifteen", "fifty",
-        "first", "firstly",
-        "five",
-        "for",
-        "former", "formerly",
-        "forty",
-        "found",
-        "four", "fourteen", "fourty",
-        "from",
-        "further",
+    // F
 
-        // G
+    "far", "farther",
+    "few", "fewer",
+    "fifteen", "fifty",
+    "first", "firstly",
+    "five",
+    "for",
+    "former", "formerly",
+    "forty",
+    "found",
+    "four", "fourteen", "fourty",
+    "from",
+    "further",
 
-        "good",
-        "great", "greater", "greatest",
+    // G
 
-        // H
+    "good",
+    "great", "greater", "greatest",
 
-        "had",
-        "half",
-        "has", "hasn", "hasn't",
-        "have", "haven", "haven't", "having",
-        "hence",
-        "her",
-        "here", "hereafter", "hereby", "herein", "hereupon",
-        "hers", "herself",
-        "him", "himself",
-        "his",
-        "how",
-        "however",
-        "hundred", "hundreds",
+    // H
 
-        // I
+    "had",
+    "half",
+    "has", "hasn", "hasn't",
+    "have", "haven", "haven't", "having",
+    "hence",
+    "her",
+    "here", "hereafter", "hereby", "herein", "hereupon",
+    "hers", "herself",
+    "him", "himself",
+    "his",
+    "how",
+    "however",
+    "hundred", "hundreds",
 
-        "i.e.",
-        "inc",
-        "indeed",
-        "instead",
-        "into",
-        "isn", "isn't",
-        "its",
-        "itself",
+    // I
 
-        // J
+    "i.e.",
+    "inc",
+    "indeed",
+    "instead",
+    "into",
+    "isn", "isn't",
+    "its",
+    "itself",
 
-        "just",
+    // J
 
-        // L
+    "just",
 
-        "last",
-        "later",
-        "latter",
-        "least",
-        "less", "lesser",
-        "let", "lets", "let's", "letting",
-        "like", "liked", "likes",
-        "likely",
-        "likewise",
-        "ltd",
+    // L
 
-        // M
+    "last",
+    "later",
+    "latter",
+    "least",
+    "less", "lesser",
+    "let", "lets", "let's", "letting",
+    "like", "liked", "likes",
+    "likely",
+    "likewise",
+    "ltd",
 
-        "made",
-        "make", "makes", "making",
-        "many",
-        "may",
-        "maybe",
-        "meantime",
-        "meanwhile",
-        "might",
-        "million", "millions",
-        "miss",
-        "more",
-        "moreover",
-        "most", "mostly",
-        "mrs",
-        "much",
-        "must", "mustn't",
-        "my",
-        "myself",
+    // M
 
-        // N
+    "made",
+    "make", "makes", "making",
+    "many",
+    "may",
+    "maybe",
+    "meantime",
+    "meanwhile",
+    "might",
+    "million", "millions",
+    "miss",
+    "more",
+    "moreover",
+    "most", "mostly",
+    "mrs",
+    "much",
+    "must", "mustn't",
+    "my",
+    "myself",
 
-        "namely",
-        "neither",
-        "never", "nevertheless",
-        "next",
-        "nine", "nineteen", "ninety",
-        "nobody",
-        "none",
-        "nonetheless",
-        "noone",
-        "nor",
-        "not",
-        "nothing",
-        "now",
-        "nowhere",
+    // N
 
-        // O
+    "namely",
+    "neither",
+    "never", "nevertheless",
+    "next",
+    "nine", "nineteen", "ninety",
+    "nobody",
+    "none",
+    "nonetheless",
+    "noone",
+    "nor",
+    "not",
+    "nothing",
+    "now",
+    "nowhere",
 
-        "off",
-        "often",
-        "once",
-        "one",
-        "only",
-        "onto",
-        "other", "others", "otherwise",
-        "our", "ours", "ourselves",
-        "out",
-        "over",
-        "overall",
-        "own",
+    // O
 
-        // P
+    "off",
+    "often",
+    "once",
+    "one",
+    "only",
+    "onto",
+    "other", "others", "otherwise",
+    "our", "ours", "ourselves",
+    "out",
+    "over",
+    "overall",
+    "own",
 
-        "per",
-        "perhaps",
+    // P
 
-        // R
+    "per",
+    "perhaps",
 
-        "rather",
-        "really",
-        "recent", "recently",
+    // R
 
-        // S
+    "rather",
+    "really",
+    "recent", "recently",
 
-        "same",
-        "saw",
-        "second", "seconds",
-        "see", "seen",
-        "seem", "seemed", "seeming", "seems",
-        "seven", "seventeen", "seventy",
-        "several",
-        "shall",
-        "she",
-        "should", "shouldn", "shouldn't",
-        "since",
-        "six", "sixteen", "sixty",
-        "some", "somehow", "someone", "something",
-        "sometime", "sometimes",
-        "somewhere",
-        "still",
-        "stop",
-        "such",
+    // S
 
-        // T
+    "same",
+    "saw",
+    "second", "seconds",
+    "see", "seen",
+    "seem", "seemed", "seeming", "seems",
+    "seven", "seventeen", "seventy",
+    "several",
+    "shall",
+    "she",
+    "should", "shouldn", "shouldn't",
+    "since",
+    "six", "sixteen", "sixty",
+    "some", "somehow", "someone", "something",
+    "sometime", "sometimes",
+    "somewhere",
+    "still",
+    "stop",
+    "such",
 
-        "take", "taken", "taking",
-        "ten", "tens",
-        "than",
-        "that",
-        "the",
-        "their",
-        "them", "themselves",
-        "then",
-        "thence",
-        "there", "thereafter", "thereby", "therefore",
-        "therein", "thereupon",
-        "these",
-        "they",
-        "third", "thirteen", "thirty",
-        "this",
-        "thorough",
-        "those",
-        "though",
-        "thousand", "thousands",
-        "three",
-        "through", "throughout",
-        "thru",
-        "thus", "thusly",
-        "together",
-        "too",
-        "took",
-        "toward", "towards",
-        "trillion", "trillions",
-        "twelve",
-        "twenty",
-        "two",
+    // T
 
-        // U
+    "take", "taken", "taking",
+    "ten", "tens",
+    "than",
+    "that",
+    "the",
+    "their",
+    "them", "themselves",
+    "then",
+    "thence",
+    "there", "thereafter", "thereby", "therefore",
+    "therein", "thereupon",
+    "these",
+    "they",
+    "third", "thirteen", "thirty",
+    "this",
+    "thorough",
+    "those",
+    "though",
+    "thousand", "thousands",
+    "three",
+    "through", "throughout",
+    "thru",
+    "thus", "thusly",
+    "together",
+    "too",
+    "took",
+    "toward", "towards",
+    "trillion", "trillions",
+    "twelve",
+    "twenty",
+    "two",
 
-        "under",
-        "unless",
-        "unlike", "unlikely",
-        "until",
-        "upon",
-        "us",
-        "use", "used", "uses", "using",
-        "usual", "usually",
+    // U
 
-        // V
+    "under",
+    "unless",
+    "unlike", "unlikely",
+    "until",
+    "upon",
+    "us",
+    "use", "used", "uses", "using",
+    "usual", "usually",
 
-        "varied", "various", "vary",
-        "very",
-        "via",
+    // V
 
-        // W
+    "varied", "various", "vary",
+    "very",
+    "via",
 
-        "want",
-        "was", "wasn", "wasn't",
-        "way",
-        "well",
-        "were", "weren", "weren't",
-        "what", "whatever",
-        "when", "whence", "whenever",
-        "where", "whereafter", "whereas", "whereby",
-        "wherein", "whereupon", "wherever",
-        "whether",
-        "which",
-        "while",
-        "whither",
-        "who", "whoever",
-        "whole",
-        "whom", "whomever",
-        "whose",
-        "why",
-        "will",
-        "with", "within", "without",
-        "won",
-        "won't",
-        "worse",
-        "would", "wouldn", "wouldn't",
+    // W
 
-        // Y
+    "want",
+    "was", "wasn", "wasn't",
+    "way",
+    "well",
+    "were", "weren", "weren't",
+    "what", "whatever",
+    "when", "whence", "whenever",
+    "where", "whereafter", "whereas", "whereby",
+    "wherein", "whereupon", "wherever",
+    "whether",
+    "which",
+    "while",
+    "whither",
+    "who", "whoever",
+    "whole",
+    "whom", "whomever",
+    "whose",
+    "why",
+    "will",
+    "with", "within", "without",
+    "won",
+    "won't",
+    "worse",
+    "would", "wouldn", "wouldn't",
 
-        "yes",
-        "yet",
-        "you", "you'll", "your", "you're", "yours",
-        "yourself", "yourselves",
+    // Y
 
-        // Z
+    "yes",
+    "yet",
+    "you", "you'll", "your", "you're", "yours",
+    "yourself", "yourselves",
 
-        "zero",
+    // Z
 
-        0
-    };
+    "zero",
 
-    if ( !file_name || !*file_name ) {          // no file: use default
-        for ( auto w = default_stop_word_table; *w; ++w )
-            insert( *w );
-        return;
+    nullptr
+  };
+
+  if ( !file_name || !*file_name ) {    // no file: use default
+    for ( auto w = default_stop_word_table; *w; ++w )
+      insert( *w );
+    return;
+  }
+
+  mmap_file const file( file_name );
+  file.behavior( mmap_file::bt_sequential );
+  if ( !file ) {
+    error() << "could not open \"" << file_name << '"'
+            << error_string( file.error() );
+    ::exit( Exit_No_Read_Stopwords );
+  }
+
+  char  word[ Word_Hard_Max_Size + 1 ];
+  int   len;
+  bool  in_word = false;
+
+  mmap_file::const_iterator c = file.begin();
+  while ( true ) {
+    if ( c != file.end() ) {
+      char const ch = tolower( iso8859_1_to_ascii( *c++ ) );
+
+      ////////// Collect a word ///////////////////////////////////////////////
+
+      if ( is_word_char( ch ) ) {
+        if ( !in_word ) {               // start a new word
+          word[ 0 ] = ch;
+          len = 1;
+          in_word = true;
+          continue;
+        }
+        if ( len < Word_Hard_Max_Size ) { // continue same word
+          word[ len++ ] = ch;
+          continue;
+        }
+        in_word = false;                // too big: skip chars
+        while ( c != file.end() && is_word_char(*c++) )
+          ;
+        continue;
+      }
+
+      if ( ch == '#' )                  // discard comment
+        while ( c != file.end() && *c++ != '\n' ) ;
+
+      if ( !in_word )
+        continue;
+    } else {
+      if ( !in_word )
+        break;
     }
 
-    mmap_file const file( file_name );
-    file.behavior( mmap_file::bt_sequential );
-    if ( !file ) {
-        error() << "could not open \"" << file_name << '"'
-                << error_string( file.error() );
-        ::exit( Exit_No_Read_Stopwords );
-    }
+    ////////// Got a word /////////////////////////////////////////////////////
 
-    char    word[ Word_Hard_Max_Size + 1 ];
-    int     len;
-    bool    in_word = false;
+    in_word = false;
+    if ( len < Word_Hard_Min_Size )
+      continue;
 
-    mmap_file::const_iterator c = file.begin();
-    while ( true ) {
-        if ( c != file.end() ) {
-            char const ch = tolower( iso8859_1_to_ascii( *c++ ) );
-
-            ////////// Collect a word /////////////////////////////////////////
-
-            if ( is_word_char( ch ) ) {
-                if ( !in_word ) {
-                    // start a new word
-                    word[ 0 ] = ch;
-                    len = 1;
-                    in_word = true;
-                    continue;
-                }
-                if ( len < Word_Hard_Max_Size ) {
-                    // continue same word
-                    word[ len++ ] = ch;
-                    continue;
-                }
-                in_word = false;                // too big: skip chars
-                while ( c != file.end() && is_word_char(*c++) );
-                continue;
-            }
-
-            if ( ch == '#' )                    // discard comment
-                while ( c != file.end() && *c++ != '\n' ) ;
-
-            if ( !in_word )
-                continue;
-        } else
-            if ( !in_word )
-                break;
-
-        ////////// Got a word /////////////////////////////////////////////////
-
-        in_word = false;
-        if ( len < Word_Hard_Min_Size )
-            continue;
-
-        word[ len ] = '\0';
-        insert( new_strdup( word ) );
-    }
+    word[ len ] = '\0';
+    insert( new_strdup( word ) );
+  } // while
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        stop_word_set::stop_word_set( mmap_file const &index_file )
-//
-// DESCRIPTION
-//
-//      Construct (initialize) a stop_word_set from an existing index file.
-//
-// PARAMETERS
-//
-//      index_file  The index file to read the stop-words from.
-//
-//*****************************************************************************
-{
-    index_segment stop_words( index_file, index_segment::isi_stop_word );
-    FOR_EACH( index_segment, stop_words, stop_word )
-        insert( new_strdup( *stop_word ) );
+stop_word_set::stop_word_set( mmap_file const &index_file ) {
+  index_segment stop_words( index_file, index_segment::isi_stop_word );
+  for ( auto stop_word : stop_words )
+    insert( new_strdup( stop_word ) );
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

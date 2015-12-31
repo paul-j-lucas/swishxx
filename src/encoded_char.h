@@ -52,15 +52,15 @@ public:
   typedef char value_type;
   typedef value_type const* const_pointer;
   typedef value_type (*charset_type)
-      ( const_pointer, const_pointer&, const_pointer );
+    ( const_pointer, const_pointer&, const_pointer );
   typedef value_type (*encoding_type)
-      ( const_pointer, const_pointer&, const_pointer );
+    ( const_pointer, const_pointer&, const_pointer );
 
   class const_iterator;
   friend class const_iterator;
 
   encoded_char_range( const_pointer begin, const_pointer end,
-                      charset_type = 0, encoding_type = 0 );
+                      charset_type = nullptr, encoding_type = nullptr );
   encoded_char_range( const_iterator const &pos );
   encoded_char_range( const_iterator const &begin, const_iterator const &end );
 
@@ -111,7 +111,7 @@ public:
 
   const_iterator() { }
   const_iterator( const_pointer begin, const_pointer end,
-                  charset_type = 0, encoding_type = 0);
+                  charset_type = nullptr, encoding_type = nullptr );
 
   // default copy constructor is fine
   // default assignment operator is fine
@@ -133,14 +133,16 @@ private:
   mutable const_pointer pos_;
   mutable const_pointer prev_;
 #ifdef WITH_DECODING
-  mutable value_type  ch_;
-  mutable bool        decoded_;
-  mutable ptrdiff_t   delta_;
+  mutable value_type    ch_;
+  mutable bool          decoded_;
+  mutable ptrdiff_t     delta_;
 #endif /* WITH_DECODING */
+
   const_iterator( encoded_char_range const*, const_pointer start_pos );
-  friend class    encoded_char_range; // for access to c'tor above
+  friend class encoded_char_range;      // for access to c'tor above
+
 #ifdef WITH_DECODING
-  void        decode() const;
+  void decode() const;
 #endif /* WITH_DECODING */
 };
 

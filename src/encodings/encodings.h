@@ -27,8 +27,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-encoded_char_range::encoding_type const Seven_Bit = 0;
-encoded_char_range::encoding_type const Eight_Bit = 0; // treaded like Seven_Bit
+encoded_char_range::encoding_type const Seven_Bit = nullptr;
+encoded_char_range::encoding_type const Eight_Bit = nullptr;
 encoded_char_range::encoding_type const Binary =
   reinterpret_cast<encoded_char_range::encoding_type>( ~0 );
 

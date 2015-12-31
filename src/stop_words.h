@@ -33,7 +33,7 @@
  * class rather than a typedef is so that we can have custom constructors.
  */
 struct stop_word_set : PJL::char_ptr_set {
-  stop_word_set( char const *file_name = 0 );
+  stop_word_set( char const *file_name = nullptr );
   stop_word_set( PJL::mmap_file const &index_file );
 };
 
