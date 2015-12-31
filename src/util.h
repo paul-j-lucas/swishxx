@@ -40,6 +40,8 @@
 #include <sys/stat.h>
 #include <unistd.h>			            /* for _exit(2), geteuid(2) */
 
+///////////////////////////////////////////////////////////////////////////////
+
 //
 // POSIX.1 is, IMHO, brain-damaged in the way it makes you determine the
 // maximum path-name length, so we'll simply pick a sufficiently large constant
@@ -56,11 +58,7 @@ int const		    PATH_MAX = 1024;
 
 extern char const*	me;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline char const* find_newline( char const *c, char const *end )
+inline char const* find_newline( char const *c, char const *end )
 //
 // DESCRIPTION
 //
@@ -317,14 +315,13 @@ extern char*	to_lower( char *buf, char const* );
 extern char*	to_lower_r( char const* );
 extern char*	to_lower_r( char const *begin, char const *end );
 
-#define	FOR_EACH(T,C,I) \
-	for ( T::const_iterator I = (C).begin(); I != (C).end(); ++I )
+#define	FOR_EACH(C,I) \
+	for ( auto I = (C).begin(); I != (C).end(); ++I )
 
-#define	FOR_EACH_IN_PAIR(T,P,I) \
-	for ( T::const_iterator I = (P).first; I != (P).second; ++I )
+#define	FOR_EACH_IN_PAIR(P,I) \
+	for ( auto I = (P).first; I != (P).second; ++I )
 
-#define	TRANSFORM_EACH(T,C,I) \
-	for ( T::iterator I = (C).begin(); I != (C).end(); ++I )
+///////////////////////////////////////////////////////////////////////////////
 
 #endif	/* util_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

@@ -543,7 +543,7 @@ static bool parse_primary( parse_q_args& q_args, parse_r_args& r_args,
   // get at least one word that isn't too frequent.
   //
   r_args.ignore = true;
-  FOR_EACH_IN_PAIR( index_segment, range, i ) {
+  FOR_EACH_IN_PAIR( range, i ) {
     file_list const list( i );
     if ( is_too_frequent( list.size() ) ) {
       q_args.stop_words_found.insert( t.lower_str() );

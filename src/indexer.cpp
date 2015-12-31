@@ -124,8 +124,8 @@ indexer*                indexer::text_indexer_ = 0;
     int option_count = 0;
     for ( s = main_spec; s->long_name; ++s )
         ++option_count;
-    FOR_EACH( map_type, map_ref(), mod )
-        if ( (s = mod->second->option_spec()) )
+    for ( auto mod : map_ref() )
+        if ( (s = mod.second->option_spec()) )
             while ( s->long_name )
                 ++option_count, ++s;
 
@@ -137,8 +137,8 @@ indexer*                indexer::text_indexer_ = 0;
 
     for ( s = main_spec; s->long_name; ++s )
         *c++ = *s;
-    FOR_EACH( map_type, map_ref(), mod )
-        if ( (s = mod->second->option_spec()) )
+    for ( auto mod : map_ref() )
+        if ( (s = mod.second->option_spec()) )
             while ( s->long_name )
                 *c++ = *s++;
     c->long_name  = 0;
@@ -160,8 +160,8 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    TRANSFORM_EACH( map_type, map_ref(), mod )
-        mod->second->post_options();
+    for ( auto mod : map_ref() )
+        mod.second->post_options();
 }
 
 //*****************************************************************************
@@ -182,8 +182,8 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    TRANSFORM_EACH( map_type, map_ref(), mod )
-        if ( mod->second->claims_option( opt ) )
+    for ( auto mod : map_ref() )
+        if ( mod.second->claims_option( opt ) )
             return true;
     return false;
 }
@@ -205,8 +205,8 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    FOR_EACH( map_type, map_ref(), mod )
-        mod->second->usage( o );
+    for ( auto mod : map_ref() )
+        mod.second->usage( o );
 }
 
 //*****************************************************************************

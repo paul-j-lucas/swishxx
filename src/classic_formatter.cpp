@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/classic_formatter.cpp
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -24,78 +24,31 @@
 #include "file_info.h"
 #include "index_segment.h"
 #include "ResultSeparator.h"
-#include "util.h"                       /* for FOR_EACH */
 
 extern index_segment directories;
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        classic_formatter::~classic_formatter()
-//
-// DESCRIPTION
-//
-//      Destroy a classic_formatter.
-//
-// NOTE
-//
-//      This is out-of-line only because it's virtual.
-//
-//*****************************************************************************
-{
-    // do nothing
+///////////////////////////////////////////////////////////////////////////////
+
+classic_formatter::~classic_formatter() {
+  // do nothing
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void classic_formatter::pre( stop_word_set const &stop_words ) const
-//
-// DESCRIPTION
-//
-//      Output search-result "meta" information: the set of stop words found in
-//      the query (if any) and the number of results.
-//
-// PARAMETERS
-//
-//      stop_words  The set of stop words.
-//
-//*****************************************************************************
-{
-    // Print stop-words, if any.
-    if ( !stop_words.empty() ) {
-        out_ << "# ignored:";
-        FOR_EACH( stop_word_set, stop_words, word )
-            out_ << ' ' << *word;
-        out_ << '\n';
-    }
-    out_ << "# results: " << results_ << '\n';
+void classic_formatter::pre( stop_word_set const &stop_words ) const {
+  if ( !stop_words.empty() ) {
+    out_ << "# ignored:";
+    for ( auto word : stop_words )
+      out_ << ' ' << word;
+    out_ << '\n';
+  }
+  out_ << "# results: " << results_ << '\n';
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void classic_formatter::result( int rank, file_info const &fi ) const
-//
-// DESCRIPTION
-//
-//      Output an individual search result's information: it's rank, path,
-//      size, and title.
-//
-// PARAMETERS
-//
-//      rank    The rank (1-100) of the result.
-//
-//      fi      The search result's file information.
-//
-//*****************************************************************************
-{
-    out_ << rank << result_separator
-         << directories[ fi.dir_index() ] << '/' << fi.file_name()
-         << result_separator << fi.size()
-         << result_separator << fi.title() << '\n';
+void classic_formatter::result( int rank, file_info const &fi ) const {
+  out_ << rank << result_separator
+       << directories[ fi.dir_index() ] << '/' << fi.file_name()
+       << result_separator << fi.size()
+       << result_separator << fi.title() << '\n';
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

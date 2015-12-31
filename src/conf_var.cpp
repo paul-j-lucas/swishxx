@@ -279,10 +279,9 @@ void conf_var::register_var( char const *name ) {
 }
 
 void conf_var::reset_all() {
-  map_type &m = map_ref();
-  TRANSFORM_EACH( map_type, m, i )
-    if ( i->second )
-      i->second->reset();
+  for ( auto i : map_ref() )
+    if ( i.second )
+      i.second->reset();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -86,8 +86,8 @@ query_node    ::visitor::~visitor() { /* Out-of-line because it's virtual. */ }
 query_node* and_node::visit( visitor const &v ) {
     query_node *const result = v( this );
     if ( result == this )
-        FOR_EACH( child_node_list, child_nodes_, child )
-            (*child)->visit( v );
+        for ( auto child : child_nodes_ )
+            child->visit( v );
     return result;
 }
 
@@ -159,9 +159,9 @@ query_node* query_node::visit( visitor const &v ) {
     typedef vector<search_results> child_results_type;
     child_results_type child_results;
     child_results.reserve( child_nodes_.size() );
-    FOR_EACH( child_node_list, child_nodes_, child_node ) {
+    for ( auto child_node : child_nodes_ ) {
         search_results results;
-        (*child_node)->eval( results );
+        child_node->eval( results );
         if ( results.empty() ) {
             //
             // Since we're evaluating an "and", we can stop immediately if any
@@ -182,7 +182,7 @@ query_node* query_node::visit( visitor const &v ) {
         //
         child_results.push_back( empty_place_holder );
         child_results.back().swap( results );
-    }
+    } // for
 
     //
     // Pluck out one of the child results and make it *the* result so far.
@@ -198,10 +198,10 @@ query_node* query_node::visit( visitor const &v ) {
     //
     for ( auto result = results.begin(); result != results.end(); ) {
         bool increment_result_iterator = true;
-        FOR_EACH( child_results_type, child_results, child_result ) {
+        for ( auto child_result : child_results ) {
             search_results::const_iterator const
-                found = child_result->find( result->first );
-            if ( found != child_result->end() ) {
+                found = child_result.find( result->first );
+            if ( found != child_result.end() ) {
                 result->second += found->second;
                 continue;
             }
@@ -215,7 +215,7 @@ query_node* query_node::visit( visitor const &v ) {
             results.erase( erase_me );
             increment_result_iterator = false;
             break;
-        }
+        } // for
         if ( increment_result_iterator )
             ++result;
     }
@@ -226,8 +226,8 @@ query_node* query_node::visit( visitor const &v ) {
     // include the "results" variable itself.)
     //
     int const num_ands = child_nodes_.size() + 1;
-    TRANSFORM_EACH( search_results, results, result )
-        result->second /= num_ands;
+    for ( auto result : results )
+        result.second /= num_ands;
 }
 
 #ifdef WITH_WORD_POS
@@ -260,11 +260,11 @@ query_node* query_node::visit( visitor const &v ) {
     )
         return;
 
-    FOR_EACH_IN_PAIR( index_segment, node[0]->range(), word0 ) {
+    FOR_EACH_IN_PAIR( node[0]->range(), word0 ) {
         file_list const list0( word0  );
         if ( is_too_frequent( list0.size() ) )
             continue;
-        FOR_EACH_IN_PAIR( index_segment, node[1]->range(), word1 ) {
+        FOR_EACH_IN_PAIR( node[1]->range(), word1 ) {
             file_list const list1( word1 );
             if ( is_too_frequent( list1.size() ) )
                 continue;
@@ -396,12 +396,12 @@ query_node* query_node::visit( visitor const &v ) {
     distributor const d( 0, not_near_ );
     if ( and_node *const a = dynamic_cast<and_node*>( node ) ) {
         and_node::child_node_list new_child_nodes;
-        FOR_EACH( and_node, *a, child ) {
+        for ( auto child : *a ) {
             near_node *const new_child = make_node(
-                *node->pool(), other_, (*child)->visit( d )
+                *node->pool(), other_, child->visit( d )
             );
             new_child_nodes.push_back( new_child->distribute() );
-        }
+        } // for
         return new and_node( *node->pool(), new_child_nodes );
     }
     if ( or_node *const o = dynamic_cast<or_node*>( node ) ) {
@@ -448,7 +448,7 @@ query_node* query_node::visit( visitor const &v ) {
     if ( !node[0] )
         return;
 
-    FOR_EACH_IN_PAIR( index_segment, node[0]->range(), word0 ) {
+    FOR_EACH_IN_PAIR( node[0]->range(), word0 ) {
         file_list const list0( word0 );
         if ( is_too_frequent( list0.size() ) )
             continue;
@@ -458,15 +458,15 @@ query_node* query_node::visit( visitor const &v ) {
             // empty_node), then this case degenerates into doing the same
             // thing that word_node::eval() does.
             //
-            FOR_EACH( file_list, list0, file )
-                if ( file->has_meta_id( node[0]->meta_id() ) )
-                    results[ file->index_ ] += file->rank_;
+            for ( auto file : list0 )
+                if ( file.has_meta_id( node[0]->meta_id() ) )
+                    results[ file.index_ ] += file.rank_;
             continue;
         }
 
         ////////// Must check for "near"-ness of right-hand side word /////////
 
-        FOR_EACH_IN_PAIR( index_segment, node[1]->range(), word1 ) {
+        FOR_EACH_IN_PAIR( node[1]->range(), word1 ) {
             file_list const list1( word1 );
             file_list::const_iterator file[] = { list0.begin(), list1.begin() };
             while ( file[0] != list0.end() ) {
@@ -571,8 +571,8 @@ found_near:     ++file[0];
     left() ->eval( left_results  );
     right()->eval( right_results );
 
-    FOR_EACH( search_results, right_results, result )
-        left_results[ result->first ] += result->second;
+    for ( auto result : right_results )
+        left_results[ result.first ] += result.second;
 }
 
 //*****************************************************************************
@@ -591,14 +591,14 @@ found_near:     ++file[0];
 //
 //*****************************************************************************
 {
-    FOR_EACH_IN_PAIR( index_segment, range_, i ) {
+    FOR_EACH_IN_PAIR( range_, i ) {
         file_list const list( i );
         if ( is_too_frequent( list.size() ) )
             continue;
-        FOR_EACH( file_list, list, file )
-            if ( file->has_meta_id( meta_id_ ) )
-                results[ file->index_ ] += file->rank_;
-    }
+        for ( auto file : list )
+            if ( file.has_meta_id( meta_id_ ) )
+                results[ file.index_ ] += file.rank_;
+    } // for
 }
 
 #ifdef DEBUG_eval_query
@@ -606,12 +606,12 @@ found_near:     ++file[0];
 
 ostream& and_node::print( ostream &o ) const {
     bool flag = false;
-    FOR_EACH( child_node_list, child_nodes_, child_ ) {
+    for ( auto child : child_nodes_ ) {
         if ( flag )
             o << "and";
         else
             flag = true;
-        o << " (" << (*child_)->print( o ) << ") ";
+        o << " (" << child->print( o ) << ") ";
     }
     return o;
 }
@@ -646,4 +646,6 @@ ostream& word_node::print( ostream &o ) const {
     return o << '"' << word_ << '"';
 }
 #endif /* DEBUG_eval_query */
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

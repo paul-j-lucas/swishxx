@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/word_info.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -45,16 +45,16 @@ word_info::file::file( int index ) :
 
 void word_info::file::write_meta_ids( ostream &o ) const {
   o << Meta_Name_List_Marker << assert_stream;
-  FOR_EACH( meta_set, meta_ids_, meta_id )
-    o << enc_int( *meta_id ) << assert_stream;
+  for ( auto meta_id : meta_ids_ )
+    o << enc_int( meta_id ) << assert_stream;
   o << Stop_Marker << assert_stream;
 }
 
 #ifdef WITH_WORD_POS
 void word_info::file::write_word_pos( ostream &o ) const {
   o << Word_Pos_List_Marker << assert_stream;
-  FOR_EACH( pos_delta_list, pos_deltas_, pos_delta )
-    o << enc_int( *pos_delta ) << assert_stream;
+  for ( auto pos_delta : pos_deltas_ )
+    o << enc_int( pos_delta ) << assert_stream;
   o << Stop_Marker << assert_stream;
 }
 #endif /* WITH_WORD_POS */
