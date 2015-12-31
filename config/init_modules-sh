@@ -83,6 +83,7 @@ do
   cat <<END
 #ifdef $IDENT
   static $CLASS ${CLASS}_instance;
+  (void)${CLASS}_instance; // to suppress warning
 #endif /* $IDENT */
 END
 done
