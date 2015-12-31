@@ -31,140 +31,149 @@
 #include <cctype>
 #include <cstring>
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline bool is_vowel( char c )
-//
-// DESCRIPTION
-//
-//      Determine whether a character is a lower-case vowel [aeiou].
-//
-// PARAMETERS
-//
-//      c   The character to be checked.
-//
-// RETURN VALUE
-//
-//      Returns true only if the character is a vowel.
-//
-//*****************************************************************************
-{
-    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Determines whether a character is a lower-case vowel [aeiou].
+ *
+ * @param c The character to be checked.
+ * @return Returns \c true only if the character is a vowel.
+ */
+inline bool is_vowel( char c ) {
+  return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline bool is_word_char( char c )
-//
-// DESCRIPTION
-//
-//      Check whether a given character is a "word character," one that is
-//      valid to be in a word.
-//
-// PARAMETERS
-//
-//      c   The character to be checked.
-//
-// RETURN VALUE
-//
-//      Returns true only if the character is a "word character."
-//
-//*****************************************************************************
-{
-    return c > 0 &&
+/**
+ * Checks whether a given character is a "word character," one that is valid to
+ * be in a word.
+ *
+ * @param c The character to be checked.
+ * @return Returns \c true only if the character is a "word character."
+ */
+inline bool is_word_char( char c ) {
+  return c > 0 &&
 #if OPTIMIZE_WORD_CHARS
-    ( is_alnum( c ) ||
-        //
-        // If you change Word_Chars in config.h from the default set but would
-        // like to keep the optimization, edit the line below to compare 'c'
-        // against every non-alphanumeric character in your set of Word_Chars.
-        //
-        c == '&' || c == '\'' || c == '-' || c == '_'
-    );
+  ( is_alnum( c ) ||
+    //
+    // If you change Word_Chars in config.h from the default set but would like
+    // to keep the optimization, edit the line below to compare 'c' against
+    // every non-alphanumeric character in your set of Word_Chars.
+    //
+    c == '&' || c == '\'' || c == '-' || c == '_'
+  );
 #else
-    std::strchr( Word_Chars, tolower( c ) ) != 0;
+  std::strchr( Word_Chars, tolower( c ) ) != 0;
 #endif /* OPTIMIZE_WORD_CHARS */
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline bool is_word_begin_char( char c )
-//
-// DESCRIPTION
-//
-//      Check whether a given character is a "word beginning character," one
-//      that is valid to begin a word.
-//
-// PARAMETERS
-//
-//      c   The character to be checked.
-//
-// RETURN VALUE
-//
-//      Returns true only if the character is a "word beginning character."
-//
-//*****************************************************************************
-{
+/**
+ * Checks whether a given character is a "word beginning character," one that
+ * is valid to begin a word.
+ *
+ * @param c The character to be checked.
+ * @return Returns \c true only if the character is a "word beginning
+ * character."
+ */
+inline bool is_word_begin_char( char c ) {
 #if OPTIMIZE_WORD_BEGIN_CHARS
-    //
-    // If you change Word_Begin_Chars in config.h from the default set but
-    // would like to keep the optimization, edit the line below to compare 'c'
-    // against every character in your set of Word_Begin_Chars.
-    //
-    return is_alnum( c );
+  //
+  // If you change Word_Begin_Chars in config.h from the default set but would
+  // like to keep the optimization, edit the line below to compare 'c' against
+  // every character in your set of Word_Begin_Chars.
+  //
+  return is_alnum( c );
 #else
-    return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
+  return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
 #endif /* OPTIMIZE_WORD_BEGIN_CHARS */
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        inline bool is_word_end_char( char c )
-//
-// DESCRIPTION
-//
-//      Check whether a given character is a "word ending character," one that
-//      is valid to end a word.
-//
-// RETURN VALUE
-//
-//      Returns true only if the character is a "word ending character."
-//
-//*****************************************************************************
-{
+/**
+ * Checks whether a given character is a "word ending character," one that is
+ * valid to end a word.
+ *
+ * @param c The character to be checked.
+ * @return Returns \c true only if the character is a "word ending character."
+ */
+inline bool is_word_end_char( char c ) {
 #if OPTIMIZE_WORD_END_CHARS
-    //
-    // Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
-    //
-    return is_alnum( c );
+  //
+  // Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
+  //
+  return is_alnum( c );
 #else
-    return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
+  return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
 #endif /* OPTIMIZE_WORD_END_CHARS */
 }
 
-//*****************************************************************************
-//
-//  Miscelleneous.
-//
-//*****************************************************************************
+/**
+ * Determines whether a given word should be indexed or not using several
+ * heuristics.
+ *
+ * First, a word is checked to see if it looks like an acronym.  A word is
+ * considered an acronym only if it starts with a capital letter and is
+ * composed exclusively of capital letters, digits, and punctuation symbols,
+ * e.g., "AT&T."  If a word looks like an acronym, it is OK and no further
+ * checks are done.
+ *
+ * Second, there are several other checks that are applied.  A word is not
+ * indexed if it:
+ *
+ * 1. Is less that Word_Min_Size characters and is not an acronym.
+ *
+ * 2. Contains less than Word_Min_Vowels.
+ *
+ * 3. Contains more than Word_Max_Consec_Same of the same character
+ *    consecutively (not including digits).
+ *
+ * 4. Contains more than Word_Max_Consec_Consonants consecutive consonants.
+ *
+ * 5. Contains more than Word_Max_Consec_Vowels consecutive vowels.
+ *
+ * 6. Contains more than Word_Max_Consec_Puncts consecutive punctuation
+ *    characters.
+ *
+ * @param word The word to be checked.
+ * @return Returns \c true only if the word should be indexed.
+ *
+ * Examples:
+ * \code
+ *    AT&T    OK
+ *    cccp    not OK -- no vowels
+ *    CCCP    OK -- acronym
+ *    eieio   not OK -- too many consec. vowels
+ * \endcode
+ */
+bool is_ok_word( char const *word );
 
-extern bool is_ok_word( char const *word );
-extern bool move_if_match(
-                char const *&c, char const *end, char const *s,
-                bool ignore_case = false
-            );
-extern bool move_if_match(
-                encoded_char_range::const_iterator &c, char const *s,
-                bool ignore_case = false
-            );
+/**
+ * Compares a string starting at the given iterator to another.
+ *
+ * @param c The iterator to use.  If the string matches, it is repositioned at
+ * the first character past the string; otherwise it is not touched.
+ * @param end The iterator marking the end of the range to search.
+ * @param s The string to compare against.  If ignore_case is true, then this
+ * string must be in lower case.
+ * @param ignore_case True if case should be ignored.
+ * @return Returns \c true only if the string matches.
+ */
+bool move_if_match( char const *&c, char const *end, char const *s,
+                    bool ignore_case = false );
+
+/**
+ * Compares a string starting at the given iterator to another.
+ *
+ * @param c The iterator to use.  If the string matches, it is repositioned at
+ * the first character past the string; otherwise it is not touched.
+ * @param end The iterator marking the end of the range to search.
+ * @param s The string to compare against.  If ignore_case is true, then this
+ * string must be in lower case.
+ * @param ignore_case True if case should be ignored.
+ * @return Returns \c true only if the string matches.
+ */
+bool move_if_match( encoded_char_range::const_iterator &c, char const *s,
+                    bool ignore_case = false );
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* word_util_H */
-/* vim:set et sw=4 ts=4: */
+/* vim:set et sw=2 ts=2: */

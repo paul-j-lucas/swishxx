@@ -259,7 +259,7 @@ void* thread_pool_thread_main( void *p ) {
   // We never get here due to the infinite loop above, but put a return
   // statement here just to make the compiler happy.
   //
-  return 0;
+  return nullptr;
 }
 
 /**

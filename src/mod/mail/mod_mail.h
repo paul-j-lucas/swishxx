@@ -152,7 +152,7 @@ inline mail_indexer::message_type::message_type( message_type const &mt ) :
   // We don't copy the filter since there isn't a need to: the last
   // message_type object to get the filter will be the one to delete it.
   //
-  mt.filter_ = 0;
+  mt.filter_ = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

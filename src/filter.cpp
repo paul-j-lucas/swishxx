@@ -115,10 +115,10 @@ using namespace std;
         // busy.
         //
         if ( ++attempt_count > Fork_Attempts )
-            return 0;
+            return nullptr;
         ::sleep( Fork_Sleep );
     }
-    return exit_code ? 0 : target_file_name_.c_str();
+    return exit_code ? nullptr : target_file_name_.c_str();
 }
 
 //*****************************************************************************

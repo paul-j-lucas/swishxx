@@ -31,6 +31,8 @@
 // standard
 #include <vector>
 
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * Either index or extract text from the given file, but only if its extension
  * is among (not among) the specified set.  It will not follow symbolic links
@@ -52,7 +54,7 @@ void do_file( char const *file_name ) {
 
   ++num_examined_files;
   if ( verbosity > 3 )                  // print base name of file
-      cout << "  " << orig_base_name << flush;
+    cout << "  " << orig_base_name << flush;
 
   ////////// Simple checks to see if we should process the file ///////////////
 

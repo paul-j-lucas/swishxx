@@ -43,7 +43,8 @@ void IncludeMeta::parse_value( char *line ) {
   //
   unique_ptr<char[]> lower( to_lower_r( line ) );
   char *p = lower.get();
-  for ( char const *meta_name; (meta_name = ::strtok( p, " \r\t" )); p = 0 ) {
+  for ( char const *meta_name; (meta_name = ::strtok( p, " \r\t" ));
+        p = nullptr ) {
     //
     // See if the meta name contains a reassignment: if so, chop it at the '='.
     //

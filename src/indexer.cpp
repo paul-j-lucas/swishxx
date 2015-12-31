@@ -48,7 +48,7 @@ extern int              word_pos;
 extern word_map         words;
 
 int                     indexer::suspend_indexing_count_ = 0;
-indexer*                indexer::text_indexer_ = 0;
+indexer*                indexer::text_indexer_ = nullptr;
 
 //*****************************************************************************
 //
@@ -141,7 +141,7 @@ indexer*                indexer::text_indexer_ = 0;
         if ( (s = mod.second->option_spec()) )
             while ( s->long_name )
                 *c++ = *s++;
-    c->long_name  = 0;
+    c->long_name  = nullptr;
     c->arg_type   = 0;
     c->short_name = 0;
     return combined_spec;
@@ -305,7 +305,7 @@ indexer*                indexer::text_indexer_ = 0;
 //
 //*****************************************************************************
 {
-    return 0;
+    return nullptr;
 }
 
 //*****************************************************************************
@@ -540,7 +540,7 @@ skip_push_back:
 //
 //*****************************************************************************
 {
-    return 0;
+    return nullptr;
 }
 
 //*****************************************************************************

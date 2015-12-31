@@ -74,7 +74,7 @@ public:
   }
 
 protected:
-  auto_delete_obj( pool_type *pool = 0 ) : pool_( pool ) {
+  auto_delete_obj( pool_type *pool = nullptr ) : pool_( pool ) {
     if ( pool_ )
       pool_->add( this );
   }

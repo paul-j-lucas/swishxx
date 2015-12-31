@@ -118,7 +118,7 @@ public:
    */
   class option {
   public:
-    option( char c = '\0', char *a = 0 ) : short_name_( c ), arg_( a ) { }
+    option( char c = '\0', char *a = nullptr ) : short_name_( c ), arg_( a ) { }
 
     /**
      * Gets the option's argument, if any.

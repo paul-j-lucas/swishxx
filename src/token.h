@@ -106,6 +106,15 @@ private:
   token*  put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
 };
 
+/**
+ * Extracts a token from the given input stream.
+ *
+ * @param ts The token stream to extract the token from.
+ * @param t The newly extracted token.
+ * @return Returns the first argument as is standard practice.
+ */
+token_stream& operator>>( token_stream &ts, token &t );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* token_H */

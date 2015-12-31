@@ -110,6 +110,12 @@ private:
   byte const       *ptr_;
   mutable size_type size_;
 
+  /**
+   * Calculates the size of the file list (the number of files the word is in)
+   * and caches the result.
+   *
+   * @return Returns said size.
+   */
   size_type calc_size() const;
 };
 

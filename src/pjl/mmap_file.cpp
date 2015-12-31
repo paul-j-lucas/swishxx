@@ -99,7 +99,7 @@ void mmap_file::init() {
 
   size_ = 0;
   fd_ = 0;
-  addr_ = 0;
+  addr_ = nullptr;
   errno_ = 0;
 }
 
@@ -141,7 +141,7 @@ bool mmap_file::open( char const *path, ios::openmode mode ) {
   }
 
   if ( (addr_ = ::mmap( 0, size_, prot, MAP_SHARED, fd_, 0 )) == MAP_FAILED ) {
-    addr_ = 0;
+    addr_ = nullptr;
     errno_ = errno;
     return false;
   }

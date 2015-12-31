@@ -103,11 +103,11 @@ char const* LaTeX_indexer::find_title( mmap_file const &file ) const {
     if ( *c++ != '\\' || !move_if_match( c, "title" ) )
       continue;
     if ( c.at_end() )
-      return 0;
+      return nullptr;
     if ( *c != '{' )
       continue;
     if ( (++c).at_end() )
-      return 0;
+      return nullptr;
 
     //
     // Found the \title{ command: mark the postition after it and look for the
@@ -122,7 +122,7 @@ char const* LaTeX_indexer::find_title( mmap_file const &file ) const {
   //
   // The file has less than num_title_lines lines and no \title{ was found.
   //
-  return 0;
+  return nullptr;
 }
 
 void LaTeX_indexer::index_words( encoded_char_range const &e, int meta_id ) {

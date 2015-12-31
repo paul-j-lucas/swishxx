@@ -113,14 +113,14 @@ int main( int argc, char *argv[] ) {
   char const   *config_file_name_arg = ConfigFile_Default;
   bool          dump_stop_words_opt = false;
   bool          extract_as_filter_opt = false;
-  char const   *extract_extension_arg = 0;
+  char const   *extract_extension_arg = nullptr;
 #ifndef PJL_NO_SYMBOLIC_LINKS
   bool          follow_symbolic_links_opt = false;
 #endif
   bool          recurse_subdirectories_opt = false;
   StopWordFile  stop_word_file_name;
-  char const   *stop_word_file_name_arg = 0;
-  char const   *verbosity_arg = 0;
+  char const   *stop_word_file_name_arg = nullptr;
+  char const   *verbosity_arg = nullptr;
 
   option_stream opt_in( argc, argv, opt_spec );
   for ( option_stream::option opt; opt_in >> opt; ) {
@@ -137,7 +137,7 @@ int main( int argc, char *argv[] ) {
         char *a = opt.arg();
         for ( char *pat; (pat = ::strtok( a, "," )); ) {
           include_patterns.insert( pat, 0 );
-          a = 0;
+          a = nullptr;
         } // for
         break;
       }
@@ -146,7 +146,7 @@ int main( int argc, char *argv[] ) {
         char *a = opt.arg();
         for ( char *pat; (pat = ::strtok( a, "," )); ) {
           exclude_patterns.insert( pat );
-          a = 0;
+          a = nullptr;
         } // for
         break;
       }

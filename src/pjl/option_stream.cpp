@@ -48,7 +48,7 @@ option_stream::option_stream( int argc, char *argv[], spec const specs[],
 
 option_stream& operator>>( option_stream &os, option_stream::option &o ) {
   char *arg;
-  option_stream::spec const *s, *found = 0;
+  option_stream::spec const *s, *found = nullptr;
   bool was_short_option = false;
 
   o.short_name_ = '\0';
@@ -114,7 +114,7 @@ option_stream& operator>>( option_stream &os, option_stream::option &o ) {
     //
     // Got a long option: now see about its argument.
     //
-    arg = 0;
+    arg = nullptr;
     switch ( found->arg_type ) {
       case option_stream::os_arg_none:
         if ( *end == '=' ) {
@@ -164,7 +164,7 @@ short_option:
       // the next call.
       //
       os.next_c_ = arg + 1;
-      arg = 0;
+      arg = nullptr;
       break;
 
     case option_stream::os_arg_req:
@@ -187,7 +187,7 @@ next:   if ( ++os.argi_ >= os.argc_ )
           // The next argv looks like an option so assume it is one and that
           // there is no argument for this option.
           //
-          arg = 0;
+          arg = nullptr;
         }
       }
       break;
@@ -210,7 +210,7 @@ check_arg:
   os.err_ << "\" requires an argument\n";
   // fall through
 option_error:
-  o.arg_ = 0;
+  o.arg_ = nullptr;
   return os;
 the_end:
   os.end_ = true;

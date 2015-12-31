@@ -42,7 +42,26 @@ struct less_stem : std::less<char const*> {
 private:
   char const* (*const stem_func_)( char const *word );
 
-  static char const* no_stem( char const *word ) { return word; }
+  static char const* no_stem( char const *word ) {
+    return word;
+  }
+
+  /**
+   * Stems the given word by applying Porter's algorithm: run through several
+   * sets of suffix replacement rules applying at most one per set.  A word
+   * is stemmed only if it is composed entirely of letters.
+   *
+   * Caveat:
+   *    This algorithm is (obviosuly) geared only for English.
+   *
+   * See also:
+   *    M.F. Porter. "An Algorithm For Suffix Stripping," Program, 14(3), July
+   *    1980, pp. 130-137.
+   *
+   * @param word The word to be stemmed.  It is presumed to have already been
+   * converted to lower case.
+   * @return Returns the word stemmed.
+   */
   static char const* stem_word( char const *word );
 };
 

@@ -28,8 +28,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-encoded_char_range::charset_type const US_ASCII         = 0;
-encoded_char_range::charset_type const ISO_8859_1       = 0;
+encoded_char_range::charset_type const US_ASCII         = nullptr;
+encoded_char_range::charset_type const ISO_8859_1       = nullptr;
 encoded_char_range::charset_type const CHARSET_UNKNOWN  =
   reinterpret_cast<encoded_char_range::charset_type>( ~0 );
 

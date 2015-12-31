@@ -31,7 +31,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 void conf_set::parse_value( char *line ) {
-  for ( char const *s; (s = ::strtok( line, " \r\t" )); line = 0 )
+  for ( char const *s; (s = ::strtok( line, " \r\t" )); line = nullptr )
     insert( s );
 }
 

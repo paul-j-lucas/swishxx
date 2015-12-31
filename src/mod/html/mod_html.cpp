@@ -369,7 +369,7 @@ char const* HTML_indexer::find_title( mmap_file const &file ) const {
       // Didn't find <TITLE> within first num_title_lines lines of file: forget
       // it.
       //
-      return 0;
+      return nullptr;
     }
 
     if ( *c != '<' ) {                  // not a tag: forget it
@@ -409,7 +409,7 @@ char const* HTML_indexer::find_title( mmap_file const &file ) const {
   //
   // The file has less than num_title_lines lines and no <TITLE> was found.
   //
-  return 0;
+  return nullptr;
 }
 
 void HTML_indexer::index_words( encoded_char_range const &e, int meta_id ) {
@@ -569,7 +569,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
           is_no_index_class = true;
           break;
         }
-        names = 0;
+        names = nullptr;
       } // while
     }
 

@@ -453,33 +453,33 @@ search_options::search_options( int *argc, char ***argv,
   dump_stop_words_opt   = false;
   dump_window_size_arg  = 0;
   dump_word_index_opt   = false;
-  index_file_name_arg   = 0;
-  max_results_arg       = 0;
-  results_format_arg    = 0;
-  result_separator_arg  = 0;
+  index_file_name_arg   = nullptr;
+  max_results_arg       = nullptr;
+  results_format_arg    = nullptr;
+  result_separator_arg  = nullptr;
   skip_results_arg      = 0;
   stem_words_opt        = false;
-  word_files_max_arg    = 0;
-  word_percent_max_arg  = 0;
+  word_files_max_arg    = nullptr;
+  word_percent_max_arg  = nullptr;
 #ifdef WITH_WORD_POS
   words_near_arg        = 0;
 #endif /* WITH_WORD_POS */
 #ifdef WITH_SEARCH_DAEMON
-  daemon_type_arg       = 0;
-  group_arg             = 0;
+  daemon_type_arg       = nullptr;
+  group_arg             = nullptr;
 #ifdef __APPLE__
-  launchd_opt           = 0;
+  launchd_opt           = false;
 #endif /* __APPLE__ */
   max_threads_arg       = 0;
   min_threads_arg       = 0;
-  pid_file_name_arg     = 0;
+  pid_file_name_arg     = nullptr;
   search_background_opt = false;
-  socket_address_arg    = 0;
-  socket_file_name_arg  = 0;
+  socket_address_arg    = nullptr;
+  socket_file_name_arg  = nullptr;
   socket_queue_size_arg = 0;
   socket_timeout_arg    = 0;
   thread_timeout_arg    = 0;
-  user_arg              = 0;
+  user_arg              = nullptr;
 #endif /* WITH_SEARCH_DAEMON */
   option_stream opt_in( *argc, *argv, opt_spec );
   for ( option_stream::option opt; opt_in >> opt; ) {
