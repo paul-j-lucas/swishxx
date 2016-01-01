@@ -1,0 +1,10 @@
+html
+html/swishxx
+
+index: ranking index...
+index: writing index...
+
+index: done:
+  5 indexed
+  2448 words, 1295 indexed, 496 unique
+

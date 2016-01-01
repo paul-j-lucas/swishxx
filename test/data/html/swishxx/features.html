@@ -1,0 +1,430 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+
+<head>
+  <title>SWISH++ Features</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+  <meta name="author" content="Paul J. Lucas" />
+  <meta name="description" content="Features of SWISH++, the Unix-based file indexing and searching engine." />
+  <link rev="made" href="http://www.pauljlucas.org/contact.html" />
+  <link rel="start" title="SWISH++" href="index.html" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<div class="page" align="center">
+  <a href="index.html">
+  <img src="images/swish.jpg" width="234" height="70" alt="SWISH++" /></a><br/>
+  <b>S</b>imple
+  <b>W</b>eb
+  <b>I</b>ndexing
+  <b>S</b>ystem for
+  <b>H</b>umans: C++ version
+</div>
+<hr noshade="noshade" />                                               
+
+<p></p>
+<div class="page">
+  <h2>Features</h2>
+  <ol>
+    <li><a href="#indexing">Lightning-fast indexing</a></li>
+    <li><a href="#meta_alt_etc">Indexes <tt>META</tt> elements, <tt>ALT</tt>, and other attributes</a></li>
+    <li><a href="#not_index">Selectively not index text within HTML or XHTML elements</a></li>
+    <li><a href="#mail_news">Intelligently index mail and news files</a></li>
+    <li><a href="#man_pages">Index Unix manual page files</a></li>
+    <li><a href="#latex">Index LaTeX and RTF documents</a></li>
+    <li><a href="#id3">Index ID3 tags of MP3 files</a></li>
+    <li><a href="#non-text">Index non-text files such as Microsoft Office documents</a></li>
+    <li><a href="#filters">Apply filters to files on-the-fly prior to indexing</a></li>
+    <li><a href="#modular">Modular indexing architecture</a></li>
+    <li><a href="#incremental">Index new files incrementally</a></li>
+    <li><a href="#remote">Index remote web sites</a></li>
+    <li><a href="#large">Handles large collections of files</a></li>
+    <li><a href="#searching">Lightning-fast searching</a></li>
+    <li><a href="#stemming">Optional word stemming (suffix stripping)</a></li>
+    <li><a href="#server">Ability to run as a search server</a></li>
+    <li><a href="#parse">Easy-to-parse results format</a></li>
+    <li><a href="#xml">XML results format</a></li>
+    <li><a href="#source">Generously commented source code</a></li>
+  </ol>
+
+  There is also a <a href="to-do.html">To-Do list</a>.
+  <p></p>
+
+  <hr noshade="noshade" size="1" />
+
+  <ol>
+    <li>
+      <a name="indexing"></a>
+      <font color="#FF0000">
+        <b>Lightning-fast indexing</b>
+      </font>
+      <br />
+      SWISH++ attains its speed chiefly by doing two things:
+      using good algorithms and data structures and by doing fast I/O.
+
+      <p></p>
+      <ol type="A">
+        <li>
+          SWISH++ uses the C++ Standard Template Library's
+          <tt>map</tt> class
+          that is typically implemented either as a red-black or AVL tree
+          for which the worst-case running time is O(lg&nbsp;n)
+          for both insertions and look-ups.
+          <p></p>
+        </li>
+        <li>
+          SWISH++ uses the <tt>mmap</tt>(2) Unix system call to read files
+          instead of using standard I/O.
+          <p>
+            <blockquote>
+              <small>
+                If you are unfamiliar with <tt>mmap</tt>, it ``maps''
+                a file into memory using the same
+                virtual memory management mechanism
+                the operating system itself uses.
+                When the first character of a file is read,
+                a page fault occurs and the operating system
+                maps a page of the file into memory.
+                It is impossible to get faster access.
+                Additionally, because the file is in memory,
+                the characters in it are accessed
+                via pointers using simple pointer arithmetic
+                rather than through library function calls
+                and input buffers.
+              </small>
+            </blockquote>
+          </p>
+        </li>
+      </ol>
+      <p></p>
+
+      Other factors contributing to SWISH++'s speed are that it does
+      very little explicit dynamic memory allocation,
+      uses function inlining,
+      and makes very few function calls in inner loops.
+      <p></p>
+    </li>
+    <li>
+      <a name="meta_alt_etc"></a>
+      <font color="#FF0000">
+        <b>Indexes <tt>META</tt> elements, <tt>ALT</tt>
+        and other attributes</b>
+      </font>
+      <br />
+      For HTML or XHTML files,
+      SWISH++ indexes words in <tt>META</tt> element <tt>CONTENT</tt>
+      attributes and associates them with the <tt>NAME</tt> attributes.
+      Meta names can later be queried against specifically, e.g.:
+      <pre>        search author = hawking</pre>
+      SWISH++ also indexes the words in <tt>ALT</tt> attributes
+      (for the <tt>AREA</tt>, <tt>IMG</tt>, and <tt>INPUT</tt> elements),
+      <tt>STANDBY</tt> attributes
+      (for the <tt>OBJECT</tt> element),
+      <tt>SUMMARY</tt> attributes
+      (for the <tt>TABLE</tt> element),
+      and <tt>TITLE</tt> attributes
+      (for any HTML or XHTML element).
+      <p></p>
+    </li>
+    <li>
+      <a name="not_index"></a>
+      <font color="#FF0000">
+        <b>Selectively not index text within HTML or XHTML elements</b>
+      </font>
+      <br />
+      Text within HTML or XHTML elements
+      belonging to specified classes can be not indexed.
+      This is most useful not to index text
+      in common page headers, footers, and pop-up menus.
+      <p></p>
+    </li>
+    <li>
+      <a name="mail_news"></a>
+      <font color="#FF0000">
+        <b>Intelligently index mail and news files</b>
+      </font>
+      <br />
+      SWISH++ indexes words in headers
+      and associates them with the name of the headers as meta names
+      that can later be queried against specifically, e.g.:
+      <pre>        search subject = big-bang</pre>
+      Similarly, words in vCard fields
+      are associated with the names of the fields
+      as meta names that can also later be queried against, e.g.:
+<pre>        search title = professor
+        search org = SLAC</pre>
+      Additionally, plain and enriched text, and HTML in any one
+      of ASCII, ISO-8859-1, UTF-7, or UTF-8 character sets in any
+      one of 7-bit, 8-bit, quoted-printable, or base-64 encodings                     is decoded and converted on-the-fly thus properly indexing
+      encoded bodies and attachments.
+      <p></p>
+      Lastly, attachments having other MIME types can be filtered on-the-fly
+      before being indexed,
+      e.g., convert Microsoft Word or PDF attachments to plain text. 
+      <p></p>
+    </li>
+    <li>
+      <a name="man_pages"></a>
+      <font color="#FF0000">
+        <b>Index Unix manual page files</b>
+      </font>
+      <br />
+      SWISH++ indexes words in sections and associates them with
+      the name of the section as meta names that can later be
+      queried against specifically, e.g.:
+<pre>        search description = environment
+        search author = lucas</pre>
+      SWISH++ can therefore be used as a much better
+      <tt>apropos</tt>(1) command replacement.
+      <p></p>
+    </li>
+    <li>
+      <a name="latex"></a>
+      <font color="#FF0000">
+        <b>Index LaTeX and RTF documents</b>
+      </font>
+      <br />
+      SWISH++ can ignore LaTeX and RTF markup.
+      Additionally, for LaTeX documents,
+      SWISH++ sets the document title to the content of the
+      <tt>\title{</tt>...<tt>}</tt> command.
+      <p></p>
+    </li>
+    <li>
+      <a name="id3"></a>
+      <font color="#FF0000">
+        <b>Index ID3 tags of MP3 files</b>
+      </font>
+      <br />
+      SWISH++ indexes words in ID3 tags of MP3 files and associates them
+      with the name of the fields as meta names than can later be
+      queried against specifically, e.g.:
+<pre>        search artist = roxette
+        search title = dangerous</pre>
+      <a href="http://www.id3.org/">
+        <img src="images/id3v2.gif" width="48" height="48" align="right"
+          border="0" hspace="10" alt="" /></a>
+      All ID3 tag versions through 2.4 are supported.
+      Additionally, text fields in any one of
+      ASCII, ISO-8859-1, UTF-8, or UTF-16 character sets
+      are supported.
+      <br clear="all" />
+      <p></p>
+    </li>
+    <li>
+      <a name="non-text"></a>
+      <font color="#FF0000">
+        <b>Index non-text files such as Microsoft Office documents</b>
+      </font>
+      <br />
+      A separate text-extraction utility ``<tt>extract</tt>''
+      is included to assist in indexing non-text files.
+      It is essentially a more sophisticated version of the Unix
+      <tt>strings</tt>(1) command, but employs the same word-determination
+      heuristics used for indexing.
+      <p></p>
+    </li>
+    <li>
+      <a name="filters"></a>
+      <font color="#FF0000">
+        <b>Apply filters to files on-the-fly prior to indexing</b>
+      </font>
+      <br />
+      Based on filename patterns,
+      files can be filtered before being indexed,
+      e.g.: compressed files uncompressed,
+      PDF files converted to plain text, etc.
+      <p></p>
+    </li>
+    <li>
+      <a name="modular"></a>
+      <font color="#FF0000">
+        <b>Modular indexing architecture</b>
+      </font>
+      <br />
+      New indexing modules can be written
+      to index other file formats directly (without filters).
+      <p></p>
+    </li>
+    <li>
+      <a name="incremental"></a>
+      <font color="#FF0000">
+        <b>Index new files incrementally</b>
+      </font>
+      <br />
+      New files can be indexed and added to an existing index incrementally.
+      <p></p>
+    </li>
+    <li>
+      <a name="remote"></a>
+      <font color="#FF0000">
+        <b>Index remote web sites</b>
+      </font>
+      <br />
+      A separate utility ``<tt>httpindex</tt>'' is included
+      that interfaces SWISH++ to the <tt>wget</tt>(1) command
+      enabling remote web sites to be indexed.
+      This is useful to be able to search all the servers
+      in your local area network simultaneously.
+      <p></p>
+    </li>
+    <li>
+      <a name="large"></a>
+      <font color="#FF0000">
+        <b>Handles large collections of files</b>
+      </font>
+      <br />
+      SWISH++ automatically splits and merges partial indices
+      for large collections of files as it goes
+      thereby not bringing your machine to its knees
+      by exhausting physical memory and causing it to swap like mad.
+      <p></p>
+    </li>
+    <li>
+      <a name="searching"></a>
+      <font color="#FF0000">
+        <b>Lightning-fast searching</b>
+      </font>
+      <br />
+      The same <tt>mmap</tt>(2) technique used for indexing
+      is used again for searching.
+      The generated index file is written to disk such that
+      it can be <tt>mmap</tt>'ed back into memory
+      and binary searched immediately,
+      with no parsing of the data, also in O(lg&nbsp;n) time.
+      <p></p>
+    </li>
+    <li>
+      <a name="stemming"></a>
+      <font color="#FF0000">
+        <b>Optional word stemming (suffix stripping)</b>
+      </font>
+      <br />
+      SWISH++ allows stemming to be performed at the time of searches,
+      not at the time of index generation.
+      This allows users to decide whether to perform stemming or not.
+      <p></p>
+    </li>
+    <li>
+      <a name="server"></a>
+      <font color="#FF0000">
+        <b>Ability to run as a search server</b>
+      </font>
+      <br />
+      SWISH++'s search engine can run in the background
+      as a multi-threaded daemon process
+      to function as a search server accepting query requests
+      and returning results via either a Unix domain or TCP socket or both.
+      For search-intensive applications,
+      such as a search engine on a heavily used web site,
+      this can yield a large performance improvement
+      since the start-up cost
+      (<tt>fork</tt>(2), <tt>exec</tt>(2), and initialization)
+      is paid only once.
+      <p></p>
+    </li>
+    <li>
+      <a name="parse"></a>
+      <font color="#FF0000">
+        <b>Easy-to-parse results format</b>
+      </font>
+      <br />
+      SWISH++ outputs its search results in the form:
+      <pre>        rank path_name file_size file_title</pre>
+      By placing the <tt>file_title</tt>, which may contain spaces, last,
+      you can easily parse it, e.g., in Perl:
+      <pre>        ($rank,$path,$size,$title) = split( / /, $_, 4 );</pre>
+      <p></p>
+    </li>
+    <li>
+      <a name="xml"></a>
+      <font color="#FF0000">
+        <b>XML results format</b>
+      </font>
+      <br />
+      Alternatively, SWISH++ can output search results in XML
+      (<a href="SearchResults.dtd">DTD</a>,
+      <a href="SearchResults/SearchResults.xsd">schema</a>)
+      for increased interoperability with other XML applications.
+      <p></p>
+    </li>
+    <li>
+      <a name="source"></a>
+      <font color="#FF0000">
+        <b>Generously commented source code</b>
+      </font>
+      <br />
+      The source code is clearly written
+      with lots of comments including references to other works
+      in case you want to modify it under the terms of the
+      <a href="http://www.fsf.org/copyleft/gpl.html">GNU
+      General Public License</a>.
+    </li>
+  </ol>
+
+  <hr noshade="noshade" size="1" />
+  <p></p>
+
+  <h2>Non-Features</h2>
+  The following is a list of the features SWISH++ does not have
+  that SWISH-E does.
+
+  I wrote SWISH++ to solve my immediate indexing problems;
+  therefore, I implemented only those features useful to me.
+  If others can also benefit from the work, great.
+  I may implement other features as time permits.
+
+  <ol>
+    <li>
+      <a name="tags"></a>
+      <font color="#FF0000">
+        <b>Indexing and searching based on HTML tags</b>
+      </font>
+      <br />
+      SWISH++ has no equivalent means
+      for searching within specific HTML tags
+      (the SWISH-E <tt>-t</tt> option).
+      I didn't have a need for this feature.
+      <p></p>
+    </li>
+    <li>
+      <a name="doc_properties"></a>
+      <font color="#FF0000">
+        <b>Document properties</b>
+      </font>
+      <br />
+      This functionality can be achieved by using the
+      <tt>extract_meta()</tt> function in the included WWW Perl module.
+      <p></p>
+    </li>
+    <li>
+      <a name="crash_burn"></a>
+      <font color="#FF0000">
+        <b>Crash and burn on files</b>
+      </font>
+      <br />
+      SWISH++ will not crash while indexing any file.  Period.
+      If it does, there's a bug and I'll fix it.
+      <p></p>
+    </li>
+  </ol>
+
+</div>
+<hr noshade="noshade" />
+<small>
+  Copyright &copy; 1998-2014 by
+  <a href="http://www.pauljlucas.org/">Paul J. Lucas</a>.<br />
+  <a href="/">SWISH++</a>
+  is available under the terms of the
+  <a href="http://www.fsf.org/copyleft/gpl.html">
+  GNU General Public License</a>.
+  <br />
+  Last updated: April 28, 2014
+</small>
+</body>
+</html>
+<!-- vim:set et sw=2 ts=2: -->

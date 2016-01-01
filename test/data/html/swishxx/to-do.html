@@ -1,0 +1,113 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+
+<head>
+  <title>SWISH++ To-Do List</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+  <meta name="author" content="Paul J. Lucas" />
+  <meta name="description" content="The To-Do list for SWISH++, the Unix-based file indexing and searching engine." />
+  <link rev="made" href="http://www.pauljlucas.org/contact.html" />
+  <link rel="start" title="SWISH++" href="index.html" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<div class="page" align="center">
+  <a href="index.html">
+  <img src="images/swish.jpg" width="234" height="70" alt="SWISH++" /></a><br/>
+  <b>S</b>imple
+  <b>W</b>eb
+  <b>I</b>ndexing
+  <b>S</b>ystem for
+  <b>H</b>umans: C++ version
+</div>
+<hr noshade="noshade" />                                               
+
+<p></p>
+<div class="page">
+  <h2>To-Do List</h2>
+  <ol>
+    <li><a href="#weighted_search">Weighted search terms</a></li>
+    <li><a href="#include">An <tt>Include</tt> directive</a></li>
+    <li><a href="#file_pattern">Constraining search results to files matching a pattern</a></li>
+    <li><a href="#title_re">Constraining search results or titles matching a regular expression</a></li>
+    <li><a href="#indexer_mm">Better memory management in the indexer</a></li>
+  </ol>
+  <hr noshade="noshade" size="1" />
+  <ol>
+    <li>
+      <a name="weighted_search"></a>
+      <font color="#FF0000">
+        <b>Weighted search terms</b>
+      </font>
+      <br />
+      The ability to adds weights (positive or negative) to search terms
+      to alter the order of the search results.
+      <p></p>
+    </li>
+    <li>
+      <a name="include"></a>
+      <font color="#FF0000">
+        <b>An <tt>Include</tt> directive</b>
+      </font>
+      <br />
+      The ability to include one configuration file in another.
+      <p></p>
+    </li>
+    <li>
+      <a name="file_pattern"></a>
+      <font color="#FF0000">
+        <b>Constraining search results to files matching a pattern</b>
+      </font>
+      <br />
+      The ability to get search results
+      only when the file name matches a pattern.
+      This is fairly easy to do;
+      however, I haven't thought of a nice query syntax for it yet.
+      One possibility is:
+      <pre>        search calculator and file:order*</pre>
+      This uses keywords like AltaVista does.
+      <p></p>
+    </li>
+    <li>
+      <a name="title_re"></a>
+      <font color="#FF0000">
+        <b>Constraining search results titles matching a regular expression</b>
+      </font>
+      <br />
+      The ability to get search results only when the title matches
+      a regular expression.
+      (Same comment as for matching file patterns above.)
+      <p></p>
+    </li>
+    <li>
+      <a name="indexer_mm"></a>
+      <font color="#FF0000">
+        <b>Better memory management in the indexer</b>
+      </font>
+      <br />
+      I think it might be possible to get better memory use
+      if a few of the data structures used custom
+      <tt>operator&nbsp;new()</tt>.
+      I haven't looked at this seriously yet though.
+      <p></p>
+    </li>
+  </ol>
+
+</div>
+<hr noshade="noshade" />
+<small>
+  Copyright &copy; 1998-2014 by
+  <a href="http://www.pauljlucas.org/">Paul J. Lucas</a>.<br />
+  <a href="/">SWISH++</a>
+  is available under the terms of the
+  <a href="http://www.fsf.org/copyleft/gpl.html">GNU General Public License</a>.
+  <br />
+  Last updated: April 28, 2014
+</small>
+</body>
+</html>
+<!-- vim:set et sw=2 ts=2: -->

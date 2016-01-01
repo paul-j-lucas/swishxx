@@ -1,0 +1,163 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//Dtd XHTML 1.0 Transitional//EN"
+  "Dtd/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+
+<head>
+  <title>SWISH++ FAQ</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+  <meta name="author" content="Paul J. Lucas" />
+  <meta name="description" content="Frequently Asked Questions about SWISH++, the Unix-based file indexing and searching engine." />
+  <link rev="made" href="http://www.pauljlucas.org/contact.html" />
+  <link rel="start" title="SWISH++" href="index.html" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<div class="page" align="center">
+  <a href="index.html">
+  <img src="images/swish.jpg" width="234" height="70" alt="SWISH++" /></a><br/>
+  <b>S</b>imple
+  <b>W</b>eb
+  <b>I</b>ndexing
+  <b>S</b>ystem for
+  <b>H</b>umans: C++ version
+</div>
+<hr noshade="noshade" />                                               
+
+<p></p>
+<div class="page">
+  <h2>Frequently Asked Questions</h2>
+  <ol>
+    <li>
+      <a href="#binaries">Are there precompiled binaries available?</a>
+    </li>
+    <li>
+      <a href="#not-in-docs">I've read the documentation
+      and I don't see any way to do (a desired feature).
+      Can SWISH++ do it?</a>
+    </li>
+    <li>
+      <a href="#memory">I'm indexing a lot of documents
+      and I run out of memory.  What can I do?</a>
+    </li>
+    <li>
+      <a href="#non-english">Can I use SWISH++ to index and search
+        documents in a language other than English?</a>
+    </li>
+    <li>
+      <a href="#source">Can I use SWISH++ to index and search
+        source code?</a>
+    </li>
+  </ol>
+  <hr noshade="noshade" size="1" />
+
+  <ol>
+    <li>
+      <a name="binaries"></a>
+      <font color="#FF0000">
+        <b>Are there precompiled binaries available?</b>
+      </font>
+      <br />
+      There are none available from the SWISH++ home page intentionally
+      because certain parameters need to be configured
+      on a per-machine basis for optimal performance.
+      However, some Linux vendors may choose to build a SWISH++ package
+      and include it in their distibutions.
+      Check with your Linux vendor.
+      (Such packages are usually several versions old,
+      so you really should just build SWISH++ from source.)
+      <p></p>
+    </li>
+    <li>
+      <a name="not-in-docs"></a>
+      <font color="#FF0000">
+        <b>
+          I've read the documentation
+          and I don't see any way to do (a desired feature).
+          Can SWISH++ do it?
+        </b>
+      </font>
+      <br />
+      Chances are the answer is &quot;no.&quot;
+      The documentation is complete.
+      If it doesn't say anything about a feature you want,
+      then odds are that SWISH++ doesn't do it.
+      (Documentation should describe the finite number of things
+      a software package does,
+      not the infinite number of things it doesn't do.)
+      <p></p>
+    </li>
+    <li>
+      <a name="memory"></a>
+      <font color="#FF0000">
+        <b>
+          I'm indexing a lot of documents and I run out of memory.
+          What can I do?
+        </b>
+      </font>
+      <br />
+      First, a simple fact:
+      indexing takes a lot of memory.
+      Period.  Full stop.  No two ways about it.  End of story.
+      You can't expect to be able to index, say, the Library of Congress
+      on a machine with 64MB.
+      Second, you need to read the documentation,
+      specifically for the <tt>TempDirectory_Default</tt>
+      and <tt>Word_Threshold</tt> configuration parameters
+      in the <tt>config.h</tt> file and make adjustments for your system.
+      Lastly, if all else fails, get more memory.
+      <p></p>
+    </li>
+    <li>
+      <a name="non-english"></a>
+      <font color="#FF0000">
+        <b>
+          Can I use SWISH++ to index and search documents
+          in a language other than English?
+        </b>
+      </font>
+      <br />
+      Not as-is.
+      The set of stop-words, the word-determination heuristics,
+      and the stemming algorithm would have to be changed.
+      <b>
+        Using SWISH++ as-is to index documents
+        in a language other than English is naive
+        and will yield poor results.
+      </b>
+      <p></p>
+    </li>
+    <li>
+      <a name="source"></a>
+      <font color="#FF0000">
+        <b>Can I use SWISH++ to index and search source code?</b>
+      </font>
+      <br />
+      This has the same answer as FAQ #4.
+      Additionally,
+      an index/search application like SWISH++ isn't generally useful
+      for source code.
+      When you search source code,
+      you typically want to find <i>every</i> occurrence of an identifier,
+      so giving search results in ranked order isn't necessary or useful.
+      Use <tt>grep</tt>(1) recursively instead.
+    </li>
+  </ol>
+
+</div>
+<hr noshade="noshade" />
+<small>
+  Copyright &copy; 1998-2014 by
+  <a href="http://www.pauljlucas.org/">Paul J. Lucas</a>.
+  <br />
+  <a href="/">SWISH++</a> 
+  is available under the terms of the
+  <a href="http://www.fsf.org/copyleft/gpl.html">GNU General Public License</a>.
+  <br />
+  Last updated: April 28, 2014
+</small>
+</body>
+</html>
+<!-- vim:set et sw=2 ts=2: -->

@@ -1,0 +1,35 @@
+
+html:
+
+html/swishxx:
+  documentation.html (56 words)
+  faq.html (201 words)
+  features.html (729 words)
+  index.html (178 words)
+  to-do.html (131 words)
+
+index: ranking index...
+  "april" discarded (100%)
+  "available" discarded (100%)
+  "copyright" discarded (100%)
+  "general" discarded (100%)
+  "gnu" discarded (100%)
+  "imple" discarded (100%)
+  "license" discarded (100%)
+  "lucas" discarded (100%)
+  "ndexing" discarded (100%)
+  "paul" discarded (100%)
+  "public" discarded (100%)
+  "search" discarded (100%)
+  "swish" discarded (100%)
+  "terms" discarded (100%)
+  "umans" discarded (100%)
+  "updated" discarded (100%)
+  "version" discarded (100%)
+  "ystem" discarded (100%)
+index: writing index...
+
+index: done:
+  5 indexed
+  2448 words, 1295 indexed, 496 unique
+

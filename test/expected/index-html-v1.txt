@@ -1,0 +1,5 @@
+
+index: done:
+  5 indexed
+  2448 words, 1295 indexed, 496 unique
+
