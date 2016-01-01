@@ -19,15 +19,14 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+/**
+ * @file This file has to be at the top-level rather than in the charsets
+ * subdirectory where it ought to be because "search" and "extract" use it
+ * stand-alone.
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
-//
-// All characters are from the ISO 8859-1 character set mapped to 7-bit ASCII.
-//
-// This file has to be at the top-level rather than in the charsets
-// subdirectory where it ought to be because "search" and "extract" use it
-// stand-alone.
-//
 extern char const iso8859_1_map[] = {
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //  0
   ' ', '\t','\n','\v','\f','\r',' ', ' ', //  |

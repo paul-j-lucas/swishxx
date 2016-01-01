@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/results_formatter.cpp
 **
-**      Copyright (C) 2001  Paul J. Lucas
+**      Copyright (C) 2001-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -22,37 +22,15 @@
 // local
 #include "results_formatter.h"
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        results_formatter::~results_formatter()
-//
-// DESCRIPTION
-//
-//      Destroy a results_formatter.
-//
-// NOTE
-//
-//      This is out-of-line only because it's virtual.
-//
-//*****************************************************************************
-{
-    // do nothing
+///////////////////////////////////////////////////////////////////////////////
+
+results_formatter::~results_formatter() {
+  // do nothing
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-        void results_formatter::post() const
-//
-// DESCRIPTION
-//
-//  Output any trailing information.
-//
-//*****************************************************************************
-{
-        // do nothing
+void results_formatter::post() const {
+  // do nothing
 }
-/* vim:set et sw=4 ts=4: */
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

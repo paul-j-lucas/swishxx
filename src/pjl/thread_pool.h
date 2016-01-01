@@ -150,8 +150,8 @@ public:
     friend void*  thread_pool_thread_main( void* );
     friend void   thread_pool_thread_once();
 
-    thread( thread const& );            // forbid copy
-    thread& operator=( thread const& ); // forbid assignment
+    thread( thread const& ) = delete;
+    thread& operator=( thread const& ) = delete;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

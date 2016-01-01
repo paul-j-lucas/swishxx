@@ -144,8 +144,8 @@ public:
     char  short_name_;
     char *arg_;
 
-    option( option const& );            // forbid copy
-    option& operator=( option const& ); // forbid assignment
+    option( option const& ) = delete;
+    option& operator=( option const& ) = delete;
   };
 
   /////////////////////////////////////////////////////////////////////////////

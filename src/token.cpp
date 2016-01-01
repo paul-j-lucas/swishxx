@@ -52,7 +52,7 @@ token_stream& operator>>( token_stream &ts, token &t ) {
 
     if ( is_word_char( c ) ) {
       if ( !in_word ) {                 // start a new word
-        t.buf_[ 0 ] = c;
+        t.buf_[0] = c;
         t.len_ = 1;
         in_word = true;
         continue;
@@ -62,7 +62,8 @@ token_stream& operator>>( token_stream &ts, token &t ) {
         continue;
       }
       in_word = false;                    // too big: skip chars
-      while ( ts.get( c ) && is_word_char( c ) ) ;
+      while ( ts.get( c ) && is_word_char( c ) )
+        ;
       continue;
     }
 

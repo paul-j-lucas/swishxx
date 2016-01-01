@@ -70,7 +70,7 @@ static option_stream::spec const opt_spec[] = {
   "user",           1, 'U',
 #endif /* WITH_SEARCH_DAEMON */
 #endif /* SEARCH_DAEMON_OPTIONS_ONLY */
-  0
+  nullptr
 };
 
 ///////////////////////////////////////////////////////////////////////////////

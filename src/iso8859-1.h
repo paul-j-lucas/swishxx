@@ -22,6 +22,9 @@
 #ifndef iso8859_1_H
 #define iso8859_1_H
 
+/**
+ * Characters from the ISO 8859-1 character set mapped to 7-bit ASCII.
+ */
 extern char const iso8859_1_map[ 256 ];
 
 ///////////////////////////////////////////////////////////////////////////////

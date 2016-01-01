@@ -227,7 +227,7 @@ int main( int argc, char *argv[] ) {
     "verbosity",      1, 'v',
     "version",        0, 'V',
     "word-threshold", 1, 'W',
-    0
+    nullptr
   };
 
   ChangeDirectory change_directory;
@@ -256,7 +256,7 @@ int main( int argc, char *argv[] ) {
   char const     *word_percent_max_arg = nullptr;
   char const     *word_threshold_arg = nullptr;
 
-  unique_ptr<option_stream::spec> const
+  unique_ptr<option_stream::spec[]> const
     all_options( indexer::all_mods_options( opt_spec ) );
   option_stream opt_in( argc, argv, all_options.get() );
 
@@ -479,7 +479,7 @@ int main( int argc, char *argv[] ) {
   if ( change_directory_arg )
     change_directory = change_directory_arg;
 
-  time_t time = ::time( 0 );            // Go!
+  time_t time = ::time( nullptr );      // Go!
 
   if ( using_stdin ) {
     //
@@ -531,7 +531,7 @@ int main( int argc, char *argv[] ) {
   out.close();
 
   if ( verbosity ) {
-    time = ::time( 0 ) - time;          // Stop!
+    time = ::time( nullptr ) - time;    // Stop!
 
     bool testing = false;
     if ( char const *const swishxx_test = ::getenv( "SWISHXX_TEST" ) )

@@ -34,11 +34,11 @@
 
   off_t *const word_offset      = new off_t[ num_unique_words ];
   off_t *const stop_word_offset = num_stop_words ?
-                                  new off_t[ num_stop_words ] : 0;
+                                  new off_t[ num_stop_words ] : nullptr;
   off_t *const dir_offset       = new off_t[ num_dirs ];
   off_t *const file_offset      = new off_t[ num_files ];
   off_t *const meta_name_offset = num_meta_names ?
-                                  new off_t[ num_meta_names ] : 0;
+                                  new off_t[ num_meta_names ] : nullptr;
 
   my_write( o, &num_unique_words, sizeof( num_unique_words ) );
   streampos const word_offset_pos = o.tellp();
@@ -48,7 +48,7 @@
   streampos const stop_word_offset_pos = o.tellp();
   if ( num_stop_words )
     my_write( o, stop_word_offset,
-        num_stop_words * sizeof( stop_word_offset[0] )
+      num_stop_words * sizeof( stop_word_offset[0] )
     );
 
   my_write( o, &num_dirs, sizeof( num_dirs ) );
@@ -63,7 +63,7 @@
   streampos const meta_name_offset_pos = o.tellp();
   if ( num_meta_names )
     my_write( o, meta_name_offset,
-        num_meta_names * sizeof( meta_name_offset[0] )
+      num_meta_names * sizeof( meta_name_offset[0] )
     );
 #endif /* SWISHXX_WRITE_HEADER */
 
@@ -73,7 +73,7 @@
   if ( num_stop_words ) {
     o.seekp( stop_word_offset_pos );
     my_write( o, stop_word_offset,
-        num_stop_words * sizeof( stop_word_offset[0] )
+      num_stop_words * sizeof( stop_word_offset[0] )
     );
   }
   o.seekp( dir_offset_pos );
@@ -83,7 +83,7 @@
   if ( num_meta_names ) {
     o.seekp( meta_name_offset_pos );
     my_write( o, meta_name_offset,
-        num_meta_names * sizeof( meta_name_offset[0] )
+      num_meta_names * sizeof( meta_name_offset[0] )
     );
   }
 
