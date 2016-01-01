@@ -4,7 +4,7 @@
 #       SWISH++
 #       searchd -- start/stop script for SysV-like systems
 #
-#       Copyright (C) 2001  Paul J. Lucas
+#       Copyright (C) 2001-2015  Paul J. Lucas
 #
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -26,9 +26,10 @@
 ##
 # What stuff is called and where it's located.
 ##
+BIN="/usr/local/bin"
 SEARCH="search"
-SEARCH_PATH="%%I_BIN%%/$SEARCH"
-SEARCHMONITOR="%%I_BIN%%/searchmonitor"
+SEARCH_PATH="$BIN/$SEARCH"
+SEARCHMONITOR="$BIN/searchmonitor"
 CONF_FILE="/etc/swish++.conf"
 PID_FILE_DEFAULT="/var/run/search.pid"
 
@@ -58,7 +59,7 @@ PID_FILE=`grep -i '^PidFile' $CONF_FILE | tail -1 | sed 's!^[^/]*!!'`
 # a user-generated signal, if search gets killed and it was killed by SIGUSR2,
 # then it MUST have been done by manual request.
 ##
-KILL=`which kill`                           # ensure shell built-in isn't used
+KILL=`which kill`                       # ensure shell built-in isn't used
 USR2=`$KILL -l USR2 2>&1`
 
 ##
@@ -78,38 +79,39 @@ rm -f /tmp/.echotmp
 ##
 if [ -f /etc/rc.d/init.d/functions ]
 then
-    . /etc/rc.d/init.d/functions
-    LINUX=true
+  . /etc/rc.d/init.d/functions
+  LINUX=true
 fi
 
 case "$1" in
-    start)
-        echo $n "Starting $SEARCH$c"
-        rm -f $PID_FILE
-        OPTS="-c $CONF_FILE -s $SEARCH_PATH"
-        if [ -n "$LINUX" ]
-        then daemon $SEARCHMONITOR $OPTS
-        else $SEARCHMONITOR $OPTS &
-        fi
-        echo
-        ;;
-    stop)
-        [ -r $PID_FILE ] || { echo $PID_FILE not found >&2; exit 1; }
-        echo $n "Stopping $SEARCH$c"
-        if [ -n "$LINUX" ]
-        then killproc $SEARCH -$USR2 2>/dev/null
-        else $KILL -s USR2 `head -1 $PID_FILE` || exit 1
-        fi
-        echo
-        ;;
-    restart)
-        $SCRIPT_DIR/$SEARCH stop || exit 1
-        sleep 3
-        $SCRIPT_DIR/$SEARCH start
-        ;;
-    *)
-        echo "usage: $0 { start | stop | restart }" >&2
-        exit 1
-        ;;
+  start)
+    echo $n "Starting $SEARCH$c"
+    rm -f $PID_FILE
+    OPTS="-c $CONF_FILE -s $SEARCH_PATH"
+    if [ -n "$LINUX" ]
+    then daemon $SEARCHMONITOR $OPTS
+    else $SEARCHMONITOR $OPTS &
+    fi
+    echo
+    ;;
+  stop)
+    [ -r $PID_FILE ] || { echo $PID_FILE not found >&2; exit 1; }
+    echo $n "Stopping $SEARCH$c"
+    if [ -n "$LINUX" ]
+    then killproc $SEARCH -$USR2 2>/dev/null
+    else $KILL -s USR2 `head -1 $PID_FILE` || exit 1
+    fi
+    echo
+    ;;
+  restart)
+    $SCRIPT_DIR/$SEARCH stop || exit 1
+    sleep 3
+    $SCRIPT_DIR/$SEARCH start
+    ;;
+  *)
+    echo "usage: $0 { start | stop | restart }" >&2
+    exit 1
+    ;;
 esac
-# vim:set et sw=4 ts=4:
+
+# vim:set et sw=2 ts=2:

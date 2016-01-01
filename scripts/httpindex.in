@@ -1,23 +1,23 @@
-#! %%PERL%%
+#! /usr/bin/env perl
 ##
-#	SWISH++
-#	httpindex
+#       SWISH++
+#       httpindex
 #
-#	Copyright (C) 1998  Paul J. Lucas
+#       Copyright (C) 1998-2015  Paul J. Lucas
 #
-#	This program is free software; you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation; either version 2 of the License, or
-#	(at your option) any later version.
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
 #
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
 #
-#	You should have received a copy of the GNU General Public License
-#	along with this program; if not, write to the Free Software
-#	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
 ########## You shouldn't have to change anything below this line. #############
@@ -45,52 +45,52 @@ die "$me: -d and -D are mutually exclusive\n" if $opt_d && $opt_D;
 # actually specified.
 ##
 for ( split( /:/, $index_opts ) ) {
-	my $v = eval "\$opt_$_";
-	push( @index_opts, "-$_$v" ) if $v;
+  my $v = eval "\$opt_$_";
+  push( @index_opts, "-$_$v" ) if $v;
 }
 
 open2( \*INDEX_STDOUT, \*INDEX_STDIN, "%%I_BIN%%/index @index_opts -v4 -" );
 while ( <> ) {
-	next unless /-> "([^"]+)"/;
-	my $path = $1;
+  next unless /-> "([^"]+)"/;
+  my $path = $1;
 
-	# Got a file from wget: give it to index(1)
-	print INDEX_STDIN "$path\n";
+  # Got a file from wget: give it to index(1)
+  print INDEX_STDIN "$path\n";
 
-	# Record the name of the top-level directory (once).
-	( $dir = $path ) =~ s!/.+!! unless $dir;
+  # Record the name of the top-level directory (once).
+  ( $dir = $path ) =~ s!/.+!! unless $dir;
 
-	# Wait for index(1) to index the file by doing a blocking read.  Skip
-	# blank lines and informational lines from index(1) about generating
-	# partial indicies.
-	do {
-		$_ = <INDEX_STDOUT>;
-	} while ( /^$|partial/ );
+  # Wait for index(1) to index the file by doing a blocking read.  Skip blank
+  # lines and informational lines from index(1) about generating partial
+  # indicies.
+  do {
+    $_ = <INDEX_STDOUT>;
+  } while ( /^$|partial/ );
 
-	if ( $opt_d ) {
-		my $desc = WWW::extract_description( $path );
-		if ( $desc ) {
-			if ( open( FILE, ">$path" ) ) {
-				print FILE "$desc\n";
-				close FILE;
-			} else {
-				warn "$me: can not overwrite $path\n";
-			}
-		} else {
-			unlink( $path );
-		}
-	} elsif ( $opt_D ) {
-		unlink( $path );
-	}
+  if ( $opt_d ) {
+    my $desc = WWW::extract_description( $path );
+    if ( $desc ) {
+      if ( open( FILE, ">$path" ) ) {
+        print FILE "$desc\n";
+        close FILE;
+      } else {
+        warn "$me: can not overwrite $path\n";
+      }
+    } else {
+      unlink( $path );
+    }
+  } elsif ( $opt_D ) {
+    unlink( $path );
+  }
 
-	if ( $opt_v < 4 ) {
-		next if /\(skipped:/;
-		if ( $opt_v < 3 ) {
-			next if /^  /;
-			next if $opt_v < 2;
-		}
-	}
-	print;
+  if ( $opt_v < 4 ) {
+    next if /\(skipped:/;
+    if ( $opt_v < 3 ) {
+      next if /^  /;
+      next if $opt_v < 2;
+    }
+  }
+  print;
 }
 close INDEX_STDIN;
 
@@ -99,7 +99,9 @@ close INDEX_STDIN;
 # whether we print it otherwise index(1) might block.
 ##
 while ( <INDEX_STDOUT> ) {
-	print if $opt_v;
+  print if $opt_v;
 }
 
-rmtree( $dir ) if $opt_D;			# remove (empty) directory tree
+rmtree( $dir ) if $opt_D;               # remove (empty) directory tree
+
+# vim:set et sw=2 ts=2:
