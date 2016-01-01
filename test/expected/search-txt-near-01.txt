@@ -1,0 +1,3 @@
+# results: 2
+100 ./Gutenberg_License.txt 17308 Gutenberg_License.txt
+98 ./GNU_GPLv2.txt 17982 GNU_GPLv2.txt

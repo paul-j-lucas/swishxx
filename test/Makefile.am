@@ -55,6 +55,8 @@ TESTS =	tests/index-no_options.test \
 	tests/search-txt-m0.test \
 	tests/search-txt-m3.test \
 	tests/search-txt-ma.test \
+	tests/search-txt-near-01.test \
+	tests/search-txt-near-02.test \
 	tests/search-txt-not-01.test \
 	tests/search-txt-or-01.test \
 	tests/search-txt-R.test \
