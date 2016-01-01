@@ -1,1 +1,1 @@
-search | | | caveat=word | 0
+search | | -i man.index | caveat=word | 0
