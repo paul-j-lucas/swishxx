@@ -257,9 +257,6 @@ char const  ShellFilenameEscapeChars[]  = " !\"#$&'()*/;<>?[\\]^`{|}~";
 #ifdef __CYGWIN__
 char const  TempDirectory_Default[]     = "/temp";
 #else
-#/*#error      You have not set TempDirectory_Default for your system.*/
-#/*#error      Comment out these lines after you have set it.*/
-
 /**
  * Default directory to use for temporary files during indexing.  If your OS
  * mounts swap space via \c /tmp (e.g., Solaris), as indexing progresses and
@@ -301,9 +298,6 @@ int const   WordsNear_Default           = 10;
  * file or on the command line.
  */
 int const   WordPercentMax_Default      = 100;
-
-#/*#error      You have not set WordThreshold_Default for your system.*/
-#/*#error      Comment out these lines after you have set it.*/
 
 /**
  * The word count past which partial indicies are generated and merged since
