@@ -1,1 +1,1 @@
-search | | -S | | 0
+search | | -i text.index -S | | 0

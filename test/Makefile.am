@@ -40,6 +40,7 @@ TESTS =	tests/index-no_options.test \
 	tests/index-WordPercentMax-102.test \
 	tests/index-WordPercentMax-a.test \
 	tests/search-Fbad.test \
+	tests/search-ma.test \
 	tests/search-ResultsFormat-bad.test \
 	tests/search-text-01.test \
 	tests/search-text-and-01.test \
@@ -50,7 +51,6 @@ TESTS =	tests/index-no_options.test \
 	tests/search-text-Fxml.test \
 	tests/search-text-m0.test \
 	tests/search-text-m3.test \
-	tests/search-text-ma.test \
 	tests/search-text-near-01.test \
 	tests/search-text-near-02.test \
 	tests/search-text-not-01.test \

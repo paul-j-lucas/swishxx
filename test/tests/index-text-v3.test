@@ -1,1 +1,1 @@
-index | | -e text:*.txt -r -v3 | . | 0
+index | | -e text:*.txt -i text.index -r -v3 | . | 0

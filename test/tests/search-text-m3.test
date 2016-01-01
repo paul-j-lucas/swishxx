@@ -1,1 +1,1 @@
-search | | -m3 | years | 0
+search | | -i text.index -m3 | years | 0

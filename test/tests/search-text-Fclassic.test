@@ -1,1 +1,1 @@
-search | | -Fclassic | year | 0
+search | | -Fclassic -i text.index | year | 0
