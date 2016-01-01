@@ -244,7 +244,6 @@ AM_CONDITIONAL([WITH_UTF8], [test x$enable_utf8 = xyes])
 AC_LANG(C++)
 AX_CFLAGS_WARN_ALL
 AX_CHECK_COMPILE_FLAG([-Wextra],[CFLAGS="$CFLAGS -Wextra"])
-AX_CHECK_COMPILE_FLAG([-Wc++-compat],[CFLAGS="$CFLAGS -Wc++-compat"])
 AX_CHECK_COMPILE_FLAG([-Wredundant-decls],[CFLAGS="$CFLAGS -Wredundant-decls"])
 AX_CHECK_COMPILE_FLAG([-Wwrite-strings],[CFLAGS="$CFLAGS -Wwrite-strings"])
 
