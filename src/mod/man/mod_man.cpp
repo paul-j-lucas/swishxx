@@ -135,10 +135,9 @@ static void parse_backslash( char const *&c, char const *end ) {
 
 char const* man_indexer::find_title( mmap_file const &file ) const {
   int   lines = 0;
-  bool  newline = false;
+  bool  newline = true;
 
-  mmap_file::const_iterator c = file.begin();
-  while ( c != file.end() ) {
+  for ( auto c = file.begin(); c != file.end(); ) {
     if ( newline && ++lines > num_title_lines ) {
       //
       // Didn't find ".SH NAME" within first num_title_lines lines of file:
@@ -148,10 +147,9 @@ char const* man_indexer::find_title( mmap_file const &file ) const {
     }
 
     //
-    // Find the start of a macro, i.e., a line that begins with a '.'
-    // (dot).
+    // Find the start of a macro, i.e., a line that begins with a '.' (dot).
     //
-    if ( !newline || *c != '.' ) {      // not macro: forget it
+    if ( !(newline && *c == '.') ) {    // not macro: forget it
       newline = *c++ == '\n';
       continue;
     }
@@ -159,14 +157,13 @@ char const* man_indexer::find_title( mmap_file const &file ) const {
     //
     // Found a macro: is it a comment?  If so, skip it.
     //
-    if ( is_man_comment( ++c, file.end() ) ) {
-      newline = true;
+    if ( is_man_comment( ++c, file.end() ) )
       continue;
-    }
 
     //
     // Is the macro ".SH NAME"?
     //
+    newline = false;
     if ( !move_if_match( c, file.end(), "SH" ) )
       continue;
     while ( c != file.end() && is_space( *c ) )
@@ -194,7 +191,7 @@ char const* man_indexer::find_title( mmap_file const &file ) const {
     *d = '\0';
 
     return title;
-  } // while
+  } // for
 
   //
   // The file has less than num_title_lines lines and no .SH NAME was found.
