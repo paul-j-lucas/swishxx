@@ -1,7 +1,5 @@
 # SWISH++: Simple Web Indexing System for Humans: C++ version
 
----
-
 SWISH++ is a Unix-based file indexing and searching engine
 (typically used to index and search files on web sites).
 It was based on SWISH-E although SWISH++ is a complete rewrite.
@@ -11,8 +9,6 @@ with using the SWISH-E package.
 SWISH++ has been ported to compile and run under Microsoft
 Windows by Robert J. Lebowitz <lebowitz@finaltouch.com> and
 Christoph Conrad <christoph.conrad@gmx.de>.
-
----
 
 ## Features
 
