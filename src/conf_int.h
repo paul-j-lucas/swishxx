@@ -26,7 +26,7 @@
 #include "conf_var.h"
 
 // system
-#include <climits>                      /* for INT_MAX */
+#include <limits>
 #include <string>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,8 @@ public:
   }
 
 protected:
-  conf( char const *name, int default_value, int min = 0, int max = INT_MAX );
+  conf( char const *name, int default_value, int min = 0,
+        int max = std::numeric_limits<int>::max() );
   conf<int>& operator=( int );
   CONF_VAR_ASSIGN_OPS( conf<int> )
 

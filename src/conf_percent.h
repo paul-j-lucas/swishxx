@@ -41,7 +41,7 @@ public:
 
 protected:
   conf_percent( char const *name, int default_value, int min = 0,
-                int max = INT_MAX ) :
+                int max = std::numeric_limits<int>::max() ) :
     conf<int>( name, default_value, min, max )
   {
   }

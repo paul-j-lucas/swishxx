@@ -55,7 +55,7 @@ conf<int>& conf<int>::operator=( int new_value ) {
   error() << '"' << name() << "\" value \""
           << new_value << "\" not in range [" << min_ << '-';
 
-  if ( max_ == INT_MAX )
+  if ( max_ == numeric_limits<int>::max() )
     cerr << "infinity";
   else
     cerr << max_;
@@ -71,7 +71,7 @@ void conf<int>::parse_value( char *line ) {
   }
   unique_ptr<char[]> const lower( to_lower_r( line ) );
   if ( !::strcmp( lower.get(), "infinity" ) ) {
-    operator=( INT_MAX );
+    operator=( numeric_limits<int>::max() );
     return;
   }
   int const n = ::atoi( line );

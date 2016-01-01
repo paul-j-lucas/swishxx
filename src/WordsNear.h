@@ -41,7 +41,12 @@
  */
 class WordsNear : public conf<int> {
 public:
-  WordsNear() : conf<int>( "WordsNear", WordsNear_Default, 1, INT_MAX ) { }
+  WordsNear() :
+    conf<int>(
+      "WordsNear", WordsNear_Default, 1, std::numeric_limits<int>::max()
+    )
+  {
+  }
   CONF_INT_ASSIGN_OPS( WordsNear )
 };
 

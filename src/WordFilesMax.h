@@ -38,7 +38,8 @@
  */
 class WordFilesMax : public conf<int> {
 public:
-  WordFilesMax() : conf<int>( "WordFilesMax", INT_MAX, 2 ) { }
+  WordFilesMax() :
+    conf<int>( "WordFilesMax", std::numeric_limits<int>::max(), 2 ) { }
   CONF_INT_ASSIGN_OPS( WordFilesMax )
 };
 
