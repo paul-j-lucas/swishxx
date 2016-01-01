@@ -179,9 +179,10 @@ SWISH++ outputs its search results in the form:
 	rank path_name file_size file_title
 
 By placing the `file_title`, which may contain spaces, last,
-you can easily parse it, e.g., in Perl:
+you can easily parse it, e.g.:
 
-	($rank,$path,$size,$title) = split( / /, $_, 4 );
+	($rank,$path,$size,$title) = split( / /, $result, 4 ); # Perl
+	($rank,$path,$size,$title) = result.split( ' ', 3 )    # Python
 
 ### XML results format
 Alternatively, SWISH++ can output search results in XML
