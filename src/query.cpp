@@ -414,7 +414,7 @@ static bool parse_relop( token_stream &query, token::type &relop ) {
       return true;
 
     default:
-      assert( false );
+      /* do nothing */;
   } // switch
   query.put_back( t );
   if ( t == token::tt_rparen )
