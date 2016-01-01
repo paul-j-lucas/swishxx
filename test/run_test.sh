@@ -147,7 +147,7 @@ done
 [ "$LOG_FILE"  ] || usage "required --log-file not given"
 [ "$TRS_FILE"  ] || usage "required --trs-file not given"
 [ $# -ge 1     ] || usage "required test-command not given"
-TEST=$1
+TEST_FILE=$1
 
 ########## Initialize #########################################################
 
@@ -182,42 +182,43 @@ esac
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
 TEST_NAME=`local_basename "$TEST_NAME"`
-OUTPUT=/tmp/swishpp_test_output_$$_
+OUTPUT=/tmp/swishxx_test_output_$$_
 
 ########## Run test ###########################################################
 
 run_sh_file() {
-  if $TEST $OUTPUT $LOG_FILE
+  TEST_FILE=$1
+  if $TEST_FILE $OUTPUT $LOG_FILE
   then pass
   else fail
   fi
 }
 
 run_test_file() {
-  IFS='|' read COMMAND CONF OPTIONS INPUT EXPECTED_EXIT < $TEST
+  TEST_FILE=$1
+  IFS='|' read COMMAND CONF OPTIONS ARGS EXPECTED_EXIT < $TEST_FILE
 
   # trim whitespace
   COMMAND=`echo $COMMAND`
   CONF=`echo $CONF`
-  INPUT=`echo $INPUT`
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`
 
   [ "$COMMAND" = "index" ] && CHDIR="-d $DATA_DIR"
   [ "$CONF" ] && CONF="-c $DATA_DIR/$CONF"
 
   [ "$ECHO" ] &&
-    $ECHO "$COMMAND $CHDIR $CONF $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE"
+    $ECHO $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $OUTPUT 2> $LOG_FILE"
 
   SWISHXX_TEST=true; export SWISHXX_TEST
-  $COMMAND $CHDIR $CONF $OPTIONS $INPUT > $OUTPUT 2>> $LOG_FILE
+  $COMMAND $CHDIR $CONF $OPTIONS $ARGS > $OUTPUT 2> $LOG_FILE
   ACTUAL_EXIT=$?
 
   if [ $ACTUAL_EXIT -eq 0 ]
   then                                  # success: diff output file
     if [ 0 -eq $EXPECTED_EXIT ]
     then
-      EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed 's/test$/txt/'`"
-      if diff $EXPECTED_OUTPUT $OUTPUT >> $LOG_FILE
+      EXPECTED_FILE="$EXPECTED_DIR/`echo $TEST_NAME | sed 's/test$/txt/'`"
+      if diff $EXPECTED_FILE $OUTPUT > $LOG_FILE
       then pass; mv $OUTPUT $LOG_FILE
       else fail
       fi
@@ -239,9 +240,9 @@ PATH=$BUILD_SRC:$PATH
 
 trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
-case $TEST in
-*.sh)   run_sh_file ;;
-*.test) run_test_file ;;
+case $TEST_FILE in
+*.sh)   run_sh_file $TEST_FILE ;;
+*.test) run_test_file $TEST_FILE ;;
 esac
 
 # vim:set et sw=2 ts=2:
