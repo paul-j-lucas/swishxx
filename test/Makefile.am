@@ -28,10 +28,10 @@ TESTS =	tests/index-no_options.test \
 	tests/index-pa.test \
 	tests/index-S.test \
 	tests/index-ta.test \
+	tests/index-text-v1.test \
+	tests/index-text-v2.test \
+	tests/index-text-v3.test \
 	tests/index-TitleLines-a.test \
-	tests/index-txt-v1.test \
-	tests/index-txt-v2.test \
-	tests/index-txt-v3.test \
 	tests/index-v5.test \
 	tests/index-va.test \
 	tests/index-WordFilesMax-1.test \
@@ -39,32 +39,32 @@ TESTS =	tests/index-no_options.test \
 	tests/index-WordPercentMax-0.test \
 	tests/index-WordPercentMax-102.test \
 	tests/index-WordPercentMax-a.test \
-	tests/search-ResultSeparator-01.test \
-	tests/search-ResultSeparator-02.test \
+	tests/search-Fbad.test \
 	tests/search-ResultsFormat-bad.test \
-	tests/search-ResultsFormat-classic.test \
-	tests/search-ResultsFormat-xml.test \
-	tests/search-txt-01.test \
-	tests/search-txt-and-01.test \
-	tests/search-txt-and-02.test \
-	tests/search-txt-d-01.test \
-	tests/search-txt-D.test \
-	tests/search-txt-Fbad.test \
-	tests/search-txt-Fclassic.test \
-	tests/search-txt-Fxml.test \
-	tests/search-txt-m0.test \
-	tests/search-txt-m3.test \
-	tests/search-txt-ma.test \
-	tests/search-txt-near-01.test \
-	tests/search-txt-near-02.test \
-	tests/search-txt-not-01.test \
-	tests/search-txt-or-01.test \
-	tests/search-txt-R.test \
-	tests/search-txt-s-01.test \
-	tests/search-txt-S.test \
-	tests/search-txt-w7,4.test \
-	tests/search-txt-w7.test \
-	tests/search-txt-wild-01.test
+	tests/search-text-01.test \
+	tests/search-text-and-01.test \
+	tests/search-text-and-02.test \
+	tests/search-text-d-01.test \
+	tests/search-text-D.test \
+	tests/search-text-Fclassic.test \
+	tests/search-text-Fxml.test \
+	tests/search-text-m0.test \
+	tests/search-text-m3.test \
+	tests/search-text-ma.test \
+	tests/search-text-near-01.test \
+	tests/search-text-near-02.test \
+	tests/search-text-not-01.test \
+	tests/search-text-or-01.test \
+	tests/search-text-ResultSeparator-01.test \
+	tests/search-text-ResultSeparator-02.test \
+	tests/search-text-ResultsFormat-classic.test \
+	tests/search-text-ResultsFormat-xml.test \
+	tests/search-text-R.test \
+	tests/search-text-s-01.test \
+	tests/search-text-S.test \
+	tests/search-text-w7,4.test \
+	tests/search-text-w7.test \
+	tests/search-text-wild-01.test
 
 if WITH_HTML
 TESTS+= tests/index-H.test \
