@@ -390,7 +390,7 @@ stop_word_set::stop_word_set( char const *file_name ) {
 
       if ( is_word_char( ch ) ) {
         if ( !in_word ) {               // start a new word
-          word[ 0 ] = ch;
+          word[0] = ch;
           len = 1;
           in_word = true;
           continue;

@@ -44,7 +44,7 @@ void rtf_indexer::index_words( encoded_char_range const &e, int ) {
 
     if ( is_word_char( ch ) ) {
       if ( !in_word ) {                 // start a new word
-        word[ 0 ] = ch;
+        word[0] = ch;
         len = 1;
         in_word = true;
         continue;

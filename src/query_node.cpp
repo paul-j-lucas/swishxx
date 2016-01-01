@@ -291,31 +291,7 @@ void near_node::eval( search_results &results ) {
   } // for
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-      query_node* near_node::distribute()
-//
-// DESCRIPTION
-//
-//      "Distribute" the child nodes that are not word_nodes since the child
-//      nodes of a near_node MUST be word_nodes.  For example:
-//
-//          cat near (mouse or bird)
-//
-//      becomes:
-//
-//          (cat near mouse) or (cat near bird)
-//
-// RETURN VALUE
-//
-//      If distribution was performed (either or both child nodes were not
-//      word nodes), returns a new, distributed subtree; otherwise, simply
-//      returns this.
-//
-//*****************************************************************************
-{
+query_node* near_node::distribute() {
   bool const this_is_not_near = dynamic_cast<not_near_node*>( this );
   bool const left_is_word     = dynamic_cast<word_node*>( left()  );
   bool const right_is_word    = dynamic_cast<word_node*>( right() );
@@ -335,26 +311,7 @@ void near_node::eval( search_results &results ) {
   return this;
 }
 
-//*****************************************************************************
-//
-// SYNOPSYS
-//
-      query_node* near_node::distributor::operator()( query_node *node ) const
-//
-// DESCRIPTION
-//
-//      Visit a node in a query tree.  If it's a near_node, distribute it.
-//
-// PARAMETERS
-//
-//      node    The query_node to visit.
-//
-// RETURN VALUE
-//
-//      Returns a possibly new subtree after possibly having done distribution.
-//
-//*****************************************************************************
-{
+query_node* near_node::distributor::operator()( query_node *node ) const {
   if ( near_node *const n = dynamic_cast<near_node*>( node ) )
     return n->distribute();
   if ( !other_ )

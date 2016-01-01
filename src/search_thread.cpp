@@ -200,7 +200,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds ) {
   // Therefore, what we do instead is to use select(2) to do the blocking, but
   // with a time-out specified.
   //
-  time_t const start_time = ::time( 0 );
+  time_t const start_time = ::time( nullptr );
   int seconds_remaining = seconds;
   while ( seconds_remaining > 0 ) {
     fd_set rset;
@@ -211,7 +211,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds ) {
     tv.tv_sec  = seconds_remaining;
     tv.tv_usec = 0;
 
-    if ( ::select( fd + 1, &rset, 0, 0, &tv ) < 1 )
+    if ( ::select( fd + 1, &rset, nullptr, nullptr, &tv ) < 1 )
       break;
     if ( !FD_ISSET( fd, &rset ) )       // shouldn't happen, but...
       break;
@@ -229,7 +229,7 @@ static bool timed_read_line( int fd, char *buf, int buf_size, int seconds ) {
     // and, if there's more time left before the time-out expires, try to read
     // some more.
     //
-    time_t const elapsed_time = ::time( 0 ) - start_time;
+    time_t const elapsed_time = ::time( nullptr ) - start_time;
     seconds_remaining = seconds - elapsed_time;
   } // while
 

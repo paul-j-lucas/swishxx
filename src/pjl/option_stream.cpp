@@ -235,7 +235,7 @@ int main( int argc, char *argv[] ) {
     "m-no-arg",   0, 'm',
     "r-req-arg",  1, 'r',
     "o-opt-arg",  2, 'o',
-    0,
+    nullptr,
   };
   option_stream opt_in( argc, argv, spec );
   option_stream::option opt;

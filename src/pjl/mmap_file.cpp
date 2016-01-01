@@ -140,7 +140,8 @@ bool mmap_file::open( char const *path, ios::openmode mode ) {
     return false;
   }
 
-  if ( (addr_ = ::mmap( 0, size_, prot, MAP_SHARED, fd_, 0 )) == MAP_FAILED ) {
+  addr_ = ::mmap( nullptr, size_, prot, MAP_SHARED, fd_, 0 );
+  if ( addr_ == MAP_FAILED ) {
     addr_ = nullptr;
     errno_ = errno;
     return false;

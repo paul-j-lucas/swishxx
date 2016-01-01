@@ -46,7 +46,7 @@ void IncludeFile::parse_value( char *line ) {
     ::exit( Exit_Config_File );
   }
 
-  for ( char const *s; (s = ::strtok( 0, " \r\t" )); )
+  for ( char const *s; (s = ::strtok( nullptr, " \r\t" )); )
     insert( new_strdup( s ), i );
 }
 

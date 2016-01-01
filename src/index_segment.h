@@ -92,33 +92,32 @@ public:
 
   class const_iterator :
     public std::iterator<std::random_access_iterator_tag,value_type> {
-  private:
-    index_segment const *index_;
-    size_type i_;
-    const_iterator( index_segment const *index, size_type i ) :
-      index_( index ), i_( i ) { }
-    friend class index_segment;
-
   public:
     const_iterator() { }
+    // default assignment operator is OK
 
     const_reference operator*() const { return (*index_)[ i_ ]; }
 
     const_iterator& operator++() {
       return ++i_, *this;
     }
+
     const_iterator& operator--() {
       return --i_, *this;
     }
+
     const_iterator operator++(int) {
       return const_iterator( index_, i_++ );
     }
+
     const_iterator operator--(int) {
       return const_iterator( index_, i_-- );
     }
+
     const_iterator& operator+=( int n ) {
       return i_ += n, *this;
     }
+
     const_iterator& operator-=( int n ) {
       return i_ -= n, *this;
     }
@@ -142,8 +141,12 @@ public:
       return i.i_ - j.i_;
     }
 
-    // default copy constructor is OK
-    // default assignment operator is OK
+  private:
+    index_segment const *index_;
+    size_type i_;
+    const_iterator( index_segment const *index, size_type i ) :
+      index_( index ), i_( i ) { }
+    friend class index_segment;
   };
 
   const_iterator begin() const {

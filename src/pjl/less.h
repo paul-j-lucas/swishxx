@@ -51,7 +51,8 @@ template<class T> struct less_n;
  * A %less_n is-a less<char const*> that compares C-style strings, but only for
  * a certain maximum length.
  */
-template<> struct less_n<char const*> : less<char const*> {
+template<>
+struct less_n<char const*> : less<char const*> {
   less_n<char const*>( size_t max_len ) : n_( max_len ) { }
 
   result_type

@@ -137,7 +137,7 @@ inline mail_indexer::message_type::message_type() :
   //
   content_type_( ct_text_plain ),
   charset_( US_ASCII ), encoding_( Seven_Bit ),
-  filter_( 0 )
+  filter_( nullptr )
 {
   // do nothing else
 }

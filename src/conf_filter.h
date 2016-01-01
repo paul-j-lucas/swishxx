@@ -45,7 +45,7 @@ public:
 
   const_pointer operator[]( key_type key ) const {
     map_type::const_iterator const i = map_.find( key );
-    return i != map_.end() ? &i->second : 0;
+    return i != map_.end() ? &i->second : nullptr;
   }
 
   const_pointer operator[]( std::string const &key ) const {

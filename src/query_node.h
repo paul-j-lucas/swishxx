@@ -152,7 +152,22 @@ public:
   near_node( pool_type&, query_node*, query_node* );
   ~near_node();
 
+  /**
+   * "Distributes" the child nodes that are not word_nodes since the child
+   * nodes of a near_node \e must be word_nodes.  For example:
+   *
+   *    cat near (mouse or bird)
+   *
+   * becomes:
+   *
+   *    (cat near mouse) or (cat near bird)
+   *
+   * @return If distribution was performed (either or both child nodes were not
+   * word nodes), returns a new, distributed subtree; otherwise, simply returns
+   * \c this.
+   */
   query_node* distribute();
+
   void        eval( search_results& );
   query_node* left () const             { return left_child_ ; }
   query_node* right() const             { return right_child_; }

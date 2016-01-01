@@ -79,31 +79,30 @@ private:
   int  len_;
 };
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-      class token_stream : public std::istringstream
-//
-// DESCRIPTION
-//
-//      A token_stream is-an istringstream that has the additional ability to
-//      put back previously parsed tokens used as look-ahead.  Note that it
-//      puts back whole, already-parsed tokens rather than characters so they
-//      don't have to be parsed again.
-//
-//*****************************************************************************
-{
+/**
+ * A %token_stream is-an istringstream that has the additional ability to put
+ * back previously parsed tokens used as look-ahead.  Note that it puts back
+ * whole, already-parsed tokens rather than characters so they don't have to be
+ * parsed again.
+ */
+class token_stream : public std::istringstream {
 public:
   token_stream( char const *s ) : std::istringstream( s ), top_( -1 ) { }
-  void    put_back( token const &t ) { stack_[ ++top_ ] = t; }
-  friend  token_stream& operator>>( token_stream&, token& );
+
+  void put_back( token const &t ) {
+    stack_[ ++top_ ] = t;
+  }
+
 private:
   // Our query parser needs at most 2 look-ahead tokens.
-  token   stack_[ 2 ];
-  int     top_;
+  token stack_[2];
+  int   top_;
 
-  token*  put_back() { return top_ >= 0 ? stack_ + top_-- : 0; }
+  token* put_back() {
+    return top_ >= 0 ? stack_ + top_-- : nullptr;
+  }
+
+  friend token_stream& operator>>( token_stream&, token& );
 };
 
 /**

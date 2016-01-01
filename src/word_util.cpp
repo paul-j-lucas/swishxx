@@ -46,6 +46,7 @@ bool is_ok_word( char const *word ) {
   int puncts = 0;
   int uppers = 0;
   int vowels = 0;
+
   for ( c = word; *c; ++c ) {
     if ( is_digit( *c ) ) {
       ++digits;

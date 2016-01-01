@@ -103,7 +103,7 @@ public:
   ////////// member functions /////////////////////////////////////////////////
 
   const_iterator  begin() const       { return const_iterator( ptr_ ); }
-  const_iterator  end() const         { return const_iterator( 0 ); }
+  const_iterator  end() const         { return const_iterator( nullptr ); }
   size_type       size() const;
 
 private:

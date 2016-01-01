@@ -29,7 +29,7 @@ char const *const SearchDaemon::legal_values_[] = {
   "tcp",
   "unix",
   "both",
-  0
+  nullptr
 };
 
 ///////////////////////////////////////////////////////////////////////////////

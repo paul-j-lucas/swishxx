@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      pjl_set.h
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2015  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace PJL {
 template<typename T>
 class pjl_set : public std::set<T> {
 public:
-    bool contains( T const &s ) const { return this->find( s ) != this->end(); }
+  bool contains( T const &s ) const { return this->find( s ) != this->end(); }
 };
 
 /**
@@ -51,7 +51,7 @@ public:
 template<>
 class pjl_set<char const*> : public std::set<char const*> {
 public:
-    bool contains( char const *s ) const { return find( s ) != this->end(); }
+  bool contains( char const *s ) const { return find( s ) != this->end(); }
 };
 
 typedef pjl_set<char const*> char_ptr_set;

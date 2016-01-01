@@ -27,7 +27,7 @@
 char const *const ResultsFormat::legal_values_[] = {
   "classic",
   "xml",
-  0
+  nullptr
 };
 
 ///////////////////////////////////////////////////////////////////////////////

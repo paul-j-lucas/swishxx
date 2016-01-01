@@ -46,7 +46,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-ExcludeClass      exclude_class_names;
+ExcludeClass exclude_class_names;
 
 //
 // The element_stack keeps track of all the HTML or XHTML elements we encounter

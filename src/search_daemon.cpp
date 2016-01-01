@@ -352,7 +352,7 @@ void become_daemon() {
     // Sit around and wait until one of the socket file descriptors is "ready."
     // See: [Stevens 1998], pp. 150-154.
     //
-    int const num_fds = ::select( max_fd, &rset, 0, 0, 0 );
+    int const num_fds = ::select( max_fd, &rset, nullptr, nullptr, nullptr );
     if ( !num_fds )
       continue;
     if ( num_fds == -1 ) {

@@ -50,7 +50,7 @@
 template<typename T>
 class pattern_map : public std::map<char const*,T> {
 public:
-  typedef typename std::map<char const*, T> map_type;
+  typedef typename std::map<char const*,T> map_type;
   typedef typename map_type::key_type key_type;
   typedef typename map_type::value_type value_type;
   typedef typename map_type::iterator iterator;

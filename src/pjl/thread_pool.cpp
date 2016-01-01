@@ -48,7 +48,7 @@ pthread_key_t thread_pool::thread::thread_obj_key_;
   ::pthread_setcanceltype( PTHREAD_CANCEL_DEFERRED, &cancel_type )
 
 #define RESTORE_CANCEL() \
-  ::pthread_setcanceltype( cancel_type, 0 ); \
+  ::pthread_setcanceltype( cancel_type, nullptr ); \
   ::pthread_testcancel(); }
 
 /**
@@ -67,14 +67,14 @@ pthread_key_t thread_pool::thread::thread_obj_key_;
   pthread_cleanup_push( (void (*)(void*))::pthread_mutex_unlock, (M) ); \
   ::pthread_mutex_lock( (M) ); \
   if ( D ) ; else { \
-    ::pthread_setcanceltype( cancel_type, 0 ); \
+    ::pthread_setcanceltype( cancel_type, nullptr ); \
     ::pthread_testcancel(); \
   }
 
 #define MUTEX_UNLOCK() \
   pthread_cleanup_pop( 1 ); \
   if ( defer_cancel ) { \
-    ::pthread_setcanceltype( cancel_type, 0 ); \
+    ::pthread_setcanceltype( cancel_type, nullptr ); \
     ::pthread_testcancel(); \
   } \
 }
@@ -215,7 +215,7 @@ void* thread_pool_thread_main( void *p ) {
       // Wait only a finite amount of time for a task to become available.
       //
       struct timespec future;
-      future.tv_sec = ::time( 0 ) + t->pool_.timeout_;
+      future.tv_sec = ::time( nullptr ) + t->pool_.timeout_;
       future.tv_nsec = 0;
       result = ::pthread_cond_timedwait(
         &t->pool_.q_not_empty_, &t->pool_.q_lock_, &future
@@ -295,13 +295,13 @@ thread_pool::thread::thread( thread_pool &p,
   // thread that is passed to the thread_pool constructor is created before the
   // thread_pool is fully constructed.
   //
-  if ( ::pthread_mutex_init( &run_lock_, 0 ) ) {
+  if ( ::pthread_mutex_init( &run_lock_, nullptr ) ) {
     error() << "could not init thread mutex" << endl;
     ::exit( Exit_No_Init_Thread_Mutex );
   }
   ::pthread_mutex_lock( &run_lock_ );
 
-  int const result = ::pthread_create( &thread_, 0, start_func, this );
+  int const result = ::pthread_create( &thread_, nullptr, start_func, this );
   if ( result ) {
     error() << "could not create thread" << error_string( result );
     ::exit( Exit_No_Create_Thread );
@@ -337,7 +337,7 @@ thread_pool::thread::~thread() {
     // thread-specific data so thread_pool_thread_data_cleanup() won't be
     // called when this thread terminates.
     //
-    ::pthread_setspecific( thread_obj_key_, 0 );
+    ::pthread_setspecific( thread_obj_key_, nullptr );
     //
     // Since we're not being called via the thread-specific data destructor
     // thread_pool_thread_data_cleanup(), kill our associated POSIX thread.
@@ -348,7 +348,7 @@ thread_pool::thread::~thread() {
       // minimum number of threads and it timed out waiting for a task: call
       // pthread_exit() in this case since it's cleaner than pthread_cancel().
       //
-      ::pthread_exit( 0 );
+      ::pthread_exit( nullptr );
     } else {
       //
       // This destructor is actually running in a thread that is different from
@@ -365,14 +365,14 @@ thread_pool::thread_pool( thread *prototype, int min_threads, int max_threads,
   min_threads_( min_threads ), max_threads_( max_threads ), t_busy_( 0 ),
   destructing_( false ), timeout_( timeout )
 {
-  if ( ::pthread_mutex_init( &t_busy_lock_, 0 ) ||
-       ::pthread_mutex_init( &q_lock_, 0 ) ||
-       ::pthread_mutex_init( &t_lock_, 0 ) ) {
+  if ( ::pthread_mutex_init( &t_busy_lock_, nullptr ) ||
+       ::pthread_mutex_init( &q_lock_, nullptr ) ||
+       ::pthread_mutex_init( &t_lock_, nullptr ) ) {
     error() << "could not init thread mutex" << endl;
     ::exit( Exit_No_Init_Thread_Mutex );
   }
-  if ( ::pthread_cond_init( &q_not_empty_, 0 ) ||
-       ::pthread_cond_init( &t_idle_, 0 ) ) {
+  if ( ::pthread_cond_init( &q_not_empty_, nullptr ) ||
+       ::pthread_cond_init( &t_idle_, nullptr ) ) {
     error() << "could not init thread condition" << endl;
     ::exit( Exit_No_Init_Thread_Condition );
   }

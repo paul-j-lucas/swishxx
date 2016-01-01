@@ -257,7 +257,7 @@ inline void indexer::suspend_indexing() {
 
 inline void indexer::resume_indexing () {
   if ( suspend_indexing_count_ )
-      --suspend_indexing_count_;
+    --suspend_indexing_count_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
