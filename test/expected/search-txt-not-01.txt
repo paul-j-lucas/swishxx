@@ -1,0 +1,4 @@
+# results: 3
+100 ./GNU_GPLv2.txt 17982 GNU_GPLv2.txt
+100 ./Gutenberg_License.txt 17308 Gutenberg_License.txt
+100 ./Raven,_The.txt 7284 Raven,_The.txt

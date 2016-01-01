@@ -1,0 +1,3 @@
+# results: 2
+100 ./GNU_GPLv2.txt 17982 GNU_GPLv2.txt
+37 ./Time_Machine,_The.txt 182203 Time_Machine,_The.txt

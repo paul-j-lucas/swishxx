@@ -1,0 +1,4 @@
+# results: 3
+100 ./Time_Machine,_The.txt 182203 Time_Machine,_The.txt
+42 ./GNU_GPLv2.txt 17982 GNU_GPLv2.txt
+36 ./Gutenberg_License.txt 17308 Gutenberg_License.txt

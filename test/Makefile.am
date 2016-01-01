@@ -45,6 +45,8 @@ TESTS =	tests/index-no_options.test \
 	tests/search-ResultsFormat-classic.test \
 	tests/search-ResultsFormat-xml.test \
 	tests/search-txt-01.test \
+	tests/search-txt-and-01.test \
+	tests/search-txt-and-02.test \
 	tests/search-txt-d-01.test \
 	tests/search-txt-D.test \
 	tests/search-txt-Fbad.test \
@@ -53,7 +55,10 @@ TESTS =	tests/index-no_options.test \
 	tests/search-txt-m0.test \
 	tests/search-txt-m3.test \
 	tests/search-txt-ma.test \
+	tests/search-txt-not-01.test \
+	tests/search-txt-or-01.test \
 	tests/search-txt-R.test \
+	tests/search-txt-s-01.test \
 	tests/search-txt-S.test \
 	tests/search-txt-w7,4.test \
 	tests/search-txt-w7.test \
@@ -67,6 +72,7 @@ if WITH_MAN
 TESTS+=	tests/index-man-v1.test \
 	tests/index-man-v2.test \
 	tests/index-man-v3.test \
+	tests/search-man-D.test \
 	tests/search-man-meta-01.test \
 	tests/search-man-M.test
 endif
