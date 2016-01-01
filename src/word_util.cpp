@@ -162,7 +162,7 @@ bool move_if_match( char const *&c, char const *end, char const *s,
       ++s, ++d;
   else
     while ( *s && d != end && *s == *d )
-        ++s, ++d;
+      ++s, ++d;
   if ( *s )                             // didn't match before null
     return false;
   c = d;
@@ -174,10 +174,10 @@ bool move_if_match( encoded_char_range::const_iterator &c, char const *s,
   encoded_char_range::const_iterator d = c;
   if ( ignore_case )
     while ( *s && !d.at_end() && *s == to_lower( *d ) )
-        ++s, ++d;
+      ++s, ++d;
   else
     while ( *s && !d.at_end() && *s == *d )
-        ++s, ++d;
+      ++s, ++d;
   if ( *s )                             // didn't match before null
     return false;
   c = d;
