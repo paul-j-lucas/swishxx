@@ -56,20 +56,29 @@ element_map::element_map() {
   //  ------------  ------- ------------------  ---------------
       "a",          R,      "/a",
       "abbr",       R,      "/abbr",
+      "access",     R,      "/acces",           // XHTML 2.0
       "acronym",    R,      "/acronym",
+      "action",     R,      "/action",          // XHTML 2.0
       "address",    R,      "/address",
       "applet",     R,      "/applet",          // deprecated
       "area",       F,
+      "area",       F,
+      "article",    R,      "/article",
+      "aside",      R,      "/aside",
+      "audio",      R,      "/audio",
       "b",          R,      "/b",
       "base",       F,
       "basefont",   F,                          // deprecated
+      "bdi",        R,      "/bdi",
       "bdo",        R,      "/bdo",
       "big",        R,      "/big",
       "blink",      R,      "/blink",           // nonstandard
+      "blockcode",  R,      "/blockcode",       // XHTML 2.0
       "blockquote", R,      "/blockquote",
       "body",       O,      "/body", "/html", nullptr,
       "br",         F,
       "button",     R,      "/button",
+      "canvas",     R,      "/canvas",
       "caption",    R,      "/caption",
       "center",     R,      "/center",          // deprecated
       "cite",       R,      "/cite",
@@ -82,20 +91,27 @@ element_map::element_map() {
                             "/table",
                             nullptr,
 
+      "data",       R,      "/data",
+      "datalist",   R,      "/datalist",
       "dd",         O,      "dd", "/dd", "/dl", "dt", "/dt", nullptr,
       "del",        R,      "/del",
       "dfn",        R,      "/dfn",
       "dir",        R,      "/dir",             // deprecated
+      "di",         R,      "/di",              // XHTML 2.0
       "div",        R,      "/div",
       "dl",         R,      "/dl",
       "dt",         O,      "dt", "/dt", "/dl", nullptr,
       "em",         R,      "/em",
       "embed",      R,      "/embed",           // nonstandard
       "fieldset",   R,      "/fieldset",
+      "figcaption", R,      "/figcaption",
+      "figure",     R,      "/figure",
       "font",       R,      "/font",            // deprecated
+      "footer",     R,      "/footer",
       "form",       R,      "/form",
       "frame",      F,
       "frameset",   R,      "/frameset",
+      "group",      R,      "/group",
       "h",          R,      "/h",               // XHTML 2.0
       "h1",         R,      "/h1",
       "h2",         R,      "/h2",
@@ -104,6 +120,8 @@ element_map::element_map() {
       "h5",         R,      "/h5",
       "h6",         R,      "/h6",
       "head",       O,      "body", "/body", "/head", "/html", nullptr,
+      "header",     R,      "/header",
+      "heading",    R,      "/heading",         // XHTML 2.0
       "hr",         F,
       "html",       O,      "/html", nullptr,
       "i",          R,      "/i",
@@ -115,6 +133,7 @@ element_map::element_map() {
       "isindex",    F,                          // deprecated
       "kbd",        R,      "/kbd",
       "keygen",     F,                          // nonstandard
+      "l",          R,      "/l",               // XHTML 2.0
       "label",      R,      "/label",
       "layer",      R,      "/layer",           // nonstandard
       "legend",     R,      "/legend",
@@ -122,10 +141,13 @@ element_map::element_map() {
       "line",       R,      "/line",            // XHTML 2.0
       "link",       F,
       "map",        R,      "/map",
+      "mark",       R,      "/mark",
       "menu",       R,      "/menu",            // deprecated
       "meta",       F,
+      "meter",      R,      "/meter",
       "multicol",   R,      "/multicol",        // nonstandard
       "name",       R,      "/name",            // XHTML 2.0
+      "nav",        R,      "/nav",
       "nl",         R,      "/nl",              // XHTML 2.0
       "nobr",       F,                          // nonstandard
       "noembed",    R,      "/noembed",         // nonstandard
@@ -140,6 +162,8 @@ element_map::element_map() {
                             "option", "/option",
                             "/select",
                             nullptr,
+
+      "output",     R,      "/output",
 
       "p",          O,      "address", "/address",
                             "applet", "/applet",
@@ -194,15 +218,16 @@ element_map::element_map() {
       "param",      F,
       "plaintext",  F,                          // deprecated
       "pre",        R,      "/pre",
+      "progress",   R,      "/progress",
       "q",          R,      "/q",               // deprecated
       "quote",      R,      "/quote",           // XHTML 2.0
 
-      "ruby",       R,      "/ruby",            // ruby elements
       "rb",         R,      "/rb",
       "rbc",        R,      "/rbc",
       "rp",         R,      "/rp",
       "rt",         R,      "/rt",
       "rtc",        R,      "/rtc",
+      "ruby",       R,      "/ruby",            // ruby elements
 
       "s",          R,      "/s",               // deprecated
       "samp",       R,      "/samp",
@@ -211,12 +236,14 @@ element_map::element_map() {
       "select",     R,      "/select",
       "server",     R,      "/server",          // nonstandard
       "small",      R,      "/small",
+      "source",     F,
       "spacer",     F,                          // nonstandard
       "span",       R,      "/span",
       "strike",     R,      "/strike",          // deprecated
       "strong",     R,      "/strong",
       "style",      R,      "/style",
       "sub",        R,      "/sub",
+      "summary",    R,      "/summary",         // XHTML 2.0
       "sup",        R,      "/sup",
       "table",      R,      "/table",
       "tbody",      O,      "tbody", "/tbody", nullptr,
@@ -229,6 +256,7 @@ element_map::element_map() {
                             "tr", "/tr",
                             nullptr,
 
+      "template",   R,      "/template",
       "textarea",   R,      "/textarea",
       "tfoot",      O,      "tbody", "/tfoot", "thead", nullptr,
 
@@ -241,6 +269,7 @@ element_map::element_map() {
                             nullptr,
 
       "thead",      O,      "tbody", "tfoot", "/thead", nullptr,
+      "time",       R,      "/time",
       "title",      R,      "/title",
 
       "tr",         O,      "tbody", "/tbody",
@@ -250,10 +279,12 @@ element_map::element_map() {
                             "/table",
                             nullptr,
 
+      "track",      F,
       "tt",         R,      "/tt",
       "u",          R,      "/u",               // deprecated
       "ul",         R,      "/ul",
       "var",        R,      "/var",
+      "video",      R,      "/video",
       "wbr",        F,                          // nonstandard
       "xmp",        R,      "/xmp",             // deprecated
 
