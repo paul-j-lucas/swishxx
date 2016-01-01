@@ -71,7 +71,10 @@ TESTS+= tests/index-H.test \
 	tests/index-html-v1.test \
 	tests/index-html-v2.test \
 	tests/index-html-v3.test \
-	tests/search-html-D.test
+	tests/search-html-D.test \
+	tests/search-html-no_index-01.test \
+	tests/index-html-no_index.test \
+	tests/search-html-no_index-02.test
 endif
 
 if WITH_MAN
