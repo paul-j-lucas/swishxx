@@ -350,7 +350,7 @@ char const* HTML_indexer::find_title( mmap_file const &file ) const {
   new_file();
 
   int tag_index = 0;
-  int lines = 0;
+  unsigned lines = 0;
 
   //
   // <TITLE>This is a title</TITLE>

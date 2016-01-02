@@ -564,14 +564,15 @@ int main( int argc, char *argv[] ) {
  * @param file_count The number of files the word occurs in.
  * @return Returns \c true only if the word is too frequent.
  */
-bool is_too_frequent( char const *word, int file_count ) {
+bool is_too_frequent( char const *word, unsigned file_count ) {
   if ( file_count > word_files_max ) {
     if ( verbosity > 2 )
       cout << "\n  \"" << word << "\" discarded (" << file_count << " files)"
            << flush;
     return true;
   }
-  int const wfp = static_cast<int>( file_count * 100 / file_info::num_files() );
+  unsigned const wfp =
+    static_cast<unsigned>( file_count * 100 / file_info::num_files() );
   if ( wfp >= word_percent_max ) {
     if ( verbosity > 2 )
       cout << "\n  \"" << word << "\" discarded (" << wfp << "%)" << flush;

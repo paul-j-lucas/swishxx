@@ -382,8 +382,9 @@ static void dump_word_window( char const *word, int window_size, int match,
  * @param out The ostream to print the results to.
  * @param err The ostream to print errors to.
  */
-static bool search( char const *query, int skip_results, int max_results,
-                    char const *results_format, ostream &out, ostream &err ) {
+static bool search( char const *query, unsigned skip_results,
+                    unsigned max_results, char const *results_format,
+                    ostream &out, ostream &err ) {
   token_stream    query_stream( query );
   search_results  results;
   stop_word_set   stop_words_found;

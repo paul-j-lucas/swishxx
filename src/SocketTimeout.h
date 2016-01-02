@@ -24,21 +24,22 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %SocketTimeout is-a conf&lt;int&gt; containing the number of seconds a
- * client has to complete a search request before being disconnected.  This is
- * to prevent a client from connecting, not completing a request, and causing
- * the thread servicing the request to wait forever.
+ * A %SocketTimeout is-a conf&lt;unsigned&gt; containing the number of seconds
+ * a client has to complete a search request before being disconnected.  This
+ * is to prevent a client from connecting, not completing a request, and
+ * causing the thread servicing the request to wait forever.
  *
  * This is the same as index's \c -o command-line option.
  */
-class SocketTimeout : public conf<int> {
+class SocketTimeout : public conf<unsigned> {
 public:
-  SocketTimeout() : conf<int>( "SocketTimeout", SocketTimeout_Default, 2 ) { }
+  SocketTimeout() :
+    conf<unsigned>( "SocketTimeout", SocketTimeout_Default, 2 ) { }
   CONF_INT_ASSIGN_OPS( SocketTimeout )
 };
 

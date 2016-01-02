@@ -258,8 +258,8 @@ void near_node::eval( search_results &results ) {
 
         ////////// Are words near each other? /////////////////////////////////
 
-        int pdi[2];                     // pos_deltas_[i] index
-        int pos[2];                     // absolute position for file[i]
+        unsigned pdi[2];                // pos_deltas_[i] index
+        unsigned pos[2];                // absolute position for file[i]
         for ( int i = 0; i < 2; ++i ) {
           pdi[i] = 0;
           pos[i] = file[i]->pos_deltas_[0];
@@ -409,8 +409,8 @@ query_node* near_node::distributor::operator()( query_node *node ) const {
 
             ////////// Are words near each other? /////////////////////////////
 
-            int pdi[2];                 // pos_deltas_[i] index
-            int pos[2];                 // absolute position for file[i]
+            unsigned pdi[2];            // pos_deltas_[i] index
+            unsigned pos[2];            // absolute position for file[i]
             for ( int i = 0; i < 2; ++i ) {
               pdi[i] = 0;
               pos[i] = file[i]->pos_deltas_[0];
@@ -439,7 +439,7 @@ query_node* near_node::distributor::operator()( query_node *node ) const {
 found_near:
         ++file[0];
         if ( file[1] != list1.end() )
-            ++file[1];
+          ++file[1];
       } // while
     } // for
   } // for
@@ -451,7 +451,7 @@ void not_node::eval( search_results &results ) {
   search_results child_results;
   child_->eval( child_results );
 
-  for ( int i = 0; i < files.size(); ++i )
+  for ( size_t i = 0; i < files.size(); ++i )
     if ( child_results.find( i ) == child_results.end() )
       results[i] = 100;
 }

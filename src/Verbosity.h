@@ -23,19 +23,19 @@
 #define Verbosity_H
 
 // local
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %Verbosity is-a conf&lt;int&gt; containing the verbosity level, i.e., how
- * much information to print during either indexing or extraction.
+ * A %Verbosity is-a conf&lt;unsigned&gt; containing the verbosity level, i.e.,
+ * how much information to print during either indexing or extraction.
  *
  * This is the same as either index's or extract's \c -v command-line option.
  */
-class Verbosity : public conf<int> {
+class Verbosity : public conf<unsigned> {
 public:
-  Verbosity() : conf<int>( "Verbosity", 0, 0, 4 ) { }
+  Verbosity() : conf<unsigned>( "Verbosity", 0, 0, 4 ) { }
   CONF_INT_ASSIGN_OPS( Verbosity )
 };
 

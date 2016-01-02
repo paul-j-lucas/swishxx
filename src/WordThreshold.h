@@ -24,23 +24,24 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %WordThreshold is-a \c conf<int> containing the word count past which
- * partial indicies are generated and merged since all the words are too big to
- * fit into memory at the same time.  See also the comment in config.h for
- * WordThreshold_Default.
+ * A %WordThreshold is-a \c conf&lt;unsigned&gt; containing the word count past
+ * which partial indicies are generated and merged since all the words are too
+ * big to fit into memory at the same time.  See also the comment in config.h
+ * for WordThreshold_Default.
  *
  * Only the super-user can specify a value larger than the compiled-in default.
  *
  * This is the same as index's \c -W command-line option.
  */
-class WordThreshold : public conf<int> {
+class WordThreshold : public conf<unsigned> {
 public:
-  WordThreshold() : conf<int>( "WordThreshold", WordThreshold_Default, 100 ) { }
+  WordThreshold() :
+    conf<unsigned>( "WordThreshold", WordThreshold_Default, 100 ) { }
   CONF_INT_ASSIGN_OPS( WordThreshold );
 
 private:

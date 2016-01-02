@@ -148,7 +148,7 @@ bool mail_indexer::boundary_cmp( char const *c, char const *end,
 char const* mail_indexer::find_title( mmap_file const &file ) const {
   new_file();
 
-  int lines = 0;
+  unsigned lines = 0;
 
   mmap_file::const_iterator c = file.begin();
   while ( c != file.end() ) {

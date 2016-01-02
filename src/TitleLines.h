@@ -24,20 +24,21 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 #include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %TitleLines is-a conf&lt;int&gt; containing the number of lines to look
- * into a file for its "title" (whatever that means for a given file format).
+ * A %TitleLines is-a conf&lt;unsigned&gt; containing the number of lines to
+ * look into a file for its "title" (whatever that means for a given file
+ * format).
  *
  * This is the same as index's \c -t command-line option.
  */
-class TitleLines : public conf<int> {
+class TitleLines : public conf<unsigned> {
 public:
-  TitleLines() : conf<int>( "TitleLines", TitleLines_Default ) { }
+  TitleLines() : conf<unsigned>( "TitleLines", TitleLines_Default ) { }
   CONF_INT_ASSIGN_OPS( TitleLines )
 };
 

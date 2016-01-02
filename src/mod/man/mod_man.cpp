@@ -134,8 +134,8 @@ static void parse_backslash( char const *&c, char const *end ) {
 ////////// member functions ///////////////////////////////////////////////////
 
 char const* man_indexer::find_title( mmap_file const &file ) const {
-  int   lines = 0;
-  bool  newline = true;
+  unsigned  lines = 0;
+  bool      newline = true;
 
   for ( auto c = file.begin(); c != file.end(); ) {
     if ( newline && ++lines > num_title_lines ) {

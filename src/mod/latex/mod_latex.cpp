@@ -85,7 +85,7 @@ static bool find_match( encoded_char_range::const_iterator &c, char left ) {
 ////////// member functions ///////////////////////////////////////////////////
 
 char const* LaTeX_indexer::find_title( mmap_file const &file ) const {
-  int lines = 0;
+  unsigned lines = 0;
 
   encoded_char_range::const_iterator c( file.begin(), file.end() );
   while ( !c.at_end() ) {

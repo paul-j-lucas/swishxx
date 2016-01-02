@@ -24,19 +24,19 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %ThreadsMin is-a conf&lt;int&gt; containing the minimum number of threads
- * that will exist at any one time to service clients
+ * A %ThreadsMin is-a conf&lt;unsigned&gt; containing the minimum number of
+ * threads that will exist at any one time to service clients
  *
  * This is the same as search's \c -t command-line option.
  */
-class ThreadsMin : public conf<int> {
+class ThreadsMin : public conf<unsigned> {
 public:
-  ThreadsMin() : conf<int>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
+  ThreadsMin() : conf<unsigned>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
   CONF_INT_ASSIGN_OPS( ThreadsMin )
 };
 

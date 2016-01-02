@@ -198,8 +198,8 @@ inline bool is_symbolic_link( std::string const &path ) {
 //
 //*****************************************************************************
 
-inline int pjl_abs( int n ) {
-  return n >= 0 ? n : -n;
+inline unsigned pjl_abs( int n ) {
+  return static_cast<unsigned>( n >= 0 ? n : -n );
 }
 
 inline std::ostream& error( std::ostream &o = std::cerr ) {

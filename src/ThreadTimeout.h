@@ -24,19 +24,19 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %ThreadTimeout is-a conf&lt;int&gt; containing the number of seconds until
- * an idle spare thread times out and destroys itself.
+ * A %ThreadTimeout is-a conf&lt;unsigned&gt; containing the number of seconds
+ * until an idle spare thread times out and destroys itself.
  *
  * This is the same as index's \c -o command-line option.
  */
-class ThreadTimeout : public conf<int> {
+class ThreadTimeout : public conf<unsigned> {
 public:
-  ThreadTimeout() : conf<int>( "ThreadTimeout", ThreadTimeout_Default ) { }
+  ThreadTimeout() : conf<unsigned>( "ThreadTimeout", ThreadTimeout_Default ) { }
   CONF_INT_ASSIGN_OPS( ThreadTimeout )
 };
 

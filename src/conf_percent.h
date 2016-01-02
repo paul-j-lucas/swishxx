@@ -23,26 +23,26 @@
 #define conf_percent_H
 
 // local
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %conf_percent is-a conf&lt;int&gt; for containing the value of an integer
- * either an as absolute number or a percentage.
+ * A %conf_percent is-a conf&lt;unsigned&gt; for containing the value of an
+ * integer either an as absolute number or a percentage.
  */
-class conf_percent : public conf<int> {
+class conf_percent : public conf<unsigned> {
 public:
-  int operator()( int size ) {
+  value_type operator()( value_type size ) {
     return size + (is_percentage_ ?
-      size * operator int() / 100 : operator int()
+      size * operator value_type() / 100 : operator value_type()
     );
   }
 
 protected:
-  conf_percent( char const *name, int default_value, int min = 0,
-                int max = std::numeric_limits<int>::max() ) :
-    conf<int>( name, default_value, min, max )
+  conf_percent( char const *name, value_type default_value, value_type min = 0,
+                value_type max = std::numeric_limits<value_type>::max() ) :
+    conf<unsigned>( name, default_value, min, max )
   {
   }
 
@@ -56,7 +56,7 @@ private:
 };
 
 #define CONF_PERCENT_ASSIGN_OPS(T)        \
-  T& operator=( int i ) {                 \
+  T& operator=( value_type i ) {                 \
     conf_percent::operator=( i );         \
     return *this;                         \
   }                                       \

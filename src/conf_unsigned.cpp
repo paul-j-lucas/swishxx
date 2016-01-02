@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/conf_int.cpp
+**      src/conf_unsigned.cpp
 **
 **      Copyright (C) 1998-2015  Paul J. Lucas
 **
@@ -21,7 +21,7 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 #include "exit_codes.h"
 #include "util.h"
 
@@ -38,7 +38,8 @@ extern char const*  me;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-conf<int>::conf( char const *name, int default_value, int min, int max ) :
+conf<unsigned>::conf( char const *name, value_type default_value,
+                      value_type min, value_type max ) :
   conf_var( name ),
   default_value_( default_value ), min_( min ), max_( max ),
   value_( default_value )
@@ -46,7 +47,7 @@ conf<int>::conf( char const *name, int default_value, int min, int max ) :
   // do nothing else
 }
 
-conf<int>& conf<int>::operator=( int new_value ) {
+conf<unsigned>& conf<unsigned>::operator=( value_type new_value ) {
   if ( new_value >= min_ && new_value <= max_ ) {
     value_ = new_value;
     return *this;
@@ -55,7 +56,7 @@ conf<int>& conf<int>::operator=( int new_value ) {
   error() << '"' << name() << "\" value \""
           << new_value << "\" not in range [" << min_ << '-';
 
-  if ( max_ == numeric_limits<int>::max() )
+  if ( max_ == numeric_limits<value_type>::max() )
     cerr << "infinity";
   else
     cerr << max_;
@@ -64,18 +65,18 @@ conf<int>& conf<int>::operator=( int new_value ) {
   ::exit( Exit_Config_File );
 }
 
-void conf<int>::parse_value( char *line ) {
+void conf<unsigned>::parse_value( char *line ) {
   if ( !line || !*line ) {
     error() << '"' << name() << "\" has no value\n";
     ::exit( Exit_Config_File );
   }
   unique_ptr<char[]> const lower( to_lower_r( line ) );
   if ( !::strcmp( lower.get(), "infinity" ) ) {
-    operator=( numeric_limits<int>::max() );
+    operator=( numeric_limits<value_type>::max() );
     return;
   }
   int const n = ::atoi( line );
-  if ( n || *line == '0' ) {
+  if ( n >= 0 || *line == '0' ) {
     operator=( n );
     return;
   }
@@ -84,7 +85,7 @@ void conf<int>::parse_value( char *line ) {
   ::exit( Exit_Config_File );
 }
 
-void conf<int>::reset() {
+void conf<unsigned>::reset() {
   value_ = default_value_;
 }
 

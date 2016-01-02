@@ -23,7 +23,7 @@
 #define WordFilesMax_H
 
 // local
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 // standard
 #include <climits>
@@ -31,15 +31,19 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A WordFilesMax is-a conf<int> containing the maximum number of files a
- * word may occur in before it is discarded as being too frequent.
+ * A WordFilesMax is-a conf&lt;unsigned&gt; containing the maximum number of
+ * files a word may occur in before it is discarded as being too frequent.
  *
  * This is the same as index's \c -f command-line option.
  */
-class WordFilesMax : public conf<int> {
+class WordFilesMax : public conf<unsigned> {
 public:
   WordFilesMax() :
-    conf<int>( "WordFilesMax", std::numeric_limits<int>::max(), 2 ) { }
+    conf<unsigned>(
+      "WordFilesMax", std::numeric_limits<value_type>::max(), 2
+    )
+  {
+  }
   CONF_INT_ASSIGN_OPS( WordFilesMax )
 };
 

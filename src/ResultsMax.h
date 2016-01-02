@@ -24,19 +24,19 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %ResultsMax is-a conf_int containing the maximum number of results to
+ * A %ResultsMax is-a conf_unsigned containing the maximum number of results to
  * return from a search.
  *
  * This is the same as search's -m command-line option.
  */
-class ResultsMax : public conf<int> {
+class ResultsMax : public conf<unsigned> {
 public:
-  ResultsMax() : conf<int>( "ResultsMax", ResultsMax_Default ) { }
+  ResultsMax() : conf<unsigned>( "ResultsMax", ResultsMax_Default ) { }
   CONF_INT_ASSIGN_OPS( ResultsMax )
 };
 

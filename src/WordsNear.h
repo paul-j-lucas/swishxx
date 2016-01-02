@@ -25,7 +25,7 @@
 #define WordsNear_H
 
 // local
-#include "conf_int.h"
+#include "conf_unsigned.h"
 #include "config.h"
 
 // standard
@@ -34,16 +34,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %WordsNear is-a conf&lt;int&gt; containing the maximum number of words
+ * A %WordsNear is-a conf&lt;unsigned&gt; containing the maximum number of words
  * apart two words can be to be considered "near" each other.
  *
  * This is the same as search's \c -n command-line option.
  */
-class WordsNear : public conf<int> {
+class WordsNear : public conf<unsigned> {
 public:
   WordsNear() :
-    conf<int>(
-      "WordsNear", WordsNear_Default, 1, std::numeric_limits<int>::max()
+    conf<unsigned>(
+      "WordsNear", WordsNear_Default, 1, std::numeric_limits<value_type>::max()
     )
   {
   }

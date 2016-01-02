@@ -24,20 +24,20 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 #include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %FilesReserve is-a conf&lt;int&gt; containing the initial number of files
- * to reserve space for; see \c file_info.c for details.
+ * A %FilesReserve is-a conf&lt;unsigned&gt; containing the initial number of
+ * files to reserve space for; see \c file_info.c for details.
  *
  * This is the same as index's \c -F command-line option.
  */
-class FilesReserve : public conf<int> {
+class FilesReserve : public conf<unsigned> {
 public:
-  FilesReserve() : conf<int>( "FilesReserve", FilesReserve_Default ) { }
+  FilesReserve() : conf<unsigned>( "FilesReserve", FilesReserve_Default ) { }
   CONF_INT_ASSIGN_OPS( FilesReserve )
 };
 

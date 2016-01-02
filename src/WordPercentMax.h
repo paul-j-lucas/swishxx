@@ -24,20 +24,21 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %WordPercentMax is-a conf&lt;int&gt; containing the maximum percentage of
- * files a word may occur in before it is discarded as being too frequent.
+ * A %WordPercentMax is-a conf&lt;unsigned&gt; containing the maximum
+ * percentage of files a word may occur in before it is discarded as being too
+ * frequent.
  *
  * This is the same as index's \c -p command-line option.
  */
-class WordPercentMax : public conf<int> {
+class WordPercentMax : public conf<unsigned> {
 public:
   WordPercentMax() :
-    conf<int>( "WordPercentMax", WordPercentMax_Default, 1, 101 ) { }
+    conf<unsigned>( "WordPercentMax", WordPercentMax_Default, 1, 101 ) { }
   CONF_INT_ASSIGN_OPS( WordPercentMax )
 };
 

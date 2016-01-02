@@ -36,8 +36,8 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 void WordThreshold::parse_value( char *line ) {
-  conf<int>::parse_value( line );
-  if ( operator int() > WordThreshold_Default && ::geteuid() != 0 ) {
+  conf<unsigned>::parse_value( line );
+  if ( operator unsigned() > WordThreshold_Default && ::geteuid() != 0 ) {
     error() << "value may be increased only by root: permission denied" << endl;
     ::exit( Exit_Not_Root );
   }

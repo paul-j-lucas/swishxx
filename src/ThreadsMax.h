@@ -24,19 +24,19 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %ThreadsMax is-a conf&lt;int&gt; containing the maximum number of threads
- * that will exist at any one time to service clients
+ * A %ThreadsMax is-a conf&lt;unsigned&gt; containing the maximum number of
+ * threads that will exist at any one time to service clients
  *
  * This is the same as search's \c -T command-line option.
  */
-class ThreadsMax : public conf<int> {
+class ThreadsMax : public conf<unsigned> {
 public:
-  ThreadsMax() : conf<int>( "ThreadsMax", ThreadsMax_Default, 1 ) { }
+  ThreadsMax() : conf<unsigned>( "ThreadsMax", ThreadsMax_Default, 1 ) { }
   CONF_INT_ASSIGN_OPS( ThreadsMax )
 };
 

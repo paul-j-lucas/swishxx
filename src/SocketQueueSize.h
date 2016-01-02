@@ -24,13 +24,13 @@
 
 // local
 #include "config.h"
-#include "conf_int.h"
+#include "conf_unsigned.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %SocketQueueSize is-a conf&lt;int&gt; containing the maximum number of
- * connections allowed to queue by the kernel for a socket.
+ * A %SocketQueueSize is-a conf&lt;unsigned&gt; containing the maximum number
+ * of connections allowed to queue by the kernel for a socket.
  *
  * This is the same as search's \c -q command-line option.
  *
@@ -38,10 +38,10 @@
  *    W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
  *    Prentice-Hall, Upper Saddle River, NJ, 1998.  Section 4.5.
  */
-class SocketQueueSize : public conf<int> {
+class SocketQueueSize : public conf<unsigned> {
 public:
   SocketQueueSize() :
-    conf<int>( "SocketQueueSize", SocketQueueSize_Default, 1 ) { }
+    conf<unsigned>( "SocketQueueSize", SocketQueueSize_Default, 1 ) { }
   CONF_INT_ASSIGN_OPS( SocketQueueSize )
 };
 

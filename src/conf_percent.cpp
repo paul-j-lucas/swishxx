@@ -33,7 +33,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 void conf_percent::parse_value( char *line ) {
-	conf<int>::parse_value( line );
+	conf<unsigned>::parse_value( line );
 	if ( (is_percentage_ = !!::strchr( line, '%' )) ) {
 		int const value = *this;
 		if ( value < 0 || value > 101 ) {
