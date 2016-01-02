@@ -244,13 +244,13 @@ AM_CONDITIONAL([WITH_UTF8], [test x$enable_utf8 = xyes])
 # Miscellaneous.
 AC_LANG(C++)
 AX_CXXFLAGS_WARN_ALL
-AX_CHECK_COMPILE_FLAG([-Wcast-align],[CXXFLAGS="$CXXFLAGS -Wcast-align"])
-AX_CHECK_COMPILE_FLAG([-Wcast-qual],[CXXFLAGS="$CXXFLAGS -Wcast-qual"])
-AX_CHECK_COMPILE_FLAG([-Wextra],[CXXFLAGS="$CXXFLAGS -Wextra"])
-AX_CHECK_COMPILE_FLAG([-Winline],[CXXFLAGS="$CXXFLAGS -Winline"])
-AX_CHECK_COMPILE_FLAG([-Wnon-virtual-dtor],[CXXFLAGS="$CXXFLAGS -Wnon-virtual-dtor"])
-AX_CHECK_COMPILE_FLAG([-Wredundant-decls],[CXXFLAGS="$CXXFLAGS -Wredundant-decls"])
-AX_CHECK_COMPILE_FLAG([-Wwrite-strings],[CXXFLAGS="$CXXFLAGS -Wwrite-strings"])
+AX_CXXFLAGS_GCC_OPTION([-Wcast-align])
+AX_CXXFLAGS_GCC_OPTION([-Wcast-qual])
+AX_CXXFLAGS_GCC_OPTION([-Wextra])
+AX_CXXFLAGS_GCC_OPTION([-Winline])
+AX_CXXFLAGS_GCC_OPTION([-Wnon-virtual-dtor])
+AX_CXXFLAGS_GCC_OPTION([-Wredundant-decls])
+AX_CXXFLAGS_GCC_OPTION([-Wwrite-strings])
 
 # Generate files.
 AH_TOP([#ifndef config_H
