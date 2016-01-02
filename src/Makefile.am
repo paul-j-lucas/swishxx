@@ -32,15 +32,11 @@ if WITH_DECODING
 index_SOURCES += encoded_char.cpp
 endif
 
-INIT_MODULES_SH = $(top_srcdir)/config/init_modules-sh
+init_modules.cpp: mod/*/mod_*.h init_modules-sh
+	init_modules-sh > $@ || { rm -f $@; exit 1; }
 
-init_modules.cpp: mod/*/mod_*.h $(INIT_MODULES_SH)
-	$(INIT_MODULES_SH) > $@ || { rm -f $@; exit 1; }
-
-INIT_MOD_VARS_SH = $(top_srcdir)/config/init_mod_vars-sh
-
-init_mod_vars.cpp: mod/*/vars $(INIT_MOD_VARS_SH)
-	$(INIT_MOD_VARS_SH) > $@ || { rm -f $@; exit 1; }
+init_mod_vars.cpp: mod/*/vars init_mod_vars-sh
+	init_mod_vars-sh > $@ || { rm -f $@; exit 1; }
 
 index_LDADD =
 
