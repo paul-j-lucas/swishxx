@@ -388,15 +388,15 @@ void id3v2_frame::parse_sylt() {
   content_begin_ += 3;                  // skip language
   content_begin_ += 1;                  // skip time-stamp format
 
-  if ( associate_meta && *content_begin_ &&
-       *content_begin_ < NUM_ELEMENTS( content_type_table ) ) {
+  size_t const content_type = *content_begin_;
+  if ( associate_meta && content_type &&
+       content_type < NUM_ELEMENTS( content_type_table ) ) {
     //
     // Do not index the words in the value of the content type if either the
     // name of the content descriptor is among the set of meta names to exclude
     // or not among the set to include.
     //
-    size_t const i = *content_begin_;
-    meta_id_ = indexer::find_meta( content_type_table[ i ] );
+    meta_id_ = indexer::find_meta( content_type_table[ content_type ] );
     if ( meta_id_ == Meta_ID_None )
       return;
   }
