@@ -26,6 +26,8 @@
 
 // standard
 #include <cassert>
+#include <cerrno>
+#include <cstdlib>                      /* for strtoul(3) */
 #include <cstring>
 
 using namespace PJL;
@@ -35,6 +37,22 @@ char_buffer_pool<128,5> lower_buf;
 struct stat             stat_buf;       // someplace to do a stat(2) in
 
 ///////////////////////////////////////////////////////////////////////////////
+
+unsigned atou( char const *s, char const *label ) {
+  assert( s );
+  if ( *s && *s != '-' ) {              // strtoul(3) wrongly allows '-'
+    char *end = nullptr;
+    errno = 0;
+    unsigned long const n = ::strtoul( s, &end, 0 );
+    if ( !errno && !*end )
+      return n ;
+  }
+  error() << '"' << s << "\": invalid unsigned integer";
+  if ( label )
+    cerr << " for " << label;
+  cerr << endl;
+  ::exit( Exit_Config_File );
+}
 
 bool parse( char const *s, bool *result ) {
   assert( s );

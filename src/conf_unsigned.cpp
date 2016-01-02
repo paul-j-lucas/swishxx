@@ -26,7 +26,7 @@
 #include "util.h"
 
 // standard
-#include <cstdlib>                      /* for atoi(3), exit(3) */
+#include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <iostream>
 #include <memory>                       /* for unique_ptr */
@@ -75,14 +75,7 @@ void conf<unsigned>::parse_value( char *line ) {
     operator=( numeric_limits<value_type>::max() );
     return;
   }
-  int const n = ::atoi( line );
-  if ( n >= 0 || *line == '0' ) {
-    operator=( n );
-    return;
-  }
-
-  error() << '"' << name() << "\" has a non-numeric value\n";
-  ::exit( Exit_Config_File );
+  operator=( atou( line, name() ) );
 }
 
 void conf<unsigned>::reset() {

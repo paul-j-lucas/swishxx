@@ -22,6 +22,7 @@
 // local
 #include "exit_codes.h"
 #include "SocketAddress.h"
+#include "util.h"
 
 // standard
 #include <iostream>
@@ -29,7 +30,7 @@
 #include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <netinet/in.h>
 #include <cstring>
-#include <cstdlib>                      /* for atoi(3), exit(3) */
+#include <cstdlib>                      /* for exit(3) */
 
 using namespace std;
 
@@ -61,9 +62,9 @@ void SocketAddress::parse_value( char *line ) {
   if ( colon ) {
     *colon = '\0';
     convert_host( line );
-    port_ = ::atoi( colon + 1 );
+    port_ = atou( colon + 1, "port" );
   } else {
-    port_ = ::atoi( line );
+    port_ = atou( line, "port" );
   }
 
   if ( !port_ )

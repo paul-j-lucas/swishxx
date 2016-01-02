@@ -62,6 +62,17 @@ extern struct stat  stat_buf;           // someplace to do a stat(2) in
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Parses a C string for an unsigned integer.
+ * If an unsigned integer can't be parsed, an error message is printed
+ * and the program exits.
+ *
+ * @param s The C string to parse.
+ * @param label If given, the error message will will include this.
+ * @return Returns the parsed unsigned integer.
+ */
+unsigned atou( char const *s, char const *label = nullptr );
+
+/**
  * Finds the next newline (CR or LF) in a character sequence.
  *
  * @param c The iterator to use.

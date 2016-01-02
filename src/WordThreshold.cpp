@@ -28,7 +28,7 @@
 
 // standard
 #include <sys/types.h>                  /* needed by FreeBSD systems */
-#include <cstdlib>                      /* for atoi(3), exit(3) */
+#include <cstdlib>                      /* for exit(3) */
 #include <unistd.h>                     /* for geteuid(2) */
 
 using namespace std;
