@@ -86,14 +86,14 @@ struct id3v2_frame {
     hr_end_of_frames
   };
 
-  typedef void (id3v2_frame::*parser)();
+  typedef void (id3v2_frame::*parser_ptr)();
 
   char            id_[5];
   size_type       size_;
   unsigned short  flags_;
   int             meta_id_;
-  char const*     content_begin_;
-  char const*     content_end_;
+  char const     *content_begin_;
+  char const     *content_end_;
   char            unsynchronized_buf_[ 4096 ];
   char            uncompressed_buf_[ 4096 ];
 
@@ -104,7 +104,7 @@ struct id3v2_frame {
    * specification, it must be in lower case.
    * @return Returns said parser or null if the frame ID is invalid.
    */
-  static parser find_parser( char const* );
+  static parser_ptr find_parser( char const* );
 
   /**
    * Parses a COMM ID3v2 frame and index the text in it.  This function is also

@@ -52,6 +52,8 @@ encoded_char_range::value_type
 encoding_base64( encoded_char_range::const_pointer begin,
                  encoded_char_range::const_pointer &c,
                  encoded_char_range::const_pointer end ) {
+  typedef encoded_char_range::difference_type difference_type;
+
   //
   // This code is based on the decode_base64() function as part of "encdec 1.1"
   // by Jörgen Hägg <jh@efd.lth.se>, 1993.
@@ -65,8 +67,8 @@ encoding_base64( encoded_char_range::const_pointer begin,
   // See if the pointer is less than a buffer's-worth away from the previous
   // pointer: if so, simply return the already-decoded character.
   //
-  encoded_char_range::difference_type delta = c - decoder.prev_c_;
-  if ( delta >= 0 && delta < sizeof buf ) {
+  difference_type delta = c - decoder.prev_c_;
+  if ( delta >= 0 && delta < static_cast<difference_type>( sizeof buf ) ) {
     //
     // We advance the pointer 1 position for the first 2 characters but 2
     // positions for the 3rd since we have to skip over the 4th character used
@@ -115,7 +117,7 @@ reached_end:
   // Calculate where the start of the group-of-4 encoded characters is.
   //
   delta = c - line_begin;
-  encoded_char_range::difference_type const delta4 = delta & ~3u;
+  difference_type const delta4 = delta & ~3u;
   encoded_char_range::const_pointer const group = line_begin + delta4;
 
   if ( group + 1 == end || group + 2 == end || group + 3 == end ) {

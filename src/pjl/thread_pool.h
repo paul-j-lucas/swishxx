@@ -167,8 +167,8 @@ public:
   * @param timeout The number of seconds for a thread to wait for a task before
   * committing suicide, but only if more than \a min_threads presently exist.
   */
-  thread_pool( thread *prototype, int min_threads, int max_threads,
-               int timeout );
+  thread_pool( thread *prototype, unsigned min_threads, unsigned max_threads,
+               unsigned timeout );
 
   ~thread_pool();
 
@@ -186,9 +186,9 @@ public:
    */
   bool new_task( thread::argument_type arg, bool block = false );
 
-  void max_threads( int n ) { max_threads_ = n; }
-  void min_threads( int n ) { min_threads_ = n; }
-  void timeout( int t )     { timeout_ = t; }
+  void max_threads( unsigned n ) { max_threads_ = n; }
+  void min_threads( unsigned n ) { min_threads_ = n; }
+  void timeout( unsigned t )     { timeout_ = t; }
   //      Adjust the thread pool's parameters.  Such adjustments do not occur
   //      immediately, however; rather, the pool slowly adjusts as tasks are
   //      completed.
@@ -197,20 +197,20 @@ private:
   typedef std::set<thread*> thread_set;
   typedef std::queue<thread::argument_type> task_queue_type;
 
-  int volatile    min_threads_, max_threads_;
-  thread_set      threads_;
-  pthread_mutex_t t_lock_;
+  unsigned volatile min_threads_, max_threads_;
+  thread_set        threads_;
+  pthread_mutex_t   t_lock_;
 
-  int volatile    t_busy_;              // how many are busy
-  pthread_mutex_t t_busy_lock_;
-  pthread_cond_t  t_idle_;              // a thread is idle
+  unsigned volatile t_busy_;            // how many are busy
+  pthread_mutex_t   t_busy_lock_;
+  pthread_cond_t    t_idle_;            // a thread is idle
 
-  task_queue_type queue_;
-  pthread_mutex_t q_lock_;
-  pthread_cond_t  q_not_empty_;         // a task is available
+  task_queue_type   queue_;
+  pthread_mutex_t   q_lock_;
+  pthread_cond_t    q_not_empty_;       // a task is available
 
-  bool            destructing_;         // destructor called?
-  int volatile    timeout_;
+  bool              destructing_;       // destructor called?
+  unsigned volatile timeout_;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

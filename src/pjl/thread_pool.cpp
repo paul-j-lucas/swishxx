@@ -272,7 +272,7 @@ void* thread_pool_thread_main( void *p ) {
  */
 void thread_pool_thread_once() {
   int const result = ::pthread_key_create(
-      &thread_pool::thread::thread_obj_key_, thread_pool_thread_data_cleanup
+    &thread_pool::thread::thread_obj_key_, thread_pool_thread_data_cleanup
   );
   if ( result ) {
     error() << "could not create thread key" << error_string( result ) << endl;
@@ -360,8 +360,8 @@ thread_pool::thread::~thread() {
   RESTORE_CANCEL();
 }
 
-thread_pool::thread_pool( thread *prototype, int min_threads, int max_threads,
-                          int timeout ) :
+thread_pool::thread_pool( thread *prototype, unsigned min_threads,
+                          unsigned max_threads, unsigned timeout ) :
   min_threads_( min_threads ), max_threads_( max_threads ), t_busy_( 0 ),
   destructing_( false ), timeout_( timeout )
 {
@@ -380,7 +380,7 @@ thread_pool::thread_pool( thread *prototype, int min_threads, int max_threads,
   MUTEX_LOCK( &t_lock_, true );
   threads_.insert( prototype );
   prototype->run();
-  for ( int i = 1; i < min_threads_; ++i )
+  for ( unsigned i = 1; i < min_threads_; ++i )
     threads_.insert( prototype->create_and_run() );
   MUTEX_UNLOCK();
 }

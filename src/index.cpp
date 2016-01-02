@@ -199,35 +199,36 @@ int main( int argc, char *argv[] ) {
   /////////// Process command-line options ////////////////////////////////////
 
   static option_stream::spec const opt_spec[] = {
-    "help",           0, '?',
-    "no-assoc-meta",  0, 'A',
-    "config-file",    1, 'c',
-    "chdir",          1, 'd',
-    "pattern",        1, 'e',
-    "no-pattern",     1, 'E',
-    "file-max",       1, 'f',
-    "files-reserve",  1, 'F',
-    "files-grow",     1, 'g',
-    "index-file",     1, 'i',
-    "incremental",    0, 'I',
+    { "help",           0, '?' },
+    { "no-assoc-meta",  0, 'A' },
+    { "config-file",    1, 'c' },
+    { "chdir",          1, 'd' },
+    { "pattern",        1, 'e' },
+    { "no-pattern",     1, 'E' },
+    { "file-max",       1, 'f' },
+    { "files-reserve",  1, 'F' },
+    { "files-grow",     1, 'g' },
+    { "index-file",     1, 'i' },
+    { "incremental",    0, 'I' },
 #ifndef PJL_NO_SYMBOLIC_LINKS
-    "follow-links",   0, 'l',
+    { "follow-links",   0, 'l' },
 #endif
-    "meta",           1, 'm',
-    "no-meta",        1, 'M',
-    "percent-max",    1, 'p',
+    { "meta",           1, 'm' },
+    { "no-meta",        1, 'M' },
+    { "percent-max",    1, 'p' },
 #ifdef WITH_WORD_POS
-    "no-pos-data",    0, 'P',
+    { "no-pos-data",    0, 'P' },
 #endif /* WITH_WORD_POS */
-    "no-recurse",     0, 'r',
-    "stop-file",      1, 's',
-    "dump-stop",      0, 'S',
-    "title-lines",    1, 't',
-    "temp-dir",       1, 'T',
-    "verbosity",      1, 'v',
-    "version",        0, 'V',
-    "word-threshold", 1, 'W',
-    nullptr
+    { "no-recurse",     0, 'r' },
+    { "stop-file",      1, 's' },
+    { "dump-stop",      0, 'S' },
+    { "title-lines",    1, 't' },
+    { "temp-dir",       1, 'T' },
+    { "verbosity",      1, 'v' },
+    { "version",        0, 'V' },
+    { "word-threshold", 1, 'W' },
+
+    { nullptr, 0, '\0' }
   };
 
   ChangeDirectory change_directory;
@@ -679,7 +680,7 @@ void merge_indicies( ostream &o ) {
   vector<mmap_file> index( partial_index_file_names.size() );
   vector<index_segment> words( partial_index_file_names.size() );
   vector<index_segment::const_iterator> word( partial_index_file_names.size() );
-  int i, j;
+  size_t i, j;
 
   ////////// Reopen all the partial indicies //////////////////////////////////
 

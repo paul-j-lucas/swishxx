@@ -93,21 +93,22 @@ int main( int argc, char *argv[] ) {
   /////////// Process command-line options ////////////////////////////////////
 
   static option_stream::spec const opt_spec[] = {
-    "help",         0, '?',
-    "config",       1, 'c',
-    "pattern",      1, 'e',
-    "no-pattern",   1, 'E',
-    "filter",       0, 'f',
+    { "help",         0, '?' },
+    { "config",       1, 'c' },
+    { "pattern",      1, 'e' },
+    { "no-pattern",   1, 'E' },
+    { "filter",       0, 'f' },
 #ifndef PJL_NO_SYMBOLIC_LINKS
-    "follow-links", 0, 'l',
+    { "follow-links", 0, 'l' },
 #endif
-    "no-recurse",   0, 'r',
-    "stop-file",    1, 's',
-    "dump-stop",    0, 'S',
-    "verbose",      1, 'v',
-    "version",      0, 'V',
-    "extension",    1, 'x',
-    0
+    { "no-recurse",   0, 'r' },
+    { "stop-file",    1, 's' },
+    { "dump-stop",    0, 'S' },
+    { "verbose",      1, 'v' },
+    { "version",      0, 'V' },
+    { "extension",    1, 'x' },
+
+    { nullptr, 0, '\0' }
   };
 
   char const   *config_file_name_arg = ConfigFile_Default;

@@ -62,7 +62,7 @@ typedef encoded_char_range::charset_type text_encoding;
  * @return Returns said text label or null if the string doesn't represent an
  * integer ID or the ID is out of range.
  */
-inline id3v1_genre const* find_genre( char const *s, int len ) {
+inline id3v1_genre const* find_genre( char const *s, size_t len ) {
   return ::strspn( s, "0123456789" ) < len ? 0 : find_genre( ::atoi( s ) );
 }
 
@@ -185,81 +185,81 @@ static unsigned unsynchsafe( char const *&c, int bytes = 4 ) {
 
 ////////// member functions ///////////////////////////////////////////////////
 
-id3v2_frame::parser id3v2_frame::find_parser( char const *frame_id ) {
+id3v2_frame::parser_ptr id3v2_frame::find_parser( char const *frame_id ) {
   struct frame_parser {
-    char const*         frame_id;
-    id3v2_frame::parser parser;
+    char const *frame_id;
+    id3v2_frame::parser_ptr parser_ptr;
   };
   static frame_parser const frame_parser_table[] = {
     //
     // ID3v2.4 frame IDs (that we care about indexing).
     //
-    "comm", &id3v2_frame::parse_comm,   // Comments
-    "sylt", &id3v2_frame::parse_sylt,   // Synchronised lyrics
-    "talb", &id3v2_frame::parse_text,   // Album title
-    "tcom", &id3v2_frame::parse_text,   // Composer
-    "tcon", &id3v2_frame::parse_tcon,   // Content type (genre)
-    "tcop", &id3v2_frame::parse_text,   // Copyright message
-    "tenc", &id3v2_frame::parse_text,   // Encoded by
-    "text", &id3v2_frame::parse_text,   // Lyricist
-    "tipl", &id3v2_frame::parse_text,   // Involved people list
-    "tit1", &id3v2_frame::parse_text,   // Content group desc.
-    "tit2", &id3v2_frame::parse_text,   // Title
-    "tit3", &id3v2_frame::parse_text,   // Subtitle
-    "tmcl", &id3v2_frame::parse_text,   // Musician credit list
-    "tmoo", &id3v2_frame::parse_text,   // Mood
-    "toal", &id3v2_frame::parse_text,   // Original album title
-    "toly", &id3v2_frame::parse_text,   // Original lyricist
-    "tope", &id3v2_frame::parse_text,   // Original artist
-    "town", &id3v2_frame::parse_text,   // File owner/licensee
-    "tpe1", &id3v2_frame::parse_text,   // Lead artist/performer
-    "tpe2", &id3v2_frame::parse_text,   // Band/orchestra
-    "tpe3", &id3v2_frame::parse_text,   // Conductor
-    "tpe4", &id3v2_frame::parse_text,   // Modified by
-    "tpub", &id3v2_frame::parse_text,   // Publisher
-    "tsst", &id3v2_frame::parse_text,   // Set subtitle
-    "txxx", &id3v2_frame::parse_text,   // User-defined text
-    "user", &id3v2_frame::parse_comm,   // Terms of use frame
-    "uslt", &id3v2_frame::parse_comm,   // Unsynchronised lyrics
+    { "comm", &id3v2_frame::parse_comm }, // Comments
+    { "sylt", &id3v2_frame::parse_sylt }, // Synchronised lyrics
+    { "talb", &id3v2_frame::parse_text }, // Album title
+    { "tcom", &id3v2_frame::parse_text }, // Composer
+    { "tcon", &id3v2_frame::parse_tcon }, // Content type (genre)
+    { "tcop", &id3v2_frame::parse_text }, // Copyright message
+    { "tenc", &id3v2_frame::parse_text }, // Encoded by
+    { "text", &id3v2_frame::parse_text }, // Lyricist
+    { "tipl", &id3v2_frame::parse_text }, // Involved people list
+    { "tit1", &id3v2_frame::parse_text }, // Content group desc.
+    { "tit2", &id3v2_frame::parse_text }, // Title
+    { "tit3", &id3v2_frame::parse_text }, // Subtitle
+    { "tmcl", &id3v2_frame::parse_text }, // Musician credit list
+    { "tmoo", &id3v2_frame::parse_text }, // Mood
+    { "toal", &id3v2_frame::parse_text }, // Original album title
+    { "toly", &id3v2_frame::parse_text }, // Original lyricist
+    { "tope", &id3v2_frame::parse_text }, // Original artist
+    { "town", &id3v2_frame::parse_text }, // File owner/licensee
+    { "tpe1", &id3v2_frame::parse_text }, // Lead artist/performer
+    { "tpe2", &id3v2_frame::parse_text }, // Band/orchestra
+    { "tpe3", &id3v2_frame::parse_text }, // Conductor
+    { "tpe4", &id3v2_frame::parse_text }, // Modified by
+    { "tpub", &id3v2_frame::parse_text }, // Publisher
+    { "tsst", &id3v2_frame::parse_text }, // Set subtitle
+    { "txxx", &id3v2_frame::parse_text }, // User-defined text
+    { "user", &id3v2_frame::parse_comm }, // Terms of use frame
+    { "uslt", &id3v2_frame::parse_comm }, // Unsynchronised lyrics
     //
     // ID3v2.3 frame IDs.
     //
-    "ipls", &id3v2_frame::parse_text,   // becomes TMCL
+    { "ipls", &id3v2_frame::parse_text }, // becomes TMCL
     //
     // ID3v2.2 frame IDs.
     //
-    "com",  &id3v2_frame::parse_comm,   // becomes COMM
-    "ipl",  &id3v2_frame::parse_text,   // becomes TMCL
-    "slt",  &id3v2_frame::parse_sylt,   // becomes SYLT
-    "tal",  &id3v2_frame::parse_text,   // becomes TALB
-    "tcm",  &id3v2_frame::parse_text,   // becomes TCOM
-    "tco",  &id3v2_frame::parse_tcon,   // becomes TCON
-    "tcr",  &id3v2_frame::parse_text,   // becomes TCOP
-    "ten",  &id3v2_frame::parse_text,   // becomes TENC
-    "toa",  &id3v2_frame::parse_text,   // becomes TOPE
-    "tol",  &id3v2_frame::parse_text,   // becomes TOLY
-    "tot",  &id3v2_frame::parse_text,   // becomes TOAL
-    "tp1",  &id3v2_frame::parse_text,   // becomes TPE1
-    "tp2",  &id3v2_frame::parse_text,   // becomes TPE2
-    "tp3",  &id3v2_frame::parse_text,   // becomes TPE3
-    "tp4",  &id3v2_frame::parse_text,   // becomes TPE4
-    "tpb",  &id3v2_frame::parse_text,   // becomes TPUB
-    "tt1",  &id3v2_frame::parse_text,   // becomes TIT1
-    "tt2",  &id3v2_frame::parse_text,   // becomes TIT2
-    "tt3",  &id3v2_frame::parse_text,   // becomes TIT3
-    "txt",  &id3v2_frame::parse_text,   // becomes TEXT
-    "txx",  &id3v2_frame::parse_text,   // becomes TXXX
-    "ult",  &id3v2_frame::parse_comm,   // becomes USLT
+    { "com",  &id3v2_frame::parse_comm }, // becomes COMM
+    { "ipl",  &id3v2_frame::parse_text }, // becomes TMCL
+    { "slt",  &id3v2_frame::parse_sylt }, // becomes SYLT
+    { "tal",  &id3v2_frame::parse_text }, // becomes TALB
+    { "tcm",  &id3v2_frame::parse_text }, // becomes TCOM
+    { "tco",  &id3v2_frame::parse_tcon }, // becomes TCON
+    { "tcr",  &id3v2_frame::parse_text }, // becomes TCOP
+    { "ten",  &id3v2_frame::parse_text }, // becomes TENC
+    { "toa",  &id3v2_frame::parse_text }, // becomes TOPE
+    { "tol",  &id3v2_frame::parse_text }, // becomes TOLY
+    { "tot",  &id3v2_frame::parse_text }, // becomes TOAL
+    { "tp1",  &id3v2_frame::parse_text }, // becomes TPE1
+    { "tp2",  &id3v2_frame::parse_text }, // becomes TPE2
+    { "tp3",  &id3v2_frame::parse_text }, // becomes TPE3
+    { "tp4",  &id3v2_frame::parse_text }, // becomes TPE4
+    { "tpb",  &id3v2_frame::parse_text }, // becomes TPUB
+    { "tt1",  &id3v2_frame::parse_text }, // becomes TIT1
+    { "tt2",  &id3v2_frame::parse_text }, // becomes TIT2
+    { "tt3",  &id3v2_frame::parse_text }, // becomes TIT3
+    { "txt",  &id3v2_frame::parse_text }, // becomes TEXT
+    { "txx",  &id3v2_frame::parse_text }, // becomes TXXX
+    { "ult",  &id3v2_frame::parse_comm }, // becomes USLT
 
-    nullptr
+    { nullptr, nullptr }
   };
 
-  typedef map<char const*,id3v2_frame::parser> map_type;
+  typedef map<char const*,id3v2_frame::parser_ptr> map_type;
   static map_type m;
 
   if ( m.empty() )
     for ( auto f = frame_parser_table; f->frame_id; ++f )
-      m[ f->frame_id ] = f->parser;
+      m[ f->frame_id ] = f->parser_ptr;
 
   map_type::const_iterator const found = m.find( frame_id );
   return found != m.end() ? found->second : 0;
@@ -395,7 +395,8 @@ void id3v2_frame::parse_sylt() {
     // name of the content descriptor is among the set of meta names to exclude
     // or not among the set to include.
     //
-    meta_id_ = indexer::find_meta( content_type_table[ *content_begin_ ] );
+    size_t const i = *content_begin_;
+    meta_id_ = indexer::find_meta( content_type_table[ i ] );
     if ( meta_id_ == Meta_ID_None )
       return;
   }

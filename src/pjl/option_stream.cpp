@@ -87,7 +87,7 @@ option_stream& operator>>( option_stream &os, option_stream::option &o ) {
     // Now look through the options table for a match.
     //
     for ( s = os.specs_; s->long_name; ++s ) {
-      ptrdiff_t const len = end - arg;
+      size_t const len = static_cast<size_t>( end - arg );
       if ( ::strncmp( arg, s->long_name, len ) != 0 )
         continue;
       if ( ::strlen( s->long_name ) == len ) {

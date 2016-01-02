@@ -57,7 +57,9 @@ extern "C" void max_out_limits() {
 #endif /* RLIMIT_VMEM */
 
 int mmap_file::behavior( behavior_type behavior ) const {
-#ifndef __APPLE__
+#ifdef __APPLE__
+  (void)behavior;
+#else
   //
   // As of Mac OS X 10.2.1 (Darwin 6.1), madvise(2) seems broken, so don't
   // bother.
@@ -65,6 +67,8 @@ int mmap_file::behavior( behavior_type behavior ) const {
 #ifdef HAVE_MADVISE
   if ( ::madvise( static_cast<caddr_t>( addr_ ), size_, behavior ) == -1 )
     return errno_ = errno;
+#else
+  (void)behavior;
 #endif /* HAVE_MADVISE */
 #endif /* __APPLE__ */
   return 0;

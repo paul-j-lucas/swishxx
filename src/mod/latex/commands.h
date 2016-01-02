@@ -34,8 +34,8 @@
  * A %command contains the information we need about LaTeX commands.
  */
 struct command {
-  char const* name;
-  char const* action;
+  char const *name;
+  char const *action;
 };
 
 /**

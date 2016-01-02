@@ -81,17 +81,17 @@ id3v1:
 
 void id3_indexer::index_id3v1_tags( char const *c, char const *end ) {
   struct id3v1_field {
-    char const* name;
-    int         length;
+    char const *name;
+    size_t      length;
   };
   static id3v1_field const field_table[] = {
-    "title",    ID3v1_Title_Size,
-    "artist",   ID3v1_Artist_Size,
-    "album",    ID3v1_Album_Size,
-    "year",     ID3v1_Year_Size,
-    "comments", ID3v1_Comments_Size,
-    "genre",    ID3v1_Genre_Size,
-    nullptr
+    { "title",    ID3v1_Title_Size    },
+    { "artist",   ID3v1_Artist_Size   },
+    { "album",    ID3v1_Album_Size    },
+    { "year",     ID3v1_Year_Size     },
+    { "comments", ID3v1_Comments_Size },
+    { "genre",    ID3v1_Genre_Size    },
+    { nullptr, 0 }
   };
 
   if ( !has_id3v1_tag( c, end ) )
@@ -138,10 +138,10 @@ bool id3_indexer::index_id3v2_tags( char const *c, char const *end ) {
         c = frame_end;
         break;
       case id3v2_frame::hr_success: {
-        id3v2_frame::parser const parser =
+        id3v2_frame::parser_ptr const parser_ptr =
           id3v2_frame::find_parser( frame.id_ );
-        if ( parser ) {
-          (frame.*parser)();
+        if ( parser_ptr ) {
+          (frame.*parser_ptr)();
           indexed_at_least_1_frame = true;
         }
         break;

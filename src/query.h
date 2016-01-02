@@ -58,7 +58,7 @@ typedef std::set<std::string> stop_word_set;
  * @param file_count The number of files a word occurs in.
  * @return Returns \c true only if a word is too frequent.
  */
-inline bool is_too_frequent( int file_count ) {
+inline bool is_too_frequent( size_t file_count ) {
   extern index_segment files;
   return  file_count > word_files_max ||
           file_count * 100 / files.size() >= word_percent_max;
