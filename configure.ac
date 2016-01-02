@@ -36,6 +36,7 @@ AC_PROG_RANLIB
 
 # Checks for libraries.
 AC_CHECK_LIB([z], [uncompress])
+AX_LIB_SOCKET_NSL
 
 # Checks for header files.
 AC_CHECK_HEADERS([arpa/inet.h])
