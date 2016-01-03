@@ -276,11 +276,11 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
       return nullptr;
     }
     default: {
-        //
-        // Substitute the text of the command's "action" as the text to be
-        // indexed.
-        //
-        return cmd->second.action;
+      //
+      // Substitute the text of the command's "action" as the text to be
+      // indexed.
+      //
+      return cmd->second.action;
     }
   } // switch
 
