@@ -76,18 +76,27 @@ public:
   void            end_pos( const_pointer p )      { end_ = p; }
   void            end_pos( const_iterator const& );
 
+  /**
+   * Gets whether this iterator has been associated with an encoded_char_range.
+   *
+   * @return Returns \c true only if it is.
+   */
+  explicit operator bool() const {
+    return begin_ != nullptr;
+  }
+
 #ifdef WITH_DECODING
   class decoder;
 #endif /* WITH_DECODING */
 
 protected:
-  encoded_char_range() { }
+  encoded_char_range() : begin_( nullptr ), end_( nullptr ) { }
 
-  const_pointer   begin_;
-  const_pointer   end_;
+  const_pointer begin_;
+  const_pointer end_;
 #ifdef WITH_DECODING
-  charset_type    charset_;
-  encoding_type   encoding_;
+  charset_type  charset_;
+  encoding_type encoding_;
 #endif /* WITH_DECODING */
 };
 
@@ -109,7 +118,7 @@ public:
   typedef encoded_char_range::value_type value_type;
   typedef encoded_char_range::const_pointer const_pointer;
 
-  const_iterator() { }
+  const_iterator();
   const_iterator( const_pointer begin, const_pointer end,
                   charset_type = nullptr, encoding_type = nullptr );
 
@@ -127,7 +136,15 @@ public:
   const_pointer   prev_pos() const    { return prev_; }
 
   friend bool operator==( const_iterator const&, const_iterator const& );
+  friend bool operator< ( const_iterator const&, const_iterator const& );
+  friend bool operator<=( const_iterator const&, const_iterator const& );
+
   friend bool operator==( const_iterator const&, const_pointer );
+  friend bool operator==( const_pointer, const_iterator const& );
+  friend bool operator< ( const_iterator const&, const_pointer );
+  friend bool operator< ( const_pointer, const_iterator const& );
+  friend bool operator<=( const_iterator const&, const_pointer );
+  friend bool operator<=( const_pointer, const_iterator const& );
 
 private:
   mutable const_pointer pos_;
@@ -175,8 +192,9 @@ private:
 ////////// encoded_char_range inlines /////////////////////////////////////////
 
 // I hate lots of typing.
-#define ECR encoded_char_range
-#define ECR_CI  ECR::const_iterator
+#define ECR       encoded_char_range
+#define ECR_CI    ECR::const_iterator
+#define ECR_CI_CP ECR::const_iterator::const_pointer
 
 inline ECR::ECR( const_pointer begin, const_pointer end, charset_type charset,
                  encoding_type encoding ) :
@@ -220,6 +238,10 @@ inline void ECR::end_pos( const_iterator const &i ) {
 }
 
 ////////// encoded_char_range::const_iterator inlines /////////////////////////
+
+inline ECR_CI::const_iterator() : pos_( nullptr )
+{
+}
 
 inline ECR_CI::const_iterator( const_pointer begin, const_pointer end,
                                charset_type charset, encoding_type encoding ) :
@@ -317,12 +339,10 @@ inline ECR_CI& ECR_CI::operator++() {
     //
     decode();
   }
-#endif /* WITH_DECODING */
   prev_ = pos_;
-#ifdef WITH_DECODING
   pos_ += delta_;
 #else
-  ++pos_;
+  prev_ = pos_++;
 #endif /* WITH_DECODING */
   return *this;
 }
@@ -332,31 +352,81 @@ inline ECR_CI ECR_CI::operator++(int) {
   return ++*this, temp;
 }
 
-////////// equality operators /////////////////////////////////////////////////
+////////// relational operator ////////////////////////////////////////////////
 
 inline bool operator==( ECR_CI const &e1, ECR_CI const &e2 ) {
   return e1.pos_ == e2.pos_;
 }
 
-inline bool operator==( ECR_CI const &e, ECR_CI::const_pointer p ) {
+inline bool operator!=( ECR_CI const &e1, ECR_CI const &e2 ) {
+  return !(e1 == e2);
+}
+
+inline bool operator<( ECR_CI const &e1, ECR_CI const &e2 ) {
+  return e1.pos_ < e2.pos_;
+}
+
+inline bool operator<=( ECR_CI const &e1, ECR_CI const &e2 ) {
+  return e1.pos_ <= e2.pos_;
+}
+
+inline bool operator>( ECR_CI const &e1, ECR_CI const &e2 ) {
+  return !(e2 <= e1);
+}
+
+inline bool operator>=( ECR_CI const &e1, ECR_CI const &e2 ) {
+  return !(e2 < e1);
+}
+
+inline bool operator==( ECR_CI const &e, ECR_CI_CP p ) {
   return e.pos_ == p;
 }
 
-inline bool operator==( ECR_CI::const_pointer p, ECR_CI const &e ) {
+inline bool operator==( ECR_CI_CP p, ECR_CI const &e ) {
   return e == p;
 }
 
-inline bool operator!=( ECR_CI const &e1, ECR_CI const &e2 ) {
-  return !( e1 == e2 );
+inline bool operator!=( ECR_CI const &e, ECR_CI_CP p ) {
+  return !(e == p);
 }
 
-inline bool operator!=( ECR_CI const &e, ECR_CI::const_pointer p ) {
-  return !( e == p );
-}
-
-inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
+inline bool operator!=( ECR_CI_CP p, ECR_CI const &e ) {
   return e != p;
 }
+
+inline bool operator<( ECR_CI const &e, ECR_CI_CP p ) {
+  return e.pos_ < p;
+}
+
+inline bool operator<( ECR_CI_CP p, ECR_CI const &e ) {
+  return p < e.pos_;
+}
+
+inline bool operator<=( ECR_CI const &e, ECR_CI_CP p ) {
+  return e.pos_ <= p;
+}
+
+inline bool operator<=( ECR_CI_CP p, ECR_CI const &e ) {
+  return p <= e.pos_;
+}
+
+inline bool operator>( ECR_CI const &e, ECR_CI_CP p ) {
+  return !(p <= e);
+}
+
+inline bool operator>( ECR_CI_CP p, ECR_CI const &e ) {
+  return !(e <= p);
+}
+
+inline bool operator>=( ECR_CI const &e, ECR_CI_CP p ) {
+  return !(p < e);
+}
+
+inline bool operator>=( ECR_CI_CP p, ECR_CI const &e ) {
+  return !(e < p);
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Returns a pointer to a string converted to lower case taking the encoding of
@@ -370,10 +440,40 @@ inline bool operator!=( ECR_CI::const_pointer p, ECR_CI const &e ) {
  */
 char *to_lower( ECR const &range );
 
-#undef  ECR_CI
-#undef  ECR
+/**
+ * Trims leading whitespace from the encoded_char_range.
+ *
+ * @param end The end of the range.
+ */
+void trim_left( ECR_CI *begin, ECR_CI const &end );
+
+/**
+ * Trims trailing whitespace from the encoded_char_range.
+ *
+ * @param begin The beginning of the range.
+ * @param end A pointer to the iterator to alter so that trailing whitespace
+ * is truncated.
+ */
+void trim_right( ECR_CI const &begin, ECR_CI *end );
+
+/**
+ * Trims both leading and trailing whitespace from the encoded_char_range.
+ *
+ * @param begin A pointer to the iterator to alter so that leading whitespace
+ * is skipped over.
+ * @param end A pointer to the iterator to alter so that trailing whitespace
+ * is truncated.
+ */
+inline void trim( ECR_CI *begin, ECR_CI *end ) {
+  trim_left( begin, *end );
+  trim_right( *begin, end );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
+
+#undef ECR
+#undef ECR_CI
+#undef ECR_CI_CP
 
 #endif /* encoded_char_H */
 /* vim:set et sw=2 ts=2: */
