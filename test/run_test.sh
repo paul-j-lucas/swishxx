@@ -19,9 +19,6 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-# Uncomment the following the line to echo the command before executing.
-#ECHO=echo
-
 # Uncomment the following line for shell tracing.
 #set -x
 
@@ -206,19 +203,18 @@ run_test_file() {
   [ "$COMMAND" = "index" ] && CHDIR="-d $DATA_DIR"
   [ "$CONF" ] && CONF="-c $DATA_DIR/$CONF"
 
-  [ "$ECHO" ] &&
-    $ECHO $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $OUTPUT 2> $LOG_FILE"
+  echo $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $OUTPUT 2> $LOG_FILE" > $LOG_FILE
 
   SWISHXX_TEST=true; export SWISHXX_TEST
-  $COMMAND $CHDIR $CONF $OPTIONS $ARGS > $OUTPUT 2> $LOG_FILE
+  $COMMAND $CHDIR $CONF $OPTIONS $ARGS > $OUTPUT 2>> $LOG_FILE
   ACTUAL_EXIT=$?
 
   if [ $ACTUAL_EXIT -eq 0 ]
   then                                  # success: diff output file
     if [ 0 -eq $EXPECTED_EXIT ]
     then
-      EXPECTED_FILE="$EXPECTED_DIR/`echo $TEST_NAME | sed 's/test$/txt/'`"
-      if diff $EXPECTED_FILE $OUTPUT > $LOG_FILE
+      EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed 's/test$/txt/'`"
+      if diff $EXPECTED_OUTPUT $OUTPUT >> $LOG_FILE
       then pass; mv $OUTPUT $LOG_FILE
       else fail
       fi
