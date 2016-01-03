@@ -54,23 +54,35 @@ int const   Word_Min_Vowels             = 1;
  * The maximum length a string composed entirely of hexadecimal digits i.e.,
  * ASCII hex data, can be before it is discarded.  Note that the word "cafe" is
  * a legitimate English word composed entirely of hexedecimal digits.  This
- * parameter is used only by \b extract(1) in \fc extract.cpp.
+ * parameter is used only by \c extract(1) in \c extract.cpp.
  */
 int const   Word_Hex_Max_Size           = 4;
 
 // I don't think there is a word in English that has more than...
 
+/**
+ * The maximum number of consecutive consonants a word may be in order to be
+ * indexed, e.g., "symphysis."
+ */
 int const   Word_Max_Consec_Consonants  = 7;
-//          ...this many consecutive consonants (like "symphysis")
 
+/**
+ * The maximum number of consecutive vowels a word may be in order to be
+ * indexed, e.g., "queueing."
+ */
 int const   Word_Max_Consec_Vowels      = 5;
-//          ...this many consecutive vowels (like "queueing")
 
+/**
+ * The maximum number of the same character consecutively a word may be in
+ * order to be indexed.
+ */
 int const   Word_Max_Consec_Same        = 2;
-//          ...this many of the same alphabetic character consecutively
 
+/**
+ * The maximum number of consecutive punctuation characters a word may have in
+ * order to be indexed.
+ */
 int const   Word_Max_Consec_Puncts      = 1;
-//          ...this many punctuation character in a row
 
 /**
  * Characters that may be in a word.  Note that \c '&' is here so acronyms like
@@ -87,7 +99,7 @@ char const  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
  * you are not using the default set of characters.  See \c word_util.h for
  * details.
  */
-#define     OPTIMIZE_WORD_CHARS         1
+#define OPTIMIZE_WORD_CHARS               1
 
 /**
  * Characters that may begin a word; should be a subset of the above.
@@ -97,7 +109,7 @@ char const  Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 /**
  * Same deal as with OPTIMIZE_WORD_CHARS.
  */
-#define     OPTIMIZE_WORD_BEGIN_CHARS   1
+#define OPTIMIZE_WORD_BEGIN_CHARS         1
 
 /**
  * Characters that may end a word; usually the same as the above.
@@ -107,7 +119,7 @@ char const  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 /**
  * Same deal as with OPTIMIZE_WORD_CHARS.
  */
-#define     OPTIMIZE_WORD_END_CHARS     1
+#define OPTIMIZE_WORD_END_CHARS           1
 
 #ifdef WITH_SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
