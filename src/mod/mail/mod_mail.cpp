@@ -122,27 +122,18 @@ could_not_filter:
 
 ////////// member functions ///////////////////////////////////////////////////
 
-inline void mail_indexer::new_file() {
-  boundary_stack_.clear();
-  did_last_header_ = false;
-}
-
-/**
- * Compares the boundary, prefixed by "--", string starting at the given
- * iterator to the given string.
- *
- * @param c The pointer presumed to be positioned at the first character on a
- * line.
- * @param end The iterator marking the end of the file.
- * @param boundary The boundary string to compare against.
- * @return Returns true only if the boundary string matches.
- */
 bool mail_indexer::boundary_cmp( char const *c, char const *end,
                                  char const *boundary ) {
   if ( c == end || *c != '-' || ++c == end || *c++ != '-' )
     return false;
-  while ( *boundary && c != end && *boundary++ == *c++ ) ;
+  while ( *boundary && c != end && *boundary++ == *c++ )
+    ;
   return !*boundary;
+}
+
+inline void mail_indexer::new_file() {
+  boundary_stack_.clear();
+  did_last_header_ = false;
 }
 
 char const* mail_indexer::find_title( mmap_file const &file ) const {
@@ -180,42 +171,10 @@ char const* mail_indexer::find_title( mmap_file const &file ) const {
 }
 
 mail_indexer::message_type mail_indexer::index_headers( char const *&c,
-                                                        char const *end )
-//
-// DESCRIPTION
-//
-//      This function indexes the words found in the values of the headers as
-//      being associated with the headers as meta names.  Additionally, it
-//      determines the message type and encoding via the Content-Type and
-//      Content-Transfer-Encoding headers.
-//
-// PARAMETERS
-//
-//      c       The pointer that must be positioned at the first character in
-//              the file.  It is left after the last header.
-//
-//      end     The pointer to the end of the file.
-//
-// RETURN VALUE
-//
-//      Returns the type and encoding of the message based on the headers.
-//
-// SEE ALSO
-//
-//      David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
-//      Text Messages," Department of Electrical Engineering, University of
-//      Delaware, August 1982.
-//
-//      Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
-//      Internet Mail Extensions (MIME) Part One: Format of Internet Message
-//      Bodies," RFC 822 Extensions Working Group of the Internet Engineering
-//      Task Force, November 1996.
-//
-//*****************************************************************************
-{
+                                                        char const *end ) {
+  key_value kv;
   message_type type;
 
-  key_value kv;
   while ( parse_header( c, end, &kv ) ) {
 
     ////////// Deal with Content-Transfer-Encoding ////////////////////////////
@@ -298,7 +257,7 @@ mail_indexer::message_type mail_indexer::index_headers( char const *&c,
       // types.
       //
       if ( FilterAttachment::const_pointer const
-            f = attachment_filters[ mime_type ] ) {
+           f = attachment_filters[ mime_type ] ) {
         type.content_type_ = ct_external_filter;
         //
         // Just in case there were two Content-Type headers (weird, yes; but we
@@ -428,6 +387,7 @@ void mail_indexer::index_words( encoded_char_range const &e, int ) {
       break;
     }
 #endif /* WITH_HTML */
+
     case ct_text_plain:
       indexer::index_words( e2 );
       break;
@@ -442,28 +402,6 @@ void mail_indexer::index_words( encoded_char_range const &e, int ) {
   } // switich
 }
 
-/**
-//      This function parses a single header and its value.  It properly
-//      handles values that are folded across multiple lines.
-//
-// PARAMETERS
-//
-//      c       The pointer that must be positioned at the first character in a
-//              header.  It is left after the last character in the value, or,
-//              if there are no more headers, after the blank line marking the
-//              end of the headers.
-//
-//      end     The pointer to the end of the range.
-//
-//      kv      A pointer to the key_value to be modified only if a header is
-//              parsed.  The key is always converted to lower case.
-//
-// SEE ALSO
-//
-//      David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
-//      Text Messages," Department of Electrical Engineering, University of
-//      Delaware, August 1982.
- */
 bool mail_indexer::parse_header( char const *&c, char const *end,
                                  key_value *kv ) {
   if ( did_last_header_ )
@@ -486,7 +424,7 @@ bool mail_indexer::parse_header( char const *&c, char const *end,
     // it.
     //
     if ( c >= header_begin + 4 /* 4 == strlen( "From" ) */ &&
-         !::strncmp( header_begin, "From ", 5 )) {
+         !::strncmp( header_begin, "From ", 5 ) ) {
       if ( (c = skip_newline( nl, end )) == end )
         return false;
       continue;
@@ -496,7 +434,7 @@ bool mail_indexer::parse_header( char const *&c, char const *end,
       return false;
     header_end = c;
     break;
-  }
+  } // while
 
   //
   // Parse a value.

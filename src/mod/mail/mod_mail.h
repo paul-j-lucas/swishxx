@@ -81,7 +81,6 @@ private:
   enum content_type {
     ct_unknown,                         // a type we don't know how to index
     ct_external_filter,
-
     ct_text_plain,
     ct_text_enriched,
     ct_text_html,
@@ -112,12 +111,65 @@ private:
 
   static bool did_last_header_;
 
-  static bool   boundary_cmp( char const*, char const*, char const* );
-  message_type  index_headers( char const*&, char const* );
-  void          index_multipart( char const*&, char const* );
-  void          index_vcard( char const*&, char const* );
-  static void   new_file();
-  static bool   parse_header( char const*&, char const*, key_value* );
+  /**
+   * Compares the boundary, prefixed by \c "--", string starting at the given
+   * iterator to the given string.
+   *
+   * @param c The pointer presumed to be positioned at the first character on a
+   * line.
+   * @param end The iterator marking the end of the file.
+   * @param boundary The boundary string to compare against.
+   * @return Returns \c true only if the boundary string matches.
+   */
+  static bool boundary_cmp( char const *c, char const *end,
+                            char const *boundary );
+
+  /**
+   * This function indexes the words found in the values of the headers as
+   * being associated with the headers as meta names.  Additionally, it
+   * determines the message type and encoding via the \c Content-Type and
+   * \c Content-Transfer-Encoding headers.
+   *
+   * @param c The pointer that must be positioned at the first character in the
+   * file.  It is left after the last header.
+   * @param end The pointer to the end of the file.
+   * @return Returns the type and encoding of the message based on the headers.
+   *
+   * See also:
+   *    David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
+   *    Text Messages," Department of Electrical Engineering, University of
+   *    Delaware, August 1982.
+   *
+   *    Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
+   *    Internet Mail Extensions (MIME) Part One: Format of Internet Message
+   *    Bodies," RFC 822 Extensions Working Group of the Internet Engineering
+   *    Task Force, November 1996.
+   */
+  message_type index_headers( char const *&c, char const *end );
+
+  void index_multipart( char const*&, char const* );
+  void index_vcard( char const*&, char const* );
+  static void new_file();
+
+  /**
+   * Parses a single header and its value.  It properly handles values that are
+   * folded across multiple lines.
+   *
+   * @param c The pointer that must be positioned at the first character in a
+   * header.  It is left after the last character in the value, or, if there
+   * are no more headers, after the blank line marking the end of the headers.
+   * @param end The pointer to the end of the range.
+   * @param kv A pointer to the key_value to be modified only if a header is
+   * parsed.  The key is always converted to lower case.
+   * @return Returns \c true only if a header was parsed.
+   *
+   * See also:
+   *    David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
+   *    Text Messages," Department of Electrical Engineering, University of
+   *    Delaware, August 1982.
+  
+   */
+  static bool parse_header( char const *&c, char const *end, key_value *kv );
 };
 
 ////////// Inlines ////////////////////////////////////////////////////////////
