@@ -325,7 +325,7 @@ void become_daemon() {
     //
     if ( ::chdir( "/" ) == -1 ) {
       error() << "chdir() failed" << error_string;
-      ::exit( Exit_No_Change_Dir );
+      ::exit( Exit_No_Chdir );
     }
 #ifdef __APPLE__
   }

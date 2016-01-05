@@ -69,7 +69,6 @@ enum {
   Exit_No_Select                = 69,
   Exit_No_Accept                = 70,
   Exit_No_Fork                  = 71,
-  Exit_No_Change_Dir            = 72,
   Exit_No_Create_Thread         = 73,
   Exit_No_Create_Thread_Key     = 74,
   Exit_No_Detach_Thread         = 75,
