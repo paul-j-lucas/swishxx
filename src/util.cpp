@@ -40,12 +40,14 @@ struct stat             stat_buf;       // someplace to do a stat(2) in
 
 unsigned atou( char const *s, char const *label ) {
   assert( s );
+  while ( isspace( *s ) )               // skip whitespace
+    ++s;
   if ( *s && *s != '-' ) {              // strtoul(3) wrongly allows '-'
     char *end = nullptr;
     errno = 0;
     unsigned long const n = ::strtoul( s, &end, 0 );
     if ( !errno && !*end )
-      return n ;
+      return n;
   }
   error() << '"' << s << "\": invalid unsigned integer";
   if ( label )
