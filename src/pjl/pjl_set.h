@@ -57,6 +57,26 @@ public:
 typedef pjl_set<char const*> char_ptr_set;
 typedef pjl_set<std::string> string_set;
 
+/**
+ * Less verbose way of determining whether a set contains a particlar element.
+ *
+ * @tparam T The element type.
+ * @param s The set to check.
+ * @param k The key to check for.
+ * @return Returns \c true only if \a s contains \a k.
+ */
+template<typename T>
+inline bool contains( std::set<T> const &s, T const &k ) {
+  return s.find( k ) != s.end();
+}
+
+/**
+ * Specialization for C strings.
+ */
+inline bool contains( std::set<char const*> const &s, char const *k ) {
+  return s.find( k ) != s.end();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 } // namespace PJL

@@ -328,13 +328,13 @@ static bool extract_word( char *word, int len, ostream &out ) {
       in_postscript = false;
     return false;
   }
-  static postscript_comment_set const postscript_comments;
-  if ( postscript_comments.contains( word ) ) {
+  static auto const &postscript_comments = postscript::comments();
+  if ( PJL::contains( postscript_comments, word ) ) {
     in_postscript = true;
     return false;
   }
-  static postscript_operator_set const postscript_operators;
-  if ( postscript_operators.contains( word ) )
+  static auto const &postscript_operators = postscript::operators();
+  if ( PJL::contains( postscript_operators, word ) )
     return false;
 
   ////////// Strip chars not in Word_Begin_Chars/Word_End_Chars ///////////////

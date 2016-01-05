@@ -20,30 +20,27 @@
 */
 
 // local
-#include "config.h"
 #include "postscript.h"
+
+using namespace std;
+
+namespace postscript {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-postscript_comment_set::postscript_comment_set() {
-  //
-  // These comments are used to detect the start of encapsulated PostScript in
-  // files so it will not be extracted.
-  //
-  insert( "%%BeginSetup" );
-  insert( "%%BoundingBox" );
-  insert( "%%Creator" );
-  insert( "%%EndComments" );
-  insert( "%%Title" );
+set<char const*> const& comments() {
+  static set<char const*> const s{
+    "%%BeginSetup",
+    "%%BoundingBox",
+    "%%Creator",
+    "%%EndComments",
+    "%%Title",
+  };
+  return s;
 }
 
-postscript_operator_set::postscript_operator_set() {
-  //
-  // The set of Level 2 PostScript operators that are not also English words
-  // are removed from files since, if found, they most likely have encapsulated
-  // PostScript (EPS) in them.
-  //
-  static char const *const postscript_table[] = {
+set<char const*> const& operators() {
+  static set<char const*> const s{
     "aload",
     "anchorsearch",
     "arcn",
@@ -282,13 +279,12 @@ postscript_operator_set::postscript_operator_set() {
     "xcheck",
     "xshow",
     "xyshow",
-
-    nullptr
   };
-
-  for ( auto p = postscript_table; *p; ++p )
-    insert( *p );
+  return s;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+} // namespace postscript
+
 /* vim:set et sw=2 ts=2: */

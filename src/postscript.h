@@ -23,30 +23,30 @@
 #define postscript_H
 
 // local
-#include "pjl/pjl_set.h"
+#include "pjl/less.h"
+
+// standard
+#include <set>
+
+namespace postscript {
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %postscript_comment_set is-a char_ptr_set.  The only reason for having a
- * derived class rather than a typedef is so that we can have a custom
- * constructor that initializes itself.
+ * Gets a set containing all PostScript comments.  They are used to detect the
+ * start of encapsulated PostScript in files so it will not be extracted.
  */
-struct postscript_comment_set : PJL::char_ptr_set {
-  postscript_comment_set();
-};
+std::set<char const*> const& comments();
 
 /**
- * A %postscript_operator_set is-a char_ptr_set used to contain the entire set
- * of Level 2 PostScript operators that are not also English words.  The only
- * reason for having a derived class rather than a typedef is so that we can
- * have a custom constructor that initializes itself.
+ * Gets a set containing all the Level 2 PostScript operators that are not also
+ * English words.  Their contents are not indexed.
  */
-struct postscript_operator_set : PJL::char_ptr_set {
-  postscript_operator_set();
-};
+std::set<char const*> const& operators();
 
 ///////////////////////////////////////////////////////////////////////////////
+
+} // namespace postscript
 
 #endif /* postscript_H */
 /* vim:set et sw=2 ts=2: */
