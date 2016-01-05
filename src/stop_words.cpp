@@ -370,12 +370,12 @@ stop_word_set::stop_word_set( char const *file_name ) {
   }
 
   mmap_file const file( file_name );
-  file.behavior( mmap_file::bt_sequential );
   if ( !file ) {
     error() << "could not open \"" << file_name << '"'
             << error_string( file.error() );
     ::exit( Exit_No_Read_Stopwords );
   }
+  file.behavior( mmap_file::bt_sequential );
 
   char  word[ Word_Hard_Max_Size + 1 ];
   int   len;
