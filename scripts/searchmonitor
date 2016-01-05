@@ -102,8 +102,8 @@ do
   if [ $exit_code -lt 128 ]
   then # it exited by itself
     case $exit_code in
-      1) $LOG.alert "configuration file error; NOT restarting"; exit 0 ;;
-      2) $LOG.alert "usage error; NOT restarting"; exit 0 ;;
+     1) $LOG.alert "configuration file error; NOT restarting"; exit 0 ;;
+     2) $LOG.alert "usage error; NOT restarting"; exit 0 ;;
     40) $LOG.alert "can't read index file; NOT restarting"; exit 0 ;;
     51) $LOG.alert "can't write PID file; NOT restarting"; exit 0 ;;
     52) $LOG.alert "bad host/IP; NOT restarting"; exit 0 ;;
