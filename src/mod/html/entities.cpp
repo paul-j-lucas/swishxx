@@ -24,12 +24,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-char_entity_map::char_entity_map() {
-  struct char_entity {
-    char const* name;
-    char        char_equiv;
-  };
-  static char_entity const char_entity_table[] = {
+char_entity_map::char_entity_map() :
+  map_{
     { "amp",    '&' },
     { "apos",  '\'' },                    // apos is in XHTML
     { "Aacute", 'A' }, { "aacute", 'a' },
@@ -63,16 +59,13 @@ char_entity_map::char_entity_map() {
     { "Ugrave", 'U' }, { "ugrave", 'u' },
     { "Uuml",   'U' }, { "uuml",   'u' },
     { "Yacute", 'Y' }, { "yacute", 'y' },
-    { "Yuml",   'Y' }, { "yuml",   'y' },
-    { nullptr, '\0' }
-  };
-
-  for ( auto e = char_entity_table; e->name; ++e )
-    map_[ e->name ] = e->char_equiv;
+    { "Yuml",   'Y' }, { "yuml",   'y' }
+  }
+{
 }
 
 char_entity_map const& char_entity_map::instance() {
-  static char_entity_map m;
+  static char_entity_map const m;
   return m;
 }
 

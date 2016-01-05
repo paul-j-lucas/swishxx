@@ -325,16 +325,6 @@ element_map::element_map() {
   } // for
 }
 
-/**
- * Defines and initializes (exactly once) a \c static instance of
- * \c element_map and return a reference to it.  The reason for this function
- * is to guarantee that there is exactly one instance of it and that it is
- * initialized before its first use across all translation units, something
- * that would not guaranteed if it were defined and initialized at file scope.
- *
- * @return Returns a reference to a static instance of an initialized
- * element_map.
- */
 element_map const& element_map::instance() {
   static element_map const m;
   return m;

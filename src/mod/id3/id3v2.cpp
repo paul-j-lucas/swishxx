@@ -186,11 +186,8 @@ static unsigned unsynchsafe( char const *&c, int bytes = 4 ) {
 ////////// member functions ///////////////////////////////////////////////////
 
 id3v2_frame::parser_ptr id3v2_frame::find_parser( char const *frame_id ) {
-  struct frame_parser {
-    char const *frame_id;
-    id3v2_frame::parser_ptr parser_ptr;
-  };
-  static frame_parser const frame_parser_table[] = {
+  typedef map<char const*,id3v2_frame::parser_ptr> map_type;
+  static map_type const m{
     //
     // ID3v2.4 frame IDs (that we care about indexing).
     //
@@ -250,16 +247,7 @@ id3v2_frame::parser_ptr id3v2_frame::find_parser( char const *frame_id ) {
     { "txt",  &id3v2_frame::parse_text }, // becomes TEXT
     { "txx",  &id3v2_frame::parse_text }, // becomes TXXX
     { "ult",  &id3v2_frame::parse_comm }, // becomes USLT
-
-    { nullptr, nullptr }
   };
-
-  typedef map<char const*,id3v2_frame::parser_ptr> map_type;
-  static map_type m;
-
-  if ( m.empty() )
-    for ( auto f = frame_parser_table; f->frame_id; ++f )
-      m[ f->frame_id ] = f->parser_ptr;
 
   map_type::const_iterator const found = m.find( frame_id );
   return found != m.end() ? found->second : 0;
