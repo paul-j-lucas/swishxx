@@ -257,8 +257,7 @@ int main( int argc, char *argv[] ) {
   char const     *word_percent_max_arg = nullptr;
   char const     *word_threshold_arg = nullptr;
 
-  unique_ptr<option_stream::spec[]> const
-    all_options( indexer::all_mods_options( opt_spec ) );
+  auto const all_options( indexer::all_mods_options( opt_spec ) );
   option_stream opt_in( argc, argv, all_options.get() );
 
   for ( option_stream::option opt; opt_in >> opt; ) {
@@ -279,29 +278,25 @@ int main( int argc, char *argv[] ) {
         change_directory_arg = opt.arg();
         break;
 
-      case 'e': { // Filename pattern(s) to index.
+      case 'e': // Filename pattern(s) to index.
         if ( !::strtok( opt.arg(), ":" ) ) {
           error() << "no indexer module name\n";
           ::exit( Exit_Usage );
         }
-        indexer *const i = indexer::find_indexer( opt.arg() );
-        if ( !i ) {
-          error() << '"' << opt.arg() << "\": no such indexing module\n";
-          ::exit( Exit_Usage );
+        if ( indexer *const i = indexer::find_indexer( opt.arg() ) ) {
+          for ( char *pat; (pat = ::strtok( nullptr, "," )); )
+            include_patterns.insert( pat, i );
+          break;
         }
-        for ( char *pat; (pat = ::strtok( 0, "," )); )
-          include_patterns.insert( pat, i );
-        break;
-      }
+        error() << '"' << opt.arg() << "\": no such indexing module\n";
+        ::exit( Exit_Usage );
 
-      case 'E': { // Filename pattern(s) not to index.
-        char *a = opt.arg();
-        for ( char *pat; (pat = ::strtok( a, "," )); ) {
+      case 'E': // Filename pattern(s) not to index.
+        for ( char *a = opt.arg(), *pat; (pat = ::strtok( a, "," )); ) {
           exclude_patterns.insert( pat );
           a = nullptr;
         } // for
         break;
-      }
 
       case 'f': // Specify the word/file file maximum.
         word_files_max_arg = opt.arg();
@@ -616,7 +611,7 @@ void load_old_index( char const *index_file_name ) {
     files_reserve = files_grow( static_cast<int>( old_files.size() ) );
   }
   FOR_EACH( old_files, f ) {
-    unsigned char const* u = reinterpret_cast<unsigned char const*>( *f );
+    unsigned char const *u = reinterpret_cast<unsigned char const*>( *f );
     int const dir_index = dec_int( u );
     char const *const file_name = reinterpret_cast<char const*>(u);
     while ( *u++ ) ;                    // skip past filename
@@ -910,7 +905,7 @@ void merge_indicies( ostream &o ) {
 }
 
 /**
- * Compute the rank of all files for all words in the index.  This function is
+ * Computes the rank of all files for all words in the index.  This function is
  * used only when partial indicies are not generated.  Also removes words that
  * occur too frequently.
  */
@@ -962,7 +957,7 @@ void remove_temp_files( void ) {
 }
 
 /**
- * Write the directory index to the given ostream recording the offsets as it
+ * Writes the directory index to the given ostream recording the offsets as it
  * goes.
  *
  * @param o The ostream to write the index to.
@@ -987,7 +982,7 @@ static void write_dir_index( ostream &o, off_t *offset ) {
 }
 
 /**
- * Write the file index to the given ostream recording the offsets as it goes.
+ * Writes the file index to the given ostream recording the offsets as it goes.
  *
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
@@ -1038,7 +1033,7 @@ static void write_full_index( ostream &o ) {
 }
 
 /**
- * Write the meta name index to the given ostream recording the offsets as it
+ * Writes the meta name index to the given ostream recording the offsets as it
  * goes.
  *
  * @param o The ostream to write the index to.
@@ -1053,7 +1048,7 @@ static void write_meta_name_index( ostream &o, off_t *offset ) {
 }
 
 /**
- * Write a partial index to a temporary file.  The format of a partial index
+ * Writes a partial index to a temporary file.  The format of a partial index
  * file is:
  * \code
  *    long  num_words;
@@ -1097,7 +1092,7 @@ static void write_partial_index() {
 }
 
 /**
- * Write the stop-word index to the given ostream recording the offsets as it
+ * Writes the stop-word index to the given ostream recording the offsets as it
  * goes.
  *
  * @param o The ostream to write the index to.
@@ -1112,7 +1107,7 @@ static void write_stop_word_index( ostream &o, off_t *offset ) {
 }
 
 /**
- * Write the word index to the given ostream recording the offsets as it goes.
+ * Writes the word index to the given ostream recording the offsets as it goes.
  *
  * @param o The ostream to write the index to.
  * @param offset A pointer to a built-in vector where to record the offsets.
@@ -1146,7 +1141,7 @@ static void write_word_index( ostream &o, off_t *offset ) {
 }
 
 /**
- * Write the usage message to the given ostream.
+ * Writes the usage message to the given ostream.
  *
  * @param o The ostream to write to.
  * @return Returns \a o.

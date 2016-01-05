@@ -41,13 +41,13 @@ bool User::change_to_uid() const {
 void User::parse_value( char *line ) {
   conf<string>::parse_value( line );
   char const *const user_name = operator char const*();
-  struct passwd const *const p = ::getpwnam( user_name );
-  if ( !p ) {
+  if ( auto p = ::getpwnam( user_name ) ) {
+    uid_ = p->pw_uid;
+  } else {
     error() << '"' << name() << "\" value of \"" << user_name
             << "\" does not exist" << endl;
     ::exit( Exit_No_User );
   }
-  uid_ = p->pw_uid;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

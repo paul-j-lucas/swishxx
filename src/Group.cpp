@@ -43,12 +43,12 @@ bool Group::change_to_gid() const {
 void Group::parse_value( char *line ) {
   conf<string>::parse_value( line );
   char const *const group_name = operator char const*();
-  struct group const *const g = ::getgrnam( group_name );
-  if ( !g ) {
+  if ( auto g = ::getgrnam( group_name ) ) {
+    gid_ = g->gr_gid;
+  } else {
     error() << '"' << group_name << "\" does not exist" << endl;
     ::exit( Exit_No_Group );
   }
-  gid_ = g->gr_gid;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

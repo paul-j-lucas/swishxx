@@ -48,11 +48,11 @@ void conf<bool>::parse_value( char *line ) {
   bool value;
   if ( parse( line, &value ) ) {
     operator=( value );
-    return;
+  } else {
+    error() << '"' << name() << "\" is not one of: "
+               "0, f, false, n, no, off, 1, on, t, true, y, yes\n";
+    ::exit( Exit_Config_File );
   }
-  error() << '"' << name() << "\" is not one of: "
-             "0, f, false, n, no, off, 1, on, t, true, y, yes\n";
-  ::exit( Exit_Config_File );
 }
 
 void conf<bool>::reset() {

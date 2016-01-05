@@ -140,9 +140,9 @@ int indexer::find_meta( char const *meta_name ) {
   //
   // Look up the meta name to get its associated unique integer ID.
   //
-  meta_map::const_iterator const i = meta_names.find( meta_name );
-  if ( i != meta_names.end() )
-    return i->second;
+  auto const found = meta_names.find( meta_name );
+  if ( found != meta_names.end() )
+    return found->second;
   //
   // New meta name: add it.  Do this in two statements intentionally because
   // C++ doesn't guarantee that the RHS of assignment is evaluated first.
@@ -246,8 +246,7 @@ void indexer::index_words( encoded_char_range const &e, int meta_id ) {
   bool  in_word = false;
   int   len;
 
-  encoded_char_range::const_iterator c = e.begin();
-  while ( !c.at_end() ) {
+  for ( auto c = e.begin(); !c.at_end(); ) {
     char const ch = iso8859_1_to_ascii( *c++ );
 
     ////////// Collect a word /////////////////////////////////////////////////
@@ -277,7 +276,7 @@ void indexer::index_words( encoded_char_range const &e, int meta_id ) {
       in_word = false;
       index_word( word, len, meta_id );
     }
-  } // while
+  } // for
 
   if ( in_word ) {
     //

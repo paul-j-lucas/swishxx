@@ -41,26 +41,26 @@
                                   new off_t[ num_meta_names ] : nullptr;
 
   my_write( o, &num_unique_words, sizeof( num_unique_words ) );
-  streampos const word_offset_pos = o.tellp();
+  auto const word_offset_pos = o.tellp();
   my_write( o, word_offset, num_unique_words * sizeof( word_offset[0] ) );
 
   my_write( o, &num_stop_words, sizeof( num_stop_words ) );
-  streampos const stop_word_offset_pos = o.tellp();
+  auto const stop_word_offset_pos = o.tellp();
   if ( num_stop_words )
     my_write( o, stop_word_offset,
       num_stop_words * sizeof( stop_word_offset[0] )
     );
 
   my_write( o, &num_dirs, sizeof( num_dirs ) );
-  streampos const dir_offset_pos = o.tellp();
+  auto const dir_offset_pos = o.tellp();
   my_write( o, dir_offset, num_dirs * sizeof( dir_offset[0] ) );
 
   my_write( o, &num_files, sizeof( num_files ) );
-  streampos const file_offset_pos = o.tellp();
+  auto const file_offset_pos = o.tellp();
   my_write( o, file_offset, num_files * sizeof( file_offset[0] ) );
 
   my_write( o, &num_meta_names, sizeof( num_meta_names ) );
-  streampos const meta_name_offset_pos = o.tellp();
+  auto const meta_name_offset_pos = o.tellp();
   if ( num_meta_names )
     my_write( o, meta_name_offset,
       num_meta_names * sizeof( meta_name_offset[0] )

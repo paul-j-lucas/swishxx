@@ -125,7 +125,7 @@ file_list::const_iterator& file_list::const_iterator::operator++() {
         //
         while ( *c_ != Stop_Marker )
           dec_int( c_ );
-  } // switch
+    } // switch
     ++c_;                               // skip Stop_Marker
   } // while
 }

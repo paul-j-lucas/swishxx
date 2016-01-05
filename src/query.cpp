@@ -182,7 +182,7 @@ static void assert_index_has_word_pos_data() {
   // if pos_delta_ is empty: if it is, no word-position data was stored.
   //
   file_list const list( words.begin() );
-  file_list::const_iterator const file( list.begin() );
+  auto const file( list.begin() );
   if ( file->pos_deltas_.empty() ) {
     extern IndexFile index_file_name;
     error() << '"' << index_file_name

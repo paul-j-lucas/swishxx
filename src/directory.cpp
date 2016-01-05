@@ -78,8 +78,7 @@ FollowLinks   follow_symbolic_links;
  * @return Returns the index number of the directory.
  */
 int check_add_directory( char const *dir_path ) {
-  pair<dir_set_type::iterator,bool> const
-    p = dir_set.insert( dir_set_type::value_type( dir_path, 0 ) );
+  auto const p = dir_set.insert( dir_set_type::value_type( dir_path, 0 ) );
   if ( p.second ) {
     //
     // We really did insert a new directory: set the index to the actual value.
@@ -171,8 +170,7 @@ void do_directory( char const *dir_path ) {
   char *file = path + ::strlen( path );
   *file++ = Dir_Sep_Char;
 
-  struct dirent const *dir_ent;
-  while ( (dir_ent = ::readdir( dir_p )) ) {
+  for ( struct dirent const *dir_ent; (dir_ent = ::readdir( dir_p )); ) {
     //
     // See if the name is "." or "..": if so, skip it.
     //
@@ -199,7 +197,7 @@ void do_directory( char const *dir_path ) {
       do_file( path );
 #endif /* SWISHXX_INDEX */
     }
-  } // while
+  } // for
 
   ::closedir( dir_p );
   if ( recursion )

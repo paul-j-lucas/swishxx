@@ -40,14 +40,13 @@ void IncludeFile::parse_value( char *line ) {
     ::exit( Exit_Config_File );
   }
 
-  indexer *const i = indexer::find_indexer( mod_name );
-  if ( !i ) {
+  if ( indexer *const i = indexer::find_indexer( mod_name ) ) {
+    for ( char const *s; (s = ::strtok( nullptr, " \r\t" )); )
+      insert( new_strdup( s ), i );
+  } else {
     error() << '"' << mod_name << "\": no such indexing module\n";
     ::exit( Exit_Config_File );
   }
-
-  for ( char const *s; (s = ::strtok( nullptr, " \r\t" )); )
-    insert( new_strdup( s ), i );
 }
 
 void IncludeFile::reset() {

@@ -171,7 +171,7 @@ bool move_if_match( char const *&c, char const *end, char const *s,
 
 bool move_if_match( encoded_char_range::const_iterator &c, char const *s,
                     bool ignore_case ) {
-  encoded_char_range::const_iterator d = c;
+  auto d = c;
   if ( ignore_case )
     while ( *s && !d.at_end() && *s == to_lower( *d ) )
       ++s, ++d;

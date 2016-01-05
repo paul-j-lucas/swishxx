@@ -71,7 +71,6 @@
 #include <algorithm>                    /* for binary_search(), etc */
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-#include <functional>                   /* for binary_function<> */
 #include <iostream>
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
@@ -90,18 +89,6 @@ using namespace std;
  * file index and the second \c int is that file's rank.
  */
 typedef pair<int,int> search_result;
-
-/**
- * A %sort_by_rank is-a binary_function used to sort search results by rank in
- * descending order (highest rank first).
- */
-struct sort_by_rank :
-  binary_function<search_result const&,search_result const&,bool>
-{
-  result_type operator()( first_argument_type a, second_argument_type b ) {
-    return a.second > b.second;
-  }
-};
 
 //*****************************************************************************
 //
@@ -249,12 +236,13 @@ int main( int argc, char *argv[] ) {
 #endif /* RLIMIT_AS */
 
   mmap_file const the_index( index_file_name );
-  the_index.behavior( mmap_file::bt_random );
   if ( !the_index ) {
     error() << "could not read index from \"" << index_file_name
             << '"' << error_string( the_index.error() );
     ::exit( Exit_No_Read_Index );
   }
+  the_index.behavior( mmap_file::bt_random );
+
   words      .set_index_file( the_index, index_segment::isi_word      );
   stop_words .set_index_file( the_index, index_segment::isi_stop_word );
   directories.set_index_file( the_index, index_segment::isi_dir       );
@@ -415,7 +403,12 @@ static bool search( char const *query, unsigned skip_results,
     sorted_results_type sorted;
     sorted.reserve( results.size() );
     ::copy( results.begin(), results.end(), ::back_inserter( sorted ) );
-    ::sort( sorted.begin(), sorted.end(), sort_by_rank() );
+    ::sort(
+      sorted.begin(), sorted.end(),
+      []( search_result const &i, search_result const &j ) {
+        return i.second > j.second;
+      }
+    );
     //
     // Compute the highest rank and the normalization factor.
     //

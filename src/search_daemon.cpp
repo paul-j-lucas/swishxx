@@ -203,7 +203,7 @@ static int open_unix_socket() {
     error() << "can not delete \"" << socket_file_name << '"' << error_string;
     ::exit( Exit_No_Unlink );
   }
-  BIND_SOCKET( fd, addr, Unix);
+  BIND_SOCKET( fd, addr, Unix );
   return fd;
 }
 

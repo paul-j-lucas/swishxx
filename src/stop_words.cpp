@@ -381,8 +381,7 @@ stop_word_set::stop_word_set( char const *file_name ) {
   int   len;
   bool  in_word = false;
 
-  mmap_file::const_iterator c = file.begin();
-  while ( true ) {
+  for ( auto c = file.begin(); ; ) {
     if ( c != file.end() ) {
       char const ch = tolower( iso8859_1_to_ascii( *c++ ) );
 
@@ -423,7 +422,7 @@ stop_word_set::stop_word_set( char const *file_name ) {
 
     word[ len ] = '\0';
     insert( new_strdup( word ) );
-  } // while
+  } // for
 }
 
 stop_word_set::stop_word_set( mmap_file const &index_file ) {

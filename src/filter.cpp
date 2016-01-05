@@ -65,11 +65,11 @@ static void unescape_filename( string &s ) {
 ////////// member functions ///////////////////////////////////////////////////
 
 char const* filter::exec() const {
-  assert ( !command_.empty() );
+  assert( !command_.empty() );
 
   int exit_code;
   int attempt_count = 0;
-  while ( ( exit_code = ::system( command_.c_str() ) ) == -1 ) {
+  while ( (exit_code = ::system( command_.c_str() )) == -1 ) {
     //
     // Try a few times before giving up in case the system is temporarily busy.
     //

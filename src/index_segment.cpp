@@ -27,7 +27,7 @@ using namespace PJL;
 ///////////////////////////////////////////////////////////////////////////////
 
 void index_segment::set_index_file( mmap_file const &file, segment_id id ) {
-  mmap_file::const_iterator c = begin_ = file.begin();
+  auto c = begin_ = file.begin();
   size_type const *p = reinterpret_cast<size_type const*>( c );
   num_entries_ = p[0];
   for ( int i = id; i > 0; --i ) {
