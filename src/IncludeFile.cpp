@@ -34,7 +34,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 void IncludeFile::parse_value( char *line ) {
-  char const *const mod_name = ::strtok( line, " \r\t" );
+  auto const mod_name = ::strtok( line, " \r\t" );
   if ( !mod_name ) {
     error() << "no indexer module name\n";
     ::exit( Exit_Config_File );

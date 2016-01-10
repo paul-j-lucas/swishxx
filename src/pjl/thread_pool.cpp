@@ -93,7 +93,7 @@ pthread_key_t thread_pool::thread::thread_obj_key_;
  * @param p Pointer to an instance of a thread_pool::thread.
  */
 void thread_pool_decrement_busy( void *p ) {
-  thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
+  auto const t = static_cast<thread_pool::thread*>( p );
   MUTEX_LOCK( &t->pool_.t_busy_lock_, true );
   --t->pool_.t_busy_;
   MUTEX_UNLOCK();
@@ -107,7 +107,7 @@ void thread_pool_decrement_busy( void *p ) {
  * @param p Pointer to an instance of a thread_pool::thread.
  */
 extern "C" void thread_pool_thread_data_cleanup( void *p ) {
-  thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
+  auto const t = static_cast<thread_pool::thread*>( p );
 # ifdef DEBUG_threads
   cerr << "thread_pool_thread_data_cleanup(" << (unsigned long)t << ')' << endl;
 # endif
@@ -147,7 +147,7 @@ void* thread_pool_thread_main( void *p ) {
     error() << "could not detach thread" << error_string( result );
     ::exit( Exit_No_Detach_Thread );
   }
-  thread_pool::thread *const t = static_cast<thread_pool::thread*>( p );
+  auto const t = static_cast<thread_pool::thread*>( p );
 
   //
   // Put a copy of the pointer to the thread object into thread-specific data
@@ -333,9 +333,9 @@ thread_pool::thread::~thread() {
   if ( !in_cleanup_ ) {
     //
     // This destructor is not being called via the thread-specific data
-    // destructor thread_pool_thread_data_cleanup(): null-out the
-    // thread-specific data so thread_pool_thread_data_cleanup() won't be
-    // called when this thread terminates.
+    // destructor thread_pool_thread_data_cleanup(): null-out the thread-
+    // specific data so thread_pool_thread_data_cleanup() won't be called when
+    // this thread terminates.
     //
     ::pthread_setspecific( thread_obj_key_, nullptr );
     //

@@ -272,7 +272,7 @@ int main( int argc, char *argv[] ) {
  */
 static void dump_single_word( char const *word, ostream &out ) {
   unique_ptr<char[]> const lower_ptr( to_lower_r( word ) );
-  char const *const lower_word = lower_ptr.get();
+  auto const lower_word = lower_ptr.get();
   less<char const*> const comparator;
 
   if ( !is_ok_word( word ) ||
@@ -287,7 +287,7 @@ static void dump_single_word( char const *word, ostream &out ) {
   //
   // Look up the word.
   //
-  word_range const range =
+  auto const range =
     ::equal_range( words.begin(), words.end(), lower_word, comparator );
   if ( range.first == words.end() || comparator( lower_word, *range.first ) ) {
     out << "# not found: " << word << endl;
@@ -317,7 +317,7 @@ static void dump_single_word( char const *word, ostream &out ) {
 static void dump_word_window( char const *word, int window_size, int match,
                               ostream &out ) {
   unique_ptr<char[]> const lower_ptr( to_lower_r( word ) );
-  char const *const lower_word = lower_ptr.get();
+  auto const lower_word = lower_ptr.get();
   less<char const*> const comparator;
 
   if ( !is_ok_word( word ) ||
@@ -332,7 +332,7 @@ static void dump_word_window( char const *word, int window_size, int match,
   //
   // Look up the word.
   //
-  word_range range =
+  auto range =
     ::equal_range( words.begin(), words.end(), lower_word, comparator );
   if ( range.first == words.end() || comparator( lower_word, *range.first ) ){
     out << "# not found: " << word << endl;

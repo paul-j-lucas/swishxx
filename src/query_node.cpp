@@ -187,8 +187,7 @@ void and_node::eval( search_results &results ) {
   for ( auto result = results.begin(); result != results.end(); ) {
     bool increment_result_iterator = true;
     for ( auto const &child_result : child_results ) {
-      search_results::const_iterator const
-        found = child_result.find( result->first );
+      auto const found = child_result.find( result->first );
       if ( found != child_result.end() ) {
         result->second += found->second;
         continue;
@@ -198,7 +197,7 @@ void and_node::eval( search_results &results ) {
       // the iterator to a temporary and increment the real iterator off of the
       // element to be erased so the real iterator won't be invalidated.
       //
-      search_results::iterator const erase_me = result++;
+      auto const erase_me = result++;
       results.erase( erase_me );
       increment_result_iterator = false;
       break;
@@ -346,25 +345,13 @@ query_node* near_node::distributor::operator()( query_node *node ) const {
   return node;
 }
 
-//*****************************************************************************
-//
-// SYNOPSIS
-//
-      void not_near_node::eval( search_results &results )
-//
-// DESCRIPTION
-//
-//      Evaluate the search results for "not near".  This code is very similar
-//      to that for near_node::eval().  The difference is that the right-hand
-//      word can either be "not near" the left-hand word -OR- not present in
-//      the same file at all.
-//
-// PARAMETERS
-//
-//      results     The results get put here.
-//
-//*****************************************************************************
-{
+void not_near_node::eval( search_results &results ) {
+  //
+  // Evaluates the search results for "not near".  This code is very similar to
+  // that for near_node::eval().  The difference is that the right-hand word
+  // can either be "not near" the left-hand word -OR- not present in the same
+  // file at all.
+  //
   word_node const *const node[] = {
     dynamic_cast<word_node*>( left()  ),
     dynamic_cast<word_node*>( right() )

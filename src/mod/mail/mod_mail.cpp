@@ -138,11 +138,9 @@ inline void mail_indexer::new_file() {
 
 char const* mail_indexer::find_title( mmap_file const &file ) const {
   new_file();
-
   unsigned lines = 0;
 
-  mmap_file::const_iterator c = file.begin();
-  while ( c != file.end() ) {
+  for ( auto c = file.begin(); c != file.end(); ) {
     if ( is_newline( c, file.end() ) || ++lines > num_title_lines ) {
       //
       // We either ran out of headers or didn't find the Subject header within
@@ -162,7 +160,7 @@ char const* mail_indexer::find_title( mmap_file const &file ) const {
       return tidy_title( c, nl );       // found the Subject
 
     c = skip_newline( nl, file.end() );
-  } // while
+  } // for
 
   //
   // The file has less than num_title_lines lines and no Subject was found.
@@ -256,8 +254,7 @@ mail_indexer::message_type mail_indexer::index_headers( char const *&c,
       // Note that a filter can override our built-in handling of certain MIME
       // types.
       //
-      if ( FilterAttachment::const_pointer const
-           f = attachment_filters[ mime_type ] ) {
+      if ( auto const f = attachment_filters[ mime_type ] ) {
         type.content_type_ = ct_external_filter;
         //
         // Just in case there were two Content-Type headers (weird, yes; but we
@@ -339,7 +336,7 @@ not_indexable:
 }
 
 void mail_indexer::index_words( encoded_char_range const &e, int ) {
-  encoded_char_range::const_iterator c = e.begin();
+  auto c = e.begin();
   message_type const type( index_headers( c.pos(), c.end_pos() ) );
 
   if ( type.content_type_ == ct_unknown || type.encoding_ == Binary ) {

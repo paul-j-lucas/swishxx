@@ -164,7 +164,7 @@ bool parse_query( token_stream &query, search_results &results,
  * @return Returns the numeric ID of the meta name in the range [0,N).
  */
 static int get_meta_id( index_segment::const_iterator i ) {
-  unsigned char const *p = reinterpret_cast<unsigned char const*>( *i );
+  auto p = reinterpret_cast<unsigned char const*>( *i );
   while ( *p++ ) ;                      // skip past word
   return dec_int( p );
 }

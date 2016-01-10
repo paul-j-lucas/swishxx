@@ -87,13 +87,13 @@ char const *filter::substitute( char const *file_name ) {
   // Determine the base name of the file in case we need it for 'b' or 'B'
   // substitutions.
   //
-  char const *const base_name = pjl_basename( esc_file_name.c_str() );
+  auto const base_name = pjl_basename( esc_file_name.c_str() );
 
   //
   // For this kind of string manipulation, the C++ string class is much easier
   // to use than the C str*() functions.
   //
-  string::size_type target_pos = string::npos;
+  auto target_pos = string::npos;
 
   command_ = command_template_;
   string::size_type pos = 0;
@@ -138,7 +138,7 @@ char const *filter::substitute( char const *file_name ) {
         break;
 
       case 'B': {                       // basename minus last extension
-        string no_ext = base_name;
+        string no_ext( base_name );
         no_ext.erase( no_ext.rfind( '.' ) );
         command_.replace( pos, 2, no_ext );
         pos += no_ext.length();
@@ -146,7 +146,7 @@ char const *filter::substitute( char const *file_name ) {
       }
 
       case 'e': {                       // filename extension
-        string ext = esc_file_name;
+        string ext( esc_file_name );
         ext.erase( 0, ext.rfind( '.' ) );
         command_.replace( pos, 2, ext );
         pos += ext.length();
@@ -154,7 +154,7 @@ char const *filter::substitute( char const *file_name ) {
       }
 
       case 'E': {                       // second-to-last filename extension
-        string ext = esc_file_name;
+        string ext( esc_file_name );
         string::size_type const x = ext.rfind( '.' );
         if ( x != string::npos ) {
           ext.erase( x );
@@ -171,7 +171,7 @@ char const *filter::substitute( char const *file_name ) {
         break;
 
       case 'F': {                       // filename minus last extension
-        string no_ext = esc_file_name;
+        string no_ext( esc_file_name );
         no_ext.erase( no_ext.rfind( '.' ) );
         command_.replace( pos, 2, no_ext );
         pos += no_ext.length();

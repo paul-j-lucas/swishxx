@@ -156,7 +156,7 @@ bool is_ok_word( char const *word ) {
 
 bool move_if_match( char const *&c, char const *end, char const *s,
                     bool ignore_case ) {
-  char const *d = c;
+  auto d = c;
   if ( ignore_case )
     while ( *s && d != end && *s == to_lower( *d ) )
       ++s, ++d;

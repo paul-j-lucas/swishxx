@@ -89,7 +89,7 @@ encoding_quoted_printable( encoded_char_range::const_pointer,
     //
     return ' ';
   }
-  encoded_char_range::value_type const h2 = *c++;
+  auto const h2 = *c++;
   if ( !is_xdigit( h2 ) ) {
     //
     // This shouldn't happen in proper quoted-printable text.

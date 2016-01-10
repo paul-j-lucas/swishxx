@@ -55,7 +55,7 @@ void trim_left( encoded_char_range::const_iterator *begin,
 
 void trim_right( encoded_char_range::const_iterator const &begin,
                  encoded_char_range::const_iterator *end ) {
-  encoded_char_range::const_iterator first_trailing_space = begin;
+  auto first_trailing_space = begin;
   bool is_space = false;
   for ( auto pos = begin; pos < *end; ++pos ) {
     if ( isspace( *pos ) ) {

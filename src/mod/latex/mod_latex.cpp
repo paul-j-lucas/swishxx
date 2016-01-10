@@ -97,26 +97,23 @@ char const* LaTeX_indexer::find_title( mmap_file const &file ) const {
       return nullptr;
     }
 
-    //
-    // Did we find \title{ yet?
-    //
-    if ( *c++ != '\\' || !move_if_match( c, "title" ) )
-      continue;
-    if ( c.at_end() )
-      return nullptr;
-    if ( *c != '{' )
-      continue;
-    if ( (++c).at_end() )
-      return nullptr;
-
-    //
-    // Found the \title{ command: mark the postition after it and look for the
-    // closing }.
-    //
-    mmap_file::const_iterator const start = c.pos();
-    while ( !(++c).at_end() )
-      if ( *c == '}' )
-        return tidy_title( start, c.pos() );
+    if ( *c == '\\' && !(++c).at_end() && move_if_match( c, "title{" ) ) {
+      //
+      // Found the \title{ command.
+      //
+      if ( !c.at_end() ) {
+        for ( auto const start = c.pos(); !c.at_end(); ++c ) {
+          switch ( *c ) {
+            case '}':
+              return tidy_title( start, c.pos() );
+            case '\n':
+              if ( ++lines > num_title_lines )
+                return nullptr;
+          } // switch
+        }
+      }
+      break;
+    }
   } // while
 
   //
@@ -131,8 +128,7 @@ void LaTeX_indexer::index_words( encoded_char_range const &e, int meta_id ) {
   int         len;
   char const* substitution = nullptr;
 
-  encoded_char_range::const_iterator c = e.begin();
-  while ( !c.at_end() ) {
+  for ( auto c = e.begin(); !c.at_end(); ) {
     char ch;
 
     if ( substitution ) {
@@ -205,7 +201,7 @@ collect:
       in_word = false;
       index_word( word, len, meta_id );
     }
-  } // while
+  } // for
 
   if ( in_word ) {
     //
@@ -229,7 +225,7 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
   // running into the end of the tag).
   //
   char *to = command_buf;
-  encoded_char_range::const_iterator from = c;
+  auto from = c;
   while ( !from.at_end() && is_alnum( *from ) ) {
     //
     // Check to see if the name is too long to be a valid one for a LaTeX
@@ -246,8 +242,8 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
 
   ////////// Look-up command //////////////////////////////////////////////////
 
-  static command_map const &commands = command_map::instance();
-  command_map::const_iterator const cmd = commands.find( command_buf );
+  static auto const &commands = command_map::instance();
+  auto const cmd = commands.find( command_buf );
   if ( cmd == commands.end() )
     goto skip;
 
@@ -268,7 +264,7 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
       //
       // Find the matching '}' or ']' and index the words in between.
       //
-      encoded_char_range::const_iterator end = c;
+      auto end = c;
       if ( find_match( end, *cmd->second.action ) ) {
         index_words( encoded_char_range( c, end ) );
         c = end;

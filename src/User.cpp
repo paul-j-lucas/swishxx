@@ -40,7 +40,7 @@ bool User::change_to_uid() const {
 
 void User::parse_value( char *line ) {
   conf<string>::parse_value( line );
-  char const *const user_name = operator char const*();
+  auto const user_name = operator char const*();
   if ( auto p = ::getpwnam( user_name ) ) {
     uid_ = p->pw_uid;
   } else {

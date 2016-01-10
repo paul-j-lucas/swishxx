@@ -322,7 +322,7 @@ char const* less_stem::stem_word( char const *word ) {
   static mutex cache_mutex;
   lock_guard<mutex> const lock( mutex );
 #endif /* WITH_SEARCH_DAEMON */
-  stem_cache::const_iterator const found = cache.find( word );
+  auto const found = cache.find( word );
   if ( found != cache.end() )
     return found->second;
 

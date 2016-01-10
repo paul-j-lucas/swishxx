@@ -296,9 +296,8 @@ element_map::element_map() {
     // The ugly double, old-style casts below are necessary because C++ has
     // become overly pedantic about casting to enums.
     //
-    element::end_tag_type const
-      v = (element::end_tag_type const)(long const)(p[1]);
-    element &e = insert( value_type( *p++, element( v ) ) ).first->second;
+    auto const v = (element::end_tag_type const)(long const)(p[1]);
+    auto &e = insert( value_type( *p++, element( v ) ) ).first->second;
 
     switch ( v ) {
 

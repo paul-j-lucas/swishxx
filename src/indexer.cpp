@@ -87,7 +87,7 @@ indexer::all_mods_options( option_stream::spec const *main_spec ) {
   unique_ptr<option_stream::spec[]> combined_spec(
     new option_stream::spec[ option_count + 1 ]
   );
-  option_stream::spec *c = combined_spec.get();
+  auto c = combined_spec.get();
 
   for ( s = main_spec; s->long_name; ++s )
     *c++ = *s;
@@ -131,7 +131,7 @@ int indexer::find_meta( char const *meta_name ) {
     // There were meta names explicitly given: see if the meta name is among
     // them.  If not, forget it; if so, possibly reassign the name.
     //
-    IncludeMeta::const_iterator const m = include_meta_names.find( meta_name );
+    auto const m = include_meta_names.find( meta_name );
     if ( m == include_meta_names.end() )
       return Meta_ID_None;
     meta_name = m->second;

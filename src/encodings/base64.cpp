@@ -83,7 +83,7 @@ return_decoded_char:
   //
   // If we're positioned at a newline, skip over it.
   //
-  encoded_char_range::const_pointer line_begin = skip_newline( c, end );
+  auto line_begin = skip_newline( c, end );
   if ( line_begin == end ) {
     //
     // We ran into the end: return something innocuous like a space since we
@@ -118,7 +118,7 @@ reached_end:
   //
   delta = c - line_begin;
   difference_type const delta4 = delta & ~3u;
-  encoded_char_range::const_pointer const group = line_begin + delta4;
+  auto const group = line_begin + delta4;
 
   if ( group + 1 == end || group + 2 == end || group + 3 == end ) {
     //

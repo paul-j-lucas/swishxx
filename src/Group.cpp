@@ -42,7 +42,7 @@ bool Group::change_to_gid() const {
 
 void Group::parse_value( char *line ) {
   conf<string>::parse_value( line );
-  char const *const group_name = operator char const*();
+  auto const group_name = operator char const*();
   if ( auto g = ::getgrnam( group_name ) ) {
     gid_ = g->gr_gid;
   } else {

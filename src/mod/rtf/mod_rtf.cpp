@@ -53,6 +53,9 @@ char const* rtf_indexer::find_title( mmap_file const &file ) const {
 
     if ( *c == '\\' && !(++c).at_end() && *c != '\\' &&
          move_if_match( c, "title " ) ) {
+      //
+      // Found the \title control word.
+      //
       if ( !c.at_end() ) {
         for ( auto const start = c.pos(); !c.at_end(); ++c ) {
           switch ( *c ) {

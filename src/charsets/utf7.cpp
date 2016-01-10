@@ -101,7 +101,7 @@ return_decoded_char:
   // not.
   //
   bool encoded = false;
-  encoded_char_range::const_pointer const orig_c = c;
+  auto const orig_c = c;
   while ( true ) {
     if ( ::strchr( set_B, *c ) ) {
       //
@@ -209,7 +209,7 @@ return_decoded_char:
     //
     // Find the character in set B.
     //
-    if ( char const *const a = ::strchr( set_B, *c ) ) {
+    if ( auto const a = ::strchr( set_B, *c ) ) {
       value += (a - set_B) << ((3 - i) * Bits_Per_Char);
       ++c;
     } else {

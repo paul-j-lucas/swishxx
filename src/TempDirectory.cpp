@@ -32,7 +32,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 char const* TempDirectory::default_value() {
-  char const *const tmpdir = ::getenv( "TMPDIR" );
+  auto const tmpdir = ::getenv( "TMPDIR" );
   return tmpdir ? tmpdir : TempDirectory_Default;
 }
 

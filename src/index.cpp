@@ -530,7 +530,7 @@ int main( int argc, char *argv[] ) {
     time = ::time( nullptr ) - time;    // Stop!
 
     bool testing = false;
-    if ( char const *const swishxx_test = ::getenv( "SWISHXX_TEST" ) )
+    if ( auto const swishxx_test = ::getenv( "SWISHXX_TEST" ) )
       parse( swishxx_test, &testing );
 
     cout << '\n' << me << ": done:\n";
@@ -566,7 +566,7 @@ bool is_too_frequent( char const *word, unsigned file_count ) {
            << flush;
     return true;
   }
-  unsigned const wfp =
+  auto const wfp =
     static_cast<unsigned>( file_count * 100 / file_info::num_files() );
   if ( wfp >= word_percent_max ) {
     if ( verbosity > 2 )
@@ -613,11 +613,11 @@ void load_old_index( char const *index_file_name ) {
   FOR_EACH( old_files, f ) {
     unsigned char const *u = reinterpret_cast<unsigned char const*>( *f );
     int const dir_index = dec_int( u );
-    char const *const file_name = reinterpret_cast<char const*>(u);
+    auto const file_name = reinterpret_cast<char const*>(u);
     while ( *u++ ) ;                    // skip past filename
     size_t const size = dec_int( u );
     int const num_words = dec_int( u );
-    char const *const title = reinterpret_cast<char const*>( u );
+    auto const title = reinterpret_cast<char const*>( u );
 
     string const dir_str( old_dirs[ dir_index ] );
     string const path( dir_str + '/' + file_name );
@@ -827,6 +827,7 @@ void merge_indicies( ostream &o ) {
           << enc_int( file.occurrences_ )
           << enc_int( rank_word( file.index_, file.occurrences_, factor ) )
           << assert_stream;
+
         if ( !file.meta_ids_.empty() )
           file.write_meta_ids( o );
 #ifdef WITH_WORD_POS

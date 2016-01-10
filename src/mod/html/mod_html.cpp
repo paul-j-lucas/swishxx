@@ -198,8 +198,7 @@ static char entity_to_ascii( encoded_char_range::const_iterator &c ) {
  * @return Returns \c true only if the attribute was found.
  */
 static bool find_attribute( encoded_char_range &e, char const *attribute ) {
-  encoded_char_range::const_iterator c = e.begin();
-  while ( !c.at_end() ) {
+  for ( auto c = e.begin(); !c.at_end(); ) {
     if ( !is_alpha( *c ) ) {
       ++c;
       continue;
@@ -235,7 +234,7 @@ static bool find_attribute( encoded_char_range &e, char const *attribute ) {
     char const quote = ( *c == '"' || *c == '\'' ) ? *c : 0;
     if ( quote && (++c).at_end() )
       break;
-    encoded_char_range::const_pointer const new_begin = c.pos();
+    auto const new_begin = c.pos();
     for ( ; !c.at_end(); ++c ) {
       if ( quote ) {                    // stop at matching quote only
         if ( *c == quote )
@@ -252,7 +251,7 @@ static bool find_attribute( encoded_char_range &e, char const *attribute ) {
     if ( c.at_end() )
       break;
     ++c;                                // attribute name didn't match
-  } // while
+  } // for
 
   return false;
 }
@@ -280,7 +279,7 @@ static bool is_html_comment( encoded_char_range::const_iterator &c ) {
   if ( move_if_match( c, "!--" ) ) {
     while ( !c.at_end() ) {
       if ( *c++ == '-' && !c.at_end() && *c == '-' ) {
-        encoded_char_range::const_iterator const d = c;
+        auto const d = c;
         while ( !(++c).at_end() && is_space( *c ) )
           ;
         if ( c.at_end() || *c++ == '>' )
@@ -478,7 +477,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
   if ( c.at_end() )
     return;
 
-  encoded_char_range::const_iterator name = c;
+  auto name = c;
   if ( skip_html_tag( c ) || *name == '!' || *name == '?' ) {
     //
     // Skip comments, type declarations, and XML processing instructions.
@@ -500,8 +499,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
     // its attributes since we only want the tag name.)
     //
     char *to = tag_buf;
-    encoded_char_range::const_iterator from = name;
-    while ( !from.at_end() && !is_space( *from ) ) {
+    for ( auto from = name; !from.at_end() && !is_space( *from ); ) {
       //
       // Check to see if the name is too long to be a valid one for an HTML
       // element: if it is, invalidate it by writing "garbage" into the name so
@@ -515,7 +513,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
         break;
       }
       *to++ = to_lower( *from++ );
-    } // while
+    } // for
     *to = '\0';
     } // local scope
 
@@ -533,7 +531,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
         //
         resume_indexing();
       }
-      char const *const start_tag = element_stack.back().first->first;
+      auto const start_tag = element_stack.back().first->first;
       element_stack.pop_back();
 
       //
@@ -575,8 +573,8 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
 
     ////////// Look-up the HTML element ///////////////////////////////////////
 
-    static element_map const &elements = element_map::instance();
-    element_map::const_iterator const e = elements.find( tag_buf );
+    static auto const &elements = element_map::instance();
+    auto const e = elements.find( tag_buf );
     if ( e != elements.end() ) {
       //
       // We found the element in our internal table: now do different stuff
@@ -704,7 +702,7 @@ option_stream::spec const* HTML_indexer::option_spec() const {
 
 void HTML_indexer::post_options() {
   if ( dump_html_elements_opt ) {
-    static element_map const &elements = element_map::instance();
+    static auto const &elements = element_map::instance();
     ::copy( elements.begin(), elements.end(),
       ostream_iterator<element_map::value_type>( cout,"\n" )
     );

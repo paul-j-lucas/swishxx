@@ -34,7 +34,7 @@ using namespace std;
 
 void ChangeDirectory::parse_value( char *line ) {
   conf<string>::parse_value( line );
-  char const *const dir = operator char const*();
+  auto const dir = operator char const*();
 
   if ( ::chdir( dir ) == -1 ) {
     error() << '"' << dir << "\": " << strerror( errno ) << endl;
