@@ -1,0 +1,554 @@
+SWISH++ NEWS -- history of user-visable changes.
+
+Copyright (C) 1996-2016 Paul J. Lucas.
+See the end of the file for license conditions.
+
+* Changes in SWISH++ 7.0
+
+** Now using Autoconf & Automake.
+The autoconf & automake are now being used for SWISH++ configuration
+and compilation.
+
+** Added a test suite.
+Doing a "make check" will now run a suite of tests to ensure SWISH++ is
+producing correct results.
+
+** Added HTML5 elements to HTML indexer.
+SWISH++ now does a better job of indexing HTML5 markup.
+
+** Improved RTF indexer.
+SWISH++ now extracts the \title from RTF files.
+
+** Can now change directories just prior to indexing.
+The index command now accepts a new -d command-line option or a new
+ChangeDirectory configuration variable to change directories just prior to
+indexing.
+
+** Now using C++11.
+Now using C++11 as the minimum required C++ version.
+
+** Added Python documentation.
+Wherever the documentaion gives Perl 5 examples now also gives Python examples.
+
+* Changes in SWISH++ 6.1.4
+
+** Fixed indexing of ID3 tags.
+Indexing of some ID3 ags was broken; now fixed.
+
+* Changes in SWISH++ 6.1.3
+
+** Fixed the search -d option.
+It simply didn't work; it now does.
+
+* Changes in SWISH++ 6.1.2
+
+** Fixed indexing of LaTeX files ending in '%'.
+The core dump that resulting from indexing a LaTeX file ending in '%' (with no
+newline) has been fixed.
+
+* Changes in SWISH++ 6.1
+
+** Added launchd(8) cooperation.
+On Mac OS X systems, the search daemon can now be controlled by launchd(8).
+
+* Changes in SWISH++ 6.0
+
+** Added "near" searches.
+Added the ability to search using "near" in queries.
+
+* Changes in SWISH++ 5.15.4
+
+** Fixed extraction from standard input.
+The extract command has been fixed to work from standard input.
+
+* Changes in SWISH++ 5.15.2
+
+** Fixed search results.
+Search results didn't include the last one, i.e., if there are supposed to be N
+results, only N-1 were returned.
+
+* Changes in SWISH++ 5.15
+
+** Index file size reduction.
+Numbers stored in generated index files are now more highly compressed
+resulting in an overall average savings of approximately 6% in index size.
+
+* Changes in SWISH++ 5.14.2
+
+** Fixed escaping of shell meta-characters.
+Passing filenames containing shell meta-characters to the shell for filtering
+is now fixed.
+
+* Changes in SWISH++ 5.14
+
+** Added chkconfig support.
+The searchd script now supports chkconfig.
+
+* Changes in SWISH++ 5.13.4
+
+** Fixed the search --max-results option.
+The search command --max-results now actually includes the "max" part.
+
+* Changes SWISH++ 5.13
+
+** Added ID3 indexing.
+Added an indexing module for ID3 tags (typically found inside MP3 files).
+ID3v1.x and ID3v2.x through 2.4.0 are supported (with the exception of
+encrypted frames).
+
+** Added UTF-16 support.
+Added support for decoding UTF-16 text (both big- and little-endian).
+
+* Changes in SWISH++ 5.12.1
+
+** Fixed negative ranks.
+File ranks are no longer ever negative.
+
+* Changes in SWISH++ 5.12
+
+** Run-time setting of WordThreshold.
+The WordThreshold parameter may now be set either in a config. file or on the
+command line (as opposed to being only a compiled-in constant).  However, only
+the super-user may specify a value larger than the default.
+
+* Changes in SWISH++ 5.11.1
+
+** Fixed handling of invalid UTF-8.
+Invalid UTF-8 byte sequences are now handled better.
+
+* Changes in SWISH++ 5.11
+
+** Improved rank results.
+The ranking result numbers (1-100) have been significantly improved: they are
+much less striated now.
+
+* Changes in SWISH++ 5.10
+
+** Improved XHTML indexing.
+Added some XHTML 2.0 elements.
+
+* Changes in SWISH++ 5.9.6
+
+** Improved LaTeX indexing.
+Unknown LaTeX commands are now ignored (as they should have been) rather than
+indexed.
+
+* Changes in SWISH++ 5.9.4
+
+** Improved FreeBSD support.
+The core dumps for the search command under FreeBSD have been fixed.
+
+* Changes in SWISH++ 5.9
+
+** Improved XML search results.
+Added XML schema information in search results XML output.
+
+* Changes in SWISH++ 5.8
+
+** Added UTF-8 and UTF-8 support.
+Added the ability to decode UTF-7 and UTF-8 in mail/news messages.
+
+** Improved "not" in queries.
+Changed the query grammar to allow "not meta" rather than just "not primary".
+(What this means is that, previously "not foo = bar" wasn't legal even though
+it should have been.  Instead, you had to do "not (foo = bar)".)
+
+* Changes in SWISH++ 5.7.1
+
+** Fixed zero rank.
+Ranks were sometimes printed as zero; this has been fixed.
+
+* Changes in SWISH++ 5.7
+
+** Added LaTex support.
+LaTeX files can now be indexed directly.
+
+** Document title whitespace improvement.
+Document titles now have multiple whitespace characters squeezed into single
+whitespace characters.
+
+** Added TMPDIR support.
+The index command will now use the value of the environment variable TMPDIR if
+it's set as the default temporary directory.  However, the value is still
+superseded by one of -T, --temp-dir, or TempDirectory if given.
+
+* Changes in SWISH++ 5.6
+
+** Added direct RTF support.
+The text/enriched attachment indexer that was part of the Mail module was split
+off into its own RTF (Rich Text Format) module so stand-alone RTF files can now
+be indexed.
+
+** Reseting TCP connections.
+For the search command running as a daemon, added code to reset the TCP
+connection for bad requests.  (The reason for doing this is so we don't
+potentially have a socket lingering in TIME-WAIT from a client that was too
+dumb to give us a valid request in the first place.  This helps alleviate
+denial-of-service attacks (if that's what's going on).)
+
+* Changes in SWISH++ 5.5.3
+
+** Added Procmail script.
+A sample Procmail recipe has been added that can be used to split incoming mail
+messages into individual files for indexing.
+
+** Improved word-determination heuristics.
+Camel-case words like "FedEx" and "iMac" are now indexed.
+
+* Changes in SWISH++ 5.5
+
+** Added non-auto-background daemon support.
+The search command can now be run as a daemon without it automatically putting
+itself into the background.  This is useful in order to wrap a start script
+around it and automatically restart it if it dies for any reason.
+
+** Added search scripts.
+Added two new utility scripts: searchmonitor (a process monitor for search) and
+searchd (a start/stop script for SysV-like systems).
+
+** Improved super-user security.
+The search command, when run as a daemon, can now give away its root privileges
+if it started with them.  There are new command-line options of -U, --user, -G,
+and --group as well as new configuration variables User and Group.
+
+** Improved support for very large document sets.
+Very large document sets where many partial indicies are generated (more than
+the maximum number of open file descriptors) are now supported.
+
+* Changes in SWISH++ 5.4
+
+** Added XML search results.
+Search results can now optionally be output in XML.
+
+* Changes in SWISH++ 5.3
+
+** Improved queries containing multiple "and" terms.
+The weighting of multiple "and" terms has been improved.  Previously, the query
+"mouse and computer and keyboard" was parsed and treated as "(mouse and
+computer) and keyboard" where "mouse" and "computer" each got 25% and
+"keyboard" got 50% of the weighting.  (The last term always got 50% of the
+weightings.)  The weighting is now distributed evenly.
+
+* Changes in SWISH++ 5.2
+
+** Support for filtering e-mail attachment.
+E-mail attachments can now be filtered by external programs.
+
+* Changes in SWISH++ 5.1
+
+* Reduced index file size.
+Reduced index storage size by recording directory names only once.
+Correspondingly, the old -G option for the index command has changed to -g and
+there is a new -G option.
+
+* Changes in SWISH++ 5.0
+
+** Mail and News filter added.
+A filter module for mail (and news) files has been added.
+
+** Manual page filter added.
+A filter module for manual page files has been added.
+
+** Added a filename substitution for filters.
+Added a new %E (second-to-last filename extenstion) substitution.
+
+** Added ability not to associate meta-data.
+For the index command, a new -A or --no-assoc-meta option and AssociateMeta
+configuration variable have been added.
+
+** Added TCP socket support.
+The search daemon can now answer queries via TCP sockets in addition to Unix
+domain sockets.
+
+** Added custom results separator.
+You can now specify the separator string in search results via the new -R or
+--separator command-line options or the new ResultSeparator configuration file
+variable.
+
+** Added XHTML 1.1 Ruby element support.
+Added parsing of XHTML 1.1 ruby elements.
+
+* Changes in SWISH++ 4.7
+
+** Added filter basename substitutions.
+Added 'b' and 'B' substitutions for filters that are the base name and base
+name minus the extension of a file name, respectively.  (This is useful when
+you need the temporary files created in a location other than where the
+originals are, for example when the originals are on a filesystem that you
+don't have write access to.)
+
+** Renamed 'E' substitution to 'F'.
+For consistency, the 'E' substitution has been renamed to 'F'.
+
+* Changes in SWISH++ 4.6.6
+
+** Improved long-tag-name handling.
+Fixed segmentation fault when parsing HTML files that contain tags longer than
+Tag_Name_Max_Size characters.
+
+* Changes in SWISH++ 4.6.4
+
+** Improved long-pathname support.
+File having path names longer than 255 characters are now indexed properly.
+
+* Changes in SWISH++ 4.6.3
+
+** Improved HTML <dd> element support.
+Fixed the handling of <dd> elements by now implicitly terminating them by a
+<dt> element.
+
+* Changes in SWISH++ 4.6
+
+** Added custom extract extensions.
+Added the ability to specify the extension appended to files for the extract
+command.
+
+** Added extract filter support.
+Added the ability to run the extract command as a filter.
+
+* Changes in SWISH++ 4.5
+
+** Added full filename pattern support.
+Added the ability to index, not index, and filter files based on filename
+pattern rather than merely extension.
+
+* Changes in SWISH++ 4.4
+
+** Added literal '%' and '@' filter support.
+The FilterExtension variable now allows you to specify literal '%' and '@'
+characters by simply doubling the character.
+
+* Changes in SWISH++ 4.3
+
+** Added process ID file support.
+The search command has a new -P and --pid-file options and a PidFile
+configuration variable to specify a file to write its process ID when running
+as a daemon.
+
+* Changes in SWISH++ 4.2
+
+** Added incremental indexing support.
+You can now index incrementally by adding new files to an existing index via
+the -I or --incremental command-line options or Incremental configuration file
+variable.
+
+* Changes in SWISH++ 4.1
+
+** Reduced index file size.
+Generated index files are now approximately 24% smaller.
+
+* Changes in SWISH++ 4.0
+
+** Added search daemon support.
+The search command now has the ability to run in the background as a
+multi-threaded daemon process functioning as a search server.
+
+* Changes in SWISH++ 3.1
+
+** Added long-option support.
+All executables now accept alternate long ("GNU-style") command-line options.
+
+** Added -? option.
+Added the -? option to print the usage ("help") message.
+
+** Added custom HTML filename extension support.
+Added a new -h option and HTMLExtention configuration variable to allow
+filename extensions that are to be treated as HTML to be specified.
+
+** Added zero results support.
+The search command now allows max-results to be specified as 0.  (This allows
+the -R option to be eliminated.)
+
+** Added ISO 8859-1 (Latin 1) support.
+Added code to map ISO 8859-1 (Latin 1) characters to their closest ASCII
+equivalent so that they are treated eactly like character entity references.
+(This should also improve use of SWISH++ in other languages.)
+
+* Changes in SWISH++ 3.0.3
+
+** Added -H option.
+A -H option has been added to the index command to dump the built-in set of
+recognized HTML elements to standard output (so you can check to see if a
+certain element is recognized or not).
+
+** Improved Boolean configuration file variable value support.
+Boolean configuration file variables now accept "on" and "off" values.
+
+* Changes in SWISH++ 3.0
+
+** Added file filtering.
+The index and extract commands now allow flexible file filtering.
+
+** Added configuration file support.
+SWISH++ now supports configuration files.
+
+** Added -T option.
+The index command now accepts a -T option that allows the directory to use for
+temporary files to be specified.
+
+** Added "examined" statistics.
+The index and extract commands now report the number of files examined in
+addition to the number indexed or extracted, respectively.
+
+* Changes in SWISH++ 2.0.1
+
+** Improved HTML support.
+HTML addtributes inside HTML comments and DOCTYPE declarations are no longer
+parsed.
+
+* Changes in SWISH++ 2.0
+
+** Added selective non-indexing for HTML files.
+The index command can now selectively not index text in HTML files within HTML
+elements that are members of specified classes.
+
+** Added stemming support.
+The search command now offers optional stemming.
+
+** Added search result count.
+The search command now outputs an additional comment "results" followed by the
+total number of search results.  Additionally, there is a new -R command-line
+option to print this alone.
+
+* Changes in SWISH++ 1.7
+
+** Added support for more HTML attributes to index.
+The complete list is now "title" (for any element), "alt" (for the "area",
+"img", and "input" elements), "standby" (for the "object" element), and
+"summary" (for the "table" element).
+
+* Changes in SWISH++ 1.6
+
+** Improved "content" attribute support.
+The value of the "content" attribute for "meta" elements can now selectively be
+indexed based on the value of the "name" attribute, either by explicit
+inclusion or exclusion.
+
+** Fixed parentheses support in queries.
+Fixed parentheses use in conjunction with 'not' in a query involving meta
+names, e.g., "search author = not ( hawking )".
+
+* Changes in SWISH++ 1.5.1
+
+** Added verbosity level 4.
+Both the index and extract commands now have a new verbosity level 4 that
+prints filenames that are not indexed or extracted, respectively, and why.
+
+* Changes in SWISH++ 1.5
+
+** Added httpindex script.
+A new command, httpindex, has been added to assist in indexing files on remote
+servers.
+
+* Changes in SWISH++ 1.4.1
+
+** Added multiple meta-names support.
+A given word can now be associated with multiple meta-names per file.
+
+* Changes in SWISH++ 1.4
+
+** Added "meta" support.
+The index command now indexes the contents of "meta" HTML elements.
+
+** Added "alt" support.
+The index command now indexes the content of "alt" attributes within "area" and
+"img" HTML elements.
+
+** Added standard input support.
+The index command can now index files and directories specified via standard
+input instead of via the command line.
+
+** Added recursion suppression.
+The index and extract commands now support a new -r command line option to
+suppress recursively indexing files in subdirectories.
+
+* Changes in SWISH++ 1.3.2
+
+** Fixed the -S option.
+Fixed the index -S option.
+
+* Changes in SWISH++ 1.3
+
+** Added search query words window.
+The search command can now dump a "window" of words around the query words via
+the new -w option.
+
+** Improved search -d option.
+The search command's -d option now dumps all the query words instead of a
+single word.  Additionally, a stop-word used to print "stop-word"; now it
+prints "# ignored: " followed by the word.  Lastly, the -d option now prints
+the commend "not found: word" if "word" is not found in the index.
+
+* Changes in SWISH++ 1.2.2
+
+** Improved word-determination heuristics.
+A heuristic was added not to index a word if it contains more than a
+threshold number of consecutive punctuation characters.
+
+** Index exclusion.
+Files can now be indexed by exclusion of filename extensions rather than by
+inclusion via a new -E command-line option.
+
+* Changes in SWISH++ 1.2.1
+
+** New -d and -D options.
+The search command's original -d option that used to dump the entire index now
+dumps the index entry for a single word.  Correspondingly, a new -D option now
+does what -d used to do.
+
+** Rank inclusion in dump.
+The search command now includes index entry's ranks in its dump.
+
+** Added HTML numeric entity reference support.
+Numeric HTML entity references are now converted to their ASCII equivalents.
+
+* Changes in SWISH++ 1.2
+
+** Improved stop-word support during searches.
+SWISH++ now stores the list of stop-words in the generated index file so they
+can be ignored on searches later.
+
+** Added -F option.
+A new -F command-line option allows the number of files to reserve space for to be specified.
+
+** Added -t option.
+A new -t command-line option allows the number of lines to look into a file for
+an HTML <title> element to be specified.
+
+* Changes in SWISH++ 1.1
+
+** Dump default stop words.
+The index command can now dump the built-in default set of stop-words to a file
+to edit and then use to index.
+
+** Example Perl code.
+Some example Perl 5 code for interfacing SWISH++ to a web-based search form has
+been provided.
+
+* Changes in SWISH++ 1.1b2
+
+** Better truncated long titles.
+For HTML files having titles longer than Title_Max_Size in length, the last
+three characters are replaces by an ellipsis ("...").
+
+* Changes in SWISH++ 1.1b1
+
+** Can now skip search results.
+The search command has a new -s option to specify the number of initial results
+to skip.  Used in conjuntion with -m, results can be returned in "pages."
+
+----------------------------------------------------------------------
+The file is part of SWISH++.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the Licence, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
