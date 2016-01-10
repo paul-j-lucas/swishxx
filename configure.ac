@@ -240,6 +240,7 @@ AM_CONDITIONAL([WITH_SEARCH_DAEMON], [test x$enable_daemon = xyes])
 AM_CONDITIONAL([WITH_UTF16], [test x$enable_utf16 = xyes])
 AM_CONDITIONAL([WITH_UTF7], [test x$enable_utf7 = xyes])
 AM_CONDITIONAL([WITH_UTF8], [test x$enable_utf8 = xyes])
+AM_CONDITIONAL([WITH_WORD_POS], [test x$enable_word_pos = xyes])
 
 # Miscellaneous.
 AC_LANG(C++)
