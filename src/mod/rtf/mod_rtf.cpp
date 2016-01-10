@@ -23,7 +23,7 @@
 #include "config.h"
 #include "iso8859-1.h"
 #include "mod_rtf.h"
-#include "util.h"
+#include "TitleLines.h"
 #include "word_util.h"
 
 // standard
@@ -33,6 +33,42 @@ using namespace PJL;
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
+
+char const* rtf_indexer::find_title( mmap_file const &file ) const {
+  unsigned lines = 0;
+  //
+  // Look for a title like:
+  //
+  //    {\title This is a title}
+  //
+  encoded_char_range::const_iterator c( file.begin(), file.end() );
+  for ( ; !c.at_end(); ++c ) {
+    if ( *c == '\n' && ++lines > num_title_lines ) {
+      //
+      // Didn't find \title within first num_title_lines lines of file: forget
+      // it.
+      //
+      return nullptr;
+    }
+
+    if ( *c == '\\' && !(++c).at_end() && *c != '\\' &&
+         move_if_match( c, "title " ) ) {
+      if ( !c.at_end() ) {
+        for ( auto const start = c.pos(); !c.at_end(); ++c ) {
+          switch ( *c ) {
+            case '}':
+              return tidy_title( start, c.pos() );
+            case '\n':
+              if ( ++lines > num_title_lines )
+                return nullptr;
+          } // switch
+        } // for
+      }
+      break;
+    }
+  } // for
+  return nullptr;
+}
 
 void rtf_indexer::index_words( encoded_char_range const &e, int ) {
   char  word[ Word_Hard_Max_Size + 1 ];
