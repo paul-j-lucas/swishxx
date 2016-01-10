@@ -51,8 +51,6 @@ TESTS =	tests/index-no_options.test \
 	tests/search-text-Fxml.test \
 	tests/search-text-m0.test \
 	tests/search-text-m3.test \
-	tests/search-text-near-01.test \
-	tests/search-text-near-02.test \
 	tests/search-text-not-01.test \
 	tests/search-text-or-01.test \
 	tests/search-text-ResultSeparator-01.test \
@@ -65,6 +63,11 @@ TESTS =	tests/index-no_options.test \
 	tests/search-text-w7,4.test \
 	tests/search-text-w7.test \
 	tests/search-text-wild-01.test
+
+if WITH_WORD_POS
+TESTS+=	tests/search-text-near-01.test \
+	tests/search-text-near-02.test
+endif
 
 if WITH_HTML
 TESTS+= tests/index-H.test \
