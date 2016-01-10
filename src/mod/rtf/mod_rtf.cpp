@@ -26,6 +26,9 @@
 #include "util.h"
 #include "word_util.h"
 
+// standard
+#include <cctype>
+
 using namespace PJL;
 using namespace std;
 
@@ -33,12 +36,58 @@ using namespace std;
 
 void rtf_indexer::index_words( encoded_char_range const &e, int ) {
   char  word[ Word_Hard_Max_Size + 1 ];
-  bool  in_word = false;
-  int   len;
+  char  control[ Word_Hard_Max_Size + 1 ];
+  bool  in_control = false, in_word = false;
+  int   len, control_len;
 
-  encoded_char_range::const_iterator c = e.begin();
-  while ( !c.at_end() ) {
+  for ( auto c = e.begin(); !c.at_end(); ) {
     char ch = iso8859_1_to_ascii( *c++ );
+
+    if ( ch == '\\' ) {
+      if ( c.at_end() )
+        break;
+      switch ( *c ) {
+        case '\\':                      // literal '\'
+          ++c;
+          break;
+        case '-':                       // optional hyphen
+        case '_':                       // nonbreaking hyphen
+          ch = '-';
+          ++c;
+          break;
+        case '~':                       // nonbreaking space
+          ch = ' ';
+          ++c;
+          break;
+      } // switch
+    }
+
+    ////////// Ignore control words ///////////////////////////////////////////
+
+    if ( in_control ) {
+      if ( isalnum( ch ) ) {
+        if ( control_len < Word_Hard_Max_Size )
+          control[ control_len++ ] = ch;
+        else
+          while ( !c.at_end() && is_word_char( iso8859_1_to_ascii( *c++ ) ) )
+            ;
+        continue;
+      }
+      in_control = ch == '\\';
+      if ( ch != ' ' )
+        goto if_in_word;
+      control[ control_len ] = '\0';
+      if ( ::strcmp( control, "rquote" ) == 0 )
+        ch = '\'';
+      else
+        continue;
+    }
+
+    if ( ch == '\\' ) {
+      control_len = 0;
+      in_control = true;
+      continue;
+    }
 
     ////////// Collect a word /////////////////////////////////////////////////
 
@@ -59,6 +108,7 @@ void rtf_indexer::index_words( encoded_char_range const &e, int ) {
       continue;
     }
 
+if_in_word:
     if ( in_word ) {
       //
       // We ran into a non-word character, so index the word up to, but not
@@ -67,20 +117,7 @@ void rtf_indexer::index_words( encoded_char_range const &e, int ) {
       in_word = false;
       index_word( word, len );
     }
-
-    if ( ch == '<' ) {
-      //
-      // This is probably the start of command; if so, skip everything until
-      // the terminating '>'.
-      //
-      if ( c.at_end() )
-        break;
-      if ( (ch = *c++) == '<' )
-        continue;                       // a literal '<': ignore it
-      while ( !c.at_end() && *c++ != '>' )
-        ;
-    }
-  } // while
+  } // for
 
   if ( in_word ) {
     //
