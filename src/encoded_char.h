@@ -51,13 +51,11 @@ public:
   typedef ptrdiff_t difference_type;
   typedef char value_type;
   typedef value_type const* const_pointer;
-  typedef value_type (*charset_type)
-    ( const_pointer, const_pointer&, const_pointer );
-  typedef value_type (*encoding_type)
-    ( const_pointer, const_pointer&, const_pointer );
-
   class const_iterator;
-  friend class const_iterator;
+  typedef value_type (*charset_type)
+    (const_pointer, const_pointer&, const_pointer);
+  typedef value_type (*encoding_type)
+    (const_pointer, const_pointer&, const_pointer);
 
   encoded_char_range( const_pointer begin, const_pointer end,
                       charset_type = nullptr, encoding_type = nullptr );
@@ -77,7 +75,7 @@ public:
   void            end_pos( const_iterator const& );
 
   /**
-   * Gets whether this iterator has been associated with an encoded_char_range.
+   * Gets whether this iterator has been associated with an actual range.
    *
    * @return Returns \c true only if it is.
    */
@@ -90,7 +88,7 @@ public:
 #endif /* WITH_DECODING */
 
 protected:
-  encoded_char_range() : begin_( nullptr ), end_( nullptr ) { }
+  encoded_char_range();
 
   const_pointer begin_;
   const_pointer end_;
@@ -98,6 +96,7 @@ protected:
   charset_type  charset_;
   encoding_type encoding_;
 #endif /* WITH_DECODING */
+  friend class const_iterator;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -111,10 +110,8 @@ protected:
  */
 class encoded_char_range::const_iterator :
   public encoded_char_range,
-  public std::iterator<
-    std::forward_iterator_tag,
-    encoded_char_range::value_type const
-  > {
+  public std::iterator<std::forward_iterator_tag,
+                       encoded_char_range::value_type const> {
 public:
   typedef encoded_char_range::difference_type difference_type;
   typedef encoded_char_range::value_type value_type;
@@ -172,6 +169,8 @@ private:
 #endif /* WITH_DECODING */
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 #ifdef WITH_DECODING
 /**
  * An %encoded_char_range::decoder is used to keep decoders' state between
@@ -188,7 +187,9 @@ public:
   static void reset_all();
 
 protected:
-  decoder() { decoders_.insert( this ); }
+  decoder() {
+    decoders_.insert( this );
+  }
 
   virtual void reset() = 0;
 

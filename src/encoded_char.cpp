@@ -29,12 +29,20 @@ encoded_char_range::decoder::set_type encoded_char_range::decoder::decoders_;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+encoded_char_range::encoded_char_range() {
+  begin_ = end_ =  nullptr;
+#if WITH_DECODING
+  charset_ = nullptr;
+  encoding_ = nullptr;
+#endif /* WITH_DECODING */
+}
+
 encoded_char_range::decoder::~decoder() {
   // do nothing
 }
 
 void encoded_char_range::decoder::reset_all() {
-  for ( auto const &d : decoders_ )
+  for ( auto &d : decoders_ )
     d->reset();
 }
 
