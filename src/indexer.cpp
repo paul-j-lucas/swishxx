@@ -131,10 +131,10 @@ int indexer::find_meta( char const *meta_name ) {
     // There were meta names explicitly given: see if the meta name is among
     // them.  If not, forget it; if so, possibly reassign the name.
     //
-    auto const m = include_meta_names.find( meta_name );
-    if ( m == include_meta_names.end() )
+    auto const found = include_meta_names.find( meta_name );
+    if ( found == include_meta_names.end() )
       return Meta_ID_None;
-    meta_name = m->second;
+    meta_name = found->second;
   }
 
   //
