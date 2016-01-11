@@ -206,6 +206,14 @@ private:
 #define ECR_CI    ECR::const_iterator
 #define ECR_CI_CP ECR::const_iterator::const_pointer
 
+inline ECR::ECR() {
+  begin_ = end_ = nullptr;
+#if WITH_DECODING
+  charset_ = nullptr;
+  encoding_ = nullptr;
+#endif /* WITH_DECODING */
+}
+
 inline ECR::ECR( const_pointer begin, const_pointer end, charset_type charset,
                  encoding_type encoding ) :
   begin_( begin ), end_( end )
@@ -249,8 +257,7 @@ inline void ECR::end_pos( const_iterator const &i ) {
 
 ////////// encoded_char_range::const_iterator inlines /////////////////////////
 
-inline ECR_CI::const_iterator() : pos_( nullptr )
-{
+inline ECR_CI::const_iterator() : pos_( nullptr ) {
 }
 
 inline ECR_CI::const_iterator( const_pointer begin, const_pointer end,
@@ -264,9 +271,9 @@ inline ECR_CI::const_iterator( const_pointer begin, const_pointer end,
 
 inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
   encoded_char_range(
-      start_pos, ecr->end_
+    start_pos, ecr->end_
 #ifdef WITH_DECODING
-      , ecr->charset_, ecr->encoding_
+    , ecr->charset_, ecr->encoding_
 #endif /* WITH_DECODING */
   ),
   pos_( start_pos )
