@@ -48,11 +48,10 @@ char const* rtf_indexer::find_title( mmap_file const &file ) const {
       // Didn't find \title within first num_title_lines lines of file: forget
       // it.
       //
-      return nullptr;
+      break;
     }
 
-    if ( *c == '\\' && !(++c).at_end() && *c != '\\' &&
-         move_if_match( c, "title " ) ) {
+    if ( *c == '\\' && !(++c).at_end() && move_if_match( c, "title " ) ) {
       //
       // Found the \title control word.
       //
