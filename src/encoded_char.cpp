@@ -71,5 +71,17 @@ void trim_right( encoded_char_range::const_iterator const &begin,
     *end = first_trailing_space;
 }
 
+bool skip_char( encoded_char_range::const_iterator *i, char c ) {
+  for ( auto j = *i; !j.at_end(); ++j ) {
+    if ( *j == c ) {
+      *i = ++j;
+      return true;
+    }
+    if ( *j == '\n' || *j == '\r' )
+      break;
+  } // for
+  return false;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

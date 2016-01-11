@@ -89,6 +89,14 @@ TESTS+=	tests/index-man-v1.test \
 	tests/search-man-M.test
 endif
 
+if WITH_RTF
+TESTS+=	tests/index-rtf-v1.test \
+	tests/index-rtf-v2.test \
+	tests/index-rtf-v3.test \
+	tests/search-rtf-D.test \
+	tests/search-rtf-rquote-01.test
+endif
+
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
 TEST_EXTENSIONS = .sh .test
 SH_LOG_DRIVER = $(srcdir)/run_test.sh

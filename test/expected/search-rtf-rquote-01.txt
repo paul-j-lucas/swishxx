@@ -1,0 +1,2 @@
+# results: 1
+100 ./sample.rtf 13394 This is a test RTF

@@ -36,26 +36,6 @@ using namespace std;
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Finds a "left" character of a pair.
- * @param c The iterator to use.  It is presumed to be positioned at any
- * character either before or at the "left" character.  It is repositioned
- * after the "left" character only if it was found.
- * @param left The left-hand character to find.
- * @return Returns \c true only if the match was found.
- */
-static bool find_left( encoded_char_range::const_iterator &c, char left ) {
-  for ( auto d = c; !d.at_end(); ++d ) {
-    if ( *d == left ) {
-      c = ++d;
-      return true;
-    }
-    if ( *d == '\n' || *d == '\r' )
-      break;
-  } // for
-  return false;
-}
-
-/**
  * Given a "left" character of a pair, find its matching "right" character
  * taking care to "balance" intervening pairs, e.g., given '{', find its
  * matching '}'.
@@ -259,7 +239,7 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
       // mean it's actually there: try to find it first.  If not found, forget
       // it.
       //
-      if ( !find_left( c, *cmd->second.action ) )
+      if ( !skip_char( &c, *cmd->second.action ) )
         goto skip;
       //
       // Find the matching '}' or ']' and index the words in between.

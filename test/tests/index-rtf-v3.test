@@ -1,0 +1,1 @@
+index | | -e rtf:*.rtf -i rtf.index -r -v3 | . | 0

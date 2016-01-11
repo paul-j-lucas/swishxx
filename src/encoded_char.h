@@ -100,6 +100,8 @@ protected:
 #endif /* WITH_DECODING */
 };
 
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * An %encoded_char_range::const_iterator is (not surprisingly) an iterator for
  * an encoded_char_range.  It might seem a bit odd to have an iterator derived
@@ -130,6 +132,13 @@ public:
   const_iterator  operator++(int);
 
   bool            at_end() const      { return pos_ == end_; }
+
+  /**
+   * Performs a dereference but only if it's not at the end.
+   *
+   * @return Returns the decoded character or \c NUL if at the end.
+   */
+  value_type safe_deref() const;
 
   const_pointer   pos() const         { return pos_; }
   const_pointer&  pos()               { return pos_; }
@@ -352,7 +361,11 @@ inline ECR_CI ECR_CI::operator++(int) {
   return ++*this, temp;
 }
 
-////////// relational operator ////////////////////////////////////////////////
+inline ECR::value_type ECR_CI::safe_deref() const {
+  return at_end() ? '\0' : operator*();
+}
+
+////////// relational operators ///////////////////////////////////////////////
 
 inline bool operator==( ECR_CI const &e1, ECR_CI const &e2 ) {
   return e1.pos_ == e2.pos_;
@@ -426,7 +439,7 @@ inline bool operator>=( ECR_CI_CP p, ECR_CI const &e ) {
   return !(e < p);
 }
 
-///////////////////////////////////////////////////////////////////////////////
+////////// utility functions //////////////////////////////////////////////////
 
 /**
  * Returns a pointer to a string converted to lower case taking the encoding of
@@ -468,6 +481,17 @@ inline void trim( ECR_CI *begin, ECR_CI *end ) {
   trim_left( begin, *end );
   trim_right( *begin, end );
 }
+
+/**
+ * Skips all characters up to and including \a c.
+ *
+ * @param i A pointer to the iterator to start at. If \c is found, \a i is
+ * repositioned to just after \a c.
+ * @param c The character to skip after.
+ * @return Returns \c true only if the character was found before finding a CR
+ * or LF.
+ */
+bool skip_char( ECR_CI *i, char c );
 
 ///////////////////////////////////////////////////////////////////////////////
 

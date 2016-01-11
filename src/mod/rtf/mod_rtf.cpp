@@ -75,12 +75,15 @@ char const* rtf_indexer::find_title( mmap_file const &file ) const {
 void rtf_indexer::index_words( encoded_char_range const &e, int ) {
   char  word[ Word_Hard_Max_Size + 1 ];
   char  control[ Word_Hard_Max_Size + 1 ];
-  bool  in_control = false, in_word = false;
+  bool  in_control = false, in_word = false, restart = false;
   int   len, control_len;
 
   for ( auto c = e.begin(); !c.at_end(); ) {
     char ch = iso8859_1_to_ascii( *c++ );
 
+    ////////// Handle escaped characters //////////////////////////////////////
+
+restart:
     if ( ch == '\\' ) {
       if ( c.at_end() )
         break;
@@ -94,6 +97,8 @@ void rtf_indexer::index_words( encoded_char_range const &e, int ) {
           ++c;
           break;
         case '~':                       // nonbreaking space
+        case '{':                       // don't care about literal '{' or '}'
+        case '}':
           ch = ' ';
           ++c;
           break;
@@ -104,21 +109,44 @@ void rtf_indexer::index_words( encoded_char_range const &e, int ) {
 
     if ( in_control ) {
       if ( isalnum( ch ) ) {
-        if ( control_len < Word_Hard_Max_Size )
+        if ( control_len < Word_Hard_Max_Size ) {
           control[ control_len++ ] = ch;
-        else
+        } else {                        // too big: skip chars
+          in_control = false;
           while ( !c.at_end() && is_word_char( iso8859_1_to_ascii( *c++ ) ) )
             ;
+        }
         continue;
       }
-      in_control = ch == '\\';
-      if ( ch != ' ' )
+      in_control = false;
+      if ( ch != ' ' ) {
+        //
+        // If we have a word immediately followed by a control word (like
+        // "word\control"), we have to wait until we reach the end of the
+        // control word to know whether to index "word" because we have to
+        // handle the special case of "\rquote" below.
+        //
+        // If the control word is terminated by anything other than a space,
+        // then it can't be "\rquote" because it's always followed by a space.
+        // Now that we know it's not "\rquote", index the word.
+        //
+        // However, we have to "restart" character analysis on the character
+        // that's already in "ch", hence this special "restart" state.
+        //
+        restart = true;
         goto if_in_word;
+      }
+      //
+      // Special case: convert "\rquote " to '\'' so it can form part of words.
+      // (The only reason we have to collect the characters comprising the
+      // control word at all is to compare it to "rquote".)
+      //
       control[ control_len ] = '\0';
-      if ( ::strcmp( control, "rquote" ) == 0 )
+      if ( ::strcmp( control, "rquote" ) == 0 ) {
         ch = '\'';
-      else
-        continue;
+        goto if_is_word_char;
+      }
+      continue;
     }
 
     if ( ch == '\\' ) {
@@ -127,8 +155,18 @@ void rtf_indexer::index_words( encoded_char_range const &e, int ) {
       continue;
     }
 
+    ////////// Ignore HYPERLINKs //////////////////////////////////////////////
+
+    if ( ch == '{' && c.safe_deref() == 'H' ) {
+      if ( move_if_match( c, "HYPERLINK " ) ) {
+        skip_char( &c, '}' );
+        continue;
+      }
+    }
+
     ////////// Collect a word /////////////////////////////////////////////////
 
+if_is_word_char:
     if ( is_word_char( ch ) ) {
       if ( !in_word ) {                 // start a new word
         word[0] = ch;
@@ -154,6 +192,11 @@ if_in_word:
       //
       in_word = false;
       index_word( word, len );
+    }
+
+    if ( restart ) {
+      restart = false;
+      goto restart;
     }
   } // for
 
