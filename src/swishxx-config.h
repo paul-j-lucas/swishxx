@@ -287,7 +287,7 @@ char const  TempDirectory_Default[]     = "/tmp";
  * that means for a given file format); this can be overridden either in a
  * config. file or on the command line.
  */
-int const   TitleLines_Default          = 50;
+int const   TitleLines_Default          = 100;
 
 /**
  * Maximum length of a file "title" (whatever that means for a given file
