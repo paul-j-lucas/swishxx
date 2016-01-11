@@ -5,5 +5,5 @@ index: writing index...
 
 index: done:
   3 indexed
-  1458 words, 571 indexed, 199 unique
+  1459 words, 571 indexed, 199 unique
 

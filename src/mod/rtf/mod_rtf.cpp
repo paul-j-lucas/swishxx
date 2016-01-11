@@ -51,7 +51,7 @@ char const* rtf_indexer::find_title( mmap_file const &file ) const {
       break;
     }
 
-    if ( *c == '\\' && !(++c).at_end() && move_if_match( c, "title " ) ) {
+    if ( *c == '\\' && move_if_match( ++c, "title " ) ) {
       //
       // Found the \title control word.
       //
@@ -88,16 +88,14 @@ restart:
       if ( c.at_end() )
         break;
       switch ( *c ) {
-        case '\\':                      // literal '\'
-          ++c;
-          break;
         case '-':                       // optional hyphen
         case '_':                       // nonbreaking hyphen
           ch = '-';
           ++c;
           break;
         case '~':                       // nonbreaking space
-        case '{':                       // don't care about literal '{' or '}'
+        case '{':                       // don't care about these as literals
+        case '\\':
         case '}':
           ch = ' ';
           ++c;
