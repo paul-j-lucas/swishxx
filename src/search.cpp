@@ -662,10 +662,10 @@ bool service_request( char *argv[], search_options const &opt, ostream &out,
     FOR_EACH( words, word ) {
       out << *word << '\n';
       file_list const list( word );
-      FOR_EACH( list, file ) {
-        out << "  " << file->occurrences_ << ' '
-            << file->rank_ << result_separator
-            << index_file_info( file->index_ )
+      for ( auto const &file : list ) {
+        out << "  " << file.occurrences_ << ' '
+            << file.rank_ << result_separator
+            << index_file_info( file.index_ )
             << '\n';
         if ( !out )
           return false;
@@ -676,8 +676,8 @@ bool service_request( char *argv[], search_options const &opt, ostream &out,
   }
 
   if ( opt.dump_stop_words_opt ) {
-    FOR_EACH( stop_words, word ) {
-      out << *word << '\n';
+    for ( auto const &word : stop_words ) {
+      out << word << '\n';
       if ( !out )
         return false;
     } // for
@@ -685,8 +685,8 @@ bool service_request( char *argv[], search_options const &opt, ostream &out,
   }
 
   if ( opt.dump_meta_names_opt ) {
-    FOR_EACH( meta_names, meta_name ) {
-      out << *meta_name << '\n';
+    for ( auto const &meta_name : meta_names ) {
+      out << meta_name << '\n';
       if ( !out )
         return false;
     } // for

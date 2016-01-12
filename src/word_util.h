@@ -53,7 +53,7 @@ inline bool is_vowel( char c ) {
 inline bool is_word_char( char c ) {
   return c > 0 &&
 #if OPTIMIZE_WORD_CHARS
-  ( is_alnum( c ) ||
+  ( isalnum( c ) ||
     //
     // If you change Word_Chars in config.h from the default set but would like
     // to keep the optimization, edit the line below to compare 'c' against
@@ -81,7 +81,7 @@ inline bool is_word_begin_char( char c ) {
   // like to keep the optimization, edit the line below to compare 'c' against
   // every character in your set of Word_Begin_Chars.
   //
-  return is_alnum( c );
+  return isalnum( c );
 #else
   return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
 #endif /* OPTIMIZE_WORD_BEGIN_CHARS */
@@ -99,7 +99,7 @@ inline bool is_word_end_char( char c ) {
   //
   // Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
   //
-  return is_alnum( c );
+  return isalnum( c );
 #else
   return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
 #endif /* OPTIMIZE_WORD_END_CHARS */

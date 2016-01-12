@@ -219,7 +219,7 @@ mail_indexer::message_type mail_indexer::index_headers( char const *&c,
       // Extract the MIME type.
       //
       char const *s = value;
-      while ( *s && is_space( *s ) ) ++s;
+      while ( *s && isspace( *s ) ) ++s;
       if ( !*s )                        // all whitespace: weird
         continue;
       string const mime_type( s, ::strcspn( s, "; \n\r\t" ) );
@@ -447,7 +447,7 @@ bool mail_indexer::parse_header( char const *&c, char const *end,
     // on the next line isn't whitespace, then the value isn't folded (it's the
     // next header).
     //
-    if ( !is_space( *c ) )
+    if ( !isspace( *c ) )
       goto more_headers;
     //
     // The first character on the next line is whitespace: see how much of the
@@ -463,7 +463,7 @@ bool mail_indexer::parse_header( char const *&c, char const *end,
         c = skip_newline( c, end );
         goto last_header;
       }
-    } while ( ++c != end && is_space( *c ) );
+    } while ( ++c != end && isspace( *c ) );
 
     //
     // The next line has at least one non-leading non-whitespace character;

@@ -48,22 +48,22 @@ bool is_ok_word( char const *word ) {
   int vowels = 0;
 
   for ( c = word; *c; ++c ) {
-    if ( is_digit( *c ) ) {
+    if ( isdigit( *c ) ) {
       ++digits;
       continue;
     };
-    if ( is_punct( *c ) ) {
+    if ( ispunct( *c ) ) {
       ++puncts;
       continue;
     }
-    if ( is_upper( *c ) )
+    if ( isupper( *c ) )
       ++uppers;
     if ( is_vowel( tolower( *c ) ) )
       ++vowels;
   } // for
   ptrdiff_t const len = c - word;
 
-  if ( is_upper( *word ) && uppers + digits + puncts == len ) {
+  if ( isupper( *word ) && uppers + digits + puncts == len ) {
 #   ifdef DEBUG_is_ok_word
     cerr << "(potential acronym)\n";
 #   endif
@@ -94,7 +94,7 @@ bool is_ok_word( char const *word ) {
 
   for ( c = word; *c; ++c ) {
 
-    if ( is_digit( *c ) ) {
+    if ( isdigit( *c ) ) {
       consec_consonants = 0;
       consec_vowels = 0;
       consec_puncts = 0;
@@ -102,7 +102,7 @@ bool is_ok_word( char const *word ) {
       continue;
     }
 
-    if ( is_punct( *c ) ) {
+    if ( ispunct( *c ) ) {
       if ( ++consec_puncts > Word_Max_Consec_Puncts ) {
 #       ifdef DEBUG_is_ok_word
         cerr << "(exceeded consec puncts)\n";

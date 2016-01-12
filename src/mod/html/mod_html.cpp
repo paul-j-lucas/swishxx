@@ -149,11 +149,11 @@ static char entity_to_ascii( encoded_char_range::const_iterator &c ) {
   unsigned n = 0;
   for ( auto e = entity_buf; *e; ++e ) {
     if ( is_hex ) {
-      if ( !is_xdigit( *e ) )           // bad hex num
+      if ( !isxdigit( *e ) )            // bad hex num
         return ' ';
-      n = (n << 4) | (is_digit( *e ) ? *e - '0' : tolower( *e ) - 'a' + 10);
+      n = (n << 4) | (isdigit( *e ) ? *e - '0' : tolower( *e ) - 'a' + 10);
     } else {
-      if ( !is_digit( *e ) )            // bad dec num
+      if ( !isdigit( *e ) )             // bad dec num
         return ' ';
       n = n * 10 + *e - '0';
     }
@@ -199,7 +199,7 @@ static char entity_to_ascii( encoded_char_range::const_iterator &c ) {
  */
 static bool find_attribute( encoded_char_range &e, char const *attribute ) {
   for ( auto c = e.begin(); !c.at_end(); ) {
-    if ( !is_alpha( *c ) ) {
+    if ( !isalpha( *c ) ) {
       ++c;
       continue;
     }
@@ -210,15 +210,15 @@ static bool find_attribute( encoded_char_range &e, char const *attribute ) {
     char const *a = attribute;
     while ( !c.at_end() && to_lower( *c ) == *a )
       ++c, ++a;
-    while ( !c.at_end() && ( is_alpha( *c ) || *c == '-' ) )
+    while ( !c.at_end() && ( isalpha( *c ) || *c == '-' ) )
       ++c;
-    while ( !c.at_end() && is_space( *c ) )
+    while ( !c.at_end() && isspace( *c ) )
       ++c;
     if ( c.at_end() )
       break;
     if ( *c != '=' )                    // we do only NAME=VALUE form
       continue;
-    while ( !(++c).at_end() && is_space( *c ) )
+    while ( !(++c).at_end() && isspace( *c ) )
       ;
     if ( c.at_end() )
       break;
@@ -239,7 +239,7 @@ static bool find_attribute( encoded_char_range &e, char const *attribute ) {
       if ( quote ) {                    // stop at matching quote only
         if ( *c == quote )
           break;
-      } else if ( is_space( *c ) )
+      } else if ( isspace( *c ) )
         break;                          // stop at whitespace
     } // for
 
@@ -280,7 +280,7 @@ static bool is_html_comment( encoded_char_range::const_iterator &c ) {
     while ( !c.at_end() ) {
       if ( *c++ == '-' && !c.at_end() && *c == '-' ) {
         auto const d = c;
-        while ( !(++c).at_end() && is_space( *c ) )
+        while ( !(++c).at_end() && isspace( *c ) )
           ;
         if ( c.at_end() || *c++ == '>' )
           break;
@@ -500,7 +500,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
     // its attributes since we only want the tag name.)
     //
     char *to = tag_buf;
-    for ( auto from = name; !from.at_end() && !is_space( *from ); ) {
+    for ( auto from = name; !from.at_end() && !isspace( *from ); ) {
       //
       // Check to see if the name is too long to be a valid one for an HTML
       // element: if it is, invalidate it by writing "garbage" into the name so

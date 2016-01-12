@@ -152,7 +152,7 @@ void search_thread::main( argument_type arg ) {
  * arg_max.
  */
 static int split_args( char *s, char *argv[], int arg_max ) {
-  for ( ; *s && is_space( *s ); ++s )   // skip leading whitespace
+  for ( ; *s && isspace( *s ); ++s )    // skip leading whitespace
     ;
   if ( !*s )
     return 0;
@@ -167,7 +167,7 @@ static int split_args( char *s, char *argv[], int arg_max ) {
       //
       // We must skip *ALL* whitespace characters separating arguments.
       //
-      while ( *++s && is_space( *s ) )
+      while ( *++s && isspace( *s ) )
         ;
     }
   } // while

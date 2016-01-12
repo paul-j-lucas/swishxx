@@ -82,7 +82,7 @@ encoding_quoted_printable( encoded_char_range::const_pointer,
     break;
   } // while
 
-  if ( !is_xdigit( h1 ) || c == end ) {
+  if ( !isxdigit( h1 ) || c == end ) {
     //
     // If it's not a hexadecimal digit or it's the last character, it's
     // malformed.
@@ -90,7 +90,7 @@ encoding_quoted_printable( encoded_char_range::const_pointer,
     return ' ';
   }
   auto const h2 = *c++;
-  if ( !is_xdigit( h2 ) ) {
+  if ( !isxdigit( h2 ) ) {
     //
     // This shouldn't happen in proper quoted-printable text.
     //
@@ -102,8 +102,8 @@ encoding_quoted_printable( encoded_char_range::const_pointer,
     // We're being robust by ensuring the hexadecimal characters are upper
     // case.
     //
-    ( is_digit( h1 ) ? h1 - '0' : toupper( h1 ) - 'A' + 10 ) << 4 |
-    ( is_digit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
+    ( isdigit( h1 ) ? h1 - '0' : toupper( h1 ) - 'A' + 10 ) << 4 |
+    ( isdigit( h2 ) ? h2 - '0' : toupper( h2 ) - 'A' + 10 )
   );
 }
 

@@ -253,35 +253,9 @@ inline char* new_strdup( char const *s ) {
   return std::strcpy( new char[ std::strlen( s ) + 1 ], s );
 }
 
-inline bool is_alnum( char c ) {
-  return isalnum( static_cast<unsigned char>( c ) );
+inline char to_lower( char c ) {
+  return tolower( c );
 }
-
-inline bool is_alpha( char c ) {
-  return isalpha( static_cast<unsigned char>( c ) );
-}
-
-inline bool is_digit( char c ) {
-  return isdigit( static_cast<unsigned char>( c ) );
-}
-
-inline bool is_punct( char c ) {
-  return ispunct( static_cast<unsigned char>( c ) );
-}
-
-inline bool is_space( char c ) {
-  return isspace( static_cast<unsigned char>( c ) );
-}
-
-inline bool is_upper( char c ) {
-  return isupper( static_cast<unsigned char>( c ) );
-}
-
-inline bool is_xdigit( char c ) {
-  return isxdigit( static_cast<unsigned char>( c ) );
-}
-
-inline char to_lower( char c ) { return tolower( c ); }
 
 /**
  * Converts a C string to lower case; the original string is untouched.  The
@@ -312,10 +286,10 @@ char* to_lower( char const *begin, char const *end );
  * string is untouched.
  *
  * @param buf The buffer into which the lower case string is to be put.
- * @parma S The string to be converted.
+ * @parma s The string to be converted.
  * @return Returns \a buf.
  */
-char* to_lower( char *buf, char const* );
+char* to_lower( char *buf, char const *s );
 
 /**
  * Converts a C string to lower case; the original string is untouched.  The

@@ -310,11 +310,11 @@ void indexer::post_options() {
 
 char* indexer::tidy_title( char const *begin, char const *end ) {
   // Remove leading spaces
-  while ( begin < end && is_space( *begin ) )
+  while ( begin < end && isspace( *begin ) )
     ++begin;
 
   // Remove trailing spaces
-  while ( begin < --end && is_space( *end ) )
+  while ( begin < --end && isspace( *end ) )
     ;
   ++end;
 
@@ -323,7 +323,7 @@ char* indexer::tidy_title( char const *begin, char const *end ) {
   int consec_spaces = 0, len = 0;
   while ( begin < end ) {
     char c = *begin++;
-    if ( is_space( c ) ) {
+    if ( isspace( c ) ) {
       if ( ++consec_spaces >= 2 )
         continue;
       c = ' ';

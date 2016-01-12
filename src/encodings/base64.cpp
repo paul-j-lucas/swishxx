@@ -101,7 +101,7 @@ reached_end:
     // need to "sync" by finding the beginning of the line to know where the
     // groups-of-4 encoded characters start.
     //
-    while ( line_begin > begin && !is_space( *line_begin ) )
+    while ( line_begin > begin && !isspace( *line_begin ) )
       --line_begin;
     if ( line_begin > begin )
       ++line_begin;

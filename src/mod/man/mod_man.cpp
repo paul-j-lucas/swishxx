@@ -166,7 +166,7 @@ char const* man_indexer::find_title( mmap_file const &file ) const {
     newline = false;
     if ( !move_if_match( c, file.end(), "SH" ) )
       continue;
-    while ( c != file.end() && is_space( *c ) )
+    while ( c != file.end() && isspace( *c ) )
       ++c;
     if ( !move_if_match( c, file.end(), "NAME" ) )
       continue;

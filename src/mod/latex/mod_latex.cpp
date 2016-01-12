@@ -156,7 +156,7 @@ collect:
         for ( bool newline = false; !c.at_end(); ++c ) {
           if ( *c == '\n' )
             newline = true;
-          else if ( newline && !is_space( *c ) )
+          else if ( newline && !isspace( *c ) )
             break;
         } // for
         continue;
@@ -207,7 +207,7 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
   //
   char *to = command_buf;
   auto from = c;
-  while ( !from.at_end() && is_alnum( *from ) ) {
+  while ( !from.at_end() && isalnum( *from ) ) {
     //
     // Check to see if the name is too long to be a valid one for a LaTeX
     // command: if it is, invalidate it by writing "garbage" into the name.

@@ -205,7 +205,7 @@ void conf_var::parse_file( char const *file_name ) {
     // leading whitespace will have been skipped.
     //
     for ( ; c != nl; ++c ) {
-      if ( is_space( *c ) )
+      if ( isspace( *c ) )
         continue;
       if ( *c == '#' )
         goto next_line;
@@ -221,7 +221,7 @@ void conf_var::parse_file( char const *file_name ) {
       ptrdiff_t len = nl - c;
       ::strncpy( buf, c, len );
       while ( len > 0 ) {
-        if ( is_space( buf[ len - 1 ] ) )
+        if ( isspace( buf[ len - 1 ] ) )
           --len;
         else
           break;
@@ -257,7 +257,7 @@ void conf_var::parse_line( char *line, int line_no ) {
     // Chop off trailing newline and remove leading whitespace from value.
     //
     char *value = ::strtok( nullptr, "\r\n" );
-    while ( *value && is_space( *value ) )
+    while ( *value && isspace( *value ) )
       ++value;
     i->second->parse_value( value );
   } // else
