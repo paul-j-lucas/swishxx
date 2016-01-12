@@ -261,8 +261,8 @@ char const  ShellFilenameDelimChars[]   = " \t&;<>|";
 /**
  * Characters in a file name that must be escaped when passed to a Unix shell.
  * This is a superset of what are commonly referred to as "meta-characers"
- * because the space and tab characters are included.  Note again that this
- * says "file" (not "path") name.
+ * because the space character is included.  Note again that this aays "file"
+ * (not "path") name.
  */
 char const  ShellFilenameEscapeChars[]  = " !\"#$&'()*/;<>?[\\]^`{|}~";
 
