@@ -155,13 +155,13 @@ public:
   /**
    * "Distributes" the child nodes that are not word_nodes since the child
    * nodes of a near_node \e must be word_nodes.  For example:
-   *
+   * \code
    *    cat near (mouse or bird)
-   *
+   * \endcode
    * becomes:
-   *
+   * \code
    *    (cat near mouse) or (cat near bird)
-   *
+   * \endcode
    * @return If distribution was performed (either or both child nodes were not
    * word nodes), returns a new, distributed subtree; otherwise, simply returns
    * \c this.
@@ -174,7 +174,7 @@ public:
   query_node* visit( visitor const& );
 
 # ifdef DEBUG_eval_query
-  std::ostream&   print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const;
 # endif
 
 private:
@@ -213,6 +213,7 @@ public:
 # ifdef DEBUG_eval_query
   std::ostream& print( std::ostream& ) const;
 # endif
+
 private:
   query_node *const child_;
 };
@@ -249,7 +250,7 @@ public:
 
   void eval( search_results& );
   meta_id_type meta_id() const { return meta_id_; }
-  word_range const& range() const   { return range_; }
+  word_range const& range() const { return range_; }
 # ifdef DEBUG_eval_query
   std::ostream& print( std::ostream& ) const;
 # endif /* DEBUG_eval_query */

@@ -105,11 +105,11 @@ public:
   }
 
   static file_info* ith_info( int i ) {
-    return list_[ i ];
+    return list_[i];
   }
 
-  static int num_files() {
-    return static_cast<int>( list_.size() );
+  static size_type num_files() {
+    return list_.size();
   }
 
   static bool seen_file( char const *file_name ) {

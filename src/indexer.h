@@ -155,6 +155,11 @@ public:
   static indexer* text_indexer();
 
 protected:
+  /**
+   * Constructs and %indexer.
+   *
+   * @param mod_name The index module name.
+   */
   indexer( char const *mod_name );
 
   /**
