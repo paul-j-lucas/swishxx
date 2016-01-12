@@ -103,7 +103,7 @@ public:
    * @param meta_name The meta-name to find.
    * @return Returns the associated meta-ID or Meta_ID_None.
    */
-  static int find_meta( char const *meta_name );
+  static meta_id_type find_meta( char const *meta_name );
 
   /**
    * By default, a file has no title, so the file's base name becomes its

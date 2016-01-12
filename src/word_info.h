@@ -49,7 +49,7 @@ public:
     //
     typedef PJL::pjl_set<short> meta_set;
     meta_set meta_ids_;                 // meta name(s) associated with
-    bool has_meta_id( int ) const;
+    bool has_meta_id( meta_id_type ) const;
     void write_meta_ids( std::ostream& ) const;
 
 #ifdef WITH_WORD_POS
