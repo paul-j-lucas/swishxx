@@ -248,7 +248,7 @@ public:
   ~word_node();
 
   void eval( search_results& );
-  int meta_id() const { return meta_id_; }
+  meta_id_type meta_id() const { return meta_id_; }
   word_range const& range() const   { return range_; }
 # ifdef DEBUG_eval_query
   std::ostream& print( std::ostream& ) const;
@@ -257,7 +257,7 @@ public:
 private:
   char *const word_;
   word_range const range_;
-  int const meta_id_;
+  meta_id_type const meta_id_;
 };
 
 ////////// inlines ////////////////////////////////////////////////////////////

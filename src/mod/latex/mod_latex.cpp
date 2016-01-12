@@ -102,7 +102,8 @@ char const* LaTeX_indexer::find_title( mmap_file const &file ) const {
   return nullptr;
 }
 
-void LaTeX_indexer::index_words( encoded_char_range const &e, int meta_id ) {
+void LaTeX_indexer::index_words( encoded_char_range const &e,
+                                 meta_id_type meta_id ) {
   char        word[ Word_Hard_Max_Size + 1 ];
   bool        in_word = false;
   int         len;

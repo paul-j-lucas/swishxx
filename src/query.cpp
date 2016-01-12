@@ -95,7 +95,7 @@ private:
  * Bundles all the 'v'alue arguments to the various \c parse_*() functions.
  */
 struct parse_v_args {
-  int meta_id;
+  meta_id_type meta_id;
 
   parse_v_args() : meta_id( Meta_ID_None ) { }
   // default copy constructor is OK

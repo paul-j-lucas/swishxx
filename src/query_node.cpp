@@ -55,7 +55,7 @@ near_node::near_node( pool_type &p, query_node *left, query_node *right ) :
 #endif /* WITH_WORD_POS */
 
 word_node::word_node( pool_type &p, char const *word, word_range const &range,
-                      int meta_id ) :
+                      meta_id_type meta_id ) :
   query_node( p ), word_( new_strdup( word ) ), range_( range ),
   meta_id_( meta_id )
 {

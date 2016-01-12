@@ -99,7 +99,7 @@ inline void word_info::file::add_word_pos( int absolute_pos ) {
 }
 #endif /* WITH_WORD_POS */
 
-inline bool word_info::file::has_meta_id( int meta_id ) const {
+inline bool word_info::file::has_meta_id( meta_id_type meta_id ) const {
   return meta_id == Meta_ID_None || meta_ids_.contains( meta_id );
 }
 

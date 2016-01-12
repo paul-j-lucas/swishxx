@@ -98,7 +98,7 @@ void id3_indexer::index_id3v1_tags( char const *c, char const *end ) {
     return;
 
   for ( auto field = field_table; field->name; c += field++->length ) {
-    int meta_id = Meta_ID_None;
+    meta_id_type meta_id = Meta_ID_None;
     if ( associate_meta ) {
       //
       // Do not index the words in the value of the field if either the name of

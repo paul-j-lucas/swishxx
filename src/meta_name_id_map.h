@@ -1,8 +1,8 @@
 /*
 **      SWISH++
-**      src/meta_map.h
+**      src/meta_name_id_map.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef meta_map_H
-#define meta_map_H
+#ifndef meta_name_id_map_H
+#define meta_name_id_map_H
 
 // local
 #include "pjl/less.h"
@@ -30,15 +30,17 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * A %meta_map is used to map a META name to its unique integer ID. IDs start
- * at zero.
- */
-typedef std::map<char const*,int> meta_map;
+typedef int meta_id_type;
 
-extern meta_map meta_names;
+/**
+ * A %meta_name_id_map_type is used to map a META name to its unique integer
+ * ID. IDs start at zero.
+ */
+typedef std::map<char const*,meta_id_type> meta_name_id_map_type;
+
+extern meta_name_id_map_type meta_name_id_map;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* meta_map_H */
+#endif /* meta_name_id_map_H */
 /* vim:set et sw=2 ts=2: */

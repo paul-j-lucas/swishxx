@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/indexer.cpp
 **
-**      Copyright (C) 2000-2015  Paul J. Lucas
+**      Copyright (C) 2000-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include "IncludeMeta.h"
 #include "indexer.h"
 #include "iso8859-1.h"
-#include "meta_map.h"
+#include "meta_name_id_map.h"
 #include "stop_words.h"
 #include "StoreWordPositions.h"
 #include "util.h"
@@ -140,22 +140,23 @@ int indexer::find_meta( char const *meta_name ) {
   //
   // Look up the meta name to get its associated unique integer ID.
   //
-  auto const found = meta_names.find( meta_name );
-  if ( found != meta_names.end() )
+  auto const found = meta_name_id_map.find( meta_name );
+  if ( found != meta_name_id_map.end() )
     return found->second;
   //
   // New meta name: add it.  Do this in two statements intentionally because
   // C++ doesn't guarantee that the RHS of assignment is evaluated first.
   //
-  int const meta_id = static_cast<int>( meta_names.size() );
-  return meta_names[ new_strdup( meta_name ) ] = meta_id;
+  meta_id_type const meta_id =
+    static_cast<meta_id_type>( meta_name_id_map.size() );
+  return meta_name_id_map[ new_strdup( meta_name ) ] = meta_id;
 }
 
 char const* indexer::find_title( mmap_file const& ) const {
   return nullptr;
 }
 
-void indexer::index_word( char *word, size_t len, int meta_id ) {
+void indexer::index_word( char *word, size_t len, meta_id_type meta_id ) {
   ++num_total_words;
 #ifdef WITH_WORD_POS
   ++word_pos;
@@ -241,7 +242,7 @@ skip_push_back:
 #endif /* WITH_WORD_POS */
 }
 
-void indexer::index_words( encoded_char_range const &e, int meta_id ) {
+void indexer::index_words( encoded_char_range const &e, meta_id_type meta_id ) {
   char  word[ Word_Hard_Max_Size + 1 ];
   bool  in_word = false;
   int   len;

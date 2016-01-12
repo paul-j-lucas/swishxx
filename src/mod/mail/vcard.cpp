@@ -45,7 +45,7 @@ void mail_indexer::index_vcard( char const *&c, char const *end ) {
     //
     // Reuse parse_header() to parse vCard types, but trim them at semicolons.
     //
-    int const meta_id = find_meta( ::strtok( kv.key.get(), ";" ) );
+    meta_id_type const meta_id = find_meta( ::strtok( kv.key.get(), ";" ) );
     if ( meta_id == Meta_ID_None )
       continue;
     //

@@ -411,7 +411,8 @@ char const* HTML_indexer::find_title( mmap_file const &file ) const {
   return nullptr;
 }
 
-void HTML_indexer::index_words( encoded_char_range const &e, int meta_id ) {
+void HTML_indexer::index_words( encoded_char_range const &e,
+                                meta_id_type meta_id ) {
   char  word[ Word_Hard_Max_Size + 1 ];
   bool  in_word = false;
   int   len;
@@ -651,7 +652,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
     encoded_char_range content_att = name;
     if ( find_attribute( name_att, "name" ) &&
          find_attribute( content_att, "content" ) ) {
-      int meta_id = Meta_ID_None;
+      meta_id_type meta_id = Meta_ID_None;
       if ( associate_meta ) {
         //
         // Do not index the words in the value of the CONTENT attribute if

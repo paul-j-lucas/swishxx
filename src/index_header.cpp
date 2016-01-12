@@ -30,7 +30,7 @@
   long const num_dirs           = dir_set.size();
   long const num_files          = file_info::num_files();
   long const num_stop_words     = stop_words->size();
-  long const num_meta_names     = meta_names.size();
+  long const num_meta_names     = meta_name_id_map.size();
 
   off_t *const word_offset      = new off_t[ num_unique_words ];
   off_t *const stop_word_offset = num_stop_words ?

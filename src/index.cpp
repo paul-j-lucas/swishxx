@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/index.cpp
 **
-**      Copyright (C) 1998  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 #include "indexer.h"
 #include "IndexFile.h"
 #include "index_segment.h"
-#include "meta_map.h"
+#include "meta_name_id_map.h"
 #include "pjl/itoa.h"
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
@@ -98,7 +98,7 @@ FilesGrow             files_grow;
 FilterFile            file_filters;
 Incremental           incremental;
 char const*           me;                 // executable name
-meta_map              meta_names;
+meta_name_id_map_type meta_name_id_map;
 static int            num_examined_files;
 static int            num_temp_files;
 TitleLines            num_title_lines;
@@ -631,7 +631,7 @@ void load_old_index( char const *index_file_name ) {
   FOR_EACH( old_meta_names, m ) {
     unsigned char const* p = reinterpret_cast<unsigned char const*>( *m );
     while ( *p++ ) ;                    // skip past meta name
-    meta_names[ new_strdup( *m ) ] = dec_int( p );
+    meta_name_id_map[ new_strdup( *m ) ] = dec_int( p );
   }
 
   partial_index_file_names.push_back( index_file_name );
@@ -1042,7 +1042,7 @@ static void write_full_index( ostream &o ) {
  */
 static void write_meta_name_index( ostream &o, off_t *offset ) {
   int meta_index = 0;
-  for ( auto const &m : meta_names ) {
+  for ( auto const &m : meta_name_id_map ) {
     offset[ meta_index++ ] = o.tellp();
     o << m.first << '\0' << enc_int( m.second ) << assert_stream;
   } // for

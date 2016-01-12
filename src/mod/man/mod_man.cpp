@@ -199,7 +199,8 @@ char const* man_indexer::find_title( mmap_file const &file ) const {
   return nullptr;
 }
 
-void man_indexer::index_words( encoded_char_range const &e, int meta_id ) {
+void man_indexer::index_words( encoded_char_range const &e,
+                               meta_id_type meta_id ) {
   char  word[ Word_Hard_Max_Size + 1 ];
   bool  in_word = false;
   int   len;
@@ -344,7 +345,7 @@ void man_indexer::parse_man_macro( char const *&c, char const *end ) {
   // Potentially index the words in the section where they are associated with
   // the name of the section as a meta name.
   //
-  int meta_id = Meta_ID_None;
+  meta_id_type meta_id = Meta_ID_None;
   if ( associate_meta ) {
     //
     // Do not index the words in the section if either the name of the section

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/indexer.h
 **
-**      Copyright (C) 2000-2015  Paul J. Lucas
+**      Copyright (C) 2000-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 // local
 #include "encoded_char.h"
+#include "meta_name_id_map.h"
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
 #include "util.h"
@@ -131,7 +132,8 @@ public:
    * @param meta_id The numeric ID of the meta name the word, if indexed, is to
    * be associated with.
    */
-  static void index_word( char *word, size_t len, int meta_id = Meta_ID_None );
+  static void index_word( char *word, size_t len,
+                          meta_id_type meta_id = Meta_ID_None );
 
   /**
    * Indexes words in a file between [begin,end) and associates them with the
@@ -143,7 +145,7 @@ public:
    * associated with.
    */
   virtual void index_words( encoded_char_range const &e,
-                            int meta_id = Meta_ID_None );
+                            meta_id_type meta_id = Meta_ID_None );
 
   /**
    * Gets the plain text %indexer.

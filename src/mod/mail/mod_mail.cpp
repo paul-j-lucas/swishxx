@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/mail/mod_mail.cpp
 **
-**      Copyright (C) 2000-2015  Paul J. Lucas
+**      Copyright (C) 2000-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include "FilterAttachment.h"
 #include "IncludeMeta.h"
 #include "iso8859-1.h"
-#include "meta_map.h"
+#include "meta_name_id_map.h"
 #ifdef WITH_HTML
 #include "mod/html/mod_html.h"
 #endif /* WITH_HTML */
@@ -318,7 +318,7 @@ not_indexable:
     // Potentially index the words in the value of the header where they are
     // associated with the name of the header as a meta name.
     //
-    int meta_id = Meta_ID_None;
+    meta_id_type meta_id = Meta_ID_None;
     if ( associate_meta ) {
       //
       // Do not index the words in the value of the header if either the name
