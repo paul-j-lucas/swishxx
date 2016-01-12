@@ -49,15 +49,15 @@ protected:
   CONF_INT_ASSIGN_OPS( conf_percent )
 
   // inherited
-  virtual void  parse_value( char *line );
+  virtual void parse_value( char *line );
 
 private:
   bool is_percentage_;
 };
 
 #define CONF_PERCENT_ASSIGN_OPS(T)        \
-  T& operator=( value_type i ) {                 \
-    conf_percent::operator=( i );         \
+  T& operator=( value_type n ) {          \
+    conf_percent::operator=( n );         \
     return *this;                         \
   }                                       \
   T& operator=( std::string const &s ) {  \

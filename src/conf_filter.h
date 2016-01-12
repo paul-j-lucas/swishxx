@@ -44,8 +44,8 @@ public:
   typedef value_type const* const_pointer;
 
   const_pointer operator[]( key_type key ) const {
-    map_type::const_iterator const i = map_.find( key );
-    return i != map_.end() ? &i->second : nullptr;
+    map_type::const_iterator const found = map_.find( key );
+    return found != map_.end() ? &found->second : nullptr;
   }
 
   const_pointer operator[]( std::string const &key ) const {

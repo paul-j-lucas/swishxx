@@ -45,8 +45,8 @@ public:
     return *this;
   }
 
-  conf operator++( int ) {
-    conf tmp = *this;
+  conf operator++(int) {
+    conf const tmp( *this );
     ++value_;
     return tmp;
   }
@@ -56,8 +56,8 @@ public:
     return *this;
   }
 
-  conf operator--( int ) {
-    conf tmp = *this;
+  conf operator--(int) {
+    conf const tmp( *this );
     --value_;
     return tmp;
   }
