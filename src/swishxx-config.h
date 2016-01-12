@@ -182,7 +182,7 @@ int const   ThreadsMax_Default          = 100;
 
 /**
  * The number of seconds until an idle spare thread times out and destroys
- * itself.  This can be overridden either in a config.  file or on the command
+ * itself.  This can be overridden either in a config. file or on the command
  * line.
  */
 int const   ThreadTimeout_Default       = 30;   // seconds
@@ -216,8 +216,8 @@ char const  ExtractExtension_Default[]  = "txt";
 
 /**
  * Default number of files to grow reserved space for when incrementally
- * indexing.  This can be overridden either in a config.  file or on the
- * command line.
+ * indexing.  This can be overridden either in a config. file or on the command
+ * line.
  */
 int const   FilesGrow_Default           = 100;
 
@@ -275,9 +275,9 @@ char const  TempDirectory_Default[]     = "/temp";
  * more files get created in \c /tmp, you will have less swap space, indexing
  * will get slower, and you may run out of memory.  If this is the case, you
  * can either change this default here for all users (preferred) or override it
- * either in a config.  file or on the command line to use a directory on a
- * real filesystem, i.e., one on a physical disk, e.g., \c /var/tmp on some
- * OSs.  The directory must exist.
+ * either in a config. file or on the command line to use a directory on a real
+ * filesystem, i.e., one on a physical disk, e.g., \c /var/tmp on some OSs.
+ * The directory must exist.
  */
 char const  TempDirectory_Default[]     = "/tmp";
 #endif /* __CYGWIN__ */
