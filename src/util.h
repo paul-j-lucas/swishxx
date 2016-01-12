@@ -281,7 +281,7 @@ inline bool is_xdigit( char c ) {
   return isxdigit( static_cast<unsigned char>( c ) );
 }
 
-inline char   to_lower( char c ) { return tolower( c ); }
+inline char to_lower( char c ) { return tolower( c ); }
 
 /**
  * Converts a C string to lower case; the original string is untouched.  The

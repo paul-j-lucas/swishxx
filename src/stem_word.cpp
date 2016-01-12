@@ -206,6 +206,10 @@ static int word_size( char const *word ) {
 
 ////////// member functions ///////////////////////////////////////////////////
 
+char const* less_stem::no_stem( char const *word ) {
+  return word;
+}
+
 char const* less_stem::stem_word( char const *word ) {
   static rule_list const rules_1a[] = {
     { 101, "sses",    "ss",    4,  2,  -1, nullptr },

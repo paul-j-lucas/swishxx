@@ -99,7 +99,7 @@ struct search_options {
   /**
    * Returns whether this %search_options contains all valid options.
    */
-  operator bool() const {
+  explicit operator bool() const {
     return !bad_;
   }
 

@@ -42,9 +42,13 @@ struct less_stem : std::less<char const*> {
 private:
   char const* (*const stem_func_)( char const *word );
 
-  static char const* no_stem( char const *word ) {
-    return word;
-  }
+  /**
+   * A no-op just to have a function to point to.
+   *
+   * @param word The word.
+   * @return Returns \a word.
+   */
+  static char const* no_stem( char const *word );
 
   /**
    * Stems the given word by applying Porter's algorithm: run through several
