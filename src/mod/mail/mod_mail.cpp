@@ -335,7 +335,7 @@ not_indexable:
   return type;
 }
 
-void mail_indexer::index_words( encoded_char_range const &e, int ) {
+void mail_indexer::index_words( encoded_char_range const &e, meta_id_type ) {
   auto c = e.begin();
   message_type const type( index_headers( c.pos(), c.end_pos() ) );
 

@@ -72,7 +72,7 @@ char const* rtf_indexer::find_title( mmap_file const &file ) const {
   return nullptr;
 }
 
-void rtf_indexer::index_words( encoded_char_range const &e, int ) {
+void rtf_indexer::index_words( encoded_char_range const &e, meta_id_type ) {
   char  word[ Word_Hard_Max_Size + 1 ];
   char  control[ Word_Hard_Max_Size + 1 ];
   bool  in_control = false, in_word = false, restart = false;

@@ -154,7 +154,7 @@ bool id3_indexer::index_id3v2_tags( char const *c, char const *end ) {
   return indexed_at_least_1_frame;
 }
 
-void id3_indexer::index_words( encoded_char_range const &e, int ) {
+void id3_indexer::index_words( encoded_char_range const &e, meta_id_type ) {
   encoded_char_range::const_iterator c = e.begin();
   //
   // Index the ID3v2 tag if it exists; index the ID3v1 tag only if it doesn't.
