@@ -49,13 +49,13 @@ public:
     init( fd );
   }
 
+  fdbuf( fdbuf const& ) = default;
+  fdbuf& operator=( fdbuf const& ) = default;
+
   ~fdbuf() {
     if ( fd_ > -1 )
       sync();
   }
-
-  // default copy constructor is fine
-  // default assignment is fine
 
   /**
    * In the case where an fdbuf object was constructed using the default

@@ -66,9 +66,8 @@ public:
 
     file();
     explicit file( int index );
-
-    // default copy constructor is OK
-    // default assignment operator is OK
+    file( file const& ) = default;
+    file& operator=( file const& ) = default;
   };
 
   typedef std::list<file> file_list;

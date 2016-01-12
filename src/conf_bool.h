@@ -39,7 +39,9 @@
  */
 template<> class conf<bool> : public conf_var {
 public:
-  operator bool() const { return value_; }
+  operator bool() const {
+    return value_;
+  }
 
 protected:
   conf( char const *name, bool default_value );

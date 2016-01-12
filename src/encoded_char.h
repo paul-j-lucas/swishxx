@@ -42,8 +42,8 @@
  * over the range and, when dereferenced, decodes a character.
  *
  * However, doing this is a serious performance hit since it has to be done for
- * every single character examined.  Hence, the code is #ifdef'd for \c MOD_id3
- * and \c MOD_mail: if neither is used, there's no need for any special
+ * every single character examined.  Hence, the code is #ifdef'd for \c
+ * WITH_DECODING: if it's not defined, there's no need for any special
  * decoding.
  */
 class encoded_char_range {
@@ -57,13 +57,36 @@ public:
   typedef value_type (*encoding_type)
     (const_pointer, const_pointer&, const_pointer);
 
+  /**
+   * Constructs an %encoded_char_range.
+   *
+   * @param begin A pointer to the beginning of the range.
+   * @param end A pointer to one past the end of the range.
+   * @param charset A pointer to the character set transcoder function, if any.
+   * @param encoding A pointer to the character encoding decoder function, if
+   * any.
+   */
   encoded_char_range( const_pointer begin, const_pointer end,
-                      charset_type = nullptr, encoding_type = nullptr );
+                      charset_type charset = nullptr,
+                      encoding_type encoding = nullptr );
+
+  /**
+   * Constructs an %encoded_char_range.
+   *
+   * @param pos The const_iterator whose range to use.
+   */
   encoded_char_range( const_iterator const &pos );
+
+  /**
+   * Constructs an %encoded_char_range.
+   *
+   * @param begin The const_iterator positioned at the beginning of the range.
+   * @param end The const_iterator positioned at one past the end of the range.
+   */
   encoded_char_range( const_iterator const &begin, const_iterator const &end );
 
-  // default copy constructor is fine
-  // default assignment operator is fine
+  encoded_char_range( encoded_char_range const& ) = default;
+  encoded_char_range& operator=( encoded_char_range const& ) = default;
 
   const_iterator  begin() const;
   const_pointer   begin_pos() const               { return begin_; }
@@ -121,8 +144,8 @@ public:
   const_iterator( const_pointer begin, const_pointer end,
                   charset_type = nullptr, encoding_type = nullptr );
 
-  // default copy constructor is fine
-  // default assignment operator is fine
+  const_iterator( const_iterator const& ) = default;
+  const_iterator& operator=( const_iterator const& ) = default;
 
   value_type      operator*() const;
   const_iterator& operator++();

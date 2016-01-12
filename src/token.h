@@ -61,9 +61,8 @@ public:
 
   token() : type_( tt_none )            { }
   explicit token( token_stream &in )    { in >> *this; }
-
-  // default copy constructor is fine
-  // default assignment operator is fine
+  token( token const& ) = default;
+  token& operator=( token const& ) = default;
 
   operator    type() const              { return type_; }
   int         length() const            { return len_; }

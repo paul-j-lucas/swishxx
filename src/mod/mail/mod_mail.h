@@ -167,7 +167,6 @@ private:
    *    David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
    *    Text Messages," Department of Electrical Engineering, University of
    *    Delaware, August 1982.
-  
    */
   static bool parse_header( char const *&c, char const *end, key_value *kv );
 };

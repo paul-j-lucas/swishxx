@@ -43,7 +43,6 @@ public:
 
   typedef int size_type;
   typedef ptrdiff_t difference_type;
-
   typedef word_info::file value_type;
   typedef value_type const* const_pointer;
   typedef value_type const& const_reference;
@@ -66,15 +65,14 @@ public:
     public std::iterator<std::forward_iterator_tag,value_type> {
   public:
     const_iterator() { }
+    const_iterator( const_iterator const& ) = default;
+    const_iterator& operator=( const_iterator const& ) = default;
 
     const_reference operator* () const { return  v_; }
     const_pointer   operator->() const { return &v_; }
 
     const_iterator& operator++();
-    const_iterator  operator++(int) {
-      const_iterator const temp = *this;
-      return ++*this, temp;
-    }
+    const_iterator operator++(int);
 
     friend bool operator==( const_iterator const &i, const_iterator const &j ) {
       return i.c_ == j.c_;
@@ -83,9 +81,6 @@ public:
     friend bool operator!=( const_iterator const &i, const_iterator const &j ) {
       return !( i == j );
     }
-
-    // default copy constructor is OK
-    // default assignment operator is OK
 
   private:
     const_iterator( byte const *p ) : c_( p ) {
@@ -120,6 +115,11 @@ private:
 };
 
 ////////// inlines ////////////////////////////////////////////////////////////
+
+inline file_list::const_iterator file_list::const_iterator::operator++(int) {
+  const_iterator const temp( *this );
+  return ++*this, temp;
+}
 
 inline file_list::size_type file_list::size() const {
   return size_ != -1 ? size_ : calc_size();

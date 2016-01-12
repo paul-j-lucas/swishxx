@@ -44,9 +44,8 @@ class index_segment {
 public:
   ////////// typedefs /////////////////////////////////////////////////////////
 
-  typedef unsigned long size_type;
+  typedef size_t size_type;
   typedef ptrdiff_t difference_type;
-
   typedef char const* value_type;
   typedef char const** const_pointer;
   typedef char const* const_reference;
@@ -62,6 +61,7 @@ public:
   ////////// constructors /////////////////////////////////////////////////////
 
   index_segment() { }
+
   index_segment( PJL::mmap_file const &file, segment_id id ) {
     set_index_file( file, id );
   }
@@ -76,13 +76,18 @@ public:
    *    Ideally, this function would be part of the constructor, but the name
    *    of the index file can be passed in via the command line and that isn't
    *    parsed until after the instance is constructed.
+   *
+   * @param file The file to use.
+   * @param id The segment_id to use.
    */
-  void set_index_file( PJL::mmap_file const&, segment_id );
+  void set_index_file( PJL::mmap_file const &file, segment_id id );
 
-  size_type size() const                { return num_entries_; }
+  size_type size() const {
+    return num_entries_;
+  }
 
   const_reference operator[]( size_type i ) const {
-    return begin_ + offset_[ i ];
+    return begin_ + offset_[i];
   }
 
   ////////// iterators ////////////////////////////////////////////////////////
@@ -94,9 +99,12 @@ public:
     public std::iterator<std::random_access_iterator_tag,value_type> {
   public:
     const_iterator() { }
-    // default assignment operator is OK
+    const_iterator( const_iterator const& ) = default;
+    const_iterator& operator=( const_iterator const& ) = default;
 
-    const_reference operator*() const { return (*index_)[ i_ ]; }
+    const_reference operator*() const {
+      return (*index_)[ i_ ];
+    }
 
     const_iterator& operator++() {
       return ++i_, *this;
@@ -144,8 +152,10 @@ public:
   private:
     index_segment const *index_;
     size_type i_;
+
     const_iterator( index_segment const *index, size_type i ) :
       index_( index ), i_( i ) { }
+
     friend class index_segment;
   };
 

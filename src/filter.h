@@ -36,10 +36,9 @@
 class filter {
 public:
   explicit filter( char const *command ) : command_template_( command ) { }
+  filter( filter const& ) = default;
+  filter& operator=( filter const& ) = default;
   ~filter();
-
-  // default copy constructor is fine
-  // default assignment operator is fine
 
   char const* substitute( char const *file_name );
   char const* substitute( std::string const &file_name );
