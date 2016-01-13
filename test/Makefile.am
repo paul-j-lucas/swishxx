@@ -70,7 +70,7 @@ TESTS+=	tests/search-text-near-01.test \
 endif
 
 if WITH_HTML
-TESTS+= tests/index-H.test \
+TESTS+=	tests/index-H.test \
 	tests/index-html-v1.test \
 	tests/index-html-v2.test \
 	tests/index-html-v3.test \
