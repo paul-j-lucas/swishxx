@@ -52,17 +52,17 @@ fail() {
 }
 
 print_result() {
-  RESULT=$1; shift
+  RESULT="$1"; shift
   MSG="$RESULT: $*"
   COLOR=`eval echo \\$COLOR_$RESULT`
-  if [ "$COLOR" ]
-  then echo $COLOR$MSG$COLOR_NONE
-  else echo $MSG
+  if [ "x$COLOR" = "x" ]
+  then echo $MSG
+  else echo $COLOR$MSG$COLOR_NONE
   fi
 }
 
 usage() {
-  [ "$1" ] && { echo "$ME: $*" >&2; usage; }
+  [ "x$1" = "x" ] || { echo "$ME: $*" >&2; usage; }
   cat >&2 <<END
 usage: $ME --test-name=NAME --log-file=PATH --trs-file=PATH [options] TEST-COMMAND
 options:
@@ -77,7 +77,7 @@ END
 
 ME=`local_basename "$0"`
 
-[ "$BUILD_SRC" ] || {
+[ "x$BUILD_SRC" = "x" ] && {
   echo "$ME: \$BUILD_SRC not set" >&2
   exit 2
 }
@@ -140,15 +140,15 @@ do
   shift
 done
 
-[ "$TEST_NAME" ] || usage "required --test-name not given"
-[ "$LOG_FILE"  ] || usage "required --log-file not given"
-[ "$TRS_FILE"  ] || usage "required --trs-file not given"
-[ $# -ge 1     ] || usage "required test-command not given"
-TEST_FILE=$1
+[ "x$TEST_NAME" = "x" ] && usage "required --test-name not given"
+[ "x$LOG_FILE"  = "x" ] && usage "required --log-file not given"
+[ "x$TRS_FILE"  = "x" ] && usage "required --trs-file not given"
+[ $# -ge 1            ] || usage "required test-command not given"
+TEST_FILE="$1"
 
 ########## Initialize #########################################################
 
-if [ "$COLOR_TESTS" = yes ]
+if [ "x$COLOR_TESTS" = "xyes" ]
 then
   COLOR_BLUE="[1;34m"
   COLOR_GREEN="[0;32m"
@@ -165,7 +165,7 @@ then
   COLOR_XPASS=$COLOR_RED
 fi
 
-case $EXPECT_FAILURE in
+case "$EXPECT_FAILURE" in
 yes) EXPECT_FAILURE=1 ;;
   *) EXPECT_FAILURE=0 ;;
 esac
@@ -174,7 +174,7 @@ esac
 # The automake framework sets $srcdir. If it's empty, it means this script was
 # called by hand, so set it ourselves.
 ##
-[ "$srcdir" ] || srcdir="."
+[ "x$srcdir" = "x" ] && srcdir="."
 
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
@@ -184,15 +184,15 @@ OUTPUT=/tmp/swishxx_test_output_$$_
 ########## Run test ###########################################################
 
 run_sh_file() {
-  TEST_FILE=$1
-  if $TEST_FILE $OUTPUT $LOG_FILE
+  TEST_FILE="$1"
+  if $TEST_FILE "$OUTPUT" "$LOG_FILE"
   then pass
   else fail
   fi
 }
 
 run_test_file() {
-  TEST_FILE=$1
+  TEST_FILE="$1"
   IFS='|' read COMMAND CONF OPTIONS ARGS EXPECTED_EXIT < $TEST_FILE
 
   # trim whitespace
@@ -200,8 +200,8 @@ run_test_file() {
   CONF=`echo $CONF`
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`
 
-  [ "$COMMAND" = "index" ] && CHDIR="-d $DATA_DIR"
-  [ "$CONF" ] && CONF="-c $DATA_DIR/$CONF"
+  [ "x$COMMAND" = "xindex" ] && CHDIR="-d $DATA_DIR"
+  [ "x$CONF" = "x" ] || CONF="-c $DATA_DIR/$CONF"
 
   echo $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $OUTPUT 2> $LOG_FILE" > $LOG_FILE
 
