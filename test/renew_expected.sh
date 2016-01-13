@@ -44,23 +44,26 @@ TESTS_DIR=tests
 ########## Run test ###########################################################
 
 run_test_file() {
-  TEST_FILE=$1
-  EXPECTED_FILE=$2
+  TEST_FILE="$1"
+  EXPECTED_FILE="$2"
 
   IFS='|' read COMMAND CONF OPTIONS ARGS EXPECTED_EXIT < $TEST_FILE
 
-  # trim whitespace
-  COMMAND=`echo $COMMAND`
-  CONF=`echo $CONF`
+  if [ "$EXPECTED_EXIT" -eq 0 ]
+  then
+    # trim whitespace
+    COMMAND=`echo $COMMAND`
+    CONF=`echo $CONF`
 
-  if [ "$COMMAND" = "index" ]
-  then CHDIR="-d $DATA_DIR"
-  else unset CHDIR
+    if [ "x$COMMAND" = "xindex" ]
+    then CHDIR="-d $DATA_DIR"
+    else unset CHDIR
+    fi
+    [ "x$CONF" = "x" ] || CONF="-c $DATA_DIR/$CONF"
+
+    echo $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $EXPECTED_FILE"
+    $COMMAND $CHDIR $CONF $OPTIONS $ARGS > $EXPECTED_FILE
   fi
-  [ "$CONF" ] && CONF="-c $DATA_DIR/$CONF"
-
-  echo $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $EXPECTED_FILE"
-  $COMMAND $CHDIR $CONF $OPTIONS $ARGS > $EXPECTED_FILE
 }
 
 ##
@@ -70,11 +73,11 @@ PATH=$BUILD_SRC:$PATH
 
 SWISHXX_TEST=true; export SWISHXX_TEST
 
-for expected_file in $EXPECTED_DIR/*.txt
+grep $TESTS_DIR/ Makefile.am | cut -f2 | sed 's! \\$!!' | while read TEST_FILE
 do
-  base=`local_basename $expected_file`
-  test_file=`echo $TESTS_DIR/$base | sed 's/txt$/test/'`
-  run_test_file $test_file $expected_file
+  base=`local_basename $TEST_FILE`
+  EXPECTED_FILE=`echo $EXPECTED_DIR/$base | sed 's/test$/txt/'`
+  run_test_file $TEST_FILE $EXPECTED_FILE
 done
 
 # vim:set et sw=2 ts=2:
