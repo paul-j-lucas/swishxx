@@ -49,7 +49,6 @@ public:
    */
   struct file {
     typedef PJL::pjl_set<meta_id_type> meta_id_set;
-
     meta_id_set meta_ids_;              // meta name(s) associated with
 
     bool has_meta_id( meta_id_type ) const;
@@ -86,6 +85,9 @@ public:
   word_info& operator=( word_info const& ) = default;
 };
 
+/**
+ * A %word_map maps every word to its associated word_info.
+ */
 typedef std::map<std::string,word_info> word_map;
 
 ////////// inlines ////////////////////////////////////////////////////////////
