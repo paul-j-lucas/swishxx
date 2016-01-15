@@ -40,8 +40,9 @@ FilesReserve              files_reserve;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-file_info::file_info( char const *path_name, int dir_index, size_t file_size,
-                      char const *title, int num_words ) :
+file_info::file_info( char const *path_name, unsigned dir_index,
+                      size_t file_size, char const *title,
+                      unsigned num_words ) :
   dir_index_( dir_index ),
   file_name_(
     //

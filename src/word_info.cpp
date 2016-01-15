@@ -35,7 +35,7 @@ word_info::file::file() {
   // do nothing
 }
 
-word_info::file::file( int index ) :
+word_info::file::file( unsigned index ) :
 #ifdef WITH_WORD_POS
   last_absolute_word_pos_( 0 ),
 #endif /* WITH_WORD_POS */

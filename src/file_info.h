@@ -58,8 +58,8 @@ public:
    * @param title     The title of the file only if not null.
    * @param num_words The number of words in the file.
    */
-  file_info( char const *path_name, int dir_index, size_t file_size,
-             char const *title, int num_words = 0 );
+  file_info( char const *path_name, unsigned dir_index, size_t file_size,
+             char const *title, unsigned num_words = 0 );
 
   /**
    * Constructs a %file_info from the raw data inside an index file.
@@ -68,7 +68,7 @@ public:
    */
   file_info( unsigned char const *ptr_into_index_file );
 
-  int dir_index() const {
+  unsigned dir_index() const {
     return dir_index_;
   }
 
@@ -76,7 +76,7 @@ public:
     return file_name_;
   }
 
-  int num_words() const {
+  unsigned num_words() const {
     return num_words_;
   }
 
@@ -96,15 +96,15 @@ public:
     return list_.end();
   }
 
-  static int current_index() {
-    return static_cast<int>( list_.size() - 1 );
+  static unsigned current_index() {
+    return static_cast<unsigned>( list_.size() - 1 );
   }
 
   static void inc_words() {
     ++list_.back()->num_words_;
   }
 
-  static file_info* ith_info( int i ) {
+  static file_info* ith_info( unsigned i ) {
     return list_[i];
   }
 
@@ -117,10 +117,10 @@ public:
   }
 
 private:
-  int const             dir_index_;
+  unsigned const        dir_index_;
   char const *const     file_name_;
   size_type const       file_size_;
-  int                   num_words_;
+  unsigned              num_words_;
   char const *const     title_;
 
   static list_type      list_;

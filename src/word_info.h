@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/word_info.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -42,30 +42,34 @@
  */
 class word_info {
 public:
+  /**
+   * Every word occurs in one or more files.  A %file stores information for
+   * each file a given word occurs in.
+   */
   struct file {
-    //
-    // Every word occurs in one or more files.  An instance of this class
-    // stores information for each file a given word occurs in.
-    //
     typedef PJL::pjl_set<short> meta_set;
+
     meta_set meta_ids_;                 // meta name(s) associated with
+
     bool has_meta_id( meta_id_type ) const;
     void write_meta_ids( std::ostream& ) const;
 
 #ifdef WITH_WORD_POS
     typedef std::vector<short> pos_delta_list;
-    int last_absolute_word_pos_;
+    unsigned last_absolute_word_pos_;
     pos_delta_list pos_deltas_;
 
-    void add_word_pos( int );
+    void add_word_pos( unsigned );
     void write_word_pos( std::ostream& ) const;
 #endif /* WITH_WORD_POS */
-    int  index_;                        // occurs in i-th file
-    int  occurrences_;                  // in this file only
-    int  rank_;
+
+    unsigned index_;                    // occurs in i-th file
+    unsigned occurrences_;              // in this file only
+    unsigned rank_;
 
     file();
-    explicit file( int index );
+    explicit file( unsigned index );
+
     file( file const& ) = default;
     file& operator=( file const& ) = default;
   };
@@ -73,7 +77,7 @@ public:
   typedef std::list<file> file_list;
 
   file_list   files_;                 // the files this word is in
-  int         occurrences_;           // over all files
+  unsigned    occurrences_;           // over all files
 
   word_info() : occurrences_( 0 ) { }
 };
@@ -83,7 +87,7 @@ typedef std::map<std::string,word_info> word_map;
 ////////// inlines ////////////////////////////////////////////////////////////
 
 #ifdef WITH_WORD_POS
-inline void word_info::file::add_word_pos( int absolute_pos ) {
+inline void word_info::file::add_word_pos( unsigned absolute_pos ) {
   if ( pos_deltas_.empty() )
     pos_deltas_.push_back( absolute_pos );
   else {
