@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/file_list.cpp
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 
 // local
 #include "config.h"
-#include "enc_int.h"
 #include "file_list.h"
+#include "pjl/vlq.h"
 #include "word_markers.h"
+
+using namespace PJL;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +36,7 @@ file_list::size_type file_list::calc_size() const {
   //
   // It would be nice if there were a way to calculate the size of the file
   // list other than by just marching though it.  Since this should be as fast
-  // as possible, a much simplified version of the dec_int() code has been
+  // as possible, a much simplified version of the vlq::decode() code has been
   // inlined here by hand -- a few times.  (We also don't care what the actual
   // numbers are, so there's no point in computing them, so we save having to
   // do two shifts, and logical or for each file.)
@@ -77,9 +79,9 @@ file_list::const_iterator& file_list::const_iterator::operator++() {
     return *this;
   }
 
-  v_.index_       = dec_int( c_ );
-  v_.occurrences_ = dec_int( c_ );
-  v_.rank_        = dec_int( c_ );
+  v_.index_       = vlq::decode( c_ );
+  v_.occurrences_ = vlq::decode( c_ );
+  v_.rank_        = vlq::decode( c_ );
 
   if ( !v_.meta_ids_.empty() )
     v_.meta_ids_.clear();
@@ -109,12 +111,12 @@ file_list::const_iterator& file_list::const_iterator::operator++() {
 
       case Meta_Name_List_Marker:
         while ( *c_ != Stop_Marker )
-          v_.meta_ids_.insert( dec_int( c_ ) );
+          v_.meta_ids_.insert( vlq::decode( c_ ) );
         break;
 #ifdef WITH_WORD_POS
       case Word_Pos_List_Marker:
         while ( *c_ != Stop_Marker )
-          v_.pos_deltas_.push_back( dec_int(c_) );
+          v_.pos_deltas_.push_back( vlq::decode(c_) );
         break;
 #endif /* WITH_WORD_POS */
       default:
@@ -124,7 +126,7 @@ file_list::const_iterator& file_list::const_iterator::operator++() {
         // don't know what to do with it, just skip all the numbers in it.
         //
         while ( *c_ != Stop_Marker )
-          dec_int( c_ );
+          (void)vlq::decode( c_ );
     } // switch
     ++c_;                               // skip Stop_Marker
   } // while

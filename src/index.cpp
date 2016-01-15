@@ -23,7 +23,6 @@
 #include "config.h"
 #include "AssociateMeta.h"
 #include "ChangeDirectory.h"
-#include "enc_int.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -45,6 +44,7 @@
 #include "pjl/itoa.h"
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
+#include "pjl/vlq.h"
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
 #include "stop_words.h"
@@ -612,17 +612,17 @@ void load_old_index( char const *index_file_name ) {
   }
   FOR_EACH( old_files, f ) {
     unsigned char const *u = reinterpret_cast<unsigned char const*>( *f );
-    int const dir_index = dec_int( u );
+    int const dir_index = vlq::decode( u );
     auto const file_name = reinterpret_cast<char const*>(u);
     while ( *u++ ) ;                    // skip past filename
-    size_t const size = dec_int( u );
-    int const num_words = dec_int( u );
+    size_t const size = vlq::decode( u );
+    int const num_words = vlq::decode( u );
     auto const title = reinterpret_cast<char const*>( u );
 
     string const dir_str( old_dirs[ dir_index ] );
     string const path( dir_str + '/' + file_name );
 
-    new file_info( path.c_str(), dir_index, size, title, num_words);
+    new file_info( path.c_str(), dir_index, size, title, num_words );
   } // for
 
   ////////// Load old meta names //////////////////////////////////////////////
@@ -631,8 +631,8 @@ void load_old_index( char const *index_file_name ) {
   FOR_EACH( old_meta_names, m ) {
     unsigned char const* p = reinterpret_cast<unsigned char const*>( *m );
     while ( *p++ ) ;                    // skip past meta name
-    meta_name_id_map[ new_strdup( *m ) ] = dec_int( p );
-  }
+    meta_name_id_map[ new_strdup( *m ) ] = vlq::decode( p );
+  } // for
 
   partial_index_file_names.push_back( index_file_name );
 }
@@ -823,9 +823,9 @@ void merge_indicies( ostream &o ) {
         else
           continues = true;
 
-        o << enc_int( file.index_ )
-          << enc_int( file.occurrences_ )
-          << enc_int( rank_word( file.index_, file.occurrences_, factor ) )
+        o << vlq::encode( file.index_ )
+          << vlq::encode( file.occurrences_ )
+          << vlq::encode( rank_word( file.index_, file.occurrences_, factor ) )
           << assert_stream;
 
         if ( !file.meta_ids_.empty() )
@@ -874,9 +874,9 @@ void merge_indicies( ostream &o ) {
         else
           continues = true;
 
-        o << enc_int( file.index_ )
-          << enc_int( file.occurrences_ )
-          << enc_int( rank_word( file.index_, file.occurrences_, factor ) )
+        o << vlq::encode( file.index_ )
+          << vlq::encode( file.occurrences_ )
+          << vlq::encode( rank_word( file.index_, file.occurrences_, factor ) )
           << assert_stream;
 
         if ( !file.meta_ids_.empty() )
@@ -992,10 +992,10 @@ static void write_file_index( ostream &o, off_t *offset ) {
   int file_index = 0;
   for ( auto fi = file_info::begin(); fi != file_info::end(); ++fi ) {
     offset[ file_index++ ] = o.tellp();
-    o << enc_int( (*fi)->dir_index() )
+    o << vlq::encode( (*fi)->dir_index() )
       << (*fi)->file_name() << '\0'
-      << enc_int( (*fi)->size() )
-      << enc_int( (*fi)->num_words() )
+      << vlq::encode( (*fi)->size() )
+      << vlq::encode( (*fi)->num_words() )
       << (*fi)->title() << '\0'
       << assert_stream;
   } // for
@@ -1044,7 +1044,7 @@ static void write_meta_name_index( ostream &o, off_t *offset ) {
   int meta_index = 0;
   for ( auto const &m : meta_name_id_map ) {
     offset[ meta_index++ ] = o.tellp();
-    o << m.first << '\0' << enc_int( m.second ) << assert_stream;
+    o << m.first << '\0' << vlq::encode( m.second ) << assert_stream;
   } // for
 }
 
@@ -1125,9 +1125,9 @@ static void write_word_index( ostream &o, off_t *offset ) {
         o << Word_Entry_Continues_Marker << assert_stream;
       else
         continues = true;
-      o << enc_int( file.index_ )
-        << enc_int( file.occurrences_ )
-        << enc_int( file.rank_ )
+      o << vlq::encode( file.index_ )
+        << vlq::encode( file.occurrences_ )
+        << vlq::encode( file.rank_ )
         << assert_stream;
       if ( !file.meta_ids_.empty() )
         file.write_meta_ids( o );

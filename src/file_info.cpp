@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/file_info.cpp
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -20,16 +20,17 @@
 */
 
 // local
+#include "FilesReserve.h"
 #include "config.h"
 #include "directory.h"
-#include "enc_int.h"
-#include "FilesReserve.h"
 #include "file_info.h"
+#include "pjl/vlq.h"
 #include "util.h"                       /* for new_strdup() */
 
 // standard
 #include <cstring>
 
+using namespace PJL;
 using namespace std;
 
 file_info::list_type      file_info::list_;
@@ -65,10 +66,10 @@ file_info::file_info( char const *path_name, int dir_index, size_t file_size,
 }
 
 file_info::file_info( unsigned char const *p ) :
-  dir_index_( dec_int( p ) ),
+  dir_index_( vlq::decode( p ) ),
   file_name_( reinterpret_cast<char const*>( p ) ),
-  size_( dec_int( p += ::strlen( reinterpret_cast<char const*>( p ) ) + 1 ) ),
-  num_words_( dec_int( p ) ),
+  size_( vlq::decode( p += ::strlen( reinterpret_cast<char const*>(p) ) + 1 ) ),
+  num_words_( vlq::decode( p ) ),
   title_( reinterpret_cast<char const*>( p ) )
 {
   // do nothing else

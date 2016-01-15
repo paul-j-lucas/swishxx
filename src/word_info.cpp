@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/word_info.cpp
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -21,11 +21,12 @@
 
 // local
 #include "config.h"
-#include "enc_int.h"
+#include "pjl/vlq.h"
+#include "util.h"
 #include "word_info.h"
 #include "word_markers.h"
-#include "util.h"
 
+using namespace PJL;
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,7 +47,7 @@ word_info::file::file( int index ) :
 void word_info::file::write_meta_ids( ostream &o ) const {
   o << Meta_Name_List_Marker << assert_stream;
   for ( auto meta_id : meta_ids_ )
-    o << enc_int( meta_id ) << assert_stream;
+    o << vlq::encode( meta_id ) << assert_stream;
   o << Stop_Marker << assert_stream;
 }
 
@@ -54,7 +55,7 @@ void word_info::file::write_meta_ids( ostream &o ) const {
 void word_info::file::write_word_pos( ostream &o ) const {
   o << Word_Pos_List_Marker << assert_stream;
   for ( auto pos_delta : pos_deltas_ )
-    o << enc_int( pos_delta ) << assert_stream;
+    o << vlq::encode( pos_delta ) << assert_stream;
   o << Stop_Marker << assert_stream;
 }
 #endif /* WITH_WORD_POS */

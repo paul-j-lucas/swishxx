@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/query.cpp
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -21,14 +21,14 @@
 
 // local
 #include "config.h"
-#include "enc_int.h"
+#include "IndexFile.h"
+#include "StemWords.h"
 #include "exit_codes.h"
 #include "file_list.h"
-#include "IndexFile.h"
+#include "pjl/vlq.h"
 #include "query.h"
 #include "query_node.h"
 #include "stem_word.h"
-#include "StemWords.h"
 #include "util.h"
 #include "word_util.h"
 
@@ -163,10 +163,10 @@ bool parse_query( token_stream &query, search_results &results,
  * @param i An iterator positioned at a meta name.
  * @return Returns the numeric ID of the meta name in the range [0,N).
  */
-static int get_meta_id( index_segment::const_iterator i ) {
+static meta_id_type get_meta_id( index_segment::const_iterator i ) {
   auto p = reinterpret_cast<unsigned char const*>( *i );
   while ( *p++ ) ;                      // skip past word
-  return dec_int( p );
+  return static_cast<meta_id_type>( vlq::decode( p ) );
 }
 
 #ifdef WITH_WORD_POS

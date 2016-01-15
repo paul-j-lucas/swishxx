@@ -1,8 +1,8 @@
 /*
 **      SWISH++
-**      src/enc_int.cpp
+**      src/vlq.cpp
 **
-**      Copyright (C) 2003-2015  Paul J. Lucas
+**      Copyright (C) 2003-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -21,27 +21,30 @@
 
 // local
 #include "config.h"
-#include "enc_int.h"
+#include "vlq.h"
 
 // standard
 #include <iostream>
 
 using namespace std;
 
+namespace PJL {
+namespace vlq {
+
 ///////////////////////////////////////////////////////////////////////////////
 
-int dec_int( unsigned char const *&p ) {
-  unsigned n = 0;
+value_type decode( unsigned char const *&p ) {
+  value_type n = 0;
   do {
     n = (n << 7) | (*p & 0x7Fu);
   } while ( *p++ & 0x80u );
   return n;
 }
 
-ostream& enc_int( ostream &o, unsigned long n ) {
+ostream& encode( ostream &o, value_type n ) {
   unsigned char buf[ 20 ];
   //
-  // Encode the long (in reverse because it's easier) just like atoi().
+  // Encode the integer (in reverse because it's easier) just like atoi().
   //
   unsigned char *p = buf + sizeof buf;
   do {
@@ -53,4 +56,8 @@ ostream& enc_int( ostream &o, unsigned long n ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+} // namespace vlq
+} // namespace PJL
+
 /* vim:set et sw=2 ts=2: */

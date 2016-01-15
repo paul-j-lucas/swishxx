@@ -2,7 +2,7 @@
 #	SWISH++
 #	src/Makefile.am
 #
-#	Copyright (C) 1998-2015  Paul J. Lucas
+#	Copyright (C) 1998-2016  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -L$(top_srcdir)/lib
 
 ########## index ##############################################################
 
-index_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_filter.cpp conf_unsigned.cpp conf_percent.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp file_info.cpp file_list.cpp filter.cpp IncludeFile.cpp IncludeMeta.cpp indexer.cpp index_segment.cpp init_modules.cpp init_mod_vars.cpp iso8859-1.cpp stop_words.cpp ChangeDirectory.cpp TempDirectory.cpp util.cpp word_info.cpp WordThreshold.cpp word_util.cpp index.cpp
+index_SOURCES = conf_var.cpp conf_bool.cpp conf_filter.cpp conf_unsigned.cpp conf_percent.cpp conf_set.cpp conf_string.cpp ExcludeFile.cpp file_info.cpp file_list.cpp filter.cpp IncludeFile.cpp IncludeMeta.cpp indexer.cpp index_segment.cpp init_modules.cpp init_mod_vars.cpp iso8859-1.cpp stop_words.cpp ChangeDirectory.cpp TempDirectory.cpp util.cpp word_info.cpp WordThreshold.cpp word_util.cpp index.cpp
 
 if WITH_DECODING
 index_SOURCES += encoded_char.cpp
@@ -63,7 +63,7 @@ index_LDADD += $(top_builddir)/src/charsets/libcharsets.a $(top_builddir)/src/en
 
 ########## search #############################################################
 
-search_SOURCES = enc_int.cpp conf_var.cpp conf_bool.cpp conf_enum.cpp conf_unsigned.cpp conf_string.cpp index_segment.cpp init_mod_vars.cpp file_info.cpp file_list.cpp iso8859-1.cpp query_node.cpp query.cpp ResultsFormat.cpp results_formatter.cpp classic_formatter.cpp xml_formatter.cpp token.cpp stem_word.cpp util.cpp word_info.cpp word_util.cpp search.cpp
+search_SOURCES = conf_var.cpp conf_bool.cpp conf_enum.cpp conf_unsigned.cpp conf_string.cpp index_segment.cpp init_mod_vars.cpp file_info.cpp file_list.cpp iso8859-1.cpp query_node.cpp query.cpp ResultsFormat.cpp results_formatter.cpp classic_formatter.cpp xml_formatter.cpp token.cpp stem_word.cpp util.cpp word_info.cpp word_util.cpp search.cpp
 
 if WITH_SEARCH_DAEMON
 search_SOURCES += Group.cpp search_daemon.cpp search_thread.cpp SearchDaemon.cpp SocketAddress.cpp User.cpp

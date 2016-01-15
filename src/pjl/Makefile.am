@@ -2,7 +2,7 @@
 #	SWISH++
 #	src/pjl/Makefile.am
 #
-#	Copyright (C) 1998-2015  Paul J. Lucas
+#	Copyright (C) 1998-2016  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ lib_LIBRARIES = libpjl.a
 
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 
-libpjl_a_SOURCES = fdbuf.cpp itoa.cpp mmap_file.cpp option_stream.cpp
+libpjl_a_SOURCES = fdbuf.cpp itoa.cpp mmap_file.cpp option_stream.cpp vlq.cpp
 
 if MULTI_THREADED
 libpjl_a_SOURCES += thread_pool.cpp
