@@ -81,7 +81,7 @@ public:
   }
 
   size_type size() const {
-    return size_;
+    return file_size_;
   }
 
   char const* title() const {
@@ -119,7 +119,7 @@ public:
 private:
   int const             dir_index_;
   char const *const     file_name_;
-  size_type const       size_;
+  size_type const       file_size_;
   int                   num_words_;
   char const *const     title_;
 

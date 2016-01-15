@@ -51,7 +51,7 @@ file_info::file_info( char const *path_name, int dir_index, size_t file_size,
     //
     pjl_basename( *name_set_.insert( new_strdup( path_name ) ).first )
   ),
-  size_( file_size ), num_words_( num_words ),
+  file_size_( file_size ), num_words_( num_words ),
   title_(
     //
     // If there was a title given, use that; otherwise the title is the file
@@ -68,7 +68,9 @@ file_info::file_info( char const *path_name, int dir_index, size_t file_size,
 file_info::file_info( unsigned char const *p ) :
   dir_index_( vlq::decode( p ) ),
   file_name_( reinterpret_cast<char const*>( p ) ),
-  size_( vlq::decode( p += ::strlen( reinterpret_cast<char const*>(p) ) + 1 ) ),
+  file_size_(
+    vlq::decode( p += ::strlen( reinterpret_cast<char const*>( p ) ) + 1 )
+  ),
   num_words_( vlq::decode( p ) ),
   title_( reinterpret_cast<char const*>( p ) )
 {
