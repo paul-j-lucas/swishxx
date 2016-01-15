@@ -24,6 +24,7 @@
 
 // local
 #include "indexer.h"                            /* for Meta_ID_None */
+#include "meta_id.h"
 #include "pjl/pjl_set.h"
 
 // standard
@@ -47,16 +48,16 @@ public:
    * each file a given word occurs in.
    */
   struct file {
-    typedef PJL::pjl_set<short> meta_set;
+    typedef PJL::pjl_set<meta_id_type> meta_id_set;
 
-    meta_set meta_ids_;                 // meta name(s) associated with
+    meta_id_set meta_ids_;              // meta name(s) associated with
 
     bool has_meta_id( meta_id_type ) const;
     void write_meta_ids( std::ostream& ) const;
 
 #ifdef WITH_WORD_POS
-    typedef std::vector<short> pos_delta_list;
-    unsigned last_absolute_word_pos_;
+    typedef short delta_type;
+    typedef std::vector<delta_type> pos_delta_list;
     pos_delta_list pos_deltas_;
 
     void add_word_pos( unsigned );
@@ -80,6 +81,9 @@ public:
   unsigned    occurrences_;           // over all files
 
   word_info() : occurrences_( 0 ) { }
+
+  word_info( word_info const& ) = default;
+  word_info& operator=( word_info const& ) = default;
 };
 
 typedef std::map<std::string,word_info> word_map;
@@ -96,9 +100,9 @@ inline void word_info::file::add_word_pos( unsigned absolute_pos ) {
     // in a variable-length binary representation in the generated index file
     // and smaller integers take less bytes.
     // 
-    pos_deltas_.push_back( absolute_pos - last_absolute_word_pos_ );
+    delta_type const prev_pos = pos_deltas_.back();
+    pos_deltas_.push_back( absolute_pos - prev_pos );
   }
-  last_absolute_word_pos_ = absolute_pos;
 }
 #endif /* WITH_WORD_POS */
 

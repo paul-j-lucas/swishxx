@@ -1,6 +1,6 @@
 /*
 **      SWISH++
-**      src/meta_name_id_map.h
+**      src/meta_id.h
 **
 **      Copyright (C) 1998-2016  Paul J. Lucas
 **
@@ -19,8 +19,8 @@
 **      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#ifndef meta_name_id_map_H
-#define meta_name_id_map_H
+#ifndef meta_id_H
+#define meta_id_H
 
 // local
 #include "pjl/less.h"
@@ -30,7 +30,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef int meta_id_type;
+typedef short meta_id_type;
 
 /**
  * A %meta_name_id_map_type is used to map a META name to its unique integer
@@ -42,5 +42,5 @@ extern meta_name_id_map_type meta_name_id_map;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* meta_name_id_map_H */
+#endif /* meta_id_H */
 /* vim:set et sw=2 ts=2: */

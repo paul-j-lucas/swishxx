@@ -24,7 +24,7 @@
 
 // local
 #include "encoded_char.h"
-#include "meta_name_id_map.h"
+#include "meta_id.h"
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
 #include "util.h"

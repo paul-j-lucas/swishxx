@@ -27,7 +27,7 @@
 #include "IncludeMeta.h"
 #include "indexer.h"
 #include "iso8859-1.h"
-#include "meta_name_id_map.h"
+#include "meta_id.h"
 #include "stop_words.h"
 #include "StoreWordPositions.h"
 #include "util.h"
@@ -122,7 +122,7 @@ bool indexer::claims_option( option_stream::option const& ) {
   return false;
 }
 
-int indexer::find_meta( char const *meta_name ) {
+meta_id_type indexer::find_meta( char const *meta_name ) {
   if ( exclude_meta_names.contains( meta_name ) )
     return Meta_ID_None;
 

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/query_node.h
 **
-**      Copyright (C) 2004-2015  Paul J. Lucas
+**      Copyright (C) 2004-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #define query_node_H
 
 // local
+#include "meta_id.h"
 #include "pjl/auto_delete_pool.h"
 #include "query.h"
 
@@ -245,7 +246,7 @@ private:
  */
 class word_node : public query_node {
 public:
-  word_node( pool_type&, char const*, word_range const&, int );
+  word_node( pool_type&, char const*, word_range const&, meta_id_type );
   ~word_node();
 
   void eval( search_results& );

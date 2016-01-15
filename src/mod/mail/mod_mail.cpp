@@ -27,7 +27,7 @@
 #include "FilterAttachment.h"
 #include "IncludeMeta.h"
 #include "iso8859-1.h"
-#include "meta_name_id_map.h"
+#include "meta_id.h"
 #ifdef WITH_HTML
 #include "mod/html/mod_html.h"
 #endif /* WITH_HTML */

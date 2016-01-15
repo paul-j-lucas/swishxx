@@ -40,7 +40,7 @@
 #include "indexer.h"
 #include "IndexFile.h"
 #include "index_segment.h"
-#include "meta_name_id_map.h"
+#include "meta_id.h"
 #include "pjl/itoa.h"
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
