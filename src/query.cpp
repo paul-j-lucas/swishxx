@@ -451,10 +451,9 @@ static bool parse_primary( parse_q_args& q_args, parse_r_args& r_args,
       // stop-word.
       //
       if ( !is_ok_word( t.str() ) ||
-        ::binary_search(
-          stop_words.begin(), stop_words.end(), t.lower_str(), comparator
-        )
-      ) {
+           ::binary_search(
+             stop_words.begin(), stop_words.end(), t.lower_str(), comparator
+           ) ) {
         q_args.stop_words_found.insert( t.str() );
 #       ifdef DEBUG_parse_query
         cerr << "---> word \"" << t.str() << "\" (ignored: not OK)\n";
