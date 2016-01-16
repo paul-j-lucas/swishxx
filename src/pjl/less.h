@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      less.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,40 +25,45 @@
 // standard
 #include <cstddef>                      /* for size_t */
 #include <cstring>
-#include <functional>
+#include <functional>                   /* for less */
 
 namespace std {
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Specialize the binary_function %less so that C-style strings (char const*)
- * will work properly with STL containers.
+ * Specialize %less so that C-style strings <code>char const*</code> will work
+ * properly with STL containers.
  */
 template<>
-struct less<char const*> : std::binary_function<char const*,char const*,bool> {
+struct less<char const*> {
+  typedef char const* first_argument_type;
+  typedef char const* second_argument_type;
+  typedef bool result_type;
+
   less() { }
 
   result_type
-  operator()( first_argument_type a, second_argument_type b ) const {
-    return std::strcmp( a, b ) < 0;
+  operator()( first_argument_type i, second_argument_type j ) const {
+    return std::strcmp( i, j ) < 0;
   }
 };
 
-template<class T> struct less_n;
+template<typename T> struct less_n;
 
 /**
- * A %less_n is-a less<char const*> that compares C-style strings, but only for
- * a certain maximum length.
+ * A %less_n is-a less&lt;char const*&gt; that compares C-style strings, but
+ * only for a certain maximum length.
  */
 template<>
 struct less_n<char const*> : less<char const*> {
   less_n<char const*>( size_t max_len ) : n_( max_len ) { }
 
   result_type
-  operator()( first_argument_type a, second_argument_type b ) const {
-    return std::strncmp( a, b, n_ ) < 0;
+  operator()( first_argument_type i, second_argument_type j ) const {
+    return std::strncmp( i, j, n_ ) < 0;
   }
+
 private:
   size_t const n_;
 };

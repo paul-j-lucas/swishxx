@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      pattern_map.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -91,13 +91,15 @@ public:
 
 private:
   /**
-   * A %pattern_match is-a unary_function to serve as a predicate to
-   * \c find_if() above.
+   * A %pattern_match serves as a predicate to \c find_if() above.
    */
-  struct pattern_match : std::unary_function<value_type const&,bool> {
+  struct pattern_match {
+    typedef value_type const& argument_type;
+    typedef bool result_type;
+
     pattern_match( char const *file_name ) : file_name_( file_name ) { }
 
-    bool operator()( value_type const &map_node ) const {
+    result_type operator()( argument_type map_node ) const {
       return !::fnmatch( map_node.first, file_name_, 0 );
     }
 
