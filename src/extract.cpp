@@ -329,12 +329,12 @@ static bool extract_word( char *word, int len, ostream &out ) {
     return false;
   }
   static auto const &postscript_comments = postscript::comments();
-  if ( PJL::contains( postscript_comments, word ) ) {
+  if ( contains( postscript_comments, word ) ) {
     in_postscript = true;
     return false;
   }
   static auto const &postscript_operators = postscript::operators();
-  if ( PJL::contains( postscript_operators, word ) )
+  if ( contains( postscript_operators, word ) )
     return false;
 
   ////////// Strip chars not in Word_Begin_Chars/Word_End_Chars ///////////////
@@ -366,7 +366,7 @@ static bool extract_word( char *word, int len, ostream &out ) {
 
   ////////// Stop-word checks /////////////////////////////////////////////////
 
-  if ( !is_ok_word( word ) || stop_words->contains( to_lower( word ) ) )
+  if ( !is_ok_word( word ) || contains( *stop_words, to_lower( word ) ) )
     return false;
 
   out << word << '\n';

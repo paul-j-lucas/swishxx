@@ -25,7 +25,6 @@
 // local
 #include "indexer.h"                            /* for Meta_ID_None */
 #include "meta_id.h"
-#include "pjl/pjl_set.h"
 
 // standard
 #include <list>
@@ -48,7 +47,7 @@ public:
    * each file a given word occurs in.
    */
   struct file {
-    typedef PJL::pjl_set<meta_id_type> meta_id_set;
+    typedef std::set<meta_id_type> meta_id_set;
     meta_id_set meta_ids_;              // meta name(s) associated with
 
     bool has_meta_id( meta_id_type ) const;
@@ -109,7 +108,7 @@ inline void word_info::file::add_word_pos( unsigned absolute_pos ) {
 #endif /* WITH_WORD_POS */
 
 inline bool word_info::file::has_meta_id( meta_id_type meta_id ) const {
-  return meta_id == Meta_ID_None || meta_ids_.contains( meta_id );
+  return meta_id == Meta_ID_None || contains( meta_ids_, meta_id );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

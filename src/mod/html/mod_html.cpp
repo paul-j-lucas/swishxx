@@ -521,7 +521,8 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
     ////////// Close open element(s) //////////////////////////////////////////
 
     while ( !element_stack.empty() &&
-            element_stack.back().first->second.close_tags.contains( tag_buf ) ){
+            contains( element_stack.back().first->second.close_tags,
+                      tag_buf ) ) {
       //
       // This element closes the currently open element.
       //
@@ -564,7 +565,7 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
       char *names = to_lower( class_att );
       char const *name;
       while ( (name = ::strtok( names, " \f\n\r\t\v" )) ) {
-        if ( exclude_class_names.contains( name ) ) {
+        if ( contains( exclude_class_names, name ) ) {
           is_no_index_class = true;
           break;
         }

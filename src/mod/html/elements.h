@@ -23,11 +23,12 @@
 #define element_map_H
 
 // local
-#include "pjl/pjl_set.h"
+#include "pjl/less.h"
 
 // standard
 #include <iostream>
 #include <map>
+#include <set>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,8 +50,8 @@ public:
     et_required
   };
 
-  PJL::char_ptr_set   close_tags;
-  end_tag_type const  end_tag;
+  std::set<char const*> close_tags;
+  end_tag_type const end_tag;
 
 private:
   explicit element( end_tag_type t ) : end_tag( t ) { }

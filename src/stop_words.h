@@ -23,16 +23,20 @@
 #define stop_words_H
 
 // local
+#include "pjl/less.h"
 #include "pjl/mmap_file.h"
-#include "pjl/pjl_set.h"
+
+// standard
+#include <set>
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %stop_word_set is-a char_ptr_set.  The only reason for having a derived
- * class rather than a typedef is so that we can have custom constructors.
+ * A %stop_word_set is-a \c set&lt;char const*&gT.  The only reason for having
+ * a derived class rather than a typedef is so that we can have custom
+ * constructors.
  */
-struct stop_word_set : PJL::char_ptr_set {
+struct stop_word_set : std::set<char const*> {
   stop_word_set( char const *file_name = nullptr );
   stop_word_set( PJL::mmap_file const &index_file );
 };

@@ -23,10 +23,11 @@
 #define file_info_H
 
 // local
-#include "pjl/pjl_set.h"
+#include "pjl/less.h"
 
 // standard
 #include <cstddef>                      /* for size_t */
+#include <set>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ public:
   typedef std::vector<file_info*> list_type;
   typedef list_type::const_iterator const_iterator;
   typedef size_t size_type;
-  typedef PJL::char_ptr_set name_set_type;
+  typedef std::set<char const*> name_set_type;
 
   /**
    * Constructs a %file_info.  If a title is given, use it; otherwise set the
@@ -113,7 +114,7 @@ public:
   }
 
   static bool seen_file( char const *file_name ) {
-    return name_set_.contains( file_name );
+    return name_set_.find( file_name ) != name_set_.end();
   }
 
 private:

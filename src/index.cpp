@@ -775,7 +775,7 @@ void merge_indicies( ostream &o ) {
     int n = 0;
     for ( j = 0; j < partial_index_file_names.size(); ++j ) {
       for ( ; word[j] != words[j].end(); ++word[j] )
-        if ( !stop_words->contains( *word[j] ) )
+        if ( !contains( *stop_words, *word[j] ) )
             break;
       if ( word[j] != words[j].end() ) {
         if ( !n++ )
@@ -851,7 +851,7 @@ void merge_indicies( ostream &o ) {
       continue;
 
     for ( ; word[j] != words[j].end(); ++word[j] ) {
-      if ( stop_words->contains( *word[j] ) )
+      if ( contains( *stop_words, *word[j] ) )
         continue;
 
       word_offset[ word_index++ ] = o.tellp();

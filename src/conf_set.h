@@ -24,15 +24,17 @@
 
 // local
 #include "conf_var.h"
-#include "pjl/pjl_set.h"
+
+// standard
+#include <set>
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %conf_set is-a conf_var and-a string_set for containing a set of
+ * A %conf_set is-a conf_var and-a \c set&lt;string&gt; for containing a set of
  * configuration variable values.
  */
-class conf_set : public conf_var, public PJL::string_set {
+class conf_set : public conf_var, public std::set<std::string> {
 protected:
   conf_set( char const *name ) : conf_var( name ) { }
   CONF_VAR_ASSIGN_OPS( conf_set )

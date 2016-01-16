@@ -25,7 +25,6 @@
 #include "iso8859-1.h"
 #include "mod_rtf.h"
 #include "pjl/less.h"
-#include "pjl/pjl_set.h"
 #include "TitleLines.h"
 #include "word_util.h"
 
@@ -167,7 +166,7 @@ restart:
       }
       if ( meta_id != Meta_ID_None )
         continue;
-      if ( PJL::contains( info_group_set, control ) ) {
+      if ( contains( info_group_set, control ) ) {
         if ( associate_meta ) {
           //
           // Do not index the words in the value of the info group member if

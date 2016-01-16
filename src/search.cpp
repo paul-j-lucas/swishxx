@@ -32,7 +32,6 @@
 #include "pjl/mmap_file.h"
 #include "pjl/omanip.h"
 #include "pjl/option_stream.h"
-#include "pjl/pjl_set.h"
 #include "query.h"
 #include "ResultSeparator.h"
 #include "ResultsFormat.h"

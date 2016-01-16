@@ -24,6 +24,7 @@
 
 // local
 #include "exit_codes.h"
+#include "pjl/less.h"
 #include "pjl/omanip.h"
 
 // standard
@@ -32,13 +33,15 @@
 #include <climits>
 #include <cstring>
 #include <iostream>
+#include <set>
 #include <string>
-#include <time.h>                       /* needed by sys/resource.h */
-#include <sys/time.h>                   /* needed by FreeBSD systems */
-#include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <sys/resource.h>
 #include <sys/stat.h>
+#include <sys/time.h>                   /* needed by FreeBSD systems */
+#include <sys/types.h>                  /* needed by FreeBSD systems */
+#include <time.h>                       /* needed by sys/resource.h */
 #include <unistd.h>                     /* for _exit(2), geteuid(2) */
+#include <unordered_set>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -144,6 +147,50 @@ inline char const* skip_newline( char const *c, char const *end ) {
   if ( c != end && *c == '\n' )
     ++c;
   return c;
+}
+
+////////// set functions //////////////////////////////////////////////////////
+
+/**
+ * Less verbose way of determining whether a set contains a particlar element.
+ *
+ * @tparam T The element type.
+ * @param s The set to check.
+ * @param key The key to check for.
+ * @return Returns \c true only if \a s contains \a key.
+ */
+template<typename T,typename K>
+inline bool contains( std::set<T> const &s, K const &key ) {
+  return s.find( key ) != s.end();
+}
+
+/**
+ * Less verbose way of determining whether an unordered_set contains a
+ * particlar element.
+ *
+ * @tparam T The element type.
+ * @param s The set to check.
+ * @param key The key to check for.
+ * @return Returns \c true only if \a s contains \a key.
+ */
+template<typename T>
+inline bool contains( std::unordered_set<T> const &s, T const &key ) {
+  return s.find( key ) != s.end();
+}
+
+/**
+ * Specialization for C strings.
+ */
+inline bool contains( std::set<char const*> const &s, char const *key ) {
+  return s.find( key ) != s.end();
+}
+
+/**
+ * Specialization for C strings.
+ */
+inline bool contains( std::unordered_set<char const*> const &s,
+                      char const *key ) {
+  return s.find( key ) != s.end();
 }
 
 //*****************************************************************************

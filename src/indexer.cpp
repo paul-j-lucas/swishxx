@@ -123,7 +123,7 @@ bool indexer::claims_option( option_stream::option const& ) {
 }
 
 meta_id_type indexer::find_meta( char const *meta_name ) {
-  if ( exclude_meta_names.contains( meta_name ) )
+  if ( contains( exclude_meta_names, meta_name ) )
     return Meta_ID_None;
 
   if ( !include_meta_names.empty() ) {
@@ -204,7 +204,7 @@ void indexer::index_word( char *word, size_t len, meta_id_type meta_id ) {
     return;
 
   char const *const lower_word = to_lower( word );
-  if ( stop_words->contains( lower_word ) )
+  if ( contains( *stop_words, lower_word ) )
     return;
 
   ////////// Add the word /////////////////////////////////////////////////////
