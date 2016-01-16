@@ -30,6 +30,7 @@
 
 // standard
 #include <iterator>
+#include <limits>
 #include <set>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -519,10 +520,11 @@ inline void trim( ECR_CI *begin, ECR_CI *end ) {
  * @param i A pointer to the iterator to start at. If \c is found, \a i is
  * repositioned to just after \a c.
  * @param c The character to skip after.
- * @return Returns \c true only if the character was found before finding a CR
- * or LF.
+ * @param limit The maximum number of character to scan looking for \a c.
+ * @return Returns \c true only if the character was found.
  */
-bool skip_char( ECR_CI *i, char c );
+bool skip_char( ECR_CI *i, char c,
+                size_t limit = std::numeric_limits<size_t>::max() );
 
 ///////////////////////////////////////////////////////////////////////////////
 

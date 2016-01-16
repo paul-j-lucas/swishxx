@@ -32,6 +32,12 @@
 using namespace PJL;
 using namespace std;
 
+/**
+ * The maximum number of characters to scan looking for the closing \c '}' for
+ * an RTF control's opening \c '{'.
+ */
+unsigned const RTF_Control_Scan_Close_Max = 100;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 char const* rtf_indexer::find_title( mmap_file const &file ) const {
@@ -157,7 +163,7 @@ restart:
 
     if ( ch == '{' && c.safe_deref() == 'H' ) {
       if ( move_if_match( c, "HYPERLINK " ) ) {
-        skip_char( &c, '}' );
+        skip_char( &c, '}', RTF_Control_Scan_Close_Max );
         continue;
       }
     }

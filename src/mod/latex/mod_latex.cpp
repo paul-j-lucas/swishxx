@@ -33,6 +33,18 @@
 using namespace PJL;
 using namespace std;
 
+/**
+ * The maximum number of characters to scan looking for the opening \c '{' for
+ * a LaTex command.
+ */
+unsigned const LaTeX_Command_Scan_Open_Max = 5;
+
+/**
+ * The maximum number of characters to scan looking for the closing \c '}' for
+ * a LaTeX command's opening \c '{'.
+ */
+unsigned const LaTeX_Command_Scan_Close_Max = 5;
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -45,13 +57,15 @@ using namespace std;
  * character only if it was found.
  * @param left The left-hand character to find the match for.  It must be
  * either \c '{' or \c '['.
+ * @param limit The maximum number of character to scan looking for the match.
  * @return Returns \c true only if the match was found.
  */
-static bool find_match( encoded_char_range::const_iterator &c, char left ) {
+static bool find_match( encoded_char_range::const_iterator &c, char left,
+                        size_t limit ) {
   char const right = left == '{' ? '}' : ']';
   int nesting = 0;
 
-  for ( auto d = c; !d.at_end(); ++d ) {
+  for ( auto d = c; !d.at_end() && limit; ++d, --limit ) {
     if ( *d == left )
       ++nesting;
     else if ( *d == right && --nesting <= 0 ) {
@@ -240,13 +254,13 @@ LaTeX_indexer::parse_latex_command( encoded_char_range::const_iterator &c ) {
       // mean it's actually there: try to find it first.  If not found, forget
       // it.
       //
-      if ( !skip_char( &c, *cmd->second.action ) )
+      if ( !skip_char( &c, *cmd->second.action, LaTeX_Command_Scan_Open_Max ) )
         goto skip;
       //
       // Find the matching '}' or ']' and index the words in between.
       //
       auto end = c;
-      if ( find_match( end, *cmd->second.action ) ) {
+      if ( find_match( end, *cmd->second.action, LaTeX_Command_Scan_Close_Max ) ) {
         index_words( encoded_char_range( c, end ) );
         c = end;
       }

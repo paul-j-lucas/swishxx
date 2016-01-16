@@ -71,8 +71,8 @@ void trim_right( encoded_char_range::const_iterator const &begin,
     *end = first_trailing_space;
 }
 
-bool skip_char( encoded_char_range::const_iterator *i, char c ) {
-  for ( auto j = *i; !j.at_end(); ++j ) {
+bool skip_char( encoded_char_range::const_iterator *i, char c, size_t limit ) {
+  for ( auto j = *i; !j.at_end() && limit; ++j, --limit ) {
     if ( *j == c ) {
       *i = ++j;
       return true;
