@@ -94,7 +94,8 @@ TESTS+=	tests/index-rtf-v1.test \
 	tests/index-rtf-v2.test \
 	tests/index-rtf-v3.test \
 	tests/search-rtf-D.test \
-	tests/search-rtf-rquote-01.test
+	tests/search-rtf-rquote-01.test \
+	tests/search-rtf-M.test
 endif
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;

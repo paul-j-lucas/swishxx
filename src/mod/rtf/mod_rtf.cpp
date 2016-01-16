@@ -42,7 +42,7 @@ using namespace std;
  */
 unsigned const RTF_Control_Scan_Close_Max = 100;
 
-static unordered_set<char const*> const info_group_set{
+static set<char const*> const info_group_set{
   "author",
   "category",
   "comment",
