@@ -1,5 +1,5 @@
 
 index: done:
-  3 indexed
-  1459 words, 571 indexed, 199 unique
+  4 indexed
+  1482 words, 590 indexed, 229 unique
 

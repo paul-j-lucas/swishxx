@@ -40,6 +40,11 @@ alphabetic
 arabic
   3 336321 ./sample.rtf 13394 This is a test RTF
 
+arial
+  9 44353 ./sample.rtf 13394 This is a test RTF
+  8 32211 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  8 15536 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 armor
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   1 160771 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -72,6 +77,9 @@ automatically
 
 baltic
   3 336321 ./sample.rtf 13394 This is a test RTF
+
+benefits
+  2 2813986 ./info_group.rtf 279 Elf Benefits
 
 body
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
@@ -149,6 +157,11 @@ correctly
   1 166666 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   3 89217 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+courier
+  9 65225 ./sample.rtf 13394 This is a test RTF
+  4 44652 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  4 21536 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 created
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
@@ -165,6 +178,11 @@ dasdas
 ddasda
   2 171915 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+default
+  1 303030 ./sample.rtf 13394 This is a test RTF
+  1 222222 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  1 107181 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 definition
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   1 160771 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -174,6 +192,12 @@ delete
 
 demonstrate
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+dental
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
+description
+  1 5263157 ./info_group.rtf 279 Elf Benefits
 
 detect
   2 171915 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -216,6 +240,9 @@ dthcharge
 emphasis
   2 171915 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+employee
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
 example
   2 237625 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   1 107181 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -250,6 +277,19 @@ flamer
 following
   3 118956 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+font
+  1 129870 ./sample.rtf 13394 This is a test RTF
+  1 95238 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  5 53327 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+footnote
+  4 172519 ./sample.rtf 13394 This is a test RTF
+  1 111111 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  1 53590 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+full
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
 generated
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
@@ -274,6 +314,9 @@ grenade
 grid
   1 909090 ./sample.rtf 13394 This is a test RTF
 
+guide
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
 handled
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
@@ -281,9 +324,17 @@ hanging
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   1 160771 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+heading
+  1 60606 ./sample.rtf 13394 This is a test RTF
+  6 52407 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  8 25893 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 headings
   1 222222 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   2 114610 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+health
+  3 1947124 ./info_group.rtf 279 Elf Benefits
 
 heavy
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
@@ -332,8 +383,17 @@ item
 jafsoft
   2 171915 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+john
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
 know
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+kringle
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
+kris
+  1 5263157 ./info_group.rtf 279 Elf Benefits
 
 layout
   2 171915 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -352,6 +412,11 @@ lines
 links
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+list
+  1 151515 ./sample.rtf 13394 This is a test RTF
+  1 111111 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  4 61019 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 lists
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
@@ -366,6 +431,9 @@ m1carbine
 
 m60
   1 666666 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+
+mary
+  1 5263157 ./info_group.rtf 279 Elf Benefits
 
 maverick
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
@@ -391,6 +459,11 @@ nice
 
 non-proportional
   2 171915 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+normal
+  2 162017 ./sample.rtf 13394 This is a test RTF
+  2 118812 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  2 57305 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
 notice
   1 666666 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
@@ -420,8 +493,16 @@ para
 parabomb
   1 666666 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
 
+paragraph
+  3 201792 ./sample.rtf 13394 This is a test RTF
+  1 133333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  1 64308 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 placed
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+plans
+  2 2813986 ./info_group.rtf 279 Elf Benefits
 
 popular
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -467,6 +548,11 @@ rate
 recognised
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+reference
+  1 303030 ./sample.rtf 13394 This is a test RTF
+  1 222222 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  1 107181 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 result
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
@@ -478,6 +564,11 @@ right
 
 rocket
   1 666666 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+
+roman
+  9 27044 ./sample.rtf 13394 This is a test RTF
+  16 20768 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  16 10016 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
 rownext
   1 909090 ./sample.rtf 13394 This is a test RTF
@@ -491,6 +582,9 @@ sam
 
 sample
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+santa's
+  1 5263157 ./info_group.rtf 279 Elf Benefits
 
 section
   4 91529 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -542,6 +636,16 @@ styles
 supports
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+symbol
+  1 303030 ./sample.rtf 13394 This is a test RTF
+  1 222222 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  1 107181 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+table
+  3 112107 ./sample.rtf 13394 This is a test RTF
+  3 82211 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  3 39652 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 tables
   3 118956 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
@@ -554,8 +658,18 @@ test
 testrtf
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
+text
+  5 75385 ./sample.rtf 13394 This is a test RTF
+  2 50919 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  7 27436 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
 things
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+times
+  9 27044 ./sample.rtf 13394 This is a test RTF
+  16 20768 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
+  16 10016 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
 
 titles
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -601,6 +715,9 @@ value
 vietnamese
   3 336321 ./sample.rtf 13394 This is a test RTF
 
+vision
+  1 5263157 ./info_group.rtf 279 Elf Benefits
+
 vulcan
   1 333333 ./table_1.rtf 18014 Example table. Table taken from the Red Alert FAQ
   1 160771 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
@@ -634,4 +751,7 @@ words
 
 working
   1 321543 ./testrtf.rtf 13704 Converted from "testrtf.txt" on 23-Feb-2004 by [[PROGRAM]]
+
+workshop
+  1 5263157 ./info_group.rtf 279 Elf Benefits
 
