@@ -17,7 +17,8 @@ producing correct results.
 SWISH++ now does a better job of indexing HTML5 markup.
 
 ** Improved RTF indexer.
-SWISH++ now extracts the \title from RTF files.
+SWISH++ now extracts the \title from RTF files and associates words in
+Information Groups as meta names.
 
 ** Can now change directories just prior to indexing.
 The index command now accepts a new -d command-line option or a new

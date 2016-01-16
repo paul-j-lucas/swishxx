@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/rtf/mod_rtf.cpp
 **
-**      Copyright (C) 2000-2015  Paul J. Lucas
+**      Copyright (C) 2000-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -21,13 +21,17 @@
 
 // local
 #include "config.h"
+#include "AssociateMeta.h"
 #include "iso8859-1.h"
 #include "mod_rtf.h"
+#include "pjl/less.h"
+#include "pjl/pjl_set.h"
 #include "TitleLines.h"
 #include "word_util.h"
 
 // standard
 #include <cctype>
+#include <unordered_set>
 
 using namespace PJL;
 using namespace std;
@@ -37,6 +41,18 @@ using namespace std;
  * an RTF control's opening \c '{'.
  */
 unsigned const RTF_Control_Scan_Close_Max = 100;
+
+static unordered_set<char const*> const info_group_set{
+  "author",
+  "category",
+  "comment",
+  "company",
+  "keywords",
+  "manager",
+  "operator",
+  "subject",
+  "title",
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +94,8 @@ char const* rtf_indexer::find_title( mmap_file const &file ) const {
   return nullptr;
 }
 
-void rtf_indexer::index_words( encoded_char_range const &e, meta_id_type ) {
+void rtf_indexer::index_words( encoded_char_range const &e,
+                               meta_id_type meta_id ) {
   char  word[ Word_Hard_Max_Size + 1 ];
   char  control[ Word_Hard_Max_Size + 1 ];
   bool  in_control = false, in_word = false, restart = false;
@@ -142,13 +159,30 @@ restart:
       }
       //
       // Special case: convert "\rquote " to '\'' so it can form part of words.
-      // (The only reason we have to collect the characters comprising the
-      // control word at all is to compare it to "rquote".)
       //
       control[ control_len ] = '\0';
       if ( ::strcmp( control, "rquote" ) == 0 ) {
         ch = '\'';
         goto if_is_word_char;
+      }
+      if ( meta_id != Meta_ID_None )
+        continue;
+      if ( PJL::contains( info_group_set, control ) ) {
+        if ( associate_meta ) {
+          //
+          // Do not index the words in the value of the info group member if
+          // either the name of the member is among the set of meta names to
+          // exclude or not among the set to include.
+          //
+          meta_id_type const temp_meta_id = find_meta( control );
+          if ( temp_meta_id == Meta_ID_None )
+            continue;
+          auto d = c;
+          if ( skip_char( &d, '}' ) ) {
+            encoded_char_range const e( c, d );
+            index_words( e, temp_meta_id );
+          }
+        }
       }
       continue;
     }
@@ -195,7 +229,7 @@ if_in_word:
       // including, it.
       //
       in_word = false;
-      index_word( word, len );
+      index_word( word, len, meta_id );
     }
 
     if ( restart ) {
@@ -209,7 +243,7 @@ if_in_word:
     // We ran into 'end' while still accumulating characters into a word, so
     // just index what we've got.
     //
-    index_word( word, len );
+    index_word( word, len, meta_id );
   }
 }
 

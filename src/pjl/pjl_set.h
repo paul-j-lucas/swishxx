@@ -25,6 +25,7 @@
 // standard
 #include <set>
 #include <string>
+#include <unordered_set>
 
 // local
 #include "pjl/less.h"
@@ -62,19 +63,41 @@ typedef pjl_set<std::string> string_set;
  *
  * @tparam T The element type.
  * @param s The set to check.
- * @param k The key to check for.
- * @return Returns \c true only if \a s contains \a k.
+ * @param key The key to check for.
+ * @return Returns \c true only if \a s contains \a key.
  */
 template<typename T>
-inline bool contains( std::set<T> const &s, T const &k ) {
-  return s.find( k ) != s.end();
+inline bool contains( std::set<T> const &s, T const &key ) {
+  return s.find( key ) != s.end();
+}
+
+/**
+ * Less verbose way of determining whether an unordered_set contains a
+ * particlar element.
+ *
+ * @tparam T The element type.
+ * @param s The set to check.
+ * @param key The key to check for.
+ * @return Returns \c true only if \a s contains \a key.
+ */
+template<typename T>
+inline bool contains( std::unordered_set<T> const &s, T const &key ) {
+  return s.find( key ) != s.end();
 }
 
 /**
  * Specialization for C strings.
  */
-inline bool contains( std::set<char const*> const &s, char const *k ) {
-  return s.find( k ) != s.end();
+inline bool contains( std::set<char const*> const &s, char const *key ) {
+  return s.find( key ) != s.end();
+}
+
+/**
+ * Specialization for C strings.
+ */
+inline bool contains( std::unordered_set<char const*> const &s,
+                      char const *key ) {
+  return s.find( key ) != s.end();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

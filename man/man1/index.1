@@ -35,7 +35,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3index\f1 1 "January 10, 2016" "SWISH++"
+.TH \f3index\f1 1 "January 16, 2016" "SWISH++"
 .SH NAME
 index \- SWISH++ indexer
 .SH SYNOPSIS
@@ -572,8 +572,7 @@ Therefore, the
 .BR splitmail (1)
 utility is included in the SWISH++ distribution.
 .SS Manual Module
-Additional processing is done for Unix manual page files.
-The additional processing is:
+Additional processing is done for Unix manual page files:
 .TP 3
 1.
 If a
@@ -639,8 +638,50 @@ The recommended sections to be indexed are:
 and
 .BR WARNINGS .
 .SS RTF Module
-This module simply indexes rich text format files
-without all formatting commands.
+Additional processing is done for rich text format (RTF) files:
+.TP 3
+1.
+The
+.B \\\\rquote
+control is converted to \f(CW'\f1 before indexing.
+For example,
+``Here\\\\rquote s'' becomes ``Here's'' before indexing.
+.TP
+2.
+If a
+.B \\\\title
+information group
+is found within the first \f(CWTitleLines\f1 lines
+of the file (default is 100),
+then the contents of the title are stored in the generated index file
+as the file's title rather than the file's name.
+.TP
+3.
+Words that are in other information groups
+are indexed associated with the name of the group as a meta name.
+(However, if either the
+.B \-A
+or
+.B \-\-no-assoc-meta
+options or the
+.B AssociateMeta
+variable is specified,
+then the words in a information group are still indexed,
+but not associated with the section heading.)
+Meta names can later be queried against specifically using
+.BR search (1).
+.IP ""
+The recommended information groups to be indexed are:
+.BR author ,
+.BR category ,
+.BR comment ,
+.BR company ,
+.BR keywords ,
+.BR manager ,
+.BR operator ,
+.BR subject ,
+and
+.BR title .
 .SH OPTIONS
 Options begin with either a `\f(CW-\f1' for short options
 or a ``\f(CW--\f1'' for long options.
