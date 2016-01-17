@@ -121,6 +121,7 @@ int                   word_pos;           // ith word in file
 
 // local functions
 static void           load_old_index( char const *index_file_name );
+static void           max_out_limits();
 static void           merge_indicies( ostream& );
 static void           rank_full_index();
 extern "C" void       remove_temp_files( void );
@@ -153,48 +154,41 @@ inline void my_write( ostream &o, void const *buf, size_t len ) {
   assert_stream( o );
 }
 
+/**
+ * Calculates the rank of a word in a file.  This equation was taken from the
+ * one used in SWISH-E whose author thinks (?) it is the one taken from WAIS.
+ * I can't find this equation in the refernece cited below, although that
+ * reference does list a different equation.  But, if it ain't broke, don't fix
+ * it.
+ *
+ * See also:
+ *    Gerard Salton.  "Automatic Text Processing: the transformation, analysis,
+ *    and retrieval of information by computer."  Addison-Wesley, Reading, MA.
+ *    pp. 279-280.
+ *
+ * @param file_index Which file we're dealing with.
+ * @param occurences_in_file The number of times the word occurs in a given
+ * file.
+ * @param factor This should be precomputed to be the value of Rank_Factor
+ * divided by the total number of occurrences across all files.  This number is
+ * constant for a given word, hence the precomputation.
+ * @return Returns a rank greater than zero.
+ */
+inline int rank_word( int file_index, int occurences_in_file, double factor ) {
+  int const r = int(
+    ( ::log( occurences_in_file ) + 10 ) * factor
+    / file_info::ith_info( file_index )->num_words()
+  );
+  return r > 0 ? r : 1;
+}
+
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char *argv[] ) {
   me = ::strrchr( argv[0], '/' );       // determine base name...
   me = me ? me + 1 : argv[0];           // ...of executable
 
-  ////////// Max-out various system resources ///////////////////////////////
-
-#ifdef RLIMIT_AS                        /* SVR4 */
-  //
-  // Max-out out out total memory potential.
-  //
-  max_out_limit( RLIMIT_AS );
-#endif /* RLIMIT_AS */
-#ifdef RLIMIT_CPU                       /* SVR4, 4.3+BSD */
-  //
-  // Max-out the amount of CPU time we can run since indexing can take a
-  // while.
-  //
-  max_out_limit( RLIMIT_CPU );
-#endif /* RLIMIT_CPU */
-#ifdef RLIMIT_DATA                      /* SVR4, 4.3+BSD */
-  //
-  // Max-out our heap allocation potential.
-  //
-  max_out_limit( RLIMIT_DATA );
-#endif /* RLIMIT_DATA */
-#ifdef RLIMIT_FSIZE
-  //
-  // Max-out the file-size creation potential.
-  //
-  max_out_limit( RLIMIT_FSIZE );
-#endif /* RLIMIT_FSIZE */
-#ifdef RLIMIT_NOFILE                    /* SVR4 */
-  //
-  // Max-out the number of file descriptors we can have open to be able to
-  // merge as many partial indicies as possible.
-  //
-  max_out_limit( RLIMIT_NOFILE );
-#elif defined( RLIMIT_OFILE )           /* 4.3+BSD name for NOFILE */
-  max_out_limit( RLIMIT_OFILE );
-#endif /* RLIMIT_OFILE */
+  max_out_limits();
 
   /////////// Process command-line options ////////////////////////////////////
 
@@ -637,32 +631,41 @@ void load_old_index( char const *index_file_name ) {
   partial_index_file_names.push_back( index_file_name );
 }
 
-/**
- * Calculates the rank of a word in a file.  This equation was taken from the
- * one used in SWISH-E whose author thinks (?) it is the one taken from WAIS.
- * I can't find this equation in the refernece cited below, although that
- * reference does list a different equation.  But, if it ain't broke, don't fix
- * it.
- *
- * See also:
- *    Gerard Salton.  "Automatic Text Processing: the transformation, analysis,
- *    and retrieval of information by computer."  Addison-Wesley, Reading, MA.
- *    pp. 279-280.
- *
- * @param file_index Which file we're dealing with.
- * @param occurences_in_file The number of times the word occurs in a given
- * file.
- * @param factor This should be precomputed to be the value of Rank_Factor
- * divided by the total number of occurrences across all files.  This number is
- * constant for a given word, hence the precomputation.
- * @return Returns a rank greater than zero.
- */
-inline int rank_word( int file_index, int occurences_in_file, double factor ) {
-  int const r = int(
-    ( ::log( occurences_in_file ) + 10 ) * factor
-    / file_info::ith_info( file_index )->num_words()
-  );
-  return r > 0 ? r : 1;
+static void max_out_limits() {
+#ifdef RLIMIT_AS                        /* SVR4 */
+  //
+  // Max-out out out total memory potential.
+  //
+  max_out_limit( RLIMIT_AS );
+#endif /* RLIMIT_AS */
+#ifdef RLIMIT_CPU                       /* SVR4, 4.3+BSD */
+  //
+  // Max-out the amount of CPU time we can run since indexing can take a
+  // while.
+  //
+  max_out_limit( RLIMIT_CPU );
+#endif /* RLIMIT_CPU */
+#ifdef RLIMIT_DATA                      /* SVR4, 4.3+BSD */
+  //
+  // Max-out our heap allocation potential.
+  //
+  max_out_limit( RLIMIT_DATA );
+#endif /* RLIMIT_DATA */
+#ifdef RLIMIT_FSIZE
+  //
+  // Max-out the file-size creation potential.
+  //
+  max_out_limit( RLIMIT_FSIZE );
+#endif /* RLIMIT_FSIZE */
+#ifdef RLIMIT_NOFILE                    /* SVR4 */
+  //
+  // Max-out the number of file descriptors we can have open to be able to
+  // merge as many partial indicies as possible.
+  //
+  max_out_limit( RLIMIT_NOFILE );
+#elif defined( RLIMIT_OFILE )           /* 4.3+BSD name for NOFILE */
+  max_out_limit( RLIMIT_OFILE );
+#endif /* RLIMIT_OFILE */
 }
 
 /**
