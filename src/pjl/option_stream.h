@@ -215,6 +215,9 @@ private:
   int           argi_;                  // current index into argv_[]
   char         *next_c_;                // next char in group of short options
   bool          end_;                   // reached end of options?
+
+  option_stream( option_stream const& ) = delete;
+  option_stream& operator=( option_stream const& ) = delete;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
