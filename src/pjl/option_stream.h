@@ -175,7 +175,7 @@ public:
    *
    * @return Returns \c true only if we've reached the end of options.
    */
-  operator bool() const {
+  explicit operator bool() const {
     return !end_;
   }
 
