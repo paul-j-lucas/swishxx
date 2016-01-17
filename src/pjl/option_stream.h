@@ -101,7 +101,7 @@ public:
 
     char const   *long_name;
     short         arg_type;
-    unsigned char short_name;
+    char          short_name;
 #if 0
     default_value def_arg;
 #endif
