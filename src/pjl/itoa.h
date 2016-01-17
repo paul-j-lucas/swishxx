@@ -42,8 +42,24 @@ namespace PJL {
  * @param n The long integer to be converted.
  * @return A pointer to the string.
  */
-char const* ltoa( long );
+char const* ltoa( long n );
 
+/**
+ * Converts an integer to a string.  The string returned is from an internal
+ * pool of string buffers.  The time you get into trouble is if you hang on to
+ * more than Num_Buffers strings.  This doesn't normally happen in practice,
+ * however.
+ *
+ * This function is \e not thread-safe because it uses char_buffer_pool which
+ * isn't.
+ *
+ * See also:
+ *    Brian W. Kernighan, Dennis M. Ritchie.  "The C Programming Language, 2nd
+ *    ed."  Addison-Wesley, Reading, MA, 1988.  pp. 63-64.
+ *
+ * @param n The long integer to be converted.
+ * @return A pointer to the string.
+ */
 inline char const* itoa( int n ) {
   return PJL::ltoa( n );
 }
