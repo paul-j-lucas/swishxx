@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/postscript.cpp
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -22,14 +22,15 @@
 // local
 #include "postscript.h"
 
+using namespace PJL;
 using namespace std;
 
 namespace postscript {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-set<char const*> const& comments() {
-  static set<char const*> const s{
+unordered_char_ptr_set const& comments() {
+  static unordered_char_ptr_set const s{
     "%%BeginSetup",
     "%%BoundingBox",
     "%%Creator",
@@ -39,8 +40,8 @@ set<char const*> const& comments() {
   return s;
 }
 
-set<char const*> const& operators() {
-  static set<char const*> const s{
+unordered_char_ptr_set const& operators() {
+  static unordered_char_ptr_set const s{
     "aload",
     "anchorsearch",
     "arcn",
@@ -286,5 +287,4 @@ set<char const*> const& operators() {
 ///////////////////////////////////////////////////////////////////////////////
 
 } // namespace postscript
-
 /* vim:set et sw=2 ts=2: */

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/util.h
 **
-**      Copyright (C) 1998-2005  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 // local
 #include "exit_codes.h"
+#include "pjl/hash.h"
 #include "pjl/less.h"
 #include "pjl/omanip.h"
 
@@ -159,8 +160,8 @@ inline char const* skip_newline( char const *c, char const *end ) {
  * @param key The key to check for.
  * @return Returns \c true only if \a s contains \a key.
  */
-template<typename T,typename K>
-inline bool contains( std::set<T> const &s, K const &key ) {
+template<typename T,class Compare,class Alloc,typename Key> inline
+bool contains( std::set<T,Compare,Alloc> const &s, Key const &key ) {
   return s.find( key ) != s.end();
 }
 
@@ -173,23 +174,9 @@ inline bool contains( std::set<T> const &s, K const &key ) {
  * @param key The key to check for.
  * @return Returns \c true only if \a s contains \a key.
  */
-template<typename T>
-inline bool contains( std::unordered_set<T> const &s, T const &key ) {
-  return s.find( key ) != s.end();
-}
-
-/**
- * Specialization for C strings.
- */
-inline bool contains( std::set<char const*> const &s, char const *key ) {
-  return s.find( key ) != s.end();
-}
-
-/**
- * Specialization for C strings.
- */
-inline bool contains( std::unordered_set<char const*> const &s,
-                      char const *key ) {
+template<typename T,class Hash,class Pred,class Alloc,typename Key> inline
+bool contains( std::unordered_set<T,Hash,Pred,Alloc> const &s,
+               Key const &key ) {
   return s.find( key ) != s.end();
 }
 

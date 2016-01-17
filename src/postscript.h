@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/postscript.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,10 +23,7 @@
 #define postscript_H
 
 // local
-#include "pjl/less.h"
-
-// standard
-#include <set>
+#include "pjl/hash.h"
 
 namespace postscript {
 
@@ -36,13 +33,13 @@ namespace postscript {
  * Gets a set containing all PostScript comments.  They are used to detect the
  * start of encapsulated PostScript in files so it will not be extracted.
  */
-std::set<char const*> const& comments();
+PJL::unordered_char_ptr_set const& comments();
 
 /**
  * Gets a set containing all the Level 2 PostScript operators that are not also
  * English words.  Their contents are not indexed.
  */
-std::set<char const*> const& operators();
+PJL::unordered_char_ptr_set const& operators();
 
 ///////////////////////////////////////////////////////////////////////////////
 

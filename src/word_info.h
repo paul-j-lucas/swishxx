@@ -29,8 +29,8 @@
 // standard
 #include <list>
 #include <map>
-#include <set>
 #include <string>
+#include <unordered_set>
 #ifdef WITH_WORD_POS
 #include <vector>
 #endif /* WITH_WORD_POS */
@@ -47,7 +47,7 @@ public:
    * each file a given word occurs in.
    */
   struct file {
-    typedef std::set<meta_id_type> meta_id_set;
+    typedef std::unordered_set<meta_id_type> meta_id_set;
     meta_id_set meta_ids_;              // meta name(s) associated with
 
     bool has_meta_id( meta_id_type ) const;

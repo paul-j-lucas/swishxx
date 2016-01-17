@@ -24,13 +24,12 @@
 #include "AssociateMeta.h"
 #include "iso8859-1.h"
 #include "mod_rtf.h"
-#include "pjl/less.h"
+#include "pjl/hash.h"
 #include "TitleLines.h"
 #include "word_util.h"
 
 // standard
 #include <cctype>
-#include <unordered_set>
 
 using namespace PJL;
 using namespace std;
@@ -41,7 +40,7 @@ using namespace std;
  */
 unsigned const RTF_Control_Scan_Close_Max = 100;
 
-static set<char const*> const info_group_set{
+static unordered_char_ptr_set const info_group_set{
   "author",
   "category",
   "comment",

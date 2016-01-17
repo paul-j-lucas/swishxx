@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/file_info.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -23,11 +23,10 @@
 #define file_info_H
 
 // local
-#include "pjl/less.h"
+#include "pjl/hash.h"
 
 // standard
 #include <cstddef>                      /* for size_t */
-#include <set>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,7 +41,7 @@ public:
   typedef std::vector<file_info*> list_type;
   typedef list_type::const_iterator const_iterator;
   typedef size_t size_type;
-  typedef std::set<char const*> name_set_type;
+  typedef PJL::unordered_char_ptr_set name_set_type;
 
   /**
    * Constructs a %file_info.  If a title is given, use it; otherwise set the

@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/encoded_char.h
 **
-**      Copyright (C) 2000-2015  Paul J. Lucas
+**      Copyright (C) 2000-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 // standard
 #include <iterator>
 #include <limits>
-#include <set>
+#include <unordered_set>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -218,7 +218,7 @@ protected:
   virtual void reset() = 0;
 
 private:
-  typedef std::set<decoder*> set_type;
+  typedef std::unordered_set<decoder*> set_type;
   static set_type decoders_;
 };
 #endif /* WITH_DECODING */

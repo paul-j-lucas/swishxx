@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      thread_pool.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 // standard
 #include <pthread.h>
 #include <queue>
-#include <set>
+#include <unordered_set>
 
 namespace PJL {
 
@@ -194,7 +194,7 @@ public:
   //      completed.
 
 private:
-  typedef std::set<thread*> thread_set;
+  typedef std::unordered_set<thread*> thread_set;
   typedef std::queue<thread::argument_type> task_queue_type;
 
   unsigned volatile min_threads_, max_threads_;

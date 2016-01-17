@@ -4,7 +4,7 @@
 #     SWISH++
 #     configure.ac
 #
-#     Copyright (C) 1998-2015  Paul J. Lucas
+#     Copyright (C) 1998-2016  Paul J. Lucas
 #
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@ AC_HEADER_ASSERT
 gl_INIT
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_SIZEOF([size_t])
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 
