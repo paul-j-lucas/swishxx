@@ -112,9 +112,8 @@ struct char_ptr_equal_to {
 /**
  * A version of \c std::unordered_set for C strings.
  */
-typedef std::unordered_set<char const*,
-                           std::hash<char const*>,
-                           char_ptr_equal_to> unordered_char_ptr_set;
+using unordered_char_ptr_set =
+  std::unordered_set<char const*,std::hash<char const*>,char_ptr_equal_to>;
 
 } // namespace PJL
 
