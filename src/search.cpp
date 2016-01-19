@@ -137,12 +137,12 @@ inline omanip<char const*> index_file_info( int index ) {
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char *argv[] ) {
-#include "search_options.cpp"           /* defines opt_spec */
-
   me = ::strrchr( argv[0], '/' );       // determine base name ...
   me = me ? me + 1 : argv[0];           // ... of executable
 
   /////////// Process command-line options ////////////////////////////////////
+
+#include "search_options.cpp"           /* defines opt_spec */
 
   search_options const opt( &argc, &argv, opt_spec );
   if ( !opt )
@@ -215,14 +215,25 @@ int main( int argc, char *argv[] ) {
     opt.dump_entire_index_opt ||
     opt.dump_meta_names_opt   ||
     opt.dump_stop_words_opt   ||
-    opt.dump_word_index_opt;
+    opt.dump_word_index_opt   ||
+    opt.print_help_opt        ||
+    opt.print_version_opt;
   if ( !(argc || dump_something
 #ifdef WITH_SEARCH_DAEMON
          || daemon_type != "none"
 #endif /* WITH_SEARCH_DAEMON */
-  ) ) {
+                                  ) ) {
     cerr << usage;
     ::exit( Exit_Usage );
+  }
+
+  if ( opt.print_help_opt ) {
+    cout << usage;
+    ::exit( Exit_Success );
+  }
+  if ( opt.print_version_opt ) {
+    cout << PACKAGE_STRING << endl;
+    ::exit( Exit_Success );
   }
 
   /////////// Load index file /////////////////////////////////////////////////
@@ -448,6 +459,8 @@ search_options::search_options( int *argc, char ***argv,
   dump_word_index_opt   = false;
   index_file_name_arg   = nullptr;
   max_results_arg       = nullptr;
+  print_help_opt        = false;
+  print_version_opt     = false;
   results_format_arg    = nullptr;
   result_separator_arg  = nullptr;
   skip_results_arg      = 0;
@@ -474,9 +487,14 @@ search_options::search_options( int *argc, char ***argv,
   thread_timeout_arg    = 0;
   user_arg              = nullptr;
 #endif /* WITH_SEARCH_DAEMON */
-  option_stream opt_in( *argc, *argv, opt_spec );
+
+  option_stream opt_in( *argc, *argv, opt_spec, err );
   for ( option_stream::option opt; opt_in >> opt; ) {
     switch ( opt ) {
+
+      case '?': // Print help.
+        print_help_opt = true;
+        break;
 
 #ifdef WITH_SEARCH_DAEMON
       case 'a': // TCP socket address.
@@ -602,15 +620,8 @@ search_options::search_options( int *argc, char ***argv,
 #endif /* WITH_SEARCH_DAEMON */
 
       case 'V': // Display version and exit.
-        err << PACKAGE_STRING << endl;
-#ifdef WITH_SEARCH_DAEMON
-        if ( daemon_type == "none" )
-#endif /* WITH_SEARCH_DAEMON */
-          ::exit( Exit_Success );
-#ifdef WITH_SEARCH_DAEMON
-        bad_ = true;
-        return;
-#endif /* WITH_SEARCH_DAEMON */
+        print_version_opt = true;
+        break;
 
       case 'w': { // Dump words around query words.
         dump_window_size_arg = ::atoi( opt.arg() );
@@ -635,10 +646,13 @@ search_options::search_options( int *argc, char ***argv,
         err << usage;
         bad_ = true;
         return;
-      } // switch
-    } // for
+    } // switch
+  } // for
 
-    *argc -= opt_in.shift(), *argv += opt_in.shift();
+  if ( opt_in.fail() )
+    bad_ = true;
+
+  *argc -= opt_in.shift(), *argv += opt_in.shift();
 }
 
 bool service_request( char *argv[], search_options const &opt, ostream &out,
@@ -689,7 +703,17 @@ bool service_request( char *argv[], search_options const &opt, ostream &out,
       if ( !out )
         return false;
     } // for
-    return false;
+    return true;
+  }
+
+  if ( opt.print_help_opt ) {
+    out << usage;
+    return true;
+  }
+
+  if ( opt.print_version_opt ) {
+    out << PACKAGE_STRING << endl;
+    return true;
   }
 
   ////////// Perform the query ////////////////////////////////////////////////

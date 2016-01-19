@@ -54,6 +54,8 @@ struct search_options {
   bool        dump_word_index_opt;
   char const *index_file_name_arg;
   char const *max_results_arg;
+  bool        print_help_opt;
+  bool        print_version_opt;
   char const *results_format_arg;
   char const *result_separator_arg;
   int         skip_results_arg;

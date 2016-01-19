@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      option_stream.h
 **
-**      Copyright (C) 1999-2015  Paul J. Lucas
+**      Copyright (C) 1999-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -47,10 +47,17 @@ namespace PJL {
 class option_stream {
 public:
   enum {
-    os_arg_none = 0,                    // option takes no argument
-    os_arg_req  = 1,                    // option takes a required argument
-    os_arg_opt  = 2                     // option takes an optional argument
+    arg_none = 0,                       // option takes no argument
+    arg_req  = 1,                       // option takes a required argument
+    arg_opt  = 2                        // option takes an optional argument
   };
+
+  /**
+   * When declaring \c spec array, %arg_lone may be specified for mutually
+   * exclusive short names to mean that it mutually excludes all other options,
+   * i.e., it is a "lone" option.
+   */
+  static char const *const arg_lone;
 
   /**
    * A %spec gives a specfication for an option: its long name, its argument
@@ -102,6 +109,8 @@ public:
     char const   *long_name;
     short         arg_type;
     char          short_name;
+    char const   *me_short_names;       // mutually exclusive options
+    char const   *req_short_names;      // required options
 #if 0
     default_value def_arg;
 #endif
@@ -150,6 +159,12 @@ public:
 
   /////////////////////////////////////////////////////////////////////////////
 
+  typedef unsigned short iostate;
+
+  static iostate const goodbit = 0b00;
+  static iostate const eofbit  = 0b01;
+  static iostate const failbit = 0b10;
+
   /**
    * Constructs an %option_stream.
    *
@@ -162,6 +177,44 @@ public:
                  std::ostream &err = std::cerr );
 
   /**
+   * Gets whether the stream is still in a good state (neither failed nor EOF).
+   *
+   * @return Returns \c true only if the stream is still in a good state
+   * (neither failed nor EOF).
+   */
+  bool good() const {
+    return state_ == goodbit;
+  }
+
+  /**
+   * Gets whether the stream has failed, i.e., there was an error during option
+   * processing.
+   *
+   * @return Returns \c true only if the stream has failed.
+   */
+  bool fail() const {
+    return state_ & failbit;
+  }
+
+  /**
+   * Gets whether the stream has reached EOF, i.e., has processed all options.
+   *
+   * @return Returns \c true only if the stream has processed all options.
+   */
+  bool eof() const {
+    return state_ & eofbit;
+  }
+
+  /**
+   * Gets the current iostate.
+   *
+   * @return Returns said state.
+   */
+  iostate rdstate() const {
+    return state_;
+  }
+
+  /**
    * Gets the amount to shift \c argc and \c argv by (the number of options).
    *
    * @return Returns said amount.
@@ -171,12 +224,14 @@ public:
   }
 
   /**
-   * Gets whether we've reached the end of options.
+   * Gets whether the stream is still in a good state (neither failed nor EOF).
+   * This is a synonym for good().
    *
-   * @return Returns \c true only if we've reached the end of options.
+   * @return Returns \c true only if the stream is still in a good state
+   * (neither failed nor EOF).
    */
   explicit operator bool() const {
-    return !end_;
+    return good();
   }
 
   /**
@@ -210,11 +265,17 @@ private:
   int           argc_;                  // argument count from main()
   char        **argv_;                  // argument vector from main()
   spec const   *specs_;                 // the option specifications
+  bool          opts_given_[256];       // the options given
   std::ostream &err_;                   // ostream to write wrrors to
 
   int           argi_;                  // current index into argv_[]
   char         *next_c_;                // next char in group of short options
-  bool          end_;                   // reached end of options?
+  iostate       state_;
+
+  void check_mutually_exclusive();
+  void check_required();
+  std::ostream& error();
+  char const* get_long_opt( char ) const;
 
   option_stream( option_stream const& ) = delete;
   option_stream& operator=( option_stream const& ) = delete;

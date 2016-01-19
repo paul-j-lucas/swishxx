@@ -193,36 +193,35 @@ int main( int argc, char *argv[] ) {
   /////////// Process command-line options ////////////////////////////////////
 
   static option_stream::spec const opt_spec[] = {
-    { "help",           0, '?' },
-    { "no-assoc-meta",  0, 'A' },
-    { "config-file",    1, 'c' },
-    { "chdir",          1, 'd' },
-    { "pattern",        1, 'e' },
-    { "no-pattern",     1, 'E' },
-    { "file-max",       1, 'f' },
-    { "files-reserve",  1, 'F' },
-    { "files-grow",     1, 'g' },
-    { "index-file",     1, 'i' },
-    { "incremental",    0, 'I' },
+    { "help",           0, '?', option_stream::arg_lone, "" },
+    { "no-assoc-meta",  0, 'A', "mM", "" },
+    { "config-file",    1, 'c', "", "" },
+    { "chdir",          1, 'd', "", "" },
+    { "pattern",        1, 'e', "", "" },
+    { "no-pattern",     1, 'E', "", "" },
+    { "file-max",       1, 'f', "", "" },
+    { "files-reserve",  1, 'F', "", "" },
+    { "files-grow",     1, 'g', "", "" },
+    { "index-file",     1, 'i', "", "" },
+    { "incremental",    0, 'I', "", "" },
 #ifndef PJL_NO_SYMBOLIC_LINKS
-    { "follow-links",   0, 'l' },
+    { "follow-links",   0, 'l', "", "" },
 #endif
-    { "meta",           1, 'm' },
-    { "no-meta",        1, 'M' },
-    { "percent-max",    1, 'p' },
+    { "meta",           1, 'm', "A", "" },
+    { "no-meta",        1, 'M', "A", "" },
+    { "percent-max",    1, 'p', "", "" },
 #ifdef WITH_WORD_POS
-    { "no-pos-data",    0, 'P' },
+    { "no-pos-data",    0, 'P', "", "" },
 #endif /* WITH_WORD_POS */
-    { "no-recurse",     0, 'r' },
-    { "stop-file",      1, 's' },
-    { "dump-stop",      0, 'S' },
-    { "title-lines",    1, 't' },
-    { "temp-dir",       1, 'T' },
-    { "verbosity",      1, 'v' },
-    { "version",        0, 'V' },
-    { "word-threshold", 1, 'W' },
-
-    { nullptr, 0, '\0' }
+    { "no-recurse",     0, 'r', "", "" },
+    { "stop-file",      1, 's', "", "" },
+    { "dump-stop",      0, 'S', option_stream::arg_lone, "" },
+    { "title-lines",    1, 't', "", "" },
+    { "temp-dir",       1, 'T', "", "" },
+    { "verbosity",      1, 'v', "", "" },
+    { "version",        0, 'V', option_stream::arg_lone, "" },
+    { "word-threshold", 1, 'W', "", "" },
+    { nullptr,          0,'\0', "", "" }
   };
 
   ChangeDirectory change_directory;
@@ -240,7 +239,8 @@ int main( int argc, char *argv[] ) {
   bool            no_associate_meta_opt = false;
   bool            no_word_pos_opt = false;
   char const     *num_title_lines_arg = nullptr;
-  bool            print_version = false;
+  bool            print_help_opt = false;
+  bool            print_version_opt = false;
   bool            recurse_subdirectories_opt = false;
   StopWordFile    stop_word_file_name;
   char const     *stop_word_file_name_arg = nullptr;
@@ -258,7 +258,8 @@ int main( int argc, char *argv[] ) {
     switch ( opt ) {
 
       case '?': // Print help.
-        cerr << usage;
+        print_help_opt = true;
+        break;
 
       case 'A': // Don't associate meta names.
         no_associate_meta_opt = true;
@@ -360,7 +361,7 @@ int main( int argc, char *argv[] ) {
         break;
 
       case 'V': // Display version and exit.
-        print_version = true;
+        print_version_opt = true;
         break;
 
       case 'W': // Word threshold.
@@ -372,9 +373,16 @@ int main( int argc, char *argv[] ) {
           cerr << usage;
     } // switch
   } // for
+
+  if ( opt_in.fail() )
+    ::exit( Exit_Usage );
   argc -= opt_in.shift(), argv += opt_in.shift();
 
-  if ( print_version ) {
+  if ( print_help_opt ) {
+    cout << usage;
+    ::exit( Exit_Success );
+  }
+  if ( print_version_opt ) {
     cout << PACKAGE_STRING << endl;
     ::exit( Exit_Success );
   }

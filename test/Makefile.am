@@ -21,6 +21,8 @@
 AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
 TESTS =	tests/index-no_options.test \
+	tests/index-A-m_01.test \
+	tests/index-A-M_02.test \
 	tests/index-f1.test \
 	tests/index-fa.test \
 	tests/index-p0.test \
@@ -34,13 +36,16 @@ TESTS =	tests/index-no_options.test \
 	tests/index-TitleLines-a.test \
 	tests/index-v5.test \
 	tests/index-va.test \
+	tests/index-V.test \
 	tests/index-WordFilesMax-1.test \
 	tests/index-WordFilesMax-a.test \
 	tests/index-WordPercentMax-0.test \
 	tests/index-WordPercentMax-102.test \
 	tests/index-WordPercentMax-a.test \
+	tests/extract-V.test \
 	tests/search-Fbad.test \
 	tests/search-ma.test \
+	tests/search-V.test \
 	tests/search-ResultsFormat-bad.test \
 	tests/search-text-01.test \
 	tests/search-text-and-01.test \

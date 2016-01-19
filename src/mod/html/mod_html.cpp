@@ -695,9 +695,9 @@ void HTML_indexer::parse_html_tag( encoded_char_range::const_iterator &c ) {
 
 option_stream::spec const* HTML_indexer::option_spec() const {
   static option_stream::spec const opt_spec[] = {
-    { "no-class",   1, 'C'  },
-    { "dump-html",  0, 'H'  },
-    { nullptr,      0, '\0' }
+    { "no-class",   1, 'C', "", "" },
+    { "dump-html",  0, 'H', option_stream::arg_lone, "" },
+    { nullptr,      0,'\0', "", "" }
   };
   return opt_spec;
 }

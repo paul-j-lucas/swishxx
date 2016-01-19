@@ -2,7 +2,7 @@
 **      PJL C++ Library
 **      option_stream.cpp
 **
-**      Copyright (C) 1999-2015  Paul J. Lucas
+**      Copyright (C) 1999-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -25,12 +25,13 @@
 
 // standard
 #include <algorithm>                    /* for copy() */
+#include <cassert>
 #include <cstdlib>                      /* for abort(3) */
 #include <cstring>
 #include <iterator>
 #include <iostream>
 
-#define ERROR os.err_ << os.argv_[0] << ": error: option "
+#define GAVE_OPTION(OPT)  opts_given_[ static_cast<unsigned char>( OPT ) ]
 
 using namespace std;
 
@@ -38,13 +39,117 @@ namespace PJL {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+char const *const option_stream::arg_lone = "<LONE-ARGUMENT>";
+
 option_stream::option_stream( int argc, char *argv[], spec const specs[],
                               ostream &err ) :
   argc_( argc ), argv_( argv ), specs_( specs ), err_( err ), argi_( 0 ),
-  next_c_( 0 ), end_( false )
+  next_c_( nullptr ), state_( goodbit )
 {
-  // do nothing else
+  ::memset( &opts_given_, 0, sizeof( opts_given_ ) );
 }
+
+/**
+ * Checks that no options were given that are among the two given mutually
+ * exclusive sets of short options.
+ * Prints an error message and exits if any such options are found.
+ */
+void option_stream::check_mutually_exclusive() {
+  spec const *opt_spec;
+  char bad_opt;
+
+  for ( opt_spec = specs_; opt_spec->short_name; ++opt_spec ) {
+    if ( GAVE_OPTION( opt_spec->short_name ) && opt_spec->me_short_names ) {
+      if ( opt_spec->me_short_names == arg_lone ) {
+        for ( auto me_spec = specs_; me_spec->short_name; ++me_spec )
+          if ( me_spec->short_name != opt_spec->short_name &&
+               GAVE_OPTION( me_spec->short_name ) ) {
+            bad_opt = me_spec->short_name;
+            goto error;
+          }
+      } else {
+        for ( auto me_opt = opt_spec->me_short_names; *me_opt; ++me_opt )
+          if ( GAVE_OPTION( *me_opt ) ) {
+            bad_opt = *me_opt;
+            goto error;
+          }
+      }
+    }
+  } // for
+  return;
+
+error:
+  error()
+    << "--" << opt_spec->long_name << "/-" << opt_spec->short_name << " and "
+    << "--" << get_long_opt( bad_opt ) << "/-" << bad_opt
+    << " options are mutually exclusive" << endl;
+}
+
+/**
+ * For each option in \a opts that was given, checks that at least one of
+ * \a req_opts was also given.
+ * If not, prints an error message and exits.
+ */
+void option_stream::check_required() {
+  for ( auto opt = specs_; opt->short_name; ++opt ) {
+    if ( GAVE_OPTION( opt->short_name ) &&
+         opt->req_short_names && *opt->req_short_names ) {
+      for ( auto req_opt = opt->req_short_names; *req_opt; ++req_opt )
+        if ( GAVE_OPTION( *req_opt ) )
+          return;
+      bool const reqs_multiple = opt->req_short_names[1];
+      error()
+        << "--" << opt->long_name << "/-" << opt->short_name << " requires "
+        << (reqs_multiple ? "one of " : "") << "the -" << opt->req_short_names
+        << " option" << (reqs_multiple ? "s" : "")
+        << " to be given also" << endl;
+    }
+  } // for
+}
+
+/**
+ * Sets the failbit and writes an error message preamble.
+ *
+ * @return Returns the error stream.
+ */
+ostream& option_stream::error() {
+  class program_name {
+  public:
+    program_name( char const *argv0 ) : argv0_( basename( argv0 ) ) { }
+
+    operator char const*() const {
+      return argv0_;
+    }
+
+  private:
+    static char const* basename( char const *path ) {
+      char const *const slash = ::strrchr( path, '/' );
+      return slash ? slash + 1 : path;
+    }
+
+    char const *const argv0_;
+  };
+  static program_name const me( argv_[0] );
+
+  state_ |= failbit;
+  err_ << me << ": error: ";
+  return err_;
+}
+
+/**
+ * Gets the corresponding name of the long option for the given short option.
+ *
+ * @param short_opt The short option to get the corresponding long option for.
+ * @return Returns the said option.
+ */
+char const* option_stream::get_long_opt( char short_opt ) const {
+  for ( auto s = specs_; s->long_name; ++s )
+    if ( s->short_name == short_opt )
+      return s->long_name;
+  assert( false );
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 option_stream& operator>>( option_stream &os, option_stream::option &o ) {
   char *arg;
@@ -98,15 +203,15 @@ option_stream& operator>>( option_stream &os, option_stream::option &o ) {
         found = s;                      // partial match
         continue;
       }
-      ERROR << '"';
-      ::copy( arg, end, ostream_iterator<char>(os.err_, "") );
+      os.error() << '"';
+      ::copy( arg, end, ostream_iterator<char>( os.err_, "" ) );
       os.err_ << "\" is ambiguous\n";
       goto option_error;
     } // for
 
     if ( !found ) {
-      ERROR << '"';
-      ::copy( arg, end, ostream_iterator<char>(os.err_, "") );
+      os.error() << '"';
+      ::copy( arg, end, ostream_iterator<char>( os.err_, "" ) );
       os.err_ << "\" unrecognized\n";
       goto option_error;
     }
@@ -116,14 +221,14 @@ option_stream& operator>>( option_stream &os, option_stream::option &o ) {
     //
     arg = nullptr;
     switch ( found->arg_type ) {
-      case option_stream::os_arg_none:
+      case option_stream::arg_none:
         if ( *end == '=' ) {
-          ERROR << '"' << found->long_name << "\" takes no argument\n";
+          os.error() << '"' << found->long_name << "\" takes no argument\n";
           goto option_error;
         }
         break;
-      case option_stream::os_arg_req:
-      case option_stream::os_arg_opt:
+      case option_stream::arg_req:
+      case option_stream::arg_opt:
         if ( *end == '=' ) {
           arg = ++end;
           break;
@@ -148,7 +253,7 @@ short_option:
     }
   } // for
   if ( !found ) {
-    ERROR << '"' << *arg << "\" unrecognized\n";
+    os.error() << '"' << *arg << "\" unrecognized\n";
     goto option_error;
   }
 
@@ -157,7 +262,7 @@ short_option:
   //
   switch ( found->arg_type ) {
 
-    case option_stream::os_arg_none:
+    case option_stream::arg_none:
       //
       // Set next_c_ in case the user gave a grouped set of short options (see
       // the comment near the beginning) so we can pick up where we left off on
@@ -167,13 +272,13 @@ short_option:
       arg = nullptr;
       break;
 
-    case option_stream::os_arg_req:
-    case option_stream::os_arg_opt:
+    case option_stream::arg_req:
+    case option_stream::arg_opt:
       //
       // Reset next_c_ since an option with either a required or optional
       // argument terminates a grouped set of options.
       //
-      os.next_c_ = 0;
+      os.next_c_ = nullptr;
 
       if ( !*++arg ) {
         //
@@ -197,12 +302,13 @@ next:   if ( ++os.argi_ >= os.argc_ )
   } // switch
 
 check_arg:
-  if ( (arg && *arg) || found->arg_type != option_stream::os_arg_req ) {
+  if ( (arg && *arg) || found->arg_type != option_stream::arg_req ) {
     o.short_name_ = found->short_name;
     o.arg_ = arg;
+    os.opts_given_[ static_cast<unsigned char>( o.short_name_ ) ] = true;
     return os;
   }
-  ERROR << '"';
+  os.error() << '"';
   if ( was_short_option )
     os.err_ << found->short_name;
   else
@@ -213,10 +319,14 @@ option_error:
   o.arg_ = nullptr;
   return os;
 the_end:
-  os.end_ = true;
+  os.state_ |= option_stream::eofbit;
+  if ( !os.fail() )
+    os.check_mutually_exclusive();
+  if ( !os.fail() )
+    os.check_required();
   return os;
 bad_spec:
-  ERROR << "invalid option argument spec: " << found->arg_type << '\n';
+  os.error() << "invalid option argument spec: " << found->arg_type << '\n';
   ::abort();
 }
 
@@ -231,11 +341,11 @@ using namespace PJL;
 
 int main( int argc, char *argv[] ) {
   static option_stream::spec const spec[] = {
-    "n-no-arg",   0, 'n',
-    "m-no-arg",   0, 'm',
-    "r-req-arg",  1, 'r',
-    "o-opt-arg",  2, 'o',
-    nullptr,
+    { "n-no-arg",   0, 'n', "", "" },
+    { "m-no-arg",   0, 'm', "", "" },
+    { "r-req-arg",  1, 'r', "", "" },
+    { "o-opt-arg",  2, 'o', "", "" },
+    { nullptr, 0, '\0', "", "" },
   };
   option_stream opt_in( argc, argv, spec );
   option_stream::option opt;

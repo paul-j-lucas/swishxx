@@ -93,22 +93,22 @@ int main( int argc, char *argv[] ) {
   /////////// Process command-line options ////////////////////////////////////
 
   static option_stream::spec const opt_spec[] = {
-    { "help",         0, '?' },
-    { "config",       1, 'c' },
-    { "pattern",      1, 'e' },
-    { "no-pattern",   1, 'E' },
-    { "filter",       0, 'f' },
+    { "help",         0, '?', option_stream::arg_lone, "" },
+    { "config",       1, 'c', "", "" },
+    { "pattern",      1, 'e', "", "" },
+    { "no-pattern",   1, 'E', "", "" },
+    { "filter",       0, 'f', "", "" },
 #ifndef PJL_NO_SYMBOLIC_LINKS
-    { "follow-links", 0, 'l' },
+    { "follow-links", 0, 'l', "", "" },
 #endif
-    { "no-recurse",   0, 'r' },
-    { "stop-file",    1, 's' },
-    { "dump-stop",    0, 'S' },
-    { "verbose",      1, 'v' },
-    { "version",      0, 'V' },
-    { "extension",    1, 'x' },
+    { "no-recurse",   0, 'r', "", "" },
+    { "stop-file",    1, 's', "", "" },
+    { "dump-stop",    0, 'S', "?ceEflrsvV", "" },
+    { "verbose",      1, 'v', "", "" },
+    { "version",      0, 'V', option_stream::arg_lone, "" },
+    { "extension",    1, 'x', "", "" },
 
-    { nullptr, 0, '\0' }
+    { nullptr, 0, '\0', "", "" }
   };
 
   char const   *config_file_name_arg = ConfigFile_Default;
@@ -118,6 +118,8 @@ int main( int argc, char *argv[] ) {
 #ifndef PJL_NO_SYMBOLIC_LINKS
   bool          follow_symbolic_links_opt = false;
 #endif
+  bool          print_help = false;
+  bool          print_version = false;
   bool          recurse_subdirectories_opt = false;
   StopWordFile  stop_word_file_name;
   char const   *stop_word_file_name_arg = nullptr;
@@ -128,7 +130,8 @@ int main( int argc, char *argv[] ) {
     switch ( opt ) {
 
       case '?': // Print help.
-        cerr << usage;
+        print_help = true;
+        break;
 
       case 'c': // Specify config. file.
         config_file_name_arg = opt.arg();
@@ -190,7 +193,18 @@ int main( int argc, char *argv[] ) {
         cerr << usage;
     } // switch
   } // for
+
+  if ( opt_in.fail() )
+    ::exit( Exit_Usage );
   argc -= opt_in.shift(), argv += opt_in.shift();
+
+  if ( print_help ) {
+    cerr << usage;
+    ::exit( Exit_Success );
+  } else if ( print_version ) {
+    cout << PACKAGE_STRING << endl;
+    ::exit( Exit_Success );
+  }
 
   //
   // First, parse the config. file (if any); then override variables specified
