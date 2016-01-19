@@ -92,7 +92,7 @@ return_decoded_char:
     return buf[ delta ];
   }
 
-  ////////// Determine whether current character is encoded /////////////////
+  ////////// Determine whether current character is encoded ///////////////////
 
   //
   // We need to "sync" by looking backwards and finding the first character
