@@ -310,7 +310,7 @@ inline ECR_CI::const_iterator( ECR const *ecr, const_pointer start_pos ) :
 #ifdef WITH_DECODING
 /**
  * Decodes the character at the iterator's current position according to the
- * character range's content-transfer-encoding.
+ * character range's encoding or character set.
  */
 inline void ECR_CI::decode() const {
   //
