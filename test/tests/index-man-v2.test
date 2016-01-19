@@ -1,1 +1,1 @@
-index | | -e man:*.[1-9] -i man.index -r -v2 | . | 0
+index | | -d data -e man:*.[1-9] -i man.index -r -v2 | . | 0

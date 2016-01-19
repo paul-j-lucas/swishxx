@@ -1,1 +1,1 @@
-index | | -e rtf:*.rtf -i rtf.index -r -v2 | . | 0
+index | | -d data -e rtf:*.rtf -i rtf.index -r -v2 | . | 0

@@ -1,1 +1,1 @@
-index | | -e html:*.html -i html.index -v3 | html | 0
+index | | -d data -e html:*.html -i html.index -v3 | html | 0

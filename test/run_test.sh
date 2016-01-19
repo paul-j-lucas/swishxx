@@ -199,7 +199,6 @@ run_test_file() {
   CONF=`echo $CONF`
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`
 
-  [ "x$COMMAND" = "xindex" ] && CHDIR="-d $DATA_DIR"
   [ "x$CONF" = "x" ] || CONF="-c $DATA_DIR/$CONF"
 
   echo $COMMAND $CHDIR $CONF $OPTIONS $ARGS "> $OUTPUT 2> $LOG_FILE" > $LOG_FILE
