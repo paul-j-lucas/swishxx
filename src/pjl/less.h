@@ -26,10 +26,11 @@
 #include <cstddef>                      /* for size_t */
 #include <cstring>
 #include <functional>                   /* for less */
-
-namespace std {
+#include <map>
 
 ///////////////////////////////////////////////////////////////////////////////
+
+namespace std {
 
 /**
  * Specialize %less so that C-style strings <code>char const*</code> will work
@@ -43,8 +44,8 @@ struct less<char const*> {
 
   less() { }
 
-  result_type
-  operator()( first_argument_type i, second_argument_type j ) const {
+  result_type operator()( first_argument_type i,
+                          second_argument_type j ) const {
     return std::strcmp( i, j ) < 0;
   }
 };
@@ -57,20 +58,33 @@ template<typename T> struct less_n;
  */
 template<>
 struct less_n<char const*> : less<char const*> {
-  less_n<char const*>( size_t max_len ) : n_( max_len ) { }
+  typedef size_t size_type;
 
-  result_type
-  operator()( first_argument_type i, second_argument_type j ) const {
+  less_n( size_type max_len ) : n_( max_len ) { }
+
+  result_type operator()( first_argument_type i,
+                          second_argument_type j ) const {
     return std::strncmp( i, j, n_ ) < 0;
   }
 
 private:
-  size_t const n_;
+  size_type const n_;
 };
-
-///////////////////////////////////////////////////////////////////////////////
 
 } // namespace std
 
+///////////////////////////////////////////////////////////////////////////////
+
+namespace PJL {
+
+/**
+ * A version of \c std::unordered_map for C strings.
+ */
+template<typename T>
+using unordered_char_ptr_map = std::map<char const*,T>;
+
+} // namespace PJL
+
+///////////////////////////////////////////////////////////////////////////////
 #endif /* less_H */
 /* vim:set et sw=2 ts=2: */
