@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/mod/html/entities.h
 **
-**      Copyright (C) 1998-2015  Paul J. Lucas
+**      Copyright (C) 1998-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -46,8 +46,8 @@ public:
   static char_entity_map const& instance();
 
   value_type operator[]( key_type key ) const {
-    map_type::const_iterator const i = map_.find( key );
-    return i != map_.end() ? i->second : ' ';
+    map_type::const_iterator const found = map_.find( key );
+    return found != map_.end() ? found->second : ' ';
   }
 
 private:
