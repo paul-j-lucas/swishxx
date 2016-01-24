@@ -172,13 +172,13 @@ restart:
           // either the name of the member is among the set of meta names to
           // exclude or not among the set to include.
           //
-          meta_id_type const temp_meta_id = find_meta( control );
-          if ( temp_meta_id == Meta_ID_None )
+          meta_id_type const control_meta_id = find_meta( control );
+          if ( control_meta_id == Meta_ID_None )
             continue;
           auto d = c;
           if ( skip_char( &d, '}' ) ) {
             encoded_char_range const e( c, d );
-            index_words( e, temp_meta_id );
+            index_words( e, control_meta_id );
           }
         }
       }
