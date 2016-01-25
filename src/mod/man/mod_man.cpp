@@ -40,7 +40,7 @@ using namespace std;
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checkss to see if the current macro is the start of a comment. If so, skip
+ * Checks to see if the current macro is the start of a comment. If so, skips
  * it by scanning for the newline.
  *
  * @param c The iterator to use.  It is presumed to be positioned at the first
