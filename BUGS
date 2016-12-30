@@ -2,17 +2,25 @@
 
 ## What to do if you find a bug
 
-In the hopefully rare circumstance that you find a bug, please report it to me
-by e-mail: <paul@lucasmail.org>.  Please include the following information:
+In the hopefully rare circumstance that you find a bug, first ensure you are
+running the latest version of SWISH++ since the bug may have already been
+fixed.
+
+If you are running the latest version of SWISH++ and there is still a bug,
+please report it to me by e-mail: <paul@lucasmail.org>.  Please include the
+following information:
 
 1. A description of the problem.
-2. Operating system and version.
+2. The operating system and version.
 3. The exact command line used.
-4. If the command dumps core, a stack trace.
+4. The configuration file used, if any.
+5. If the bug is with the indexer, the single file that causes the bug to
+   manifest.
+6. If the command dumps core, a stack trace.
 
 To get a stack trace:
 
-1. You should have a "core" file (if the filesystem is writable and you have
+7. You should have a "core" file (if the filesystem is writable and you have
    write permission to it).  For Mac OS X, core files are placed in the
    directory /cores and are of the form "core.XXXXX" where XXXXX is the process
    ID.
@@ -23,9 +31,9 @@ To get a stack trace:
 
    and try again.
 
-4. Execute gdb by typing:
+8. Execute gdb by typing:
 
 	gdb /path/to/swish++-executable /path/to/core
 
-5. Then in gdb, type "where" and copy and paste the output into an e-mail
+9. Then in gdb, type "where" and copy and paste the output into an e-mail
    message to me.
