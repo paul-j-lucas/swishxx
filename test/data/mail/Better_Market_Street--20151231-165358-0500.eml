@@ -1,0 +1,597 @@
+Delivered-To: paul@lucasmail.org
+Received: by 10.107.23.132 with SMTP id 126csp7275630iox;
+        Thu, 31 Dec 2015 13:53:59 -0800 (PST)
+X-Received: by 10.140.161.9 with SMTP id h9mr18089895qhh.82.1451598839814;
+        Thu, 31 Dec 2015 13:53:59 -0800 (PST)
+Return-Path: <A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com>
+Received: from ccm185.constantcontact.com (ccm185.constantcontact.com. [208.75.123.185])
+        by mx.google.com with ESMTPS id v17si82629608qhb.37.2015.12.31.13.53.59
+        for <paul@lucasmail.org>
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 31 Dec 2015 13:53:59 -0800 (PST)
+Received-SPF: pass (google.com: domain of A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com designates 208.75.123.185 as permitted sender) client-ip=208.75.123.185;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com designates 208.75.123.185 as permitted sender) smtp.mailfrom=A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com;
+       dkim=pass header.i=@auth.ccsend.com
+Received: from p2-jbsvcs5191.ad.prodcc.net (p2-pen2.ad.prodcc.net [10.252.0.102])
+	by p2-mail129.ccm185.constantcontact.com (Postfix) with ESMTP id BFB2D11EB9AB
+	for <paul@lucasmail.org>; Thu, 31 Dec 2015 16:53:58 -0500 (EST)
+DKIM-Signature: v=1; q=dns/txt; a=rsa-sha256; c=relaxed/relaxed; s=1000073432; d=auth.ccsend.com; h=date:mime-version:subject:X-Feedback-ID:message-id:from:reply-to:list-unsubscribe:to; bh=3nW40/wJ7PXKcRCFW3RkDmQia0sl0rrakWhJcPHgkQA=; b=aOjA7zjUhUkEUU+jMT36OhPsEvuy22J368C6JZtbc9GlRC6i+SxkNVXyArZ8ixvh38k4kr5t8YipSElAXNg5OgjAAWZgUqTmclLxXEW7iiPpcYUGBFMyvksx1DKjHIhhWrVpv2v+2n6w4zbW4wSBJseNmAzV/ndVlzdwm7xLfQM=
+Message-ID: <1123344920103.1102363540785.12690.0.211653JL.1002@scheduler.constantcontact.com>
+Date: Thu, 31 Dec 2015 16:53:58 -0500 (EST)
+From: Better Market Street <bettermarketstreet@sfdpw.org>
+Reply-To: bettermarketstreet@sfdpw.org
+To: paul@lucasmail.org
+Subject: LiDAR survey & traffic alert Jan. 2
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1061508272_741448389.1451598838775"
+List-Unsubscribe: http://visitor.constantcontact.com/do?p=un&m=001TkV20ChbLeyZaDysc4DByg%3D%3D&se=001PplY03ZxXoM%3D&t=001EkZLEx15CcE%3D&llr=rjpz4ucab
+X-Campaign-Activity-ID: d0f7be28-7686-4b87-b1e8-eb9329dd0e6b
+X-Channel-ID: d4310d80-341c-11e3-9053-d4ae529a824a
+X-Mailer: Roving Constant Contact 2012 (http://www.constantcontact.com)
+X-Return-Path-Hint: A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com
+X-Roving-Campaignid: 1123344920103
+X-Roving-Id: 1102363540785.12690
+X-Feedback-ID: d4310d80-341c-11e3-9053-d4ae529a824a:d0f7be28-7686-4b87-b1e8-eb9329dd0e6b:1102363540785:CTCT
+X-CTCT-ID: d2b012d0-341c-11e3-8f46-d4ae529a824a
+
+------=_Part_1061508272_741448389.1451598838775
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+www.bettermarketstreetsf.org [http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ec=
+EruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA2JCdFvR8u6SmaDAZOfPLC2k24BERYj9LxU=
+2rnmR72hkwzQePyPcyn_AMPDPRIviS-NdrLSGt7v9w7URAH7LdNO4bM84I51Ai7_FmfDmUrkqyX=
+C1YxA2FGX5RgzlJl2W8A=3D=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYL=
+L4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-=
+w=3D=3D]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+LiDAR survey and traffic alert on Market St.
+Saturday, Jan. 2, 2016
+San Francisco Public Works and the San Francisco Municipal Transportation A=
+gency
+ will be performing a truck-mounted Light Detection and Ranging (LiDAR [htt=
+p://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A=
+2aS2YalA4akQUDbbAYERqJJtEZ0yO3KeOfYi5YPVneaDYB_FgbdSsDYgchbzXszXtVB5lGXtfFS=
+nuNHVl8fmdxQ7CJAlUUOT_lEoD0jS4VnnPB2oQrQcWiKNxu9Zws5dlkC79RmuJUFq5Z82t0SY1n=
+p2ITw3cY=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=
+=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D])
+survey of Market Street. This visual mapping survey is the first step to do=
+ing detailed
+design work for the Better Market Street project. We will gather accurate i=
+nformation
+on the exact locations of features and utilities on Market Street - curbs, =
+BART=20
+portals, light poles, building facades, trees, fire hydrants, sidewalk and =
+street
+elevations and more -- that will enable us to move from conceptual to detai=
+led designs
+and then on to construction.
+Weather permitting, the LiDAR survey will take place in the early morning h=
+ours=20
+of Saturday, January 2, 2016.  To ensure an accurate and complete survey, p=
+lease
+ help us spread this important information about traffic restrictions and t=
+he Better
+Market Street LiDAR survey:
+
+* The survey will take place between 2 a.m. - 6 a.m. on Saturday, Jan. 2, 2=
+016.
+* Stopping or parking on Market Street and the adjacent side streets is pro=
+hibited
+between midnight and 6 a.m. to ensure the street is clear for the survey. T=
+ow-away
+signs have been posted.
+* The survey truck will run along Market Street between Guerrero Street and=
+ Steuart
+Street four times in order to get an accurate representation of all the fea=
+tures.
+* The truck also will measure the street features along all the side street=
+s in=20
+the project area.
+* There are temporary tow-away signs posted along Market Street and in zone=
+s along
+all the cross streets in the vicinity so that vehicles don't block the "vie=
+w" of
+ the curb. PLEASE OBEY THE TEMPORARY TOW-AWAY SIGNS.
+* The LiDAR truck will be escorted by a police motorcade as it cannot stop =
+along
+ Market Street for any reason, since that will distort the data collection.
+* Traffic on the cross streets will be momentarily stopped and required to =
+wait=20
+up to 2 minutes while the survey motorcade passes.
+* The curb lanes will be momentarily closed due to the survey motorcade. Tr=
+affic
+ in the curb lane will be shifted to the center lane as the survey motorcad=
+e passes.
+* Private cars, taxis, commercial vehicles and bicyclists are encouraged to=
+ use=20
+adjacent parallel streets such as Mission Street during these pre-dawn hour=
+s.
+* The LiDAR truck will run with the flow of traffic -- PLEASE STAY ALERT AN=
+D DRIVE
+SLOWLY.
+* The SFMTA signal shop will place all traffic signals on Market Street bet=
+ween=20
+Guerrero and Steuart onto flashing red for all directions for everyone's sa=
+fety.
+The LiDAR survey method is a quick, efficient, non-invasive surveying techn=
+ique=20
+that is used around the world. The LiDAR method was chosen to get accurate =
+information
+while minimizing travel impacts on one of the City's busiest corridors.
+Stay tuned for more information on the status of the Better Market Street p=
+roject
+and next steps on our project page [http://r20.rs6.net/tn.jsp?f=3D0017BeGqt=
+esN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA2WPGmiXhXfK_ntvntjbBvpZwvfzi=
+8ujSqA3daEDz4qaHoaf1bkGxrX9j30Og-HEceutxBNLY7fColdbfnIOTPZiCyO_Lp1LhOHJ0H8k=
+j8AVTMM9ajXvdK1xv9-dKBIqlVh55FCVXSC8&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMB=
+J3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi=
+8ucHtO6cJ-w=3D=3D].
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+The Better Market Street project is led by San Francisco Public Works, the =
+San Francisco
+Planning Department, San Francisco Municipal Transportation Agency, the San=
+ Francisco
+County Transportation Authority, the San Francisco Public Utilities Commiss=
+ion and
+the Office of Economic and Workforce Development in coordination with the M=
+ayor's
+Office and other City departments.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+City of San Francisco Seal [http://www.ci.sf.ca.us/index.asp]         Logo =
+for San
+Francisco County Transit Authority [http://www.sfcta.org/] San Francisco Mu=
+nicipal
+Transportation Agency logo [http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEr=
+uI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA2iGHJLpWjU8xMb5tg9A_FGbYnU7lEIrxW7oc=
+1sbX4BvO03lJvwaGd9Egc7D5E3Yp06HSfPyOqW702dNzIss5oUOSm8TBKSL7-NBrJpbIfESqpH_=
+A1ikIbQ=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D=
+&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D]
+Logo for Office of Economic and Workforce Development [http://www.oewd.org/=
+]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+For more information on the Better Market Street Project, call (415) 558-40=
+45, or
+visit www.bettermarketstreetsf.org
+
+311: &#x4e2d;&#x6587; / Espa=C3=B1ol / Fran=C3=A7ais / &#x65e5;&#x672c;&#x8=
+a9e; / &#xd55c;&#xad6d;&#xc5b4;
+/ &#x0440;&#x0443;&#x0441;&#x0441;&#x043a;&#x0438;&#x0439; / ti&#x1ebf;ng V=
+i&#x1ec7;t
+/ Tagalog / &#x0e20;"&#x0e29;"&#x0e44;&#x0e17;&#x0e22;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+Forward this email
+http://ui.constantcontact.com/sa/fwtf.jsp?llr=3Drjpz4ucab&m=3D1102363540785=
+&ea=3D$paul@lucasmail.org$&a=3D1123344920103
+
+This email was sent to paul@lucasmail.org by bettermarketstreet@sfdpw.org.
+
+Update Profile/Email Address
+http://visitor.constantcontact.com/do?p=3Doo&m=3D001TkV20ChbLeyZaDysc4DByg%=
+3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e=
+8-eb9329dd0e6b
+
+
+Instant removal with SafeUnsubscribe(TM)
+http://visitor.constantcontact.com/do?p=3Dun&m=3D001TkV20ChbLeyZaDysc4DByg%=
+3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e=
+8-eb9329dd0e6b
+
+
+Privacy Policy:
+http://www.constantcontact.com/legal/service-provider?cc=3Dabout-service-pr=
+ovider
+
+Online Marketing by
+Constant Contact(R)
+www.constantcontact.com
+
+
+
+Public Works | City Hall room 348 | San Francisco | CA | 94102
+------=_Part_1061508272_741448389.1451598838775
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+<body topmargin=3D"0" leftmargin=3D"0" rightmargin=3D"0"><!--Copyright (c) =
+1996-2015 Constant Contact. All rights reserved.  Except as permitted under=
+ a separate
+written agreement with Constant Contact, neither the Constant Contact softw=
+are, nor any content that appears on any Constant Contact site,
+including but not limited to, web pages, newsletters, or templates may be r=
+eproduced, republished, repurposed, or distributed without the
+prior written permission of Constant Contact.  For inquiries regarding repr=
+oduction or distribution of any Constant Contact material, please
+contact legal@constantcontact.com.--><div id=3D"rootDiv"><img src=3D"http:/=
+/r20.rs6.net/on.jsp?ca=3Dd0f7be28-7686-4b87-b1e8-eb9329dd0e6b&a=3D110236354=
+0785&d=3D1123344920103&r=3D3&o=3Dhttp://ui.constantcontact.com/images/p1x1.=
+gif&c=3Dd2b012d0-341c-11e3-8f46-d4ae529a824a&ch=3Dd4310d80-341c-11e3-9053-d=
+4ae529a824a" height=3D"1" width=3D"1" />
+<div align=3D"center">
+<table class=3D"body" style=3D"background-color:#FFFFFF;margin:0px 0px 0px =
+0px;" bgcolor=3D"#FFFFFF" border=3D"0" width=3D"100%" cellspacing=3D"0" cel=
+lpadding=3D"0">
+<tr>
+    <td valign=3D"top" rowspan=3D"1" colspan=3D"1" align=3D"center"><table =
+class=3D"TemplateWidth" style=3D"width:600px;" border=3D"0" width=3D"600" c=
+ellspacing=3D"0" cellpadding=3D"1">
+    <tr>
+        <td width=3D"100%" rowspan=3D"1" colspan=3D"1">
+        </td>
+    </tr>
+    <tr>
+        <td class=3D"MainBorder" style=3D"background-color:#FFFFFF;padding:=
+1px;" bgcolor=3D"#FFFFFF" valign=3D"top" rowspan=3D"1" colspan=3D"1" align=
+=3D"left"><table class=3D"MainBodyBG" style=3D"background-color:#FFFFFF;" b=
+gcolor=3D"#FFFFFF" border=3D"0" width=3D"100%" cellspacing=3D"0" cellpaddin=
+g=3D"0">
+        <tr>
+            <td valign=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" a=
+lign=3D"left" />
+        </tr>
+        <tr>
+            <td class=3D"MainPad" style=3D"padding:5px;" valign=3D"top" wid=
+th=3D"100%" rowspan=3D"1" colspan=3D"1"><table class=3D"BlockMargin" style=
+=3D"margin-bottom:6px;" border=3D"0" width=3D"100%" cellpadding=3D"5" cells=
+pacing=3D"0" id=3D"content_LETTER.BLOCK20"><tr><td class=3D"MessageText" st=
+yle=3D"color:#000000;font-family:Arial,Helvetica,sans-serif;font-size:10pt;=
+TEXT-ALIGN: left" rowspan=3D"1" colspan=3D"1" align=3D"left"><br /><a class=
+=3D"imgCaptionAnchor" track=3D"on" shape=3D"rect" href=3D"http://r20.rs6.ne=
+t/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA-KJeys=
+6gsSOqef87edjyAjjkRiJ8-Fx06khxrtvFswNFIdGf0jpJppgKVq1L9yx13W_3IreOS6fWtHqoG=
+A-7RtdxoX1OOH3IrYgG0KOy0-u5zq8lVRHd3WAyTPmNj7TCawmQlzeHkvX&c=3Dh8_AlndhAY5m=
+WX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQ=
+omJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" alt=3D"https://twitter.com/betterm=
+arketsf" target=3D"_blank"><img height=3D"24" vspace=3D"5" name=3D"ACCOUNT.=
+IMAGE.938" border=3D"0" hspace=3D"5" width=3D"79" src=3D"http://files.ctctc=
+dn.com/13dbcf9a001/e435c4f4-9cf9-45bc-86df-ea9a2cca2770.png" /></a>&nbsp;&n=
+bsp;</td></tr></table><table class=3D"BlockMargin" style=3D"margin-bottom:6=
+px;" border=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"=
+content_LETTER.BLOCK23"><tr><td style=3D"FONT-FAMILY: calibri, helvetica, a=
+rial, sans-serif; COLOR: #9fbf23; FONT-SIZE: 14pt" valign=3D"top" rowspan=
+=3D"1" colspan=3D"1">
+<div style=3D"TEXT-ALIGN: center" align=3D"center"><strong><a style=3D"COLO=
+R: #9fbf23; TEXT-DECORATION: none" track=3D"on" shape=3D"rect" href=3D"http=
+://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2=
+aS2YalA2JCdFvR8u6SmaDAZOfPLC2k24BERYj9LxU2rnmR72hkwzQePyPcyn_AMPDPRIviS-Ndr=
+LSGt7v9w7URAH7LdNO4bM84I51Ai7_FmfDmUrkqyXC1YxA2FGX5RgzlJl2W8A=3D=3D&c=3Dh8_=
+AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7P=
+lbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" linktype=3D"1" alt=3D"htt=
+p://www.bettermarketstreetsf.org" target=3D"_blank">www.bettermarketstreets=
+f.org</a></strong></div></td></tr></table>
+           =20
+           =20
+           =20
+           =20
+            <table class=3D"BlockMargin" style=3D"margin-bottom:6px;" borde=
+r=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LE=
+TTER.BLOCK22"><tr><td style=3D"FONT-FAMILY: calibri, helvetica, arial, sans=
+-serif; COLOR: #9fbf23; FONT-SIZE: 14pt" valign=3D"top" rowspan=3D"1" colsp=
+an=3D"1">
+<div style=3D"TEXT-ALIGN: center" align=3D"center"><img vspace=3D"5" border=
+=3D"0" name=3D"ACCOUNT.IMAGE.1020" hspace=3D"5" width=3D"585" alt=3D"Better=
+ Market Street logo" src=3D"http://files.ctctcdn.com/13dbcf9a001/05e60975-e=
+f92-4d79-9e66-bcac25eacad9.jpg">&nbsp;</img></div></td></tr></table><table =
+class=3D"BlockMargin" style=3D"margin-bottom:6px;BACKGROUND-COLOR: #000000"=
+ bgcolor=3D"#000000" border=3D"0" width=3D"100%" cellpadding=3D"5" cellspac=
+ing=3D"0" id=3D"content_LETTER.BLOCK13"><tr><td class=3D"MessageText" style=
+=3D"color:#000000;font-family:Arial,Helvetica,sans-serif;font-size:10pt;TEX=
+T-ALIGN: left" rowspan=3D"1" colspan=3D"1" align=3D"left"><br /></td></tr><=
+/table><table class=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D"=
+0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.=
+BLOCK6"><tr><td style=3D"color: #000000;" valign=3D"bottom" rowspan=3D"1" c=
+olspan=3D"1" align=3D"left"><img vspace=3D"5" border=3D"0" name=3D"ACCOUNT.=
+IMAGE.1189" hspace=3D"5" width=3D"585" src=3D"http://files.ctctcdn.com/13db=
+cf9a001/577183ba-af4c-48ce-90e9-63ddef95ccc0.png"><div style=3D"text-align:=
+ center;" align=3D"center"><span>&nbsp; </span></div><span>
+<div><strong>
+<div style=3D"text-align: center; margin-top: 0px; font-family: franklin go=
+thic medium, arial, helvetica, sans-serif; margin-bottom: 0px; color: #3366=
+ff; font-size: 18pt;" align=3D"center">
+<div>LiDAR survey and traffic alert on Market St.</div>
+<div>Saturday, Jan. 2, 2016</div>
+</div>
+<div style=3D"margin-top: 0px; margin-bottom: 0px;"><br /></div>
+</strong>
+<div>
+<div style=3D"font-family: calibri, helvetica, arial, sans-serif; font-size=
+: 11pt;">
+<div style=3D"font-family: calibri, helvetica, arial, sans-serif; font-size=
+: 11pt;">
+<div style=3D"font-family: calibri, helvetica, arial, sans-serif; font-size=
+: 11pt;">
+<div style=3D"margin-top: 0px; margin-bottom: 0px;">
+<div style=3D"font-size: 12pt;">San Francisco Public Works and the San Fran=
+cisco Municipal Transportation Agency will be performing a truck-mounted Li=
+ght Detection and Ranging (<a style=3D"color: blue; text-decoration: underl=
+ine;" track=3D"on" shape=3D"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D001=
+7BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA4akQUDbbAYERqJJtEZ0yO3=
+KeOfYi5YPVneaDYB_FgbdSsDYgchbzXszXtVB5lGXtfFSnuNHVl8fmdxQ7CJAlUUOT_lEoD0jS4=
+VnnPB2oQrQcWiKNxu9Zws5dlkC79RmuJUFq5Z82t0SY1np2ITw3cY=3D&c=3Dh8_AlndhAY5mWX=
+1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQom=
+JHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" linktype=3D"1" alt=3D"http://oceanse=
+rvice.noaa.gov/facts/lidar.html" target=3D"_blank">LiDAR</a>) survey of Mar=
+ket Street. This visual mapping survey is the first step to doing detailed =
+design work for the Better Market Street project. We will gather accurate i=
+nformation on the exact locations of features and utilities on Market Stree=
+t - curbs, BART portals, light poles, building facades, trees, fire hydrant=
+s, sidewalk and street elevations and more -- that will enable us to move f=
+rom conceptual to detailed designs and then on to construction.</div>
+<div style=3D"font-size: 12pt;">&nbsp;</div>
+<div style=3D"font-size: 12pt;">Weather permitting, the LiDAR survey will t=
+ake place in the early morning hours of Saturday, January 2, 2016.&nbsp; To=
+ ensure an accurate and complete survey, please help us spread this importa=
+nt information about traffic restrictions and the Better Market Street LiDA=
+R survey:</div>
+<div style=3D"font-size: 12pt;">&nbsp;</div>
+<ul><li style=3D"font-size: 12pt;">The survey will take place between 2 a.m=
+. - 6 a.m. on Saturday, Jan. 2, 2016.</li><li style=3D"font-size: 12pt;">St=
+opping or parking on Market Street and the adjacent side streets is prohibi=
+ted between midnight and 6 a.m. to ensure the street is clear for the surve=
+y. Tow-away signs have been posted.</li><li style=3D"font-size: 12pt;">The =
+survey truck will run along Market Street between Guerrero Street and Steua=
+rt Street four times in order to get an accurate representation of all the =
+features. </li><li style=3D"font-size: 12pt;">The truck also will measure t=
+he street features along all the side streets in the project area.</li><li =
+style=3D"font-size: 12pt;">There are temporary tow-away signs posted along =
+Market Street and in zones along all the cross streets in the vicinity so t=
+hat vehicles don't block the "view" of the curb. PLEASE OBEY THE TEMPORARY =
+TOW-AWAY SIGNS. </li><li style=3D"font-size: 12pt;">The LiDAR truck will be=
+ escorted by a police motorcade as it cannot stop along Market Street for a=
+ny reason, since that will distort the data collection.</li><li style=3D"fo=
+nt-size: 12pt;">Traffic on the cross streets will be momentarily stopped an=
+d required to wait up to 2 minutes while the survey motorcade passes. </li>=
+<li style=3D"font-size: 12pt;">The curb lanes will be momentarily closed du=
+e to the survey motorcade. Traffic in the curb lane will be shifted to the =
+center lane as the survey motorcade passes. </li><li style=3D"font-size: 12=
+pt;">Private cars, taxis, commercial vehicles and bicyclists are encouraged=
+ to use adjacent parallel streets such as Mission Street during these pre-d=
+awn hours.&nbsp; </li><li style=3D"font-size: 12pt;">The LiDAR truck will r=
+un with the flow of traffic -- PLEASE STAY ALERT AND DRIVE SLOWLY.</li><li =
+style=3D"font-size: 12pt;">The SFMTA signal shop will place all traffic sig=
+nals on Market Street between Guerrero and Steuart onto flashing red for al=
+l directions for everyone's safety.</li></ul>
+<div style=3D"font-size: 12pt;">The LiDAR survey method is a quick, efficie=
+nt, non-invasive surveying technique that is used around the world. The LiD=
+AR method was chosen to get accurate information while minimizing travel im=
+pacts on one of the City's busiest corridors.</div>
+<div style=3D"font-size: 12pt;">&nbsp;</div>
+<div style=3D"font-size: 12pt;">Stay tuned for more information on the stat=
+us of the Better Market Street project and next steps on our <a style=3D"co=
+lor: blue; text-decoration: underline;" track=3D"on" shape=3D"rect" href=3D=
+"http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9=
+cL3A2aS2YalA2WPGmiXhXfK_ntvntjbBvpZwvfzi8ujSqA3daEDz4qaHoaf1bkGxrX9j30Og-HE=
+ceutxBNLY7fColdbfnIOTPZiCyO_Lp1LhOHJ0H8kj8AVTMM9ajXvdK1xv9-dKBIqlVh55FCVXSC=
+8&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_=
+ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" linktype=3D"1" a=
+lt=3D"http://www.bettermarketstreetsf.org/" target=3D"_blank">project page<=
+/a>. &nbsp;</div>
+<br /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</span></img></td></tr></table><table class=3D"BlockMargin" style=3D"margin=
+-bottom:6px;BACKGROUND-COLOR: #000000" bgcolor=3D"#000000" border=3D"0" wid=
+th=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOCK1=
+3"><tr><td class=3D"MessageText" style=3D"color:#000000;font-family:Arial,H=
+elvetica,sans-serif;font-size:10pt;TEXT-ALIGN: left" rowspan=3D"1" colspan=
+=3D"1" align=3D"left"><br /></td></tr></table></td>
+        </tr>
+        </table></td>
+    </tr>
+    <tr>
+        <td height=3D"10" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=
+=3D"left">           =20
+       =20
+       =20
+       =20
+       =20
+        <table class=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D=
+"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER=
+.BLOCK8"><tr><td style=3D"font-family: calibri, helvetica, arial, sans-seri=
+f; color: #000000; font-size: 12pt;" valign=3D"top" rowspan=3D"1" colspan=
+=3D"1">
+<div>The Better Market Street project is led by San Francisco Public Works,=
+ the San Francisco Planning Department, San Francisco Municipal Transportat=
+ion Agency, the San Francisco County Transportation Authority, the San Fran=
+cisco Public Utilities Commission and the Office of Economic and Workforce =
+Development in coordination with the Mayor's Office and other City departme=
+nts.</div>
+</td></tr></table><table class=3D"BlockMargin" style=3D"margin-bottom:6px;"=
+ border=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"cont=
+ent_LETTER.BLOCK14"><tr><td class=3D"MessageText" style=3D"color:#000000;fo=
+nt-family:Arial,Helvetica,sans-serif;font-size:10pt;TEXT-ALIGN: left" rowsp=
+an=3D"1" colspan=3D"1" align=3D"left"><br /></td></tr></table><table class=
+=3D"BlockMargin" style=3D"margin-bottom:6px;display: table;" border=3D"0" w=
+idth=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOC=
+K14"><tr><td style=3D"font-family: calibri, helvetica, arial, sans-serif; c=
+olor: #000000; font-size: 12pt;" valign=3D"top" rowspan=3D"1" colspan=3D"1"=
+>
+<div style=3D"text-align: center;" align=3D"center"><a class=3D"imgCaptionA=
+nchor" track=3D"off" shape=3D"rect" href=3D"http://www.ci.sf.ca.us/index.as=
+p" alt=3D"http://www.ci.sf.ca.us/index.asp" target=3D"_blank"><img height=
+=3D"49" vspace=3D"5" name=3D"ACCOUNT.IMAGE.461" border=3D"0" width=3D"50" a=
+lt=3D"City of San Francisco Seal" src=3D"http://files.ctctcdn.com/13dbcf9a0=
+01/0fe218c1-bec0-4665-83e0-bc3b324153f2.jpg" /></a>&nbsp; &nbsp; &nbsp; &nb=
+sp;&nbsp;  <a class=3D"imgCaptionAnchor" track=3D"off" shape=3D"rect" href=
+=3D"http://www.sfpublicworks.org" alt=3D"http://www.sfpublicworks.org" targ=
+et=3D"_blank"><img height=3D"68" vspace=3D"5" border=3D"0" name=3D"ACCOUNT.=
+IMAGE.1131" hspace=3D"5" width=3D"75" src=3D"http://files.ctctcdn.com/13dbc=
+f9a001/9b48ec82-e298-4bfd-85f6-f6ff3bfb7911.jpg" /></a>&nbsp; &nbsp; &nbsp;=
+  <a class=3D"imgCaptionAnchor" track=3D"off" shape=3D"rect" href=3D"http:/=
+/www.sfcta.org/" alt=3D"http://www.sfcta.org/" target=3D"_blank"><img heigh=
+t=3D"50" vspace=3D"5" name=3D"ACCOUNT.IMAGE.783" border=3D"0" hspace=3D"5" =
+width=3D"50" alt=3D"Logo for San Francisco County Transit Authority" src=3D=
+"http://files.ctctcdn.com/13dbcf9a001/aef79083-3a2c-44d4-8de7-c8508466836a.=
+jpg" /></a><a class=3D"imgCaptionAnchor" track=3D"on" shape=3D"rect" href=
+=3D"http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLaw=
+Hv9cL3A2aS2YalA2iGHJLpWjU8xMb5tg9A_FGbYnU7lEIrxW7oc1sbX4BvO03lJvwaGd9Egc7D5=
+E3Yp06HSfPyOqW702dNzIss5oUOSm8TBKSL7-NBrJpbIfESqpH_A1ikIbQ=3D&c=3Dh8_AlndhA=
+Y5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkN=
+RrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" alt=3D"http://www.sfmta.org" ta=
+rget=3D"_blank"><img height=3D"52" vspace=3D"5" name=3D"ACCOUNT.IMAGE.940" =
+border=3D"0" hspace=3D"5" width=3D"100" alt=3D"San Francisco Municipal Tran=
+sportation Agency logo" src=3D"http://files.ctctcdn.com/13dbcf9a001/47e5e56=
+2-959e-4108-b4b7-08e9c79b89fb.jpg" /></a>&nbsp;&nbsp;</div>
+<div style=3D"text-align: center;" align=3D"center">&nbsp;   <a class=3D"im=
+gCaptionAnchor" track=3D"on" href=3D"http://r20.rs6.net/tn.jsp?f=3D0017BeGq=
+tesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA6O5KCmYLwl1qpdUNtcjJun8oRgU=
+w5wpw0DLCh670VwKlpovQ06NdSeksX0nNxwINY91hK9mT3I155s-BjJVU6adrb0_fuh_3Pdi6Jq=
+Hwf-J4W30HMUAxqg=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBo=
+rzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D=
+" shape=3D"rect" alt=3D"http://www.sfwater.org" target=3D"_blank"><img heig=
+ht=3D"33" vspace=3D"5" name=3D"ACCOUNT.IMAGE.1136" border=3D"0" hspace=3D"5=
+" width=3D"125" src=3D"http://files.ctctcdn.com/13dbcf9a001/fbb35008-b719-4=
+1d7-8d6c-34bafc32f836.jpg" /></a>&nbsp;&nbsp; &nbsp; &nbsp;<a class=3D"imgC=
+aptionAnchor" style=3D"font-size: 12pt;" track=3D"off" shape=3D"rect" href=
+=3D"http://sfplanning.org/" alt=3D"http://sfplanning.org/" target=3D"_blank=
+"><img height=3D"65" vspace=3D"5" border=3D"0" name=3D"ACCOUNT.IMAGE.1138" =
+hspace=3D"5" width=3D"65" src=3D"http://files.ctctcdn.com/13dbcf9a001/b5b0b=
+d3a-6b94-42cd-89cd-8e9283bcd17b.png" /></a>&nbsp;&nbsp;<span style=3D"font-=
+size: 12pt;">&nbsp; &nbsp;</span><a class=3D"imgCaptionAnchor" style=3D"fon=
+t-size: 12pt;" track=3D"off" shape=3D"rect" href=3D"http://www.oewd.org/" a=
+lt=3D"http://www.oewd.org/" target=3D"_blank"><img height=3D"29" vspace=3D"=
+5" name=3D"ACCOUNT.IMAGE.786" border=3D"0" hspace=3D"5" width=3D"124" alt=
+=3D"Logo for Office of Economic and Workforce Development" src=3D"http://fi=
+les.ctctcdn.com/13dbcf9a001/3d230755-0316-4ba0-9992-3f6e1c248545.jpg" /></a=
+><span style=3D"font-size: 12pt;">&nbsp;</span></div>
+</td></tr></table><table class=3D"BlockMargin" style=3D"margin-bottom:6px;"=
+ border=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"cont=
+ent_LETTER.BLOCK14"><tr><td class=3D"MessageText" style=3D"color:#000000;fo=
+nt-family:Arial,Helvetica,sans-serif;font-size:10pt;TEXT-ALIGN: left" rowsp=
+an=3D"1" colspan=3D"1" align=3D"left"><br /></td></tr></table><table class=
+=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D"0" width=3D"100%" c=
+ellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOCK5"><tr><td cla=
+ss=3D"ClosingText" style=3D"color:#666666;font-family:Arial,Helvetica,sans-=
+serif;font-size:10pt;TEXT-ALIGN: left" valign=3D"bottom" rowspan=3D"1" cols=
+pan=3D"1" align=3D"left"><span style=3D"FONT-FAMILY: calibri, helvetica, ar=
+ial, sans-serif; COLOR: #000000; FONT-SIZE: 12pt"><span>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><span>For more information=
+ on the Better Market Street Project, call (415) 558-4045, or visit <a shap=
+e=3D"rect">www.bettermarketstreetsf.org</a></span></p></span>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 30px">&nbsp;<=
+/p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</p><span style=3D"F=
+ONT-FAMILY: calibri, helvetica, arial, sans-serif; COLOR: #000000; FONT-SIZ=
+E: 12pt">
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><span><strong><img style=
+=3D"TEXT-ALIGN: left" height=3D"34" vspace=3D"5" name=3D"ACCOUNT.IMAGE.797"=
+ border=3D"0" hspace=3D"5" width=3D"34" src=3D"http://files.ctctcdn.com/13d=
+bcf9a001/f7399418-35d7-4751-892a-d3191b3a9726.jpg" align=3D"left">311</img>=
+</strong><span>: </span><span>&#x4e2d;&#x6587;</span><span> / </span><span>=
+Espa=C3=B1ol /</span><span> Fran=C3=A7ais</span><span> / </span><span>&#x65=
+e5;&#x672c;&#x8a9e;</span><span> / </span><span>&#xd55c;&#xad6d;&#xc5b4;</s=
+pan><span> / </span><span>&#x0440;&#x0443;&#x0441;&#x0441;&#x043a;&#x0438;&=
+#x0439;</span><span> / </span><span>ti&#x1ebf;ng Vi&#x1ec7;t</span><span> /=
+ </span><span>Tagalog</span><span> / </span><span>&#x0e20;"&#x0e29;"&#x0e44=
+;&#x0e17;&#x0e22;</span></span></p></span></span></td></tr></table><table c=
+lass=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D"0" width=3D"100=
+%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOCK14"><tr><t=
+d class=3D"MessageText" style=3D"color:#000000;font-family:Arial,Helvetica,=
+sans-serif;font-size:10pt;TEXT-ALIGN: left" rowspan=3D"1" colspan=3D"1" ali=
+gn=3D"left"><br /></td></tr></table></td>
+    </tr>
+    </table>
+    </td>
+</tr>
+</table>
+</div>
+<div id=3D"footerContainer" align=3D"center" style=3D"background-color:#fff=
+fff;">
+<table style=3D"background-color:#ffffff;" border=3D"0" width=3D"100%" cell=
+padding=3D"0" cellspacing=3D"0" id=3D"footerPanelWrap">
+<tr>
+<td rowspan=3D"1" colspan=3D"1" align=3D"center">
+
+<table style=3D"background-color:#ffffff" border=3D"0" width=3D"100%" cells=
+pacing=3D"0" cellpadding=3D"0"><tr><td valign=3D"top" rowspan=3D"1" colspan=
+=3D"1" align=3D"left"><div style=3D"max-width:620px;margin-left:auto;margin=
+-right:auto;" align=3D"center"><table style=3D"margin-left:auto;margin-righ=
+t:auto;" border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><t=
+r><td rowspan=3D"1" colspan=3D"1"><img height=3D"5" vspace=3D"0" border=3D"=
+0" hspace=3D"0" width=3D"1" alt=3D"" src=3D"https://imgssl.constantcontact.=
+com/letters/images/1101116784221/S.gif" /></td><td valign=3D"top" width=3D"=
+620" rowspan=3D"1" colspan=3D"1" align=3D"center"><table style=3D"font-fami=
+ly:verdana,arial; font-size:8pt; color:#000000;" border=3D"0" width=3D"100%=
+" cellspacing=3D"0" cellpadding=3D"0"><tr><td rowspan=3D"1" colspan=3D"2"><=
+span style=3D"font-family:verdana,arial; font-weight:bold; font-size:8pt; c=
+olor:#000000;"><a shape=3D"rect" href=3D"http://ui.constantcontact.com/sa/f=
+wtf.jsp?llr=3Drjpz4ucab&m=3D1102363540785&ea=3Dpaul%40lucasmail.org&a=3D112=
+3344920103" target=3D"_blank">Forward this email</a></span></td></tr><tr><t=
+d width=3D"100" rowspan=3D"1" colspan=3D"1"><span style=3D"font-family:verd=
+ana,arial; font-size:8pt; color:#000000;"><br /><a shape=3D"rect" href=3D"h=
+ttp://visitor.constantcontact.com/do?p=3Dun&m=3D001TkV20ChbLeyZaDysc4DByg%3=
+D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e8=
+-eb9329dd0e6b" target=3D"_blank"><img border=3D"0" src=3D"http://img.consta=
+ntcontact.com/letters/images/SafeUnsubscribe_Footer_Logo_New.png" /></a><br=
+ /><br /><div>This email was sent to paul@lucasmail.org by <a style=3D"colo=
+r:#0000ff;" shape=3D"rect" href=3D"mailto:bettermarketstreet@sfdpw.org" tar=
+get=3D"_blank">bettermarketstreet@sfdpw.org</a> <span style=3D"color: #baba=
+ba;"> | </span> &nbsp; </div><div><a style=3D"color:#0000ff;" shape=3D"rect=
+" href=3D"http://visitor.constantcontact.com/do?p=3Doo&m=3D001TkV20ChbLeyZa=
+Dysc4DByg%3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-768=
+6-4b87-b1e8-eb9329dd0e6b" target=3D"_blank">Update Profile/Email Address</a=
+> <span style=3D"color: #bababa;">|</span> Rapid removal with <a style=3D"c=
+olor:#0000ff;" shape=3D"rect" href=3D"http://visitor.constantcontact.com/do=
+?p=3Dun&m=3D001TkV20ChbLeyZaDysc4DByg%3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4=
+ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e8-eb9329dd0e6b" target=3D"_blank">Saf=
+eUnsubscribe</a>&trade;  <span style=3D"color: #bababa;">|</span>  <a style=
+=3D"color:#0000ff;" shape=3D"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D00=
+17BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA7HUTWvJMGuI02XAseyKT0=
+Os6mCABd-IQXzbgGdnavng8ShakE4m3O5yjMy0zjcDFDVRlcAl8S-mdlC9c3YAxKCOVOH2nqPRR=
+tAuRt2Ze3MMIhlhvtR5fN9sswHpt_BBNsbyY2xMZ5YUGn-GcxaGDFzffYLGV2f2yn0mjRyT4eMZ=
+C-RXuTquV3baws5TbTXevdviAjnyDWZs&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n8=
+0khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucH=
+tO6cJ-w=3D=3D" alt=3D"http://www.constantcontact.com/legal/service-provider=
+?cc=3Dabout-service-provider" target=3D"_blank">About our service provider<=
+/a>.</div></span></td></tr><tr><td style=3D"padding: 15px 0px 0px 0px ;" wi=
+dth=3D"100%" rowspan=3D"1" colspan=3D"1"><span style=3D"font-family:verdana=
+,arial; font-size:8pt; color:#000000;"><a shape=3D"rect" href=3D"http://www=
+.constantcontact.com/index.jsp?cc=3DTEM_Basic_204" target=3D"_blank"><img b=
+order=3D"0" src=3D"http://img.constantcontact.com/letters/images/CC_Footer_=
+Logo_New.png" /></a></span><br /></td></tr><tr><td rowspan=3D"1" colspan=3D=
+"1"><div style=3D"font-family:verdana,arial; font-size:8pt; color:#000000;"=
+ id=3D"LETTER.PHYSICALADDRESS"><br />Public Works<span style=3D"color: #bab=
+aba;"> | </span>City Hall room 348<span style=3D"color: #bababa;"> | </span=
+>San Francisco<span style=3D"color: #bababa;"> | </span>CA<span style=3D"co=
+lor: #bababa;"> | </span>94102</div></td></tr></table></td><td rowspan=3D"1=
+" colspan=3D"1"><img height=3D"5" vspace=3D"0" border=3D"0" hspace=3D"0" wi=
+dth=3D"1" alt=3D"" src=3D"https://imgssl.constantcontact.com/letters/images=
+/1101116784221/S.gif" /></td></tr></table></div></td></tr></table>
+</td>
+</tr>
+</table>
+</div></div></body>
+
+------=_Part_1061508272_741448389.1451598838775--

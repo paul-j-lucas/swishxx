@@ -2,7 +2,7 @@
 **      SWISH++
 **      src/encodings/encodings.h
 **
-**      Copyright (C) 2002-2015  Paul J. Lucas
+**      Copyright (C) 2002-2016  Paul J. Lucas
 **
 **      This program is free software; you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -69,6 +69,27 @@ encoded_char_range::value_type encoding_base64(
   encoded_char_range::const_pointer end
 );
 #endif /* WITH_BASE64 */
+
+#ifdef WITH_ENCODED_WORD
+/**
+ * Converts an encoded-word character sequence to its single-character
+ * equivalent.
+ *
+ * Anywhere a space is returned it's because we've encountered an error
+ * condition and the function has to return "something" and a space is
+ * innocuous.
+ *
+ * See also:
+ *    K. Moore.  "RFC 2047: MIME (Multipurpose Internet Mail Extensions) Part
+ *    Three: Message Header Extensions for Non-ASCII Text," Network Working
+ *    Group of the Internet Engineering Task Force, November 1996.
+ */
+encoded_char_range::value_type encoding_encoded_word(
+  encoded_char_range::const_pointer begin,
+  encoded_char_range::const_pointer &pos,
+  encoded_char_range::const_pointer end
+);
+#endif /* WITH_ENCODED_WORD */
 
 #ifdef WITH_QUOTED_PRINTABLE
 /**

@@ -85,6 +85,15 @@ TESTS+=	tests/index-H.test \
 	tests/search-html-no_index-02.test
 endif
 
+if WITH_MAIL
+TESTS+=	tests/index-mail-v1.test \
+	tests/index-mail-v2.test \
+	tests/index-mail-v3.test \
+	tests/search-mail-D.test \
+	tests/search-mail-meta-01.test \
+	tests/search-mail-M.test
+endif
+
 if WITH_MAN
 TESTS+=	tests/index-man-v1.test \
 	tests/index-man-v2.test \

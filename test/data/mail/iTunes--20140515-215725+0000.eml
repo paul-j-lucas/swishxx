@@ -1,0 +1,2837 @@
+From do_not_reply@apple.com Thu May 15 14:57:26 2014
+Delivered-To: paul@lucasmail.org
+Received: by 10.140.31.11 with SMTP id e11csp369152qge;
+        Thu, 15 May 2014 14:57:26 -0700 (PDT)
+X-Received: by 10.66.180.34 with SMTP id dl2mr15850514pac.124.1400191046182;
+        Thu, 15 May 2014 14:57:26 -0700 (PDT)
+Return-Path: <do_not_reply@apple.com>
+Received: from nwk-txn-msbadger0703.apple.com (nwk-txn-msbadger0703.apple.com. [17.151.1.82])
+        by mx.google.com with ESMTP id yi3si3324733pbb.269.2014.05.15.14.57.25
+        for <paul@lucasmail.org>;
+        Thu, 15 May 2014 14:57:26 -0700 (PDT)
+Received-SPF: pass (google.com: domain of do_not_reply@apple.com designates 17.151.1.82 as permitted sender) client-ip=17.151.1.82;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of do_not_reply@apple.com designates 17.151.1.82 as permitted sender) smtp.mail=do_not_reply@apple.com;
+       dkim=pass header.i=@apple.com;
+       dmarc=pass (p=NONE dis=NONE) header.from=apple.com
+DKIM-Signature: v=1; a=rsa-sha1; d=apple.com; s=mailout2048s; c=relaxed/relaxed;
+	q=dns/txt; i=@apple.com; t=1400191045;
+	h=From:Subject:Date:To:MIME-Version:Content-Type;
+	bh=sG90Ha9uhRaxYUeid/Pxt5fobuY=;
+	b=KzmRTgthi9nHpRDjLtlYUGLJ5IA6n0QVNpOPfWP2qHgCC7NCveKpdPv4l2XDTcVd
+	dZtXvB86WhI/UDTM/LmA7j2p4TIJt63TQhfQ5jv6Zz3kvUu7UZoBcXlbJ49Rzn1U
+	vb2Mq6pGErXwUCN/itoTG2GlMhERmZIDdx4KoYXV8HLtCIz+jqYAIbwEksSoaaJ7
+	4GpPNGGkFmH3/xH6v/TQ44/TdldyMMTa6fc80a0qUEBOP74Uo0vHfX6CEKCITUn1
+	i9KZ+qrwHUUL4Lr66h+skzE519+9XzKLzaThMpQd9Z35O5L8nAukm/4wba7s8xOn
+	y+fHtefETREJYlcmXlIY9Q==;
+Date: Thu, 15 May 2014 21:57:25 +0000 (GMT)
+From: iTunes Store <do_not_reply@apple.com>
+To: paul@lucasmail.org
+Message-ID: <558550012.320361400191045293.JavaMail.email@email.apple.com>
+Subject: Introducing iTunes Connect 3 for iOS.
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_16282_1287831844.1400191045293"
+X-EmailType-Id: 10631
+X-Sent-To: paul@lucasmail.org,2,k%2BmjWPCFEH1m5ry2zndhApTuWzZ%2FsWXmBYlTsHG5QWYxZxBDADlHJ0LpCMgLzUQ8MarCIv9J4rzXlJ4ZevhQwiJNydl98ojngCLRMDfDUmqbjWqbQ00rM1BX5FqO7Mv3N1mSXEXffCCqERwB5ss1V0M24rs4%2F5sIOvxK5nfb8TpBk3GNSsNqAou2JPmcR08ZHJKwYGi%2BE7ePTcb%2BBxARzmqtuHcZ%2F7u6F48fKeJmfd7NC9qKaTDqWNq%2B6QihhqMUEq6vT3C%2BUNVeX%2BmTVPteN6p34PlCkEZ3OGyFkwzlIAq0wGJL53XK2eP9u%2FwCIzPgMzFw3emlAt0DYXH%2F8DCrnKq3X7ykI8Y%2Fzjkxd94fd60%3D
+X-Attach-Flag: N
+X-TXN_ID: AABA0C75-394F-4A8C-97CA-CAFA78427299
+X-Business-Group: iTunes
+X-DKIM_SIGN_REQUIRED: YES
+
+------=_Part_16282_1287831844.1400191045293
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-Disposition: inline
+
+
+
+------=_Part_16282_1287831844.1400191045293
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-Disposition: inline
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><!DOCTYPE HT=
+ML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>iTunes Connect</title>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-885=
+9-1">
+  <style type=3D"text/css">
+    A { text-decoration: none; }
+
+    A:link { color: #0088CC; text-decoration: none; }
+
+    A:visited { text-decoration: none; }
+
+    A:active { color: #696969; text-decoration: underline;}
+
+    A:hover { text-decoration: underline; }
+
+    BODY, TD, P, UL, OL {
+    font-family: Helvetica, Lucida Grande, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    color: #666666;
+    text-align: justify;
+    }
+
+    P {
+    margin-bottom: 1em;
+    }
+
+    H1 {
+    line-height:145%;
+    }
+
+    HR {
+    border: 0;
+    border-top: 1px solid #dddddd;
+    margin: 10px 0px 15px 0px;
+    }
+
+    @media only screen and (max-device-width: 481px) and (min-device-pixel-=
+ratio : 2), only screen and (min-device-width: 481px) and (-webkit-min-devi=
+ce-pixel-ratio : 2) {
+    img { visibility:hidden; }
+    *[id=3Dheader] { background:url('https://itc-mzstatic-origin.itunes.app=
+le.com/itc/images/email/email-itc-logo@2X.png') no-repeat 0 top; -webkit-ba=
+ckground-size: 173px 45px; }
+    *[id=3Dhr-fade] { background:url('https://itc-mzstatic-origin.itunes.ap=
+ple.com/itc/images/email/email-hr@2X.png') no-repeat 0 top; -webkit-backgro=
+und-size: 648px 18px; }
+    }
+
+    @media only screen and (max-device-width: 480px) {
+
+    table[class=3D"table"], td[class=3D"cell"] {
+    width: 270px !important;
+    }
+    table[class=3D"table3"], td[class=3D"cell3"] {
+    width: 270px !important;
+    text-align: left !important;
+    }
+    img[id=3D"header"] {
+    width: 135px !important;
+    height: 35px !important;
+    }
+    td[id=3D"header"] {
+    -webkit-background-size: 135px 35px;
+    }
+    table[class=3D"footer_table"] {
+    display: none !important;
+    }
+
+    .hide { max-height: none !important; font-size: 11px !important; displa=
+y: block !important; }
+
+    p {
+    text-align: left !important;
+    }
+
+    }
+  </style>
+</head>
+<body>
+<table class=3D"table" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" ali=
+gn=3D"center" width=3D"700">
+  <tr align=3D"center">
+    <td class=3D"spacer" align=3D"left" valign=3D"top" bgcolor=3D"#ffffff" =
+width=3D"20">
+      <img src=3D"https://itc-mzstatic-origin.itunes.apple.com/itc/images/e=
+mail/spacer.gif" border=3D"0" alt=3D"" width=3D"20" height=3D"1">
+    </td>
+    <td align=3D"left">
+      <table class=3D"table3" width=3D"648" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" align=3D"center" bgcolor=3D"#ffffff" >
+        <tr>
+          <td class=3D"cell3" id=3D"header" width=3D"648" align=3D"left" st=
+yle=3D"padding-bottom: 10px;">
+            <img id=3D"header" src=3D"https://itc-mzstatic-origin.itunes.ap=
+ple.com/itc/images/email/email-itc-logo.png" border=3D"0" alt=3D"iTunes Con=
+nect" width=3D"173" height=3D"45">
+          </td>
+        </tr>
+        <tr>
+          <td class=3D"cell3" style=3D"font-size: 0px; line-height: 1px; ba=
+ckground:none; border-top:solid 1px #dddddd; height:1px; width:648px; margi=
+n:0px 0px 0px 0px; padding-bottom: 15px">=C2=A0</td>
+        </tr>
+        <tr>
+          <td class=3D"cell3" align=3D"left" valign=3D"top" bgcolor=3D"#fff=
+fff" width=3D"648" style=3D"font-family: Helvetica, Lucida Grande, Arial, s=
+ans-serif; font-size: 14px; line-height: 18px; color: #666666; text-align: =
+justify;">
+                       =20
+
+                               =20
+=09<style type=3D"text/css">
+h1, h2, h3, h4 {
+    font-family: Helvetica, Lucida Grande, Arial, sans-serif;
+    color: #666666;
+    line-height:145%;
+    font-weight: 300;
+    -webkit-margin-after: 0.23em;
+    margin-after: 0.23em;
+}
+
+p:first-child {
+    -webkit-margin-before: 0em;
+    margin-before: 0em;
+}
+
+@media only screen and (max-device-width: 480px) {
+    img[id=3D"hero"] {
+        width: 260px !important;
+        height: 236px !important;
+    }
+    td[class=3D"hero_spacer"] {
+        width: 30px !important;
+    }
+    td[class=3D"hero_cell"] {
+        height: 236px !important;
+        width: 260px !important;
+    }
+    table[class=3D"table"], td[class=3D"cell"] {
+              width: 330px !important;
+         }
+        table[class=3D"table3"], td[class=3D"cell3"] {
+              width: 330px !important;
+              text-align: left !important;
+         }
+    h2 {
+        font-size: 19px;
+    }
+}
+
+@media only screen and (min-device-width: 481px) and (min-device-pixel-rati=
+o : 2), only screen and (min-device-width: 481px) and (-webkit-min-device-p=
+ixel-ratio : 2) {
+    *[id=3Dhero] {
+        background:url('http://a1.phobos.apple.com/au/r30/Features6/v4/e2/c=
+6/4b/e2c64b7f-2560-fae0-5e89-9e3b51b98c95/mza_3924714527614439552.png') no-=
+repeat 0 top;
+        -webkit-background-size: 342px 311px;
+        background-position:center center;
+        background-origin: content-box;
+    }
+}
+</style>
+</td>
+</tr>
+<tr>
+    <td class=3D"cell3">
+        <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" style=3D"ma=
+rgin-bottom: 25px; margin-top: 5px;">
+            <tr>
+                <td class=3D"hero_spacer" align=3D"left" valign=3D"top" bgc=
+olor=3D"#ffffff" width=3D"153">
+                    <img src=3D"https://itunesconnect.apple.com/itc/images/=
+email/spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1">
+                </td>
+                <td class=3D"hero_cell" id=3D"hero" align=3D"center" style=
+=3D"text-align: center;" valign=3D"middle" bgcolor=3D"#ffffff" width=3D"367=
+" height=3D"311">
+                    <img id=3D"hero" style=3D"text-align: center;" src=3D"h=
+ttp://a1.phobos.apple.com/au/r30/Features6/v4/e2/c6/4b/e2c64b7f-2560-fae0-5=
+e89-9e3b51b98c95/mza_3924714527614439552.png" alt=3D"iTunes Connect 3 for i=
+OS" width=3D"342" height=3D"311">
+                </td>
+                <td class=3D"hero_spacer" align=3D"left" valign=3D"top" bgc=
+olor=3D"#ffffff" width=3D"154">
+                    <img src=3D"https://itunesconnect.apple.com/itc/images/=
+email/spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1">
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td class=3D"cell3" align=3D"left" valign=3D"top" bgcolor=3D"#ffffff" w=
+idth=3D"648" style=3D"font-family: Helvetica, Lucida Grande, Arial, sans-se=
+rif; font-size: 14px; line-height: 18px; color: #666666; text-align: justif=
+y;">
+        <h2 id=3D"now-for-music-movies-and-tv-shows">Now for music, movies,=
+ and TV shows.</h2>
+        <div>
+        <p>iTunes Connect for iOS isn=E2=80=99t just for app developers and=
+ book publishers anymore. You can now use iTunes Connect for iOS to access =
+any of the content you=E2=80=99ve made available on the iTunes Store, iBook=
+s Store, and App Store.</p>
+    </div>
+        <h2 id=3D"insights-on-the-go">Insights on the go.</h2>
+        <div><p>Use iTunes Connect for iOS to stay current on your content=
+=E2=80=99s latest trends, read what customers are saying about your product=
+s, and more.</p></div>
+        <h2 id=3D"stay-alert">Stay alert.</h2>
+        <div><p>Receive push notifications any time the status of your apps=
+ and books change during review. You can also be alerted when your products=
+ are ready for sale.</p></div>
+        <h2 id=3D"all-new-design">All-new design.</h2>
+        <div><p>iTunes Connect for iOS has a completely new look and feel, =
+bringing you the same elegant design that you have come to expect with iOS =
+7.</p>
+        <p>iTunes Connect for iOS is available on the App Store. <a href=3D=
+"https://itunes.apple.com/us/app/itunes-connect-mobile/id376771144?mt=3D8">=
+Get it now</a> for iPhone, iPad, and iPod touch.</p></div>
+
+
+                       =20
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td class=3D"spacer" align=3D"right" valign=3D"top" bgcolor=3D"#ffffff"=
+ width=3D"20">
+      <img src=3D"https://itc-mzstatic-origin.itunes.apple.com/itc/images/e=
+mail/spacer.gif" border=3D"0" alt=3D"" width=3D"20" height=3D"1">
+    </td>
+  </tr>
+</table>
+<table class=3D"footer_table" width=3D"700" border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0" align=3D"center" style=3D"margin-top:25px; margin-bottom:=
+15px;">
+  <tr>
+    <td class=3D"cell" align=3D"left">=C2=A0</td>
+  </tr>
+  <tr>
+    <td class=3D"cell" style=3D"font-size:10px; line-height: 12px; color:#9=
+f9f9f; font-family: Helvetica, Lucida Grande, Arial, sans-serif; text-align=
+: center; -webkit-text-size-adjust:none;">
+      <a href=3D"http://www.apple.com/itunes/go/itunesconnect/contactus">Co=
+ntact Us</a>  |  <a href=3D"http://itunesconnect.apple.com">iTunes Connect<=
+/a>  |  1 Infinite Loop, Cupertino, CA 95014
+    </td>
+  </tr>
+  <tr>
+    <td class=3D"cell" id=3D"hr-fade" style=3D"text-align: center;">
+      <img id=3D"footer" src=3D"https://itc-mzstatic-origin.itunes.apple.co=
+m/itc/images/email/email-hr.png" width=3D"648" height=3D"18"/>
+    </td>
+  </tr>
+  <tr>
+    <td class=3D"cell" style=3D"font-size:10px; line-height: 12px; color:#9=
+f9f9f; font-family: Helvetica, Lucida Grande, Arial, sans-serif; text-align=
+: center; -webkit-text-size-adjust:none;">
+      <a href=3D"http://www.apple.com/legal/privacy/">Privacy Policy</a>  |=
+  <a href=3D"http://www.apple.com/support/itunes/legal/terms.html">Terms of=
+ Service</a>  |  <a href=3D"http://www.apple.com/support/itunes/legal/polic=
+ies.html">Terms of Sale</a>
+    </td>
+  </tr>
+</table>
+<table class=3D"hide" width=3D"270" border=3D"0" cellspacing=3D"0" cellpadd=
+ing=3D"0" align=3D"center" style=3D"margin-top:45px; margin-bottom:15px; ma=
+x-height: 0px; font-size: 0; display: none;">
+  <tr>
+    <td class=3D"hide" style=3D"max-height: 0px; font-size: 0; display: non=
+e; height: 1px; background:none; border-top:solid 1px #dddddd; width:648px;=
+ margin:0px 0px 0px 0px;">=C2=A0</td>
+  </tr>
+  <tr>
+    <td class=3D"hide" style=3D"line-height: 120%; color:#9f9f9f; font-fami=
+ly: Helvetica, Lucida Grande, Arial, sans-serif; text-align: center; max-he=
+ight: 0px; font-size: 0; display: none; -webkit-text-size-adjust:none;"><br=
+/>
+      <a href=3D"http://www.apple.com/itunes/go/itunesconnect/contactus">Co=
+ntact Us</a>  |  <a href=3D"http://itunesconnect.apple.com">iTunes Connect<=
+/a><br/>1 Infinite Loop, Cupertino, CA 95014
+    </td>
+  </tr>
+  <tr>
+    <td class=3D"hide" align=3D"left" style=3D"max-height: 0px; font-size: =
+0; display: none; line-height: 120%;">=C2=A0</td>
+  </tr>
+  <tr>
+    <td class=3D"hide" style=3D"line-height: 120%; color:#9f9f9f; font-fami=
+ly: Helvetica, Lucida Grande, Arial, sans-serif; text-align: center; max-he=
+ight: 0px; font-size: 0; display: none; -webkit-text-size-adjust:none;">
+      <a href=3D"http://www.apple.com/legal/privacy/">Privacy Policy</a>  |=
+  <a href=3D"http://www.apple.com/support/itunes/legal/terms.html">Terms of=
+ Service</a>  |  <a href=3D"http://www.apple.com/support/itunes/legal/polic=
+ies.html">Terms of Sale</a>
+    </td>
+  </tr>
+</table>
+</body>
+<img src=3D'http://outsideapple.apple.com/img/APPLE_EMAIL_LINK/spacer4.gif?=
+v=3D2&a=3Dk%2BmjWPCFEH1m5ry2zndhApTuWzZ%2FsWXmBYlTsHG5QWYxZxBDADlHJ0LpCMgLz=
+UQ8MarCIv9J4rzXlJ4ZevhQwiJNydl98ojngCLRMDfDUmqbjWqbQ00rM1BX5FqO7Mv3N1mSXEXf=
+fCCqERwB5ss1V0M24rs4%2F5sIOvxK5nfb8TpBk3GNSsNqAou2JPmcR08ZHJKwYGi%2BE7ePTcb=
+%2BBxARzmqtuHcZ%2F7u6F48fKeJmfd7NC9qKaTDqWNq%2B6QihhqMUEq6vT3C%2BUNVeX%2BmT=
+VPteN6p34PlCkEZ3OGyFkwzlIAq0wGJL53XK2eP9u%2FwCIzPgMzFw3emlAt0DYXH%2F8DCrnKq=
+3X7ykI8Y%2Fzjkxd94fd60%3D'/>
+</html>
+------=_Part_16282_1287831844.1400191045293--
+
+From apps-noreply@google.com Wed Feb 04 22:57:23 2015
+Delivered-To: paul@pauljlucas.org
+Received: by 10.140.21.136 with SMTP id 8csp208968qgl;
+        Wed, 4 Feb 2015 22:57:23 -0800 (PST)
+X-Received: by 10.66.102.2 with SMTP id fk2mr3179211pab.149.1423119443061;
+        Wed, 04 Feb 2015 22:57:23 -0800 (PST)
+Return-Path: <3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com>
+Received: from mail-pa0-x245.google.com (mail-pa0-x245.google.com. [2607:f8b0:400e:c03::245])
+        by mx.google.com with ESMTPS id hp4si5137404pbb.9.2015.02.04.22.57.22
+        for <paul@pauljlucas.org>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Feb 2015 22:57:23 -0800 (PST)
+Received-SPF: pass (google.com: domain of 3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com designates 2607:f8b0:400e:c03::245 as permitted sender) client-ip=2607:f8b0:400e:c03::245;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of 3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com designates 2607:f8b0:400e:c03::245 as permitted sender) smtp.mail=3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com;
+       dkim=pass header.i=@google.com;
+       dmarc=pass (p=REJECT dis=NONE) header.from=google.com
+Received: by mail-pa0-f69.google.com with SMTP id rd3so43957613pab.0
+        for <paul@pauljlucas.org>; Wed, 04 Feb 2015 22:57:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=04kcjxRjkBdFwK270ulWTAlYayZjMwjh7Gg2G7BYCrY=;
+        b=nYp8+h/ZQiOC4vf0nWXYtKtsnjYi69NqpW0VqLifKz7dvGMzvewbgd54b9jStXlfmG
+         Nyl5pvIjElkvC/1aDJ0P3MKHESEGQJGtw22ldINXaGyOAKl2I13cI9MdqlkikLFqps3K
+         U59OUZ46M5GqYIqDcTijSe+c7LTrpgHOSgVL/Akn7yo9NtcNc2obSnPS82wNyV++mgrO
+         SmEXI2DsY+zF157VrH7xmhKUys2v8RTqIcJ45C+bc1fSczCdU+wEm8RqfqCocNQVMh7K
+         mPirLT911cHVKB/Qv/Kd1z7+A6BHE5imfRHMDDB/++nlWhlKMm37As7bNUq8yLpZXtEA
+         7ijA==
+MIME-Version: 1.0
+X-Received: by 10.66.65.202 with SMTP id z10mr2068468pas.29.1423119442334;
+ Wed, 04 Feb 2015 22:57:22 -0800 (PST)
+X-Notifications: XEAAAAA9bPswzyapT2r_NiGIiR_Q
+Date: Wed, 04 Feb 2015 22:57:22 -0800 (PST)
+Message-ID: <LDGzp-ujlno8Eqw0sBOt3w@notifications.google.com>
+Subject: Welcome to the new, redesigned Google Admin console
+From: Google Apps <apps-noreply@google.com>
+To: paul@pauljlucas.org
+Cc: pauljlucas@mac.com
+Content-Type: multipart/alternative; boundary=001a11363b7ed557e5050e51d0e8
+
+--001a11363b7ed557e5050e51d0e8
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+R29vZ2xlDQoNCg0KDQpXZWxjb21lIHRvIHRoZSBuZXcsIHJlZGVzaWduZWQgR29vZ2xlIEFkbWlu
+IGNvbnNvbGUNCg0KDQoNCg0KSGVsbG8gQWRtaW5pc3RyYXRvcnMsDQoNCldlJ3JlIGV4Y2l0ZWQg
+dG8gYW5ub3VuY2UgdGhhdCB0aGUgQWRtaW4gY29uc29sZSBoYXMgYmVlbiByZWRlc2lnbmVkIHRv
+ICANCmJldHRlciBtZWV0IHlvdXIgbmVlZHMsIHB1dHRpbmcgeW91ciBtb3N0IGltcG9ydGFudCBj
+b250cm9scyBmcm9udCBhbmQgIA0KY2VudGVyIGFuZCBtYWtpbmcgdGhlIG1vc3QgY29tbW9uIHRh
+c2tzIGVhc2llciB0aGFuIGV2ZXIgdG8gY29tcGxldGUuDQoNCldlJ3ZlIHByZXBhcmVkIGFuIG92
+ZXJ2aWV3IGd1aWRlLCB2aWRlbyB0dXRvcmlhbCwgYW5kIHNjcmVlbnNob3RzIG91dGxpbmluZyAg
+DQpob3cgdG8gY2hhbmdlIHNldHRpbmdzLCBtYW5hZ2UgdXNlcnMsIGFwcGx5IGZpbHRlcnMsIGFu
+ZCBhY2Nlc3Mgb3RoZXIgIA0KZnJlcXVlbnRseSB1c2VkIGZlYXR1cmVzIGluIHRoZSBuZXcgVUku
+DQoNClRoZSByZWRlc2lnbiBpcyBiZWluZyByb2xsZWQgb3V0IGdyYWR1YWxseSB0byBhbGwgZG9t
+YWlucyBvdmVyIHRoZSBjb21pbmcgIA0Kd2Vla3MuIFdlIGhvcGUgeW91IGxpa2UgdGhlIGNoYW5n
+ZXMgYW5kIHdlJ2xsIGNvbnRpbnVlIHRvIHdvcmsgdG8gcHJvdmlkZSAgDQp5b3Ugd2l0aCBlZmZp
+Y2llbnQsIGZyaWVuZGx5LCBhbmQgYWNjZXNzaWJsZSB0b29scy4NCg0KDQoNCg0KU2luY2VyZWx5
+LA0KVGhlIEdvb2dsZSBmb3IgV29yayBUZWFtDQoNCg0KDQqpIDIwMTUgR29vZ2xlIEluYy4gMTYw
+MCBBbXBoaXRoZWF0cmUgUGFya3dheSwgTW91bnRhaW4gVmlldywgQ0EgOTQwNDMNCg0KWW91IGhh
+dmUgcmVjZWl2ZWQgdGhpcyBtYW5kYXRvcnkgZW1haWwgc2VydmljZSBhbm5vdW5jZW1lbnQgdG8g
+dXBkYXRlIHlvdSAgDQphYm91dCBpbXBvcnRhbnQgY2hhbmdlcyB0byB5b3VyIEdvb2dsZSBBcHBz
+IHByb2R1Y3Qgb3IgYWNjb3VudC4NCg0KDQoNCg==
+--001a11363b7ed557e5050e51d0e8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8" />
+
+</head>
+
+<body bgcolor=3D"#ffffff">
+
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" bgco=
+lor=3D"#ffffff" style=3D"background-color: #ffffff;">
+  <tr>
+    <td align=3D"center">
+
+
+
+      <div style=3D"max-width: 558px; margin-top: 0; margin-right: auto; ma=
+rgin-bottom: 0; margin-left: auto; padding-top: 0; padding-right: 10px; pad=
+ding-bottom: 0; padding-left: 10px;">
+        <table align=3D"center" width=3D"100%" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0" style=3D"max-width: 558px; padding-bottom: 0; padding-=
+right: 0; padding-top: 0; padding-left: 0; margin-top: 0; margin-right: 0; =
+margin-bottom: 0; margin-left: 0; font-family: Arial, Helvetica, sans-serif=
+; font-weight: normal; font-size: 13px; line-height: 18px; color: #444444; =
+text-align: left;">
+          <tr>
+            <td valign=3D"top" width=3D"100%" style=3D"padding-left: 0; pad=
+ding-bottom: 18px; padding-right: 0; padding-top: 22px; border-collapse: co=
+llapse; border-bottom-width: 1px; border-bottom-color: #dcdcdc; border-bott=
+om-style: solid;">
+              <img src=3D"http://www.google.com/support/enterprise/static/g=
+apps/art/admin/en/gans/logo_col_126x48.png" alt=3D"Google" title=3D"Google"=
+ width=3D"126" border=3D"0" style=3D"display: block;" />
+            </td>
+          </tr>
+          <tr>
+            <td width=3D"100%" style=3D"padding-top: 44px; padding-right: 0=
+; padding-bottom: 0; padding-left: 0;">
+              <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadd=
+ing=3D"0" bgcolor=3D"#ffffff" style=3D"font-family: Arial, Helvetica, sans-=
+serif; font-weight: normal; font-size: 13px; line-height: 18px; color: #444=
+444; background-color: #ffffff; padding-top: 0; padding-bottom: 0; padding-=
+right: 0; padding-left: 0; margin-left: 0; margin-bottom: 0; margin-top: 0;=
+ margin-right: 0;">
+
+                <tr>
+                  <td valign=3D"top" width=3D"100%" style=3D"font-family: A=
+rial, Helvetica, sans-serif; font-size: 28px; line-height: 32px; color: #1a=
+1a1a; font-weight: normal; text-align: left;">
+
+
+
+                    <!-- /// content: SUBJECT -->
+                    Welcome to the new, redesigned Google Admin console
+                    <!-- End -->
+
+
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td width=3D"100%">
+                    <table width=3D"100%" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">
+                      <tr>
+                        <td valign=3D"top" width=3D"100%" style=3D"padding-=
+left: 0; padding-bottom: 5px; padding-right: 0; padding-top: 5px; font-fami=
+ly: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 13px; lin=
+e-height: 18px; color: #333333; text-align: left;">
+
+
+
+                          <!-- /// content: COPY -->
+
+<p>Hello Administrators,</p>
+
+<p>We&rsquo;re excited to announce that the Admin console has been redesign=
+ed to better meet your needs, putting your most important controls front an=
+d center and making the most common tasks easier than ever to complete.</p>
+<p>We&rsquo;ve prepared an <a href=3D"https://support.google.com/a/answer/6=
+160844">overview guide</a>, <a href=3D"http://youtu.be/5HmttbYH3SQ">video t=
+utorial</a>, and <a href=3D"http://goo.gl/sy6ESj">screenshots</a> outlining=
+ how to change settings, manage users, apply filters, and access other freq=
+uently used features in the new UI.</p>
+<p>The redesign is being rolled out gradually to all domains over the comin=
+g weeks. We hope you like the changes and we&rsquo;ll continue to work to p=
+rovide you with efficient, friendly, and accessible tools.</p>
+                     <!-- End -->
+
+
+
+                        </td>
+                      </tr>
+
+
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign=3D"top" width=3D"100%" style=3D"padding-left: =
+0; padding-bottom: 40px; padding-right: 0; padding-top: 20px; font-family: =
+Arial, Helvetica, sans-serif; font-weight: normal; font-size: 13px; line-he=
+ight: 18px; color: #333333; border-collapse: collapse;  text-align: left;">
+
+
+
+                    <!-- /// content: SIGN-OFF -->
+                    Sincerely,<br /><strong>The Google for Work Team</stron=
+g>
+                    <!-- End -->
+
+
+
+                  </td>
+                </tr>
+
+
+<!-- /// content: Add additional content here-->=20
+               =20
+               =20
+               =20
+<!-- /// content: End of additional content -->                =20
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td width=3D"100%" style=3D"font-family: Arial, Helvetica, sans=
+-serif; font-weight: normal; font-size: 10px; line-height: 14px; color: #66=
+6666; padding-bottom: 0; padding-top: 20px; padding-right: 0; padding-left:=
+ 0; text-align: left;border-top-style: solid; border-top-color: #dcdcdc; bo=
+rder-top-width: 1px;">
+
+
+
+              <!-- /// content: Footer -->
+              &copy; 2015 Google Inc. 1600 Amphitheatre Parkway, Mountain V=
+iew, CA 94043
+              <br /><br />
+              You have received this mandatory email service announcement t=
+o update you about important changes to your Google Apps product or account=
+.
+              <!-- End -->
+
+
+
+            </td>
+          </tr>
+        </table>
+      </div>
+
+
+
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+--001a11363b7ed557e5050e51d0e8--
+
+From paypal@e.paypal.com Tue Sep 15 13:55:10 2015
+Delivered-To: paypal@pauljlucas.org
+Received: by 10.107.131.231 with SMTP id n100csp1787011ioi;
+        Tue, 15 Sep 2015 13:55:10 -0700 (PDT)
+X-Received: by 10.55.27.203 with SMTP id m72mr34977123qkh.39.1442350510183;
+        Tue, 15 Sep 2015 13:55:10 -0700 (PDT)
+Return-Path: <NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com>
+Received: from outbound.na.e.paypal.com (outbound.na.e.paypal.com. [96.47.30.202])
+        by mx.google.com with ESMTPS id v24si18636090qkv.69.2015.09.15.13.55.09
+        for <paypal@pauljlucas.org>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Sep 2015 13:55:10 -0700 (PDT)
+Received-SPF: pass (google.com: domain of NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com designates 96.47.30.202 as permitted sender) client-ip=96.47.30.202;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com designates 96.47.30.202 as permitted sender) smtp.mailfrom=NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com;
+       dkim=pass header.i=@e.paypal.com;
+       dmarc=pass (p=REJECT dis=NONE) header.from=paypal.com
+Return-Path: <NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com>
+DKIM-Signature: v=1; a=rsa-sha1; d=e.paypal.com; s=ED-DKIM-V3; c=relaxed/relaxed;
+	q=dns/txt; i=@e.paypal.com; t=1442350504;
+	h=From:Subject:Date:To:MIME-Version:Content-Type;
+	bh=l2/KDAVI/ki3nqlRXWFKWQBLO6A=;
+	b=DJb1XxX4rQp2lqROkVHuvOBByqeQK25byHGuDVI0IC1LteGfP4V1wM5bbm0lt1VN
+	mdJkN9LBqtx2aoenvXMOt64Dv+4y8p0f6IMDbZpp57Wbs1Hgwd6lHDy89uwC+Ib3
+	4lZduFHenlmQdJFfa2Ge5+YKpJ9BJu9hLv8qIoEMnyE=;
+X-MSFBL: cGF5cGFsQHBhdWxqbHVjYXMub3JnQG5hLmUucGF5cGFsLmNvbV8yMEBkZWZhdWx0
+	QA==
+Received: from [127.0.0.1] ([127.0.0.1:56957])
+	by bm11-06.bo3.e-dialog.com (envelope-from <NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com>)
+	(ecelerity 3.6.4.44580 r(Platform:3.6.4.1)) with ECSTREAM
+	id 7E/65-46741-8A588F55; Tue, 15 Sep 2015 16:55:04 -0400
+Date: Tue, 15 Sep 2015 16:55:04 -0400
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+From: "PayPal" <paypal@e.paypal.com>
+Reply-To: "PayPal" <noreply@e.paypal.com>
+To: paypal@pauljlucas.org
+Subject: Notice of Policy Updates
+Message-Id: <23993-631-NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@e-dialog.com>
+X-Mail-From: NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com
+X-Match: na.e.paypal.com
+X-RCPT-To: paypal@pauljlucas.org
+X-Mailer: EDMAIL R6.00.02
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" =
+/>
+		<meta name=3D"viewport" content=3D"width=3D320" />
+		<title>PayPal</title>
+		<style type=3D"text/css">
+.ReadMsgBody {
+	width: 100%;
+}
+.ExternalClass {
+	width: 100%;
+}
+ @media screen and (max-device-width: 480px) {
+=09=20
+.applelinks1 a {
+		font-family:'Helvetica Neue Light', Helvetica, Arial, sans-serif; !import=
+ant;
+		font-size:11px !important;
+		line-height:15px !important;
+		text-decoration:none !important;
+		color:#8c8c8c !important;
+}
+
+*[class=3Demailwrapto320] {
+	width: 320px !important;
+	height: auto !important;
+}
+
+*[class=3Demailwrapto220] {
+	width: 264px !important;
+	height: auto !important;
+}
+
+*[class=3Demailwrapto90] {
+	width: 90px !important;
+	height: auto !important;
+}
+
+*[class=3Dnomob]{
+	display:none !important;
+
+}
+
+/* Font class */
+
+*[class=3Dfont10]{
+	font-size:10px !important;
+	line-height:13px !important;=20
+	}
+=09
+	*[class=3Dfont10_center]{
+	font-size:10px !important;
+	line-height:13px !important;
+	text-align:center !important;=20
+	}
+
+*[class=3Dfont12]{
+	font-size:12px !important;
+	line-height:16px !important;=20
+}=09
+
+*[class=3Dfont28]{
+	font-size:28px !important;
+	line-height:32px !important;=20
+	}
+
+/* Spacer class */
+
+*[class=3Dresize_w20]{
+	width:20px !important;
+	}
+=09
+	*[class=3Dresize_h20]{
+	height:20px !important;
+	}
+
+/* */
+
+*[class=3Dblock1]{
+	display:block !important;
+}
+
+*[class=3Dlogo_resize]{
+	width:87px !important;
+	height: auto !important;
+}
+
+a {
+	color: #006ba3;
+}
+a img {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+</style>
+		</head>
+		<body bgcolor=3D"#f2f2f2" style=3D"background-color:#f2f2f2;-webkit-text-=
+size-adjust:none; font-family:'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; margin:0; padding:0;">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" bgco=
+lor=3D"#f2f2f2">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table class=3D"emailwrapto320" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"700" align=3D"center">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table class=3D"emailwrapto320" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"700" align=3D"center" bgcolor=3D"#f2f2f2">
+<tr>
+<td height=3D"10" align=3D"left" valign=3D"top"><img style=3D"display:block=
+;" src=3D"https://image.paypal-communication.com/paypal_na/2014/20131210_Te=
+mplates_22725/img_spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1=
+0" /></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top" width=3D"606" class=3D"emailwrapto264"><t=
+able width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+                <td valign=3D"top" align=3D"left" width=3D"1" class=3D"resi=
+ze_w20"><img class=3D"resize_w20" src=3D"https://image.paypal-communication=
+.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" width=3D"1" he=
+ight=3D"1" alt=3D""  border=3D"0" style=3D"display:block;"/></td>
+                <td valign=3D"middle" align=3D"left" class=3D"font10" style=
+=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-serif; font=
+-size: 12px; color: #666666; text-decoration:none; line-height: 16px;"><str=
+ong>Paul Lucas</strong>, PayPal Policy update now available.</td>
+                <td align=3D"left" valign=3D"top" width=3D"30"><img width=
+=3D"30" src=3D"https://image.paypal-communication.com/paypal_na/2014/201312=
+10_Templates_22725/img_spacer.gif" height=3D"1" alt=3D"" border=3D"0" style=
+=3D"display:block;" /></td>
+  </tr>
+</table>
+</td>
+<td class=3D"emailwrapto90" width=3D"94" align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"font10_center" style=3D"font-family: 'Helvetica Neue Light', H=
+elvetica, Arial, sans-serif; font-size: 12px; color: #666666; text-decorati=
+on:none; line-height: 14px;" width=3D"250" align=3D"right" valign=3D"middle=
+"><a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/8ZWF5=
+D/NN/h?a=3DNRJTP4E&b=3DDWI3T6&c=3DCF5PT4X&d=3DPR3B62M&e=3D1&f=3D4afe613ccc2=
+1210525bf" style=3D"color: #666666; text-decoration: underline;" class=3D"f=
+ont10_center" target=3D"_blank"
+>View online</a></td>
+<td class=3D"resize_w20" width=3D"1" align=3D"left" valign=3D"top"><img cla=
+ss=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-comm=
+unication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" borde=
+r=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class=3D"emailwrapto320" align=3D"left" valign=3D"top" bgcolor=3D"#ffff=
+ff">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr1.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#e3e3e3"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"16" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"16" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr2.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"nomob" style=3D"font-size:0; line-height:0;" width=3D"1" align=
+=3D"left" valign=3D"top" bgcolor=3D"#e3e3e3"><img class=3D"nomob" style=3D"=
+display:block;" src=3D"https://image.paypal-communication.com/paypal_na/201=
+4/20131210_Templates_22725/img_spacer.gif" border=3D"0" alt=3D"" width=3D"1=
+" height=3D"1" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"resize_w20" width=3D"25" align=3D"left" valign=3D"top"><img cl=
+ass=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-com=
+munication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" bord=
+er=3D"0" alt=3D"" width=3D"25" height=3D"1" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"column_spli272" width=3D"115" height=3D"36" align=3D"left" val=
+ign=3D"top"><img class=3D"logo_resize" style=3D"display:block;" src=3D"http=
+s://image.paypal-communication.com/paypal_na/common/img_logo_new2.gif" bord=
+er=3D"0" alt=3D"PayPal" width=3D"140" height=3D"34" /></td>
+<td class=3D"column_spli272" align=3D"right" valign=3D"top">
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"18" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"18" /></td>
+</tr>
+<tr>
+<td class=3D"font28" style=3D"font-family: 'Helvetica Neue Light', Helvetic=
+a, Arial, sans-serif; font-size: 42px; line-height: 46px; text-decoration: =
+none; color: #009CDE;" align=3D"left" valign=3D"top">Notice of Policy Updat=
+es</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+<tr>
+<td style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-se=
+rif; font-size: 14px; line-height: 20px; text-decoration: none; color: #999=
+99A;" align=3D"left" valign=3D"top"></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+<tr>
+<td style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-se=
+rif; font-size: 14px; line-height: 20px; text-decoration: none; color: #000=
+000;" align=3D"left" valign=3D"top"><p>
+<span style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-=
+serif; font-size: 14px; line-height: 20px; text-decoration: none; color: #0=
+09cde;" align=3D"left" valign=3D"top">Dear Paul Lucas,</span><br /><br />
+
+We are making some changes to the PayPal User Agreement that will go into e=
+ffect on October 30, 2015.  If you're interested in all the details, <a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/IIJG9=
+3/NN/h" style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; color:#009cde; font-size: 14px; line-height: 20px; text-decoration=
+: underline;" target=3D"_blank"
+>take a look</a> at our Policy Updates Page.  Here are the highlights:
+=20=20
+  <ul style=3D"list-style-type:circle">
+  <li>We revised Section 3 to make it clear that our send money functionali=
+ty requires that the person receiving funds create a PayPal account in orde=
+r to receive the funds.</li>
+  <li>Person to person payments will not be available for payments sent fro=
+m Puerto Rico after October 30th. </li>
+=20=20
+</ul>
+These changes will be effective on October 30, 2015 for all U.S. users.   <=
+br /><br />
+We are also sending you a copy of our Error Resolution Notice below to prov=
+ide helpful information if you have a billing error or unauthorized transac=
+tion on your Account.  Just remember that you can check out our Error Resol=
+ution Notice anytime by going to Section 12 of the <a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/L9NOR=
+L/NN/h" style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; color:#009cde; font-size: 14px; line-height: 20px; text-decoration=
+: underline;" target=3D"_blank"
+>PayPal User Agreement</a>.<br /><br />
+=20=20
+  As always, if you need help or have any questions, give us a call or visi=
+t our <a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/PF12P=
+8/NN/h" style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; color:#009cde; font-size: 14px; line-height: 20px; text-decoration=
+: underline;"
+>Help Center</a>. You can find the link on any page of our website.<br /><b=
+r />
+=20
+  Thank you for being a PayPal customer.
+=20=20
+=20=20
+  <br />
+    <br />
+    Sincerely,
+    <br /><br />
+    PayPal<br /><br />
+    <strong><u>ANNUAL ERROR RESOLUTION NOTICE</u></strong><br />=20
+The purpose of this notice is to provide you with important information abo=
+ut reporting errors in payments made using PayPal's services. You should ke=
+ep this notice for future reference. <br /><br /><strong>What to do About Q=
+uestions or Errors with Your Transactions.</strong><br />You should notify =
+PayPal as soon as you can if you believe:<br />&#8226; your account stateme=
+nt (you can access your account statement by logging into your account) or =
+your transaction confirmation (which is sent to=20
+you via email) is wrong; <br />
+&#8226; you need more information about a transaction listed on the stateme=
+nt or transaction confirmation; or <br />
+&#8226; there has been an unauthorized transaction, other error or unauthor=
+ized access to your PayPal account. <br /><br />
+You must notify us no later than 60 days after the error <strong>FIRST</str=
+ong> appears in your account statement. We will extend the 60-day time peri=
+od if a good reason, such as a hospital stay, prevented you from notifying =
+us within 60 days. <br /><br />
+For any type of error, you can telephone PayPal Customer Service at <strong=
+>(402) 938-3614</strong>. You can also notify us in writing or online by fo=
+llowing the instructions below. <br /><br />
+If the transaction does <strong>not</strong> involve a PayPal debit card, n=
+otify us by either: <br />
+&#8226; Using the form available in the <u>PayPal Resolution Center</u> to =
+file an unauthorized transaction report, or <br />
+&#8226; Writing to PayPal, Attn: Error Resolution Department, P.O. Box 4595=
+0, Omaha, NE 68145-0950.<br /><br />=20
+If the transaction involves <strong>your PayPal debit card</strong>, notify=
+ us by either: <br />
+&#8226; Logging into your PayPal account, going to the "Account Overview" p=
+age and selecting the transaction details for the transaction you wish to d=
+ispute. Then follow the directions provided for disputing the transaction; =
+or <br />
+&#8226; Mailing the Written Statement of Disputed PayPal ATM/Debit Card Tra=
+nsactions Form or other notice to PayPal, Attn: PayPal Debit Card Departmen=
+t, P.O. Box 45950, Omaha, NE 68145-0950, or faxing it to 303-395-2855. A li=
+nk to the form can be found with the directions provided for disputing the =
+transaction as noted above. <br /><br />
+If you notify us orally, we may request that you send us your complaint or =
+question in writing (by following the notification procedures described in =
+the paragraphs above) within 10 business days of providing us the oral noti=
+ce. <br /><br />
+When you notify us (orally or in writing), provide us with the following in=
+formation:<br />=20
+&#8226; Your name and email address you used to register your account, and =
+<br />
+&#8226; A description of the suspected unauthorized transaction or other er=
+ror and an explanation as to why you believe it is incorrect or why you nee=
+d more information, and <br />
+&#8226; The dollar amount (and if possible, the date) of the suspected unau=
+thorized transaction or other error. <br /><br />
+During the course of our investigation, we may request additional informati=
+on from you.<br />=20
+Once you notify us of a suspected error, we will investigate your complaint=
+ or question within 10 business days (or up to 20 business days for new acc=
+ounts =E2=80=93 accounts that have 30 days or fewer since the date of their=
+ first transaction). If we need more time, we may take up to 45 days to com=
+plete our investigation (or up to 90 days for new accounts, point of sale o=
+r foreign initiated transactions). <br /><br />
+If we decide that we need more time to complete our investigation (as expla=
+ined directly above), we will provisionally credit your account for the amo=
+unt of the suspected error. You will receive the provisional credit within =
+10 business days of the date we received your notice (20 business days for =
+new accounts). This will allow you to have use of the money until we comple=
+te the investigation. If we ask you to put your complaint or question in wr=
+iting and we do not receive your written=20
+complaint or question within 10 business days (or 20 for new accounts), we =
+will not provisionally credit your account. <br /><br />
+We will inform you of our decision within three business days after complet=
+ing our investigation. If we determine that there was an error, we will pro=
+mptly correct the error. If you have already received a provisional credit,=
+ you will be allowed to retain those funds. If we decide that there was not=
+ an error, we will include an explanation of our decision in our email to y=
+ou. If you received a provisional credit, we will remove it from your accou=
+nt. You may request copies of the documents=20
+that we used in our investigation. <br /><br />
+For this purpose, our "business days" are Monday through Friday. Holidays a=
+re not included as business days.
+
+  </p></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"12" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"12" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"resize_w20" width=3D"25" align=3D"left" valign=3D"top"><img cl=
+ass=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-com=
+munication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" bord=
+er=3D"0" alt=3D"" width=3D"25" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"15" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"15" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"nomob" style=3D"font-size:0; line-height:0;" width=3D"1" align=
+=3D"left" valign=3D"top" bgcolor=3D"#e3e3e3"><img class=3D"nomob" style=3D"=
+display:block;" src=3D"https://image.paypal-communication.com/paypal_na/201=
+4/20131210_Templates_22725/img_spacer.gif" border=3D"0" alt=3D"" width=3D"1=
+" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr3.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"19" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"19" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#e3e3e3"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr4.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class=3D"emailwrapto320" align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+
+
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"18" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"18" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#d9d9d9"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#ffffff"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"12" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"12" /></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"resize_w20" width=3D"25" align=3D"left" valign=3D"top"><img cl=
+ass=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-com=
+munication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" bord=
+er=3D"0" alt=3D"" width=3D"25" height=3D"1" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td style=3D"font-family:'Helvetica Neue Light', Helvetica, Arial, sans-ser=
+if; font-size:11px; line-height:15px; text-decoration:none; color:#8c8c8c;"=
+ align=3D"left" valign=3D"top"><table border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0">
+<tr>
+  <td colspan=3D"3"><img style=3D"display: block" src=3D"https://image.payp=
+al-communication.com/paypal_na/common/spacer.gif" alt=3D"" width=3D"1" heig=
+ht=3D"10" border=3D"0"></td>
+</tr>
+<tr>
+<td style=3D"font-family:'Helvetica Neue Light', Helvetica, Arial, sans-ser=
+if; font-size: 10px; color: #666666;">Please do not reply to this email. We=
+ are unable to respond to inquiries sent to this address. For immediate ans=
+wers to your questions, visit our Help Center by clicking "Help" located on=
+ any PayPal page or email.<br>
+
+<br>
+Copyright &copy; 2015 PayPal, Inc. All rights reserved. PayPal is located a=
+t 2211 N. First St., San Jose, CA 95131.
+<br>
+<br>
+NA03252
+</td>
+</tr>
+<tr>
+  <td colspan=3D"3"><img style=3D"display: block" src=3D"https://image.payp=
+al-communication.com/paypal_na/common/spacer.gif" alt=3D"" width=3D"1" heig=
+ht=3D"10" border=3D"0"></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"25" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"25" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+<img height=3D"1" width=3D"1" src=3D"https://email-edg.paypal.com/o/NRJTP4E=
+/YHQU9D/IYQ31G0/QU9F4J/2CV1/52"><!-- [[NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J=
+-H-M2-20150912-96e3b69345097]] -->
+
+
+
+From bettermarketstreet@sfdpw.org Thu Dec 31 13:53:59 2015
+Delivered-To: paul@lucasmail.org
+Received: by 10.107.23.132 with SMTP id 126csp7275630iox;
+        Thu, 31 Dec 2015 13:53:59 -0800 (PST)
+X-Received: by 10.140.161.9 with SMTP id h9mr18089895qhh.82.1451598839814;
+        Thu, 31 Dec 2015 13:53:59 -0800 (PST)
+Return-Path: <A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com>
+Received: from ccm185.constantcontact.com (ccm185.constantcontact.com. [208.75.123.185])
+        by mx.google.com with ESMTPS id v17si82629608qhb.37.2015.12.31.13.53.59
+        for <paul@lucasmail.org>
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 31 Dec 2015 13:53:59 -0800 (PST)
+Received-SPF: pass (google.com: domain of A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com designates 208.75.123.185 as permitted sender) client-ip=208.75.123.185;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com designates 208.75.123.185 as permitted sender) smtp.mailfrom=A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com;
+       dkim=pass header.i=@auth.ccsend.com
+Received: from p2-jbsvcs5191.ad.prodcc.net (p2-pen2.ad.prodcc.net [10.252.0.102])
+	by p2-mail129.ccm185.constantcontact.com (Postfix) with ESMTP id BFB2D11EB9AB
+	for <paul@lucasmail.org>; Thu, 31 Dec 2015 16:53:58 -0500 (EST)
+DKIM-Signature: v=1; q=dns/txt; a=rsa-sha256; c=relaxed/relaxed; s=1000073432; d=auth.ccsend.com; h=date:mime-version:subject:X-Feedback-ID:message-id:from:reply-to:list-unsubscribe:to; bh=3nW40/wJ7PXKcRCFW3RkDmQia0sl0rrakWhJcPHgkQA=; b=aOjA7zjUhUkEUU+jMT36OhPsEvuy22J368C6JZtbc9GlRC6i+SxkNVXyArZ8ixvh38k4kr5t8YipSElAXNg5OgjAAWZgUqTmclLxXEW7iiPpcYUGBFMyvksx1DKjHIhhWrVpv2v+2n6w4zbW4wSBJseNmAzV/ndVlzdwm7xLfQM=
+Message-ID: <1123344920103.1102363540785.12690.0.211653JL.1002@scheduler.constantcontact.com>
+Date: Thu, 31 Dec 2015 16:53:58 -0500 (EST)
+From: Better Market Street <bettermarketstreet@sfdpw.org>
+Reply-To: bettermarketstreet@sfdpw.org
+To: paul@lucasmail.org
+Subject: LiDAR survey & traffic alert Jan. 2
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1061508272_741448389.1451598838775"
+List-Unsubscribe: http://visitor.constantcontact.com/do?p=un&m=001TkV20ChbLeyZaDysc4DByg%3D%3D&se=001PplY03ZxXoM%3D&t=001EkZLEx15CcE%3D&llr=rjpz4ucab
+X-Campaign-Activity-ID: d0f7be28-7686-4b87-b1e8-eb9329dd0e6b
+X-Channel-ID: d4310d80-341c-11e3-9053-d4ae529a824a
+X-Mailer: Roving Constant Contact 2012 (http://www.constantcontact.com)
+X-Return-Path-Hint: A0Pe+KHaGS4ex6OuTKd0Oaw==_1102363540785_1DENgDQcEeOQU9SuUpqCSg==@in.constantcontact.com
+X-Roving-Campaignid: 1123344920103
+X-Roving-Id: 1102363540785.12690
+X-Feedback-ID: d4310d80-341c-11e3-9053-d4ae529a824a:d0f7be28-7686-4b87-b1e8-eb9329dd0e6b:1102363540785:CTCT
+X-CTCT-ID: d2b012d0-341c-11e3-8f46-d4ae529a824a
+
+------=_Part_1061508272_741448389.1451598838775
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+www.bettermarketstreetsf.org [http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ec=
+EruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA2JCdFvR8u6SmaDAZOfPLC2k24BERYj9LxU=
+2rnmR72hkwzQePyPcyn_AMPDPRIviS-NdrLSGt7v9w7URAH7LdNO4bM84I51Ai7_FmfDmUrkqyX=
+C1YxA2FGX5RgzlJl2W8A=3D=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYL=
+L4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-=
+w=3D=3D]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+LiDAR survey and traffic alert on Market St.
+Saturday, Jan. 2, 2016
+San Francisco Public Works and the San Francisco Municipal Transportation A=
+gency
+ will be performing a truck-mounted Light Detection and Ranging (LiDAR [htt=
+p://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A=
+2aS2YalA4akQUDbbAYERqJJtEZ0yO3KeOfYi5YPVneaDYB_FgbdSsDYgchbzXszXtVB5lGXtfFS=
+nuNHVl8fmdxQ7CJAlUUOT_lEoD0jS4VnnPB2oQrQcWiKNxu9Zws5dlkC79RmuJUFq5Z82t0SY1n=
+p2ITw3cY=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=
+=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D])
+survey of Market Street. This visual mapping survey is the first step to do=
+ing detailed
+design work for the Better Market Street project. We will gather accurate i=
+nformation
+on the exact locations of features and utilities on Market Street - curbs, =
+BART=20
+portals, light poles, building facades, trees, fire hydrants, sidewalk and =
+street
+elevations and more -- that will enable us to move from conceptual to detai=
+led designs
+and then on to construction.
+Weather permitting, the LiDAR survey will take place in the early morning h=
+ours=20
+of Saturday, January 2, 2016.  To ensure an accurate and complete survey, p=
+lease
+ help us spread this important information about traffic restrictions and t=
+he Better
+Market Street LiDAR survey:
+
+* The survey will take place between 2 a.m. - 6 a.m. on Saturday, Jan. 2, 2=
+016.
+* Stopping or parking on Market Street and the adjacent side streets is pro=
+hibited
+between midnight and 6 a.m. to ensure the street is clear for the survey. T=
+ow-away
+signs have been posted.
+* The survey truck will run along Market Street between Guerrero Street and=
+ Steuart
+Street four times in order to get an accurate representation of all the fea=
+tures.
+* The truck also will measure the street features along all the side street=
+s in=20
+the project area.
+* There are temporary tow-away signs posted along Market Street and in zone=
+s along
+all the cross streets in the vicinity so that vehicles don't block the "vie=
+w" of
+ the curb. PLEASE OBEY THE TEMPORARY TOW-AWAY SIGNS.
+* The LiDAR truck will be escorted by a police motorcade as it cannot stop =
+along
+ Market Street for any reason, since that will distort the data collection.
+* Traffic on the cross streets will be momentarily stopped and required to =
+wait=20
+up to 2 minutes while the survey motorcade passes.
+* The curb lanes will be momentarily closed due to the survey motorcade. Tr=
+affic
+ in the curb lane will be shifted to the center lane as the survey motorcad=
+e passes.
+* Private cars, taxis, commercial vehicles and bicyclists are encouraged to=
+ use=20
+adjacent parallel streets such as Mission Street during these pre-dawn hour=
+s.
+* The LiDAR truck will run with the flow of traffic -- PLEASE STAY ALERT AN=
+D DRIVE
+SLOWLY.
+* The SFMTA signal shop will place all traffic signals on Market Street bet=
+ween=20
+Guerrero and Steuart onto flashing red for all directions for everyone's sa=
+fety.
+The LiDAR survey method is a quick, efficient, non-invasive surveying techn=
+ique=20
+that is used around the world. The LiDAR method was chosen to get accurate =
+information
+while minimizing travel impacts on one of the City's busiest corridors.
+Stay tuned for more information on the status of the Better Market Street p=
+roject
+and next steps on our project page [http://r20.rs6.net/tn.jsp?f=3D0017BeGqt=
+esN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA2WPGmiXhXfK_ntvntjbBvpZwvfzi=
+8ujSqA3daEDz4qaHoaf1bkGxrX9j30Og-HEceutxBNLY7fColdbfnIOTPZiCyO_Lp1LhOHJ0H8k=
+j8AVTMM9ajXvdK1xv9-dKBIqlVh55FCVXSC8&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMB=
+J3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi=
+8ucHtO6cJ-w=3D=3D].
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+The Better Market Street project is led by San Francisco Public Works, the =
+San Francisco
+Planning Department, San Francisco Municipal Transportation Agency, the San=
+ Francisco
+County Transportation Authority, the San Francisco Public Utilities Commiss=
+ion and
+the Office of Economic and Workforce Development in coordination with the M=
+ayor's
+Office and other City departments.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+City of San Francisco Seal [http://www.ci.sf.ca.us/index.asp]         Logo =
+for San
+Francisco County Transit Authority [http://www.sfcta.org/] San Francisco Mu=
+nicipal
+Transportation Agency logo [http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEr=
+uI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA2iGHJLpWjU8xMb5tg9A_FGbYnU7lEIrxW7oc=
+1sbX4BvO03lJvwaGd9Egc7D5E3Yp06HSfPyOqW702dNzIss5oUOSm8TBKSL7-NBrJpbIfESqpH_=
+A1ikIbQ=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D=
+&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D]
+Logo for Office of Economic and Workforce Development [http://www.oewd.org/=
+]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+For more information on the Better Market Street Project, call (415) 558-40=
+45, or
+visit www.bettermarketstreetsf.org
+
+311: &#x4e2d;&#x6587; / Espa=C3=B1ol / Fran=C3=A7ais / &#x65e5;&#x672c;&#x8=
+a9e; / &#xd55c;&#xad6d;&#xc5b4;
+/ &#x0440;&#x0443;&#x0441;&#x0441;&#x043a;&#x0438;&#x0439; / ti&#x1ebf;ng V=
+i&#x1ec7;t
+/ Tagalog / &#x0e20;"&#x0e29;"&#x0e44;&#x0e17;&#x0e22;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+Forward this email
+http://ui.constantcontact.com/sa/fwtf.jsp?llr=3Drjpz4ucab&m=3D1102363540785=
+&ea=3D$paul@lucasmail.org$&a=3D1123344920103
+
+This email was sent to paul@lucasmail.org by bettermarketstreet@sfdpw.org.
+
+Update Profile/Email Address
+http://visitor.constantcontact.com/do?p=3Doo&m=3D001TkV20ChbLeyZaDysc4DByg%=
+3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e=
+8-eb9329dd0e6b
+
+
+Instant removal with SafeUnsubscribe(TM)
+http://visitor.constantcontact.com/do?p=3Dun&m=3D001TkV20ChbLeyZaDysc4DByg%=
+3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e=
+8-eb9329dd0e6b
+
+
+Privacy Policy:
+http://www.constantcontact.com/legal/service-provider?cc=3Dabout-service-pr=
+ovider
+
+Online Marketing by
+Constant Contact(R)
+www.constantcontact.com
+
+
+
+Public Works | City Hall room 348 | San Francisco | CA | 94102
+------=_Part_1061508272_741448389.1451598838775
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+<body topmargin=3D"0" leftmargin=3D"0" rightmargin=3D"0"><!--Copyright (c) =
+1996-2015 Constant Contact. All rights reserved.  Except as permitted under=
+ a separate
+written agreement with Constant Contact, neither the Constant Contact softw=
+are, nor any content that appears on any Constant Contact site,
+including but not limited to, web pages, newsletters, or templates may be r=
+eproduced, republished, repurposed, or distributed without the
+prior written permission of Constant Contact.  For inquiries regarding repr=
+oduction or distribution of any Constant Contact material, please
+contact legal@constantcontact.com.--><div id=3D"rootDiv"><img src=3D"http:/=
+/r20.rs6.net/on.jsp?ca=3Dd0f7be28-7686-4b87-b1e8-eb9329dd0e6b&a=3D110236354=
+0785&d=3D1123344920103&r=3D3&o=3Dhttp://ui.constantcontact.com/images/p1x1.=
+gif&c=3Dd2b012d0-341c-11e3-8f46-d4ae529a824a&ch=3Dd4310d80-341c-11e3-9053-d=
+4ae529a824a" height=3D"1" width=3D"1" />
+<div align=3D"center">
+<table class=3D"body" style=3D"background-color:#FFFFFF;margin:0px 0px 0px =
+0px;" bgcolor=3D"#FFFFFF" border=3D"0" width=3D"100%" cellspacing=3D"0" cel=
+lpadding=3D"0">
+<tr>
+    <td valign=3D"top" rowspan=3D"1" colspan=3D"1" align=3D"center"><table =
+class=3D"TemplateWidth" style=3D"width:600px;" border=3D"0" width=3D"600" c=
+ellspacing=3D"0" cellpadding=3D"1">
+    <tr>
+        <td width=3D"100%" rowspan=3D"1" colspan=3D"1">
+        </td>
+    </tr>
+    <tr>
+        <td class=3D"MainBorder" style=3D"background-color:#FFFFFF;padding:=
+1px;" bgcolor=3D"#FFFFFF" valign=3D"top" rowspan=3D"1" colspan=3D"1" align=
+=3D"left"><table class=3D"MainBodyBG" style=3D"background-color:#FFFFFF;" b=
+gcolor=3D"#FFFFFF" border=3D"0" width=3D"100%" cellspacing=3D"0" cellpaddin=
+g=3D"0">
+        <tr>
+            <td valign=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" a=
+lign=3D"left" />
+        </tr>
+        <tr>
+            <td class=3D"MainPad" style=3D"padding:5px;" valign=3D"top" wid=
+th=3D"100%" rowspan=3D"1" colspan=3D"1"><table class=3D"BlockMargin" style=
+=3D"margin-bottom:6px;" border=3D"0" width=3D"100%" cellpadding=3D"5" cells=
+pacing=3D"0" id=3D"content_LETTER.BLOCK20"><tr><td class=3D"MessageText" st=
+yle=3D"color:#000000;font-family:Arial,Helvetica,sans-serif;font-size:10pt;=
+TEXT-ALIGN: left" rowspan=3D"1" colspan=3D"1" align=3D"left"><br /><a class=
+=3D"imgCaptionAnchor" track=3D"on" shape=3D"rect" href=3D"http://r20.rs6.ne=
+t/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA-KJeys=
+6gsSOqef87edjyAjjkRiJ8-Fx06khxrtvFswNFIdGf0jpJppgKVq1L9yx13W_3IreOS6fWtHqoG=
+A-7RtdxoX1OOH3IrYgG0KOy0-u5zq8lVRHd3WAyTPmNj7TCawmQlzeHkvX&c=3Dh8_AlndhAY5m=
+WX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQ=
+omJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" alt=3D"https://twitter.com/betterm=
+arketsf" target=3D"_blank"><img height=3D"24" vspace=3D"5" name=3D"ACCOUNT.=
+IMAGE.938" border=3D"0" hspace=3D"5" width=3D"79" src=3D"http://files.ctctc=
+dn.com/13dbcf9a001/e435c4f4-9cf9-45bc-86df-ea9a2cca2770.png" /></a>&nbsp;&n=
+bsp;</td></tr></table><table class=3D"BlockMargin" style=3D"margin-bottom:6=
+px;" border=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"=
+content_LETTER.BLOCK23"><tr><td style=3D"FONT-FAMILY: calibri, helvetica, a=
+rial, sans-serif; COLOR: #9fbf23; FONT-SIZE: 14pt" valign=3D"top" rowspan=
+=3D"1" colspan=3D"1">
+<div style=3D"TEXT-ALIGN: center" align=3D"center"><strong><a style=3D"COLO=
+R: #9fbf23; TEXT-DECORATION: none" track=3D"on" shape=3D"rect" href=3D"http=
+://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2=
+aS2YalA2JCdFvR8u6SmaDAZOfPLC2k24BERYj9LxU2rnmR72hkwzQePyPcyn_AMPDPRIviS-Ndr=
+LSGt7v9w7URAH7LdNO4bM84I51Ai7_FmfDmUrkqyXC1YxA2FGX5RgzlJl2W8A=3D=3D&c=3Dh8_=
+AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7P=
+lbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" linktype=3D"1" alt=3D"htt=
+p://www.bettermarketstreetsf.org" target=3D"_blank">www.bettermarketstreets=
+f.org</a></strong></div></td></tr></table>
+           =20
+           =20
+           =20
+           =20
+            <table class=3D"BlockMargin" style=3D"margin-bottom:6px;" borde=
+r=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LE=
+TTER.BLOCK22"><tr><td style=3D"FONT-FAMILY: calibri, helvetica, arial, sans=
+-serif; COLOR: #9fbf23; FONT-SIZE: 14pt" valign=3D"top" rowspan=3D"1" colsp=
+an=3D"1">
+<div style=3D"TEXT-ALIGN: center" align=3D"center"><img vspace=3D"5" border=
+=3D"0" name=3D"ACCOUNT.IMAGE.1020" hspace=3D"5" width=3D"585" alt=3D"Better=
+ Market Street logo" src=3D"http://files.ctctcdn.com/13dbcf9a001/05e60975-e=
+f92-4d79-9e66-bcac25eacad9.jpg">&nbsp;</img></div></td></tr></table><table =
+class=3D"BlockMargin" style=3D"margin-bottom:6px;BACKGROUND-COLOR: #000000"=
+ bgcolor=3D"#000000" border=3D"0" width=3D"100%" cellpadding=3D"5" cellspac=
+ing=3D"0" id=3D"content_LETTER.BLOCK13"><tr><td class=3D"MessageText" style=
+=3D"color:#000000;font-family:Arial,Helvetica,sans-serif;font-size:10pt;TEX=
+T-ALIGN: left" rowspan=3D"1" colspan=3D"1" align=3D"left"><br /></td></tr><=
+/table><table class=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D"=
+0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.=
+BLOCK6"><tr><td style=3D"color: #000000;" valign=3D"bottom" rowspan=3D"1" c=
+olspan=3D"1" align=3D"left"><img vspace=3D"5" border=3D"0" name=3D"ACCOUNT.=
+IMAGE.1189" hspace=3D"5" width=3D"585" src=3D"http://files.ctctcdn.com/13db=
+cf9a001/577183ba-af4c-48ce-90e9-63ddef95ccc0.png"><div style=3D"text-align:=
+ center;" align=3D"center"><span>&nbsp; </span></div><span>
+<div><strong>
+<div style=3D"text-align: center; margin-top: 0px; font-family: franklin go=
+thic medium, arial, helvetica, sans-serif; margin-bottom: 0px; color: #3366=
+ff; font-size: 18pt;" align=3D"center">
+<div>LiDAR survey and traffic alert on Market St.</div>
+<div>Saturday, Jan. 2, 2016</div>
+</div>
+<div style=3D"margin-top: 0px; margin-bottom: 0px;"><br /></div>
+</strong>
+<div>
+<div style=3D"font-family: calibri, helvetica, arial, sans-serif; font-size=
+: 11pt;">
+<div style=3D"font-family: calibri, helvetica, arial, sans-serif; font-size=
+: 11pt;">
+<div style=3D"font-family: calibri, helvetica, arial, sans-serif; font-size=
+: 11pt;">
+<div style=3D"margin-top: 0px; margin-bottom: 0px;">
+<div style=3D"font-size: 12pt;">San Francisco Public Works and the San Fran=
+cisco Municipal Transportation Agency will be performing a truck-mounted Li=
+ght Detection and Ranging (<a style=3D"color: blue; text-decoration: underl=
+ine;" track=3D"on" shape=3D"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D001=
+7BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA4akQUDbbAYERqJJtEZ0yO3=
+KeOfYi5YPVneaDYB_FgbdSsDYgchbzXszXtVB5lGXtfFSnuNHVl8fmdxQ7CJAlUUOT_lEoD0jS4=
+VnnPB2oQrQcWiKNxu9Zws5dlkC79RmuJUFq5Z82t0SY1np2ITw3cY=3D&c=3Dh8_AlndhAY5mWX=
+1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQom=
+JHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" linktype=3D"1" alt=3D"http://oceanse=
+rvice.noaa.gov/facts/lidar.html" target=3D"_blank">LiDAR</a>) survey of Mar=
+ket Street. This visual mapping survey is the first step to doing detailed =
+design work for the Better Market Street project. We will gather accurate i=
+nformation on the exact locations of features and utilities on Market Stree=
+t - curbs, BART portals, light poles, building facades, trees, fire hydrant=
+s, sidewalk and street elevations and more -- that will enable us to move f=
+rom conceptual to detailed designs and then on to construction.</div>
+<div style=3D"font-size: 12pt;">&nbsp;</div>
+<div style=3D"font-size: 12pt;">Weather permitting, the LiDAR survey will t=
+ake place in the early morning hours of Saturday, January 2, 2016.&nbsp; To=
+ ensure an accurate and complete survey, please help us spread this importa=
+nt information about traffic restrictions and the Better Market Street LiDA=
+R survey:</div>
+<div style=3D"font-size: 12pt;">&nbsp;</div>
+<ul><li style=3D"font-size: 12pt;">The survey will take place between 2 a.m=
+. - 6 a.m. on Saturday, Jan. 2, 2016.</li><li style=3D"font-size: 12pt;">St=
+opping or parking on Market Street and the adjacent side streets is prohibi=
+ted between midnight and 6 a.m. to ensure the street is clear for the surve=
+y. Tow-away signs have been posted.</li><li style=3D"font-size: 12pt;">The =
+survey truck will run along Market Street between Guerrero Street and Steua=
+rt Street four times in order to get an accurate representation of all the =
+features. </li><li style=3D"font-size: 12pt;">The truck also will measure t=
+he street features along all the side streets in the project area.</li><li =
+style=3D"font-size: 12pt;">There are temporary tow-away signs posted along =
+Market Street and in zones along all the cross streets in the vicinity so t=
+hat vehicles don't block the "view" of the curb. PLEASE OBEY THE TEMPORARY =
+TOW-AWAY SIGNS. </li><li style=3D"font-size: 12pt;">The LiDAR truck will be=
+ escorted by a police motorcade as it cannot stop along Market Street for a=
+ny reason, since that will distort the data collection.</li><li style=3D"fo=
+nt-size: 12pt;">Traffic on the cross streets will be momentarily stopped an=
+d required to wait up to 2 minutes while the survey motorcade passes. </li>=
+<li style=3D"font-size: 12pt;">The curb lanes will be momentarily closed du=
+e to the survey motorcade. Traffic in the curb lane will be shifted to the =
+center lane as the survey motorcade passes. </li><li style=3D"font-size: 12=
+pt;">Private cars, taxis, commercial vehicles and bicyclists are encouraged=
+ to use adjacent parallel streets such as Mission Street during these pre-d=
+awn hours.&nbsp; </li><li style=3D"font-size: 12pt;">The LiDAR truck will r=
+un with the flow of traffic -- PLEASE STAY ALERT AND DRIVE SLOWLY.</li><li =
+style=3D"font-size: 12pt;">The SFMTA signal shop will place all traffic sig=
+nals on Market Street between Guerrero and Steuart onto flashing red for al=
+l directions for everyone's safety.</li></ul>
+<div style=3D"font-size: 12pt;">The LiDAR survey method is a quick, efficie=
+nt, non-invasive surveying technique that is used around the world. The LiD=
+AR method was chosen to get accurate information while minimizing travel im=
+pacts on one of the City's busiest corridors.</div>
+<div style=3D"font-size: 12pt;">&nbsp;</div>
+<div style=3D"font-size: 12pt;">Stay tuned for more information on the stat=
+us of the Better Market Street project and next steps on our <a style=3D"co=
+lor: blue; text-decoration: underline;" track=3D"on" shape=3D"rect" href=3D=
+"http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9=
+cL3A2aS2YalA2WPGmiXhXfK_ntvntjbBvpZwvfzi8ujSqA3daEDz4qaHoaf1bkGxrX9j30Og-HE=
+ceutxBNLY7fColdbfnIOTPZiCyO_Lp1LhOHJ0H8kj8AVTMM9ajXvdK1xv9-dKBIqlVh55FCVXSC=
+8&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_=
+ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" linktype=3D"1" a=
+lt=3D"http://www.bettermarketstreetsf.org/" target=3D"_blank">project page<=
+/a>. &nbsp;</div>
+<br /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</span></img></td></tr></table><table class=3D"BlockMargin" style=3D"margin=
+-bottom:6px;BACKGROUND-COLOR: #000000" bgcolor=3D"#000000" border=3D"0" wid=
+th=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOCK1=
+3"><tr><td class=3D"MessageText" style=3D"color:#000000;font-family:Arial,H=
+elvetica,sans-serif;font-size:10pt;TEXT-ALIGN: left" rowspan=3D"1" colspan=
+=3D"1" align=3D"left"><br /></td></tr></table></td>
+        </tr>
+        </table></td>
+    </tr>
+    <tr>
+        <td height=3D"10" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=
+=3D"left">           =20
+       =20
+       =20
+       =20
+       =20
+        <table class=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D=
+"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER=
+.BLOCK8"><tr><td style=3D"font-family: calibri, helvetica, arial, sans-seri=
+f; color: #000000; font-size: 12pt;" valign=3D"top" rowspan=3D"1" colspan=
+=3D"1">
+<div>The Better Market Street project is led by San Francisco Public Works,=
+ the San Francisco Planning Department, San Francisco Municipal Transportat=
+ion Agency, the San Francisco County Transportation Authority, the San Fran=
+cisco Public Utilities Commission and the Office of Economic and Workforce =
+Development in coordination with the Mayor's Office and other City departme=
+nts.</div>
+</td></tr></table><table class=3D"BlockMargin" style=3D"margin-bottom:6px;"=
+ border=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"cont=
+ent_LETTER.BLOCK14"><tr><td class=3D"MessageText" style=3D"color:#000000;fo=
+nt-family:Arial,Helvetica,sans-serif;font-size:10pt;TEXT-ALIGN: left" rowsp=
+an=3D"1" colspan=3D"1" align=3D"left"><br /></td></tr></table><table class=
+=3D"BlockMargin" style=3D"margin-bottom:6px;display: table;" border=3D"0" w=
+idth=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOC=
+K14"><tr><td style=3D"font-family: calibri, helvetica, arial, sans-serif; c=
+olor: #000000; font-size: 12pt;" valign=3D"top" rowspan=3D"1" colspan=3D"1"=
+>
+<div style=3D"text-align: center;" align=3D"center"><a class=3D"imgCaptionA=
+nchor" track=3D"off" shape=3D"rect" href=3D"http://www.ci.sf.ca.us/index.as=
+p" alt=3D"http://www.ci.sf.ca.us/index.asp" target=3D"_blank"><img height=
+=3D"49" vspace=3D"5" name=3D"ACCOUNT.IMAGE.461" border=3D"0" width=3D"50" a=
+lt=3D"City of San Francisco Seal" src=3D"http://files.ctctcdn.com/13dbcf9a0=
+01/0fe218c1-bec0-4665-83e0-bc3b324153f2.jpg" /></a>&nbsp; &nbsp; &nbsp; &nb=
+sp;&nbsp;  <a class=3D"imgCaptionAnchor" track=3D"off" shape=3D"rect" href=
+=3D"http://www.sfpublicworks.org" alt=3D"http://www.sfpublicworks.org" targ=
+et=3D"_blank"><img height=3D"68" vspace=3D"5" border=3D"0" name=3D"ACCOUNT.=
+IMAGE.1131" hspace=3D"5" width=3D"75" src=3D"http://files.ctctcdn.com/13dbc=
+f9a001/9b48ec82-e298-4bfd-85f6-f6ff3bfb7911.jpg" /></a>&nbsp; &nbsp; &nbsp;=
+  <a class=3D"imgCaptionAnchor" track=3D"off" shape=3D"rect" href=3D"http:/=
+/www.sfcta.org/" alt=3D"http://www.sfcta.org/" target=3D"_blank"><img heigh=
+t=3D"50" vspace=3D"5" name=3D"ACCOUNT.IMAGE.783" border=3D"0" hspace=3D"5" =
+width=3D"50" alt=3D"Logo for San Francisco County Transit Authority" src=3D=
+"http://files.ctctcdn.com/13dbcf9a001/aef79083-3a2c-44d4-8de7-c8508466836a.=
+jpg" /></a><a class=3D"imgCaptionAnchor" track=3D"on" shape=3D"rect" href=
+=3D"http://r20.rs6.net/tn.jsp?f=3D0017BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLaw=
+Hv9cL3A2aS2YalA2iGHJLpWjU8xMb5tg9A_FGbYnU7lEIrxW7oc1sbX4BvO03lJvwaGd9Egc7D5=
+E3Yp06HSfPyOqW702dNzIss5oUOSm8TBKSL7-NBrJpbIfESqpH_A1ikIbQ=3D&c=3Dh8_AlndhA=
+Y5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkN=
+RrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D" alt=3D"http://www.sfmta.org" ta=
+rget=3D"_blank"><img height=3D"52" vspace=3D"5" name=3D"ACCOUNT.IMAGE.940" =
+border=3D"0" hspace=3D"5" width=3D"100" alt=3D"San Francisco Municipal Tran=
+sportation Agency logo" src=3D"http://files.ctctcdn.com/13dbcf9a001/47e5e56=
+2-959e-4108-b4b7-08e9c79b89fb.jpg" /></a>&nbsp;&nbsp;</div>
+<div style=3D"text-align: center;" align=3D"center">&nbsp;   <a class=3D"im=
+gCaptionAnchor" track=3D"on" href=3D"http://r20.rs6.net/tn.jsp?f=3D0017BeGq=
+tesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA6O5KCmYLwl1qpdUNtcjJun8oRgU=
+w5wpw0DLCh670VwKlpovQ06NdSeksX0nNxwINY91hK9mT3I155s-BjJVU6adrb0_fuh_3Pdi6Jq=
+Hwf-J4W30HMUAxqg=3D&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n80khQYLL4MrKBo=
+rzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucHtO6cJ-w=3D=3D=
+" shape=3D"rect" alt=3D"http://www.sfwater.org" target=3D"_blank"><img heig=
+ht=3D"33" vspace=3D"5" name=3D"ACCOUNT.IMAGE.1136" border=3D"0" hspace=3D"5=
+" width=3D"125" src=3D"http://files.ctctcdn.com/13dbcf9a001/fbb35008-b719-4=
+1d7-8d6c-34bafc32f836.jpg" /></a>&nbsp;&nbsp; &nbsp; &nbsp;<a class=3D"imgC=
+aptionAnchor" style=3D"font-size: 12pt;" track=3D"off" shape=3D"rect" href=
+=3D"http://sfplanning.org/" alt=3D"http://sfplanning.org/" target=3D"_blank=
+"><img height=3D"65" vspace=3D"5" border=3D"0" name=3D"ACCOUNT.IMAGE.1138" =
+hspace=3D"5" width=3D"65" src=3D"http://files.ctctcdn.com/13dbcf9a001/b5b0b=
+d3a-6b94-42cd-89cd-8e9283bcd17b.png" /></a>&nbsp;&nbsp;<span style=3D"font-=
+size: 12pt;">&nbsp; &nbsp;</span><a class=3D"imgCaptionAnchor" style=3D"fon=
+t-size: 12pt;" track=3D"off" shape=3D"rect" href=3D"http://www.oewd.org/" a=
+lt=3D"http://www.oewd.org/" target=3D"_blank"><img height=3D"29" vspace=3D"=
+5" name=3D"ACCOUNT.IMAGE.786" border=3D"0" hspace=3D"5" width=3D"124" alt=
+=3D"Logo for Office of Economic and Workforce Development" src=3D"http://fi=
+les.ctctcdn.com/13dbcf9a001/3d230755-0316-4ba0-9992-3f6e1c248545.jpg" /></a=
+><span style=3D"font-size: 12pt;">&nbsp;</span></div>
+</td></tr></table><table class=3D"BlockMargin" style=3D"margin-bottom:6px;"=
+ border=3D"0" width=3D"100%" cellpadding=3D"5" cellspacing=3D"0" id=3D"cont=
+ent_LETTER.BLOCK14"><tr><td class=3D"MessageText" style=3D"color:#000000;fo=
+nt-family:Arial,Helvetica,sans-serif;font-size:10pt;TEXT-ALIGN: left" rowsp=
+an=3D"1" colspan=3D"1" align=3D"left"><br /></td></tr></table><table class=
+=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D"0" width=3D"100%" c=
+ellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOCK5"><tr><td cla=
+ss=3D"ClosingText" style=3D"color:#666666;font-family:Arial,Helvetica,sans-=
+serif;font-size:10pt;TEXT-ALIGN: left" valign=3D"bottom" rowspan=3D"1" cols=
+pan=3D"1" align=3D"left"><span style=3D"FONT-FAMILY: calibri, helvetica, ar=
+ial, sans-serif; COLOR: #000000; FONT-SIZE: 12pt"><span>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><span>For more information=
+ on the Better Market Street Project, call (415) 558-4045, or visit <a shap=
+e=3D"rect">www.bettermarketstreetsf.org</a></span></p></span>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 30px">&nbsp;<=
+/p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</p><span style=3D"F=
+ONT-FAMILY: calibri, helvetica, arial, sans-serif; COLOR: #000000; FONT-SIZ=
+E: 12pt">
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><span><strong><img style=
+=3D"TEXT-ALIGN: left" height=3D"34" vspace=3D"5" name=3D"ACCOUNT.IMAGE.797"=
+ border=3D"0" hspace=3D"5" width=3D"34" src=3D"http://files.ctctcdn.com/13d=
+bcf9a001/f7399418-35d7-4751-892a-d3191b3a9726.jpg" align=3D"left">311</img>=
+</strong><span>: </span><span>&#x4e2d;&#x6587;</span><span> / </span><span>=
+Espa=C3=B1ol /</span><span> Fran=C3=A7ais</span><span> / </span><span>&#x65=
+e5;&#x672c;&#x8a9e;</span><span> / </span><span>&#xd55c;&#xad6d;&#xc5b4;</s=
+pan><span> / </span><span>&#x0440;&#x0443;&#x0441;&#x0441;&#x043a;&#x0438;&=
+#x0439;</span><span> / </span><span>ti&#x1ebf;ng Vi&#x1ec7;t</span><span> /=
+ </span><span>Tagalog</span><span> / </span><span>&#x0e20;"&#x0e29;"&#x0e44=
+;&#x0e17;&#x0e22;</span></span></p></span></span></td></tr></table><table c=
+lass=3D"BlockMargin" style=3D"margin-bottom:6px;" border=3D"0" width=3D"100=
+%" cellpadding=3D"5" cellspacing=3D"0" id=3D"content_LETTER.BLOCK14"><tr><t=
+d class=3D"MessageText" style=3D"color:#000000;font-family:Arial,Helvetica,=
+sans-serif;font-size:10pt;TEXT-ALIGN: left" rowspan=3D"1" colspan=3D"1" ali=
+gn=3D"left"><br /></td></tr></table></td>
+    </tr>
+    </table>
+    </td>
+</tr>
+</table>
+</div>
+<div id=3D"footerContainer" align=3D"center" style=3D"background-color:#fff=
+fff;">
+<table style=3D"background-color:#ffffff;" border=3D"0" width=3D"100%" cell=
+padding=3D"0" cellspacing=3D"0" id=3D"footerPanelWrap">
+<tr>
+<td rowspan=3D"1" colspan=3D"1" align=3D"center">
+
+<table style=3D"background-color:#ffffff" border=3D"0" width=3D"100%" cells=
+pacing=3D"0" cellpadding=3D"0"><tr><td valign=3D"top" rowspan=3D"1" colspan=
+=3D"1" align=3D"left"><div style=3D"max-width:620px;margin-left:auto;margin=
+-right:auto;" align=3D"center"><table style=3D"margin-left:auto;margin-righ=
+t:auto;" border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><t=
+r><td rowspan=3D"1" colspan=3D"1"><img height=3D"5" vspace=3D"0" border=3D"=
+0" hspace=3D"0" width=3D"1" alt=3D"" src=3D"https://imgssl.constantcontact.=
+com/letters/images/1101116784221/S.gif" /></td><td valign=3D"top" width=3D"=
+620" rowspan=3D"1" colspan=3D"1" align=3D"center"><table style=3D"font-fami=
+ly:verdana,arial; font-size:8pt; color:#000000;" border=3D"0" width=3D"100%=
+" cellspacing=3D"0" cellpadding=3D"0"><tr><td rowspan=3D"1" colspan=3D"2"><=
+span style=3D"font-family:verdana,arial; font-weight:bold; font-size:8pt; c=
+olor:#000000;"><a shape=3D"rect" href=3D"http://ui.constantcontact.com/sa/f=
+wtf.jsp?llr=3Drjpz4ucab&m=3D1102363540785&ea=3Dpaul%40lucasmail.org&a=3D112=
+3344920103" target=3D"_blank">Forward this email</a></span></td></tr><tr><t=
+d width=3D"100" rowspan=3D"1" colspan=3D"1"><span style=3D"font-family:verd=
+ana,arial; font-size:8pt; color:#000000;"><br /><a shape=3D"rect" href=3D"h=
+ttp://visitor.constantcontact.com/do?p=3Dun&m=3D001TkV20ChbLeyZaDysc4DByg%3=
+D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e8=
+-eb9329dd0e6b" target=3D"_blank"><img border=3D"0" src=3D"http://img.consta=
+ntcontact.com/letters/images/SafeUnsubscribe_Footer_Logo_New.png" /></a><br=
+ /><br /><div>This email was sent to paul@lucasmail.org by <a style=3D"colo=
+r:#0000ff;" shape=3D"rect" href=3D"mailto:bettermarketstreet@sfdpw.org" tar=
+get=3D"_blank">bettermarketstreet@sfdpw.org</a> <span style=3D"color: #baba=
+ba;"> | </span> &nbsp; </div><div><a style=3D"color:#0000ff;" shape=3D"rect=
+" href=3D"http://visitor.constantcontact.com/do?p=3Doo&m=3D001TkV20ChbLeyZa=
+Dysc4DByg%3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4ae529a824a&ca=3Dd0f7be28-768=
+6-4b87-b1e8-eb9329dd0e6b" target=3D"_blank">Update Profile/Email Address</a=
+> <span style=3D"color: #bababa;">|</span> Rapid removal with <a style=3D"c=
+olor:#0000ff;" shape=3D"rect" href=3D"http://visitor.constantcontact.com/do=
+?p=3Dun&m=3D001TkV20ChbLeyZaDysc4DByg%3D%3D&ch=3Dd4310d80-341c-11e3-9053-d4=
+ae529a824a&ca=3Dd0f7be28-7686-4b87-b1e8-eb9329dd0e6b" target=3D"_blank">Saf=
+eUnsubscribe</a>&trade;  <span style=3D"color: #bababa;">|</span>  <a style=
+=3D"color:#0000ff;" shape=3D"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D00=
+17BeGqtesN4ecEruI0e5I_m8jV0KSqRdMberLawHv9cL3A2aS2YalA7HUTWvJMGuI02XAseyKT0=
+Os6mCABd-IQXzbgGdnavng8ShakE4m3O5yjMy0zjcDFDVRlcAl8S-mdlC9c3YAxKCOVOH2nqPRR=
+tAuRt2Ze3MMIhlhvtR5fN9sswHpt_BBNsbyY2xMZ5YUGn-GcxaGDFzffYLGV2f2yn0mjRyT4eMZ=
+C-RXuTquV3baws5TbTXevdviAjnyDWZs&c=3Dh8_AlndhAY5mWX1ERJesPXZVQYOEcwgcMBJ3n8=
+0khQYLL4MrKBorzA=3D=3D&ch=3Doe_ymFhi3t7PlbkfkNRrQomJHrrefE8uACoElOEwzRi8ucH=
+tO6cJ-w=3D=3D" alt=3D"http://www.constantcontact.com/legal/service-provider=
+?cc=3Dabout-service-provider" target=3D"_blank">About our service provider<=
+/a>.</div></span></td></tr><tr><td style=3D"padding: 15px 0px 0px 0px ;" wi=
+dth=3D"100%" rowspan=3D"1" colspan=3D"1"><span style=3D"font-family:verdana=
+,arial; font-size:8pt; color:#000000;"><a shape=3D"rect" href=3D"http://www=
+.constantcontact.com/index.jsp?cc=3DTEM_Basic_204" target=3D"_blank"><img b=
+order=3D"0" src=3D"http://img.constantcontact.com/letters/images/CC_Footer_=
+Logo_New.png" /></a></span><br /></td></tr><tr><td rowspan=3D"1" colspan=3D=
+"1"><div style=3D"font-family:verdana,arial; font-size:8pt; color:#000000;"=
+ id=3D"LETTER.PHYSICALADDRESS"><br />Public Works<span style=3D"color: #bab=
+aba;"> | </span>City Hall room 348<span style=3D"color: #bababa;"> | </span=
+>San Francisco<span style=3D"color: #bababa;"> | </span>CA<span style=3D"co=
+lor: #bababa;"> | </span>94102</div></td></tr></table></td><td rowspan=3D"1=
+" colspan=3D"1"><img height=3D"5" vspace=3D"0" border=3D"0" hspace=3D"0" wi=
+dth=3D"1" alt=3D"" src=3D"https://imgssl.constantcontact.com/letters/images=
+/1101116784221/S.gif" /></td></tr></table></div></td></tr></table>
+</td>
+</tr>
+</table>
+</div></div></body>
+
+------=_Part_1061508272_741448389.1451598838775--
+
+From sfmta@public.govdelivery.com Thu Dec 31 14:03:58 2015
+Delivered-To: paul@lucasmail.org
+Received: by 10.107.23.132 with SMTP id 126csp7278959iox;
+        Thu, 31 Dec 2015 14:03:58 -0800 (PST)
+X-Received: by 10.107.164.141 with SMTP id d13mr73438906ioj.88.1451599438718;
+        Thu, 31 Dec 2015 14:03:58 -0800 (PST)
+Return-Path: <messages@public.govdelivery.com>
+Received: from mailer158083.service.govdelivery.com (mailer158083.service.govdelivery.com. [209.134.158.83])
+        by mx.google.com with ESMTP id 64si21567455iop.175.2015.12.31.14.03.58
+        for <paul@lucasmail.org>;
+        Thu, 31 Dec 2015 14:03:58 -0800 (PST)
+Received-SPF: pass (google.com: domain of messages@public.govdelivery.com designates 209.134.158.83 as permitted sender) client-ip=209.134.158.83;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of messages@public.govdelivery.com designates 209.134.158.83 as permitted sender) smtp.mailfrom=messages@public.govdelivery.com;
+       dkim=pass header.i=@public.govdelivery.com
+X-VirtualServer: VSG003, mailer158083.service.govdelivery.com, 172.24.0.83
+X-VirtualServerGroup: VSG003
+X-MailingID: 17559554::20151231.53311141::1001::MDB-PRD-BUL-20151231.53311141::paul@lucasmail.org::791_0
+X-SMHeaderMap: mid="X-MailingID"
+X-Destination-ID: paul@lucasmail.org
+X-SMFBL: cGF1bEBsdWNhc21haWwub3Jn
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+	d=public.govdelivery.com; s=13q2; i=@public.govdelivery.com; h=Content-Transfer-Encoding:
+	Content-Type:x-subscriber2:x-subscriber:X-Accountcode:Errors-To:
+	Reply-To:MIME-Version:Message-ID:X-ReportingKey:Subject:Date:To:
+	From; bh=ExtsOsWWW4B0nByyjZSFVtw1DVw=; b=nuJuiuL5GNjIgFMv9pO1sqN
+	2OKCG7aHD5Qs3l8Fd6uecGxKqPVIFt2fGZwpeHhESb0IkNnNMzd2BSxlZJQYJbhr
+	tkA91cIc5xfi+ElRnhjJrMYZfE9+iZk/CxqXpGHUx6nqvWsNip8p5svahHWObIm0
+	L9XdVPp8AWm1LrLoBPzXxGqbQjiVwYHbEoLSa4whMzPRd5rfqEbptCgCH6Jdxv/f
+	P91S8zx7kF5yT3zNc2vIsHuZwdHcpULR4RHAciH9WAGnfHYNFf8cxXmaY8dbVgah
+	NsLGaTF1Nqe4yZ4+pIr6f5RGu01dt1R0UMx5LMX/gzlMgnWBGNes38dDnbWJMcg=
+	=
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_0A3_C8ED_4AC86500.390784A0"
+x-subscriber2: 2.AHzaM3yk5Kgwr3DIrEdSe7G8tZL18OY7fZseXMCeSQY=
+x-subscriber: D/AMLH0OrD2JN0C1ufLk90clJ0+NqX+2
+X-Accountcode: CASFMTA
+Errors-To: messages@public.govdelivery.com
+Reply-To: sfmta@public.govdelivery.com
+MIME-Version: 1.0
+Message-ID: <17559554.791@public.govdelivery.com>
+X-ReportingKey: LJJJ2EWJK6012WJJ23VJJ::paul@lucasmail.org::paul@lucasmail.org
+Subject: =?US-ASCII?Q?HeadsUp:_Extra_Muni_svc_for_#NYE:_?= =?US-ASCII?Q?Subway_to_EMB_runs_til_4_am,_4th/Ki?= =?US-ASCII?Q?ng_til_2_am._Extra_Owl_svc:_5,_14,?= =?US-ASCII?Q?_22,_24,_38,_90,_91,_L_&_N_Owl._@76?=
+Date: Thu, 31 Dec 2015 16:03:12 -0600
+To: paul@lucasmail.org
+From: "=?US-ASCII?Q?Muni_Alerts?=" <sfmta@public.govdelivery.com>
+
+
+------=_NextPart_0A3_C8ED_4AC86500.390784A0
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+=A0=20
+SFMTA Muni ALERT [ http://www.sfmta.com ] HeadsUp: Extra Muni svc for #NY=
+E: Subway to EMB runs til 4 am, 4th/King til 2 am. Extra Owl svc: 5, 14, =
+22, 24, 38, 90, 91, L & N Owl. @76=20
+ =A0=20
+
+=A0
+
+"With MuniMobile, your phone is your fare. Get bus, rail, cable car & par=
+atransit tix with the push of a button www.sfmta.com/munimobile [ http://=
+www.sfmta.com/munimobile ]."
+
+Find more update options at Agency News [ https://public.govdelivery.com/=
+accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_1 ], Muni Alerts [ https=
+://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMT=
+A_2 ], Streetscape and Other Projects [ https://public.govdelivery.com/ac=
+counts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_6 ] & Muni Forward [ https=
+://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMT=
+A_8 ]. Thank you for subscribing!
+
+ Styling Image =A0 SFMTA Logo [ http://www.sfmta.com/ ]=20
+STAY CONNECTED: Visit us on Facebook [ https://www.facebook.com/SFMTA.Mun=
+i ] Visit us on Twitter [ https://twitter.com/sfmta_muni ] Sign up for em=
+ail updates [ https://public.govdelivery.com/accounts/CASFMTA/subscriber/=
+new ] Visit us on Twitter [ http://www.youtube.com/user/SFMTAMuniTaxiStre=
+ets?feature=3Dwatch ] Visit us on Twitter [ http://www.flickr.com/photos/=
+sfmtaphoto/ ] =A0White SFMTA logo on a gray field [ http://www.sfmta.com/=
+blog ]=20
+
+ [ http://content.govdelivery.com/accounts/CASFMTA/bulletins/12dcd19?reqf=
+rom=3Dshare ]
+
+=20
+=20
+
+SUBSCRIBER SERVICES:
+
+=20
+
+Preferences [ http://public.govdelivery.com/accounts/CASFMTA/subscribers/=
+new?preferences=3Dtrue ]=A0=A0|=A0=A0Unsubscribe
+ [ https://public.govdelivery.com/accounts/CASFMTA/subscriber/one_click_u=
+nsubscribe?verification=3D5.301721c5bbfdbfba3602153a8711461f&destination=3D=
+paul@lucasmail.org ] Help [ https://subscriberhelp.govdelivery.com/ ]=A0=A0=
+ |=A0=A0Feedback [ http://www.sfmta.com/feedback ]
+
+=20
+=20
+ =A0=20
+=20
+
+=A0
+
+________________________________________________________________________
+
+ This email was sent to paul@lucasmail.org using GovDelivery, on behalf o=
+f: San Francisco Municipal Transportation Agency (SFMTA) =B7 One South Va=
+n Ness, San Francisco, CA &lrm;94103 Powered by GovDelivery [ http://www.=
+govdelivery.com/portals/powered-by ]=20
+ =A0=20
+=20
+
+=A0
+=0A
+------=_NextPart_0A3_C8ED_4AC86500.390784A0
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"en" lang=3D"en">=
+
+<head>
+<title>    HeadsUp: Extra Muni svc for #NYE: Subway to EMB runs til 4 am,=
+ 4th/King til 2 am. Extra Owl svc: 5, 14, 22, 24, 38, 90, 91, L & N Owl. =
+@76
+</title>
+   =20
+
+</head>
+<body>
+
+      <table width=3D"700" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0" align=3D"center">
+        <tr>
+          <td>
+
+
+ =20
+
+
+
+ =20
+  <table style=3D"width: 100%; background-color: #ffffff; background-posi=
+tion: initial initial; background-repeat: initial initial;" border=3D"0" =
+cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr style=3D"height: 7.5pt;">
+<td style=3D"padding: 0in 0in 0in 0in; height: 7.5pt;">&nbsp;</td>
+</tr>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<div align=3D"center">
+<table style=3D"width: 600px; background-color: white; background-positio=
+n: initial initial; background-repeat: initial initial;" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;"><font size=3D"3"><a href=3D"http:=
+//links.govdelivery.com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lk=
+PTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxM=
+TE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc2=
+1haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF=
+0ZUlkPSYmJg=3D=3D&&&100&&&http://www.sfmta.com" title=3D"Link Title"> <im=
+g src=3D"https://admin.govdelivery.com/attachments/fancy_images/CASFMTA/2=
+013/10/223221/sfmta-alert-header-600_original.png" border=3D"0" alt=3D"SF=
+MTA Muni ALERT" title=3D"SFMTA Muni ALERT" /></a></font></td>
+</tr>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;"><font size=3D"2">HeadsUp: Extra M=
+uni svc for #NYE: Subway to EMB runs til 4 am, 4th/King til 2 am. Extra O=
+wl svc: 5, 14, 22, 24, 38, 90, 91, L &amp; N Owl. @76</font></td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in; height: 7.5pt;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+ =20
+
+
+<div id=3D"mail_footer">
+    <!--Start of the footer-->
+<table style=3D"width: 100.0%; background: #ffffff;" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<table style=3D"width: 600px; background: white;" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td><!--Insert stay connected-->
+<table style=3D"width: 600px;" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0">
+<tbody>
+<tr>
+<td style=3D"text-align: center;" colspan=3D"3">
+<p><span style=3D"font-family: arial, helvetica, sans-serif; font-size: x=
+-small;"><em>With MuniMobile, your phone is your fare. Get bus, rail, cab=
+le car &amp; paratransit tix with the push of a button <a href=3D"http://=
+links.govdelivery.com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPT=
+IwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE=
+0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21h=
+aWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0Z=
+UlkPSYmJg=3D=3D&&&101&&&http://www.sfmta.com/munimobile">www.sfmta.com/mu=
+nimobile</a>.</em></span></p>
+<p><span style=3D"font-family: arial, helvetica, sans-serif; font-size: x=
+-small;">Find more update options at <a href=3D"http://links.govdelivery.=
+com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzEx=
+MTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkP=
+TEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD=
+1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&=
+102&&&https://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?q=
+sp=3DCASFMTA_1" title=3D"Agency News E-mail Update Options">Agency News</=
+a>, <a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&103&&&https://public.govdelivery.=
+com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_2" title=3D"Real-tim=
+e &amp; scheduled e-mail &amp; text alerts for Muni service ">Muni Alerts=
+</a>, <a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&104&&&https://public.govdelivery.=
+com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_6">Streetscape and O=
+ther Projects</a> &amp; <a href=3D"http://links.govdelivery.com:80/track?=
+type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ=
+2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaW=
+FsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2F=
+zbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&105&&&https:/=
+/public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_=
+8">Muni Forward</a>. Thank you for subscribing!</span></p>
+</td>
+</tr>
+<tr>
+<td colspan=3D"3"><span style=3D"font-family: arial, helvetica, sans-seri=
+f;"><img src=3D"https://admin.govdelivery.com/attachments/fancy_images/CA=
+SFMTA/2013/07/199608/background-line_original.png" alt=3D"Styling Image" =
+width=3D"600" height=3D"6" /></span></td>
+</tr>
+<tr>
+<td colspan=3D"3">&nbsp;</td>
+</tr>
+<tr>
+<td width=3D"300"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&106&&&http://www.sfm=
+ta.com/" target=3D"_blank"><img src=3D"https://admin.govdelivery.com/atta=
+chments/fancy_images/CASFMTA/2013/07/199555/sfmta-logo-200x70_original.pn=
+g" border=3D"0" alt=3D"SFMTA Logo" width=3D"200" height=3D"70" /></a></td=
+>
+<td align=3D"right" valign=3D"top" width=3D"300">
+<table cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">STAY CONNECTED:</td>
+</tr>
+<tr>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&107&&&https://www.fa=
+cebook.com/SFMTA.Muni" target=3D"_blank" title=3D"Find us on Facebook!"><=
+img src=3D"https://service.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MED=
+IA/facebook.gif" border=3D"0" alt=3D"Visit us on Facebook" width=3D"26" h=
+eight=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&108&&&https://twitte=
+r.com/sfmta_muni" title=3D"Follow us on Twitter"><img src=3D"https://serv=
+ice.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MEDIA/twitter.gif" border=3D=
+"0" alt=3D"Visit us on Twitter" width=3D"27" height=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&109&&&https://public=
+.govdelivery.com/accounts/CASFMTA/subscriber/new" target=3D"_blank" title=
+=3D"Get Updates"><img src=3D"https://service.govdelivery.com/banners/GOVD=
+ELIVERY/SOCIAL_MEDIA/envelope.gif" border=3D"0" alt=3D"Sign up for email =
+updates" width=3D"25" height=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&110&&&http://www.you=
+tube.com/user/SFMTAMuniTaxiStreets?feature=3Dwatch" title=3D"Follow up on=
+ YouTube"><img src=3D"https://service.govdelivery.com/banners/GOVDELIVERY=
+/SOCIAL_MEDIA/youtube.gif" border=3D"0" alt=3D"Visit us on Twitter" width=
+=3D"27" height=3D"25" /></a></td>
+<td width=3D"41"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&111&&&http://www.fli=
+ckr.com/photos/sfmtaphoto/" title=3D"Follow us on Flickr"><img src=3D"htt=
+ps://service.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MEDIA/flickr.gif"=
+ border=3D"0" alt=3D"Visit us on Twitter" width=3D"27" height=3D"25" /></=
+a></td>
+<td width=3D"33">&nbsp;<a href=3D"http://links.govdelivery.com:80/track?t=
+ype=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2=
+VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWF=
+sPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2Fz=
+bWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&112&&&http://w=
+ww.sfmta.com/blog" title=3D"Follow Our Blog, Moving SF"><img src=3D"https=
+://admin.govdelivery.com/attachments/fancy_images/CASFMTA/2014/09/350565/=
+small-logo-no-border_original.png" alt=3D"White SFMTA logo on a gray fiel=
+d" width=3D"25" height=3D"25" /></a></td>
+</tr>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">
+<p><span style=3D"color: #000000; font-family: Verdana, Arial, Helvetica,=
+ sans-serif; font-size: 10px;"><br /><a href=3D'http://links.govdelivery.=
+com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzEx=
+MTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkP=
+TEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD=
+1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&=
+113&&&http://content.govdelivery.com/accounts/CASFMTA/bulletins/12dcd19?r=
+eqfrom=3Dshare' target=3D'_blank'><img width=3D'83' height=3D'16' alt=3D'=
+Bookmark and Share' style=3D'border:0' src=3D'https://public.govdelivery.=
+com/assets/share_this.gif'/></a></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td align=3D"right" valign=3D"top" width=3D"300">
+<table cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">
+<p>SUBSCRIBER SERVICES:</p>
+</td>
+</tr>
+<tr>
+<td>
+<p style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 12=
+px;"><a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&114&&&http://public.govdelivery.c=
+om/accounts/CASFMTA/subscribers/new?preferences=3Dtrue"> Preferences</a>&=
+nbsp;&nbsp;|&nbsp;&nbsp;<a href=3D"http://links.govdelivery.com:80/track?=
+type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ=
+2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaW=
+FsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2F=
+zbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&115&&&https:/=
+/public.govdelivery.com/accounts/CASFMTA/subscriber/one_click_unsubscribe=
+?verification=3D5.301721c5bbfdbfba3602153a8711461f&destination=3Dpaul@luc=
+asmail.org">Unsubscribe<br /> </a> <a href=3D"http://links.govdelivery.co=
+m:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMT=
+QxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTE=
+wMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1w=
+YXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&11=
+6&&&https://subscriberhelp.govdelivery.com/">Help</a>&nbsp;&nbsp; |&nbsp;=
+&nbsp;<a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&117&&&http://www.sfmta.com/feedba=
+ck">Feedback</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--End of footer-->
+<p>&nbsp;</p>
+
+</div>
+<div id=3D"tagline">
+    <table style=3D"width: 100.0%; background: #ffffff;" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<table style=3D"width: 600px; background: white;" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td>
+<table style=3D"width: 600px; height: 53px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"color: #757575; font-size: 10px; font-family: Arial;" colspa=
+n=3D"2" width=3D"89%"><hr /></td>
+</tr>
+<tr>
+<td style=3D"color: #757575; font-size: 10px; font-family: Arial;" width=3D=
+"89%">This email was sent to paul@lucasmail.org using GovDelivery, on beh=
+alf of: San Francisco Municipal Transportation Agency (SFMTA) &middot; On=
+e South Van Ness, San Francisco, CA &lrm;94103</td>
+<td align=3D"right" width=3D"11%"><a href=3D"http://links.govdelivery.com=
+:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQ=
+xJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEw=
+MDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wY=
+XVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&118=
+&&&http://www.govdelivery.com/portals/powered-by" target=3D"_blank"><img =
+src=3D"https://service.govdelivery.com/banners/GOVDELIVERY/logo_gd_powere=
+dby.gif" border=3D"0" alt=3D"Powered by GovDelivery" width=3D"115" height=
+=3D"35" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+</div>
+          </td>
+        </tr>
+      </table>
+
+<IMG SRC=3D"http://links.govdelivery.com:80/track?enid=3DZWFzPTEmbWFpbGlu=
+Z2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41M=
+zMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmdHlwZT1vcGVuJnNlcmlhbD0xNzU1OTU1NCZlbWFpbG=
+lkPXBhdWxAbHVjYXNtYWlsLm9yZyZ1c2VyaWQ9cGF1bEBsdWNhc21haWwub3JnJmZsPSZleHR=
+yYT1NdWx0aXZhcmlhdGVJZD0mJiY=3D" WIDTH=3D"1" HEIGHT=3D"1" STYLE=3D"border=
+-width:0; border-style:hidden;" ALT=3D""/></body>
+</html>
+=0A
+------=_NextPart_0A3_C8ED_4AC86500.390784A0--
+
+
+From sfmta@public.govdelivery.com Tue Jan 05 13:32:58 2016
+Delivered-To: paul@lucasmail.org
+Received: by 10.107.23.132 with SMTP id 126csp9684842iox;
+        Tue, 5 Jan 2016 13:32:58 -0800 (PST)
+X-Received: by 10.50.25.167 with SMTP id d7mr5905325igg.69.1452029578276;
+        Tue, 05 Jan 2016 13:32:58 -0800 (PST)
+Return-Path: <info99@service.govdelivery.com>
+Received: from mailer158080.service.govdelivery.com (mailer158080.service.govdelivery.com. [209.134.158.80])
+        by mx.google.com with ESMTP id j1si8382695igx.53.2016.01.05.13.32.58
+        for <paul@lucasmail.org>;
+        Tue, 05 Jan 2016 13:32:58 -0800 (PST)
+Received-SPF: pass (google.com: domain of info99@service.govdelivery.com designates 209.134.158.80 as permitted sender) client-ip=209.134.158.80;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of info99@service.govdelivery.com designates 209.134.158.80 as permitted sender) smtp.mailfrom=info99@service.govdelivery.com;
+       dkim=pass header.i=@public.govdelivery.com
+X-VirtualServer: VSG003, mailer158080.service.govdelivery.com, 172.24.0.80
+X-VirtualServerGroup: VSG003
+X-MailingID: 17561765::20160105.53413971::1001::MDB-PRD-BUL-20160105.53413971::paul@lucasmail.org::22_0
+X-SMHeaderMap: mid="X-MailingID"
+X-Destination-ID: paul@lucasmail.org
+X-SMFBL: cGF1bEBsdWNhc21haWwub3Jn
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+	d=public.govdelivery.com; s=13q2; i=@public.govdelivery.com; h=Content-Transfer-Encoding:
+	Content-Type:x-subscriber2:x-subscriber:X-Accountcode:Errors-To:
+	Reply-To:MIME-Version:Message-ID:X-ReportingKey:Subject:Date:To:
+	From; bh=SQHvz+OJLLIOsmEM2On9WsgXxQk=; b=Aj7V8KMqO6o3w2FRpvpYW1N
+	iw9aOeTCY1Qsrhh1n2vbDYXndRLkYyBu7lCXLeHWP14i7DNAfIQqSZW53YVVwWi+
+	TpAo+LfRYc5yfcA5yYjdCGS9Yi5AStypjngvzvkZJ5s7eBb7Puphij1kzKNhbpFy
+	LliXN+qzcGUmrXe5CvxkVjlpmxrFo5q5VEadhPKbKK4/F1PuORJCHi77GPS+y7YU
+	3WiFt71gOyehy8IQc3SbzWvY0/H41/CQ3G3bBDbHbHq2ROulxt2NrD2MfKrB8YP1
+	LmHV1cibdeI+hW5BjkaIB+OJ9zmMg1AHODQ/H+IphqgT6r5yC8Vt6V+Z86Txh8g=
+	=
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_D6F_5814_4DBBACF2.767201B3"
+x-subscriber2: 2.AHzaM3yk5Kgwr3DIrEdSe7G8tZL18OY7fZseXMCeSQY=
+x-subscriber: D/AMLH0OrD2JN0C1ufLk90clJ0+NqX+2
+X-Accountcode: CASFMTA
+Errors-To: info99@service.govdelivery.com
+Reply-To: sfmta@public.govdelivery.com
+MIME-Version: 1.0
+Message-ID: <17561765.22@public.govdelivery.com>
+X-ReportingKey: LJJJ2EWJK6075KJJ1MJJ::paul@lucasmail.org::paul@lucasmail.org
+Subject: =?US-ASCII?Q?San_Francisco_Municipal_Transportation_Agency_(SFMTA)_19th?= =?US-ASCII?Q?_Ave/M_Ocean_View_Project_Public_Meeting_Schedule_Announced?=
+Date: Tue, 05 Jan 2016 15:32:50 -0600
+To: paul@lucasmail.org
+From: "=?US-ASCII?Q?SFMTA_Municipal_Transportation_Agency?=" <sfmta@public.govdelivery.com>
+
+
+------=_NextPart_D6F_5814_4DBBACF2.767201B3
+Content-Type: text/plain;
+	charset="Cp1252"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Happy New Year!
+
+Thanks for your continued interest in the 19th Avenue/M Ocean View Projec=
+t. We are excited to announce the next round of public meetings. Join SFM=
+TA at any of four meetings where we will share and get feedback on projec=
+t alternatives that have been refined based on public input and conceptua=
+l engineering. Please note we are still years away from making a project =
+approval decision. Your early input helps shape the project alternatives =
+that will undergo environmental review.
+
+Here are the dates and locations of the meetings. More information can al=
+so be found on the 19th Avenue/M Ocean View project website [ http://www.=
+sfmta.com/19thave ]:
+
+
+  * Thursday, =A0February 4, SF State University, 6-8pm [ http://www.sfmt=
+a.com/node/189351 ]=20
+  * Tuesday, February 16, IT Bookman Community Center, 7-9pm [ http://www=
+.sfmta.com/node/190236 ]=20
+  * Thursday, February 18, SFMTA Headquarters, 6-8pm [ http://www.sfmta.c=
+om/node/190246 ]=20
+  * Thursday, February 25, Waldorf High School, 6-8pm [ http://www.sfmta.=
+com/node/190256 ]=20
+
+There will be a presentation followed by a Q&A session. An open house wil=
+l also be available throughout the meeting for more in-depth information.=
+ Each meeting will cover the same content. Language assistance can be pro=
+vided with at least 72 hours' notice. Contact Kelley McCoy, Public Relati=
+ons Officer (415.701.5428 or kelley.mccoy@sfmta.com) to confirm your requ=
+est.
+
+Can=92t make it to the meetings? No worries. We will post all materials o=
+nline after the first meeting. We are also happy to make presentations at=
+ your community group.
+
+"With MuniMobile, your phone is your fare. Get bus, rail, cable car & par=
+atransit tix with the push of a button www.sfmta.com/munimobile [ http://=
+www.sfmta.com/munimobile ]."
+
+Find more update options at Agency News [ https://public.govdelivery.com/=
+accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_1 ], Muni Alerts [ https=
+://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMT=
+A_2 ], Streetscape and Other Projects [ https://public.govdelivery.com/ac=
+counts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_6 ] & Muni Forward [ https=
+://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMT=
+A_8 ]. Thank you for subscribing!
+
+ Styling Image =A0 SFMTA Logo [ http://www.sfmta.com/ ]=20
+STAY CONNECTED: Visit us on Facebook [ https://www.facebook.com/SFMTA.Mun=
+i ] Visit us on Twitter [ https://twitter.com/sfmta_muni ] Sign up for em=
+ail updates [ https://public.govdelivery.com/accounts/CASFMTA/subscriber/=
+new ] Visit us on Twitter [ http://www.youtube.com/user/SFMTAMuniTaxiStre=
+ets?feature=3Dwatch ] Visit us on Twitter [ http://www.flickr.com/photos/=
+sfmtaphoto/ ] =A0White SFMTA logo on a gray field [ http://www.sfmta.com/=
+blog ]=20
+
+ [ http://content.govdelivery.com/accounts/CASFMTA/bulletins/12e7c48?reqf=
+rom=3Dshare ]
+
+=20
+=20
+
+SUBSCRIBER SERVICES:
+
+=20
+
+Preferences [ http://public.govdelivery.com/accounts/CASFMTA/subscribers/=
+new?preferences=3Dtrue ]=A0=A0|=A0=A0Unsubscribe
+ [ https://public.govdelivery.com/accounts/CASFMTA/subscriber/one_click_u=
+nsubscribe?verification=3D5.301721c5bbfdbfba3602153a8711461f&destination=3D=
+paul@lucasmail.org ] Help [ https://subscriberhelp.govdelivery.com/ ]=A0=A0=
+ |=A0=A0Feedback [ http://www.sfmta.com/feedback ]
+
+=20
+=20
+ =A0=20
+=20
+
+________________________________________________________________________
+
+ This email was sent to paul@lucasmail.org using GovDelivery, on behalf o=
+f: San Francisco Municipal Transportation Agency (SFMTA) =B7 One South Va=
+n Ness, San Francisco, CA &lrm;94103 Powered by GovDelivery [ http://www.=
+govdelivery.com/portals/powered-by ]=20
+ =A0=20
+=20
+
+=A0
+=0A
+------=_NextPart_D6F_5814_4DBBACF2.767201B3
+Content-Type: text/html;
+	charset="Cp1252"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"en" lang=3D"en">=
+
+<head>
+<title>    San Francisco Municipal Transportation Agency (SFMTA) 19th Ave=
+/M Ocean View Project Public Meeting Schedule Announced
+</title>
+   =20
+
+</head>
+<body>
+
+      <table width=3D"700" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0" align=3D"center">
+        <tr>
+          <td>
+
+
+ =20
+
+
+
+  <p style=3D"text-align: center;"><img src=3D"https://admin.govdelivery.=
+com/attachments/fancy_images/CASFMTA/2013/12/246730/sfmta-update_original=
+.png" /></p>
+  <p><span style=3D"font-size: 10.0pt; font-family: 'Arial','sans-serif';=
+">Happy New Year!</span></p>
+<p><span style=3D"font-size: 10.0pt; font-family: 'Arial','sans-serif';">=
+Thanks for your continued interest in the 19<sup>th</sup> Avenue/M Ocean =
+View Project. We are excited to announce the next round of public meeting=
+s. Join SFMTA at any of four meetings where we will share and get feedbac=
+k on project alternatives that have been refined based on public input an=
+d conceptual engineering. Please note we are still years away from making=
+ a project approval decision. Your early input helps shape the project al=
+ternatives that will undergo environmental review.</span></p>
+<p><span style=3D"font-size: 10.0pt; font-family: 'Arial','sans-serif';">=
+Here are the dates and locations of the meetings. More information can al=
+so be found on the </span><a href=3D"http://links.govdelivery.com:80/trac=
+k?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3N=
+hZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2Vy=
+aWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y=
+2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&100&&&http:=
+//www.sfmta.com/19thave" target=3D"_blank" title=3D"19th Avenue/M Ocean V=
+iew project website"><span style=3D"font-size: 10.0pt; font-family: 'Aria=
+l','sans-serif'; color: windowtext;">19<sup>th</sup> Avenue/M Ocean View =
+project website</span></a><span style=3D"font-size: 10.0pt; font-family: =
+'Arial','sans-serif';">:</span></p>
+<ul>
+<li style=3D"margin-left: 54.75pt;"><span style=3D"font-size: 10.0pt; fon=
+t-family: Symbol;"> </span><a href=3D"http://links.govdelivery.com:80/tra=
+ck?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3=
+NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2V=
+yaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1=
+Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&101&&&http=
+://www.sfmta.com/node/189351" target=3D"_blank" title=3D"Thursday, &nbsp;=
+February 4, SF State University, 6-8pm"><span style=3D"font-size: 10.0pt;=
+ font-family: 'Arial','sans-serif';">Thursday, &nbsp;February 4, SF State=
+ University, 6-8pm</span></a></li>
+<li style=3D"margin-left: 54.75pt;"><span style=3D"font-size: 10.0pt; fon=
+t-family: Symbol;"> </span><a href=3D"http://links.govdelivery.com:80/tra=
+ck?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3=
+NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2V=
+yaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1=
+Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&102&&&http=
+://www.sfmta.com/node/190236" target=3D"_blank" title=3D"Tuesday, Februar=
+y 16, IT Bookman Community Center, 7-9pm"><span style=3D"font-size: 10.0p=
+t; font-family: 'Arial','sans-serif';">Tuesday, February 16, IT Bookman C=
+ommunity Center, 7-9pm</span></a></li>
+<li style=3D"margin-left: 54.75pt;"><span style=3D"font-size: 10.0pt; fon=
+t-family: Symbol;"> </span><a href=3D"http://links.govdelivery.com:80/tra=
+ck?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3=
+NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2V=
+yaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1=
+Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&103&&&http=
+://www.sfmta.com/node/190246" target=3D"_blank" title=3D"Thursday, Februa=
+ry 18, SFMTA Headquarters, 6-8pm"><span style=3D"font-size: 10.0pt; font-=
+family: 'Arial','sans-serif';">Thursday, February 18, SFMTA Headquarters,=
+ 6-8pm</span></a></li>
+<li style=3D"margin-left: 54.75pt;"><span style=3D"font-size: 10.0pt; fon=
+t-family: Symbol;"> </span><a href=3D"http://links.govdelivery.com:80/tra=
+ck?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3=
+NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2V=
+yaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1=
+Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&104&&&http=
+://www.sfmta.com/node/190256" target=3D"_blank" title=3D"Thursday, Februa=
+ry 25, Waldorf High School, 6-8pm"><span style=3D"font-size: 10.0pt; font=
+-family: 'Arial','sans-serif';">Thursday, February 25, Waldorf High Schoo=
+l, 6-8pm</span></a></li>
+</ul>
+<p><span style=3D"font-size: 10.0pt; font-family: 'Arial','sans-serif';">=
+There will be a presentation followed by a Q&amp;A session. An open house=
+ will also be available throughout the meeting for more in-depth informat=
+ion. Each meeting will cover the same content. Language assistance can be=
+ provided with at least 72 hours' notice. Contact Kelley McCoy, Public Re=
+lations Officer (415.701.5428 or </span><a href=3D"mailto:kelley.mccoy@sf=
+mta.com"><span style=3D"font-size: 10.0pt; font-family: 'Arial','sans-ser=
+if'; color: windowtext;">kelley.mccoy@sfmta.com</span></a><span style=3D"=
+font-size: 10.0pt; font-family: 'Arial','sans-serif';">) to confirm your =
+request.</span></p>
+<p><span style=3D"font-size: 10.0pt; font-family: 'Arial','sans-serif';">=
+Can&rsquo;t make it to the meetings? No worries. We will post all materia=
+ls online after the first meeting. We are also happy to make presentation=
+s at your community group.</span></p>
+ =20
+
+
+<div id=3D"mail_footer">
+    <!--Start of the footer-->
+<table style=3D"width: 100.0%; background: #ffffff;" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<table style=3D"width: 600px; background: white;" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td><!--Insert stay connected-->
+<table style=3D"width: 600px;" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0">
+<tbody>
+<tr>
+<td style=3D"text-align: center;" colspan=3D"3">
+<p><span style=3D"font-family: arial, helvetica, sans-serif; font-size: x=
+-small;"><em>With MuniMobile, your phone is your fare. Get bus, rail, cab=
+le car &amp; paratransit tix with the push of a button <a href=3D"http://=
+links.govdelivery.com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPT=
+IwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk=
+3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21h=
+aWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0Z=
+UlkPSYmJg=3D=3D&&&105&&&http://www.sfmta.com/munimobile">www.sfmta.com/mu=
+nimobile</a>.</em></span></p>
+<p><span style=3D"font-family: arial, helvetica, sans-serif; font-size: x=
+-small;">Find more update options at <a href=3D"http://links.govdelivery.=
+com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEz=
+OTcxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkP=
+TEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD=
+1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&=
+106&&&https://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?q=
+sp=3DCASFMTA_1" title=3D"Agency News E-mail Update Options">Agency News</=
+a>, <a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&107&&&https://public.govdelivery.=
+com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_2" title=3D"Real-tim=
+e &amp; scheduled e-mail &amp; text alerts for Muni service ">Muni Alerts=
+</a>, <a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&108&&&https://public.govdelivery.=
+com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_6">Streetscape and O=
+ther Projects</a> &amp; <a href=3D"http://links.govdelivery.com:80/track?=
+type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ=
+2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaW=
+FsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2F=
+zbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&109&&&https:/=
+/public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_=
+8">Muni Forward</a>. Thank you for subscribing!</span></p>
+</td>
+</tr>
+<tr>
+<td colspan=3D"3"><span style=3D"font-family: arial, helvetica, sans-seri=
+f;"><img src=3D"https://admin.govdelivery.com/attachments/fancy_images/CA=
+SFMTA/2013/07/199608/background-line_original.png" alt=3D"Styling Image" =
+width=3D"600" height=3D"6" /></span></td>
+</tr>
+<tr>
+<td colspan=3D"3">&nbsp;</td>
+</tr>
+<tr>
+<td width=3D"300"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&110&&&http://www.sfm=
+ta.com/" target=3D"_blank"><img src=3D"https://admin.govdelivery.com/atta=
+chments/fancy_images/CASFMTA/2013/07/199555/sfmta-logo-200x70_original.pn=
+g" border=3D"0" alt=3D"SFMTA Logo" width=3D"200" height=3D"70" /></a></td=
+>
+<td align=3D"right" valign=3D"top" width=3D"300">
+<table cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">STAY CONNECTED:</td>
+</tr>
+<tr>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&111&&&https://www.fa=
+cebook.com/SFMTA.Muni" target=3D"_blank" title=3D"Find us on Facebook!"><=
+img src=3D"https://service.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MED=
+IA/facebook.gif" border=3D"0" alt=3D"Visit us on Facebook" width=3D"26" h=
+eight=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&112&&&https://twitte=
+r.com/sfmta_muni" title=3D"Follow us on Twitter"><img src=3D"https://serv=
+ice.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MEDIA/twitter.gif" border=3D=
+"0" alt=3D"Visit us on Twitter" width=3D"27" height=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&113&&&https://public=
+.govdelivery.com/accounts/CASFMTA/subscriber/new" target=3D"_blank" title=
+=3D"Get Updates"><img src=3D"https://service.govdelivery.com/banners/GOVD=
+ELIVERY/SOCIAL_MEDIA/envelope.gif" border=3D"0" alt=3D"Sign up for email =
+updates" width=3D"25" height=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&114&&&http://www.you=
+tube.com/user/SFMTAMuniTaxiStreets?feature=3Dwatch" title=3D"Follow up on=
+ YouTube"><img src=3D"https://service.govdelivery.com/banners/GOVDELIVERY=
+/SOCIAL_MEDIA/youtube.gif" border=3D"0" alt=3D"Visit us on Twitter" width=
+=3D"27" height=3D"25" /></a></td>
+<td width=3D"41"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&115&&&http://www.fli=
+ckr.com/photos/sfmtaphoto/" title=3D"Follow us on Flickr"><img src=3D"htt=
+ps://service.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MEDIA/flickr.gif"=
+ border=3D"0" alt=3D"Visit us on Twitter" width=3D"27" height=3D"25" /></=
+a></td>
+<td width=3D"33">&nbsp;<a href=3D"http://links.govdelivery.com:80/track?t=
+ype=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2=
+VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWF=
+sPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2Fz=
+bWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&116&&&http://w=
+ww.sfmta.com/blog" title=3D"Follow Our Blog, Moving SF"><img src=3D"https=
+://admin.govdelivery.com/attachments/fancy_images/CASFMTA/2014/09/350565/=
+small-logo-no-border_original.png" alt=3D"White SFMTA logo on a gray fiel=
+d" width=3D"25" height=3D"25" /></a></td>
+</tr>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">
+<p><span style=3D"color: #000000; font-family: Verdana, Arial, Helvetica,=
+ sans-serif; font-size: 10px;"><br /><a href=3D'http://links.govdelivery.=
+com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEz=
+OTcxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkP=
+TEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD=
+1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&=
+117&&&http://content.govdelivery.com/accounts/CASFMTA/bulletins/12e7c48?r=
+eqfrom=3Dshare' target=3D'_blank'><img width=3D'83' height=3D'16' alt=3D'=
+Bookmark and Share' style=3D'border:0' src=3D'https://public.govdelivery.=
+com/assets/share_this.gif'/></a></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td align=3D"right" valign=3D"top" width=3D"300">
+<table cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">
+<p>SUBSCRIBER SERVICES:</p>
+</td>
+</tr>
+<tr>
+<td>
+<p style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 12=
+px;"><a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&118&&&http://public.govdelivery.c=
+om/accounts/CASFMTA/subscribers/new?preferences=3Dtrue"> Preferences</a>&=
+nbsp;&nbsp;|&nbsp;&nbsp;<a href=3D"http://links.govdelivery.com:80/track?=
+type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ=
+2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaW=
+FsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2F=
+zbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&119&&&https:/=
+/public.govdelivery.com/accounts/CASFMTA/subscriber/one_click_unsubscribe=
+?verification=3D5.301721c5bbfdbfba3602153a8711461f&destination=3Dpaul@luc=
+asmail.org">Unsubscribe<br /> </a> <a href=3D"http://links.govdelivery.co=
+m:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOT=
+cxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTE=
+wMDEmc2VyaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1w=
+YXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&12=
+0&&&https://subscriberhelp.govdelivery.com/">Help</a>&nbsp;&nbsp; |&nbsp;=
+&nbsp;<a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTYxNzY1JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&121&&&http://www.sfmta.com/feedba=
+ck">Feedback</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--End of footer-->
+
+</div>
+<div id=3D"tagline">
+    <table style=3D"width: 100.0%; background: #ffffff;" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<table style=3D"width: 600px; background: white;" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td>
+<table style=3D"width: 600px; height: 53px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"color: #757575; font-size: 10px; font-family: Arial;" colspa=
+n=3D"2" width=3D"89%"><hr /></td>
+</tr>
+<tr>
+<td style=3D"color: #757575; font-size: 10px; font-family: Arial;" width=3D=
+"89%">This email was sent to paul@lucasmail.org using GovDelivery, on beh=
+alf of: San Francisco Municipal Transportation Agency (SFMTA) &middot; On=
+e South Van Ness, San Francisco, CA &lrm;94103</td>
+<td align=3D"right" width=3D"11%"><a href=3D"http://links.govdelivery.com=
+:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTYwMTA1LjUzNDEzOTc=
+xJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41MzQxMzk3MSZkYXRhYmFzZWlkPTEw=
+MDEmc2VyaWFsPTE3NTYxNzY1JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wY=
+XVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&122=
+&&&http://www.govdelivery.com/portals/powered-by" target=3D"_blank"><img =
+src=3D"https://service.govdelivery.com/banners/GOVDELIVERY/logo_gd_powere=
+dby.gif" border=3D"0" alt=3D"Powered by GovDelivery" width=3D"115" height=
+=3D"35" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+</div>
+          </td>
+        </tr>
+      </table>
+
+<IMG SRC=3D"http://links.govdelivery.com:80/track?enid=3DZWFzPTEmbWFpbGlu=
+Z2lkPTIwMTYwMTA1LjUzNDEzOTcxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE2MDEwNS41M=
+zQxMzk3MSZkYXRhYmFzZWlkPTEwMDEmdHlwZT1vcGVuJnNlcmlhbD0xNzU2MTc2NSZlbWFpbG=
+lkPXBhdWxAbHVjYXNtYWlsLm9yZyZ1c2VyaWQ9cGF1bEBsdWNhc21haWwub3JnJmZsPSZleHR=
+yYT1NdWx0aXZhcmlhdGVJZD0mJiY=3D" WIDTH=3D"1" HEIGHT=3D"1" STYLE=3D"border=
+-width:0; border-style:hidden;" ALT=3D""/></body>
+</html>
+=0A
+------=_NextPart_D6F_5814_4DBBACF2.767201B3--
+

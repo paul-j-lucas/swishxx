@@ -28,6 +28,9 @@
 #include "IncludeMeta.h"
 #include "iso8859-1.h"
 #include "meta_id.h"
+#ifdef WITH_ENCODED_WORD
+#include "encodings/encodings.h"
+#endif /* WITH_ENCODED_WORD */
 #ifdef WITH_HTML
 #include "mod/html/mod_html.h"
 #endif /* WITH_HTML */
@@ -177,7 +180,7 @@ mail_indexer::message_type mail_indexer::index_headers( char const *&c,
 
     ////////// Deal with Content-Transfer-Encoding ////////////////////////////
 
-    if ( !::strcmp( kv.key.get(), "content-transfer-encoding" ) ) {
+    if ( ::strcmp( kv.key.get(), "content-transfer-encoding" ) == 0 ) {
       unique_ptr<char[]> const lower_ptr(
         to_lower_r( kv.value_begin, kv.value_end )
       );
@@ -328,7 +331,15 @@ not_indexable:
       if ( (meta_id = find_meta( kv.key.get() )) == Meta_ID_None )
         continue;
     }
-    encoded_char_range const e( kv.value_begin, kv.value_end );
+
+    encoded_char_range const e(
+      kv.value_begin, kv.value_end, nullptr,
+#ifdef WITH_ENCODED_WORD
+      encoding_encoded_word
+#else
+      nullptr
+#endif /* WITH_ENCODED_WORD */
+    );
     indexer::index_words( e, meta_id );
   } // while
 

@@ -1,0 +1,224 @@
+Delivered-To: paul@pauljlucas.org
+Received: by 10.140.21.136 with SMTP id 8csp208968qgl;
+        Wed, 4 Feb 2015 22:57:23 -0800 (PST)
+X-Received: by 10.66.102.2 with SMTP id fk2mr3179211pab.149.1423119443061;
+        Wed, 04 Feb 2015 22:57:23 -0800 (PST)
+Return-Path: <3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com>
+Received: from mail-pa0-x245.google.com (mail-pa0-x245.google.com. [2607:f8b0:400e:c03::245])
+        by mx.google.com with ESMTPS id hp4si5137404pbb.9.2015.02.04.22.57.22
+        for <paul@pauljlucas.org>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Feb 2015 22:57:23 -0800 (PST)
+Received-SPF: pass (google.com: domain of 3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com designates 2607:f8b0:400e:c03::245 as permitted sender) client-ip=2607:f8b0:400e:c03::245;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of 3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com designates 2607:f8b0:400e:c03::245 as permitted sender) smtp.mail=3UhTTVAwKBHMRggj-efiVgcpXffXcV.TfdgRlcgRlcaclTRj.fiX@unified-notifications.bounces.google.com;
+       dkim=pass header.i=@google.com;
+       dmarc=pass (p=REJECT dis=NONE) header.from=google.com
+Received: by mail-pa0-f69.google.com with SMTP id rd3so43957613pab.0
+        for <paul@pauljlucas.org>; Wed, 04 Feb 2015 22:57:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=04kcjxRjkBdFwK270ulWTAlYayZjMwjh7Gg2G7BYCrY=;
+        b=nYp8+h/ZQiOC4vf0nWXYtKtsnjYi69NqpW0VqLifKz7dvGMzvewbgd54b9jStXlfmG
+         Nyl5pvIjElkvC/1aDJ0P3MKHESEGQJGtw22ldINXaGyOAKl2I13cI9MdqlkikLFqps3K
+         U59OUZ46M5GqYIqDcTijSe+c7LTrpgHOSgVL/Akn7yo9NtcNc2obSnPS82wNyV++mgrO
+         SmEXI2DsY+zF157VrH7xmhKUys2v8RTqIcJ45C+bc1fSczCdU+wEm8RqfqCocNQVMh7K
+         mPirLT911cHVKB/Qv/Kd1z7+A6BHE5imfRHMDDB/++nlWhlKMm37As7bNUq8yLpZXtEA
+         7ijA==
+MIME-Version: 1.0
+X-Received: by 10.66.65.202 with SMTP id z10mr2068468pas.29.1423119442334;
+ Wed, 04 Feb 2015 22:57:22 -0800 (PST)
+X-Notifications: XEAAAAA9bPswzyapT2r_NiGIiR_Q
+Date: Wed, 04 Feb 2015 22:57:22 -0800 (PST)
+Message-ID: <LDGzp-ujlno8Eqw0sBOt3w@notifications.google.com>
+Subject: Welcome to the new, redesigned Google Admin console
+From: Google Apps <apps-noreply@google.com>
+To: paul@pauljlucas.org
+Cc: pauljlucas@mac.com
+Content-Type: multipart/alternative; boundary=001a11363b7ed557e5050e51d0e8
+
+--001a11363b7ed557e5050e51d0e8
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+R29vZ2xlDQoNCg0KDQpXZWxjb21lIHRvIHRoZSBuZXcsIHJlZGVzaWduZWQgR29vZ2xlIEFkbWlu
+IGNvbnNvbGUNCg0KDQoNCg0KSGVsbG8gQWRtaW5pc3RyYXRvcnMsDQoNCldlJ3JlIGV4Y2l0ZWQg
+dG8gYW5ub3VuY2UgdGhhdCB0aGUgQWRtaW4gY29uc29sZSBoYXMgYmVlbiByZWRlc2lnbmVkIHRv
+ICANCmJldHRlciBtZWV0IHlvdXIgbmVlZHMsIHB1dHRpbmcgeW91ciBtb3N0IGltcG9ydGFudCBj
+b250cm9scyBmcm9udCBhbmQgIA0KY2VudGVyIGFuZCBtYWtpbmcgdGhlIG1vc3QgY29tbW9uIHRh
+c2tzIGVhc2llciB0aGFuIGV2ZXIgdG8gY29tcGxldGUuDQoNCldlJ3ZlIHByZXBhcmVkIGFuIG92
+ZXJ2aWV3IGd1aWRlLCB2aWRlbyB0dXRvcmlhbCwgYW5kIHNjcmVlbnNob3RzIG91dGxpbmluZyAg
+DQpob3cgdG8gY2hhbmdlIHNldHRpbmdzLCBtYW5hZ2UgdXNlcnMsIGFwcGx5IGZpbHRlcnMsIGFu
+ZCBhY2Nlc3Mgb3RoZXIgIA0KZnJlcXVlbnRseSB1c2VkIGZlYXR1cmVzIGluIHRoZSBuZXcgVUku
+DQoNClRoZSByZWRlc2lnbiBpcyBiZWluZyByb2xsZWQgb3V0IGdyYWR1YWxseSB0byBhbGwgZG9t
+YWlucyBvdmVyIHRoZSBjb21pbmcgIA0Kd2Vla3MuIFdlIGhvcGUgeW91IGxpa2UgdGhlIGNoYW5n
+ZXMgYW5kIHdlJ2xsIGNvbnRpbnVlIHRvIHdvcmsgdG8gcHJvdmlkZSAgDQp5b3Ugd2l0aCBlZmZp
+Y2llbnQsIGZyaWVuZGx5LCBhbmQgYWNjZXNzaWJsZSB0b29scy4NCg0KDQoNCg0KU2luY2VyZWx5
+LA0KVGhlIEdvb2dsZSBmb3IgV29yayBUZWFtDQoNCg0KDQqpIDIwMTUgR29vZ2xlIEluYy4gMTYw
+MCBBbXBoaXRoZWF0cmUgUGFya3dheSwgTW91bnRhaW4gVmlldywgQ0EgOTQwNDMNCg0KWW91IGhh
+dmUgcmVjZWl2ZWQgdGhpcyBtYW5kYXRvcnkgZW1haWwgc2VydmljZSBhbm5vdW5jZW1lbnQgdG8g
+dXBkYXRlIHlvdSAgDQphYm91dCBpbXBvcnRhbnQgY2hhbmdlcyB0byB5b3VyIEdvb2dsZSBBcHBz
+IHByb2R1Y3Qgb3IgYWNjb3VudC4NCg0KDQoNCg==
+--001a11363b7ed557e5050e51d0e8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8" />
+
+</head>
+
+<body bgcolor=3D"#ffffff">
+
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" bgco=
+lor=3D"#ffffff" style=3D"background-color: #ffffff;">
+  <tr>
+    <td align=3D"center">
+
+
+
+      <div style=3D"max-width: 558px; margin-top: 0; margin-right: auto; ma=
+rgin-bottom: 0; margin-left: auto; padding-top: 0; padding-right: 10px; pad=
+ding-bottom: 0; padding-left: 10px;">
+        <table align=3D"center" width=3D"100%" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0" style=3D"max-width: 558px; padding-bottom: 0; padding-=
+right: 0; padding-top: 0; padding-left: 0; margin-top: 0; margin-right: 0; =
+margin-bottom: 0; margin-left: 0; font-family: Arial, Helvetica, sans-serif=
+; font-weight: normal; font-size: 13px; line-height: 18px; color: #444444; =
+text-align: left;">
+          <tr>
+            <td valign=3D"top" width=3D"100%" style=3D"padding-left: 0; pad=
+ding-bottom: 18px; padding-right: 0; padding-top: 22px; border-collapse: co=
+llapse; border-bottom-width: 1px; border-bottom-color: #dcdcdc; border-bott=
+om-style: solid;">
+              <img src=3D"http://www.google.com/support/enterprise/static/g=
+apps/art/admin/en/gans/logo_col_126x48.png" alt=3D"Google" title=3D"Google"=
+ width=3D"126" border=3D"0" style=3D"display: block;" />
+            </td>
+          </tr>
+          <tr>
+            <td width=3D"100%" style=3D"padding-top: 44px; padding-right: 0=
+; padding-bottom: 0; padding-left: 0;">
+              <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadd=
+ing=3D"0" bgcolor=3D"#ffffff" style=3D"font-family: Arial, Helvetica, sans-=
+serif; font-weight: normal; font-size: 13px; line-height: 18px; color: #444=
+444; background-color: #ffffff; padding-top: 0; padding-bottom: 0; padding-=
+right: 0; padding-left: 0; margin-left: 0; margin-bottom: 0; margin-top: 0;=
+ margin-right: 0;">
+
+                <tr>
+                  <td valign=3D"top" width=3D"100%" style=3D"font-family: A=
+rial, Helvetica, sans-serif; font-size: 28px; line-height: 32px; color: #1a=
+1a1a; font-weight: normal; text-align: left;">
+
+
+
+                    <!-- /// content: SUBJECT -->
+                    Welcome to the new, redesigned Google Admin console
+                    <!-- End -->
+
+
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td width=3D"100%">
+                    <table width=3D"100%" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">
+                      <tr>
+                        <td valign=3D"top" width=3D"100%" style=3D"padding-=
+left: 0; padding-bottom: 5px; padding-right: 0; padding-top: 5px; font-fami=
+ly: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 13px; lin=
+e-height: 18px; color: #333333; text-align: left;">
+
+
+
+                          <!-- /// content: COPY -->
+
+<p>Hello Administrators,</p>
+
+<p>We&rsquo;re excited to announce that the Admin console has been redesign=
+ed to better meet your needs, putting your most important controls front an=
+d center and making the most common tasks easier than ever to complete.</p>
+<p>We&rsquo;ve prepared an <a href=3D"https://support.google.com/a/answer/6=
+160844">overview guide</a>, <a href=3D"http://youtu.be/5HmttbYH3SQ">video t=
+utorial</a>, and <a href=3D"http://goo.gl/sy6ESj">screenshots</a> outlining=
+ how to change settings, manage users, apply filters, and access other freq=
+uently used features in the new UI.</p>
+<p>The redesign is being rolled out gradually to all domains over the comin=
+g weeks. We hope you like the changes and we&rsquo;ll continue to work to p=
+rovide you with efficient, friendly, and accessible tools.</p>
+                     <!-- End -->
+
+
+
+                        </td>
+                      </tr>
+
+
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td valign=3D"top" width=3D"100%" style=3D"padding-left: =
+0; padding-bottom: 40px; padding-right: 0; padding-top: 20px; font-family: =
+Arial, Helvetica, sans-serif; font-weight: normal; font-size: 13px; line-he=
+ight: 18px; color: #333333; border-collapse: collapse;  text-align: left;">
+
+
+
+                    <!-- /// content: SIGN-OFF -->
+                    Sincerely,<br /><strong>The Google for Work Team</stron=
+g>
+                    <!-- End -->
+
+
+
+                  </td>
+                </tr>
+
+
+<!-- /// content: Add additional content here-->=20
+               =20
+               =20
+               =20
+<!-- /// content: End of additional content -->                =20
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td width=3D"100%" style=3D"font-family: Arial, Helvetica, sans=
+-serif; font-weight: normal; font-size: 10px; line-height: 14px; color: #66=
+6666; padding-bottom: 0; padding-top: 20px; padding-right: 0; padding-left:=
+ 0; text-align: left;border-top-style: solid; border-top-color: #dcdcdc; bo=
+rder-top-width: 1px;">
+
+
+
+              <!-- /// content: Footer -->
+              &copy; 2015 Google Inc. 1600 Amphitheatre Parkway, Mountain V=
+iew, CA 94043
+              <br /><br />
+              You have received this mandatory email service announcement t=
+o update you about important changes to your Google Apps product or account=
+.
+              <!-- End -->
+
+
+
+            </td>
+          </tr>
+        </table>
+      </div>
+
+
+
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+--001a11363b7ed557e5050e51d0e8--

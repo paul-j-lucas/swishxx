@@ -90,6 +90,19 @@ AS_IF([test x$enable_base64 = xyes],
    AC_DEFINE([WITH_DECODING],[1],[with decoding])]
 )
 
+# Program feature: Encoded-Word Decoding (--disable-encoded-word)
+AC_MSG_CHECKING([whether to enable encoded-word support])
+AC_ARG_ENABLE([encoded-qord],
+  [AS_HELP_STRING([--disable-encoded-word], [disable encoded-word support])],
+  [],
+  [enable_encoded_word="yes" enable_decoding="yes"]
+)
+AC_MSG_RESULT([$enable_encoded_word])
+AS_IF([test x$enable_encoded_word = xyes],
+  [AC_DEFINE([WITH_ENCODED_WORD],[1],[with encoded-word support])
+   AC_DEFINE([WITH_DECODING],[1],[with decoding])]
+)
+
 # Program feature: Quoted-Printable Decoding (--disable-quoted-printable)
 AC_MSG_CHECKING([whether to enable quoted-printable support])
 AC_ARG_ENABLE([quoted-printable],
@@ -230,6 +243,7 @@ AS_IF([test x$enable_rtf = xyes],
 AM_CONDITIONAL([MULTI_THREADED], [test x$enable_daemon = xyes])
 AM_CONDITIONAL([WITH_BASE64], [test x$enable_base64 = xyes])
 AM_CONDITIONAL([WITH_DECODING], [test x$enable_decoding = xyes])
+AM_CONDITIONAL([WITH_ENCODED_WORD], [test x$enable_encoded_word = xyes])
 AM_CONDITIONAL([WITH_HTML], [test x$enable_html = xyes])
 AM_CONDITIONAL([WITH_ID3], [test x$enable_id3 = xyes])
 AM_CONDITIONAL([WITH_LATEX], [test x$enable_latex = xyes])

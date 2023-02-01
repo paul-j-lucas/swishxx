@@ -1,0 +1,109 @@
+Delivered-To: paul@lucasmail.org
+Received: by 10.194.38.106 with SMTP id f10csp195764wjk;
+        Mon, 5 Nov 2012 15:29:53 -0800 (PST)
+Received: by 10.50.189.193 with SMTP id gk1mr11262136igc.22.1352158192565;
+        Mon, 05 Nov 2012 15:29:52 -0800 (PST)
+Return-Path: <icu-support-bounces@lists.sourceforge.net>
+Received: from lists.sourceforge.net (lists.sourceforge.net. [216.34.181.88])
+        by mx.google.com with ESMTPS id bc8si19706321icb.47.2012.11.05.15.29.51
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 05 Nov 2012 15:29:52 -0800 (PST)
+Received-SPF: pass (google.com: domain of icu-support-bounces@lists.sourceforge.net designates 216.34.181.88 as permitted sender) client-ip=216.34.181.88;
+Authentication-Results: mx.google.com; spf=pass (google.com: domain of icu-support-bounces@lists.sourceforge.net designates 216.34.181.88 as permitted sender) smtp.mail=icu-support-bounces@lists.sourceforge.net
+Received: from localhost ([127.0.0.1] helo=sfs-ml-4.v29.ch3.sourceforge.com)
+	by sfs-ml-4.v29.ch3.sourceforge.com with esmtp (Exim 4.76)
+	(envelope-from <icu-support-bounces@lists.sourceforge.net>)
+	id 1TVW6y-00079T-3N; Mon, 05 Nov 2012 23:29:44 +0000
+Received: from sog-mx-2.v43.ch3.sourceforge.com ([172.29.43.192]
+	helo=mx.sourceforge.net)
+	by sfs-ml-4.v29.ch3.sourceforge.com with esmtp (Exim 4.76)
+	(envelope-from <pedberg@apple.com>)
+	id 1TVW6u-000793-Qt; Mon, 05 Nov 2012 23:29:40 +0000
+Received-SPF: pass (sog-mx-2.v43.ch3.sourceforge.com: domain of apple.com
+	designates 17.151.62.50 as permitted sender)
+	client-ip=17.151.62.50; envelope-from=pedberg@apple.com;
+	helo=mail-out.apple.com; 
+Received: from mail-out.apple.com ([17.151.62.50])
+	by sog-mx-2.v43.ch3.sourceforge.com with esmtps (TLSv1:RC4-MD5:128)
+	(Exim 4.76) id 1TVW6t-00022C-NQ; Mon, 05 Nov 2012 23:29:40 +0000
+MIME-version: 1.0
+Received: from relay15.apple.com ([17.128.113.54])
+	by mail-out.apple.com (Oracle Communications Messaging Server 7u4-23.01
+	(7.0.4.23.0) 64bit (built Aug 10 2011))
+	with ESMTP id <0MD1009L7FWAV9U2@mail-out.apple.com>; Mon,
+	05 Nov 2012 15:29:07 -0800 (PST)
+X-AuditID: 11807136-b7fc26d00000623e-a3-50984bc2190a
+Received: from [17.153.31.150] (Unknown_Domain [17.153.31.150])
+	by relay15.apple.com (Apple SCV relay) with SMTP id
+	9D.62.25150.2CB48905; Mon, 05 Nov 2012 15:29:06 -0800 (PST)
+From: Peter Edberg <pedberg@apple.com>
+Date: Mon, 05 Nov 2012 15:29:05 -0800
+Message-id: <EF201DBE-5403-4AAC-B95C-5FFCAC9AD89C@apple.com>
+To: icu-announce@lists.sourceforge.net,
+	ICU support mailing list <icu-support@lists.sourceforge.net>,
+	icu-design@lists.sourceforge.net
+X-Mailer: Apple Mail (2.1283)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPJMWRmVeSWpSXmKPExsUiOFN+mu4h7xkBBp2HrCyedVRY/J+5kcli
+	7eELTA7MHrsXfGYKYIzisklJzcksSy3St0vgynh4ezFrwXyOikfzVzI2MH5g62Lk5JAQMJHY
+	8eYpE4QtJnHh3nqgOBeHkMBGRol3vRNYuhg5ONgE1CS2zMgFqWEW0JK48e8lE4StLbFs4Wtm
+	EFtYQFGib+1nsJksAioSh7Z9AKvhFbCR2PTqBthMEYEuRonWCRcYIRKGEh3vDkAdISuxcfsD
+	9gmMPLOQ7JiFZMcsJC0LGJlXMQoWpeYkVhqa6iUWFOSk6iXn525iBAVLQ6HZDsYdf+UOMQpw
+	MCrx8AqKzQgQYk0sK67MPcQowcGsJMLLcWd6gBBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeEl6g
+	aoH0xJLU7NTUgtQimCwTB6dUA2PS8Qa2opQJy6tsNX66yNqtbAw2SjufErWXa+uaJdc78rSe
+	npozM6JfyN2e/dAvhRcPr6p4r278Jz99QZTFwfX+T4y5uIo++D6o+uWzc9HND78SimfzPb7H
+	a1myJu3D39fzmK8s9V40U6M80k9ecsaZa0+2XWo2/bVr1wGTydp8ixYEnZjtJu2vxFKckWio
+	xVxUnAgAyckGAhICAAA=
+X-Spam-Score: -1.7 (-)
+X-Spam-Report: Spam Filtering performed by mx.sourceforge.net.
+	See http://spamassassin.org/tag/ for more details.
+	-1.5 SPF_CHECK_PASS SPF reports sender host as permitted sender for
+	sender-domain
+	-0.0 SPF_PASS               SPF: sender matches SPF record
+	-0.4 RP_MATCHES_RCVD Envelope sender domain matches handover relay
+	domain 0.2 AWL AWL: From: address is in the auto white-list
+X-Headers-End: 1TVW6t-00022C-NQ
+Subject: [icu-support] ICU 50 is now available!
+X-BeenThere: icu-support@lists.sourceforge.net
+X-Mailman-Version: 2.1.9
+Precedence: list
+Reply-To: ICU support mailing list <icu-support@lists.sourceforge.net>
+List-Id: ICU support mailing list <icu-support.lists.sourceforge.net>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/icu-support>, 
+	<mailto:icu-support-request@lists.sourceforge.net?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=icu-support>
+List-Post: <mailto:icu-support@lists.sourceforge.net>
+List-Help: <mailto:icu-support-request@lists.sourceforge.net?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/icu-support>,
+	<mailto:icu-support-request@lists.sourceforge.net?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: icu-support-bounces@lists.sourceforge.net
+
+Dear friends and users of ICU,
+
+We are pleased to announce the release of ICU 50, with initial public release version 50.1. For information on ICU version numbering, see
+http://userguide.icu-project.org/design#TOC-Version-Numbers-in-ICU
+
+ICU version 50 supports Unicode 6.2 and includes the latest locale data from CLDR 22.1, which was released October 26. It also includes ordinal-number support in MessageFormat & PluralRules, dictionary-based break iterators for Chinese and Japanese, Korean lunar calendar support in Java, a new GenderInfo class and new TimeZoneFormat APIs for C, and numerous other enhancements and bug fixes. Thread safety support in C can no longer be removed.
+
+More information about this release can be found here:
+http://site.icu-project.org/download/50
+
+The API reference documents for both ICU4C and ICU4J are published at the following locations:
+ICU4C: http://icu-project.org/apiref/icu4c/
+ICU4J: http://icu-project.org/apiref/icu4j/
+
+Best regards,
+Peter Edberg for the ICU Project
+
+
+------------------------------------------------------------------------------
+LogMeIn Central: Instant, anywhere, Remote PC access and management.
+Stay in control, update software, and manage PCs from one command center
+Diagnose problems and improve visibility into emerging IT issues
+Automate, monitor and manage. Do more in less time with Central
+http://p.sf.net/sfu/logmein12331_d2d
+_______________________________________________
+icu-support mailing list - icu-support@lists.sourceforge.net
+To Un/Subscribe: https://lists.sourceforge.net/lists/listinfo/icu-support
+Archives/Project Info: http://site.icu-project.org/contacts

@@ -1,0 +1,471 @@
+Delivered-To: paul@lucasmail.org
+Received: by 10.107.23.132 with SMTP id 126csp7278959iox;
+        Thu, 31 Dec 2015 14:03:58 -0800 (PST)
+X-Received: by 10.107.164.141 with SMTP id d13mr73438906ioj.88.1451599438718;
+        Thu, 31 Dec 2015 14:03:58 -0800 (PST)
+Return-Path: <messages@public.govdelivery.com>
+Received: from mailer158083.service.govdelivery.com (mailer158083.service.govdelivery.com. [209.134.158.83])
+        by mx.google.com with ESMTP id 64si21567455iop.175.2015.12.31.14.03.58
+        for <paul@lucasmail.org>;
+        Thu, 31 Dec 2015 14:03:58 -0800 (PST)
+Received-SPF: pass (google.com: domain of messages@public.govdelivery.com designates 209.134.158.83 as permitted sender) client-ip=209.134.158.83;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of messages@public.govdelivery.com designates 209.134.158.83 as permitted sender) smtp.mailfrom=messages@public.govdelivery.com;
+       dkim=pass header.i=@public.govdelivery.com
+X-VirtualServer: VSG003, mailer158083.service.govdelivery.com, 172.24.0.83
+X-VirtualServerGroup: VSG003
+X-MailingID: 17559554::20151231.53311141::1001::MDB-PRD-BUL-20151231.53311141::paul@lucasmail.org::791_0
+X-SMHeaderMap: mid="X-MailingID"
+X-Destination-ID: paul@lucasmail.org
+X-SMFBL: cGF1bEBsdWNhc21haWwub3Jn
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed;
+	d=public.govdelivery.com; s=13q2; i=@public.govdelivery.com; h=Content-Transfer-Encoding:
+	Content-Type:x-subscriber2:x-subscriber:X-Accountcode:Errors-To:
+	Reply-To:MIME-Version:Message-ID:X-ReportingKey:Subject:Date:To:
+	From; bh=ExtsOsWWW4B0nByyjZSFVtw1DVw=; b=nuJuiuL5GNjIgFMv9pO1sqN
+	2OKCG7aHD5Qs3l8Fd6uecGxKqPVIFt2fGZwpeHhESb0IkNnNMzd2BSxlZJQYJbhr
+	tkA91cIc5xfi+ElRnhjJrMYZfE9+iZk/CxqXpGHUx6nqvWsNip8p5svahHWObIm0
+	L9XdVPp8AWm1LrLoBPzXxGqbQjiVwYHbEoLSa4whMzPRd5rfqEbptCgCH6Jdxv/f
+	P91S8zx7kF5yT3zNc2vIsHuZwdHcpULR4RHAciH9WAGnfHYNFf8cxXmaY8dbVgah
+	NsLGaTF1Nqe4yZ4+pIr6f5RGu01dt1R0UMx5LMX/gzlMgnWBGNes38dDnbWJMcg=
+	=
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_0A3_C8ED_4AC86500.390784A0"
+x-subscriber2: 2.AHzaM3yk5Kgwr3DIrEdSe7G8tZL18OY7fZseXMCeSQY=
+x-subscriber: D/AMLH0OrD2JN0C1ufLk90clJ0+NqX+2
+X-Accountcode: CASFMTA
+Errors-To: messages@public.govdelivery.com
+Reply-To: sfmta@public.govdelivery.com
+MIME-Version: 1.0
+Message-ID: <17559554.791@public.govdelivery.com>
+X-ReportingKey: LJJJ2EWJK6012WJJ23VJJ::paul@lucasmail.org::paul@lucasmail.org
+Subject: =?US-ASCII?Q?HeadsUp:_Extra_Muni_svc_for_#NYE:_?= =?US-ASCII?Q?Subway_to_EMB_runs_til_4_am,_4th/Ki?= =?US-ASCII?Q?ng_til_2_am._Extra_Owl_svc:_5,_14,?= =?US-ASCII?Q?_22,_24,_38,_90,_91,_L_&_N_Owl._@76?=
+Date: Thu, 31 Dec 2015 16:03:12 -0600
+To: paul@lucasmail.org
+From: "=?US-ASCII?Q?Muni_Alerts?=" <sfmta@public.govdelivery.com>
+
+
+------=_NextPart_0A3_C8ED_4AC86500.390784A0
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+=A0=20
+SFMTA Muni ALERT [ http://www.sfmta.com ] HeadsUp: Extra Muni svc for #NY=
+E: Subway to EMB runs til 4 am, 4th/King til 2 am. Extra Owl svc: 5, 14, =
+22, 24, 38, 90, 91, L & N Owl. @76=20
+ =A0=20
+
+=A0
+
+"With MuniMobile, your phone is your fare. Get bus, rail, cable car & par=
+atransit tix with the push of a button www.sfmta.com/munimobile [ http://=
+www.sfmta.com/munimobile ]."
+
+Find more update options at Agency News [ https://public.govdelivery.com/=
+accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_1 ], Muni Alerts [ https=
+://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMT=
+A_2 ], Streetscape and Other Projects [ https://public.govdelivery.com/ac=
+counts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_6 ] & Muni Forward [ https=
+://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMT=
+A_8 ]. Thank you for subscribing!
+
+ Styling Image =A0 SFMTA Logo [ http://www.sfmta.com/ ]=20
+STAY CONNECTED: Visit us on Facebook [ https://www.facebook.com/SFMTA.Mun=
+i ] Visit us on Twitter [ https://twitter.com/sfmta_muni ] Sign up for em=
+ail updates [ https://public.govdelivery.com/accounts/CASFMTA/subscriber/=
+new ] Visit us on Twitter [ http://www.youtube.com/user/SFMTAMuniTaxiStre=
+ets?feature=3Dwatch ] Visit us on Twitter [ http://www.flickr.com/photos/=
+sfmtaphoto/ ] =A0White SFMTA logo on a gray field [ http://www.sfmta.com/=
+blog ]=20
+
+ [ http://content.govdelivery.com/accounts/CASFMTA/bulletins/12dcd19?reqf=
+rom=3Dshare ]
+
+=20
+=20
+
+SUBSCRIBER SERVICES:
+
+=20
+
+Preferences [ http://public.govdelivery.com/accounts/CASFMTA/subscribers/=
+new?preferences=3Dtrue ]=A0=A0|=A0=A0Unsubscribe
+ [ https://public.govdelivery.com/accounts/CASFMTA/subscriber/one_click_u=
+nsubscribe?verification=3D5.301721c5bbfdbfba3602153a8711461f&destination=3D=
+paul@lucasmail.org ] Help [ https://subscriberhelp.govdelivery.com/ ]=A0=A0=
+ |=A0=A0Feedback [ http://www.sfmta.com/feedback ]
+
+=20
+=20
+ =A0=20
+=20
+
+=A0
+
+________________________________________________________________________
+
+ This email was sent to paul@lucasmail.org using GovDelivery, on behalf o=
+f: San Francisco Municipal Transportation Agency (SFMTA) =B7 One South Va=
+n Ness, San Francisco, CA &lrm;94103 Powered by GovDelivery [ http://www.=
+govdelivery.com/portals/powered-by ]=20
+ =A0=20
+=20
+
+=A0
+=0A
+------=_NextPart_0A3_C8ED_4AC86500.390784A0
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"en" lang=3D"en">=
+
+<head>
+<title>    HeadsUp: Extra Muni svc for #NYE: Subway to EMB runs til 4 am,=
+ 4th/King til 2 am. Extra Owl svc: 5, 14, 22, 24, 38, 90, 91, L & N Owl. =
+@76
+</title>
+   =20
+
+</head>
+<body>
+
+      <table width=3D"700" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0" align=3D"center">
+        <tr>
+          <td>
+
+
+ =20
+
+
+
+ =20
+  <table style=3D"width: 100%; background-color: #ffffff; background-posi=
+tion: initial initial; background-repeat: initial initial;" border=3D"0" =
+cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr style=3D"height: 7.5pt;">
+<td style=3D"padding: 0in 0in 0in 0in; height: 7.5pt;">&nbsp;</td>
+</tr>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<div align=3D"center">
+<table style=3D"width: 600px; background-color: white; background-positio=
+n: initial initial; background-repeat: initial initial;" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;"><font size=3D"3"><a href=3D"http:=
+//links.govdelivery.com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lk=
+PTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxM=
+TE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc2=
+1haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF=
+0ZUlkPSYmJg=3D=3D&&&100&&&http://www.sfmta.com" title=3D"Link Title"> <im=
+g src=3D"https://admin.govdelivery.com/attachments/fancy_images/CASFMTA/2=
+013/10/223221/sfmta-alert-header-600_original.png" border=3D"0" alt=3D"SF=
+MTA Muni ALERT" title=3D"SFMTA Muni ALERT" /></a></font></td>
+</tr>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;"><font size=3D"2">HeadsUp: Extra M=
+uni svc for #NYE: Subway to EMB runs til 4 am, 4th/King til 2 am. Extra O=
+wl svc: 5, 14, 22, 24, 38, 90, 91, L &amp; N Owl. @76</font></td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in; height: 7.5pt;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+ =20
+
+
+<div id=3D"mail_footer">
+    <!--Start of the footer-->
+<table style=3D"width: 100.0%; background: #ffffff;" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<table style=3D"width: 600px; background: white;" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td><!--Insert stay connected-->
+<table style=3D"width: 600px;" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0">
+<tbody>
+<tr>
+<td style=3D"text-align: center;" colspan=3D"3">
+<p><span style=3D"font-family: arial, helvetica, sans-serif; font-size: x=
+-small;"><em>With MuniMobile, your phone is your fare. Get bus, rail, cab=
+le car &amp; paratransit tix with the push of a button <a href=3D"http://=
+links.govdelivery.com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPT=
+IwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE=
+0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21h=
+aWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0Z=
+UlkPSYmJg=3D=3D&&&101&&&http://www.sfmta.com/munimobile">www.sfmta.com/mu=
+nimobile</a>.</em></span></p>
+<p><span style=3D"font-family: arial, helvetica, sans-serif; font-size: x=
+-small;">Find more update options at <a href=3D"http://links.govdelivery.=
+com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzEx=
+MTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkP=
+TEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD=
+1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&=
+102&&&https://public.govdelivery.com/accounts/CASFMTA/subscriber/topics?q=
+sp=3DCASFMTA_1" title=3D"Agency News E-mail Update Options">Agency News</=
+a>, <a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&103&&&https://public.govdelivery.=
+com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_2" title=3D"Real-tim=
+e &amp; scheduled e-mail &amp; text alerts for Muni service ">Muni Alerts=
+</a>, <a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&104&&&https://public.govdelivery.=
+com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_6">Streetscape and O=
+ther Projects</a> &amp; <a href=3D"http://links.govdelivery.com:80/track?=
+type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ=
+2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaW=
+FsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2F=
+zbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&105&&&https:/=
+/public.govdelivery.com/accounts/CASFMTA/subscriber/topics?qsp=3DCASFMTA_=
+8">Muni Forward</a>. Thank you for subscribing!</span></p>
+</td>
+</tr>
+<tr>
+<td colspan=3D"3"><span style=3D"font-family: arial, helvetica, sans-seri=
+f;"><img src=3D"https://admin.govdelivery.com/attachments/fancy_images/CA=
+SFMTA/2013/07/199608/background-line_original.png" alt=3D"Styling Image" =
+width=3D"600" height=3D"6" /></span></td>
+</tr>
+<tr>
+<td colspan=3D"3">&nbsp;</td>
+</tr>
+<tr>
+<td width=3D"300"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&106&&&http://www.sfm=
+ta.com/" target=3D"_blank"><img src=3D"https://admin.govdelivery.com/atta=
+chments/fancy_images/CASFMTA/2013/07/199555/sfmta-logo-200x70_original.pn=
+g" border=3D"0" alt=3D"SFMTA Logo" width=3D"200" height=3D"70" /></a></td=
+>
+<td align=3D"right" valign=3D"top" width=3D"300">
+<table cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">STAY CONNECTED:</td>
+</tr>
+<tr>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&107&&&https://www.fa=
+cebook.com/SFMTA.Muni" target=3D"_blank" title=3D"Find us on Facebook!"><=
+img src=3D"https://service.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MED=
+IA/facebook.gif" border=3D"0" alt=3D"Visit us on Facebook" width=3D"26" h=
+eight=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&108&&&https://twitte=
+r.com/sfmta_muni" title=3D"Follow us on Twitter"><img src=3D"https://serv=
+ice.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MEDIA/twitter.gif" border=3D=
+"0" alt=3D"Visit us on Twitter" width=3D"27" height=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&109&&&https://public=
+.govdelivery.com/accounts/CASFMTA/subscriber/new" target=3D"_blank" title=
+=3D"Get Updates"><img src=3D"https://service.govdelivery.com/banners/GOVD=
+ELIVERY/SOCIAL_MEDIA/envelope.gif" border=3D"0" alt=3D"Sign up for email =
+updates" width=3D"25" height=3D"25" /></a></td>
+<td width=3D"33"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&110&&&http://www.you=
+tube.com/user/SFMTAMuniTaxiStreets?feature=3Dwatch" title=3D"Follow up on=
+ YouTube"><img src=3D"https://service.govdelivery.com/banners/GOVDELIVERY=
+/SOCIAL_MEDIA/youtube.gif" border=3D"0" alt=3D"Visit us on Twitter" width=
+=3D"27" height=3D"25" /></a></td>
+<td width=3D"41"><a href=3D"http://links.govdelivery.com:80/track?type=3D=
+click&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1N=
+REItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3N=
+TU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC=
+5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&111&&&http://www.fli=
+ckr.com/photos/sfmtaphoto/" title=3D"Follow us on Flickr"><img src=3D"htt=
+ps://service.govdelivery.com/banners/GOVDELIVERY/SOCIAL_MEDIA/flickr.gif"=
+ border=3D"0" alt=3D"Visit us on Twitter" width=3D"27" height=3D"25" /></=
+a></td>
+<td width=3D"33">&nbsp;<a href=3D"http://links.govdelivery.com:80/track?t=
+ype=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2=
+VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWF=
+sPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2Fz=
+bWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&112&&&http://w=
+ww.sfmta.com/blog" title=3D"Follow Our Blog, Moving SF"><img src=3D"https=
+://admin.govdelivery.com/attachments/fancy_images/CASFMTA/2014/09/350565/=
+small-logo-no-border_original.png" alt=3D"White SFMTA logo on a gray fiel=
+d" width=3D"25" height=3D"25" /></a></td>
+</tr>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">
+<p><span style=3D"color: #000000; font-family: Verdana, Arial, Helvetica,=
+ sans-serif; font-size: 10px;"><br /><a href=3D'http://links.govdelivery.=
+com:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzEx=
+MTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkP=
+TEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD=
+1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&=
+113&&&http://content.govdelivery.com/accounts/CASFMTA/bulletins/12dcd19?r=
+eqfrom=3Dshare' target=3D'_blank'><img width=3D'83' height=3D'16' alt=3D'=
+Bookmark and Share' style=3D'border:0' src=3D'https://public.govdelivery.=
+com/assets/share_this.gif'/></a></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td align=3D"right" valign=3D"top" width=3D"300">
+<table cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 1=
+2px;" colspan=3D"7" valign=3D"top" height=3D"24">
+<p>SUBSCRIBER SERVICES:</p>
+</td>
+</tr>
+<tr>
+<td>
+<p style=3D"color: #666666; font-family: Arial, sans-serif; font-size: 12=
+px;"><a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&114&&&http://public.govdelivery.c=
+om/accounts/CASFMTA/subscribers/new?preferences=3Dtrue"> Preferences</a>&=
+nbsp;&nbsp;|&nbsp;&nbsp;<a href=3D"http://links.govdelivery.com:80/track?=
+type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ=
+2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaW=
+FsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2F=
+zbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&115&&&https:/=
+/public.govdelivery.com/accounts/CASFMTA/subscriber/one_click_unsubscribe=
+?verification=3D5.301721c5bbfdbfba3602153a8711461f&destination=3Dpaul@luc=
+asmail.org">Unsubscribe<br /> </a> <a href=3D"http://links.govdelivery.co=
+m:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMT=
+QxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTE=
+wMDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1w=
+YXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&11=
+6&&&https://subscriberhelp.govdelivery.com/">Help</a>&nbsp;&nbsp; |&nbsp;=
+&nbsp;<a href=3D"http://links.govdelivery.com:80/track?type=3Dclick&enid=3D=
+ZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVT=
+C0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmc2VyaWFsPTE3NTU5NTU0JmVtYW=
+lsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wYXVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV=
+4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&117&&&http://www.sfmta.com/feedba=
+ck">Feedback</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--End of footer-->
+<p>&nbsp;</p>
+
+</div>
+<div id=3D"tagline">
+    <table style=3D"width: 100.0%; background: #ffffff;" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0in 0in 0in 0in;">
+<table style=3D"width: 600px; background: white;" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td>
+<table style=3D"width: 600px; height: 53px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"color: #757575; font-size: 10px; font-family: Arial;" colspa=
+n=3D"2" width=3D"89%"><hr /></td>
+</tr>
+<tr>
+<td style=3D"color: #757575; font-size: 10px; font-family: Arial;" width=3D=
+"89%">This email was sent to paul@lucasmail.org using GovDelivery, on beh=
+alf of: San Francisco Municipal Transportation Agency (SFMTA) &middot; On=
+e South Van Ness, San Francisco, CA &lrm;94103</td>
+<td align=3D"right" width=3D"11%"><a href=3D"http://links.govdelivery.com=
+:80/track?type=3Dclick&enid=3DZWFzPTEmbWFpbGluZ2lkPTIwMTUxMjMxLjUzMzExMTQ=
+xJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41MzMxMTE0MSZkYXRhYmFzZWlkPTEw=
+MDEmc2VyaWFsPTE3NTU5NTU0JmVtYWlsaWQ9cGF1bEBsdWNhc21haWwub3JnJnVzZXJpZD1wY=
+XVsQGx1Y2FzbWFpbC5vcmcmZmw9JmV4dHJhPU11bHRpdmFyaWF0ZUlkPSYmJg=3D=3D&&&118=
+&&&http://www.govdelivery.com/portals/powered-by" target=3D"_blank"><img =
+src=3D"https://service.govdelivery.com/banners/GOVDELIVERY/logo_gd_powere=
+dby.gif" border=3D"0" alt=3D"Powered by GovDelivery" width=3D"115" height=
+=3D"35" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+</div>
+          </td>
+        </tr>
+      </table>
+
+<IMG SRC=3D"http://links.govdelivery.com:80/track?enid=3DZWFzPTEmbWFpbGlu=
+Z2lkPTIwMTUxMjMxLjUzMzExMTQxJm1lc3NhZ2VpZD1NREItUFJELUJVTC0yMDE1MTIzMS41M=
+zMxMTE0MSZkYXRhYmFzZWlkPTEwMDEmdHlwZT1vcGVuJnNlcmlhbD0xNzU1OTU1NCZlbWFpbG=
+lkPXBhdWxAbHVjYXNtYWlsLm9yZyZ1c2VyaWQ9cGF1bEBsdWNhc21haWwub3JnJmZsPSZleHR=
+yYT1NdWx0aXZhcmlhdGVJZD0mJiY=3D" WIDTH=3D"1" HEIGHT=3D"1" STYLE=3D"border=
+-width:0; border-style:hidden;" ALT=3D""/></body>
+</html>
+=0A
+------=_NextPart_0A3_C8ED_4AC86500.390784A0--
+

@@ -2,7 +2,7 @@
 #	SWISH++
 #	src/encodings/Makefile.am
 #
-#	Copyright (C) 1998-2015  Paul J. Lucas
+#	Copyright (C) 1998-2016  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -26,6 +26,10 @@ libencodings_a_SOURCES =
 
 if WITH_BASE64
 libencodings_a_SOURCES += base64.cpp
+endif
+
+if WITH_ENCODED_WORD
+libencodings_a_SOURCES += encoded_word.cpp
 endif
 
 if WITH_QUOTED_PRINTABLE

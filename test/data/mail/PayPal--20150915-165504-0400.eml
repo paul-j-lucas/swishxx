@@ -1,0 +1,636 @@
+Delivered-To: paypal@pauljlucas.org
+Received: by 10.107.131.231 with SMTP id n100csp1787011ioi;
+        Tue, 15 Sep 2015 13:55:10 -0700 (PDT)
+X-Received: by 10.55.27.203 with SMTP id m72mr34977123qkh.39.1442350510183;
+        Tue, 15 Sep 2015 13:55:10 -0700 (PDT)
+Return-Path: <NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com>
+Received: from outbound.na.e.paypal.com (outbound.na.e.paypal.com. [96.47.30.202])
+        by mx.google.com with ESMTPS id v24si18636090qkv.69.2015.09.15.13.55.09
+        for <paypal@pauljlucas.org>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Sep 2015 13:55:10 -0700 (PDT)
+Received-SPF: pass (google.com: domain of NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com designates 96.47.30.202 as permitted sender) client-ip=96.47.30.202;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com designates 96.47.30.202 as permitted sender) smtp.mailfrom=NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com;
+       dkim=pass header.i=@e.paypal.com;
+       dmarc=pass (p=REJECT dis=NONE) header.from=paypal.com
+Return-Path: <NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com>
+DKIM-Signature: v=1; a=rsa-sha1; d=e.paypal.com; s=ED-DKIM-V3; c=relaxed/relaxed;
+	q=dns/txt; i=@e.paypal.com; t=1442350504;
+	h=From:Subject:Date:To:MIME-Version:Content-Type;
+	bh=l2/KDAVI/ki3nqlRXWFKWQBLO6A=;
+	b=DJb1XxX4rQp2lqROkVHuvOBByqeQK25byHGuDVI0IC1LteGfP4V1wM5bbm0lt1VN
+	mdJkN9LBqtx2aoenvXMOt64Dv+4y8p0f6IMDbZpp57Wbs1Hgwd6lHDy89uwC+Ib3
+	4lZduFHenlmQdJFfa2Ge5+YKpJ9BJu9hLv8qIoEMnyE=;
+X-MSFBL: cGF5cGFsQHBhdWxqbHVjYXMub3JnQG5hLmUucGF5cGFsLmNvbV8yMEBkZWZhdWx0
+	QA==
+Received: from [127.0.0.1] ([127.0.0.1:56957])
+	by bm11-06.bo3.e-dialog.com (envelope-from <NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com>)
+	(ecelerity 3.6.4.44580 r(Platform:3.6.4.1)) with ECSTREAM
+	id 7E/65-46741-8A588F55; Tue, 15 Sep 2015 16:55:04 -0400
+Date: Tue, 15 Sep 2015 16:55:04 -0400
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+From: "PayPal" <paypal@e.paypal.com>
+Reply-To: "PayPal" <noreply@e.paypal.com>
+To: paypal@pauljlucas.org
+Subject: Notice of Policy Updates
+Message-Id: <23993-631-NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@e-dialog.com>
+X-Mail-From: NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J-H-M2-20150912-96e3b69345097@na.e.paypal.com
+X-Match: na.e.paypal.com
+X-RCPT-To: paypal@pauljlucas.org
+X-Mailer: EDMAIL R6.00.02
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" =
+/>
+		<meta name=3D"viewport" content=3D"width=3D320" />
+		<title>PayPal</title>
+		<style type=3D"text/css">
+.ReadMsgBody {
+	width: 100%;
+}
+.ExternalClass {
+	width: 100%;
+}
+ @media screen and (max-device-width: 480px) {
+=09=20
+.applelinks1 a {
+		font-family:'Helvetica Neue Light', Helvetica, Arial, sans-serif; !import=
+ant;
+		font-size:11px !important;
+		line-height:15px !important;
+		text-decoration:none !important;
+		color:#8c8c8c !important;
+}
+
+*[class=3Demailwrapto320] {
+	width: 320px !important;
+	height: auto !important;
+}
+
+*[class=3Demailwrapto220] {
+	width: 264px !important;
+	height: auto !important;
+}
+
+*[class=3Demailwrapto90] {
+	width: 90px !important;
+	height: auto !important;
+}
+
+*[class=3Dnomob]{
+	display:none !important;
+
+}
+
+/* Font class */
+
+*[class=3Dfont10]{
+	font-size:10px !important;
+	line-height:13px !important;=20
+	}
+=09
+	*[class=3Dfont10_center]{
+	font-size:10px !important;
+	line-height:13px !important;
+	text-align:center !important;=20
+	}
+
+*[class=3Dfont12]{
+	font-size:12px !important;
+	line-height:16px !important;=20
+}=09
+
+*[class=3Dfont28]{
+	font-size:28px !important;
+	line-height:32px !important;=20
+	}
+
+/* Spacer class */
+
+*[class=3Dresize_w20]{
+	width:20px !important;
+	}
+=09
+	*[class=3Dresize_h20]{
+	height:20px !important;
+	}
+
+/* */
+
+*[class=3Dblock1]{
+	display:block !important;
+}
+
+*[class=3Dlogo_resize]{
+	width:87px !important;
+	height: auto !important;
+}
+
+a {
+	color: #006ba3;
+}
+a img {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+</style>
+		</head>
+		<body bgcolor=3D"#f2f2f2" style=3D"background-color:#f2f2f2;-webkit-text-=
+size-adjust:none; font-family:'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; margin:0; padding:0;">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" bgco=
+lor=3D"#f2f2f2">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table class=3D"emailwrapto320" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"700" align=3D"center">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table class=3D"emailwrapto320" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"700" align=3D"center" bgcolor=3D"#f2f2f2">
+<tr>
+<td height=3D"10" align=3D"left" valign=3D"top"><img style=3D"display:block=
+;" src=3D"https://image.paypal-communication.com/paypal_na/2014/20131210_Te=
+mplates_22725/img_spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1=
+0" /></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top" width=3D"606" class=3D"emailwrapto264"><t=
+able width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+                <td valign=3D"top" align=3D"left" width=3D"1" class=3D"resi=
+ze_w20"><img class=3D"resize_w20" src=3D"https://image.paypal-communication=
+.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" width=3D"1" he=
+ight=3D"1" alt=3D""  border=3D"0" style=3D"display:block;"/></td>
+                <td valign=3D"middle" align=3D"left" class=3D"font10" style=
+=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-serif; font=
+-size: 12px; color: #666666; text-decoration:none; line-height: 16px;"><str=
+ong>Paul Lucas</strong>, PayPal Policy update now available.</td>
+                <td align=3D"left" valign=3D"top" width=3D"30"><img width=
+=3D"30" src=3D"https://image.paypal-communication.com/paypal_na/2014/201312=
+10_Templates_22725/img_spacer.gif" height=3D"1" alt=3D"" border=3D"0" style=
+=3D"display:block;" /></td>
+  </tr>
+</table>
+</td>
+<td class=3D"emailwrapto90" width=3D"94" align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"font10_center" style=3D"font-family: 'Helvetica Neue Light', H=
+elvetica, Arial, sans-serif; font-size: 12px; color: #666666; text-decorati=
+on:none; line-height: 14px;" width=3D"250" align=3D"right" valign=3D"middle=
+"><a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/8ZWF5=
+D/NN/h?a=3DNRJTP4E&b=3DDWI3T6&c=3DCF5PT4X&d=3DPR3B62M&e=3D1&f=3D4afe613ccc2=
+1210525bf" style=3D"color: #666666; text-decoration: underline;" class=3D"f=
+ont10_center" target=3D"_blank"
+>View online</a></td>
+<td class=3D"resize_w20" width=3D"1" align=3D"left" valign=3D"top"><img cla=
+ss=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-comm=
+unication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" borde=
+r=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class=3D"emailwrapto320" align=3D"left" valign=3D"top" bgcolor=3D"#ffff=
+ff">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr1.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#e3e3e3"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"16" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"16" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr2.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"nomob" style=3D"font-size:0; line-height:0;" width=3D"1" align=
+=3D"left" valign=3D"top" bgcolor=3D"#e3e3e3"><img class=3D"nomob" style=3D"=
+display:block;" src=3D"https://image.paypal-communication.com/paypal_na/201=
+4/20131210_Templates_22725/img_spacer.gif" border=3D"0" alt=3D"" width=3D"1=
+" height=3D"1" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"resize_w20" width=3D"25" align=3D"left" valign=3D"top"><img cl=
+ass=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-com=
+munication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" bord=
+er=3D"0" alt=3D"" width=3D"25" height=3D"1" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"column_spli272" width=3D"115" height=3D"36" align=3D"left" val=
+ign=3D"top"><img class=3D"logo_resize" style=3D"display:block;" src=3D"http=
+s://image.paypal-communication.com/paypal_na/common/img_logo_new2.gif" bord=
+er=3D"0" alt=3D"PayPal" width=3D"140" height=3D"34" /></td>
+<td class=3D"column_spli272" align=3D"right" valign=3D"top">
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"18" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"18" /></td>
+</tr>
+<tr>
+<td class=3D"font28" style=3D"font-family: 'Helvetica Neue Light', Helvetic=
+a, Arial, sans-serif; font-size: 42px; line-height: 46px; text-decoration: =
+none; color: #009CDE;" align=3D"left" valign=3D"top">Notice of Policy Updat=
+es</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+<tr>
+<td style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-se=
+rif; font-size: 14px; line-height: 20px; text-decoration: none; color: #999=
+99A;" align=3D"left" valign=3D"top"></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+<tr>
+<td style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-se=
+rif; font-size: 14px; line-height: 20px; text-decoration: none; color: #000=
+000;" align=3D"left" valign=3D"top"><p>
+<span style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-=
+serif; font-size: 14px; line-height: 20px; text-decoration: none; color: #0=
+09cde;" align=3D"left" valign=3D"top">Dear Paul Lucas,</span><br /><br />
+
+We are making some changes to the PayPal User Agreement that will go into e=
+ffect on October 30, 2015.  If you're interested in all the details, <a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/IIJG9=
+3/NN/h" style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; color:#009cde; font-size: 14px; line-height: 20px; text-decoration=
+: underline;" target=3D"_blank"
+>take a look</a> at our Policy Updates Page.  Here are the highlights:
+=20=20
+  <ul style=3D"list-style-type:circle">
+  <li>We revised Section 3 to make it clear that our send money functionali=
+ty requires that the person receiving funds create a PayPal account in orde=
+r to receive the funds.</li>
+  <li>Person to person payments will not be available for payments sent fro=
+m Puerto Rico after October 30th. </li>
+=20=20
+</ul>
+These changes will be effective on October 30, 2015 for all U.S. users.   <=
+br /><br />
+We are also sending you a copy of our Error Resolution Notice below to prov=
+ide helpful information if you have a billing error or unauthorized transac=
+tion on your Account.  Just remember that you can check out our Error Resol=
+ution Notice anytime by going to Section 12 of the <a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/L9NOR=
+L/NN/h" style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; color:#009cde; font-size: 14px; line-height: 20px; text-decoration=
+: underline;" target=3D"_blank"
+>PayPal User Agreement</a>.<br /><br />
+=20=20
+  As always, if you need help or have any questions, give us a call or visi=
+t our <a
+ href=3D"https://email-edg.paypal.com/r/NRJTP4E/YHQU9D/IYQ31G0/QU9F4J/PF12P=
+8/NN/h" style=3D"font-family: 'Helvetica Neue Light', Helvetica, Arial, san=
+s-serif; color:#009cde; font-size: 14px; line-height: 20px; text-decoration=
+: underline;"
+>Help Center</a>. You can find the link on any page of our website.<br /><b=
+r />
+=20
+  Thank you for being a PayPal customer.
+=20=20
+=20=20
+  <br />
+    <br />
+    Sincerely,
+    <br /><br />
+    PayPal<br /><br />
+    <strong><u>ANNUAL ERROR RESOLUTION NOTICE</u></strong><br />=20
+The purpose of this notice is to provide you with important information abo=
+ut reporting errors in payments made using PayPal's services. You should ke=
+ep this notice for future reference. <br /><br /><strong>What to do About Q=
+uestions or Errors with Your Transactions.</strong><br />You should notify =
+PayPal as soon as you can if you believe:<br />&#8226; your account stateme=
+nt (you can access your account statement by logging into your account) or =
+your transaction confirmation (which is sent to=20
+you via email) is wrong; <br />
+&#8226; you need more information about a transaction listed on the stateme=
+nt or transaction confirmation; or <br />
+&#8226; there has been an unauthorized transaction, other error or unauthor=
+ized access to your PayPal account. <br /><br />
+You must notify us no later than 60 days after the error <strong>FIRST</str=
+ong> appears in your account statement. We will extend the 60-day time peri=
+od if a good reason, such as a hospital stay, prevented you from notifying =
+us within 60 days. <br /><br />
+For any type of error, you can telephone PayPal Customer Service at <strong=
+>(402) 938-3614</strong>. You can also notify us in writing or online by fo=
+llowing the instructions below. <br /><br />
+If the transaction does <strong>not</strong> involve a PayPal debit card, n=
+otify us by either: <br />
+&#8226; Using the form available in the <u>PayPal Resolution Center</u> to =
+file an unauthorized transaction report, or <br />
+&#8226; Writing to PayPal, Attn: Error Resolution Department, P.O. Box 4595=
+0, Omaha, NE 68145-0950.<br /><br />=20
+If the transaction involves <strong>your PayPal debit card</strong>, notify=
+ us by either: <br />
+&#8226; Logging into your PayPal account, going to the "Account Overview" p=
+age and selecting the transaction details for the transaction you wish to d=
+ispute. Then follow the directions provided for disputing the transaction; =
+or <br />
+&#8226; Mailing the Written Statement of Disputed PayPal ATM/Debit Card Tra=
+nsactions Form or other notice to PayPal, Attn: PayPal Debit Card Departmen=
+t, P.O. Box 45950, Omaha, NE 68145-0950, or faxing it to 303-395-2855. A li=
+nk to the form can be found with the directions provided for disputing the =
+transaction as noted above. <br /><br />
+If you notify us orally, we may request that you send us your complaint or =
+question in writing (by following the notification procedures described in =
+the paragraphs above) within 10 business days of providing us the oral noti=
+ce. <br /><br />
+When you notify us (orally or in writing), provide us with the following in=
+formation:<br />=20
+&#8226; Your name and email address you used to register your account, and =
+<br />
+&#8226; A description of the suspected unauthorized transaction or other er=
+ror and an explanation as to why you believe it is incorrect or why you nee=
+d more information, and <br />
+&#8226; The dollar amount (and if possible, the date) of the suspected unau=
+thorized transaction or other error. <br /><br />
+During the course of our investigation, we may request additional informati=
+on from you.<br />=20
+Once you notify us of a suspected error, we will investigate your complaint=
+ or question within 10 business days (or up to 20 business days for new acc=
+ounts =E2=80=93 accounts that have 30 days or fewer since the date of their=
+ first transaction). If we need more time, we may take up to 45 days to com=
+plete our investigation (or up to 90 days for new accounts, point of sale o=
+r foreign initiated transactions). <br /><br />
+If we decide that we need more time to complete our investigation (as expla=
+ined directly above), we will provisionally credit your account for the amo=
+unt of the suspected error. You will receive the provisional credit within =
+10 business days of the date we received your notice (20 business days for =
+new accounts). This will allow you to have use of the money until we comple=
+te the investigation. If we ask you to put your complaint or question in wr=
+iting and we do not receive your written=20
+complaint or question within 10 business days (or 20 for new accounts), we =
+will not provisionally credit your account. <br /><br />
+We will inform you of our decision within three business days after complet=
+ing our investigation. If we determine that there was an error, we will pro=
+mptly correct the error. If you have already received a provisional credit,=
+ you will be allowed to retain those funds. If we decide that there was not=
+ an error, we will include an explanation of our decision in our email to y=
+ou. If you received a provisional credit, we will remove it from your accou=
+nt. You may request copies of the documents=20
+that we used in our investigation. <br /><br />
+For this purpose, our "business days" are Monday through Friday. Holidays a=
+re not included as business days.
+
+  </p></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"12" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"12" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"resize_w20" width=3D"25" align=3D"left" valign=3D"top"><img cl=
+ass=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-com=
+munication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" bord=
+er=3D"0" alt=3D"" width=3D"25" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"15" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"15" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"nomob" style=3D"font-size:0; line-height:0;" width=3D"1" align=
+=3D"left" valign=3D"top" bgcolor=3D"#e3e3e3"><img class=3D"nomob" style=3D"=
+display:block;" src=3D"https://image.paypal-communication.com/paypal_na/201=
+4/20131210_Templates_22725/img_spacer.gif" border=3D"0" alt=3D"" width=3D"1=
+" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr3.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"19" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"19" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#e3e3e3"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+</table>
+</td>
+<td class=3D"nomob" width=3D"20" height=3D"20" align=3D"left" valign=3D"top=
+"><img class=3D"nomob" style=3D"display:block;" src=3D"https://image.paypal=
+-communication.com/paypal_na/2014/20131210_Templates_22725/img_bdr4.gif" bo=
+rder=3D"0" alt=3D"" width=3D"20" height=3D"20" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class=3D"emailwrapto320" align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+
+
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"18" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"18" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#d9d9d9"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"1" align=3D"left" valig=
+n=3D"top" bgcolor=3D"#ffffff"><img style=3D"display:block;" src=3D"https://=
+image.paypal-communication.com/paypal_na/2014/20131210_Templates_22725/img_=
+spacer.gif" border=3D"0" alt=3D"" width=3D"1" height=3D"1" /></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"12" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"12" /></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td class=3D"resize_w20" width=3D"25" align=3D"left" valign=3D"top"><img cl=
+ass=3D"resize_w20" style=3D"display:block;" src=3D"https://image.paypal-com=
+munication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" bord=
+er=3D"0" alt=3D"" width=3D"25" height=3D"1" /></td>
+<td align=3D"left" valign=3D"top">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr>
+<td style=3D"font-family:'Helvetica Neue Light', Helvetica, Arial, sans-ser=
+if; font-size:11px; line-height:15px; text-decoration:none; color:#8c8c8c;"=
+ align=3D"left" valign=3D"top"><table border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0">
+<tr>
+  <td colspan=3D"3"><img style=3D"display: block" src=3D"https://image.payp=
+al-communication.com/paypal_na/common/spacer.gif" alt=3D"" width=3D"1" heig=
+ht=3D"10" border=3D"0"></td>
+</tr>
+<tr>
+<td style=3D"font-family:'Helvetica Neue Light', Helvetica, Arial, sans-ser=
+if; font-size: 10px; color: #666666;">Please do not reply to this email. We=
+ are unable to respond to inquiries sent to this address. For immediate ans=
+wers to your questions, visit our Help Center by clicking "Help" located on=
+ any PayPal page or email.<br>
+
+<br>
+Copyright &copy; 2015 PayPal, Inc. All rights reserved. PayPal is located a=
+t 2211 N. First St., San Jose, CA 95131.
+<br>
+<br>
+NA03252
+</td>
+</tr>
+<tr>
+  <td colspan=3D"3"><img style=3D"display: block" src=3D"https://image.payp=
+al-communication.com/paypal_na/common/spacer.gif" alt=3D"" width=3D"1" heig=
+ht=3D"10" border=3D"0"></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"10" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"10" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-size:0; line-height:0;" height=3D"25" align=3D"left" vali=
+gn=3D"top"><img style=3D"display:block;" src=3D"https://image.paypal-commun=
+ication.com/paypal_na/2014/20131210_Templates_22725/img_spacer.gif" border=
+=3D"0" alt=3D"" width=3D"1" height=3D"25" /></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+<img height=3D"1" width=3D"1" src=3D"https://email-edg.paypal.com/o/NRJTP4E=
+/YHQU9D/IYQ31G0/QU9F4J/2CV1/52"><!-- [[NRJTP4E-DWI3T6-YHQU9D-IYQ31G0-QU9F4J=
+-H-M2-20150912-96e3b69345097]] -->
+
+
