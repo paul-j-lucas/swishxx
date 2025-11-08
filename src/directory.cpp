@@ -169,17 +169,21 @@ void do_directory( char const *dir_path ) {
   char *file = path + ::strlen( path );
   *file++ = Dir_Sep_Char;
 
+  // Read directory entries and sort them first to make ordering consistent
+  // across machines.
+  std::vector<std::string> d_names;
   for ( struct dirent const *dir_ent; (dir_ent = ::readdir( dir_p )); ) {
+    d_names.push_back(std::string(dir_ent->d_name));
+  }
+  std::sort(d_names.begin(), d_names.end());
+
+  for (auto d_name : d_names) {
     //
     // See if the name is "." or "..": if so, skip it.
     //
-    if ( dir_ent->d_name[0] == '.' ) {
-      if ( !dir_ent->d_name[1] )
-        continue;
-      if ( dir_ent->d_name[1] == '.' && !dir_ent->d_name[2] )
-        continue;
-    }
-    ::strcpy( file, dir_ent->d_name );
+    if ((d_name == ".") || (d_name == ".."))
+      continue;
+    ::strcpy( file, d_name.c_str() );
     if ( is_directory( path ) && recurse_subdirectories )
       dir_queue.push( new_strdup( path ) );
     else {
