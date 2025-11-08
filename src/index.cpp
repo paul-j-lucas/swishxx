@@ -199,7 +199,7 @@ int main( int argc, char *argv[] ) {
     { "chdir",          1, 'd', "", "" },
     { "pattern",        1, 'e', "", "" },
     { "no-pattern",     1, 'E', "", "" },
-    { "file-max",       1, 'f', "", "" },
+    { "word-files",     1, 'f', "", "" },
     { "files-reserve",  1, 'F', "", "" },
     { "files-grow",     1, 'g', "", "" },
     { "index-file",     1, 'i', "", "" },
@@ -1165,6 +1165,7 @@ static ostream& usage( ostream &o ) {
   "-?     | --help             : Print this help message\n"
   "-A     | --no-assoc-meta    : Don't associate meta names [default: do]\n"
   "-c f   | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+  "-d dir | --chdir dir        : Change working directory to dir just prior to beginning indexing\n"
   "-e m:p | --pattern m:p      : Module and file pattern to index [default: none]\n"
   "-E p   | --no-pattern p     : File pattern not to index [default: none]\n"
   "-f n   | --word-files n     : Word/file maximum [default: infinity]\n"
