@@ -40,12 +40,12 @@ public:
   filter& operator=( filter const& ) = default;
   ~filter();
 
-  char const* substitute( char const *file_name );
-  char const* substitute( std::string const &file_name );
+  std::string substitute( char const *file_name );
+  std::string substitute( std::string const &file_name );
   char const* exec() const;
 
 private:
-  char const *command_template_;
+  std::string command_template_;
   std::string command_;
   std::string target_file_name_;
 };
@@ -57,7 +57,7 @@ inline filter::~filter() {
     ::unlink( target_file_name_.c_str() );
 }
 
-inline char const* filter::substitute( std::string const &file_name ) {
+inline std::string filter::substitute( std::string const &file_name ) {
   return substitute( file_name.c_str() );
 }
 

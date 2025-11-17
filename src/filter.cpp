@@ -80,7 +80,7 @@ char const* filter::exec() const {
   return exit_code ? nullptr : target_file_name_.c_str();
 }
 
-char const *filter::substitute( char const *file_name ) {
+std::string filter::substitute( char const *file_name ) {
   string esc_file_name( file_name );
   escape_filename( esc_file_name );
   //
@@ -207,7 +207,7 @@ char const *filter::substitute( char const *file_name ) {
   // final file-name.
   //
   unescape_filename( target_file_name_ );
-  return target_file_name_.c_str();
+  return target_file_name_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

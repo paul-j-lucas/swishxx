@@ -109,19 +109,20 @@ void do_file( char const *file_name ) {
 #ifdef SWISHXX_INDEX
   char const *const orig_file_name = file_name;
 #endif /* SWISHXX_INDEX */
+  std::string file_name_str(file_name);
 
   while ( true ) {
     //
     // Determine if the file needs to be filtered and, if so, set the filename
     // to what it would become if it were filtered.
     //
-    FilterFile::const_pointer const f = file_filters[ file_name ];
+    FilterFile::const_pointer const f = file_filters[ file_name_str.c_str() ];
     if ( !f )
       break;
     filter_list.push_back( *f );
-    file_name = filter_list.back().substitute( file_name );
+    file_name_str = filter_list.back().substitute( file_name_str.c_str() );
   } // while
-  char const *const base_name = pjl_basename( file_name );
+  char const *const base_name = pjl_basename( file_name_str.c_str() );
 
   //
   // Skip the file if it matches one of the set of unacceptable patterns.
@@ -166,14 +167,14 @@ void do_file( char const *file_name ) {
     // We're not running as a filter: check to see if the extracted file
     // already exists; if so, skip extraction entirely.
     //
-    if ( ::strlen( file_name ) + extract_extension.length() > PATH_MAX ) {
+    if ( ::strlen( file_name_str.c_str() ) + extract_extension.length() > PATH_MAX ) {
       if ( verbosity > 3 )
         cout << " (skipped: " << extract_extension
              << " file-name too long)\n";
       return;
     }
     char extracted_file_name[ PATH_MAX + 1 ];
-    ::strcpy( extracted_file_name, file_name );
+    ::strcpy( extracted_file_name, file_name_str.c_str() );
     ::strcat( extracted_file_name, extract_extension );
     if ( file_exists( extracted_file_name ) ) {
       if ( verbosity > 3 )
@@ -196,6 +197,7 @@ void do_file( char const *file_name ) {
   //
   // Execute the filter(s) on the file.
   //
+  file_name = file_name_str.c_str();
   for ( auto const &f : filter_list ) {
     if ( !( file_name = f.exec() ) ) {
       if ( verbosity > 3 )
