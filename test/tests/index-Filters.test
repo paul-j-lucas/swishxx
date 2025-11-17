@@ -1,0 +1,1 @@
+index | index-Filters.conf | -d data -i test.index -v3 | - | 0 | index-Filters.stdin

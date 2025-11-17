@@ -1,0 +1,11 @@
+  index-Filters-input.pdf.gz (3 words)
+
+index: ranking index...
+  "file" discarded (100%)
+  "text" discarded (100%)
+  "tiny" discarded (100%)
+
+index: done:
+  1 indexed
+  6 words, 3 indexed, 0 unique
+
