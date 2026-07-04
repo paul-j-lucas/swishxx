@@ -23,6 +23,7 @@
 #define id3v1_h
 
 // local
+#include "config.h"
 #include "util.h"
 #include "word_util.h"
 

@@ -23,6 +23,7 @@
 #define indexer_H
 
 // local
+#include "config.h"
 #include "encoded_char.h"
 #include "meta_id.h"
 #include "pjl/mmap_file.h"

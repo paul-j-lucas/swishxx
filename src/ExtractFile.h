@@ -23,6 +23,7 @@
 #define ExtractFile_H
 
 // local
+#include "config.h"
 #include "conf_var.h"
 #include "pjl/pattern_map.h"
 

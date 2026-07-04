@@ -23,6 +23,7 @@
 #define index_segment_H
 
 // local
+#include "config.h"
 #include "pjl/mmap_file.h"
 
 // standard

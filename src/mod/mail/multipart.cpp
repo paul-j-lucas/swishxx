@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "encoded_char.h"
 #include "mod_mail.h"
 #include "util.h"

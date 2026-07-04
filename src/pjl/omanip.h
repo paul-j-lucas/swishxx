@@ -22,6 +22,9 @@
 #ifndef omanip_H
 #define omanip_H
 
+// local
+#include "config.h"
+
 // standard
 #include <iostream>
 

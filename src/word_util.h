@@ -23,6 +23,7 @@
 #define word_util_H
 
 // local
+#include "config.h"
 #include "encoded_char.h"
 #include "swishxx-config.h"
 #include "util.h"

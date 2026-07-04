@@ -23,6 +23,7 @@
 #define stem_word_H
 
 // local
+#include "config.h"
 #include "pjl/less.h"
 
 // standard

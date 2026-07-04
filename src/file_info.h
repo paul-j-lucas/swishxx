@@ -23,6 +23,7 @@
 #define file_info_H
 
 // local
+#include "config.h"
 #include "pjl/hash.h"
 
 // standard

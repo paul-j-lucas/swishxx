@@ -20,8 +20,8 @@
 */
 
 // local
-#include "FilesReserve.h"
 #include "config.h"
+#include "FilesReserve.h"
 #include "directory.h"
 #include "file_info.h"
 #include "pjl/vlq.h"

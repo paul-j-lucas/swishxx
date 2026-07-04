@@ -22,6 +22,9 @@
 #ifndef filter_H
 #define filter_H
 
+// local
+#include "config.h"
+
 // standard
 #include <string>
 #include <unistd.h>                     /* for unlink(2) */

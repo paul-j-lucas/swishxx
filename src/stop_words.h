@@ -23,6 +23,7 @@
 #define stop_words_H
 
 // local
+#include "config.h"
 #include "pjl/less.h"
 #include "pjl/mmap_file.h"
 

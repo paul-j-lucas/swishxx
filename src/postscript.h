@@ -23,6 +23,7 @@
 #define postscript_H
 
 // local
+#include "config.h"
 #include "pjl/hash.h"
 
 namespace postscript {

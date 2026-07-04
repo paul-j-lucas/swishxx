@@ -23,6 +23,7 @@
 #define word_info_H
 
 // local
+#include "config.h"
 #include "indexer.h"                            /* for Meta_ID_None */
 #include "meta_id.h"
 

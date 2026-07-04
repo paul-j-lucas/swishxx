@@ -25,8 +25,8 @@
 #define WordsNear_H
 
 // local
-#include "conf_unsigned.h"
 #include "config.h"
+#include "conf_unsigned.h"
 
 // standard
 #include <climits>

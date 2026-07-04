@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "char_buffer_pool.h"
 #include "itoa.h"
 

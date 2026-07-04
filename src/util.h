@@ -23,6 +23,7 @@
 #define util_H
 
 // local
+#include "config.h"
 #include "exit_codes.h"
 #include "pjl/hash.h"
 #include "pjl/less.h"

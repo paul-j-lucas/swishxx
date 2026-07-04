@@ -23,6 +23,7 @@
 #define conf_bool_H
 
 // local
+#include "config.h"
 #include "conf_var.h"
 
 // standard

@@ -23,6 +23,7 @@
 #define conf_unsigned_H
 
 // local
+#include "config.h"
 #include "conf_var.h"
 
 // system

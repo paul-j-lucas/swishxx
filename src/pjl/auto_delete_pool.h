@@ -22,6 +22,9 @@
 #ifndef auto_delete_pool_H
 #define auto_delete_pool_H
 
+// local
+#include "config.h"
+
 // standard
 #include <vector>
 

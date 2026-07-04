@@ -23,6 +23,7 @@
 #define token_H
 
 // local
+#include "config.h"
 #include "swishxx-config.h"
 
 // standard

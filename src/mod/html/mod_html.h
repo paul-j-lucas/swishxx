@@ -23,6 +23,7 @@
 #define mod_html_H
 
 // local
+#include "config.h"
 #include "elements.h"
 #include "indexer.h"
 

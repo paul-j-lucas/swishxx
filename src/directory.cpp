@@ -25,6 +25,7 @@
 */
 
 // local
+#include "config.h"
 #include "directory.h"
 #include "RecurseSubdirs.h"
 #include "util.h"

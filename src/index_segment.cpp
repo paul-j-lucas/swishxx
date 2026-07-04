@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "index_segment.h"
 
 using namespace PJL;

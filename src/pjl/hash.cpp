@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "hash.h"
 
 using namespace std;

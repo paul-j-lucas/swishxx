@@ -22,6 +22,9 @@
 #ifndef thread_pool_H
 #define thread_pool_H
 
+// local
+#include "config.h"
+
 // standard
 #include <pthread.h>
 #include <queue>

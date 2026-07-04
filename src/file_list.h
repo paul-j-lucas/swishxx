@@ -23,6 +23,7 @@
 #define file_list_H
 
 // local
+#include "config.h"
 #include "index_segment.h"
 #include "word_info.h"
 

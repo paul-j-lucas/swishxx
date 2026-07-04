@@ -23,6 +23,7 @@
 #define mod_mail_H
 
 // local
+#include "config.h"
 #include "charsets/charsets.h"
 #include "encodings/encodings.h"
 #include "filter.h"

@@ -23,6 +23,7 @@
 #define vlq_H
 
 // local
+#include "config.h"
 #include "pjl/omanip.h"
 
 // standard

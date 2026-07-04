@@ -22,6 +22,9 @@
 #ifndef fdbuf_H
 #define fdbuf_H
 
+// local
+#include "config.h"
+
 // standard
 #include <iostream>
 #include <streambuf>

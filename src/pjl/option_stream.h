@@ -22,16 +22,17 @@
 #ifndef option_stream_H
 #define option_stream_H
 
-// standard
-#include <iostream>
-
 #if 0
 extern char const* dtoa( double );
 
 // local
+#include "config.h"
 #include "itoa.h"
 #include "util.h"
 #endif
+
+// standard
+#include <iostream>
 
 namespace PJL {
 

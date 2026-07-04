@@ -23,6 +23,7 @@
 #define query_H
 
 // local
+#include "config.h"
 #include "index_segment.h"
 #include "token.h"
 #include "WordFilesMax.h"

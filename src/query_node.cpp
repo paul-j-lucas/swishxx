@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "file_list.h"
 #include "index_segment.h"
 #include "query_node.h"

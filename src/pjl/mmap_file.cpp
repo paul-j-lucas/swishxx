@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "mmap_file.h"
 
 // standard

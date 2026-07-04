@@ -20,8 +20,8 @@
 */
 
 // local
-#include "classic_formatter.h"
 #include "config.h"
+#include "classic_formatter.h"
 #include "exit_codes.h"
 #include "file_info.h"
 #include "file_list.h"

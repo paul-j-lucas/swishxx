@@ -20,6 +20,7 @@
 */
 
 // local
+#include "config.h"
 #include "mod_mail.h"
 
 // standard

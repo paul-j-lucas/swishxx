@@ -23,6 +23,7 @@
 #define results_formatter_H
 
 // local
+#include "config.h"
 class file_info;
 #include "query.h"
 

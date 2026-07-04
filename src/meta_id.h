@@ -23,6 +23,7 @@
 #define meta_id_H
 
 // local
+#include "config.h"
 #include "pjl/less.h"
 
 // standard

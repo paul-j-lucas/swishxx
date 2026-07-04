@@ -23,6 +23,7 @@
 #define IncludeMeta_H
 
 // local
+#include "config.h"
 #include "conf_var.h"
 #include "pjl/less.h"
 

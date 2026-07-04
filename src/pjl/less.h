@@ -22,6 +22,9 @@
 #ifndef less_H
 #define less_H
 
+// local
+#include "config.h"
+
 // standard
 #include <cstddef>                      /* for size_t */
 #include <cstring>

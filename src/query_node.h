@@ -23,6 +23,7 @@
 #define query_node_H
 
 // local
+#include "config.h"
 #include "meta_id.h"
 #include "pjl/auto_delete_pool.h"
 #include "query.h"

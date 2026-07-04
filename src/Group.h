@@ -23,6 +23,7 @@
 #define Group_H
 
 // local
+#include "config.h"
 #include "conf_string.h"
 #include "swishxx-config.h"
 

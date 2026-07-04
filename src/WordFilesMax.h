@@ -23,6 +23,7 @@
 #define WordFilesMax_H
 
 // local
+#include "config.h"
 #include "conf_unsigned.h"
 
 // standard

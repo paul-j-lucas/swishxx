@@ -23,6 +23,7 @@
 #define unicode_H
 
 // local
+#include "config.h"
 #include "iso8859-1.h"
 
 // standard

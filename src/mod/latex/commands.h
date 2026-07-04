@@ -23,6 +23,7 @@
 #define latex_command_map_H
 
 // local
+#include "config.h"
 #include "pjl/less.h"
 
 // standard
