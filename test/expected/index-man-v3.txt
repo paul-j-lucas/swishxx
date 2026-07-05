@@ -1,14 +1,14 @@
 
 .:
-  ad.1 (856 words)
-  doc.4 (181 words)
   html2pdbtxt.1 (300 words)
-  pdb.4 (187 words)
-  pdbtxt2html.1 (199 words)
-  txt2pdbdoc.1 (309 words)
-  wrap.1 (444 words)
   wrapc.1 (332 words)
+  pdbtxt2html.1 (199 words)
+  pdb.4 (187 words)
   wraprc.5 (206 words)
+  txt2pdbdoc.1 (309 words)
+  doc.4 (181 words)
+  wrap.1 (444 words)
+  ad.1 (856 words)
 
 index: ranking index...
   "author" discarded (100%)

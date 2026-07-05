@@ -5,12 +5,12 @@
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 ability
-  2 24447 html/swishxx/features.html 15025 SWISH++ Features
   4 144863 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 24447 html/swishxx/features.html 15025 SWISH++ Features
 
 able
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 accepting
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -28,9 +28,9 @@ added
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 additionally
-  1 82918 html/swishxx/faq.html 5243 SWISH++ FAQ
-  4 26031 html/swishxx/features.html 15025 SWISH++ Features
   1 93632 html/swishxx/index.html 4860 SWISH++
+  4 26031 html/swishxx/features.html 15025 SWISH++ Features
+  1 82918 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 adds
   1 763358 html/swishxx/to-do.html 3654 SWISH++ To-Do List
@@ -82,10 +82,10 @@ apply
 
 april
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 apropos
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -109,8 +109,8 @@ ascii
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
 
 asked
-  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 assist
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -138,17 +138,17 @@ automatically
 
 available
   1 178571 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  4 56648 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 13717 html/swishxx/features.html 15025 SWISH++ Features
   3 62351 html/swishxx/index.html 4860 SWISH++
   1 76335 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 13717 html/swishxx/features.html 15025 SWISH++ Features
+  4 56648 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 avl
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 back
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 background
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -157,8 +157,8 @@ base-64
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 based
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 basis
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
@@ -236,8 +236,8 @@ characters
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 check
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 chiefly
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -261,13 +261,13 @@ clearly
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 code
-  4 56648 html/swishxx/faq.html 5243 SWISH++ FAQ
-  3 15224 html/swishxx/features.html 15025 SWISH++ Features
   3 62351 html/swishxx/index.html 4860 SWISH++
+  3 15224 html/swishxx/features.html 15025 SWISH++ Features
+  4 56648 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 collections
-  3 38061 html/swishxx/features.html 15025 SWISH++ Features
   1 140449 html/swishxx/index.html 4860 SWISH++
+  3 38061 html/swishxx/features.html 15025 SWISH++ Features
 
 command
   4 39047 html/swishxx/features.html 15025 SWISH++ Features
@@ -279,8 +279,8 @@ comment
   1 763358 html/swishxx/to-do.html 3654 SWISH++ To-Do List
 
 commented
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 comments
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -295,8 +295,8 @@ compiler
   2 300369 html/swishxx/index.html 4860 SWISH++
 
 complete
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 compressed
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -308,8 +308,8 @@ config
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 configuration
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 381679 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 configured
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
@@ -343,14 +343,14 @@ copy
 
 copyright
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 cost
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 crash
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
@@ -368,8 +368,8 @@ dangerous
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 data
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 254452 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 decide
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -421,9 +421,9 @@ documented
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 documents
-  5 52507 html/swishxx/faq.html 5243 SWISH++ FAQ
-  5 14477 html/swishxx/features.html 15025 SWISH++ Features
   1 51072 html/swishxx/index.html 4860 SWISH++
+  5 14477 html/swishxx/features.html 15025 SWISH++ Features
+  5 52507 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 doing
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
@@ -468,10 +468,10 @@ encodings
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 engine
-  1 82918 html/swishxx/faq.html 5243 SWISH++ FAQ
-  3 25374 html/swishxx/features.html 15025 SWISH++ Features
   1 93632 html/swishxx/index.html 4860 SWISH++
   1 127226 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  3 25374 html/swishxx/features.html 15025 SWISH++ Features
+  1 82918 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 english
   3 184056 html/swishxx/faq.html 5243 SWISH++ FAQ
@@ -529,12 +529,12 @@ fairly
   1 763358 html/swishxx/to-do.html 3654 SWISH++ To-Do List
 
 faq
-  2 132999 html/swishxx/faq.html 5243 SWISH++ FAQ
   2 150184 html/swishxx/index.html 4860 SWISH++
+  2 132999 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 fast
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 faster
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -543,21 +543,21 @@ fault
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 feature
-  3 138042 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 34293 html/swishxx/features.html 15025 SWISH++ Features
+  3 138042 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 features
-  6 23107 html/swishxx/features.html 15025 SWISH++ Features
   1 80256 html/swishxx/index.html 4860 SWISH++
+  6 23107 html/swishxx/features.html 15025 SWISH++ Features
 
 fields
   4 39047 html/swishxx/features.html 15025 SWISH++ Features
 
 file
-  2 29555 html/swishxx/faq.html 5243 SWISH++ FAQ
-  8 9205 html/swishxx/features.html 15025 SWISH++ Features
   3 34639 html/swishxx/index.html 4860 SWISH++
   5 49234 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  8 9205 html/swishxx/features.html 15025 SWISH++ Features
+  2 29555 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 file_size
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -569,9 +569,9 @@ filename
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 files
-  24 6233 html/swishxx/features.html 15025 SWISH++ Features
   3 21500 html/swishxx/index.html 4860 SWISH++
   2 28147 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  24 6233 html/swishxx/features.html 15025 SWISH++ Features
 
 filtered
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
@@ -586,8 +586,8 @@ finite
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 following
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 footers
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -599,8 +599,8 @@ form
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 format
-  4 31238 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
+  4 31238 html/swishxx/features.html 15025 SWISH++ Features
 
 formats
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -609,8 +609,8 @@ free
   4 159919 html/swishxx/index.html 4860 SWISH++
 
 frequently
-  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 freshmeat
   2 300369 html/swishxx/index.html 4860 SWISH++
@@ -632,10 +632,10 @@ functionality
 
 general
   1 255102 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 20954 html/swishxx/features.html 15025 SWISH++ Features
   2 85819 html/swishxx/index.html 4860 SWISH++
   1 109051 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 20954 html/swishxx/features.html 15025 SWISH++ Features
+  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 generally
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
@@ -650,8 +650,8 @@ generic
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 generously
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 gimble
   1 5555555 html/no_index.html 397 No Index Test
@@ -664,10 +664,10 @@ giving
 
 gnu
   1 198412 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 55279 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 16298 html/swishxx/features.html 15025 SWISH++ Features
   4 71075 html/swishxx/index.html 4860 SWISH++
   1 84817 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 16298 html/swishxx/features.html 15025 SWISH++ Features
+  1 55279 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 goes
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -679,8 +679,8 @@ gyre
   1 5555555 html/no_index.html 397 No Index Test
 
 handles
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 happens
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -698,19 +698,19 @@ height
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 heuristics
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 home
-  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
   2 200246 html/swishxx/index.html 4860 SWISH++
+  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 href
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 html
-  8 18410 html/swishxx/features.html 15025 SWISH++ Features
   1 62421 html/swishxx/index.html 4860 SWISH++
+  8 18410 html/swishxx/features.html 15025 SWISH++ Features
 
 httpindex
   1 892857 html/swishxx/documentation.html 5499 SWISH++ Documentation
@@ -745,10 +745,10 @@ immediately
 
 imple
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 implement
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -763,13 +763,13 @@ improvement
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 include
-  1 124378 html/swishxx/faq.html 5243 SWISH++ FAQ
   3 211805 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 124378 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 included
   1 297619 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  3 25374 html/swishxx/features.html 15025 SWISH++ Features
   2 100123 html/swishxx/index.html 4860 SWISH++
+  3 25374 html/swishxx/features.html 15025 SWISH++ Features
 
 including
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -783,9 +783,9 @@ incrementally
 index
   1 163398 html/no_index.html 397 No Index Test
   2 56161 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  7 17480 html/swishxx/faq.html 5243 SWISH++ FAQ
-  21 5262 html/swishxx/features.html 15025 SWISH++ Features
   3 18338 html/swishxx/index.html 4860 SWISH++
+  21 5262 html/swishxx/features.html 15025 SWISH++ Features
+  7 17480 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 indexed
   5 31850 html/swishxx/features.html 15025 SWISH++ Features
@@ -797,10 +797,10 @@ indexes
   7 23409 html/swishxx/features.html 15025 SWISH++ Features
 
 indexing
-  4 24629 html/swishxx/faq.html 5243 SWISH++ FAQ
-  15 7579 html/swishxx/features.html 15025 SWISH++ Features
   3 27109 html/swishxx/index.html 4860 SWISH++
   1 33189 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  15 7579 html/swishxx/features.html 15025 SWISH++ Features
+  4 24629 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 indices
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -857,12 +857,12 @@ language
   3 184056 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 large
-  4 31238 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
+  4 31238 html/swishxx/features.html 15025 SWISH++ Features
 
 lastly
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 latex
   4 39047 html/swishxx/features.html 15025 SWISH++ Features
@@ -871,23 +871,23 @@ lebowitz
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 library
-  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 45724 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  1 45724 html/swishxx/features.html 15025 SWISH++ Features
+  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 library's
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 license
   1 255102 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 20954 html/swishxx/features.html 15025 SWISH++ Features
   2 85819 html/swishxx/index.html 4860 SWISH++
   1 109051 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 20954 html/swishxx/features.html 15025 SWISH++ Features
+  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 lightning-fast
-  4 31238 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
+  4 31238 html/swishxx/features.html 15025 SWISH++ Features
 
 link
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -896,9 +896,9 @@ linux
   2 265998 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 list
-  2 24447 html/swishxx/features.html 15025 SWISH++ Features
   1 93632 html/swishxx/index.html 4860 SWISH++
   3 141203 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 24447 html/swishxx/features.html 15025 SWISH++ Features
 
 little
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -920,21 +920,21 @@ lots
 
 lucas
   2 173590 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  2 48363 html/swishxx/faq.html 5243 SWISH++ FAQ
-  3 13840 html/swishxx/features.html 15025 SWISH++ Features
   2 54612 html/swishxx/index.html 4860 SWISH++
   2 74206 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  3 13840 html/swishxx/features.html 15025 SWISH++ Features
+  2 48363 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 machine
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 mail
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
 
 management
-  1 45724 html/swishxx/features.html 15025 SWISH++ Features
   2 272090 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 45724 html/swishxx/features.html 15025 SWISH++ Features
 
 manual
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
@@ -958,9 +958,9 @@ mechanism
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 memory
-  4 40463 html/swishxx/faq.html 5243 SWISH++ FAQ
-  7 11704 html/swishxx/features.html 15025 SWISH++ Features
   3 60515 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  7 11704 html/swishxx/features.html 15025 SWISH++ Features
+  4 40463 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 menus
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -972,8 +972,8 @@ meta
   8 20712 html/swishxx/features.html 15025 SWISH++ Features
 
 microsoft
-  3 25374 html/swishxx/features.html 15025 SWISH++ Features
   3 103919 html/swishxx/index.html 4860 SWISH++
+  3 25374 html/swishxx/features.html 15025 SWISH++ Features
 
 mime
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1009,18 +1009,18 @@ naive
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 name
-  4 31238 html/swishxx/features.html 15025 SWISH++ Features
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  4 31238 html/swishxx/features.html 15025 SWISH++ Features
 
 names
   6 26958 html/swishxx/features.html 15025 SWISH++ Features
 
 ndexing
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 near
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -1029,8 +1029,8 @@ necessary
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 need
-  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 45724 html/swishxx/features.html 15025 SWISH++ Features
+  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 negative
   1 763358 html/swishxx/to-do.html 3654 SWISH++ To-Do List
@@ -1048,8 +1048,8 @@ non-features
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 non-text
-  3 38061 html/swishxx/features.html 15025 SWISH++ Features
   1 140449 html/swishxx/index.html 4860 SWISH++
+  3 38061 html/swishxx/features.html 15025 SWISH++ Features
 
 notified
   2 300369 html/swishxx/index.html 4860 SWISH++
@@ -1070,8 +1070,8 @@ odds
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 office
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 on-the-fly
   4 39047 html/swishxx/features.html 15025 SWISH++ Features
@@ -1092,8 +1092,8 @@ optional
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
 
 order
-  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
   2 272090 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 outgrabe
   1 5555555 html/no_index.html 397 No Index Test
@@ -1105,16 +1105,16 @@ outputs
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 package
-  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 packages
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 page
-  1 62189 html/swishxx/faq.html 5243 SWISH++ FAQ
-  5 19906 html/swishxx/features.html 15025 SWISH++ Features
   2 75092 html/swishxx/index.html 4860 SWISH++
+  5 19906 html/swishxx/features.html 15025 SWISH++ Features
+  1 62189 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 pages
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -1144,15 +1144,15 @@ pattern
   3 282407 html/swishxx/to-do.html 3654 SWISH++ To-Do List
 
 patterns
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 381679 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 paul
   2 190949 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  2 53199 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 14668 html/swishxx/features.html 15025 SWISH++ Features
   2 60073 html/swishxx/index.html 4860 SWISH++
   2 81627 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 14668 html/swishxx/features.html 15025 SWISH++ Features
+  2 53199 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 pdf
   10 183074 html/swishxx/documentation.html 5499 SWISH++ Documentation
@@ -1165,19 +1165,19 @@ perform
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 performance
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 performed
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 period
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 perl
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 permits
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1247,24 +1247,24 @@ provided
 
 public
   1 255102 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 20954 html/swishxx/features.html 15025 SWISH++ Features
   2 85819 html/swishxx/index.html 4860 SWISH++
   1 109051 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 20954 html/swishxx/features.html 15025 SWISH++ Features
+  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 queried
   5 31850 html/swishxx/features.html 15025 SWISH++ Features
 
 query
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 381679 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 question
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 questions
-  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 quoted-printable
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1280,8 +1280,8 @@ raths
 
 read
   1 925925 html/no_index.html 397 No Index Test
-  3 92028 html/swishxx/faq.html 5243 SWISH++ FAQ
   2 24447 html/swishxx/features.html 15025 SWISH++ Features
+  3 92028 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 recursively
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
@@ -1311,9 +1311,9 @@ requirements
   2 300369 html/swishxx/index.html 4860 SWISH++
 
 results
-  2 33249 html/swishxx/faq.html 5243 SWISH++ FAQ
-  7 10241 html/swishxx/features.html 15025 SWISH++ Features
   7 56993 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  7 10241 html/swishxx/features.html 15025 SWISH++ Features
+  2 33249 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 returning
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1341,10 +1341,10 @@ schema
 
 search
   1 49603 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  7 16508 html/swishxx/faq.html 5243 SWISH++ FAQ
-  16 4866 html/swishxx/features.html 15025 SWISH++ Features
   1 15605 html/swishxx/index.html 4860 SWISH++
   11 26289 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  16 4866 html/swishxx/features.html 15025 SWISH++ Features
+  7 16508 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 search-intensive
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1356,14 +1356,14 @@ searched
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 searches
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 searching
-  1 49751 html/swishxx/faq.html 5243 SWISH++ FAQ
-  6 16175 html/swishxx/features.html 15025 SWISH++ Features
   2 60073 html/swishxx/index.html 4860 SWISH++
   1 76335 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  6 16175 html/swishxx/features.html 15025 SWISH++ Features
+  1 49751 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 searchmonitor
   1 1785714 html/swishxx/documentation.html 5499 SWISH++ Documentation
@@ -1397,19 +1397,19 @@ similarly
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 simple
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 simultaneously
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 site
-  1 45724 html/swishxx/features.html 15025 SWISH++ Features
   2 200246 html/swishxx/index.html 4860 SWISH++
+  1 45724 html/swishxx/features.html 15025 SWISH++ Features
 
 sites
-  3 38061 html/swishxx/features.html 15025 SWISH++ Features
   1 140449 html/swishxx/index.html 4860 SWISH++
+  3 38061 html/swishxx/features.html 15025 SWISH++ Features
 
 size
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1424,8 +1424,8 @@ socket
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 software
-  1 124378 html/swishxx/faq.html 5243 SWISH++ FAQ
   3 155879 html/swishxx/index.html 4860 SWISH++
+  1 124378 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 solve
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1434,9 +1434,9 @@ sophisticated
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 source
-  5 57758 html/swishxx/faq.html 5243 SWISH++ FAQ
-  3 15224 html/swishxx/features.html 15025 SWISH++ Features
   2 60073 html/swishxx/index.html 4860 SWISH++
+  3 15224 html/swishxx/features.html 15025 SWISH++ Features
+  5 57758 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 sourceforge
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -1448,8 +1448,8 @@ specific
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 specifically
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
   4 31238 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 specified
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1467,8 +1467,8 @@ splits
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 standard
-  2 48894 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  2 48894 html/swishxx/features.html 15025 SWISH++ Features
 
 standby
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1477,8 +1477,8 @@ start-up
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 stemming
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
   4 31238 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 stl
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -1496,8 +1496,8 @@ stripping
   2 73341 html/swishxx/features.html 15025 SWISH++ Features
 
 structures
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 381679 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 subject
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1519,14 +1519,14 @@ swap
 
 swish
   7 31370 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  17 9389 html/swishxx/faq.html 5243 SWISH++ FAQ
-  27 2682 html/swishxx/features.html 15025 SWISH++ Features
   12 10314 html/swishxx/index.html 4860 SWISH++
   5 13032 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  27 2682 html/swishxx/features.html 15025 SWISH++ Features
+  17 9389 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 swish-e
-  2 36670 html/swishxx/features.html 15025 SWISH++ Features
   2 150184 html/swishxx/index.html 4860 SWISH++
+  2 36670 html/swishxx/features.html 15025 SWISH++ Features
 
 swish-powered
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -1541,8 +1541,8 @@ syntax
   1 763358 html/swishxx/to-do.html 3654 SWISH++ To-Do List
 
 system
-  1 124378 html/swishxx/faq.html 5243 SWISH++ FAQ
   3 38061 html/swishxx/features.html 15025 SWISH++ Features
+  1 124378 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 table
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1563,15 +1563,15 @@ tempdirectory_default
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 template
-  1 68587 html/swishxx/features.html 15025 SWISH++ Features
   1 280898 html/swishxx/index.html 4860 SWISH++
+  1 68587 html/swishxx/features.html 15025 SWISH++ Features
 
 terms
   1 178571 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 49751 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 14668 html/swishxx/features.html 15025 SWISH++ Features
   2 60073 html/swishxx/index.html 4860 SWISH++
   4 86918 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 14668 html/swishxx/features.html 15025 SWISH++ Features
+  1 49751 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 test
   1 5555555 html/no_index.html 397 No Index Test
@@ -1586,8 +1586,8 @@ there's
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 things
-  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 45724 html/swishxx/features.html 15025 SWISH++ Features
+  2 177332 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 think
   1 763358 html/swishxx/to-do.html 3654 SWISH++ To-Do List
@@ -1599,15 +1599,15 @@ time
   5 31850 html/swishxx/features.html 15025 SWISH++ Features
 
 title
-  6 23107 html/swishxx/features.html 15025 SWISH++ Features
   1 109051 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  6 23107 html/swishxx/features.html 15025 SWISH++ Features
 
 titles
   2 408135 html/swishxx/to-do.html 3654 SWISH++ To-Do List
 
 to-do
-  1 34293 html/swishxx/features.html 15025 SWISH++ Features
   3 211805 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 34293 html/swishxx/features.html 15025 SWISH++ Features
 
 tools
   1 561797 html/swishxx/index.html 4860 SWISH++
@@ -1625,16 +1625,16 @@ types
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 typically
-  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 45724 html/swishxx/features.html 15025 SWISH++ Features
   1 187265 html/swishxx/index.html 4860 SWISH++
+  1 45724 html/swishxx/features.html 15025 SWISH++ Features
+  1 165837 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 umans
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 uncompressed
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1643,28 +1643,28 @@ unfamiliar
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
 
 unix
-  5 26541 html/swishxx/features.html 15025 SWISH++ Features
   1 93632 html/swishxx/index.html 4860 SWISH++
+  5 26541 html/swishxx/features.html 15025 SWISH++ Features
 
 unix-based
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   2 120147 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 unix-style
   1 561797 html/swishxx/index.html 4860 SWISH++
 
 updated
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 useful
-  2 106399 html/swishxx/faq.html 5243 SWISH++ FAQ
   3 30448 html/swishxx/features.html 15025 SWISH++ Features
+  2 106399 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 users
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1692,14 +1692,14 @@ vendors
 
 version
   1 255102 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
-  2 20954 html/swishxx/features.html 15025 SWISH++ Features
   2 85819 html/swishxx/index.html 4860 SWISH++
   1 109051 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  2 20954 html/swishxx/features.html 15025 SWISH++ Features
+  1 71073 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 versions
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 virtual
   1 137174 html/swishxx/features.html 15025 SWISH++ Features
@@ -1729,8 +1729,8 @@ word
   3 50748 html/swishxx/features.html 15025 SWISH++ Features
 
 word-determination
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 word_threshold
   1 497512 html/swishxx/faq.html 5243 SWISH++ FAQ
@@ -1764,13 +1764,13 @@ xml
   4 39047 html/swishxx/features.html 15025 SWISH++ Features
 
 yield
-  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
   1 68587 html/swishxx/features.html 15025 SWISH++ Features
+  1 248756 html/swishxx/faq.html 5243 SWISH++ FAQ
 
 ystem
   1 357142 html/swishxx/documentation.html 5499 SWISH++ Documentation
-  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
-  1 27434 html/swishxx/features.html 15025 SWISH++ Features
   1 112359 html/swishxx/index.html 4860 SWISH++
   1 152671 html/swishxx/to-do.html 3654 SWISH++ To-Do List
+  1 27434 html/swishxx/features.html 15025 SWISH++ Features
+  1 99502 html/swishxx/faq.html 5243 SWISH++ FAQ
 

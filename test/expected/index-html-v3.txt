@@ -4,10 +4,10 @@ html:
 
 html/swishxx:
   documentation.html (56 words)
-  faq.html (201 words)
-  features.html (729 words)
   index.html (178 words)
   to-do.html (131 words)
+  features.html (729 words)
+  faq.html (201 words)
 
 index: ranking index...
 index: writing index...

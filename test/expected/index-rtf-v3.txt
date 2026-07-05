@@ -1,9 +1,9 @@
 
 .:
+  testrtf.rtf (317 words)
+  table_1.rtf (157 words)
   info_group.rtf (38 words)
   sample.rtf (114 words)
-  table_1.rtf (157 words)
-  testrtf.rtf (317 words)
 
 index: ranking index...
 index: writing index...

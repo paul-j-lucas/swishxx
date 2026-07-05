@@ -1,11 +1,11 @@
 
 .:
+  Time_Machine,_The.txt (11918 words)
+  Gutenberg_License.txt (1323 words)
+  GNU_GPLv2.txt (1244 words)
+  Raven,_The.txt (510 words)
   Alice's_Adventures_in_Wonderland.txt (9245 words)
   Christmas_Carol,_A.txt (10596 words)
-  GNU_GPLv2.txt (1244 words)
-  Gutenberg_License.txt (1323 words)
-  Raven,_The.txt (510 words)
-  Time_Machine,_The.txt (11918 words)
 
 index: ranking index...
   "form" discarded (100%)
