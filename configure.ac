@@ -260,24 +260,24 @@ AH_TOP([#ifndef config_H
 AH_BOTTOM([#endif /* config_H */])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
-    Makefile
-    lib/Makefile
-    src/Makefile
-    src/pjl/Makefile
-    src/charsets/Makefile
-    src/encodings/Makefile
-    src/mod/Makefile
-    src/mod/html/Makefile
-    src/mod/id3/Makefile
-    src/mod/latex/Makefile
-    src/mod/mail/Makefile
-    src/mod/man/Makefile
-    src/mod/rtf/Makefile
-    test/Makefile
-    man/Makefile
-    man/man1/Makefile
-    man/man4/Makefile
-    man/man8/Makefile
+  Makefile
+  lib/Makefile
+  src/Makefile
+  src/pjl/Makefile
+  src/charsets/Makefile
+  src/encodings/Makefile
+  src/mod/Makefile
+  src/mod/html/Makefile
+  src/mod/id3/Makefile
+  src/mod/latex/Makefile
+  src/mod/mail/Makefile
+  src/mod/man/Makefile
+  src/mod/rtf/Makefile
+  test/Makefile
+  man/Makefile
+  man/man1/Makefile
+  man/man4/Makefile
+  man/man8/Makefile
 ])
 AC_OUTPUT
 
