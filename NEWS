@@ -3,6 +3,16 @@ SWISH++ NEWS -- history of user-visable changes.
 Copyright (C) 1996-2016 Paul J. Lucas.
 See the end of the file for license conditions.
 
+* Changes in SWISH++ 7.0.1
+
+** Multi-file filters
+A bug when there is more than one file filter in a row has been fixed.
+
+** Change directory help
+The `--help` message for `index` now includes the missing -d/--chdir option.
+
+
+
 * Changes in SWISH++ 7.0
 
 ** Now using Autoconf & Automake.
