@@ -29,6 +29,7 @@
 #include "encoded_char.h"
 
 // standard
+#include <string>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,17 +111,23 @@ void do_file( char const *file_name ) {
   char const *const orig_file_name = file_name;
 #endif /* SWISHXX_INDEX */
 
+  std::string safe_file_name{ file_name };
   while ( true ) {
     //
     // Determine if the file needs to be filtered and, if so, set the filename
     // to what it would become if it were filtered.
     //
-    FilterFile::const_pointer const f = file_filters[ file_name ];
+    FilterFile::const_pointer const f = file_filters[ safe_file_name ];
     if ( !f )
       break;
     filter_list.push_back( *f );
-    file_name = filter_list.back().substitute( file_name );
+    //
+    // Because filter_list grows, if file_name were used, it can become
+    // invalid, so use safe_file_name instead.
+    //
+    safe_file_name = filter_list.back().substitute( safe_file_name );
   } // while
+  file_name = safe_file_name.c_str();
   char const *const base_name = pjl_basename( file_name );
 
   //
