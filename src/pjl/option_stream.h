@@ -267,7 +267,7 @@ private:
   char        **argv_;                  // argument vector from main()
   spec const   *specs_;                 // the option specifications
   bool          opts_given_[256];       // the options given
-  std::ostream &err_;                   // ostream to write wrrors to
+  std::ostream &err_;                   // ostream to write errors to
 
   int           argi_;                  // current index into argv_[]
   char         *next_c_;                // next char in group of short options
