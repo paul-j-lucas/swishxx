@@ -1165,6 +1165,7 @@ static ostream& usage( ostream &o ) {
   "-?     | --help             : Print this help message\n"
   "-A     | --no-assoc-meta    : Don't associate meta names [default: do]\n"
   "-c f   | --config-file f    : Name of configuration file [default: " << ConfigFile_Default << "]\n"
+  "-d d   | --chdir d          : Change directory before indexing\n"
   "-e m:p | --pattern m:p      : Module and file pattern to index [default: none]\n"
   "-E p   | --no-pattern p     : File pattern not to index [default: none]\n"
   "-f n   | --word-files n     : Word/file maximum [default: infinity]\n"
