@@ -1,5 +1,6 @@
 2026-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * query.cpp: Now using = delete.
    * encoded_char.h, file_list.h, index_segment.h: Eliminated deprecated
      std::iterator.
    * configure.ac, ax_cxx_compile_stdcxx.m4, pjl_check_compile_flag.m4,
