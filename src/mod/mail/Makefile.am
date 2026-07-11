@@ -18,9 +18,10 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-lib_LIBRARIES = libmail.a
+lib_LIBRARIES =	libmail.a
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
+AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
+AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
 libmail_a_SOURCES = mod_mail.cpp multipart.cpp vcard.cpp
 libmail_a_LIBADD = $(top_builddir)/lib/libgnu.a

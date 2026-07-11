@@ -51,7 +51,7 @@ char const* id3_indexer::find_title( mmap_file const &file ) const {
         case id3v2_frame::hr_success:
           if ( !::strcmp( frame.id_, "tit2" ) )
             break;
-          // fall through
+          [[fallthrough]];
         case id3v2_frame::hr_failure:
           continue;
         case id3v2_frame::hr_end_of_frames:

@@ -92,14 +92,19 @@ charset_utf8( encoded_char_range::const_pointer,
   switch ( trailing_bytes ) {
     case 5: u += static_cast<unsigned char>( *c++ ); u <<= 6;
             if ( c == end ) break;
+            [[fallthrough]];
     case 4: u += static_cast<unsigned char>( *c++ ); u <<= 6;
             if ( c == end ) break;
+            [[fallthrough]];
     case 3: u += static_cast<unsigned char>( *c++ ); u <<= 6;
             if ( c == end ) break;
+            [[fallthrough]];
     case 2: u += static_cast<unsigned char>( *c++ ); u <<= 6;
             if ( c == end ) break;
+            [[fallthrough]];
     case 1: u += static_cast<unsigned char>( *c++ ); u <<= 6;
             if ( c == end ) break;
+            [[fallthrough]];
     case 0: u += static_cast<unsigned char>( *c++ );
   } // switch
 

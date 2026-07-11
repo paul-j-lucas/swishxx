@@ -18,9 +18,10 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-lib_LIBRARIES = libhtml.a
+lib_LIBRARIES =	libhtml.a
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
+AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
+AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
 libhtml_a_SOURCES = elements.cpp entities.cpp mod_html.cpp
 libhtml_a_LIBADD = $(top_builddir)/lib/libgnu.a

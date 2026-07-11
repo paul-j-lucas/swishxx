@@ -18,9 +18,10 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-lib_LIBRARIES = libpjl.a
+lib_LIBRARIES =	libpjl.a
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
+AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
+AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib
 
 libpjl_a_SOURCES = fdbuf.cpp hash.cpp itoa.cpp mmap_file.cpp option_stream.cpp vlq.cpp
 

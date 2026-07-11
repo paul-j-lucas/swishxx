@@ -137,7 +137,7 @@ return_decoded_char:
           break;
         case '-':
           encoded = false;
-          // no break;
+          [[fallthrough]];
         default:
           just_saw_plus = false;
       } // switch

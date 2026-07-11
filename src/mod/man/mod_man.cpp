@@ -87,7 +87,7 @@ static void parse_backslash( char const *&c, char const *end ) {
     case 'n':
       if ( *c++ != '(' || c == end )
         break;
-      // no break;
+      [[fallthrough]];
 
     case '(':                           // \(xx
       if ( ++c != end )
@@ -116,7 +116,7 @@ static void parse_backslash( char const *&c, char const *end ) {
     case 's':                           // \sN, \s+N, \s-N
       if ( (*c == '+' || *c == '-') && ++c == end )
         break;
-      // no break;
+      [[fallthrough]];
 
     case '\n':                          // escaped newline ...
       ++c;                              // ... make it disappear

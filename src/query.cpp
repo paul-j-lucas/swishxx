@@ -386,6 +386,7 @@ static bool parse_relop( token_stream &query, token::type &relop ) {
       }
       t_type = token::tt_not_near;
     }
+    [[fallthrough]];
     case token::tt_near:
 #endif /* WITH_WORD_POS */
     case token::tt_and:
@@ -399,7 +400,7 @@ static bool parse_relop( token_stream &query, token::type &relop ) {
 #ifdef WITH_WORD_POS
         case token::tt_not_near:
           cerr << "not ";
-          // no break;
+          [[fallthrough]];
         case token::tt_near:
           cerr << "near";
           break;

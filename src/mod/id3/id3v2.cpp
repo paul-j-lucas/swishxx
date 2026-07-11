@@ -129,7 +129,7 @@ static text_encoding parse_text_encoding( char const *&c,
         return charset_utf16be;
       if ( bom[0] == 0xFFu && bom[1] == 0xFEu )
         return charset_utf16le;
-      // no break;
+      [[fallthrough]];
     }
 #endif /* WITH_UTF16 */
     default:

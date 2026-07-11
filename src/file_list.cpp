@@ -104,7 +104,7 @@ file_list::const_iterator& file_list::const_iterator::operator++() {
         // value.
         //
         c_ = &end_value;
-        // no break;
+        [[fallthrough]];
 
       case Word_Entry_Continues_Marker:
         return *this;
