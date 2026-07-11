@@ -18,8 +18,18 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = m4/gnulib-cache.m4
-SUBDIRS = lib src man test
+ACLOCAL_AMFLAGS =	-I m4
+SUBDIRS =		lib src man test
+
+EXTRA_DIST =		bootstrap \
+			m4/gnulib-cache.m4 \
+			README.md \
+			README.Solaris
+
+dist-hook:
+	find $(distdir) -name .DS_Store -exec rm -f {} \;
+
+update-gnulib:
+	gnulib-tool --add-import --no-vc-files
 
 # vim:set noet sw=8 ts=8:
