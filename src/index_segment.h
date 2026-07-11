@@ -96,9 +96,16 @@ public:
   class const_iterator;
   friend class const_iterator;
 
-  class const_iterator :
-    public std::iterator<std::random_access_iterator_tag,value_type> {
+  class const_iterator {
   public:
+    using iterator_category = std::random_access_iterator_tag;
+    using difference_type   = difference_type;
+    using value_type        = value_type;
+    using pointer           = const_pointer;
+    using const_pointer     = const_pointer;
+    using reference         = const_reference;
+    using const_reference   = const_reference;
+
     const_iterator() { }
     const_iterator( const_iterator const& ) = default;
     const_iterator& operator=( const_iterator const& ) = default;

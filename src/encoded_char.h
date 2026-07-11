@@ -29,7 +29,6 @@
 #include "util.h"                       /* for to_lower() */
 
 // standard
-#include <iterator>
 #include <limits>
 #include <unordered_set>
 
@@ -132,10 +131,7 @@ protected:
  * but the iterator needs access to all its data members and going through an
  * extra level of indirection by having a pointer to it would be slower.
  */
-class encoded_char_range::const_iterator :
-  public encoded_char_range,
-  public std::iterator<std::forward_iterator_tag,
-                       encoded_char_range::value_type const> {
+class encoded_char_range::const_iterator : public encoded_char_range {
 public:
   typedef encoded_char_range::difference_type difference_type;
   typedef encoded_char_range::value_type value_type;
