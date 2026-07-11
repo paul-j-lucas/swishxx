@@ -1,5 +1,6 @@
 2026-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Now compiling as C++23.
    * query.cpp: Now using = delete.
    * encoded_char.h, file_list.h, index_segment.h: Eliminated deprecated
      std::iterator.
