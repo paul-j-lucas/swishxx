@@ -24,7 +24,8 @@ SUBDIRS =		lib src man test
 EXTRA_DIST =		bootstrap \
 			m4/gnulib-cache.m4 \
 			README.md \
-			README.Solaris
+			README.Solaris \
+			INSTALL.unix
 
 dist-hook:
 	find $(distdir) -name .DS_Store -exec rm -f {} \;
