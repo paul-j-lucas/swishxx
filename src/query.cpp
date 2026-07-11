@@ -72,8 +72,8 @@ struct parse_q_args {
   }
 
 private:
-  parse_q_args( parse_q_args const& );            // forbid copy
-  parse_q_args& operator=( parse_q_args const& ); // forbid assignment
+  parse_q_args( parse_q_args const& ) = delete;
+  parse_q_args& operator=( parse_q_args const& ) = delete;
 };
 
 /**
@@ -87,8 +87,8 @@ struct parse_r_args {
   parse_r_args() { }
 
 private:
-  parse_r_args( parse_r_args const& );            // forbid copy
-  parse_r_args& operator=( parse_r_args const& ); // forbid assignment
+  parse_r_args( parse_r_args const& ) = delete;
+  parse_r_args& operator=( parse_r_args const& ) = delete;
 };
 
 /**
@@ -98,10 +98,10 @@ struct parse_v_args {
   meta_id_type meta_id;
 
   parse_v_args() : meta_id( Meta_ID_None ) { }
-  // default copy constructor is OK
+  parse_v_args( parse_v_args const& ) = default;
 
 private:
-  parse_v_args& operator=( parse_v_args const& ); // forbid assignment
+  parse_v_args& operator=( parse_v_args const& ) = delete;
 };
 
 } // namespace
