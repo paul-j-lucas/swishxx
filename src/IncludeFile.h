@@ -23,6 +23,7 @@
 #define IncludeFile_H
 
 // local
+#include "config.h"
 #include "conf_var.h"
 #include "indexer.h"
 #include "pjl/pattern_map.h"

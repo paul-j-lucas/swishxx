@@ -22,13 +22,12 @@
 #ifndef option_stream_H
 #define option_stream_H
 
-#if 0
-extern char const* dtoa( double );
-
 // local
 #include "config.h"
+#if 0
 #include "itoa.h"
 #include "util.h"
+extern char const* dtoa( double );
 #endif
 
 // standard

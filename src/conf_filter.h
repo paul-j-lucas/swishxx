@@ -23,6 +23,7 @@
 #define conf_filter_H
 
 // local
+#include "config.h"
 #include "conf_var.h"
 #include "filter.h"
 #include "pjl/pattern_map.h"
