@@ -1,7 +1,7 @@
 ##
 #     WWW.pm: World Wide Web package
 #
-#     Copyright (C) 1996  Paul J. Lucas
+#     Copyright (C) 1996-2026  Paul J. Lucas
 #
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
