@@ -31,15 +31,14 @@
 /**
  * An %rtf_indexer is-an indexer for indexing RTF (Rich Text Format) files.
  *
- * See also:
- *    Nathaniel S. Borenstein.  "RFC: 1563: The text/enriched MIME Content-
- *    type," Network Working Group of the Internet Engineering Task Force,
- *    January 1994.
+ * @sa Nathaniel S. Borenstein.  "RFC: 1563: The text/enriched MIME Content-
+ * type," Network Working Group of the Internet Engineering Task Force, January
+ * 1994.
  *
- *    Nathaniel S. Borenstein and Ned Freed.  "RFC: 1341: MIME (Multipurpose
- *    Internet Mail Extensions): Mechanisms for Specifying and Describing the
- *    Format of Internet Message Bodies," Network Working Group of the Internet
- *    Engineering Task Force, June 1992.
+ * @sa Nathaniel S. Borenstein and Ned Freed.  "RFC: 1341: MIME (Multipurpose
+ * Internet Mail Extensions): Mechanisms for Specifying and Describing the
+ * Format of Internet Message Bodies," Network Working Group of the Internet
+ * Engineering Task Force, June 1992.
  */
 class rtf_indexer : public indexer {
 public:

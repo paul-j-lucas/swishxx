@@ -34,9 +34,8 @@
  *
  * This is the same as search's \c -q command-line option.
  *
- * See also:
- *    W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
- *    Prentice-Hall, Upper Saddle River, NJ, 1998.  Section 4.5.
+ * @sa W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
+ * Prentice-Hall, Upper Saddle River, NJ, 1998.  Section 4.5.
  */
 class SocketQueueSize : public conf<unsigned> {
 public:

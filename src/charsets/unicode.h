@@ -41,13 +41,12 @@ typedef uint32_t ucs4;
  * This function exists to ensure that the value of the character used to index
  * \c iso8859_1_map[] is within range.
  *
- * See also:
- *    International Standards Organization.  "ISO 8859-1: Information
- *    Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
- *    Latin alphabet No. 1," 1987.
- *
  * @param c The character to be converted.
  * @return Returns the equivalent ASCII character.
+ *
+ * @sa International Standards Organization.  "ISO 8859-1: Information
+ * Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
+ * Latin alphabet No. 1," 1987.
  */
 inline char unicode_to_ascii( ucs4 c ) {
   return  c < sizeof( iso8859_1_map ) / sizeof( iso8859_1_map[0] ) ?

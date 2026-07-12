@@ -36,13 +36,12 @@ extern char const iso8859_1_map[ 256 ];
  * This function exists to ensure that the value of the character used to
  * index the \c iso8859_1_map[] vector declared above is unsigned.
  *
- * See also:
- *    International Standards Organization.  "ISO 8859-1: Information
- *    Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
- *    Latin alphabet No. 1," 1987.
- *
  * @param c The ISO 8859-1 character to be converted.
  * @return Returns the character that is the closest ASCII equivalent.
+ *
+ * @sa International Standards Organization.  "ISO 8859-1: Information
+ * Processing -- 8-bit single-byte coded graphic character sets -- Part 1:
+ * Latin alphabet No. 1," 1987.
  */
 inline char iso8859_1_to_ascii( char c ) {
   return iso8859_1_map[ static_cast<unsigned char>( c ) ];

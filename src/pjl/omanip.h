@@ -37,9 +37,8 @@ namespace PJL {
  * by storing a pointer to a function and its argument to be called later via
  * \c operator<<().
  *
- * See also:
- *    Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales."
- *    Addison-Wesley, Reading, MA., pp. 179-191.
+ * @sa Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales."
+ * Addison-Wesley, Reading, MA., pp. 179-191.
  */
 template<typename Arg>
 class omanip {

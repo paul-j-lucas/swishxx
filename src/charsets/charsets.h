@@ -37,24 +37,23 @@ encoded_char_range::charset_type const CHARSET_UNKNOWN  =
 /**
  * Converts a UTF-7-encoded character sequence to its ASCII equivalent.
  *
- * See also:
- *    The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
- *    section 2.3, Addison-Wesley, 2000.
- *
- *    Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose Internet
- *    Mail Extensions (MIME) Part One: Format of Internet Message Bodies,"
- *    Section 6.8, "Base64 Content-Transfer-Encoding," RFC 822 Extensions
- *    Working Group of the Internet Engineering Task Force, November 1996.
- *
- *    David Goldsmith and Mark Davis.  "RFC 2152: UTF-7, a mail-safe
- *    transformation format of Unicode," Network Working Group of the Internet
- *    Engineering Task Force, May 1997.
- *
  * @param begin A pointer marking the beginning of the entire encoded range.
  * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  * @return Returns the decoded character or ' ' upon error.
+ *
+ * @sa The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
+ * section 2.3, Addison-Wesley, 2000.
+ *
+ * @sa Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose Internet
+ * Mail Extensions (MIME) Part One: Format of Internet Message Bodies," Section
+ * 6.8, "Base64 Content-Transfer-Encoding," RFC 822 Extensions Working Group of
+ * the Internet Engineering Task Force, November 1996.
+ *
+ * @sa David Goldsmith and Mark Davis.  "RFC 2152: UTF-7, a mail-safe
+ * transformation format of Unicode," Network Working Group of the Internet
+ * Engineering Task Force, May 1997.
  */
 encoded_char_range::value_type charset_utf7(
   encoded_char_range::const_pointer begin,
@@ -67,19 +66,18 @@ encoded_char_range::value_type charset_utf7(
 /**
  * Converts a UTF-8-encoded character sequence to its ASCII equivalent.
  *
- * See also:
- *    The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
- *    section 2.3, Addison-Wesley, 2000.
- *
- *    Francois Yergeau.  "RFC 2279: UTF-8, a transformation format of ISO
- *    10646," Network Working Group of the Internet Engineering Task Force,
- *    January 1998.
- *
  * @param begin A pointer marking the beginning of the entire encoded range.
  * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  * @return Returns the decoded character or ' ' upon error.
+ *
+ * @sa The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
+ * section 2.3, Addison-Wesley, 2000.
+ *
+ * @sa Francois Yergeau.  "RFC 2279: UTF-8, a transformation format of
+ * ISO 10646," Network Working Group of the Internet Engineering Task Force,
+ * January 1998.
  */
 encoded_char_range::value_type charset_utf8(
   encoded_char_range::const_pointer begin,
@@ -93,14 +91,13 @@ encoded_char_range::value_type charset_utf8(
  * Converts a UTF-16 big-endian encoded character sequence to its ASCII
  * equivalent.
  *
- * See also:
- *    The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
- *    section 2.3, Addison-Wesley, 2000.
- *
  * @param begin A pointer marking the beginning of the entire encoded range.
  * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
+ *
+ * @sa The Unicode Consortium.  "Encoding Forms," The Unicode Standard
+ * 3.0, section 2.3, Addison-Wesley, 2000.
  */
 encoded_char_range::value_type charset_utf16be(
   encoded_char_range::const_pointer begin,
@@ -112,14 +109,13 @@ encoded_char_range::value_type charset_utf16be(
  * Converts a UTF-16 little-endian encoded character sequence to its ASCII
  * equivalent.
  *
- * See also:
- *    The Unicode Consortium.  "Encoding Forms," The Unicode Standard 3.0,
- *    section 2.3, Addison-Wesley, 2000.
- *
  * @param begin A pointer marking the beginning of the entire encoded range.
  * @param pos A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
+ *
+ * @sa The Unicode Consortium.  "Encoding Forms," The Unicode Standard
+ * 3.0, section 2.3, Addison-Wesley, 2000.
  */
 encoded_char_range::value_type charset_utf16le(
   encoded_char_range::const_pointer begin,

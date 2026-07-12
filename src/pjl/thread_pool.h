@@ -60,9 +60,8 @@ extern "C" {
  * If, for whatever reason, you don't want the dynamic behavior, just set
  * \c max_threads to be equal to \c min_threads.
  *
- * See also:
- *    Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
- *    "Pthreads Programming," O'Reilly & Associates, Sebastopol, CA, 1996.
+ * @sa Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
+ * "Pthreads Programming," O'Reilly & Associates, Sebastopol, CA, 1996.
  */
 class thread_pool {
 public:

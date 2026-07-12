@@ -76,22 +76,18 @@ private:
   /**
    * Constructs (initializes) an element_map.
    *
-   * See also:
-   *    Shane McCarron, et al.  "XHTML 2.0," World Wide Web Consortium,
-   *    August 2002.
-   *      <http://www.w3.org/TR/xhtml2/>
+   * @sa Shane McCarron, et al.  "XHTML 2.0," World Wide Web Consortium,
+   * August 2002.  <http://www.w3.org/TR/xhtml2/>
    *
-   *    Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "Index of Elements,"
-   *    HTML 4.0 Specification, World Wide Web Consortium, April 1998.
-   *      <http://www.w3.org/TR/REC-html40/index/elements.html>
+   * @sa Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "Index of Elements,"
+   * HTML 4.0 Specification, World Wide Web Consortium, April 1998.
+   * <http://www.w3.org/TR/REC-html40/index/elements.html>
    *
-   *    Marcin Sawicki, et al.  "Ruby Annotation," World Wide Web Consortium,
-   *    April 6, 2001.
-   *      <http://www.w3.org/TR/2001/PR-ruby-20010406/>
+   * @sa Marcin Sawicki, et al.  "Ruby Annotation," World Wide Web Consortium,
+   * April 6, 2001.  <http://www.w3.org/TR/2001/PR-ruby-20010406/>
    *
-   *    Netscape Communications Corporation.  "HTML Tag Reference," January
-   *    1998.
-   *      <http://developer.netscape.com/docs/manuals/htmlguid/index.htm>
+   * @sa Netscape Communications Corporation.  "HTML Tag Reference," January
+   * 1998.  <http://developer.netscape.com/docs/manuals/htmlguid/index.htm>
    */
   element_map();
 };

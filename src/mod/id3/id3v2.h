@@ -111,48 +111,44 @@ struct id3v2_frame {
    * Parses a COMM ID3v2 frame and index the text in it.  This function is also
    * used to parse USER frames.
    *
-   * See also:
-   *    Martin Nilsson.  "4.10. Comments," ID3 tag version 2.4.0 - Native
-   *    Frames, November 2000.
-   *      <http://www.id3.org/>
+   * @sa Martin Nilsson.  "4.10. Comments," ID3 tag version 2.4.0 - Native
+   * Frames, November 2000.  <http://www.id3.org/>
    */
   void parse_comm();
 
   /**
    * Parses an ID3v2 frame header.
    *
-   * See also:
-   *    Martin Nilsson.  "3.2. ID3v2 frames overview," ID3 tag version 2, March
-   *    1998.
-   *      <http://www.id3.org/>
-   *
-   *    "3.3. ID3v2 frame overview," ID3 tag version 2.3.0, February
-   *    1999.
-   *      <http://www.id3.org/>
-   *
-   *    ---.  "4. ID3v2 frame overview," ID3 tag version 2.4.0 - Main
-   *    Structure, November 2000.
-   *      <http://www.id3.org/>
-   *
    * @param c A pointer to the start of the frame.
    * @param header The ID3v2 tag header.
    * @return Returns a header_result.
+   *
+   * @sa Martin Nilsson.  "3.2. ID3v2 frames overview," ID3 tag version 2, March
+   * 1998.  <http://www.id3.org/>
+   *
+   * @sa "3.3. ID3v2 frame overview," ID3 tag version 2.3.0, February
+   * 1999.  <http://www.id3.org/>
+   *
+   * @sa ---. "4. ID3v2 frame overview," ID3 tag version 2.4.0 - Main
+   * Structure, November 2000.  <http://www.id3.org/>
    */
   header_result parse_header( char const *&c, id3v2_header const &header );
 
   /**
    * Parses a SYLT ID3v2 frame.
    *
-   * See also:
-   *    Martin Nilsson.  "4.9. Synchronized lyrics/text," ID3 tag version 2.4.0
-   *    - Native Frames, November 2000.
-   *      <http://www.id3.org/>
+   * @sa Martin Nilsson.  "4.9. Synchronized lyrics/text," ID3 tag version 2.4.0
+   *  - Native Frames, November 2000.  <http://www.id3.org/>
    */
   void parse_sylt();
 
   /**
-   * Parses a TCON (genre) ID3v2 frame.  In ID3v2.x, genres are either strings
-   * or references to ID3v1.x numeric IDs.
+   * Parses a TCON (genre) ID3v2 frame.
+   *
+   * @remarks
+   * @parblock
+   * In ID3v2.x, genres are either strings or references to ID3v1.x numeric
+   * IDs.
    *
    * In ID3v2.3, an ID3v1.x reference is of the form "(n)" where 'n' is one or
    * more decimal digits.  It can be optionally followed by a "refinement,"
@@ -161,25 +157,21 @@ struct id3v2_frame {
    * In ID3v2.4, an ID3v1.x reference is of the form "n" (without parentheses)
    * where 'n' is one or more decimal digits.  Multiple genres/references are
    * null separated.
+   * @endparblock
    *
-   * See also:
-   *    Martin Nilsson.  "4.2.1. Text information frames - details," ID3 tag
-   *    version 2.3.0, February 1999.
-   *      <http://www.id3.org/>
+   * @sa Martin Nilsson.  "4.2.1. Text information frames - details," ID3 tag
+   * version 2.3.0, February 1999.  <http://www.id3.org/>
    *
-   *    ---.  "4.2.3. TCON Content type," ID3 tag version 2.4.0 - Native
-   *    Frames, November 2000.
-   *      <http://www.id3.org/>
+   * @sa ---.  "4.2.3. TCON Content type," ID3 tag version 2.4.0 - Native
+   * Frames, November 2000.  <http://www.id3.org/>
    */
   void parse_tcon();
 
   /**
    * Parses a TEXT ID3v2 frame.
    *
-   * See also:
-   *    Martin Nilsson.  "4.2. Text information frames," ID3 tag version 2.4.0
-   *    - Native Frames, November 2000.
-   *      <http://www.id3.org/>
+   * @sa Martin Nilsson.  "4.2. Text information frames," ID3 tag version 2.4.0
+   *  - Native Frames, November 2000.  <http://www.id3.org/>
    */
   void parse_text();
 };

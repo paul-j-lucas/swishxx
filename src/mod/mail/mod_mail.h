@@ -42,22 +42,21 @@
  * quoted-printable, HTML, MIME, vCard.  Header names and vCard types are
  * treated as meta names.
  *
- * See also:
- *    David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
- *    Text Messages," Department of Electrical Engineering, University of
- *    Delaware, August 1982.
+ * @sa David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
+ * Text Messages," Department of Electrical Engineering, University of
+ * Delaware, August 1982.
  *
- *    Frank Dawson and Tim Howes.  "RFC 2426: vCard MIME Directory Profile,"
- *    Network Working Group of the Internet Engineering Task Force, September
- *    1998.
+ * @sa Frank Dawson and Tim Howes.  "RFC 2426: vCard MIME Directory Profile,"
+ * Network Working Group of the Internet Engineering Task Force, September
+ * 1998.
  *
- *    Nathaniel S. Borenstein and Ned Freed.  "RFC 2045: Multipurpose Internet
- *    Mail Extensions (MIME) Part One: Format of Internet Message Bodies," RFC
- *    822 Extensions Working Group of the Internet Engineering Task Force,
- *    November 1996.
+ * @sa Nathaniel S. Borenstein and Ned Freed.  "RFC 2045: Multipurpose Internet
+ * Mail Extensions (MIME) Part One: Format of Internet Message Bodies," RFC 822
+ * Extensions Working Group of the Internet Engineering Task Force, November
+ * 1996.
  *
- *    Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "HTML 4.0 Specification,"
- *    World Wide Web Consortium, April 1998.
+ * @sa Dave Raggett, Arnaud Le Hors, and Ian Jacobs.  "HTML 4.0 Specification,"
+ * World Wide Web Consortium, April 1998.
  */
 class mail_indexer : public indexer {
 public:
@@ -136,15 +135,14 @@ private:
    * @param end The pointer to the end of the file.
    * @return Returns the type and encoding of the message based on the headers.
    *
-   * See also:
-   *    David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
-   *    Text Messages," Department of Electrical Engineering, University of
-   *    Delaware, August 1982.
+   * @sa David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
+   * Text Messages," Department of Electrical Engineering, University of
+   * Delaware, August 1982.
    *
-   *    Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
-   *    Internet Mail Extensions (MIME) Part One: Format of Internet Message
-   *    Bodies," RFC 822 Extensions Working Group of the Internet Engineering
-   *    Task Force, November 1996.
+   * @sa Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose
+   * Internet Mail Extensions (MIME) Part One: Format of Internet Message
+   * Bodies," RFC 822 Extensions Working Group of the Internet Engineering Task
+   * Force, November 1996.
    */
   message_type index_headers( char const *&c, char const *end );
 
@@ -164,10 +162,9 @@ private:
    * parsed.  The key is always converted to lower case.
    * @return Returns \c true only if a header was parsed.
    *
-   * See also:
-   *    David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
-   *    Text Messages," Department of Electrical Engineering, University of
-   *    Delaware, August 1982.
+   * @sa David H. Crocker.  "RFC 822: Standard for the Format of ARPA Internet
+   * Text Messages," Department of Electrical Engineering, University of
+   * Delaware, August 1982.
    */
   static bool parse_header( char const *&c, char const *end, key_value *kv );
 };

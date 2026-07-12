@@ -52,17 +52,16 @@ encoded_char_range::encoding_type const Binary =
  * condition and the function has to return "something" and a space is
  * innocuous.
  *
- * See also:
- *    Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose Internet
- *    Mail Extensions (MIME) Part One: Format of Internet Message Bodies,"
- *    Section 6.8, "Base64 Content-Transfer-Encoding," RFC 822 Extensions
- *    Working Group of the Internet Engineering Task Force, November 1996.
- *
  * @param begin A pointer marking the beginning of the entire encoded range.
  * @param c A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  * @return Returns the decoded character or ' ' upon error.
+ *
+ * @sa Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose Internet
+ * Mail Extensions (MIME) Part One: Format of Internet Message Bodies," Section
+ * 6.8, "Base64 Content-Transfer-Encoding," RFC 822 Extensions Working Group of
+ * the Internet Engineering Task Force, November 1996.
  */
 encoded_char_range::value_type encoding_base64(
   encoded_char_range::const_pointer begin,
@@ -81,18 +80,16 @@ encoded_char_range::value_type encoding_base64(
  * condition and the function has to return "something" and a space is
  * innocuous.
  *
- * See also:
- *    Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose Internet
- *    Mail Extensions (MIME) Part One: Format of Internet Message Bodies,"
- *    Section 6.7, "Quoted-Printable Content-Transfer-Encoding," RFC 822
- *    Extensions Working Group of the Internet Engineering Task Force, November
- *    1996.
- *
  * @param begin A pointer marking the beginning of the entire encoded range.
  * @param c A pointer marking the position of the character to decode.  It is
  * left after the decoded character.
  * @param end A pointer marking the end of the entire encoded range.
  * @return Returns the decoded character or ' ' upon error.
+ *
+ * @sa Ned Freed and Nathaniel S. Borenstein.  "RFC 2045: Multipurpose Internet
+ * Mail Extensions (MIME) Part One: Format of Internet Message Bodies," Section
+ * 6.7, "Quoted-Printable Content-Transfer-Encoding," RFC 822 Extensions
+ * Working Group of the Internet Engineering Task Force, November 1996.
  */
 encoded_char_range::value_type encoding_quoted_printable(
   encoded_char_range::const_pointer begin,

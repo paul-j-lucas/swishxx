@@ -59,16 +59,15 @@ private:
    * sets of suffix replacement rules applying at most one per set.  A word
    * is stemmed only if it is composed entirely of letters.
    *
-   * Caveat:
-   *    This algorithm is (obviosuly) geared only for English.
-   *
-   * See also:
-   *    M.F. Porter. "An Algorithm For Suffix Stripping," Program, 14(3), July
-   *    1980, pp. 130-137.
+   * @par Caveat
+   * This algorithm is (obviosuly) geared only for English.
    *
    * @param word The word to be stemmed.  It is presumed to have already been
    * converted to lower case.
    * @return Returns the word stemmed.
+   *
+   * @sa M.F. Porter. "An Algorithm For Suffix Stripping," Program, 14(3),
+   * July 1980, pp. 130-137.
    */
   static char const* stem_word( char const *word );
 };

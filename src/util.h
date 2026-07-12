@@ -95,11 +95,10 @@ inline char const* find_newline( char const *c, char const *end ) {
  * Sets the limit for the given resource to its maximum value.  If we're
  * running as root, set it to infinity.
  *
- * See also:
- *    W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
- *    Addison-Wesley, Reading, MA, 1993. pp. 180-184.
- *
  * @param resource The ID for the resource as given in \c sys/resources.h.
+ *
+ * @sa W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+ * Addison-Wesley, Reading, MA, 1993. pp. 180-184.
  */
 template<typename T>
 void max_out_limit( T resource ) {

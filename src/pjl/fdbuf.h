@@ -37,13 +37,11 @@ namespace PJL {
  * An %fdbuf is-a streambuf that is used to be attached to a Unix file
  * descriptor.
  *
- * See also:
- *    Nicolai M. Josuttis.  "The C++ Starndard Library: A Tutorial and
- *    Reference," Addison-Wesley, 1999, pp. 672-676.
- *
- *    Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales:
- *    Advanced Programmer's Guide and Reference," Addison-Wesley, 2000, pp.
- *    225-244.
+ * @sa Nicolai M. Josuttis.  "The C++ Starndard Library: A Tutorial and
+ * Reference," Addison-Wesley, 1999, pp. 672-676.
+ * @sa Angelika Langer and Klaus Kreft.  "Standard C++ IOStreams and Locales:
+ * Advanced Programmer's Guide and Reference," Addison-Wesley, 2000, pp.
+ * 225-244.
  */
 class fdbuf : public std::streambuf {
   enum { buf_size = 1024 };

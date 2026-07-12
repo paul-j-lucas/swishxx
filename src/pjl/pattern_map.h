@@ -42,10 +42,9 @@
  * above that defines <code>less&lt;char const*&gt;</code>, C-style string
  * comparisons work properly.
  *
- * See also:
- *    International Standards Organizaion.  "ISO/IEC 9945-2: Information
- *    Technology -- Portable Operating System Interface (POSIX) -- Part 2:
- *    Shell and Utilities," 1993.
+ * @sa International Standards Organizaion.  "ISO/IEC 9945-2: Information
+ * Technology -- Portable Operating System Interface (POSIX) -- Part 2: Shell
+ * and Utilities," 1993.
  */
 template<typename T>
 class pattern_map : public std::map<char const*,T> {

@@ -62,9 +62,8 @@ private:
    * and convert it to a value suitable for use as an Internet address.  A
    * value of \c '*' means "any IP address."
    *
-   * See also:
-   *    W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
-   *    Prentice-Hall, Upper Saddle River, NJ, 1998, section 9.3.
+   * @sa W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
+   * Prentice-Hall, Upper Saddle River, NJ, 1998, section 9.3.
    *
    * @param hostname_or_ip The host name or IP address to be parsed.
    */

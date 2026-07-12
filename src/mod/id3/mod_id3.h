@@ -32,11 +32,10 @@
  * An %id3_indexer is-an indexer for indexing ID3 tag information typically
  * found in MP3 files.
  *
- * See also:
- *    Martin Nilsson.  "ID3 tag version 2," March 1998.
- *    ---.  "ID3 tag version 2.3.0," February 1999.
- *    ---.  "ID3 tag version 2.4.0 - Main Structure," November 2000.
- *    ---.  "ID3 tag version 2.4.0 - Native Frames," November 2000.
+ * @sa Martin Nilsson.  "ID3 tag version 2," March 1998.
+ * @sa ---.  "ID3 tag version 2.3.0," February 1999.
+ * @sa ---.  "ID3 tag version 2.4.0 - Main Structure," November 2000.
+ * @sa ---.  "ID3 tag version 2.4.0 - Native Frames," November 2000.
  */
 class id3_indexer : public indexer {
 public:

@@ -55,9 +55,8 @@ namespace PJL {
  * call mmap(2)) allowing it to be accessed via iterators.  Processing a file,
  * especially files accessed randomly, is \e much faster than standard I/O.
  *
- * See also:
- *    W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
- *    Addison-Wesley, Reading, MA, 1993.  pp. 407-413
+ * @sa W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+ * Addison-Wesley, Reading, MA, 1993.  pp. 407-413
  */
 class mmap_file {
 public:
