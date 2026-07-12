@@ -1,5 +1,12 @@
 2026-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * ChangeDirectory.h, ExcludeFile.h, ExtractFile.h, Group.h, IncludeFile.h,
+     IncludeMeta.h, SocketAddress.h, User.h, WordThreshold.h,
+     classic_formatter.h, conf_bool.h, conf_enum.h, conf_filter.h,
+     conf_percent.h, conf_set.h, conf_string.h, conf_unsigned.h,
+     mod/html/mod_html.h, mod/id3/mod_id3.h, mod/latex/mod_latex.h,
+     mod/mail/mod_mail.h, mod/man/mod_man.h, mod/rtf/mod_rtf.h, pjl/fdbuf.h,
+     query_node.h, search_thread.h: Now using "override".
    * configure.ac: Now compiling as C++23.
    * query.cpp: Now using = delete.
    * encoded_char.h, file_list.h, index_segment.h: Eliminated deprecated
