@@ -1,5 +1,23 @@
 2026-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * AssociateMeta.h, ChangeDirectory.h, ExcludeFile.h, ExcludeMeta.h,
+     ExtractExtension.h, ExtractFile.h, ExtractFilter.h, FilesGrow.h,
+     FilesReserve.h, FilterFile.h, FollowLinks.h, Group.h, IncludeFile.h,
+     IncludeMeta.h, Incremental.h, IndexFile.h, LaunchdCooperation.h,
+     PidFile.h, RecurseSubdirs.h, ResultSeparator.h, ResultsFormat.h,
+     ResultsMax.h, SearchBackground.h, SearchDaemon.h, SocketAddress.h,
+     SocketFile.h, SocketQueueSize.h, SocketTimeout.h, StemWords.h,
+     StopWordFile.h, StoreWordPositions.h, TempDirectory.h, ThreadTimeout.h,
+     ThreadsMax.h, ThreadsMin.h, TitleLines.h, User.h, Verbosity.h,
+     WordFilesMax.h, WordPercentMax.h, WordThreshold.h, WordsNear.h,
+     classic_formatter.h, conf_enum.h, conf_filter.h, conf_percent.h,
+     conf_set.h, conf_string.h, file_info.h, file_list.h, filter.h,
+     index_segment.h, meta_id.h, pjl/auto_delete_pool.h,
+     pjl/char_buffer_pool.h, pjl/hash.cpp, pjl/less.h, pjl/omanip.h,
+     pjl/option_stream.cpp, pjl/option_stream.h, pjl/pattern_map.h,
+     pjl/thread_pool.h, query_node.h, results_formatter.h, search_thread.h,
+     stem_word.h, stop_words.h, swishxx-config.h, word_info.h, word_markers.h,
+     xml_formatter.h: C++ modernization.
    * ChangeDirectory.h, ExcludeFile.h, ExtractFile.h, Group.h, IncludeFile.h,
      IncludeMeta.h, SocketAddress.h, User.h, WordThreshold.h,
      classic_formatter.h, conf_bool.h, conf_enum.h, conf_filter.h,
