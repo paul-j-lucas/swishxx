@@ -3,7 +3,6 @@
 /alloca.h
 /arg-nonnull.h
 /assert.h
-/c++defs.h
 /configmake.h
 /ctype.h
 /errno.h
