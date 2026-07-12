@@ -29,8 +29,6 @@
 #include <cstddef>                      /* for size_t */
 #include <cstring>
 #include <functional>                   /* for hash */
-#include <memory>                       /* for unique_ptr */
-#include <string>
 #include <unordered_set>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -38,9 +36,9 @@
 namespace PJL {
 
 #if   SIZEOF_SIZE_T == 4
-size_t const Hash_Init = 2166136261ul;
+constexpr size_t Hash_Init = 2166136261ul;
 #elif SIZEOF_SIZE_T == 8
-size_t const Hash_Init = 14695981039346656037ul;
+constexpr size_t Hash_Init = 14695981039346656037ul;
 #else
 # error "Unexpected sizeof(size_t)"
 #endif /* SIZEOF_SIZE_T */
