@@ -39,9 +39,8 @@ public:
   static unsigned socket_timeout;
 
 private:
-  // inherited
-  thread* create( PJL::thread_pool &p ) const;
-  void main( argument_type );
+  thread* create( PJL::thread_pool &p ) const override;
+  void main( argument_type ) override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

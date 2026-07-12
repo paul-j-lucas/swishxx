@@ -43,12 +43,10 @@ public:
   IncludeMeta() : conf_var( "IncludeMeta" ) { }
   CONF_VAR_ASSIGN_OPS( IncludeMeta )
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 
 private:
-  // inherited
-  virtual void reset();
+  void reset() override;
 };
 
 extern IncludeMeta include_meta_names;

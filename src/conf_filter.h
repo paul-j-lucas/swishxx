@@ -59,9 +59,8 @@ protected:
   typedef pattern_map<value_type> map_type;
   map_type map_;
 
-  // inherited
-  virtual void parse_value( char *line );
-  virtual void reset();
+  void parse_value( char *line ) override;
+  void reset() override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

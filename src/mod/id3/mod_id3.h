@@ -41,9 +41,9 @@ class id3_indexer : public indexer {
 public:
   id3_indexer() : indexer( "ID3" ) { }
 
-  // inherited
-  char const* find_title( PJL::mmap_file const& ) const;
-  void index_words( encoded_char_range const&, meta_id_type = Meta_ID_None );
+  char const* find_title( PJL::mmap_file const& ) const override;
+  void index_words( encoded_char_range const&,
+                    meta_id_type = Meta_ID_None ) override;
 
 private:
   void index_id3v1_tags( char const*, char const* );

@@ -48,9 +48,8 @@ public:
   }
 
 private:
-  // inherited
-  virtual void parse_value( char *line );
-  virtual void reset();
+  void parse_value( char *line ) override;
+  void reset() override;
 };
 
 extern ExcludeFile exclude_patterns;

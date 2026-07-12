@@ -102,15 +102,13 @@ protected:
     return *this;
   }
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 
 private:
   std::string const default_value_;
   std::string       value_;
 
-  // inherited
-  virtual void reset();
+  void reset() override;
 };
 
 #define CONF_STRING_ASSIGN_OPS(T)         \

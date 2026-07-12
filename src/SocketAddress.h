@@ -69,8 +69,7 @@ private:
    */
   void convert_host( char const *hostname_or_ip );
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 };
 
 extern SocketAddress socket_address;

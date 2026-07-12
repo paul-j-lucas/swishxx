@@ -36,9 +36,9 @@ class HTML_indexer : public indexer {
 public:
   HTML_indexer() : indexer( "HTML" ) { }
 
-  // inherited
-  char const* find_title( PJL::mmap_file const& ) const;
-  void index_words( encoded_char_range const&, meta_id_type = Meta_ID_None );
+  char const* find_title( PJL::mmap_file const& ) const override;
+  void index_words( encoded_char_range const&,
+                    meta_id_type = Meta_ID_None ) override;
 
 private:
   /**
@@ -102,11 +102,10 @@ private:
    */
   void parse_html_tag( encoded_char_range::const_iterator& );
 
-  // inherited
-  bool claims_option( PJL::option_stream::option const& );
-  PJL::option_stream::spec const* option_spec() const;
-  void post_options();
-  void usage( std::ostream& ) const;
+  bool claims_option( PJL::option_stream::option const& ) override;
+  PJL::option_stream::spec const* option_spec() const override;
+  void post_options() override;
+  void usage( std::ostream& ) const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

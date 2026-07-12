@@ -45,8 +45,7 @@ public:
   CONF_INT_ASSIGN_OPS( WordThreshold );
 
 private:
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 };
 
 extern WordThreshold word_threshold;

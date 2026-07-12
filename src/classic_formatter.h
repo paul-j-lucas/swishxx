@@ -38,9 +38,8 @@ public:
       results_formatter( o, results ) { }
   ~classic_formatter();
 
-  // inherited
-  virtual void pre( stop_word_set const& ) const;
-  virtual void result( int rank, file_info const& ) const;
+  void pre( stop_word_set const& ) const override;
+  void result( int rank, file_info const& ) const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

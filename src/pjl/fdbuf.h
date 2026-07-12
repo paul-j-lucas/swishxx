@@ -72,11 +72,10 @@ protected:
 
   std::streamsize write_buf( char const*, std::streamsize );
 
-  // inherited
-  virtual int_type overflow( int_type c );
-  virtual int sync();
-  virtual int_type underflow();
-  virtual std::streamsize xsputn( char const *buf, std::streamsize len );
+  int_type overflow( int_type c ) override;
+  int sync() override;
+  int_type underflow() override;
+  std::streamsize xsputn( char const *buf, std::streamsize len ) override;
 
 private:
   int fd_;

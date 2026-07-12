@@ -35,9 +35,9 @@ class man_indexer : public indexer {
 public:
   man_indexer() : indexer( "man" ) { }
 
-  // inherited
-  char const* find_title( PJL::mmap_file const& ) const;
-  void index_words( encoded_char_range const&, meta_id_type = Meta_ID_None );
+  char const* find_title( PJL::mmap_file const& ) const override;
+  void index_words( encoded_char_range const&,
+                    meta_id_type = Meta_ID_None ) override;
 
 private:
   /**

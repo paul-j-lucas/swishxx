@@ -49,8 +49,7 @@ public:
     gid_t gid() const { return gid_; }
 
 private:
-    // inherited
-    virtual void parse_value( char *line );
+    void parse_value( char *line ) override;
 
     gid_t gid_;
 };

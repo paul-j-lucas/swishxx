@@ -43,9 +43,8 @@ public:
   CONF_VAR_ASSIGN_OPS( IncludeFile )
 
 private:
-  // inherited
-  virtual void parse_value( char *line );
-  virtual void reset();
+  void parse_value( char *line ) override;
+  void reset() override;
 };
 
 extern IncludeFile include_patterns;

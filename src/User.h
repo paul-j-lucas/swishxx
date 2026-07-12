@@ -50,8 +50,7 @@ public:
 private:
   uid_t uid_;
 
-  // inherited
-  virtual void  parse_value( char *line );
+  void  parse_value( char *line ) override;
 };
 
 extern User user;

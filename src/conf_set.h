@@ -40,12 +40,10 @@ protected:
   conf_set( char const *name ) : conf_var( name ) { }
   CONF_VAR_ASSIGN_OPS( conf_set )
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 
 private:
-  // inherited
-  virtual void reset();
+  void reset() override;
 };
 
 #define CONF_SET_ASSIGN_OPS(T)            \

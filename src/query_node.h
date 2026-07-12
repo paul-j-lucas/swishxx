@@ -87,7 +87,7 @@ public:
   void            eval( search_results& );
   query_node*     visit( visitor const& );
 # ifdef DEBUG_eval_query
-  std::ostream&   print( std::ostream& ) const;
+  std::ostream&   print( std::ostream& ) const override;
 # endif
 
 protected:
@@ -107,10 +107,9 @@ public:
   void* operator new( size_t )              { return &singleton_; }
   void  operator delete( void*, size_t )    { /* do nothing */ }
 
-  // inherited
-  void eval( search_results& );
+  void eval( search_results& ) override;
 # ifdef DEBUG_eval_query
-  std::ostream& print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const override;
 # endif
 
 private:
@@ -176,7 +175,7 @@ public:
   query_node* visit( visitor const& );
 
 # ifdef DEBUG_eval_query
-  std::ostream& print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const override;
 # endif
 
 private:
@@ -195,7 +194,7 @@ public:
   void eval( search_results& );
 
 # ifdef DEBUG_eval_query
-  std::ostream& print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const override;
 # endif
 };
 #endif /* WITH_WORD_POS */
@@ -213,7 +212,7 @@ public:
   void        eval( search_results& );
   query_node* visit( visitor const& );
 # ifdef DEBUG_eval_query
-  std::ostream& print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const override;
 # endif
 
 private:
@@ -234,7 +233,7 @@ public:
   query_node* right() const { return right_child_; }
   query_node* visit( visitor const& );
 # ifdef DEBUG_eval_query
-  std::ostream& print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const override;
 # endif /* DEBUG_eval_query */
 
 private:
@@ -254,7 +253,7 @@ public:
   meta_id_type meta_id() const { return meta_id_; }
   word_range const& range() const { return range_; }
 # ifdef DEBUG_eval_query
-  std::ostream& print( std::ostream& ) const;
+  std::ostream& print( std::ostream& ) const override;
 # endif /* DEBUG_eval_query */
 
 private:

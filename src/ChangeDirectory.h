@@ -40,8 +40,7 @@ public:
   CONF_STRING_ASSIGN_OPS( ChangeDirectory )
 
 protected:
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

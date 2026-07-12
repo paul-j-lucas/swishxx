@@ -49,8 +49,7 @@ protected:
 
   CONF_INT_ASSIGN_OPS( conf_percent )
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 
 private:
   bool is_percentage_;

@@ -73,14 +73,13 @@ protected:
   conf& operator=( value_type );
   CONF_VAR_ASSIGN_OPS( conf )
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 
 private:
   unsigned const default_value_, min_, max_;
   unsigned       value_;
 
-  virtual void reset();
+  void reset() override;
 };
 
 #define CONF_INT_ASSIGN_OPS(T)            \

@@ -52,15 +52,13 @@ protected:
   }
   CONF_VAR_ASSIGN_OPS( conf<bool> )
 
-  // inherited
-  virtual void parse_value( char *line );
+  void parse_value( char *line ) override;
 
 private:
   bool const default_value_;
   bool value_;
 
-  // inherited
-  virtual void reset();
+  void reset() override;
 };
 
 #define CONF_BOOL_ASSIGN_OPS(T)           \

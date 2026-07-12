@@ -41,9 +41,8 @@ public:
   CONF_VAR_ASSIGN_OPS( ExtractFile )
 
 private:
-  // inherited
-  virtual void parse_value( char *line );
-  virtual void reset() { clear(); }
+  void parse_value( char *line ) override;
+  void reset() override { clear(); }
 };
 
 extern ExtractFile include_patterns;
