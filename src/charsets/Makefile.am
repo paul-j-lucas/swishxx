@@ -26,15 +26,15 @@ AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 libcharsets_a_SOURCES =
 
 if WITH_UTF7
-libcharsets_a_SOURCES += utf7.cpp
+libcharsets_a_SOURCES+= utf7.cpp
 endif
 
 if WITH_UTF8
-libcharsets_a_SOURCES += utf8.cpp
+libcharsets_a_SOURCES+= utf8.cpp
 endif
 
 if WITH_UTF16
-libcharsets_a_SOURCES += utf16.cpp
+libcharsets_a_SOURCES+= utf16.cpp
 endif
 
 # vim:set noet sw=8 ts=8:

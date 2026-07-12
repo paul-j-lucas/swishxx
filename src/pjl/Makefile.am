@@ -23,10 +23,15 @@ lib_LIBRARIES =	libpjl.a
 AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
 AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib
 
-libpjl_a_SOURCES = fdbuf.cpp hash.cpp itoa.cpp mmap_file.cpp option_stream.cpp vlq.cpp
+libpjl_a_SOURCES =	fdbuf.cpp \
+			hash.cpp \
+			itoa.cpp \
+			mmap_file.cpp \
+			option_stream.cpp \
+			vlq.cpp
 
 if MULTI_THREADED
-libpjl_a_SOURCES += thread_pool.cpp
+libpjl_a_SOURCES+=	thread_pool.cpp
 endif
 
 # vim:set noet sw=8 ts=8:

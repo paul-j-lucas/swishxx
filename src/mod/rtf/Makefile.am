@@ -23,7 +23,7 @@ lib_LIBRARIES =	librtf.a
 AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
 AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
-librtf_a_SOURCES = mod_rtf.cpp
-librtf_a_LIBADD = $(top_builddir)/lib/libgnu.a
+librtf_a_SOURCES =	mod_rtf.cpp
+librtf_a_LIBADD =	$(top_builddir)/lib/libgnu.a
 
 # vim:set noet sw=8 ts=8:

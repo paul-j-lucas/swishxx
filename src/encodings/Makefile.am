@@ -26,11 +26,11 @@ AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 libencodings_a_SOURCES =
 
 if WITH_BASE64
-libencodings_a_SOURCES += base64.cpp
+libencodings_a_SOURCES+= base64.cpp
 endif
 
 if WITH_QUOTED_PRINTABLE
-libencodings_a_SOURCES += quoted_printable.cpp
+libencodings_a_SOURCES+= quoted_printable.cpp
 endif
 
 # vim:set noet sw=8 ts=8:

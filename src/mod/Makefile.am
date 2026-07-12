@@ -21,27 +21,27 @@
 SUBDIRS =
 
 if WITH_HTML
-SUBDIRS += html
+SUBDIRS+= html
 endif
 
 if WITH_ID3
-SUBDIRS += id3
+SUBDIRS+= id3
 endif
 
 if WITH_LATEX
-SUBDIRS += latex
+SUBDIRS+= latex
 endif
 
 if WITH_MAIL
-SUBDIRS += mail
+SUBDIRS+= mail
 endif
 
 if WITH_MAN
-SUBDIRS += man
+SUBDIRS+= man
 endif
 
 if WITH_RTF
-SUBDIRS += rtf
+SUBDIRS+= rtf
 endif
 
 # vim:set noet sw=8 ts=8:
