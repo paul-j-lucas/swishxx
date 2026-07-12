@@ -63,7 +63,7 @@ template<>
 struct less_n<char const*> : less<char const*> {
   typedef size_t size_type;
 
-  less_n( size_type max_len ) : n_( max_len ) { }
+  less_n( size_type max_len ) : n_{ max_len } { }
 
   result_type operator()( first_argument_type i,
                           second_argument_type j ) const {

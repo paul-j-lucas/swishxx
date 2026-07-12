@@ -97,6 +97,7 @@ protected:
     value_ += s;
     return *this;
   }
+
   conf<std::string>& operator+=( char const *s ) {
     value_ += s;
     return *this;

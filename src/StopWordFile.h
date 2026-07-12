@@ -36,7 +36,7 @@
  */
 class StopWordFile : public conf<std::string> {
 public:
-  StopWordFile() : conf<std::string>( "StopWordFile" ) { }
+  StopWordFile() : conf<std::string>{ "StopWordFile" } { }
   CONF_STRING_ASSIGN_OPS( StopWordFile )
 };
 

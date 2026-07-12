@@ -36,7 +36,7 @@
  * possibly stems (suffix strips) the words before comparison.
  */
 struct less_stem : std::less<char const*> {
-  less_stem( bool stem ) : stem_func_( stem ? stem_word : no_stem ) { }
+  less_stem( bool stem ) : stem_func_{ stem ? stem_word : no_stem } { }
 
   result_type operator()( first_argument_type a,
                           second_argument_type b ) const {

@@ -39,7 +39,7 @@
  */
 class StoreWordPositions : public conf<bool> {
 public:
-  StoreWordPositions() : conf<bool>( "StoreWordPositions", true ) { }
+  StoreWordPositions() : conf<bool>{ "StoreWordPositions", true } { }
   CONF_BOOL_ASSIGN_OPS( StoreWordPositions )
 };
 

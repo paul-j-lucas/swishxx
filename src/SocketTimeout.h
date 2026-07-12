@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +40,7 @@
 class SocketTimeout : public conf<unsigned> {
 public:
   SocketTimeout() :
-    conf<unsigned>( "SocketTimeout", SocketTimeout_Default, 2 ) { }
+    conf<unsigned>{ "SocketTimeout", SocketTimeout_Default, 2 } { }
   CONF_INT_ASSIGN_OPS( SocketTimeout )
 };
 

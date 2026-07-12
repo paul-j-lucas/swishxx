@@ -35,7 +35,7 @@
 /**
  * A %file_info contains information for every file encountered during
  * indexing.  A static data member keeps track of all dynamically allocated
- * instances so thay can be iterated over later.
+ * instances so that can be iterated over later.
  */
 class file_info {
 public:

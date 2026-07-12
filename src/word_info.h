@@ -94,8 +94,9 @@ typedef std::map<std::string,word_info> word_map;
 
 #ifdef WITH_WORD_POS
 inline void word_info::file::add_word_pos( unsigned absolute_pos ) {
-  if ( pos_deltas_.empty() )
+  if ( pos_deltas_.empty() ) {
     pos_deltas_.push_back( absolute_pos );
+  }
   else {
     //
     // Store deltas rather than absolute positions because integers are stored

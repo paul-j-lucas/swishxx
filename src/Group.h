@@ -41,7 +41,7 @@
  */
 class Group : public conf<std::string> {
 public:
-    Group() : conf<std::string>( "Group", Group_Default ), gid_( ::getegid() ) {
+    Group() : conf<std::string>{ "Group", Group_Default }, gid_{ ::getegid() } {
     }
     CONF_STRING_ASSIGN_OPS( Group );
 

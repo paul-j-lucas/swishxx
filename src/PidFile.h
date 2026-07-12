@@ -36,7 +36,7 @@
  */
 class PidFile : public conf<std::string> {
 public:
-  PidFile() : conf<std::string>( "PidFile" ) { }
+  PidFile() : conf<std::string>{ "PidFile" } { }
   CONF_STRING_ASSIGN_OPS( PidFile )
 };
 

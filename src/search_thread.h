@@ -34,7 +34,8 @@
  */
 class search_thread : public PJL::thread_pool::thread {
 public:
-  search_thread( PJL::thread_pool &p ) : PJL::thread_pool::thread( p ) { }
+  explicit search_thread( PJL::thread_pool &p ) :
+    PJL::thread_pool::thread{ p } { }
 
   static unsigned socket_timeout;
 

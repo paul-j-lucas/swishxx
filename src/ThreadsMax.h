@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@
  */
 class ThreadsMax : public conf<unsigned> {
 public:
-  ThreadsMax() : conf<unsigned>( "ThreadsMax", ThreadsMax_Default, 1 ) { }
+  ThreadsMax() : conf<unsigned>{ "ThreadsMax", ThreadsMax_Default, 1 } { }
   CONF_INT_ASSIGN_OPS( ThreadsMax )
 };
 

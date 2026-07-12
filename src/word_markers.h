@@ -31,27 +31,27 @@
  * This byte marks the end of a list of numbers (such as a meta name list) for
  * a word entry in an index file.  It also stops a word entry itself.
  */
-unsigned char const Stop_Marker = '\x80';
+constexpr unsigned char Stop_Marker = '\x80';
 
 /**
  * This byte marks the beginning of a meta name list for a word entry in an
  * index file.
  */
-unsigned char const Meta_Name_List_Marker = '\x01';
+constexpr unsigned char Meta_Name_List_Marker = '\x01';
 
 #ifdef WITH_WORD_POS
 /**
  * This byte marks the beginning of a word position delta list for a word entry
  * in an index file.
  */
-unsigned char const Word_Pos_List_Marker = '\x02';
+constexpr unsigned char Word_Pos_List_Marker = '\x02';
 #endif /* WITH_WORD_POS */
 
 /**
  * This byte marks that a word entry continues (the opposite of the
  * Stop_Marker).
  */
-unsigned char const Word_Entry_Continues_Marker = '\x00';
+constexpr unsigned char Word_Entry_Continues_Marker = '\x00';
 
 ///////////////////////////////////////////////////////////////////////////////
 

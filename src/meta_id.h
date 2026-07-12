@@ -31,13 +31,13 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef short meta_id_type;
+using meta_id_type = short;
 
 /**
  * A %meta_name_id_map_type is used to map a META name to its unique integer
  * ID. IDs start at zero.
  */
-typedef std::map<char const*,meta_id_type> meta_name_id_map_type;
+using meta_name_id_map_type = std::map<char const*,meta_id_type>;
 
 extern meta_name_id_map_type meta_name_id_map;
 

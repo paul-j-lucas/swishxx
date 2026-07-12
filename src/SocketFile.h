@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_string.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@
  */
 class SocketFile : public conf<std::string> {
 public:
-  SocketFile() : conf<std::string>( "SocketFile", SocketFile_Default ) { }
+  SocketFile() : conf<std::string>{ "SocketFile", SocketFile_Default } { }
   CONF_STRING_ASSIGN_OPS( SocketFile )
 };
 

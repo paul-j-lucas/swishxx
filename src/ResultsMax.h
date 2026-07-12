@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@
  */
 class ResultsMax : public conf<unsigned> {
 public:
-  ResultsMax() : conf<unsigned>( "ResultsMax", ResultsMax_Default ) { }
+  ResultsMax() : conf<unsigned>{ "ResultsMax", ResultsMax_Default } { }
   CONF_INT_ASSIGN_OPS( ResultsMax )
 };
 

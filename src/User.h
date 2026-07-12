@@ -41,7 +41,7 @@
  */
 class User : public conf<std::string> {
 public:
-  User() : conf<std::string>( "User", User_Default ), uid_( ::geteuid() ) { }
+  User() : conf<std::string>{ "User", User_Default }, uid_{ ::geteuid() } { }
   CONF_STRING_ASSIGN_OPS( User );
 
   bool change_to_uid() const;

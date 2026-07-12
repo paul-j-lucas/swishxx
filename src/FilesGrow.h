@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_percent.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@
  */
 class FilesGrow : public conf_percent {
 public:
-  FilesGrow() : conf_percent( "FilesGrow", FilesGrow_Default, 1 ) { }
+  FilesGrow() : conf_percent{ "FilesGrow", FilesGrow_Default, 1 } { }
   CONF_PERCENT_ASSIGN_OPS( FilesGrow )
 };
 

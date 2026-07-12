@@ -35,7 +35,7 @@
  */
 class FilterFile : public conf_filter {
 public:
-  FilterFile() : conf_filter( "FilterFile" ) { }
+  FilterFile() : conf_filter{ "FilterFile" } { }
 };
 
 extern FilterFile file_filters;

@@ -37,7 +37,7 @@
  */
 class FilesReserve : public conf<unsigned> {
 public:
-  FilesReserve() : conf<unsigned>( "FilesReserve", FilesReserve_Default ) { }
+  FilesReserve() : conf<unsigned>{ "FilesReserve", FilesReserve_Default } { }
   CONF_INT_ASSIGN_OPS( FilesReserve )
 };
 

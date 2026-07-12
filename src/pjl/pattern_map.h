@@ -96,7 +96,10 @@ private:
     typedef value_type const& argument_type;
     typedef bool result_type;
 
-    pattern_match( char const *file_name ) : file_name_( file_name ) { }
+    explicit pattern_match( char const *file_name ) :
+      file_name_{ file_name }
+    {
+    }
 
     result_type operator()( argument_type map_node ) const {
       return !::fnmatch( map_node.first, file_name_, 0 );

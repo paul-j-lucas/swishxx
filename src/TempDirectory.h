@@ -36,7 +36,7 @@
  */
 class TempDirectory : public conf<std::string> {
 public:
-  TempDirectory() : conf<std::string>( "TempDirectory", default_value() ) { }
+  TempDirectory() : conf<std::string>{ "TempDirectory", default_value() } { }
   CONF_STRING_ASSIGN_OPS( TempDirectory )
 
 private:

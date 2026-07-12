@@ -37,7 +37,7 @@
  */
 class SearchBackground : public conf<bool> {
 public:
-  SearchBackground() : conf<bool>( "SearchBackground", true ) { }
+  SearchBackground() : conf<bool>{ "SearchBackground", true } { }
   CONF_BOOL_ASSIGN_OPS( SearchBackground )
 };
 

@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -41,7 +42,7 @@
 class WordThreshold : public conf<unsigned> {
 public:
   WordThreshold() :
-    conf<unsigned>( "WordThreshold", WordThreshold_Default, 100 ) { }
+    conf<unsigned>{ "WordThreshold", WordThreshold_Default, 100 } { }
   CONF_INT_ASSIGN_OPS( WordThreshold );
 
 private:

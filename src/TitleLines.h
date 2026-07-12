@@ -38,7 +38,7 @@
  */
 class TitleLines : public conf<unsigned> {
 public:
-  TitleLines() : conf<unsigned>( "TitleLines", TitleLines_Default ) { }
+  TitleLines() : conf<unsigned>{ "TitleLines", TitleLines_Default } { }
   CONF_INT_ASSIGN_OPS( TitleLines )
 };
 

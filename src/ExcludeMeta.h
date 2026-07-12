@@ -36,7 +36,7 @@
  */
 class ExcludeMeta : public conf_set {
 public:
-  ExcludeMeta() : conf_set( "ExcludeMeta" ) { }
+  ExcludeMeta() : conf_set{ "ExcludeMeta" } { }
   CONF_SET_ASSIGN_OPS( ExcludeMeta )
 };
 

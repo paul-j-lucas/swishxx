@@ -43,8 +43,8 @@ char const *const option_stream::arg_lone = "<LONE-ARGUMENT>";
 
 option_stream::option_stream( int argc, char *argv[], spec const specs[],
                               ostream &err ) :
-  argc_( argc ), argv_( argv ), specs_( specs ), err_( err ), argi_( 0 ),
-  next_c_( nullptr ), state_( goodbit )
+  argc_{ argc }, argv_{ argv }, specs_{ specs }, err_{ err }, argi_{ 0 },
+  next_c_{ nullptr }, state_{ goodbit }
 {
   ::memset( &opts_given_, 0, sizeof( opts_given_ ) );
 }
@@ -115,7 +115,7 @@ void option_stream::check_required() {
 ostream& option_stream::error() {
   class program_name {
   public:
-    program_name( char const *argv0 ) : argv0_( basename( argv0 ) ) { }
+    explicit program_name( char const *argv0 ) : argv0_{ basename( argv0 ) } { }
 
     operator char const*() const {
       return argv0_;
@@ -143,9 +143,10 @@ ostream& option_stream::error() {
  * @return Returns the said option.
  */
 char const* option_stream::get_long_opt( char short_opt ) const {
-  for ( auto s = specs_; s->long_name; ++s )
+  for ( auto s = specs_; s->long_name; ++s ) {
     if ( s->short_name == short_opt )
       return s->long_name;
+  } // for
   assert( false );
 }
 

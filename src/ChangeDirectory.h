@@ -36,7 +36,7 @@
  */
 class ChangeDirectory : public conf<std::string> {
 public:
-  ChangeDirectory() : conf<std::string>( "ChangeDirectory" ) { }
+  ChangeDirectory() : conf<std::string>{ "ChangeDirectory" } { }
   CONF_STRING_ASSIGN_OPS( ChangeDirectory )
 
 protected:

@@ -38,7 +38,7 @@ namespace PJL {
 template<int Buf_Size,int N>
 class char_buffer_pool {
 public:
-  char_buffer_pool() : next_buf_index_( 0 ), cur_buf_( buf_[0] ) { }
+  char_buffer_pool() : next_buf_index_{ 0 }, cur_buf_{ buf_[0] } { }
 
   char* current() const {
     return cur_buf_;
@@ -52,7 +52,7 @@ public:
 
 private:
   char buf_[ N ][ Buf_Size ];
-  int next_buf_index_;
+  unsigned next_buf_index_;
   char *cur_buf_;
 };
 

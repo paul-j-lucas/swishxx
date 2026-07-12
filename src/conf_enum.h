@@ -42,7 +42,7 @@ public:
    * @param err The ostream to write an error message to, if any.
    * @return Returns \c true only if the value is legal.
    */
-  bool is_legal( char const*, std::ostream& = std::cerr ) const;
+  bool is_legal( char const *value, std::ostream &err = std::cerr ) const;
 
 protected:
   conf_enum( char const *name, char const *const legal_values[] );

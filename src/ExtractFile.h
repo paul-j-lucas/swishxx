@@ -37,7 +37,7 @@
  */
 class ExtractFile : public conf_var, public pattern_map<bool> {
 public:
-  ExtractFile() : conf_var( "ExtractFile" ) { }
+  ExtractFile() : conf_var{ "ExtractFile" } { }
   CONF_VAR_ASSIGN_OPS( ExtractFile )
 
 private:

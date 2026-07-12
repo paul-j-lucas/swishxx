@@ -40,7 +40,7 @@
 class SocketQueueSize : public conf<unsigned> {
 public:
   SocketQueueSize() :
-    conf<unsigned>( "SocketQueueSize", SocketQueueSize_Default, 1 ) { }
+    conf<unsigned>{ "SocketQueueSize", SocketQueueSize_Default, 1 } { }
   CONF_INT_ASSIGN_OPS( SocketQueueSize )
 };
 

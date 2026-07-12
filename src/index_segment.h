@@ -73,10 +73,10 @@ public:
    * Sets the index file to use by setting data members to the proper positions
    * within the index file.
    *
-   * Caveat:
-   *    Ideally, this function would be part of the constructor, but the name
-   *    of the index file can be passed in via the command line and that isn't
-   *    parsed until after the instance is constructed.
+   * @par Caveat
+   * Ideally, this function would be part of the constructor, but the name of
+   * the index file can be passed in via the command line and that isn't parsed
+   * until after the instance is constructed.
    *
    * @param file The file to use.
    * @param id The segment_id to use.

@@ -28,9 +28,9 @@ using namespace std;
 namespace PJL {
 
 #if   SIZEOF_SIZE_T == 4
-size_t const Hash_Prime = 16777619ul;
+constexpr size_t Hash_Prime = 16777619ul;
 #elif SIZEOF_SIZE_T == 8
-size_t const Hash_Prime = 1099511628211ul;
+constexpr size_t Hash_Prime = 1099511628211ul;
 #else
 # error "Unexpected sizeof(size_t)"
 #endif /* SIZEOF_SIZE_T */

@@ -37,7 +37,7 @@
  */
 class conf_set : public conf_var, public std::set<std::string> {
 protected:
-  conf_set( char const *name ) : conf_var( name ) { }
+  conf_set( char const *name ) : conf_var{ name } { }
   CONF_VAR_ASSIGN_OPS( conf_set )
 
   void parse_value( char *line ) override;

@@ -40,9 +40,9 @@
 class WordFilesMax : public conf<unsigned> {
 public:
   WordFilesMax() :
-    conf<unsigned>(
+    conf<unsigned>{
       "WordFilesMax", std::numeric_limits<value_type>::max(), 2
-    )
+    }
   {
   }
   CONF_INT_ASSIGN_OPS( WordFilesMax )

@@ -39,7 +39,7 @@
  */
 class IncludeFile : public conf_var, public pattern_map<indexer*> {
 public:
-  IncludeFile() : conf_var( "IncludeFile" ) { }
+  IncludeFile() : conf_var{ "IncludeFile" } { }
   CONF_VAR_ASSIGN_OPS( IncludeFile )
 
 private:

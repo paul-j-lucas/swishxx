@@ -43,7 +43,7 @@
 class SocketAddress : public conf<std::string> {
 public:
   SocketAddress() :
-    conf<std::string>( "SocketAddress" ), port_( SocketPort_Default )
+    conf<std::string>{ "SocketAddress" }, port_{ SocketPort_Default }
   {
     addr_.s_addr = htonl( INADDR_ANY );
   }
@@ -51,11 +51,11 @@ public:
   CONF_STRING_ASSIGN_OPS( SocketAddress )
 
   struct in_addr addr() const { return addr_; }
-  int port() const { return port_; }
+  unsigned port() const { return port_; }
 
 private:
   struct in_addr addr_;
-  int port_;
+  unsigned port_;
 
   /**
    * Parse either a hostname (foo.bar.com) or an IP address (123.45.67.89)

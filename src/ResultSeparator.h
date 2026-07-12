@@ -36,7 +36,7 @@
  */
 class ResultSeparator : public conf<std::string> {
 public:
-  ResultSeparator() : conf<std::string>( "ResultSeparator", " " ) { }
+  ResultSeparator() : conf<std::string>{ "ResultSeparator", " " } { }
   CONF_STRING_ASSIGN_OPS( ResultSeparator )
 };
 

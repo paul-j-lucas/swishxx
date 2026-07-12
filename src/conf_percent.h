@@ -43,7 +43,7 @@ public:
 protected:
   conf_percent( char const *name, value_type default_value, value_type min = 0,
                 value_type max = std::numeric_limits<value_type>::max() ) :
-    conf<unsigned>( name, default_value, min, max )
+    conf<unsigned>{ name, default_value, min, max }
   {
   }
 

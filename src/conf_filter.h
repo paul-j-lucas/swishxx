@@ -54,7 +54,7 @@ public:
   }
 
 protected:
-  conf_filter( char const *name ) : conf_var( name ) { }
+  conf_filter( char const *name ) : conf_var{ name } { }
 
   typedef pattern_map<value_type> map_type;
   map_type map_;

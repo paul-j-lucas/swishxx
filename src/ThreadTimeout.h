@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@
  */
 class ThreadTimeout : public conf<unsigned> {
 public:
-  ThreadTimeout() : conf<unsigned>( "ThreadTimeout", ThreadTimeout_Default ) { }
+  ThreadTimeout() : conf<unsigned>{ "ThreadTimeout", ThreadTimeout_Default } { }
   CONF_INT_ASSIGN_OPS( ThreadTimeout )
 };
 

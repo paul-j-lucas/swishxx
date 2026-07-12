@@ -36,7 +36,7 @@
  */
 class Verbosity : public conf<unsigned> {
 public:
-  Verbosity() : conf<unsigned>( "Verbosity", 0, 0, 4 ) { }
+  Verbosity() : conf<unsigned>{ "Verbosity", 0, 0, 4 } { }
   CONF_INT_ASSIGN_OPS( Verbosity )
 };
 

@@ -36,7 +36,7 @@
  */
 class LaunchdCooperation : public conf<bool> {
 public:
-  LaunchdCooperation() : conf<bool>( "LaunchdCooperation", false ) { }
+  LaunchdCooperation() : conf<bool>{ "LaunchdCooperation", false } { }
   CONF_BOOL_ASSIGN_OPS( LaunchdCooperation )
 };
 

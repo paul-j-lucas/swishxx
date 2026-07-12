@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +37,7 @@
  */
 class ThreadsMin : public conf<unsigned> {
 public:
-  ThreadsMin() : conf<unsigned>( "ThreadsMin", ThreadsMin_Default, 1 ) { }
+  ThreadsMin() : conf<unsigned>{ "ThreadsMin", ThreadsMin_Default, 1 } { }
   CONF_INT_ASSIGN_OPS( ThreadsMin )
 };
 

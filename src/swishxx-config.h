@@ -31,24 +31,24 @@
  * The minimum length a word must be in order even to bother doing more
  * aggressive checks on it to determine if it should be indexed.
  */
-int const   Word_Hard_Min_Size          = 3;
+constexpr int   Word_Hard_Min_Size          = 3;
 
 /**
  * The maximum length a word must be in order even to bother doing more
  * aggressive checks on it to determine if it should be indexed.
  */
-int const   Word_Hard_Max_Size          = 25;
+constexpr int   Word_Hard_Max_Size          = 25;
 
 /**
  * The minimum length a non-acronym word must be in order to be considered for
  * indexing.
  */
-int const   Word_Min_Size               = 4;
+constexpr int   Word_Min_Size               = 4;
 
 /**
  * The minimum number of vowels a word must have in order to be indexed.
  */
-int const   Word_Min_Vowels             = 1;
+constexpr int   Word_Min_Vowels             = 1;
 
 /**
  * The maximum length a string composed entirely of hexadecimal digits i.e.,
@@ -56,7 +56,7 @@ int const   Word_Min_Vowels             = 1;
  * a legitimate English word composed entirely of hexedecimal digits.  This
  * parameter is used only by \c extract(1) in \c extract.cpp.
  */
-int const   Word_Hex_Max_Size           = 4;
+constexpr int   Word_Hex_Max_Size           = 4;
 
 // I don't think there is a word in English that has more than...
 
@@ -64,32 +64,32 @@ int const   Word_Hex_Max_Size           = 4;
  * The maximum number of consecutive consonants a word may be in order to be
  * indexed, e.g., "symphysis."
  */
-int const   Word_Max_Consec_Consonants  = 7;
+constexpr int   Word_Max_Consec_Consonants  = 7;
 
 /**
  * The maximum number of consecutive vowels a word may be in order to be
  * indexed, e.g., "queueing."
  */
-int const   Word_Max_Consec_Vowels      = 5;
+constexpr int   Word_Max_Consec_Vowels      = 5;
 
 /**
  * The maximum number of the same character consecutively a word may be in
  * order to be indexed.
  */
-int const   Word_Max_Consec_Same        = 2;
+constexpr int   Word_Max_Consec_Same        = 2;
 
 /**
  * The maximum number of consecutive punctuation characters a word may have in
  * order to be indexed.
  */
-int const   Word_Max_Consec_Puncts      = 1;
+constexpr int   Word_Max_Consec_Puncts      = 1;
 
 /**
  * Characters that may be in a word.  Note that \c '&' is here so acronyms like
  * "AT&T" are treated as one word.  Unlike SWISH-E, \c ';' does not need to be
  * here to recognize and convert character entity references.
  */
-char const  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
+constexpr char  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
 
 /**
  * If you are using the default set of characters, that is the alphanumerics
@@ -104,7 +104,7 @@ char const  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
 /**
  * Characters that may begin a word; should be a subset of the above.
  */
-char const  Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+constexpr char  Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 /**
  * Same deal as with OPTIMIZE_WORD_CHARS.
@@ -114,7 +114,7 @@ char const  Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 /**
  * Characters that may end a word; usually the same as the above.
  */
-char const  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+constexpr char  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 /**
  * Same deal as with OPTIMIZE_WORD_CHARS.
@@ -128,13 +128,13 @@ char const  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
  * Default name of the Unix domain socket file; this can be overridden either
  * in a config. file or on the command line.
  */
-char const  SocketFile_Default[]        = "/tmp/search.socket";
+constexpr char  SocketFile_Default[]        = "/tmp/search.socket";
 
 /**
  * Default port number of the TCP socket; this can be overridden either in a
  * config. file or on the command line.
  */
-int const   SocketPort_Default          = 1967;
+constexpr int   SocketPort_Default          = 1967;
 
 /**
  * Maximum number of queued connections for a socket.  From [Stevens 1998], p.
@@ -158,7 +158,7 @@ int const   SocketPort_Default          = 1967;
  * If it's good enough for Apache, it's good enough for us.  This can be
  * overridden either in a config. file or on the command line.
  */
-int const   SocketQueueSize_Default     = 511;
+constexpr int   SocketQueueSize_Default     = 511;
 
 /**
  * The number of seconds a client has to complete a search request before being
@@ -166,38 +166,38 @@ int const   SocketQueueSize_Default     = 511;
  * request, and causing the thread servicing the request to wait forever.  This
  * can be overridden either in a config. file or on the command line.
  */
-int const   SocketTimeout_Default       = 10;   // seconds
+constexpr int   SocketTimeout_Default       = 10;   // seconds
 
 /**
  * The minimum number of simultanous threads; this can be overridden either in
  * a config. file or on the command line.
  */
-int const   ThreadsMin_Default          = 5;
+constexpr int   ThreadsMin_Default          = 5;
 
 /**
  * The maximum number of simultanous threads; this can be overridden either in
  * a config. file or on the command line.
  */
-int const   ThreadsMax_Default          = 100;
+constexpr int   ThreadsMax_Default          = 100;
 
 /**
  * The number of seconds until an idle spare thread times out and destroys
  * itself.  This can be overridden either in a config. file or on the command
  * line.
  */
-int const   ThreadTimeout_Default       = 30;   // seconds
+constexpr int   ThreadTimeout_Default       = 30;   // seconds
 
 /**
  * The user to switch to after initialization (if root to begin with).  This
  * can be overridden either in a config. file or on the command line.
  */
-char const  User_Default[]              = "nobody";
+constexpr char  User_Default[]              = "nobody";
 
 /**
  * The group to switch to after initialization (if root to begin with).  This
  * can be overridden either in a config. file or on the command line.
  */
-char const  Group_Default[]             = "nobody";
+constexpr char  Group_Default[]             = "nobody";
 #endif /* WITH_SEARCH_DAEMON */
 
 ////////// Miscellaneous parameters ///////////////////////////////////////////
@@ -206,57 +206,57 @@ char const  Group_Default[]             = "nobody";
  * Default name of the configuration file; this can be overridden on the
  * command line.
  */
-char const  ConfigFile_Default[]        = "swish++.conf";
+constexpr char  ConfigFile_Default[]        = "swish++.conf";
 
 /**
  * Default extension to append to filenames during extraction.  This can be
  * overridden either in a config. file or on the command line.
  */
-char const  ExtractExtension_Default[]  = "txt";
+constexpr char  ExtractExtension_Default[]  = "txt";
 
 /**
  * Default number of files to grow reserved space for when incrementally
  * indexing.  This can be overridden either in a config. file or on the command
  * line.
  */
-int const   FilesGrow_Default           = 100;
+constexpr int FilesGrow_Default           = 100;
 
 /**
  * Default maximum number of files to reserve space for; see \c file_info.cpp
  * for details.  This can be overridden either in a config. file or on the
  * command line.
  */
-int const   FilesReserve_Default        = 1000;
+constexpr int   FilesReserve_Default        = 1000;
 
 /**
  * Number of times to try to fork before giving up.  This parameter is used
  * only in \c filter.cpp.
  */
-int const   Fork_Attempts               = 5;
+constexpr int   Fork_Attempts               = 5;
 
 /**
  * Number of seconds to sleep before retrying to fork.  This parameter is used
  * only in \c filter.cpp.
  */
-int const   Fork_Sleep                  = 5;    // seconds
+constexpr int   Fork_Sleep                  = 5;    // seconds
 
 /**
  * Default name of the index file generated/searched; can be overridden either
  * in a config. file or on the command line.
  */
-char const  IndexFile_Default[]         = "swish++.index";
+constexpr char  IndexFile_Default[]         = "swish++.index";
 
 /**
  * Default maximum number of search results; this can be overridden either in a
  * config. file or on the command line.
  */
-int const   ResultsMax_Default          = 100;
+constexpr int   ResultsMax_Default          = 100;
 
 /**
  * Characters in a Unix shell command that delimit file names.  Note that this
  * says "file" (not "path") names.
  */
-char const  ShellFilenameDelimChars[]   = " \t&;<>|";
+constexpr char  ShellFilenameDelimChars[]   = " \t&;<>|";
 
 /**
  * Characters in a file name that must be escaped when passed to a Unix shell.
@@ -264,10 +264,10 @@ char const  ShellFilenameDelimChars[]   = " \t&;<>|";
  * because the space character is included.  Note again that this aays "file"
  * (not "path") name.
  */
-char const  ShellFilenameEscapeChars[]  = " !\"#$&'()*/;<>?[\\]^`{|}~";
+constexpr char  ShellFilenameEscapeChars[]  = " !\"#$&'()*/;<>?[\\]^`{|}~";
 
 #ifdef __CYGWIN__
-char const  TempDirectory_Default[]     = "/temp";
+constexpr char  TempDirectory_Default[]     = "/temp";
 #else
 /**
  * Default directory to use for temporary files during indexing.  If your OS
@@ -279,7 +279,7 @@ char const  TempDirectory_Default[]     = "/temp";
  * filesystem, i.e., one on a physical disk, e.g., \c /var/tmp on some OSs.
  * The directory must exist.
  */
-char const  TempDirectory_Default[]     = "/tmp";
+constexpr char  TempDirectory_Default[]     = "/tmp";
 #endif /* __CYGWIN__ */
 
 /**
@@ -287,13 +287,13 @@ char const  TempDirectory_Default[]     = "/tmp";
  * that means for a given file format); this can be overridden either in a
  * config. file or on the command line.
  */
-int const   TitleLines_Default          = 100;
+constexpr int   TitleLines_Default          = 100;
 
 /**
  * Maximum length of a file "title" (whatever that means for a given file
  * format).
  */
-int const   Title_Max_Size              = 200;
+constexpr int   Title_Max_Size              = 200;
 
 #ifdef WITH_WORD_POS
 /**
@@ -301,7 +301,7 @@ int const   Title_Max_Size              = 200;
  * each other; this can be overridden either in a config. file or on the
  * command line.
  */
-int const   WordsNear_Default           = 10;
+constexpr int   WordsNear_Default           = 10;
 #endif /* WITH_WORD_POS */
 
 /**
@@ -309,7 +309,7 @@ int const   WordsNear_Default           = 10;
  * discarded as being too frequent; this can be overridden either in a config.
  * file or on the command line.
  */
-int const   WordPercentMax_Default      = 100;
+constexpr int   WordPercentMax_Default      = 100;
 
 /**
  * The word count past which partial indicies are generated and merged since
@@ -321,7 +321,7 @@ int const   WordPercentMax_Default      = 100;
  * differently.  You simply have to experiment.  Only the super-user can
  * increase this either in a config. file or on the command line.
  */
-int const   WordThreshold_Default       = 4000000;
+constexpr int   WordThreshold_Default       = 4000000;
 
 ///////////////////////////////////////////////////////////////////////////////
 

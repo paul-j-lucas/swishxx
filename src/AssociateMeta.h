@@ -36,7 +36,7 @@
  */
 class AssociateMeta : public conf<bool> {
 public:
-  AssociateMeta() : conf<bool>( "AssociateMeta", true ) { }
+  AssociateMeta() : conf<bool>{ "AssociateMeta", true } { }
   CONF_BOOL_ASSIGN_OPS( AssociateMeta )
 };
 

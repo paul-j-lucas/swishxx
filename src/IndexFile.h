@@ -37,7 +37,7 @@
  */
 class IndexFile : public conf<std::string> {
 public:
-  IndexFile() : conf<std::string>( "IndexFile", IndexFile_Default ) { }
+  IndexFile() : conf<std::string>{ "IndexFile", IndexFile_Default } { }
   CONF_STRING_ASSIGN_OPS( IndexFile )
 };
 

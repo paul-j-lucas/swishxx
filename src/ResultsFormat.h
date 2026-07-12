@@ -36,7 +36,7 @@
  */
 class ResultsFormat : public conf_enum {
 public:
-  ResultsFormat() : conf_enum( "ResultsFormat", legal_values_ ) { }
+  ResultsFormat() : conf_enum{ "ResultsFormat", legal_values_ } { }
   CONF_ENUM_ASSIGN_OPS( ResultsFormat )
 
 private:

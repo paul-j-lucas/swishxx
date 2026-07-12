@@ -35,7 +35,7 @@
 class classic_formatter : public results_formatter {
 public:
   classic_formatter( std::ostream &o, int results ) :
-      results_formatter( o, results ) { }
+    results_formatter{ o, results } { }
   ~classic_formatter();
 
   void pre( stop_word_set const& ) const override;

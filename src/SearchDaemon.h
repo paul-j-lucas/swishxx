@@ -36,7 +36,7 @@
  */
 class SearchDaemon : public conf_enum {
 public:
-  SearchDaemon() : conf_enum( "SearchDaemon", legal_values_ ) { }
+  SearchDaemon() : conf_enum{ "SearchDaemon", legal_values_ } { }
   CONF_ENUM_ASSIGN_OPS( SearchDaemon )
 
 private:

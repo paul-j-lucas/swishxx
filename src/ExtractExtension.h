@@ -38,7 +38,7 @@
 class ExtractExtension : public conf<std::string> {
 public:
   ExtractExtension() :
-      conf<std::string>( "ExtractExtension", ExtractExtension_Default ) { }
+    conf<std::string>{ "ExtractExtension", ExtractExtension_Default } { }
   CONF_STRING_ASSIGN_OPS( ExtractExtension )
 };
 

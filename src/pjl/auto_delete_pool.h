@@ -77,12 +77,12 @@ public:
   }
 
 protected:
-  auto_delete_obj( pool_type *pool = nullptr ) : pool_( pool ) {
-    if ( pool_ )
+  auto_delete_obj( pool_type *pool = nullptr ) : pool_{ pool } {
+    if ( pool_ != nullptr )
       pool_->add( this );
   }
 
-  auto_delete_obj( pool_type &pool ) : pool_( &pool ) {
+  auto_delete_obj( pool_type &pool ) : pool_{ &pool } {
     pool_->add( this );
   }
 

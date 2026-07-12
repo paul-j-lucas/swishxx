@@ -37,7 +37,7 @@
  */
 class RecurseSubdirs : public conf<bool> {
 public:
-  RecurseSubdirs() : conf<bool>( "RecurseSubdirs", true ) { }
+  RecurseSubdirs() : conf<bool>{ "RecurseSubdirs", true } { }
   CONF_BOOL_ASSIGN_OPS( RecurseSubdirs )
 };
 

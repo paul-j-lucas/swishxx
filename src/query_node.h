@@ -62,7 +62,7 @@ public:
 
 protected:
   query_node() { }
-  query_node( pool_type &p ) : pool_object_type( p ) { }
+  query_node( pool_type &p ) : pool_object_type{ p } { }
 };
 
 /**
@@ -138,8 +138,8 @@ public:
    */
   class distributor : public visitor {
   public:
-    distributor( query_node *other, bool not_near = false ) :
-        other_( other ), not_near_( not_near ) { }
+    explicit distributor( query_node *other, bool not_near = false ) :
+      other_{ other }, not_near_{ not_near } { }
 
     query_node* operator()( query_node* ) const;
 
@@ -188,7 +188,7 @@ private:
 class not_near_node : public near_node {
 public:
   not_near_node( pool_type &pool, query_node *left, query_node *right ) :
-    near_node( pool, left, right ) { }
+    near_node{ pool, left, right } { }
   ~not_near_node();
 
   void eval( search_results& );
@@ -205,7 +205,7 @@ public:
 class not_node : public query_node {
 public:
   not_node( pool_type &p, query_node *child ) :
-    query_node( p ), child_( child ) { }
+    query_node{ p }, child_{ child } { }
   ~not_node();
 
   query_node* child() const { return child_; }
@@ -225,7 +225,7 @@ private:
 class or_node : public query_node {
 public:
   or_node( pool_type &p, query_node *left, query_node *right ) :
-    query_node( p ), left_child_( left ), right_child_( right ) { }
+    query_node{ p }, left_child_{ left }, right_child_{ right } { }
   ~or_node();
 
   void        eval( search_results& );

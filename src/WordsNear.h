@@ -27,6 +27,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 // standard
 #include <climits>
@@ -42,9 +43,9 @@
 class WordsNear : public conf<unsigned> {
 public:
   WordsNear() :
-    conf<unsigned>(
+    conf<unsigned>{
       "WordsNear", WordsNear_Default, 1, std::numeric_limits<value_type>::max()
-    )
+    }
   {
   }
   CONF_INT_ASSIGN_OPS( WordsNear )

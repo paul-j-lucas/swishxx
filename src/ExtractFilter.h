@@ -37,7 +37,7 @@
  */
 class ExtractFilter : public conf<bool> {
 public:
-  ExtractFilter() : conf<bool>( "ExtractFilter", false ) { }
+  ExtractFilter() : conf<bool>{ "ExtractFilter", false } { }
   CONF_BOOL_ASSIGN_OPS( ExtractFilter )
 };
 

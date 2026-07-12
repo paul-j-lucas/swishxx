@@ -40,7 +40,7 @@
  */
 class ExcludeFile : public conf_var, public pattern_map<bool> {
 public:
-  ExcludeFile() : conf_var( "ExcludeFile" ) { }
+  ExcludeFile() : conf_var{ "ExcludeFile" } { }
   CONF_VAR_ASSIGN_OPS( ExcludeFile )
 
   void insert( char const *pattern ) {

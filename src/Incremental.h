@@ -36,7 +36,7 @@
  */
 class Incremental : public conf<bool> {
 public:
-  Incremental() : conf<bool>( "Incremental", false ) { }
+  Incremental() : conf<bool>{ "Incremental", false } { }
   CONF_BOOL_ASSIGN_OPS( Incremental )
 };
 

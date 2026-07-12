@@ -25,6 +25,7 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "swishxx-config.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +39,7 @@
 class WordPercentMax : public conf<unsigned> {
 public:
   WordPercentMax() :
-    conf<unsigned>( "WordPercentMax", WordPercentMax_Default, 1, 101 ) { }
+    conf<unsigned>{ "WordPercentMax", WordPercentMax_Default, 1, 101 } { }
   CONF_INT_ASSIGN_OPS( WordPercentMax )
 };
 

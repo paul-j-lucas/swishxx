@@ -65,7 +65,7 @@ public:
 
 protected:
   results_formatter( std::ostream &o, int results ) :
-    out_( o ), results_( results ) { }
+    out_{ o }, results_{ results } { }
 
   std::ostream&   out_;
   int const       results_;

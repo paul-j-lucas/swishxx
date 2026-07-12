@@ -106,8 +106,8 @@ public:
      * to delete said structure when done with it.)
      */
     union argument_type {
-      argument_type( long  a ) : i( a ) { }
-      argument_type( void *a ) : p( a ) { }
+      argument_type( long  a ) : i{ a } { }
+      argument_type( void *a ) : p{ a } { }
       long  i;
       void *p;
     private:

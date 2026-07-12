@@ -45,7 +45,7 @@ class omanip {
 public:
   typedef std::ostream& (*func_type)( std::ostream&, Arg );
 
-  omanip( func_type f, Arg const &arg ) : f_( f ), arg_( arg ) { }
+  omanip( func_type f, Arg const &arg ) : f_{ f }, arg_{ arg } { }
 
   friend std::ostream& operator<<( std::ostream &o, omanip<Arg> const &om ) {
     return (*om.f_)( o, om.arg_ );

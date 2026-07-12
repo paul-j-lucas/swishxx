@@ -36,7 +36,7 @@
  */
 class StemWords : public conf<bool> {
 public:
-  StemWords() : conf<bool>( "StemWords", false ) { }
+  StemWords() : conf<bool>{ "StemWords", false } { }
   CONF_BOOL_ASSIGN_OPS( StemWords )
 };
 

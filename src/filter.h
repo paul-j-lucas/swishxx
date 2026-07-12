@@ -38,7 +38,7 @@
  */
 class filter {
 public:
-  explicit filter( char const *command ) : command_template_( command ) { }
+  explicit filter( char const *command ) : command_template_{ command } { }
   filter( filter const& ) = default;
   filter& operator=( filter const& ) = default;
   ~filter();

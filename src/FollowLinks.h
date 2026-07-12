@@ -36,7 +36,7 @@
  */
 class FollowLinks : public conf<bool> {
 public:
-  FollowLinks() : conf<bool>( "FollowLinks", false ) { }
+  FollowLinks() : conf<bool>{ "FollowLinks", false } { }
   CONF_BOOL_ASSIGN_OPS( FollowLinks )
 };
 

@@ -38,8 +38,8 @@
  * constructors.
  */
 struct stop_word_set : std::set<char const*> {
-  stop_word_set( char const *file_name = nullptr );
-  stop_word_set( PJL::mmap_file const &index_file );
+  explicit stop_word_set( char const *file_name = nullptr );
+  explicit stop_word_set( PJL::mmap_file const &index_file );
 };
 
 extern stop_word_set* stop_words;

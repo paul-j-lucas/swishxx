@@ -40,7 +40,7 @@
  */
 class IncludeMeta : public conf_var, public std::map<char const*,char const*> {
 public:
-  IncludeMeta() : conf_var( "IncludeMeta" ) { }
+  IncludeMeta() : conf_var{ "IncludeMeta" } { }
   CONF_VAR_ASSIGN_OPS( IncludeMeta )
 
   void parse_value( char *line ) override;
