@@ -116,7 +116,7 @@ search_SOURCES =	conf_var.cpp \
 			xml_formatter.cpp
 
 if WITH_SEARCH_DAEMON
-search_SOURCES+=	Group.cpp 
+search_SOURCES+=	Group.cpp \
 			search_daemon.cpp \
 			search_thread.cpp \
 			SearchDaemon.cpp \
