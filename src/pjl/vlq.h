@@ -27,7 +27,7 @@
 #include "pjl/omanip.h"
 
 // standard
-#include <iostream>
+#include <ostream>
 
 namespace PJL {
 
@@ -46,7 +46,7 @@ namespace vlq {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef unsigned long value_type;
+using value_type = unsigned long;
 
 /**
  * Decodes a VLQ.
