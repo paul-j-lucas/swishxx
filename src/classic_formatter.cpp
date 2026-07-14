@@ -24,6 +24,7 @@
 #include "classic_formatter.h"
 #include "file_info.h"
 #include "index_segment.h"
+#include "query.h"
 #include "ResultSeparator.h"
 
 extern index_segment directories;

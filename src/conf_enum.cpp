@@ -27,8 +27,10 @@
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
-#include <iostream>
+#include <cstring>
 #include <memory>                       /* for unique_ptr */
+#include <ostream>
+#include <string>
 
 using namespace PJL;
 using namespace std;
@@ -38,8 +40,8 @@ extern char const*  me;
 ///////////////////////////////////////////////////////////////////////////////
 
 conf_enum::conf_enum( char const *name, char const *const legal_values[] ) :
-  conf<std::string>( name, legal_values[0] ),
-  legal_values_( legal_values )
+  conf<std::string>{ name, legal_values[0] },
+  legal_values_{ legal_values }
 {
   // do nothing else
 }

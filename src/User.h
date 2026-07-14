@@ -29,6 +29,7 @@
 #include "swishxx-config.h"
 
 // standard
+#include <string>
 #include <sys/types.h>                  /* for uid_t */
 #include <unistd.h>                     /* for geteuid() */
 

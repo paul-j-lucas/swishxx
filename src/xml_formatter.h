@@ -24,6 +24,7 @@
 
 // local
 #include "config.h"
+#include "query.h"
 #include "results_formatter.h"
 
 // standard
