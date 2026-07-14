@@ -41,9 +41,9 @@ namespace std {
  */
 template<>
 struct less<char const*> {
-  typedef char const* first_argument_type;
-  typedef char const* second_argument_type;
-  typedef bool result_type;
+  using first_argument_type = char const*;
+  using second_argument_type = char const*;
+  using result_type = bool;
 
   less() { }
 
@@ -61,9 +61,9 @@ template<typename T> struct less_n;
  */
 template<>
 struct less_n<char const*> : less<char const*> {
-  typedef size_t size_type;
+  using size_type = size_t;
 
-  less_n( size_type max_len ) : n_{ max_len } { }
+  explicit less_n( size_type max_len ) : n_{ max_len } { }
 
   result_type operator()( first_argument_type i,
                           second_argument_type j ) const {
