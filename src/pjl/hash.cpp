@@ -23,6 +23,9 @@
 #include "config.h"
 #include "hash.h"
 
+// standard
+#include <cstddef>
+
 using namespace std;
 
 namespace PJL {
