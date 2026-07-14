@@ -23,6 +23,7 @@
 #include "config.h"
 #include "AssociateMeta.h"
 #include "charsets/unicode.h"
+#include "elements.h"
 #include "encoded_char.h"
 #include "entities.h"
 #include "ExcludeClass.h"

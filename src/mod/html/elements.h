@@ -27,8 +27,8 @@
 #include "pjl/less.h"
 
 // standard
-#include <iostream>
 #include <map>
+#include <ostream>
 #include <set>
 
 ///////////////////////////////////////////////////////////////////////////////

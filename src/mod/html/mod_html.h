@@ -24,8 +24,10 @@
 
 // local
 #include "config.h"
-#include "elements.h"
 #include "indexer.h"
+
+// standard
+#include <ostream>
 
 ///////////////////////////////////////////////////////////////////////////////
 
