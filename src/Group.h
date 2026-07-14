@@ -25,9 +25,11 @@
 // local
 #include "config.h"
 #include "conf_string.h"
+#include "conf_var.h"
 #include "swishxx-config.h"
 
 // standard
+#include <string>
 #include <sys/types.h>
 #include <unistd.h>                     /* for gid_t */
 

@@ -25,6 +25,10 @@
 // local
 #include "config.h"
 #include "conf_string.h"
+#include "conf_var.h"
+
+// standard
+#include <string>
 
 ///////////////////////////////////////////////////////////////////////////////
 

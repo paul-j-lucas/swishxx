@@ -25,9 +25,10 @@
 // local
 #include "config.h"
 #include "conf_unsigned.h"
+#include "conf_var.h"
 
 // standard
-#include <climits>
+#include <limits>
 
 ///////////////////////////////////////////////////////////////////////////////
 

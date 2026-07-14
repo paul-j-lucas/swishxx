@@ -32,9 +32,10 @@
 #include "word_util.h"
 
 // standard
-#include <iostream>
+#include <cstddef>
 #include <map>
 #include <memory>
+#include <ostream>
 #include <string>
 
 enum {

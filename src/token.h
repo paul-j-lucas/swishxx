@@ -60,7 +60,7 @@ public:
     tt_word
   };
 
-  token() : type_( tt_none )            { }
+  token() : type_{ tt_none }            { }
   explicit token( token_stream &in )    { in >> *this; }
   token( token const& ) = default;
   token& operator=( token const& ) = default;
@@ -87,7 +87,7 @@ private:
  */
 class token_stream : public std::istringstream {
 public:
-  token_stream( char const *s ) : std::istringstream( s ), top_( -1 ) { }
+  token_stream( char const *s ) : std::istringstream{ s }, top_{ -1 } { }
 
   void put_back( token const &t ) {
     stack_[ ++top_ ] = t;

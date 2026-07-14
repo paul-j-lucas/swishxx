@@ -29,10 +29,10 @@
 #include "query.h"
 
 // standard
+#include <cstddef>
 #ifdef DEBUG_eval_query
-#include <iostream>
+#include <ostream>
 #endif /* DEBUG_eval_query */
-#include <new>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////

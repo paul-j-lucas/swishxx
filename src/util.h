@@ -33,8 +33,10 @@
 #include <cctype>
 #include <cerrno>
 #include <climits>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <ostream>
 #include <set>
 #include <string>
 #include <sys/resource.h>

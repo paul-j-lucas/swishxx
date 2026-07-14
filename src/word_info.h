@@ -31,6 +31,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <ostream>
 #include <unordered_set>
 #ifdef WITH_WORD_POS
 #include <vector>

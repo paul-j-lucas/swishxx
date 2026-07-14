@@ -30,6 +30,7 @@
 #include "WordPercentMax.h"
 
 // standard
+#include <cstddef>
 #include <map>
 #include <set>
 #include <string>

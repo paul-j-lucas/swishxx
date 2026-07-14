@@ -25,11 +25,13 @@
 // local
 #include "config.h"
 #include "conf_string.h"
+#include "conf_var.h"
 #include "swishxx-config.h"
 
 // standard
 #include <arpa/inet.h>                  /* for htonl(3), INADDR_ANY */
 #include <netinet/in.h>                 /* for struct in_addr */
+#include <string>
 
 ///////////////////////////////////////////////////////////////////////////////
 
