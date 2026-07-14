@@ -32,6 +32,7 @@ extern char const* dtoa( double );
 
 // standard
 #include <iostream>
+#include <ostream>
 
 namespace PJL {
 
