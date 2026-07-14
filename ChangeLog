@@ -1,3 +1,34 @@
+2026-07-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * AssociateMeta.h, ChangeDirectory.h, ExtractExtension.h, ExtractFilter.h,
+     FilesReserve.h, FollowLinks.h, Group.h, Incremental.h, IndexFile.h,
+     LaunchdCooperation.h, PidFile.h, RecurseSubdirs.h, ResultSeparator.h,
+     ResultsMax.h, SearchBackground.h, SocketAddress.h, SocketFile.h,
+     SocketQueueSize.h, SocketTimeout.h, StemWords.h, StopWordFile.h,
+     TempDirectory.h, ThreadTimeout.h, ThreadsMax.h, ThreadsMin.h,
+     TitleLines.h, User.h, Verbosity.h, WordFilesMax.h, WordPercentMax.h,
+     WordThreshold.h, classic_formatter.h, conf_enum.h, conf_percent.h,
+     conf_set.h, conf_var.h, indexer.h, query.h, query_node.h,
+     results_formatter.h, search.h, token.h, util.h, word_info.h,
+     xml_formatter.h: Include fixes; C++ modernization.
+   * SocketQueueSize.h: Added missing #include.
+   * mod/html/elements.h, mod/html/mod_html.cpp, mod/html/mod_html.h: #include
+     fixes.
+
+2026-07-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl/option_stream.h: #include fix.
+   * pjl/omanip.h: s/iostream/ostream/
+   * pjl/less.h: C++ modernization.
+   * pjl/option_stream.h: Added explicit.
+   * pjl/vlq.h: s/iostream/ostream/
+
+2026-07-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Added missing /.
+   * c++defs.h: Put c++defs.h back.
+   * AUTHORS, configure.ac: Removed "foreign".
+
 2026-07-11  Paul J. Lucas <paul@lucasmail.org>
 
    * AssociateMeta.h, ChangeDirectory.h, ExcludeFile.h, ExcludeMeta.h,
