@@ -76,9 +76,9 @@ int mmap_file::behavior( behavior_type behavior ) const {
 }
 
 void mmap_file::close() {
-  if ( addr_ )
-    ::munmap( static_cast<char*>( addr_ ), size_ );
-  if ( fd_ )
+  if ( addr_ != nullptr )
+    ::munmap( addr_, size_ );
+  if ( fd_ != 0 )
     ::close( fd_ );
   init();
 }
@@ -102,9 +102,9 @@ void mmap_file::init() {
 #endif /* MULTI_THREADED */
 #endif /* RLIMIT_VMEM */
 
-  size_ = 0;
-  fd_ = 0;
   addr_ = nullptr;
+  fd_ = 0;
+  size_ = 0;
   errno_ = 0;
 }
 
