@@ -25,7 +25,9 @@
 
 // standard
 #include <cerrno>
+#include <cstdio>                       /* for EOF */
 #include <cstring>
+#include <ios>
 #include <unistd.h>
 
 using namespace std;

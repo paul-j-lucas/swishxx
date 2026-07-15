@@ -22,13 +22,15 @@
 // local
 #include "config.h"
 #include "thread_pool.h"
+#include "omanip.h"
 #include "util.h"
 
 // standard
+#include <cerrno>
 #include <cstdlib>                      /* for exit(3) */
 #include <time.h>
 #ifdef DEBUG_threads
-#include <iostream>
+#include <ostream>
 #endif /* DEBUG_threads */
 
 extern char const *me;

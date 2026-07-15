@@ -26,9 +26,13 @@
 // standard
 #include <cerrno>
 #include <fcntl.h>                      /* for open(2), O_RDONLY, etc */
+#include <ios>
+#include <sys/mman.h>                   /* for MAIL_FAILED */
+#ifdef RLIMIT_VMEM
 #include <time.h>                       /* needed by sys/resource.h */
 #include <sys/time.h>                   /* needed by FreeBSD systems */
 #include <sys/resource.h>               /* for get/setrlimit(2) */
+#endif /* RLIMIT_VMEM */
 #include <sys/stat.h>                   /* for stat(2) */
 #include <unistd.h>                     /* for close(2) */
 #if defined( MULTI_THREADED ) && defined( RLIMIT_VMEM )

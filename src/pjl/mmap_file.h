@@ -27,7 +27,7 @@
 
 // standard
 #include <cstddef>                      /* for ptrdiff_t, size_t */
-#include <fstream>                      /* for openmode */
+#include <ios>                          /* for openmode, streamsize */
 #include <iterator>
 #include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <sys/mman.h>                   /* for mmap(2) */

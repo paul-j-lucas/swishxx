@@ -45,6 +45,7 @@
 #include <algorithm>                    /* for copy() */
 #include <cctype>
 #include <cstring>
+#include <fstream>
 #include <memory>                       /* for unique_ptr */
 #include <string>
 #include <unistd.h>                     /* for unlink(2) */

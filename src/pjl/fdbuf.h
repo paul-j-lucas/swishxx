@@ -26,7 +26,7 @@
 #include "config.h"
 
 // standard
-#include <iostream>
+#include <ios>
 #include <streambuf>
 
 namespace PJL {
