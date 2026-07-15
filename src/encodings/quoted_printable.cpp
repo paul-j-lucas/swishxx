@@ -22,10 +22,9 @@
 // local
 #include "config.h"
 #include "encoded_char.h"
-#include "util.h"
 
 // standard
-#include <cstring>
+#include <cctype>
 
 using namespace std;
 
