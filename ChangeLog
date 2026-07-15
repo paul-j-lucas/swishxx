@@ -1,5 +1,19 @@
+2026-07-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl/thread_pool.cpp, pjl/thread_pool.h: Fixed warnings.
+   * mod/mail/mod_mail.cpp, pjl/fdbuf.cpp, pjl/fdbuf.h, pjl/mmap_file.cpp,
+     pjl/mmap_file.h, pjl/thread_pool.cpp: Include fixes.
+
 2026-07-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * warn-on-use.h: Added missing warn-on-use.h.
+   * arg-nonnull.h: Added missing arg-nonnull.h.
+   * pjl/mmap_file.cpp, pjl/option_stream.cpp: Include fixes; C++
+     modernization.
+   * pjl/hash.cpp: Include fixes.
+   * pjl/vlq.cpp: Include fixes.
+   * User.h, classic_formatter.cpp, conf_enum.cpp, xml_formatter.h: Include
+     fixes; C++ modernization.
    * AssociateMeta.h, ChangeDirectory.h, ExtractExtension.h, ExtractFilter.h,
      FilesReserve.h, FollowLinks.h, Group.h, Incremental.h, IndexFile.h,
      LaunchdCooperation.h, PidFile.h, RecurseSubdirs.h, ResultSeparator.h,
