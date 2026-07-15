@@ -43,6 +43,16 @@ namespace PJL {
 
 pthread_key_t thread_pool::thread::thread_obj_key_;
 
+/**
+ * A wrapper around pthread_mutex_unlock() that can be passed to
+ * pthread_cleanup_push().
+ *
+ * @param arg The argument to pass to pthread_mutex_unlock(), i.e., the mutex.
+ */
+static void pthread_mutex_unlock_cleanup( void *arg ) {
+  ::pthread_mutex_unlock( static_cast<pthread_mutex_t*>( arg ) );
+}
+
 //
 // Macros to wrap critical sections.
 //
@@ -59,27 +69,26 @@ pthread_key_t thread_pool::thread::thread_obj_key_;
  * be unlocked even if the thread is cancelled.  Also roll in optional critical
  * section protection since we're doing \c pthread_setcanceltype() anyway.
  *
- * See also:
- *    Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
- *    "Pthreads Programming," O'Reilly & Associates, Sebastopol, CA, 1996.
- *    pp. 141-142.
+ * @sa Bradford Nichols, Dick Buttlar, and Jacqueline Proulx Farrell.
+  "Pthreads Programming," O'Reilly & Associates, Sebastopol, CA, 1996.  pp.
+ * 141-142.
  */
 #define MUTEX_LOCK(M,D) { \
-  int cancel_type; bool const defer_cancel = (D); \
+  int cancel_type; bool const defer_cancel = (D);                   \
   ::pthread_setcanceltype( PTHREAD_CANCEL_DEFERRED, &cancel_type ); \
-  pthread_cleanup_push( (void (*)(void*))::pthread_mutex_unlock, (M) ); \
-  ::pthread_mutex_lock( (M) ); \
-  if ( D ) ; else { \
-    ::pthread_setcanceltype( cancel_type, nullptr ); \
-    ::pthread_testcancel(); \
+  pthread_cleanup_push( &pthread_mutex_unlock_cleanup, (M) );       \
+  ::pthread_mutex_lock( (M) );                                      \
+  if ( D ) ; else {                                                 \
+    ::pthread_setcanceltype( cancel_type, nullptr );                \
+    ::pthread_testcancel();                                         \
   }
 
-#define MUTEX_UNLOCK() \
-  pthread_cleanup_pop( 1 ); \
-  if ( defer_cancel ) { \
-    ::pthread_setcanceltype( cancel_type, nullptr ); \
-    ::pthread_testcancel(); \
-  } \
+#define MUTEX_UNLOCK()                                \
+  pthread_cleanup_pop( 1 );                           \
+  if ( defer_cancel ) {                               \
+    ::pthread_setcanceltype( cancel_type, nullptr );  \
+    ::pthread_testcancel();                           \
+  }                                                   \
 }
 
 /**

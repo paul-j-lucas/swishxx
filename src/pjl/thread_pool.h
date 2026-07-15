@@ -203,7 +203,7 @@ private:
   thread_set        threads_;
   pthread_mutex_t   t_lock_;
 
-  unsigned volatile t_busy_;            // how many are busy
+  unsigned          t_busy_;            // how many are busy
   pthread_mutex_t   t_busy_lock_;
   pthread_cond_t    t_idle_;            // a thread is idle
 
