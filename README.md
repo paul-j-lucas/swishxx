@@ -233,5 +233,5 @@ If it does, there's a bug and I'll fix it.
 
 ---
 
-Copyright (C) 1998-2015 by Paul J. Lucas &lt;<paul@lucasmail.org>&gt;  
+Copyright (C) 1998-2026 by Paul J. Lucas &lt;<paul@lucasmail.org>&gt;  
 SWISH++ is available under the GNU General Public License.
