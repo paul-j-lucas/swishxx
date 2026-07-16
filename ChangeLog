@@ -1,5 +1,14 @@
 2026-07-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am: Added ./ to init_modules-sh and init_mod_vars-sh.
+   * ChangeDirectory.cpp, IncludeMeta.cpp, SocketAddress.cpp,
+     classic_formatter.h, conf_unsigned.cpp, conf_var.cpp, directory.cpp,
+     encoded_char.cpp, encoded_char.h, indexer.h, query_node.cpp, search.cpp,
+     stem_word.cpp, stop_words.cpp, token.cpp, util.cpp, word_info.h,
+     word_util.cpp, xml_formatter.cpp: Include fixes.
+   * charsets/utf7.cpp: #include fixes.
+   * encodings/base64.cpp, encodings/quoted_printable.cpp: #include fixes.
+   * pjl/thread_pool.cpp: #include fix.
    * pjl/thread_pool.cpp, pjl/thread_pool.h: Fixed warnings.
    * mod/mail/mod_mail.cpp, pjl/fdbuf.cpp, pjl/fdbuf.h, pjl/mmap_file.cpp,
      pjl/mmap_file.h, pjl/thread_pool.cpp: Include fixes.
