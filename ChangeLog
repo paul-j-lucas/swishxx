@@ -1,3 +1,13 @@
+2026-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * directory.cpp, encoded_char.cpp, extract.cpp, filter.cpp,
+     index_segment.cpp, indexer.cpp, query.cpp, search.cpp, util.cpp,
+     word_info.cpp, xml_formatter.cpp: Include fixes.
+   * postscript.cpp: Include fixes.
+   * ChangeDirectory.cpp, Group.cpp, IncludeFile.cpp, IncludeMeta.cpp,
+     SocketAddress.cpp, User.cpp, WordThreshold.cpp, query_node.cpp: Include
+     fixes.
+
 2026-07-15  Paul J. Lucas <paul@lucasmail.org>
 
    * src/Makefile.am: Added ./ to init_modules-sh and init_mod_vars-sh.
