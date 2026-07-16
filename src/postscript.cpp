@@ -20,7 +20,6 @@
 */
 
 // local
-#include "config.h"
 #include "postscript.h"
 
 using namespace PJL;
