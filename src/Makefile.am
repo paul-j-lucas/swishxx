@@ -59,10 +59,10 @@ index_SOURCES+=		encoded_char.cpp
 endif
 
 init_modules.cpp: mod/*/mod_*.h init_modules-sh
-	init_modules-sh > $@ || { rm -f $@; exit 1; }
+	./init_modules-sh > $@ || { rm -f $@; exit 1; }
 
 init_mod_vars.cpp: mod/*/vars init_mod_vars-sh
-	init_mod_vars-sh > $@ || { rm -f $@; exit 1; }
+	./init_mod_vars-sh > $@ || { rm -f $@; exit 1; }
 
 index_LDADD =
 
