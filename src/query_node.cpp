@@ -23,12 +23,14 @@
 #include "config.h"
 #include "file_list.h"
 #include "index_segment.h"
+#include "meta_id.h"
 #include "query_node.h"
 #include "WordsNear.h"
 #include "util.h"
 
 // standard
-#include <iostream>
+#include <cstddef>
+#include <ostream>
 #include <vector>
 
 using namespace std;

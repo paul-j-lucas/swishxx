@@ -41,7 +41,11 @@
 using namespace PJL;
 using namespace std;
 
+#ifdef SWISHXX_INDEX
 extern void do_file( char const *file_name, int dir_index );
+#else
+extern void do_file( char const *file_name );
+#endif /* SWISHXX_INDEX */
 
 ///////////////////////////////////////////////////////////////////////////////
 

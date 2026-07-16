@@ -27,6 +27,8 @@
 // standard
 #include <cerrno>
 #include <cstdio>                       /* for strerror(3) */
+#include <cstdlib>
+#include <string>
 #include <unistd.h>                     /* for chdir(2) */
 
 using namespace std;

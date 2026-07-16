@@ -26,12 +26,14 @@
 #include "util.h"
 
 // standard
+#include <arpa/inet.h>                  /* for htonl */
+#include <cstdlib>                      /* for exit(3) */
+#include <cstring>
 #include <iostream>
 #include <netdb.h>                      /* for gethostbyname(3), etc */
-#include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <netinet/in.h>
-#include <cstring>
-#include <cstdlib>                      /* for exit(3) */
+#include <string>
+#include <sys/types.h>                  /* needed by FreeBSD systems */
 
 using namespace std;
 

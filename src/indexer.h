@@ -29,7 +29,6 @@
 #include "pjl/mmap_file.h"
 #include "pjl/option_stream.h"
 #include "util.h"
-#include "word_util.h"
 
 // standard
 #include <cstddef>

@@ -21,13 +21,13 @@
 
 // local
 #include "config.h"
-#include "iso8859-1.h"
 #include "token.h"
+#include "iso8859-1.h"
+#include "swishxx-config.h"
 #include "util.h"
 #include "word_util.h"
 
 // standard
-#include <cctype>
 #include <cstring>
 
 using namespace std;

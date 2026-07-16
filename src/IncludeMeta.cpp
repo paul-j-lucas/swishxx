@@ -41,7 +41,7 @@ void IncludeMeta::parse_value( char *line ) {
   // whitespace.  Additionally, "words" can be further split by '=' to do meta
   // name reassignment, e.g.: adr=address.
   //
-  unique_ptr<char[]> lower( to_lower_r( line ) );
+  unique_ptr<char[]> lower{ to_lower_r( line ) };
   char *p = lower.get();
   for ( char const *meta_name; (meta_name = ::strtok( p, " \r\t" ));
         p = nullptr ) {

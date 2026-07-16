@@ -60,6 +60,7 @@
 #include "SocketFile.h"
 #include "SocketQueueSize.h"
 #include "SocketTimeout.h"
+#include "swishxx-config.h"
 #include "ThreadsMax.h"
 #include "ThreadsMin.h"
 #include "ThreadTimeout.h"

@@ -22,11 +22,12 @@
 // local
 #include "config.h"
 #include "word_util.h"
+#include "util.h"
 
 // standard
 #include <cctype>
 #ifdef DEBUG_is_ok_word
-#include <iostream>
+#include <ostream>
 #endif /* DEBUG_is_ok_word */
 
 using namespace std;

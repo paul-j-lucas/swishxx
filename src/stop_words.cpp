@@ -21,11 +21,12 @@
 
 // local
 #include "config.h"
+#include "stop_words.h"
 #include "exit_codes.h"
 #include "index_segment.h"
 #include "iso8859-1.h"
 #include "pjl/mmap_file.h"
-#include "stop_words.h"
+#include "swishxx-config.h"
 #include "util.h"
 #include "word_util.h"
 

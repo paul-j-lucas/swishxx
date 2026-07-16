@@ -27,11 +27,11 @@
 // local
 #include "config.h"
 #include "stem_word.h"
+#include "swishxx-config.h"
 #include "word_util.h"
 #include "util.h"                       /* for new_strdup() */
 
 // standard
-#include <cctype>
 #include <cstring>
 #include <map>
 #ifdef WITH_SEARCH_DAEMON

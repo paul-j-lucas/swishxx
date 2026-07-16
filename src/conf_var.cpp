@@ -29,6 +29,7 @@
 
 // standard
 #include <cctype>
+#include <cstddef>                      /* for ptrdiff_t */
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <iostream>

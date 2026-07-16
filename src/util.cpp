@@ -21,11 +21,13 @@
 
 // local
 #include "config.h"
-#include "pjl/char_buffer_pool.h"
 #include "util.h"
+#include "exit_codes.h"
+#include "pjl/char_buffer_pool.h"
 
 // standard
 #include <cassert>
+#include <cctype>
 #include <cerrno>
 #include <cstdlib>                      /* for strtoul(3) */
 #include <cstring>
