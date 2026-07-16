@@ -26,6 +26,7 @@
 
 // standard
 #include <cctype>
+#include <cstddef>
 
 encoded_char_range::decoder::set_type encoded_char_range::decoder::decoders_;
 

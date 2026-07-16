@@ -24,7 +24,6 @@
 #include "file_info.h"
 #include "index_segment.h"
 #include "query.h"
-#include "util.h"
 #include "xml_formatter.h"
 
 // standard

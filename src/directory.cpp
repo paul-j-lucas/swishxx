@@ -26,7 +26,9 @@
 
 // local
 #include "config.h"
+#ifdef SWISHXX_INDEX
 #include "directory.h"
+#endif /* SWISHXX_INDEX */
 #include "RecurseSubdirs.h"
 #include "util.h"
 #include "Verbosity.h"

@@ -22,6 +22,7 @@
 // local
 #include "config.h"
 #include "index_segment.h"
+#include "pjl/mmap_file.h"
 
 using namespace PJL;
 

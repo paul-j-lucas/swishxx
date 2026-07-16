@@ -26,6 +26,9 @@
 #include "word_info.h"
 #include "word_markers.h"
 
+// standard
+#include <ostream>
+
 using namespace PJL;
 using namespace std;
 
@@ -36,7 +39,7 @@ word_info::file::file() {
 }
 
 word_info::file::file( unsigned index ) :
-  index_( index ), occurrences_( 1 ), rank_( 0 )
+  index_{ index }, occurrences_{ 1 }, rank_{ 0 }
 {
   // do nothing else
 }

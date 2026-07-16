@@ -31,6 +31,8 @@
 #include <cerrno>
 #include <cstdlib>                      /* for strtoul(3) */
 #include <cstring>
+#include <iostream>
+#include <sys/stat.h>
 
 using namespace PJL;
 using namespace std;

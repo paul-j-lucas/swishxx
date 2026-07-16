@@ -21,21 +21,26 @@
 
 // local
 #include "config.h"
-#include "encoded_char.h"
-#include "file_info.h"
-#include "ExcludeMeta.h"
-#include "IncludeMeta.h"
 #include "indexer.h"
+#include "encoded_char.h"
+#include "ExcludeMeta.h"
+#include "file_info.h"
+#include "IncludeMeta.h"
 #include "iso8859-1.h"
 #include "meta_id.h"
+#include "pjl/mmap_file.h"
+#include "pjl/option_stream.h"
 #include "stop_words.h"
 #include "StoreWordPositions.h"
+#include "swishxx-config.h"
 #include "util.h"
 #include "word_info.h"
 #include "word_util.h"
 
 // standard
+#include <cctype>
 #include <cstring>
+#include <memory>
 
 using namespace PJL;
 using namespace std;

@@ -36,6 +36,7 @@
 #include "RecurseSubdirs.h"
 #include "StopWordFile.h"
 #include "stop_words.h"
+#include "swishxx-config.h"
 #include "util.h"
 #include "Verbosity.h"
 #include "word_util.h"
@@ -43,12 +44,13 @@
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
+#include <ctime>
 #include <fstream>
 #include <iomanip>                      /* for setfill(), setw() */
-#include <iostream>
+#include <ostream>
 #include <string>
+#include <sys/resource.h>
 #include <sys/types.h>
-#include <time.h>
 
 using namespace PJL;
 using namespace std;

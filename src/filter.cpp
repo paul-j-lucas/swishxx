@@ -29,6 +29,7 @@
 #include <cassert>
 #include <cstdlib>                      /* for system(3) */
 #include <cstring>
+#include <string>
 #include <unistd.h>                     /* for sleep(3) */
 
 using namespace std;
@@ -67,8 +68,9 @@ static void unescape_filename( string &s ) {
 char const* filter::exec() const {
   assert( !command_.empty() );
 
+  unsigned attempt_count = 0;
   int exit_code;
-  int attempt_count = 0;
+
   while ( (exit_code = ::system( command_.c_str() )) == -1 ) {
     //
     // Try a few times before giving up in case the system is temporarily busy.
@@ -81,7 +83,7 @@ char const* filter::exec() const {
 }
 
 char const *filter::substitute( char const *file_name ) {
-  string esc_file_name( file_name );
+  string esc_file_name{ file_name };
   escape_filename( esc_file_name );
   //
   // Determine the base name of the file in case we need it for 'b' or 'B'

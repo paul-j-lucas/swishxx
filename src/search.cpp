@@ -75,8 +75,8 @@
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
 #include <string>
-#include <sys/resource.h>               /* for RLIMIT_* */
 #include <sys/time.h>                   /* needed by FreeBSD systems */
+#include <sys/resource.h>               /* for RLIMIT_* */
 #include <time.h>                       /* needed by sys/resource.h */
 #include <utility>                      /* for pair<> */
 #include <vector>
