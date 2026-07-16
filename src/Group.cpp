@@ -23,12 +23,13 @@
 #include "config.h"
 #include "Group.h"
 #include "exit_codes.h"
-#include "util.h"
 
 // standard
-#include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <cstdlib>                      /* for exit(3) */
 #include <grp.h>                        /* for getgrnam(3) */
+#include <string>
+#include <sys/types.h>                  /* needed by FreeBSD systems */
+#include <unistd.h>
 
 using namespace std;
 

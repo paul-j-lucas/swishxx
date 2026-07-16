@@ -21,16 +21,17 @@
 
 // local
 #include "config.h"
+#include "query_node.h"
 #include "file_list.h"
+#include "indexer.h"
 #include "index_segment.h"
 #include "meta_id.h"
-#include "query_node.h"
-#include "WordsNear.h"
+#include "query.h"
 #include "util.h"
+#include "WordsNear.h"
 
 // standard
 #include <cstddef>
-#include <ostream>
 #include <vector>
 
 using namespace std;

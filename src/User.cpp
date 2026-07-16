@@ -23,11 +23,12 @@
 #include "config.h"
 #include "exit_codes.h"
 #include "User.h"
-#include "util.h"
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
+#include <string>
 #include <pwd.h>                        /* for getpwnam(3) */
+#include <unistd.h>
 
 using namespace std;
 

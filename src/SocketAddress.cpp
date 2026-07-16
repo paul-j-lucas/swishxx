@@ -29,7 +29,6 @@
 #include <arpa/inet.h>                  /* for htonl */
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-#include <iostream>
 #include <netdb.h>                      /* for gethostbyname(3), etc */
 #include <netinet/in.h>
 #include <string>

@@ -23,6 +23,7 @@
 #include "config.h"
 #include "IncludeMeta.h"
 #include "exit_codes.h"
+#include "pjl/less.h"
 #include "util.h"                       /* for error(), new_strdup() */
 
 // standard

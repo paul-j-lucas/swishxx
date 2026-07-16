@@ -26,8 +26,8 @@
 
 // standard
 #include <cerrno>
-#include <cstdio>                       /* for strerror(3) */
 #include <cstdlib>
+#include <cstring>
 #include <string>
 #include <unistd.h>                     /* for chdir(2) */
 

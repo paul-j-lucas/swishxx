@@ -23,12 +23,11 @@
 #include "config.h"
 #include "exit_codes.h"
 #include "swishxx-config.h"
-#include "util.h"
 #include "WordThreshold.h"
 
 // standard
-#include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <cstdlib>                      /* for exit(3) */
+#include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <unistd.h>                     /* for geteuid(2) */
 
 using namespace std;
