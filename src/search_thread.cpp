@@ -21,20 +21,21 @@
 
 // local
 #include "config.h"
+#include "search_thread.h"
 #include "pjl/fdbuf.h"
 #include "search.h"
-#include "search_thread.h"
+#include "pjl/thread_pool.h"
 #include "util.h"
 
 // standard
 #include <cctype>
-#include <cerrno>
 #include <climits>                      /* for ARG_MAX */
 #include <cstring>
-#include <fcntl.h>
-#include <iostream>
+#include <ostream>
+#include <sys/select.h>
 #include <sys/socket.h>                 /* for recv(3) */
 #include <time.h>
+#include <sys/time.h>
 #include <unistd.h>                     /* for close(2) */
 
 //
