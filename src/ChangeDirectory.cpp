@@ -21,8 +21,8 @@
 
 // local
 #include "config.h"
-#include "exit_codes.h"
 #include "ChangeDirectory.h"
+#include "exit_codes.h"
 
 // standard
 #include <cerrno>

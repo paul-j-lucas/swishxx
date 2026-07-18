@@ -21,11 +21,11 @@
 
 // local
 #include "config.h"
+#include "id3v2.h"
 #include "AssociateMeta.h"
 #include "charsets/charsets.h"
 #include "encoded_char.h"
 #include "id3v1.h"
-#include "id3v2.h"
 #include "indexer.h"
 #include "pjl/less.h"
 #include "util.h"

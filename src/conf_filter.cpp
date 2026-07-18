@@ -21,8 +21,8 @@
 
 // local
 #include "config.h"
-#include "exit_codes.h"
 #include "conf_filter.h"
+#include "exit_codes.h"
 
 // standard
 #include <cstdlib>                      /* for exit(3) */

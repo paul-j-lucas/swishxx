@@ -21,11 +21,11 @@
 
 // local
 #include "config.h"
+#include "mod_id3.h"
 #include "AssociateMeta.h"
 #include "encoded_char.h"
 #include "id3v1.h"
 #include "id3v2.h"
-#include "mod_id3.h"
 
 // standard
 #include <cassert>

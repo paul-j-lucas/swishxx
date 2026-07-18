@@ -21,6 +21,7 @@
 
 // local
 #include "config.h"
+#include "search.h"
 #include "classic_formatter.h"
 #include "exit_codes.h"
 #include "file_info.h"
@@ -37,7 +38,6 @@
 #include "ResultsFormat.h"
 #include "results_formatter.h"
 #include "ResultsMax.h"
-#include "search.h"
 #include "StemWords.h"
 #include "token.h"
 #include "util.h"

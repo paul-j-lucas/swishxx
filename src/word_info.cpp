@@ -21,9 +21,9 @@
 
 // local
 #include "config.h"
+#include "word_info.h"
 #include "pjl/vlq.h"
 #include "util.h"
-#include "word_info.h"
 #include "word_markers.h"
 
 // standard

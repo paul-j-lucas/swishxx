@@ -21,9 +21,9 @@
 
 // local
 #include "config.h"
+#include "file_info.h"
 #include "FilesReserve.h"
 #include "directory.h"
-#include "file_info.h"
 #include "pjl/vlq.h"
 #include "util.h"                       /* for new_strdup() */
 

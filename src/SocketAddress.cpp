@@ -21,8 +21,8 @@
 
 // local
 #include "config.h"
-#include "exit_codes.h"
 #include "SocketAddress.h"
+#include "exit_codes.h"
 #include "util.h"
 
 // standard

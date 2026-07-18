@@ -23,8 +23,8 @@
 #include "config.h"
 #include "search_thread.h"
 #include "pjl/fdbuf.h"
-#include "search.h"
 #include "pjl/thread_pool.h"
+#include "search.h"
 #include "util.h"
 
 // standard

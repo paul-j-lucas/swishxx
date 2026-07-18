@@ -21,6 +21,7 @@
 
 // local
 #include "config.h"
+#include "mod_html.h"
 #include "AssociateMeta.h"
 #include "charsets/unicode.h"
 #include "elements.h"
@@ -29,7 +30,6 @@
 #include "ExcludeClass.h"
 #include "html_config.h"
 #include "iso8859-1.h"
-#include "mod_html.h"
 #include "TitleLines.h"
 #include "util.h"
 #include "word_util.h"

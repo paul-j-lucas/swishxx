@@ -21,6 +21,7 @@
 
 // local
 #include "config.h"
+#include "mod_mail.h"
 #include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
@@ -31,7 +32,6 @@
 #ifdef WITH_HTML
 #include "mod/html/mod_html.h"
 #endif /* WITH_HTML */
-#include "mod_mail.h"
 #ifdef WITH_RTF
 #include "mod/rtf/mod_rtf.h"
 #endif /* WITH_RTF */

@@ -21,9 +21,9 @@
 
 // local
 #include "config.h"
+#include "WordThreshold.h"
 #include "exit_codes.h"
 #include "swishxx-config.h"
-#include "WordThreshold.h"
 
 // standard
 #include <cstdlib>                      /* for exit(3) */

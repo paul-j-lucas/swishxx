@@ -21,11 +21,11 @@
 
 // local
 #include "config.h"
+#include "mod_man.h"
 #include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
 #include "iso8859-1.h"
-#include "mod_man.h"
 #include "TitleLines.h"
 #include "util.h"
 #include "word_util.h"

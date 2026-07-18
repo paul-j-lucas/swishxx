@@ -21,9 +21,9 @@
 
 // local
 #include "config.h"
+#include "mod_rtf.h"
 #include "AssociateMeta.h"
 #include "iso8859-1.h"
-#include "mod_rtf.h"
 #include "pjl/hash.h"
 #include "TitleLines.h"
 #include "word_util.h"

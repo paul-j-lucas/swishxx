@@ -21,8 +21,8 @@
 
 // local
 #include "config.h"
-#include "swishxx-config.h"
 #include "TempDirectory.h"
+#include "swishxx-config.h"
 
 // standard
 #include <cstdlib>                      /* for getenv(3) */
