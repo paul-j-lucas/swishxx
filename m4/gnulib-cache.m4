@@ -38,16 +38,20 @@
 #  --no-libtool \
 #  --macro-prefix=gl \
 #  --no-vc-files \
+#  bool \
 #  errno \
 #  fnmatch \
-#  socklen
+#  socklen \
+#  sysexits
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
 gl_MODULES([
+  bool
   errno
   fnmatch
   socklen
+  sysexits
 ])
 gl_AVOID([])
 gl_SOURCE_BASE([lib])

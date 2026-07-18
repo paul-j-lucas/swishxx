@@ -125,6 +125,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module strnlen1:
   # Code from module sys_types-h:
   AC_REQUIRE([AC_USE_SYSTEM_EXTENSIONS])
+  # Code from module sysexits:
+  # Code from module sysexits-h:
   # Code from module uchar-h:
   # Code from module unicase/base:
   # Code from module unicase/tolower:
@@ -458,6 +460,9 @@ AC_DEFUN([gl_INIT],
   gl_STRING_MODULE_INDICATOR([strnlen])
   gl_SYS_TYPES_H
   gl_SYS_TYPES_H_REQUIRE_DEFAULTS
+  AC_PROG_MKDIR_P
+  gl_SYSEXITS
+  gl_CONDITIONAL_HEADER([sysexits.h])
   AC_PROG_MKDIR_P
   gl_UCHAR_H
   gl_UCHAR_H_REQUIRE_DEFAULTS
@@ -802,6 +807,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strnlen1.c
   lib/strnlen1.h
   lib/sys_types.in.h
+  lib/sysexits.in.h
   lib/uchar.in.h
   lib/unicase.in.h
   lib/unicase/simple-mapping.h
@@ -922,6 +928,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/string_h.m4
   m4/strnlen.m4
   m4/sys_types_h.m4
+  m4/sysexits.m4
   m4/threadlib.m4
   m4/uchar_h.m4
   m4/unicase_h.m4

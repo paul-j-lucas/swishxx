@@ -33,9 +33,11 @@
 #  --no-libtool \
 #  --macro-prefix=gl \
 #  --no-vc-files \
+#  bool \
 #  errno \
 #  fnmatch \
-#  socklen
+#  socklen \
+#  sysexits
 
 AUTOMAKE_OPTIONS = 1.14 gnits subdir-objects
 
@@ -1271,6 +1273,33 @@ MOSTLYCLEANDIRS += sys
 EXTRA_DIST += sys_types.in.h
 
 ## end   gnulib module sys_types-h
+
+## begin gnulib module sysexits-h
+
+BUILT_SOURCES += $(SYSEXITS_H)
+
+# We need the following in order to create <sysexits.h> when the system
+# doesn't have one that works with the given compiler.
+if GL_GENERATE_SYSEXITS_H
+sysexits.h: sysexits.in.h $(top_builddir)/config.status
+	$(gl_V_at)$(SED_HEADER_STDOUT) \
+	      -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''HAVE_SYSEXITS_H''@|$(HAVE_SYSEXITS_H)|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_SYSEXITS_H''@|$(NEXT_SYSEXITS_H)|g' \
+	      $(srcdir)/sysexits.in.h > $@-t
+	$(AM_V_at)mv $@-t $@
+else
+sysexits.h: $(top_builddir)/config.status
+	rm -f $@
+endif
+MOSTLYCLEANFILES += sysexits.h sysexits.h-t
+
+EXTRA_DIST += sysexits.in.h
+
+## end   gnulib module sysexits-h
 
 ## begin gnulib module uchar-h
 
