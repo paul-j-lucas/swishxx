@@ -1,5 +1,11 @@
 2026-07-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * ChangeDirectory.cpp, SocketAddress.cpp, TempDirectory.cpp, User.cpp,
+     WordThreshold.cpp, conf_filter.cpp, file_info.cpp, mod/html/mod_html.cpp,
+     mod/id3/id3v2.cpp, mod/id3/mod_id3.cpp, mod/latex/mod_latex.cpp,
+     mod/mail/mod_mail.cpp, mod/man/mod_man.cpp, mod/rtf/mod_rtf.cpp,
+     pjl/itoa.cpp, search.cpp, search_thread.cpp, word_info.cpp: Include fixes.
+   * search_thread.cpp: Include fixes.
    * xml_formatter.cpp: #include fix.
 
 2026-07-16  Paul J. Lucas <paul@lucasmail.org>
