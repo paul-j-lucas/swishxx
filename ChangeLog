@@ -1,3 +1,7 @@
+2026-07-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * xml_formatter.cpp: #include fix.
+
 2026-07-16  Paul J. Lucas <paul@lucasmail.org>
 
    * directory.cpp, encoded_char.cpp, extract.cpp, filter.cpp,
