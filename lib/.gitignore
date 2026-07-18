@@ -16,7 +16,7 @@
 /stdint.h
 /stdlib.h
 /string.h
-/sys_types.h
+/sys
 /uchar.h
 /unicase.h
 /unictype.h
