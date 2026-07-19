@@ -22,6 +22,7 @@
 // local
 #include "config.h"
 #include "word_util.h"
+#include "swishxx-config.h"
 #include "util.h"
 
 // standard

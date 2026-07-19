@@ -23,12 +23,14 @@
 #include "config.h"
 #include "exit_codes.h"
 #include "Group.h"
-#include "PidFile.h"
 #ifdef __APPLE__
 #include "LaunchdCooperation.h"
 #endif /* __APPLE__ */
+#include "PidFile.h"
+#include "pjl/thread_pool.h"
 #include "SearchBackground.h"
 #include "SearchDaemon.h"
+#include "search_thread.h"
 #include "SocketAddress.h"
 #include "SocketFile.h"
 #include "SocketQueueSize.h"
@@ -36,7 +38,6 @@
 #include "ThreadsMax.h"
 #include "ThreadsMin.h"
 #include "ThreadTimeout.h"
-#include "search_thread.h"
 #include "User.h"
 #include "util.h"                       /* for max_out_limit() */
 
@@ -52,6 +53,7 @@
 #include <time.h>                       /* needed by sys/resource.h */
 #include <sys/time.h>                   /* needed by FreeBSD systems */
 #include <sys/resource.h>               /* for RLIMIT_* */
+#include <sys/select.h>
 #include <sys/socket.h>                 /* for bind(3), socket(3), etc. */
 #include <sys/un.h>                     /* for sockaddr_un */
 #include <unistd.h>                     /* for fork(2), setsid(2), unlink(2) */
