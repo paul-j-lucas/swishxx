@@ -51,6 +51,7 @@
 #ifdef WITH_WORD_POS
 #include "StoreWordPositions.h"
 #endif /* WITH_WORD_POS */
+#include "swishxx-config.h"
 #include "TempDirectory.h"
 #include "TitleLines.h"
 #include "util.h"
