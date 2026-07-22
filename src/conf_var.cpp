@@ -53,7 +53,7 @@ int conf_var::current_config_file_line_no_ = 0;
  * @param var_name The name of the variable.
  */
 conf_var::conf_var( char const *var_name ) :
-  name_( var_name )
+  name_{ var_name }
 {
   conf_var *&var = map_ref()[ to_lower( name_ ) ];
   if ( var ) {

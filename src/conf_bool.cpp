@@ -37,9 +37,9 @@ extern char const*  me;
 ///////////////////////////////////////////////////////////////////////////////
 
 conf<bool>::conf( char const *name, bool default_value ) :
-  conf_var( name ),
-  default_value_( default_value ),
-  value_( default_value )
+  conf_var{ name },
+  default_value_{ default_value },
+  value_{ default_value }
 {
   // do nothing else
 }
