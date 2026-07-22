@@ -32,6 +32,7 @@
 #include <cstdlib>                      /* for strtoul(3) */
 #include <cstring>
 #include <iostream>
+#include <ostream>
 #include <sys/stat.h>
 
 using namespace PJL;

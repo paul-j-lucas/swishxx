@@ -22,11 +22,13 @@
 // local
 #include "config.h"
 #include "word_util.h"
+#include "encoded_char.h"
 #include "swishxx-config.h"
 #include "util.h"
 
 // standard
 #include <cctype>
+#include <cstddef>
 #ifdef DEBUG_is_ok_word
 #include <ostream>
 #endif /* DEBUG_is_ok_word */

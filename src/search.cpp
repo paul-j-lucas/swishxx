@@ -26,7 +26,6 @@
 #include "exit_codes.h"
 #include "file_info.h"
 #include "file_list.h"
-#include "indexer.h"
 #include "IndexFile.h"
 #include "index_segment.h"
 #include "pjl/less.h"
@@ -74,10 +73,11 @@
 #include <iostream>
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
+#include <ostream>
 #include <string>
 #include <sys/time.h>                   /* needed by FreeBSD systems */
-#include <sys/resource.h>               /* for RLIMIT_* */
 #include <time.h>                       /* needed by sys/resource.h */
+#include <sys/resource.h>               /* for RLIMIT_* */
 #include <utility>                      /* for pair<> */
 #include <vector>
 
