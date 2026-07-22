@@ -23,6 +23,7 @@
 #include "config.h"
 #include "encoded_char.h"
 #include "pjl/char_buffer_pool.h"
+#include "util.h"
 
 // standard
 #include <cctype>

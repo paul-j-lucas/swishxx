@@ -32,7 +32,7 @@
 #include <cstddef>                      /* for ptrdiff_t */
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-#include <iostream>
+#include <ostream>
 #include <memory>                       /* for unique_ptr */
 
 using namespace std;
