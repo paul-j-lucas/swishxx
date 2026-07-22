@@ -26,9 +26,11 @@
 #include "encoded_char.h"
 #include "id3v1.h"
 #include "id3v2.h"
+#include "indexer.h"
 
 // standard
 #include <cassert>
+#include <cstring>
 
 using namespace PJL;
 using namespace std;

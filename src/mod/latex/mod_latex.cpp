@@ -27,8 +27,10 @@
 #include "iso8859-1.h"
 #include "latex_config.h"
 #include "TitleLines.h"
-#include "util.h"
 #include "word_util.h"
+
+// standard
+#include <cctype>
 
 using namespace PJL;
 using namespace std;

@@ -29,14 +29,15 @@
 #include "indexer.h"
 #include "pjl/less.h"
 #include "util.h"
+#include "word_util.h"
 
 // standard
 #include <cstdlib>
 #include <cstring>
 #include <map>
 #ifdef DEBUG_id3v2
-#include <iostream>
 #include <iomanip>
+#include <ostream>
 #endif /* DEBUG_id3v2 */
 
 // zlib

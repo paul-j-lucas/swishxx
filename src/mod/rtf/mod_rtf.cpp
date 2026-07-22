@@ -23,6 +23,7 @@
 #include "config.h"
 #include "mod_rtf.h"
 #include "AssociateMeta.h"
+#include "indexer.h"
 #include "iso8859-1.h"
 #include "pjl/hash.h"
 #include "TitleLines.h"
@@ -30,6 +31,7 @@
 
 // standard
 #include <cctype>
+#include <cstring>
 
 using namespace PJL;
 using namespace std;

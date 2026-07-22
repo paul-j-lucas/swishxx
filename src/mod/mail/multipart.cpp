@@ -24,7 +24,6 @@
 #include "encoded_char.h"
 #include "mod_mail.h"
 #include "util.h"
-#include "word_util.h"
 
 using namespace PJL;
 using namespace std;

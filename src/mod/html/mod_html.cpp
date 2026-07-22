@@ -29,6 +29,7 @@
 #include "entities.h"
 #include "ExcludeClass.h"
 #include "html_config.h"
+#include "indexer.h"
 #include "iso8859-1.h"
 #include "TitleLines.h"
 #include "util.h"
@@ -38,6 +39,8 @@
 #include <cctype>
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
+#include <iterator>
+#include <ostream>
 #include <utility>                      /* for pair<> */
 #include <vector>
 

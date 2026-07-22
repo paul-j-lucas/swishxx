@@ -23,10 +23,10 @@
 #include "config.h"
 #include "mod_mail.h"
 #include "AssociateMeta.h"
-#include "config.h"
+#include "charsets/charsets.h"
 #include "encoded_char.h"
 #include "FilterAttachment.h"
-#include "IncludeMeta.h"
+#include "indexer.h"
 #include "iso8859-1.h"
 #include "meta_id.h"
 #ifdef WITH_HTML
@@ -46,10 +46,11 @@
 #include <cctype>
 #include <cstring>
 #include <fstream>
+#include <iterator>
 #include <memory>                       /* for unique_ptr */
+#include <ostream>
 #include <string>
 #include <unistd.h>                     /* for unlink(2) */
-#include <vector>
 
 using namespace PJL;
 using namespace std;

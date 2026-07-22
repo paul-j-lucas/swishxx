@@ -21,6 +21,9 @@
 
 // local
 #include "config.h"
+#include "charsets/charsets.h"
+#include "encodings/encodings.h"
+#include "indexer.h"
 #include "mod_mail.h"
 
 // standard

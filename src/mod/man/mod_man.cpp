@@ -25,6 +25,7 @@
 #include "AssociateMeta.h"
 #include "config.h"
 #include "encoded_char.h"
+#include "indexer.h"
 #include "iso8859-1.h"
 #include "TitleLines.h"
 #include "util.h"
@@ -32,7 +33,6 @@
 
 // standard
 #include <cctype>
-#include <cstring>
 
 using namespace PJL;
 using namespace std;
