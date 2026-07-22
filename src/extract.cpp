@@ -47,10 +47,10 @@
 #include <ctime>
 #include <fstream>
 #include <iomanip>                      /* for setfill(), setw() */
+#include <iterator>
 #include <ostream>
 #include <string>
 #include <sys/resource.h>
-#include <sys/types.h>
 
 using namespace PJL;
 using namespace std;
