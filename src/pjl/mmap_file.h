@@ -62,13 +62,13 @@ class mmap_file {
 public:
   ////////// typedefs /////////////////////////////////////////////////////////
 
-  typedef size_t size_type;
-  typedef ptrdiff_t difference_type;
-  typedef char value_type;
-  typedef value_type* pointer;
-  typedef value_type const* const_pointer;
-  typedef value_type& reference;
-  typedef value_type const& const_reference;
+  using size_type = size_t;
+  using difference_type = ptrdiff_t;
+  using value_type = char;
+  using pointer = value_type*;
+  using const_pointer = value_type const*;
+  using reference = value_type&;
+  using const_reference = value_type const&;
 
   enum behavior_type {
 #ifdef HAVE_MADVISE
@@ -99,10 +99,10 @@ public:
 
   ////////// iterators ////////////////////////////////////////////////////////
 
-  typedef pointer iterator;
-  typedef const_pointer const_iterator;
-  typedef std::reverse_iterator<iterator> reverse_iterator;
-  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+  using iterator = pointer;
+  using const_iterator = const_pointer;
+  using reverse_iterator = std::reverse_iterator<iterator>;
+  using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
   iterator        begin()               { return (iterator)addr_; }
   const_iterator  begin() const         { return (const_iterator)addr_; }

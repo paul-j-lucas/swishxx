@@ -30,9 +30,7 @@
 #include <cstdlib>                      /* for exit(3) */
 #include <pthread.h>
 #include <time.h>
-#ifdef DEBUG_threads
 #include <ostream>
-#endif /* DEBUG_threads */
 
 extern char const *me;
 
