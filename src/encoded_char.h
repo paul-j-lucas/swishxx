@@ -28,6 +28,7 @@
 #include "util.h"                       /* for to_lower() */
 
 // standard
+#include <cstddef>
 #include <limits>
 #include <unordered_set>
 
@@ -47,14 +48,16 @@
  */
 class encoded_char_range {
 public:
-  typedef ptrdiff_t difference_type;
-  typedef char value_type;
-  typedef value_type const* const_pointer;
+  using difference_type = ptrdiff_t;
+  using value_type = char;
+  using const_pointer = value_type const*;
   class const_iterator;
-  typedef value_type (*charset_type)
-    (const_pointer, const_pointer&, const_pointer);
-  typedef value_type (*encoding_type)
-    (const_pointer, const_pointer&, const_pointer);
+
+  using charset_type =
+    value_type (*)(const_pointer, const_pointer&, const_pointer);
+
+  using encoding_type =
+    value_type (*)(const_pointer, const_pointer&, const_pointer);
 
   /**
    * Constructs an %encoded_char_range.

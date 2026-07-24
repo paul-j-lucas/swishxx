@@ -25,6 +25,7 @@
 #include "AssociateMeta.h"
 #include "charsets/charsets.h"
 #include "encoded_char.h"
+#include "encodings/encodings.h"
 #include "FilterAttachment.h"
 #include "indexer.h"
 #include "iso8859-1.h"
@@ -46,6 +47,8 @@
 #include <cctype>
 #include <cstring>
 #include <fstream>
+#include <ios>
+#include <iostream>
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
 #include <ostream>

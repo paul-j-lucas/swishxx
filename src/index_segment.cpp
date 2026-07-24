@@ -24,6 +24,9 @@
 #include "index_segment.h"
 #include "pjl/mmap_file.h"
 
+// standard
+#include <sys/types.h>
+
 using namespace PJL;
 
 ///////////////////////////////////////////////////////////////////////////////

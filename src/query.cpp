@@ -40,9 +40,8 @@
 // standard
 #include <algorithm>                    /* for binary_search(), etc */
 #include <cstdlib>                      /* for exit(3) */
-#ifdef DEBUG_parse_query
 #include <iostream>
-#endif /* DEBUG_parse_query */
+#include <ostream>
 
 using namespace PJL;
 using namespace std;

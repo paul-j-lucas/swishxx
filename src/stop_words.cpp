@@ -33,6 +33,7 @@
 // standard
 #include <cctype>
 #include <cstdlib>                      /* for exit(3) */
+#include <ostream>
 
 using namespace PJL;
 using namespace std;

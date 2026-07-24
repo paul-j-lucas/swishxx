@@ -47,6 +47,7 @@
 #include <ctime>
 #include <fstream>
 #include <iomanip>                      /* for setfill(), setw() */
+#include <iostream>
 #include <iterator>
 #include <ostream>
 #include <string>

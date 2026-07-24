@@ -27,6 +27,8 @@
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
+#include <iostream>
+#include <ostream>
 #include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <unistd.h>                     /* for geteuid(2) */
 

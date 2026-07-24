@@ -31,6 +31,7 @@
 #include <cctype>
 #include <climits>                      /* for ARG_MAX */
 #include <cstring>
+#include <iostream>
 #include <ostream>
 #include <sys/select.h>
 #include <sys/socket.h>                 /* for recv(3) */

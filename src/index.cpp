@@ -72,6 +72,7 @@
 #include <iostream>
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
+#include <ostream>
 #include <string>
 #include <time.h>
 #include <sys/time.h>                   /* needed by FreeBSD systems */

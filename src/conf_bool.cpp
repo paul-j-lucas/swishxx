@@ -27,7 +27,7 @@
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
-#include <iostream>
+#include <ostream>
 
 using namespace PJL;
 using namespace std;

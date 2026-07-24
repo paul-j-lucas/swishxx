@@ -28,7 +28,8 @@
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
-#include <iostream>
+#include <ostream>
+#include <string>
 
 using namespace std;
 

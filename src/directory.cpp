@@ -36,6 +36,7 @@
 // standard
 #include <cstring>
 #include <iostream>
+#include <ostream>
 #include <queue>
 #include <sys/types.h>                  /* needed by dirent.h */
 #include <dirent.h>

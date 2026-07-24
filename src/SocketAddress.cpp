@@ -31,6 +31,7 @@
 #include <cstring>
 #include <netdb.h>                      /* for gethostbyname(3), etc */
 #include <netinet/in.h>
+#include <ostream>
 #include <string>
 #include <sys/types.h>                  /* needed by FreeBSD systems */
 

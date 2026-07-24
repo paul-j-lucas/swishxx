@@ -26,8 +26,10 @@
 
 // standard
 #include <cstdlib>                      /* for exit(3) */
-#include <string>
+#include <iostream>
+#include <ostream>
 #include <pwd.h>                        /* for getpwnam(3) */
+#include <string>
 #include <unistd.h>
 
 using namespace std;

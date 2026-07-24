@@ -28,6 +28,7 @@
 // standard
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
+#include <iostream>
 #include <limits>
 #include <memory>                       /* for unique_ptr */
 #include <ostream>

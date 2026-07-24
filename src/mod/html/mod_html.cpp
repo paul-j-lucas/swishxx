@@ -39,6 +39,7 @@
 #include <cctype>
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
+#include <iostream>
 #include <iterator>
 #include <ostream>
 #include <utility>                      /* for pair<> */

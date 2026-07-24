@@ -32,6 +32,7 @@
 
 // standard
 #include <cstddef>
+#include <ostream>
 #include <vector>
 
 using namespace std;

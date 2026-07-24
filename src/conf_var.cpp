@@ -56,7 +56,7 @@ conf_var::conf_var( char const *var_name ) :
   name_{ var_name }
 {
   conf_var *&var = map_ref()[ to_lower( name_ ) ];
-  if ( var ) {
+  if ( var != nullptr ) {
     internal_error
       << "conf_var::conf_var(): \"" << name_
       << "\" registered more than once" << report_error;

@@ -27,6 +27,9 @@
 #include "query.h"
 #include "ResultSeparator.h"
 
+// standard
+#include <ostream>
+
 extern index_segment directories;
 
 ///////////////////////////////////////////////////////////////////////////////

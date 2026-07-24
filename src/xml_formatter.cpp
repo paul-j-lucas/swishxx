@@ -28,6 +28,7 @@
 
 // standard
 #include <cstring>                      /* for strpbrk(3) */
+#include <ostream>
 #include <string>
 
 using namespace std;

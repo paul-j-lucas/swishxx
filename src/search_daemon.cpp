@@ -49,12 +49,15 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <ostream>
 #include <signal.h>
+#include <netinet/in.h>
 #include <time.h>                       /* needed by sys/resource.h */
 #include <sys/time.h>                   /* needed by FreeBSD systems */
 #include <sys/resource.h>               /* for RLIMIT_* */
 #include <sys/select.h>
 #include <sys/socket.h>                 /* for bind(3), socket(3), etc. */
+#include <sys/types.h>
 #include <sys/un.h>                     /* for sockaddr_un */
 #include <unistd.h>                     /* for fork(2), setsid(2), unlink(2) */
 

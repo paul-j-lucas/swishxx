@@ -41,6 +41,7 @@
 #include <cctype>
 #include <cstring>
 #include <memory>
+#include <ostream>
 
 using namespace PJL;
 using namespace std;

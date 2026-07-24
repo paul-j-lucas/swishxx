@@ -28,6 +28,8 @@
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
+#include <ostream>
 #include <string>
 #include <unistd.h>                     /* for chdir(2) */
 
