@@ -29,7 +29,6 @@
 #include <cstddef>                      /* for size_t */
 #include <cstring>
 #include <functional>                   /* for less */
-#include <map>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -75,18 +74,6 @@ private:
 };
 
 } // namespace std
-
-///////////////////////////////////////////////////////////////////////////////
-
-namespace PJL {
-
-/**
- * A version of \c std::unordered_map for C strings.
- */
-template<typename T>
-using unordered_char_ptr_map = std::map<char const*,T>;
-
-} // namespace PJL
 
 ///////////////////////////////////////////////////////////////////////////////
 #endif /* less_H */
