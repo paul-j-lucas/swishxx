@@ -110,16 +110,16 @@ public:
   const_iterator  end() const           { return begin() + size_; }
 
   reverse_iterator rbegin() {
-    return reverse_iterator( end() );
+    return reverse_iterator{ end() };
   }
   reverse_iterator rend() {
-    return reverse_iterator( begin() );
+    return reverse_iterator{ begin() };
   }
   const_reverse_iterator rbegin() const {
-    return const_reverse_iterator( end() );
+    return const_reverse_iterator{ end() };
   }
   const_reverse_iterator rend() const {
-    return const_reverse_iterator( begin() );
+    return const_reverse_iterator{ begin() };
   }
 
   ////////// member functions /////////////////////////////////////////////////
@@ -133,7 +133,7 @@ public:
   const_reference front() const         { return *begin(); }
   bool            open( char const *path, std::ios::openmode = std::ios::in );
   void            close();
-  bool            empty() const         { return !size_; }
+  bool            empty() const         { return size_ == 0; }
   int             error() const         { return errno_; }
   size_type       max_size() const      { return size_; }
   size_type       size() const          { return size_; }
