@@ -28,9 +28,10 @@
 // standard
 #include <cerrno>
 #include <cstdlib>                      /* for exit(3) */
+#include <iostream>
+#include <ostream>
 #include <pthread.h>
 #include <time.h>
-#include <ostream>
 
 extern char const *me;
 

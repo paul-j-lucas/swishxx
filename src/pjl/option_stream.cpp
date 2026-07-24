@@ -29,6 +29,7 @@
 #include <cstdlib>                      /* for abort(3) */
 #include <cstring>
 #include <iterator>
+#include <iostream>
 #include <ostream>
 
 #define GAVE_OPTION(OPT)  opts_given_[ static_cast<unsigned char>( OPT ) ]
