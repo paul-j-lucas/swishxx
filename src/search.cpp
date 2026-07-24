@@ -23,6 +23,7 @@
 #include "config.h"
 #include "search.h"
 #include "classic_formatter.h"
+#include "conf_var.h"
 #include "exit_codes.h"
 #include "file_info.h"
 #include "file_list.h"
