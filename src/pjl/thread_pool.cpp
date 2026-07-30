@@ -22,7 +22,6 @@
 // local
 #include "config.h"
 #include "thread_pool.h"
-#include "omanip.h"
 #include "util.h"
 
 // standard
