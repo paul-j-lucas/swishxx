@@ -50,15 +50,15 @@ public:
    * each file a given word occurs in.
    */
   struct file {
-    typedef std::unordered_set<meta_id_type> meta_id_set;
+    using meta_id_set = std::unordered_set<meta_id_type>;
     meta_id_set meta_ids_;              // meta name(s) associated with
 
     bool has_meta_id( meta_id_type ) const;
     void write_meta_ids( std::ostream& ) const;
 
 #ifdef WITH_WORD_POS
-    typedef short delta_type;
-    typedef std::vector<delta_type> pos_delta_list;
+    using delta_type = short;
+    using pos_delta_list = std::vector<delta_type>;
     pos_delta_list pos_deltas_;
 
     void add_word_pos( unsigned );
@@ -76,12 +76,12 @@ public:
     file& operator=( file const& ) = default;
   };
 
-  typedef std::list<file> file_list;
+  using file_list = std::list<file>;
 
   file_list   files_;                 // the files this word is in
   unsigned    occurrences_;           // over all files
 
-  word_info() : occurrences_( 0 ) { }
+  word_info();
 
   word_info( word_info const& ) = default;
   word_info& operator=( word_info const& ) = default;
@@ -90,7 +90,7 @@ public:
 /**
  * A %word_map maps every word to its associated word_info.
  */
-typedef std::map<std::string,word_info> word_map;
+using word_map = std::map<std::string,word_info>;
 
 ////////// inlines ////////////////////////////////////////////////////////////
 

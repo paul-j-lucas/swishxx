@@ -34,6 +34,11 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+word_info::word_info() :
+  occurrences_{ 0 }
+{
+}
+
 word_info::file::file() {
   // do nothing
 }

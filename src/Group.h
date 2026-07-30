@@ -31,7 +31,7 @@
 // standard
 #include <string>
 #include <sys/types.h>
-#include <unistd.h>                     /* for gid_t */
+#include <unistd.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
