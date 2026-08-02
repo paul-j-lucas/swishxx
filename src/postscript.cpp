@@ -21,6 +21,7 @@
 
 // local
 #include "postscript.h"
+#include "pjl/hash.h"
 
 using namespace PJL;
 using namespace std;
