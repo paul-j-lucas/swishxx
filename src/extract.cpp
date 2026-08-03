@@ -43,6 +43,7 @@
 #include "word_util.h"
 
 // standard
+#include <algorithm>
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <ctime>

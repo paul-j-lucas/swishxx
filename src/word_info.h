@@ -26,6 +26,7 @@
 #include "config.h"
 #include "indexer.h"                            /* for Meta_ID_None */
 #include "meta_id.h"
+#include "util.h"
 
 // standard
 #include <list>
