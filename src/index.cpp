@@ -64,6 +64,7 @@
 #include "WordThreshold.h"
 
 // standard
+#include <algorithm>                    /* for std::copy */
 #include <cmath>                        /* for log(3) */
 #include <cstdlib>                      /* for getenv(3), exit(3) */
 #include <cstring>
