@@ -39,10 +39,10 @@
  */
 class file_info {
 public:
-  typedef std::vector<file_info*> list_type;
-  typedef list_type::const_iterator const_iterator;
-  typedef size_t size_type;
-  typedef PJL::unordered_char_ptr_set name_set_type;
+  using list_type = std::vector<file_info*>;
+  using const_iterator = list_type::const_iterator;
+  using size_type = size_t;
+  using name_set_type = PJL::unordered_char_ptr_set;
 
   /**
    * Constructs a %file_info.  If a title is given, use it; otherwise set the
