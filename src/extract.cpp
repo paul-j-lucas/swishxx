@@ -21,6 +21,7 @@
 
 // local
 #include "config.h"
+#include "conf_var.h"
 #include "ExcludeFile.h"
 #include "exit_codes.h"
 #include "ExtractExtension.h"
@@ -45,7 +46,6 @@
 #include <cstdlib>                      /* for exit(3) */
 #include <cstring>
 #include <ctime>
-#include <fstream>
 #include <iomanip>                      /* for setfill(), setw() */
 #include <iostream>
 #include <iterator>

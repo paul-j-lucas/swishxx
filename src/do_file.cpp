@@ -29,6 +29,9 @@
 #include "encoded_char.h"
 
 // standard
+#ifdef SWISHXX_EXTRACT
+#include <fstream>
+#endif /* SWISHXX_EXTRACT */
 #include <string>
 #include <vector>
 
