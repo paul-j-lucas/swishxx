@@ -23,7 +23,6 @@
 #include "config.h"
 #include "conf_string.h"
 #include "exit_codes.h"
-#include "util.h"                       /* for error() */
 
 // standard
 #include <cstdlib>                      /* for exit(3) */

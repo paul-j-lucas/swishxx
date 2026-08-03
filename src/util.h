@@ -25,7 +25,6 @@
 // local
 #include "config.h"
 #include "exit_codes.h"
-#include "pjl/hash.h"
 #include "pjl/less.h"
 #include "pjl/omanip.h"
 
@@ -39,11 +38,11 @@
 #include <ostream>
 #include <set>
 #include <string>
-#include <sys/resource.h>
 #include <sys/stat.h>
 #include <sys/time.h>                   /* needed by FreeBSD systems */
 #include <sys/types.h>                  /* needed by FreeBSD systems */
 #include <time.h>                       /* needed by sys/resource.h */
+#include <sys/resource.h>
 #include <unistd.h>                     /* for _exit(2), geteuid(2) */
 #include <unordered_set>
 

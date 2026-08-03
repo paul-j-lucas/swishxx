@@ -23,6 +23,7 @@
 #include "config.h"
 #include "AssociateMeta.h"
 #include "ChangeDirectory.h"
+#include "conf_var.h"
 #include "ExcludeFile.h"
 #include "ExcludeMeta.h"
 #include "exit_codes.h"
@@ -61,7 +62,6 @@
 #include "word_markers.h"
 #include "WordPercentMax.h"
 #include "WordThreshold.h"
-#include "word_util.h"
 
 // standard
 #include <cmath>                        /* for log(3) */
@@ -72,7 +72,6 @@
 #include <ios>
 #include <iostream>
 #include <iterator>
-#include <memory>                       /* for unique_ptr */
 #include <ostream>
 #include <string>
 #include <time.h>

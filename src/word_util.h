@@ -26,7 +26,6 @@
 #include "config.h"
 #include "encoded_char.h"
 #include "swishxx-config.h"
-#include "util.h"
 
 // standard
 #include <cctype>
