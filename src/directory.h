@@ -31,7 +31,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef std::map<char const*,int> dir_set_type;
+using dir_set_type = std::map<char const*,int>;
 
 /**
  * Contains a map of all directory paths and an \c int that gives its index

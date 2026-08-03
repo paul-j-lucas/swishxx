@@ -69,6 +69,7 @@
 #include <cstring>
 #include <fstream>
 #include <iomanip>                      /* for setfill(), setw() */
+#include <ios>
 #include <iostream>
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
