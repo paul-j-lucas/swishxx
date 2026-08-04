@@ -49,7 +49,7 @@ public:
   }
 
 private:
-  typedef std::vector<void*> list_type;
+  using list_type = std::vector<void*>;
   list_type list_;
 
   void add( void *obj ) {
@@ -66,8 +66,8 @@ private:
 template<typename Derived>
 class auto_delete_obj {
 public:
-  typedef auto_delete_obj<Derived> pool_object_type;
-  typedef auto_delete_pool<Derived> pool_type;
+  using pool_object_type = auto_delete_obj<Derived>;
+  using pool_type = auto_delete_pool<Derived>;
 
   virtual ~auto_delete_obj() {
   }
