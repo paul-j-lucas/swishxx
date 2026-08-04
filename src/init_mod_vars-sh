@@ -72,7 +72,7 @@ do
     IDENT=`ident $HEADER`
     cat <<END
 #ifdef $IDENT
-  conf_var::register_var( "$var_name" );
+  register_var( "$var_name" );
 #endif /* $IDENT */
 END
   done # while
