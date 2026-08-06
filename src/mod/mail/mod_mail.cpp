@@ -51,7 +51,6 @@
 #include <iostream>
 #include <iterator>
 #include <memory>                       /* for unique_ptr */
-#include <ostream>
 #include <string>
 #include <unistd.h>                     /* for unlink(2) */
 

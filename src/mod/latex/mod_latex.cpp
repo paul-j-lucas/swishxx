@@ -31,6 +31,7 @@
 
 // standard
 #include <cctype>
+#include <cstddef>
 
 using namespace PJL;
 using namespace std;
