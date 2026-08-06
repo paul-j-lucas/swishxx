@@ -99,8 +99,8 @@ namespace PJL {
  * A version of \c std::equal_to for C strings.
  */
 struct char_ptr_equal_to {
-  typedef char const* argument_type;
-  typedef bool result_type;
+  using argument_type = char const*;
+  using result_type = bool;
 
   result_type operator()( argument_type i, argument_type j ) const {
     return std::strcmp( i, j ) == 0;

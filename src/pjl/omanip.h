@@ -43,7 +43,7 @@ namespace PJL {
 template<typename Arg>
 class omanip {
 public:
-  typedef std::ostream& (*func_type)( std::ostream&, Arg );
+  using func_type = std::ostream& (*)( std::ostream&, Arg );
 
   omanip( func_type f, Arg const &arg ) : f_{ f }, arg_{ arg } { }
 

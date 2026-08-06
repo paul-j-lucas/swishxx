@@ -98,7 +98,7 @@ protected:
   static std::ostream& warning( std::ostream& = std::cerr );
 
 private:
-  typedef std::map<char const*,conf_var*> map_type;
+  using map_type = std::map<char const*,conf_var*>;
 
   char const *const     name_;
   static int            current_config_file_line_no_;

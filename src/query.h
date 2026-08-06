@@ -40,16 +40,16 @@
  * A %search_results contains a set of search results where the key int is a
  * file index and the value int is that file's rank.
  */
-typedef std::map<int,int> search_results;
+using search_results = std::map<int,int>;
 
 /**
  * A %word_range is-a pair of iterators marking the beginning and end of a
  * range over which a given word matches.
  */
-typedef std::pair<index_segment::const_iterator,index_segment::const_iterator>
-        word_range;
+using word_range =
+  std::pair<index_segment::const_iterator,index_segment::const_iterator>;
 
-typedef std::set<std::string> stop_word_set;
+using stop_word_set = std::set<std::string>;
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -231,7 +231,7 @@ private:
    * separately from the original module names, i.e., the original \c char*
    * can't be used), strings might as well be used.
    */
-  typedef std::map<std::string,indexer*> map_type;
+  using map_type = std::map<std::string,indexer*>;
 
   indexer( indexer const& ) = delete;
   indexer& operator=( indexer const& ) = delete;

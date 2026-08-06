@@ -161,7 +161,7 @@ public:
 
   /////////////////////////////////////////////////////////////////////////////
 
-  typedef unsigned short iostate;
+  using iostate = unsigned short;
 
   static iostate const goodbit = 0b00;
   static iostate const eofbit  = 0b01;

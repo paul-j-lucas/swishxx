@@ -38,7 +38,7 @@
 template<>
 class conf<std::string> : public conf_var {
 public:
-  typedef std::string::size_type size_type;
+  using size_type = std::string::size_type;
 
   size_type length() const {
     return value_.length();

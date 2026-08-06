@@ -49,11 +49,11 @@
 template<typename T>
 class pattern_map : public std::map<char const*,T> {
 public:
-  typedef typename std::map<char const*,T> map_type;
-  typedef typename map_type::key_type key_type;
-  typedef typename map_type::value_type value_type;
-  typedef typename map_type::iterator iterator;
-  typedef typename map_type::const_iterator const_iterator;
+  using map_type = std::map<char const*,T>;
+  using key_type = map_type::key_type;
+  using value_type = map_type::value_type;
+  using iterator = map_type::iterator;
+  using const_iterator = map_type::const_iterator;
 
   //
   // find() must be overridden to use our own comparison class.
@@ -93,8 +93,8 @@ private:
    * A %pattern_match serves as a predicate to \c find_if() above.
    */
   struct pattern_match {
-    typedef value_type const& argument_type;
-    typedef bool result_type;
+    using argument_type = value_type const&;
+    using result_type = bool;
 
     explicit pattern_match( char const *file_name ) :
       file_name_{ file_name }

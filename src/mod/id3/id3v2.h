@@ -63,7 +63,7 @@ struct id3v2_header {
  * NOT meant to map the physical byte storage of the frame in the file.
  */
 struct id3v2_frame {
-  typedef unsigned int size_type;
+  using size_type = unsigned;
 
   enum Sizes {
     Version_2_2_Size    =  6,
@@ -87,7 +87,7 @@ struct id3v2_frame {
     hr_end_of_frames
   };
 
-  typedef void (id3v2_frame::*parser_ptr)();
+  using parser_ptr = void (id3v2_frame::*)();
 
   char            id_[5];
   size_type       size_;

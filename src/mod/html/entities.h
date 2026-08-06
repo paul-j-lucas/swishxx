@@ -41,8 +41,8 @@
  */
 class char_entity_map {
 public:
-  typedef char const* key_type;
-  typedef char value_type;
+  using key_type = char const*;
+  using value_type = char;
 
   static char_entity_map const& instance();
 
@@ -62,7 +62,7 @@ private:
    */
   char_entity_map();
 
-  typedef std::map<key_type,value_type> map_type;
+  using map_type = std::map<key_type,value_type>;
   map_type map_;
 };
 

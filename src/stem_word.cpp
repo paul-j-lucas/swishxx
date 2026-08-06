@@ -320,7 +320,7 @@ char const* less_stem::stem_word( char const *word ) {
 
   ////////// Stemming is really slow: look in a private cache /////////////////
 
-  typedef map<char const*,char const*> stem_cache;
+  using stem_cache = map<char const*,char const*>;
   static stem_cache cache;
 #ifdef WITH_SEARCH_DAEMON
   static mutex cache_mutex;

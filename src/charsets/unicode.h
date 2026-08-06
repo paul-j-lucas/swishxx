@@ -31,7 +31,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef uint32_t ucs4;
+using ucs4 = uint32_t;
 
 /**
  * Convert a 32-bit Unicode character to its closest 7-bit ASCII equivalent.

@@ -148,7 +148,7 @@ void and_node::eval( search_results &results ) {
   // are saved in a list and then and'ed together at the end.
   //
   search_results const empty_place_holder;
-  typedef vector<search_results> child_results_type;
+  using child_results_type = vector<search_results>;
   child_results_type child_results;
   child_results.reserve( child_nodes_.size() );
 

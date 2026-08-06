@@ -40,9 +40,9 @@
  */
 class conf_filter : public conf_var {
 public:
-  typedef char const* key_type;
-  typedef filter value_type;
-  typedef value_type const* const_pointer;
+  using key_type = char const*;
+  using value_type = filter;
+  using const_pointer = value_type const*;
 
   const_pointer operator[]( key_type key ) const {
     map_type::const_iterator const found = map_.find( key );
@@ -56,7 +56,7 @@ public:
 protected:
   conf_filter( char const *name ) : conf_var{ name } { }
 
-  typedef pattern_map<value_type> map_type;
+  using map_type = pattern_map<value_type>;
   map_type map_;
 
   void parse_value( char *line ) override;

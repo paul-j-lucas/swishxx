@@ -48,8 +48,8 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef and_node::child_node_list and_node_list_type;
-typedef query_node::pool_type node_pool_type;
+using and_node_list_type = and_node::child_node_list;
+using node_pool_type = query_node::pool_type;
 
 namespace {
 

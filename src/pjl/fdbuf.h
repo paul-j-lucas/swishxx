@@ -68,7 +68,7 @@ public:
   void attach( int fd );
 
 protected:
-  typedef int int_type;
+  using int_type = int;
 
   std::streamsize write_buf( char const*, std::streamsize );
 

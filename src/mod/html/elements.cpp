@@ -26,7 +26,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 element_map::element_map() {
-  typedef char const *const cpcc;
+  using cpcc = char const *const;
   //
   // Declare character pointers having values equal to element's end_tag_type
   // enum so that we can have a simple array of strings below where each "row"

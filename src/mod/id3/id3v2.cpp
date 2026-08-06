@@ -52,7 +52,7 @@ using namespace std;
 /**
  * What the ID3v2 specification calls an "encoding" we call a "character set."
  */
-typedef encoded_char_range::charset_type text_encoding;
+using text_encoding = encoded_char_range::charset_type;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -187,7 +187,7 @@ static unsigned unsynchsafe( char const *&c, int bytes = 4 ) {
 ////////// member functions ///////////////////////////////////////////////////
 
 id3v2_frame::parser_ptr id3v2_frame::find_parser( char const *frame_id ) {
-  typedef map<char const*,id3v2_frame::parser_ptr> map_type;
+  using map_type = map<char const*,id3v2_frame::parser_ptr>;
   static map_type const m{
     //
     // ID3v2.4 frame IDs (that we care about indexing).

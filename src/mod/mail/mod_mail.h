@@ -75,7 +75,7 @@ private:
   // entire stack and, unfortunately, clear() isn't supported for stacks, an
   // oversight in STL, IMHO.
   //
-  typedef std::vector<std::string> boundary_stack_type;
+  using boundary_stack_type = std::vector<std::string>;
   static boundary_stack_type boundary_stack_;
 
   enum content_type {

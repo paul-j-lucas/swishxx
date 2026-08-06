@@ -89,7 +89,7 @@ using namespace std;
  * A %search_result is an individual search result where the first \c int is a
  * file index and the second \c int is that file's rank.
  */
-typedef pair<int,int> search_result;
+using search_result = pair<int,int>;
 
 //*****************************************************************************
 //
@@ -411,7 +411,7 @@ static bool search( char const *query, unsigned skip_results,
   if ( !out )
     return false;
   if ( skip_results < results.size() && max_results ) {
-    typedef vector<search_result> sorted_results_type;
+    using sorted_results_type = vector<search_result>;
     sorted_results_type sorted;
     sorted.reserve( results.size() );
     ::copy( results.begin(), results.end(), ::back_inserter( sorted ) );

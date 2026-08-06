@@ -108,7 +108,7 @@ void do_file( char const *file_name ) {
 
   ////////// Perform filter name substitution(s) //////////////////////////////
 
-  typedef vector<filter> filter_list_type;
+  using filter_list_type = vector<filter>;
   filter_list_type filter_list;
 #ifdef SWISHXX_INDEX
   char const *const orig_file_name = file_name;

@@ -131,7 +131,7 @@ void do_check_add_file( char const *file_name ) {
  * for the duration of the program.
  */
 void do_directory( char const *dir_path ) {
-  typedef queue<char const*> dir_queue_type;
+  using dir_queue_type = queue<char const*>;
   static dir_queue_type dir_queue;
   static int recursion;
 

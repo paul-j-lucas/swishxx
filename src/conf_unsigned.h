@@ -39,7 +39,7 @@
 template<>
 class conf<unsigned> : public conf_var {
 public:
-  typedef unsigned value_type;
+  using value_type = unsigned;
 
   conf& operator++() {
     ++value_;

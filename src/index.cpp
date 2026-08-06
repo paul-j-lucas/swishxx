@@ -982,7 +982,7 @@ static void write_dir_index( ostream &o, off_t *offset ) {
   //
   // First, order the directories by their index using a temporary vector.
   //
-  typedef vector<char const*> dir_list_type;
+  using dir_list_type = vector<char const*>;
   dir_list_type dir_list( dir_set.size() );
   for ( auto const &dir : dir_set )
     dir_list[ dir.second ] = dir.first;

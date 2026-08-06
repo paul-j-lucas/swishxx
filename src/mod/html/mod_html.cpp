@@ -66,7 +66,7 @@ ExcludeClass exclude_class_names;
 // entire stack and, unfortunately, clear() isn't supported for stacks...an
 // oversight in STL, IMHO.
 //
-typedef vector<pair<element_map::value_type const*,bool>> stack_type;
+using stack_type = vector<pair<element_map::value_type const*,bool>>;
 
 // local variables
 static bool       dump_html_elements_opt;

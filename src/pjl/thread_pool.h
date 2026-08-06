@@ -35,7 +35,7 @@ namespace PJL {
 ///////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
-  typedef void* (*thread_start_function_type)( void* );
+  using thread_start_function_type = void* (*)( void* );
 
   void  thread_pool_decrement_busy( void* );
   void  thread_pool_thread_data_cleanup( void* );
@@ -196,8 +196,8 @@ public:
   //      completed.
 
 private:
-  typedef std::unordered_set<thread*> thread_set;
-  typedef std::queue<thread::argument_type> task_queue_type;
+  using thread_set = std::unordered_set<thread*>;
+  using task_queue_type = std::queue<thread::argument_type>;
 
   unsigned volatile min_threads_, max_threads_;
   thread_set        threads_;

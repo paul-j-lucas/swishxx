@@ -54,7 +54,7 @@ encoded_char_range::value_type
 encoding_base64( encoded_char_range::const_pointer begin,
                  encoded_char_range::const_pointer &c,
                  encoded_char_range::const_pointer end ) {
-  typedef encoded_char_range::difference_type difference_type;
+  using difference_type = encoded_char_range::difference_type;
 
   //
   // This code is based on the decode_base64() function as part of "encdec 1.1"
