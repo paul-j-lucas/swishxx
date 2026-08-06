@@ -27,15 +27,9 @@
 #include "encoded_char.h"
 #include "encodings/encodings.h"
 #include "FilterAttachment.h"
+#include "filter.h"
 #include "indexer.h"
-#include "iso8859-1.h"
 #include "meta_id.h"
-#ifdef WITH_HTML
-#include "mod/html/mod_html.h"
-#endif /* WITH_HTML */
-#ifdef WITH_RTF
-#include "mod/rtf/mod_rtf.h"
-#endif /* WITH_RTF */
 #include "pjl/less.h"
 #include "TitleLines.h"
 #include "util.h"
