@@ -26,6 +26,9 @@
 #include "encoded_char.h"
 #include "iso8859-1.h"
 #include "latex_config.h"
+#include "meta_id.h"
+#include "pjl/mmap_file.h"
+#include "swishxx-config.h"
 #include "TitleLines.h"
 #include "word_util.h"
 

@@ -24,7 +24,10 @@
 
 // local
 #include "config.h"
+#include "encoded_char.h"
 #include "indexer.h"
+#include "meta_id.h"
+#include "pjl/mmap_file.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
