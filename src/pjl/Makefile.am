@@ -21,7 +21,12 @@
 lib_LIBRARIES =	libpjl.a
 
 AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
-AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib
+AM_CPPFLAGS =	-I$(top_builddir)/src -I$(top_srcdir)/lib -I$(top_builddir)/lib
+
+TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
+		-Xtidy --verbose=f \
+		-Xtidy --error=never
+TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
 
 libpjl_a_SOURCES =	fdbuf.cpp \
 			hash.cpp \
@@ -33,5 +38,11 @@ libpjl_a_SOURCES =	fdbuf.cpp \
 if MULTI_THREADED
 libpjl_a_SOURCES+=	thread_pool.cpp
 endif
+
+tidy-local:
+	@for file in *.h *.cpp; do \
+	  [ ! -f "$$file" ] || \
+	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
+	done
 
 # vim:set noet sw=8 ts=8:

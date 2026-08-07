@@ -23,6 +23,11 @@ lib_LIBRARIES =	libcharsets.a
 AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
 AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
+TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
+		-Xtidy --verbose=f \
+		-Xtidy --error=never
+TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
+
 libcharsets_a_SOURCES =
 
 if WITH_UTF7
@@ -36,5 +41,11 @@ endif
 if WITH_UTF16
 libcharsets_a_SOURCES+= utf16.cpp
 endif
+
+tidy-local:
+	@for file in *.h *.cpp; do \
+	  [ ! -f "$$file" ] || \
+	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
+	done
 
 # vim:set noet sw=8 ts=8:

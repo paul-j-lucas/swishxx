@@ -26,4 +26,15 @@ AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 libhtml_a_SOURCES = 	elements.cpp entities.cpp mod_html.cpp
 libhtml_a_LIBADD =	$(top_builddir)/lib/libgnu.a
 
+TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
+		-Xtidy --verbose=f \
+		-Xtidy --error=never
+TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
+
+tidy-local:
+	@for file in *.h *.cpp; do \
+	  [ ! -f "$$file" ] || \
+	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
+	done
+
 # vim:set noet sw=8 ts=8:

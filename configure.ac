@@ -23,6 +23,7 @@
 AC_INIT([SWISH++], [7.0.1], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/swishxx])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
+AM_EXTRA_RECURSIVE_TARGETS([tidy])
 
 # Checks for programs.
 AC_PROG_CXX

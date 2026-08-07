@@ -1,0 +1,107 @@
+##
+#       SWISH++
+#       src/include-tidy.toml
+#
+#       Copyright (C) 2026  Paul J. Lucas
+#
+#       This program is free software: you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation, either version 3 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+
+[config.h]
+ignore-as-argument = true
+first = true
+keep = true
+
+[conf_var.h]
+keep-includes = "pjl/less.h"
+
+[directory.h]
+keep-includes = "pjl/less.h"
+
+[directory.cpp]
+keep-includes = "sys/types.h"
+
+[do_file.cpp]
+ignore-as-argument = true
+
+[extract.cpp]
+keep-includes = [
+  "directory.cpp",
+  "do_file.cpp",
+  "FollowLinks.h",
+  "sys/time.h"
+]
+
+[Group.cpp]
+keep-includes = "sys/types.h"
+
+[IncludeMeta.h]
+keep-includes = "pjl/less.h"
+
+[IncludeMeta.cpp]
+keep-includes = "pjl/less.h"
+
+[index.cpp]
+keep-includes = [
+  "do_file.cpp",
+  "FollowLinks.h",
+  "index_header.cpp",
+  "sys/time.h"
+]
+
+[indexer.cpp]
+keep-includes = "pjl/less.h"
+
+[meta_id.h]
+keep-includes = "pjl/less.h"
+
+[search.cpp]
+keep-includes = [
+  "pjl/less.h",
+  "sys/time.h",
+  "time.h"
+]
+
+[search_daemon.cpp]
+keep-includes = [
+  "sys/time.h",
+  "time.h"
+]
+
+[search_options.cpp]
+ignore-as-argument = true
+
+[SocketAddress.cpp]
+keep-includes = "sys/types.h"
+
+[stem_word.h]
+keep-includes = "pjl/less.h"
+
+[stop_words.h]
+keep-includes = "pjl/less.h"
+
+[util.h]
+keep-includes = [
+  "pjl/less.h",
+  "sys/time.h",
+  "time.h"
+]
+
+[WordThreshold.cpp]
+keep-includes = "sys/types.h"
+
+[word_util.h]
+keep-includes = "cstring"
+
+# vim:se et sw=2 ts=2:

@@ -23,7 +23,12 @@ SUBDIRS =	pjl charsets encodings mod
 bin_PROGRAMS =	index search extract
 
 AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
-AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -L$(top_srcdir)/lib
+AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I. -L$(top_srcdir)/lib
+
+TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
+		-Xtidy --verbose=f \
+		-Xtidy --error=never
+TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
 
 ########## index ##############################################################
 
@@ -153,5 +158,11 @@ extract_LDADD =		$(top_builddir)/src/charsets/libcharsets.a \
 			$(top_builddir)/src/encodings/libencodings.a \
 			$(top_builddir)/src/pjl/libpjl.a \
 			$(top_builddir)/lib/libgnu.a
+
+tidy-local:
+	@for file in *.h *.cpp; do \
+	  [ ! -f "$$file" ] || \
+	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
+	done
 
 # vim:set noet sw=8 ts=8:
