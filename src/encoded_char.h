@@ -134,9 +134,9 @@ protected:
  */
 class encoded_char_range::const_iterator : public encoded_char_range {
 public:
-  typedef encoded_char_range::difference_type difference_type;
-  typedef encoded_char_range::value_type value_type;
-  typedef encoded_char_range::const_pointer const_pointer;
+  using difference_type = encoded_char_range::difference_type;
+  using value_type = encoded_char_range::value_type;
+  using const_pointer = encoded_char_range::const_pointer;
 
   const_iterator();
   const_iterator( const_pointer begin, const_pointer end,
@@ -200,8 +200,8 @@ private:
  */
 class encoded_char_range::decoder {
 public:
-  typedef encoded_char_range::value_type value_type;
-  typedef encoded_char_range::const_pointer const_pointer;
+  using value_type = encoded_char_range::value_type;
+  using const_pointer = encoded_char_range::const_pointer;
 
   virtual ~decoder();
 
@@ -215,7 +215,7 @@ protected:
   virtual void reset() = 0;
 
 private:
-  typedef std::unordered_set<decoder*> set_type;
+  using set_type = std::unordered_set<decoder*>;
   static set_type decoders_;
 };
 #endif /* WITH_DECODING */
