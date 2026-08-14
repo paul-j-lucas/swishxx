@@ -98,6 +98,7 @@ public:
 
   class const_iterator {
   public:
+    using difference_type   = index_segment::difference_type;
     using iterator_category = std::random_access_iterator_tag;
     using value_type        = index_segment::value_type;
     using pointer           = index_segment::const_pointer;
