@@ -23,11 +23,6 @@ lib_LIBRARIES =	libencodings.a
 AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
 AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 
-TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
-		-Xtidy --verbose=f \
-		-Xtidy --error=never
-TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
-
 libencodings_a_SOURCES =
 
 if WITH_BASE64
@@ -38,10 +33,6 @@ if WITH_QUOTED_PRINTABLE
 libencodings_a_SOURCES+= quoted_printable.cpp
 endif
 
-tidy-local:
-	@for file in *.h *.cpp; do \
-	  [ ! -f "$$file" ] || \
-	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
-	done
+include $(top_srcdir)/src/include-tidy.am
 
 # vim:set noet sw=8 ts=8:

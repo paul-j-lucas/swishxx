@@ -26,15 +26,6 @@ AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
 libmail_a_SOURCES =	mod_mail.cpp multipart.cpp vcard.cpp
 libmail_a_LIBADD =	$(top_builddir)/lib/libgnu.a
 
-TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
-		-Xtidy --verbose=f \
-		-Xtidy --error=never
-TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
-
-tidy-local:
-	@for file in *.h *.cpp; do \
-	  [ ! -f "$$file" ] || \
-	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
-	done
+include $(top_srcdir)/src/include-tidy.am
 
 # vim:set noet sw=8 ts=8:

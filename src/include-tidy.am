@@ -1,8 +1,8 @@
 ##
 #	SWISH++
-#	src/rtf/Makefile.am
+#	src/include-tidy.am
 #
-#	Copyright (C) 1998-2026  Paul J. Lucas
+#	Copyright (C) 2026  Paul J. Lucas
 #
 #	This program is free software; you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -18,14 +18,16 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-lib_LIBRARIES =	librtf.a
+TIDY_FLAGS =	-Xtidy --config=$(top_srcdir)/src/include-tidy.toml \
+		-Xtidy --verbose=F \
+		-Xtidy --error=never
 
-AM_CXXFLAGS =	$(SWISHXX_CXXFLAGS)
-AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(top_srcdir)/src
+TIDY_CXXFLAGS =	$(CXXFLAGS) $(AM_CXXFLAGS) $(CPPFLAGS) $(AM_CPPFLAGS) -xc++
 
-librtf_a_SOURCES =	mod_rtf.cpp
-librtf_a_LIBADD =	$(top_builddir)/lib/libgnu.a
+tidy-local:
+	@for file in *.h *.cpp; do \
+	  [ ! -f "$$file" ] || \
+	    include-tidy $(TIDY_FLAGS) $(TIDY_CXXFLAGS) "$$file" || exit $$?; \
+	done
 
-include $(top_srcdir)/src/include-tidy.am
-
-# vim:set noet sw=8 ts=8:
+# vim:set noet syn=make sw=8 ts=8:
