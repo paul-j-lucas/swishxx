@@ -40,7 +40,9 @@ class filter {
 public:
   explicit filter( char const *command ) : command_template_{ command } { }
   filter( filter const& ) = default;
+  filter( filter&& ) = default;
   filter& operator=( filter const& ) = default;
+  filter& operator=( filter&& ) = default;
   ~filter();
 
   char const* substitute( char const *file_name );
