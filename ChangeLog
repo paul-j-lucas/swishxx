@@ -1,3 +1,103 @@
+2026-08-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, src/charsets/Makefile.am, src/encodings/Makefile.am,
+     include-tidy.am, src/mod/html/Makefile.am, src/mod/id3/Makefile.am,
+     src/mod/latex/Makefile.am, src/mod/mail/Makefile.am,
+     src/mod/man/Makefile.am, src/mod/rtf/Makefile.am, src/pjl/Makefile.am:
+     Added include-tidy.am.
+
+2026-08-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * encoded_char.h: C++ modernization.
+   * configure.ac, src/Makefile.am, src/charsets/Makefile.am,
+     src/encodings/Makefile.am, include-tidy.toml, src/mod/html/Makefile.am,
+     mod/html/include-tidy.toml, src/mod/id3/Makefile.am,
+     mod/id3/include-tidy.toml, src/mod/latex/Makefile.am,
+     mod/latex/include-tidy.toml, src/mod/mail/Makefile.am,
+     mod/mail/include-tidy.toml, src/mod/man/Makefile.am,
+     src/mod/rtf/Makefile.am, src/pjl/Makefile.am, pjl/include-tidy.toml: Added
+     tidy recursive target.
+   * mod/latex/mod_latex.cpp, mod/latex/mod_latex.h: #include fixes.
+   * mod/mail/mod_mail.cpp: #include fixes.
+
+2026-08-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * charsets/unicode.h, conf_filter.h, conf_string.h, conf_unsigned.h,
+     conf_var.h, directory.cpp, do_file.cpp, encodings/base64.cpp, index.cpp,
+     indexer.h, mod/html/elements.cpp, mod/html/entities.h,
+     mod/html/mod_html.cpp, mod/id3/id3v1.h, mod/id3/id3v2.cpp,
+     mod/id3/id3v2.h, mod/mail/mod_mail.h, pjl/fdbuf.h, pjl/hash.h,
+     pjl/mmap_file.h, pjl/omanip.h, pjl/option_stream.h, pjl/pattern_map.h,
+     pjl/thread_pool.h, query.cpp, query.h, query_node.cpp, search.cpp,
+     stem_word.cpp: C++ modernization.
+   * mod/html/mod_html.cpp, mod/latex/mod_latex.cpp, mod/mail/mod_mail.cpp:
+     #include fixes.
+
+2026-08-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl/auto_delete_pool.h: C++ modernization.
+
+2026-08-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * init_mod_vars-sh, stem_word.h: #include fixes.
+   * extract.cpp, word_info.h: #include fixes.
+   * index.cpp: #include fixes.
+   * conf_string.cpp, index.cpp, util.h, word_info.h, word_util.h: #include
+     fixes.
+   * directory.cpp, directory.h, file_info.cpp, index.cpp: #include fixes; C++
+     modernization.
+   * encoded_char.h, file_info.h: #include fixes; C++ modernization.
+
+2026-08-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * do_file.cpp, extract.cpp: #include fixes.
+   * mod/html/elements.cpp, postscript.cpp: #include fixes; C++ modernization.
+
+2026-07-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl/thread_pool.cpp: #include fixes.
+   * Group.h, word_info.cpp, word_info.h: C++ modernization.
+
+2026-07-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl/mmap_file.h: C++ modernization.
+   * pjl/option_stream.cpp, pjl/thread_pool.cpp: #include fixes.
+   * pjl/less.h: Removed unordered_char_ptr_map.
+
+2026-07-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * ChangeDirectory.cpp, Group.cpp, IncludeFile.cpp, IncludeMeta.cpp,
+     SocketAddress.cpp, User.cpp, WordThreshold.cpp, classic_formatter.cpp,
+     conf_bool.cpp, conf_filter.cpp, conf_percent.cpp, conf_string.cpp,
+     conf_unsigned.cpp, conf_var.cpp, directory.cpp, encoded_char.h,
+     extract.cpp, index.cpp, index_segment.cpp, indexer.cpp,
+     mod/html/mod_html.cpp, mod/mail/mod_mail.cpp, query.cpp, query_node.cpp,
+     search_daemon.cpp, search_thread.cpp, stop_words.cpp, xml_formatter.cpp:
+     Include fixes; C++ modernization.
+   * search.cpp: #include fixes.
+
+2026-07-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * conf_bool.cpp, conf_string.cpp, conf_unsigned.cpp, conf_var.cpp: C++
+     modernization.
+   * conf_var.cpp: #include fixes.
+
+2026-07-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * conf_var.cpp, encoded_char.cpp: #include fixes.
+   * search.cpp, util.cpp, word_util.cpp: #include fixes.
+   * mod/html/mod_html.cpp, mod/id3/id3v2.cpp, mod/id3/mod_id3.cpp,
+     mod/latex/mod_latex.cpp, mod/mail/mod_mail.cpp, mod/mail/multipart.cpp,
+     mod/mail/vcard.cpp, mod/man/mod_man.cpp, mod/rtf/mod_rtf.cpp: #include
+     fixes.
+   * extract.cpp: #include fixes.
+   * pjl/mmap_file.h, pjl/thread_pool.cpp: Include fixes.
+   * index.cpp: #include fixes.
+
+2026-07-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * search_daemon.cpp, word_util.cpp: #include fixes.
+
 2026-07-18  Paul J. Lucas <paul@lucasmail.org>
 
    * ChangeDirectory.cpp, SocketAddress.cpp, TempDirectory.cpp, User.cpp,
