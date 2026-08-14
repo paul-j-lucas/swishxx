@@ -99,12 +99,11 @@ public:
   class const_iterator {
   public:
     using iterator_category = std::random_access_iterator_tag;
-    using difference_type   = difference_type;
-    using value_type        = value_type;
-    using pointer           = const_pointer;
-    using const_pointer     = const_pointer;
-    using reference         = const_reference;
-    using const_reference   = const_reference;
+    using value_type        = index_segment::value_type;
+    using pointer           = index_segment::const_pointer;
+    using const_pointer     = index_segment::const_pointer;
+    using reference         = index_segment::const_reference;
+    using const_reference   = index_segment::const_reference;
 
     const_iterator() { }
     const_iterator( const_iterator const& ) = default;
