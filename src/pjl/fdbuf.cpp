@@ -38,8 +38,8 @@ namespace PJL {
 
 void fdbuf::init( int fd ) {
   fd_ = fd;
-  setg( rbuf_, rbuf_ + buf_size, rbuf_ + buf_size );
-  setp( wbuf_, wbuf_ + buf_size );
+  setg( rbuf_, rbuf_ + BUF_SIZE, rbuf_ + BUF_SIZE );
+  setp( wbuf_, wbuf_ + BUF_SIZE );
 }
 
 int fdbuf::sync() {
@@ -68,7 +68,7 @@ fdbuf::int_type fdbuf::underflow() {
     //
     ssize_t bytes;
     while ( true ) {
-      if ( (bytes = ::read( fd_, rbuf_, buf_size )) > 0 )
+      if ( (bytes = ::read( fd_, rbuf_, BUF_SIZE )) > 0 )
         break;                          // we read some bytes so stop
       if ( bytes < 0 && (errno == EAGAIN || errno == EINTR) )
         continue;

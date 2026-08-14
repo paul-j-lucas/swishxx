@@ -44,7 +44,7 @@ namespace PJL {
  * 225-244.
  */
 class fdbuf : public std::streambuf {
-  enum { buf_size = 1024 };
+  static constexpr unsigned BUF_SIZE = 1024;
 public:
   explicit fdbuf( int fd = -1 ) {
     init( fd );
@@ -79,8 +79,8 @@ protected:
 
 private:
   int fd_;
-  char rbuf_[ buf_size ];
-  char wbuf_[ buf_size ];
+  char rbuf_[ BUF_SIZE ];
+  char wbuf_[ BUF_SIZE ];
 
   void init( int fd );
 };
