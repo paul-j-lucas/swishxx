@@ -211,20 +211,20 @@ char const* less_stem::no_stem( char const *word ) {
 }
 
 char const* less_stem::stem_word( char const *word ) {
-  static rule_list const rules_1a[] = {
+  static rule_list const RULES_1a[] = {
     { 101, "sses",    "ss",    4,  2,  -1, nullptr },
     { 102, "ies",     "i",     3,  1,  -1, nullptr },
     { 103, "ss",      "ss",    2,  2,  -1, nullptr },
     { 104, "s",       "",      1,  0,  -1, nullptr },
     { 0,   nullptr,   nullptr, 0,  0,   0, nullptr }
   };
-  static rule_list const rules_1b[] = {
+  static rule_list const RULES_1b[] = {
     { 105, "eed",     "ee",    3,  2,  0, nullptr   },
     { 106, "ed",      "",      2,  0, -1, has_vowel },
     { 107, "ing",     "",      3,  0, -1, has_vowel },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_1b1[] = {
+  static rule_list const RULES_1b1[] = {
     { 108, "at",      "ate",   2,  3, -1, nullptr   },
     { 109, "bl",      "ble",   2,  3, -1, nullptr   },
     { 110, "iz",      "ize",   2,  3, -1, nullptr   },
@@ -242,11 +242,11 @@ char const* less_stem::stem_word( char const *word ) {
     { 122, "",        "e",     0,  1, -1, add_e     },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_1c[] = {
+  static rule_list const RULES_1c[] = {
     { 123, "y",       "i",     1,  1, -1, has_vowel },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_2[] = {
+  static rule_list const RULES_2[] = {
     { 201, "ational", "ate",   7,  3,  0, nullptr   },
     { 202, "tional",  "tion",  6,  4,  0, nullptr   },
     { 203, "enci",    "ence",  4,  4,  0, nullptr   },
@@ -269,7 +269,7 @@ char const* less_stem::stem_word( char const *word ) {
     { 220, "biliti",  "ble",   6,  3,  0, nullptr   },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_3[] = {
+  static rule_list const RULES_3[] = {
     { 301, "icate",   "ic",    5,  2,  0, nullptr   },
     { 302, "ative",   "",      5,  0,  0, nullptr   },
     { 303, "alize",   "al",    5,  2,  0, nullptr   },
@@ -279,7 +279,7 @@ char const* less_stem::stem_word( char const *word ) {
     { 309, "ness",    "",      4,  0,  0, nullptr   },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_4[] = {
+  static rule_list const RULES_4[] = {
     { 401, "al",      "",      2,  0,  1, nullptr   },
     { 402, "ance",    "",      4,  0,  1, nullptr   },
     { 403, "ence",    "",      4,  0,  1, nullptr   },
@@ -302,12 +302,12 @@ char const* less_stem::stem_word( char const *word ) {
     { 421, "ize",     "",      3,  0,  1, nullptr   },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_5a[] = {
+  static rule_list const RULES_5a[] = {
     { 501, "e",       "",      1,  0,  1, nullptr   },
     { 502, "e",       "",      1,  0, -1, remove_e  },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr   }
   };
-  static rule_list const rules_5b[] = {
+  static rule_list const RULES_5b[] = {
     { 503, "ll",      "l",     2,  1,  1,  nullptr  },
     { 0,   nullptr,   nullptr, 0,  0,  0, nullptr  }
   };
@@ -340,16 +340,16 @@ char const* less_stem::stem_word( char const *word ) {
   ::strcpy( word_buf, word );
   word_end = word_buf + len;
 
-  replace_suffix( word_buf, rules_1a );
-  int const rule = replace_suffix( word_buf, rules_1b );
+  replace_suffix( word_buf, RULES_1a );
+  int const rule = replace_suffix( word_buf, RULES_1b );
   if ( rule == 106 || rule == 107 )
-    replace_suffix( word_buf, rules_1b1 );
-  replace_suffix( word_buf, rules_1c );
-  replace_suffix( word_buf, rules_2  );
-  replace_suffix( word_buf, rules_3  );
-  replace_suffix( word_buf, rules_4  );
-  replace_suffix( word_buf, rules_5a );
-  replace_suffix( word_buf, rules_5b );
+    replace_suffix( word_buf, RULES_1b1 );
+  replace_suffix( word_buf, RULES_1c );
+  replace_suffix( word_buf, RULES_2  );
+  replace_suffix( word_buf, RULES_3  );
+  replace_suffix( word_buf, RULES_4  );
+  replace_suffix( word_buf, RULES_5a );
+  replace_suffix( word_buf, RULES_5b );
 
 # ifdef DEBUG_stem_word
   cerr << "\n---> stemmed word=" << word_buf << "\n";

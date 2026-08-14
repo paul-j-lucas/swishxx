@@ -43,13 +43,13 @@
  */
 class index_segment {
 public:
-  ////////// typedefs /////////////////////////////////////////////////////////
+  ////////// types ////////////////////////////////////////////////////////////
 
-  typedef size_t size_type;
-  typedef ptrdiff_t difference_type;
-  typedef char const* value_type;
-  typedef char const** const_pointer;
-  typedef char const* const_reference;
+  using size_type = size_t;
+  using difference_type = ptrdiff_t;
+  using value_type = char const*;
+  using const_pointer = value_type*;
+  using const_reference = value_type;
 
   enum segment_id {
     isi_word      = 0,

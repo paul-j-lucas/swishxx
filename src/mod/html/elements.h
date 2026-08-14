@@ -61,12 +61,16 @@ private:
 
 /**
  * An %element_map is-a map from the character strings for HTML elements to
- * instances of the element class declared above.  The only reason for having a
- * derived class rather than a \c typedef is so that we can have a custom
- * constructor that initializes itself.
+ * instances of the element class declared above.
  *
- * The constructor is private, however, to ensure that only \c instance() can
- * be called to initialize and access a single, static instance.
+ * @remarks
+ * @parblock
+ * The only reason for having a derived class rather than a `typedef` is so
+ * that we can have a custom constructor that initializes itself.
+ *
+ * The constructor is private, however, to ensure that only instance() can be
+ * called to initialize and access a single, static instance.
+ * @endparblock
  */
 class element_map : public std::map<char const*,element> {
 public:

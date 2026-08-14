@@ -96,7 +96,7 @@ int main( int argc, char *argv[] ) {
 
   /////////// Process command-line options ////////////////////////////////////
 
-  static option_stream::spec const opt_spec[] = {
+  static option_stream::spec const OPT_SPEC[] = {
     { "help",         0, '?', option_stream::arg_lone, "" },
     { "config",       1, 'c', "", "" },
     { "pattern",      1, 'e', "", "" },
@@ -129,7 +129,7 @@ int main( int argc, char *argv[] ) {
   char const   *stop_word_file_name_arg = nullptr;
   char const   *verbosity_arg = nullptr;
 
-  option_stream opt_in( argc, argv, opt_spec );
+  option_stream opt_in( argc, argv, OPT_SPEC );
   for ( option_stream::option opt; opt_in >> opt; ) {
     switch ( opt ) {
 

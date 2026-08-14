@@ -33,9 +33,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A %stop_word_set is-a \c set&lt;char const*&gT.  The only reason for having
- * a derived class rather than a typedef is so that we can have custom
- * constructors.
+ * A %stop_word_set is-a \c set&lt;char const*&gt.
+ *
+ * @remarks The only reason for having a derived class rather than a `typedef`
+ * is so that we can have custom constructors.
  */
 struct stop_word_set : std::set<char const*> {
   explicit stop_word_set( char const *file_name = nullptr );

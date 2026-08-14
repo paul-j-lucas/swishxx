@@ -28,9 +28,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-encoded_char_range::charset_type const US_ASCII         = nullptr;
-encoded_char_range::charset_type const ISO_8859_1       = nullptr;
-encoded_char_range::charset_type const CHARSET_UNKNOWN  =
+constexpr encoded_char_range::charset_type US_ASCII         = nullptr;
+constexpr encoded_char_range::charset_type ISO_8859_1       = nullptr;
+encoded_char_range::charset_type const     CHARSET_UNKNOWN  =
   reinterpret_cast<encoded_char_range::charset_type>( ~0 );
 
 #ifdef WITH_UTF7

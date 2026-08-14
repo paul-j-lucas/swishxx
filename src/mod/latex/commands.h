@@ -41,12 +41,16 @@ struct command {
 
 /**
  * A %command_map is-a map from the character strings for LaTeX commands to
- * instances of the command class declared above.  The only reason for having a
- * derived class rather than a typedef is so that we can have a custom
- * constructor that initializes itself.
+ * instances of the command class declared above.
+ *
+ * @remarks
+ * @parblock
+ * The only reason for having a derived class rather than a `typedef` is so
+ * that we can have a custom constructor that initializes itself.
  *
  * The constructor is private, however, to ensure that only instance() can be
  * called to initialize and access a single, static instance.
+ * @endparblock
  */
 class command_map : public std::map<char const*,command> {
 public:

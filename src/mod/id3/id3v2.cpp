@@ -358,7 +358,7 @@ void id3v2_frame::parse_comm() {
 }
 
 void id3v2_frame::parse_sylt() {
-  static char const *const content_type_table[] = {
+  static char const *const CONTENT_TYPE_TABLE[] = {
     "other",                            // 0 -- we don't use this one
     "lyrics",                           // 1
     "text-transcription",               // 2
@@ -379,13 +379,13 @@ void id3v2_frame::parse_sylt() {
 
   size_t const content_type = *content_begin_;
   if ( associate_meta && content_type &&
-       content_type < NUM_ELEMENTS( content_type_table ) ) {
+       content_type < NUM_ELEMENTS( CONTENT_TYPE_TABLE ) ) {
     //
     // Do not index the words in the value of the content type if either the
     // name of the content descriptor is among the set of meta names to exclude
     // or not among the set to include.
     //
-    meta_id_ = indexer::find_meta( content_type_table[ content_type ] );
+    meta_id_ = indexer::find_meta( CONTENT_TYPE_TABLE[ content_type ] );
     if ( meta_id_ == Meta_ID_None )
       return;
   }

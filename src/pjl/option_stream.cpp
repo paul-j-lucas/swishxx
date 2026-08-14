@@ -342,7 +342,7 @@ bad_spec:
 using namespace PJL;
 
 int main( int argc, char *argv[] ) {
-  static option_stream::spec const spec[] = {
+  static constexpr option_stream::spec spec[] = {
     { "n-no-arg",   0, 'n', "", "" },
     { "m-no-arg",   0, 'm', "", "" },
     { "r-req-arg",  1, 'r', "", "" },

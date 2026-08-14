@@ -70,12 +70,12 @@ protected:
  */
 class and_node : public query_node {
 public:
-  typedef std::vector<query_node*> child_node_list;
+  using child_node_list = std::vector<query_node*>;
 
-  typedef child_node_list::iterator iterator;
-  typedef child_node_list::const_iterator const_iterator;
-  typedef child_node_list::reverse_iterator reverse_iterator;
-  typedef child_node_list::const_reverse_iterator const_reverse_iterator;
+  using iterator = child_node_list::iterator;
+  using const_iterator = child_node_list::const_iterator;
+  using reverse_iterator = child_node_list::reverse_iterator;
+  using const_reverse_iterator = child_node_list::const_reverse_iterator;
 
   and_node( pool_type&, child_node_list& );
   ~and_node();

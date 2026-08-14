@@ -90,7 +90,7 @@ using namespace std;
  * be a good number: higher, the results don't get better; lower, the results
  * get more striated.
  */
-static long const Rank_Factor = 10000000;
+static constexpr long Rank_Factor = 10000000;
 
 AssociateMeta         associate_meta;
 ExcludeFile           exclude_patterns;   // do not index these
@@ -195,7 +195,7 @@ int main( int argc, char *argv[] ) {
 
   /////////// Process command-line options ////////////////////////////////////
 
-  static option_stream::spec const opt_spec[] = {
+  static option_stream::spec const OPT_SPEC[] = {
     { "help",           0, '?', option_stream::arg_lone, "" },
     { "no-assoc-meta",  0, 'A', "mM", "" },
     { "config-file",    1, 'c', "", "" },
@@ -254,7 +254,7 @@ int main( int argc, char *argv[] ) {
   char const     *word_percent_max_arg = nullptr;
   char const     *word_threshold_arg = nullptr;
 
-  auto const all_options( indexer::all_mods_options( opt_spec ) );
+  auto const all_options( indexer::all_mods_options( OPT_SPEC ) );
   option_stream opt_in( argc, argv, all_options.get() );
 
   for ( option_stream::option opt; opt_in >> opt; ) {

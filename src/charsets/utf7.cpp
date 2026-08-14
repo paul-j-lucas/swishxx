@@ -35,7 +35,7 @@ namespace {
 
   class utf7_decoder : public encoded_char_range::decoder {
   public:
-    int buf_count_;
+    unsigned buf_count_;
     const_pointer prev_c_;
   private:
     virtual void reset();
@@ -58,9 +58,9 @@ charset_utf7( encoded_char_range::const_pointer begin,
   // This code is based on the decode_base64() function as part of "encdec 1.1"
   // by Jörgen Hägg <jh@efd.lth.se>, 1993.
   //
-  int const Bits_Per_Char = 6;          // by definition of Base64 encoding
+  constexpr int Bits_Per_Char = 6;      // by definition of Base64 encoding
 
-  static char const set_B[] =           // modified Base64 alphabet
+  static constexpr char set_B[] =       // modified Base64 alphabet
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz"
     "0123456789+/";                     // '=' is omitted intentionally

@@ -89,7 +89,7 @@ conf_var::map_type& conf_var::map_ref() {
   if ( !init ) {
     init = true;                        // must set this before init_mod_vars()
     init_mod_vars();                    // defined in init_mod_vars.c
-    static char const *const var_name_table[] = {
+    static char const *const VAR_NAME_TABLE[] = {
       "associatemeta",
       "changedirectory",
       "excludefile",
@@ -140,7 +140,7 @@ conf_var::map_type& conf_var::map_ref() {
 #endif /* WITH_SEARCH_DAEMON */
       nullptr
     };
-    for ( auto v = var_name_table; *v; ++v )
+    for ( auto v = VAR_NAME_TABLE; *v; ++v )
       m[ *v ] = nullptr;
   }
   return m;

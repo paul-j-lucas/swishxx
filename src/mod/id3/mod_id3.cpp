@@ -86,20 +86,20 @@ void id3_indexer::index_id3v1_tags( char const *c, char const *end ) {
     char const *name;
     size_t      length;
   };
-  static id3v1_field const field_table[] = {
+  static constexpr id3v1_field FIELD_TABLE[] = {
     { "title",    ID3v1_Title_Size    },
     { "artist",   ID3v1_Artist_Size   },
     { "album",    ID3v1_Album_Size    },
     { "year",     ID3v1_Year_Size     },
     { "comments", ID3v1_Comments_Size },
     { "genre",    ID3v1_Genre_Size    },
-    { nullptr, 0 }
+    { nullptr,    0                   }
   };
 
   if ( !has_id3v1_tag( c, end ) )
     return;
 
-  for ( auto field = field_table; field->name; c += field++->length ) {
+  for ( auto field = FIELD_TABLE; field->name; c += field++->length ) {
     meta_id_type meta_id = Meta_ID_None;
     if ( associate_meta ) {
       //

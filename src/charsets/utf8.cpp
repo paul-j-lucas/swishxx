@@ -66,7 +66,7 @@ charset_utf8( encoded_char_range::const_pointer,
   // Using a static table to know how many bytes are in the UTF-8 character is
   // the fastest way.
   //
-  static char const trailing_bytes_table[] = {
+  static constexpr char trailing_bytes_table[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -108,7 +108,7 @@ charset_utf8( encoded_char_range::const_pointer,
     case 0: u += static_cast<unsigned char>( *c++ );
   } // switch
 
-  static unsigned long const offset_table[] = {
+  static constexpr unsigned long offset_table[] = {
     0x0u, 0x3080u, 0xE2080u, 0x3C82080u, 0xFA082080u, 0x82082080u
   };
   u -= offset_table[ trailing_bytes ];

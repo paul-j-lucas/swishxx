@@ -144,9 +144,9 @@ int main( int argc, char *argv[] ) {
 
   /////////// Process command-line options ////////////////////////////////////
 
-#include "search_options.cpp"           /* defines opt_spec */
+#include "search_options.cpp"           /* defines OPT_SPEC */
 
-  search_options const opt( &argc, &argv, opt_spec );
+  search_options const opt( &argc, &argv, OPT_SPEC );
   if ( !opt )
     ::exit( Exit_Usage );
 

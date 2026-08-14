@@ -142,7 +142,7 @@ reached_end:
   unsigned value = 0;
   int i;
   for ( i = 0; i <= num_chars; ++i ) {
-    static char const alphabet[] =
+    static constexpr char alphabet[] =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     //
     // Find the character in the Base64 alphabet.

@@ -39,18 +39,18 @@
 #include <sys/time.h>
 #include <unistd.h>                     /* for close(2) */
 
-//
-// We need to know the maximum number of command-line arguments so we can split
-// a command-line string into individual arguments.  If the OS defines the
-// POSIX.1 ARG_MAX macro, see if it's insanely large (Solaris's limit is over a
-// million!) because we don't want to allocate that much space for argument
-// pointers since it would probably blow our thread stack space; however, if
-// it's small, we might as well use that number since there's no reason to
-// exceed it.
-//
-// See also: W. Richard Stevens.  "Advanced Programming in the Unix
-// Environment," Addison-Wesley, Reading, MA, 1993.  pp. 32-40.
-//
+/**
+ * We need to know the maximum number of command-line arguments so we can split
+ * a command-line string into individual arguments.  If the OS defines the
+ * POSIX.1 ARG_MAX macro, see if it's insanely large (Solaris's limit is over a
+ * million!) because we don't want to allocate that much space for argument
+ * pointers since it would probably blow our thread stack space; however, if
+ * it's small, we might as well use that number since there's no reason to
+ * exceed it.
+ *
+ * @sa W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+ * Addison-Wesley, Reading, MA, 1993.  pp. 32-40.
+ */
 #define REASONABLE_ARG_MAX 50
 #ifdef ARG_MAX
 # if ARG_MAX > REASONABLE_ARG_MAX
@@ -86,7 +86,7 @@ search_thread::thread* search_thread::create( thread_pool &p ) const {
  */
 void search_thread::main( argument_type arg ) {
 #define SEARCH_DAEMON_OPTIONS_ONLY
-#include "search_options.cpp"           /* defines opt_spec */
+#include "search_options.cpp"           /* defines OPT_SPEC */
 
 # ifdef DEBUG_threads
   cerr << "in search_thread::main()\n";
@@ -111,7 +111,7 @@ void search_thread::main( argument_type arg ) {
     } else if ( argc == ARG_MAX ) {
       out << error << "more than " << ARG_MAX << " arguments" << endl;
     } else {
-      search_options const opt( &argc, &argv, opt_spec, out );
+      search_options const opt( &argc, &argv, OPT_SPEC, out );
       if ( opt )
         ok = service_request( argv, opt, out, out );
     }
@@ -136,16 +136,20 @@ void search_thread::main( argument_type arg ) {
 }
 
 /**
- * Splits a string into individual, argv-like arguments at whitespace.  This
- * code is based on \c buf_args() in [Stevens 1993], p. 495, except that it:
+ * Splits a string into individual, argv-like arguments at whitespace.
+ *
+ * @remarks
+ * @parblock
+ * This code is based on \c buf_args() in [Stevens 1993], p. 495, except that
+ * it:
  *
  *    1. Is thread-safe by not using \c strtok().
  *    2. Discards leading whitespace in the buffer.
  *    3. Just does the split and doesn't call any function.
+ * @endparblock
  *
- * See also:
- *    W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
- *    Addison-Wesley, Reading, MA, 1993.  p. 495.
+ * @sa W. Richard Stevens.  "Advanced Programming in the Unix Environment,"
+ * Addison-Wesley, Reading, MA, 1993.  p. 495.
  *
  * @param s The string to be split.
  * @param argv The array to deposit the pointers to arguments in.
@@ -180,11 +184,12 @@ static int split_args( char *s, char *argv[], int arg_max ) {
  * Reads a line of text (a string of characters ending in either a carriage
  * return or a newline) from a Unix file descriptor and store it in the given
  * buffer, null-terminated; but time-out if we don't get it in a certain amount
- * of time.  The carriage return or newline is discarded.
+ * of time.
  *
- * See also:
- *    W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
- *    Prentice-Hall, Upper Saddle River, NJ, 1998.  pp. 352-353.
+ * @note The carriage return or newline is discarded.
+ *
+ * @sa W. Richard Stevens.  "Unix Network Programming, Vol 1, 2nd ed."
+ * Prentice-Hall, Upper Saddle River, NJ, 1998.  pp. 352-353.
  *
  * @param fd The Unix file descriptor to read from.
  * @param buf The buffer to read into.

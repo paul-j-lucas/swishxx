@@ -27,7 +27,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static option_stream::spec const opt_spec[] = {
+static option_stream::spec const OPT_SPEC[] = {
   { "help",           0, '?', option_stream::arg_lone, "" },
   { "dump-words",     0, 'd', "", "" },
   { "dump-index",     0, 'D', "", "" },

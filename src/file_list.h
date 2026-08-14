@@ -37,15 +37,15 @@
  * created, the list of files can be iterated over.
  */
 class file_list {
-  typedef unsigned char byte;         // for convenience
+  using byte = unsigned char;         // for convenience
 public:
-  ////////// typedefs /////////////////////////////////////////////////////////
+  ////////// types ////////////////////////////////////////////////////////////
 
-  typedef int size_type;
-  typedef ptrdiff_t difference_type;
-  typedef word_info::file value_type;
-  typedef value_type const* const_pointer;
-  typedef value_type const& const_reference;
+  using size_type = int;
+  using difference_type = ptrdiff_t;
+  using value_type = word_info::file;
+  using const_pointer = value_type const*;
+  using const_reference =  value_type const&;
 
   ////////// constructors /////////////////////////////////////////////////////
 
