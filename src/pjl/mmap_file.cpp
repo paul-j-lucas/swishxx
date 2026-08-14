@@ -38,6 +38,7 @@
 #if defined( MULTI_THREADED ) && defined( RLIMIT_VMEM )
 #include <pthread.h>
 #endif
+#include <utility>
 
 using namespace PJL;
 using namespace std;
@@ -60,6 +61,26 @@ extern "C" void max_out_limits() {
   ::setrlimit( RLIMIT_VMEM, &r );
 }
 #endif /* RLIMIT_VMEM */
+
+mmap_file::mmap_file( mmap_file &&other ) noexcept :
+  addr_{ std::exchange( other.addr_, nullptr ) },
+  fd_{ std::exchange( other.fd_, -1 ) },
+  size_{ std::exchange( other.size_, 0 ) },
+  errno_{ std::exchange( other.errno_, 0 ) }
+{
+}
+
+mmap_file& mmap_file::operator=( mmap_file &&other ) noexcept {
+  if ( this != &other ) {
+    close();
+
+    addr_  = std::exchange( other.addr_, nullptr );
+    fd_    = std::exchange( other.fd_, -1 );
+    size_  = std::exchange( other.size_, 0 );
+    errno_ = std::exchange( other.errno_, 0 );
+  }
+  return *this;
+}
 
 int mmap_file::behavior( behavior_type behavior ) const {
 #ifdef __APPLE__
@@ -107,7 +128,7 @@ void mmap_file::init() {
 #endif /* RLIMIT_VMEM */
 
   addr_ = nullptr;
-  fd_ = 0;
+  fd_ = -1;
   size_ = 0;
   errno_ = 0;
 }
@@ -126,7 +147,6 @@ bool mmap_file::open( char const *path, ios::openmode mode ) {
   if ( mode & ios::out )  flags |= O_WRONLY;
 
   if ( (fd_ = ::open( path, flags )) == -1 ) {
-    fd_ = 0;
     errno_ = errno;
     return false;
   }

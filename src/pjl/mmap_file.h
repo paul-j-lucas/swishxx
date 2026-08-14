@@ -88,10 +88,17 @@ public:
     init();
   }
 
-  mmap_file( char const *path, std::ios::openmode mode = std::ios::in ) {
+  explicit mmap_file( char const *path,
+                      std::ios::openmode mode = std::ios::in ) {
     init();
     open( path, mode );
   }
+
+  mmap_file( mmap_file const& ) = delete;
+  mmap_file& operator=( mmap_file const& ) = delete;
+
+  mmap_file( mmap_file&& ) noexcept;
+  mmap_file& operator=( mmap_file&& ) noexcept;
 
   ~mmap_file() {
     close();
