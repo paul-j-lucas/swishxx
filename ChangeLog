@@ -1,5 +1,27 @@
+2026-09-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * file_list.h, pjl/thread_pool.h: Added explicit.
+
+2026-08-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * SECURITY.md: Fix URL.
+   * SECURITY.md: Placate pedantic repository-scanning-and-reporting tools.
+
+2026-08-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * index_segment.h: Put difference_type back.
+
 2026-08-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * pjl/mmap_file.cpp, pjl/mmap_file.h: Added move ctor/assign.
+   * filter.h: Added default move ctor/assign.
+   * file_list.h, index_segment.h: using fixes.
+   * charsets/charsets.h, charsets/utf7.cpp, charsets/utf8.cpp, conf_var.cpp,
+     encodings/base64.cpp, extract.cpp, file_list.h, index.cpp,
+     index_segment.h, mod/html/elements.h, mod/id3/id3v2.cpp,
+     mod/id3/mod_id3.cpp, mod/latex/commands.h, pjl/option_stream.cpp,
+     query_node.h, search.cpp, search_options.cpp, search_thread.cpp,
+     stem_word.cpp, stop_words.h: C++ modernization.
    * src/Makefile.am, src/charsets/Makefile.am, src/encodings/Makefile.am,
      include-tidy.am, src/mod/html/Makefile.am, src/mod/id3/Makefile.am,
      src/mod/latex/Makefile.am, src/mod/mail/Makefile.am,
