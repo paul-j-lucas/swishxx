@@ -123,8 +123,8 @@ public:
      * @param pool The thread_pool to which this thread belongs.
      * @param start_func The function that is called upon thread creation.
      */
-    thread( thread_pool &pool,
-            thread_start_function_type start_func = thread_pool_thread_main );
+    explicit thread( thread_pool &pool, thread_start_function_type start_func =
+                     thread_pool_thread_main );
 
     virtual thread* create( thread_pool& ) const = 0;
     virtual void main( argument_type ) = 0;

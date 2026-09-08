@@ -49,7 +49,7 @@ public:
 
   ////////// constructors /////////////////////////////////////////////////////
 
-  file_list( index_segment::const_iterator const &iter ) :
+  explicit file_list( index_segment::const_iterator const &iter ) :
     ptr_{ reinterpret_cast<byte const*>( *iter ) },
     size_{ -1 }                         // -1 = "haven't computed yet"
   {
@@ -82,7 +82,7 @@ public:
     }
 
   private:
-    const_iterator( byte const *p ) : c_( p ) {
+    explicit const_iterator( byte const *p ) : c_{ p } {
       if ( c_ )
         operator++();
     }
