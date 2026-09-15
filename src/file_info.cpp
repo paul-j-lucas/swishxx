@@ -42,23 +42,23 @@ FilesReserve              files_reserve;
 file_info::file_info( char const *path_name, unsigned dir_index,
                       size_t file_size, char const *title,
                       unsigned num_words ) :
-  dir_index_( dir_index ),
-  file_name_(
+  dir_index_{ dir_index },
+  file_name_{
     //
     // First duplicate the entire path name and put it into the set of files
     // encountered; then make file_name_ point to the base name inside the same
     // string, i.e., it shares storage.
     //
     pjl_basename( *name_set_.insert( new_strdup( path_name ) ).first )
-  ),
-  file_size_( file_size ), num_words_( num_words ),
-  title_(
+  },
+  file_size_{ file_size }, num_words_{ num_words },
+  title_{
     //
     // If there was a title given, use that; otherwise the title is the file
     // name.  Note that it too shares storage.
     //
     title ? new_strdup( title ) : file_name_
-  )
+  }
 {
   if ( list_.empty() )
     list_.reserve( files_reserve );
@@ -66,13 +66,13 @@ file_info::file_info( char const *path_name, unsigned dir_index,
 }
 
 file_info::file_info( unsigned char const *p ) :
-  dir_index_( vlq::decode( p ) ),
-  file_name_( reinterpret_cast<char const*>( p ) ),
-  file_size_(
+  dir_index_{ static_cast<unsigned>( vlq::decode( p ) ) },
+  file_name_{ reinterpret_cast<char const*>( p ) },
+  file_size_{
     vlq::decode( p += ::strlen( reinterpret_cast<char const*>( p ) ) + 1 )
-  ),
-  num_words_( vlq::decode( p ) ),
-  title_( reinterpret_cast<char const*>( p ) )
+  },
+  num_words_{ static_cast<unsigned>( vlq::decode( p ) ) },
+  title_{ reinterpret_cast<char const*>( p ) }
 {
   // do nothing else
 }
