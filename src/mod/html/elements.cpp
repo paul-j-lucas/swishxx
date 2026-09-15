@@ -50,7 +50,7 @@ element_map::element_map() {
   // mod_html.c is made simpler by explicitly giving the end tag here rather
   // than having to construct a temporary string prepending a '/' to the tag.
   //
-  static char const *const end_tag_table[] = {
+  static char const *const END_TAG_TABLE[] = {
 
   //  element       end tag tags that close it  status
   //  ------------  ------- ------------------  ---------------
@@ -291,13 +291,13 @@ element_map::element_map() {
       nullptr
   };
 
-  for ( auto p = end_tag_table; *p; ++p ) {
+  for ( auto p = END_TAG_TABLE; *p; ++p ) {
     //
     // The ugly double, old-style casts below are necessary because C++ has
     // become overly pedantic about casting to enums.
     //
     auto const v = (element::end_tag_type const)(long const)(p[1]);
-    auto &e = insert( value_type{ *p++, element( v ) } ).first->second;
+    auto &e = insert( value_type{ *p++, element{ v } } ).first->second;
 
     switch ( v ) {
 

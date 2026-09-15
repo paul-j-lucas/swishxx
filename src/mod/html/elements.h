@@ -55,7 +55,7 @@ public:
   end_tag_type const end_tag;
 
 private:
-  explicit element( end_tag_type t ) : end_tag( t ) { }
+  explicit element( end_tag_type t ) : end_tag{ t } { }
   friend class element_map;
 };
 
