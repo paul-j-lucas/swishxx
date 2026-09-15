@@ -1,3 +1,7 @@
+2026-09-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * mod/html/elements.cpp, mod/html/elements.h: C++ modernization.
+
 2026-09-08  Paul J. Lucas <paul@lucasmail.org>
 
    * file_list.h, pjl/thread_pool.h: Added explicit.
