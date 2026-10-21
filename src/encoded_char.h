@@ -483,35 +483,6 @@ inline bool operator>=( ECR_CI_CP p, ECR_CI const &e ) {
 char *to_lower( ECR const &range );
 
 /**
- * Trims leading whitespace from the encoded_char_range.
- *
- * @param end The end of the range.
- */
-void trim_left( ECR_CI *begin, ECR_CI const &end );
-
-/**
- * Trims trailing whitespace from the encoded_char_range.
- *
- * @param begin The beginning of the range.
- * @param end A pointer to the iterator to alter so that trailing whitespace
- * is truncated.
- */
-void trim_right( ECR_CI const &begin, ECR_CI *end );
-
-/**
- * Trims both leading and trailing whitespace from the encoded_char_range.
- *
- * @param begin A pointer to the iterator to alter so that leading whitespace
- * is skipped over.
- * @param end A pointer to the iterator to alter so that trailing whitespace
- * is truncated.
- */
-inline void trim( ECR_CI *begin, ECR_CI *end ) {
-  trim_left( begin, *end );
-  trim_right( *begin, end );
-}
-
-/**
  * Skips all characters up to and including \a c.
  *
  * @param i A pointer to the iterator to start at. If \c is found, \a i is

@@ -26,7 +26,6 @@
 #include "util.h"
 
 // standard
-#include <cctype>
 #include <cstddef>
 
 encoded_char_range::decoder::set_type encoded_char_range::decoder::decoders_;
@@ -49,30 +48,6 @@ char* to_lower( encoded_char_range const &range ) {
     *p++ = to_lower( *c );
   *p = '\0';
   return lower_buf.current();
-}
-
-void trim_left( encoded_char_range::const_iterator *begin,
-                encoded_char_range::const_iterator const &end ) {
-  while ( *begin < end && isspace( **begin ) )
-    ++*begin;
-}
-
-void trim_right( encoded_char_range::const_iterator const &begin,
-                 encoded_char_range::const_iterator *end ) {
-  auto first_trailing_space = begin;
-  bool is_space = false;
-  for ( auto pos = begin; pos < *end; ++pos ) {
-    if ( isspace( *pos ) ) {
-      if ( !is_space ) {
-        first_trailing_space = pos;
-        is_space = true;
-      }
-    } else {
-      is_space = false;
-    }
-  } // for
-  if ( is_space )
-    *end = first_trailing_space;
 }
 
 bool skip_char( encoded_char_range::const_iterator *i, char c, size_t limit ) {
