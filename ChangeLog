@@ -1,21 +1,38 @@
-2026-09-14  Paul J. Lucas <paul@lucasmail.org>
+2026-10-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * stem_word.cpp: Fixed cache_mutex locking.
+
+2026-10-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * encoded_char.cpp, encoded_char.h: Eliminated trim, trim_left, trim_right
+     --- not used.
+
+2026-10-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * configure.ac, include-tidy.am: s/tidy/itidy/
+
+2026-09-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * file_info.cpp: C++ modernization.
+
+2026-09-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * mod/html/elements.cpp, mod/html/elements.h: C++ modernization.
 
-2026-09-08  Paul J. Lucas <paul@lucasmail.org>
+2026-09-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * file_list.h, pjl/thread_pool.h: Added explicit.
 
-2026-08-22  Paul J. Lucas <paul@lucasmail.org>
+2026-08-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * SECURITY.md: Fix URL.
    * SECURITY.md: Placate pedantic repository-scanning-and-reporting tools.
 
-2026-08-14  Paul J. Lucas <paul@lucasmail.org>
+2026-08-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * index_segment.h: Put difference_type back.
 
-2026-08-13  Paul J. Lucas <paul@lucasmail.org>
+2026-08-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/mmap_file.cpp, pjl/mmap_file.h: Added move ctor/assign.
    * filter.h: Added default move ctor/assign.
@@ -32,7 +49,7 @@
      src/mod/man/Makefile.am, src/mod/rtf/Makefile.am, src/pjl/Makefile.am:
      Added include-tidy.am.
 
-2026-08-06  Paul J. Lucas <paul@lucasmail.org>
+2026-08-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * encoded_char.h: C++ modernization.
    * configure.ac, src/Makefile.am, src/charsets/Makefile.am,
@@ -46,7 +63,7 @@
    * mod/latex/mod_latex.cpp, mod/latex/mod_latex.h: #include fixes.
    * mod/mail/mod_mail.cpp: #include fixes.
 
-2026-08-05  Paul J. Lucas <paul@lucasmail.org>
+2026-08-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * charsets/unicode.h, conf_filter.h, conf_string.h, conf_unsigned.h,
      conf_var.h, directory.cpp, do_file.cpp, encodings/base64.cpp, index.cpp,
@@ -59,11 +76,11 @@
    * mod/html/mod_html.cpp, mod/latex/mod_latex.cpp, mod/mail/mod_mail.cpp:
      #include fixes.
 
-2026-08-04  Paul J. Lucas <paul@lucasmail.org>
+2026-08-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/auto_delete_pool.h: C++ modernization.
 
-2026-08-03  Paul J. Lucas <paul@lucasmail.org>
+2026-08-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * init_mod_vars-sh, stem_word.h: #include fixes.
    * extract.cpp, word_info.h: #include fixes.
@@ -74,23 +91,23 @@
      modernization.
    * encoded_char.h, file_info.h: #include fixes; C++ modernization.
 
-2026-08-02  Paul J. Lucas <paul@lucasmail.org>
+2026-08-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * do_file.cpp, extract.cpp: #include fixes.
    * mod/html/elements.cpp, postscript.cpp: #include fixes; C++ modernization.
 
-2026-07-30  Paul J. Lucas <paul@lucasmail.org>
+2026-07-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/thread_pool.cpp: #include fixes.
    * Group.h, word_info.cpp, word_info.h: C++ modernization.
 
-2026-07-24  Paul J. Lucas <paul@lucasmail.org>
+2026-07-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/mmap_file.h: C++ modernization.
    * pjl/option_stream.cpp, pjl/thread_pool.cpp: #include fixes.
    * pjl/less.h: Removed unordered_char_ptr_map.
 
-2026-07-23  Paul J. Lucas <paul@lucasmail.org>
+2026-07-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * ChangeDirectory.cpp, Group.cpp, IncludeFile.cpp, IncludeMeta.cpp,
      SocketAddress.cpp, User.cpp, WordThreshold.cpp, classic_formatter.cpp,
@@ -102,13 +119,13 @@
      Include fixes; C++ modernization.
    * search.cpp: #include fixes.
 
-2026-07-22  Paul J. Lucas <paul@lucasmail.org>
+2026-07-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * conf_bool.cpp, conf_string.cpp, conf_unsigned.cpp, conf_var.cpp: C++
      modernization.
    * conf_var.cpp: #include fixes.
 
-2026-07-21  Paul J. Lucas <paul@lucasmail.org>
+2026-07-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * conf_var.cpp, encoded_char.cpp: #include fixes.
    * search.cpp, util.cpp, word_util.cpp: #include fixes.
@@ -120,11 +137,11 @@
    * pjl/mmap_file.h, pjl/thread_pool.cpp: Include fixes.
    * index.cpp: #include fixes.
 
-2026-07-19  Paul J. Lucas <paul@lucasmail.org>
+2026-07-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * search_daemon.cpp, word_util.cpp: #include fixes.
 
-2026-07-18  Paul J. Lucas <paul@lucasmail.org>
+2026-07-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * ChangeDirectory.cpp, SocketAddress.cpp, TempDirectory.cpp, User.cpp,
      WordThreshold.cpp, conf_filter.cpp, file_info.cpp, mod/html/mod_html.cpp,
@@ -134,7 +151,7 @@
    * search_thread.cpp: Include fixes.
    * xml_formatter.cpp: #include fix.
 
-2026-07-16  Paul J. Lucas <paul@lucasmail.org>
+2026-07-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * directory.cpp, encoded_char.cpp, extract.cpp, filter.cpp,
      index_segment.cpp, indexer.cpp, query.cpp, search.cpp, util.cpp,
@@ -144,7 +161,7 @@
      SocketAddress.cpp, User.cpp, WordThreshold.cpp, query_node.cpp: Include
      fixes.
 
-2026-07-15  Paul J. Lucas <paul@lucasmail.org>
+2026-07-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * src/Makefile.am: Added ./ to init_modules-sh and init_mod_vars-sh.
    * ChangeDirectory.cpp, IncludeMeta.cpp, SocketAddress.cpp,
@@ -159,7 +176,7 @@
    * mod/mail/mod_mail.cpp, pjl/fdbuf.cpp, pjl/fdbuf.h, pjl/mmap_file.cpp,
      pjl/mmap_file.h, pjl/thread_pool.cpp: Include fixes.
 
-2026-07-14  Paul J. Lucas <paul@lucasmail.org>
+2026-07-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * warn-on-use.h: Added missing warn-on-use.h.
    * arg-nonnull.h: Added missing arg-nonnull.h.
@@ -184,7 +201,7 @@
    * mod/html/elements.h, mod/html/mod_html.cpp, mod/html/mod_html.h: #include
      fixes.
 
-2026-07-13  Paul J. Lucas <paul@lucasmail.org>
+2026-07-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/option_stream.h: #include fix.
    * pjl/omanip.h: s/iostream/ostream/
@@ -192,13 +209,13 @@
    * pjl/option_stream.h: Added explicit.
    * pjl/vlq.h: s/iostream/ostream/
 
-2026-07-12  Paul J. Lucas <paul@lucasmail.org>
+2026-07-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * src/Makefile.am: Added missing /.
    * c++defs.h: Put c++defs.h back.
    * AUTHORS, configure.ac: Removed "foreign".
 
-2026-07-11  Paul J. Lucas <paul@lucasmail.org>
+2026-07-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * AssociateMeta.h, ChangeDirectory.h, ExcludeFile.h, ExcludeMeta.h,
      ExtractExtension.h, ExtractFile.h, ExtractFilter.h, FilesGrow.h,
@@ -244,20 +261,20 @@
      "config.h".
    * Makefile.am, bootstrap: Added update-gnulib target.
 
-2026-07-06  Paul J. Lucas <paul@lucasmail.org>
+2026-07-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * configure.ac: Upped version to 7.0.1.
    * index.cpp: Added missing -d/--chdir to help.
    * do_file.cpp: Fixed file_name becomming invalid if filter_list grows.
 
-2026-07-05  Paul J. Lucas <paul@lucasmail.org>
+2026-07-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * index-html-v3.txt, index-man-v3.txt, index-rtf-v3.txt, index-text-v3.txt,
      search-html-D.txt, search-man-D.txt, search-rtf-D.txt, search-text-D.txt,
      search-text-d-01.txt, search-text-not-01.txt: Updated test expected
      results.
 
-2026-07-04  Paul J. Lucas <paul@lucasmail.org>
+2026-07-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * AssociateMeta.h, ChangeDirectory.cpp, ChangeDirectory.h, ExcludeFile.h,
      ExcludeMeta.h, ExtractFile.h, ExtractFilter.h, FilterFile.h,
@@ -287,11 +304,11 @@
      search_thread.h, stem_word.h, stop_words.h, token.h, util.h, word_info.h,
      word_util.h, xml_formatter.h: Added #include "config.h".
 
-2016-12-30  Paul J. Lucas <paul@lucasmail.org>
+2016-12-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * BUGS: More instructions.
 
-2016-01-18  Paul J. Lucas <paul@lucasmail.org>
+2016-01-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/less.h: Added unordered_char_ptr_map; clean-up.
    * pjl/hash.h: Now using "using".
@@ -307,13 +324,13 @@
      index-text-v2.test, index-text-v3.test: No longer auto-doing "-d data".
    * run_test.sh: No longer exiting on fail.
 
-2016-01-17  Paul J. Lucas <paul@lucasmail.org>
+2016-01-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * pjl/option_stream.h: Removed unnecessary unsigned.
    * pjl/option_stream.h: Deleted copy constructor and assignment operator.
    * pjl/option_stream.h: Added explicit.
 
-2016-01-16  Paul J. Lucas <paul@lucasmail.org>
+2016-01-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * configure.ac, encoded_char.h, file_info.h, mod/rtf/mod_rtf.cpp,
      src/pjl/Makefile.am, pjl/hash.cpp, pjl/hash.h, pjl/thread_pool.h,
@@ -336,7 +353,7 @@
    * encoded_char.cpp, encoded_char.h, mod/latex/mod_latex.cpp,
      mod/rtf/mod_rtf.cpp: Added "limit" to skip_char.
 
-2016-01-14  Paul J. Lucas <paul@lucasmail.org>
+2016-01-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * stem_word.h: Added #include <cstring>
    * file_info.cpp, file_info.h, word_info.cpp, word_info.h: s/int/unsigned/
@@ -345,13 +362,13 @@
      src/pjl/Makefile.am, query.cpp, word_info.cpp: Renamed enc_int(),
      dec_int() to vlq::encode(), vlq::decode().
 
-2016-01-12  Paul J. Lucas <paul@lucasmail.org>
+2016-01-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * run_test.sh: More portable.
    * renew_expected.sh: Now running tests in same order as Makefile.am.
    * test/Makefile.am: Fixed space to tab.
 
-2016-01-11  Paul J. Lucas <paul@lucasmail.org>
+2016-01-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * mod/id3/mod_id3.cpp, mod/id3/mod_id3.h, mod/mail/mod_mail.cpp,
      mod/mail/mod_mail.h, mod/rtf/mod_rtf.cpp: More changing to meta_id_type.
@@ -368,7 +385,7 @@
    * mod/rtf/mod_rtf.cpp, index-rtf-v1.txt, index-rtf-v2.txt, index-rtf-v3.txt:
      Better handling of \\.
 
-2016-01-10  Paul J. Lucas <paul@lucasmail.org>
+2016-01-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * encoded_char.cpp, encoded_char.h, mod/latex/mod_latex.cpp,
      mod/rtf/mod_rtf.cpp, test/Makefile.am, sample.rtf, table_1.rtf,
@@ -380,14 +397,14 @@
    * index.1, misc/swish++.conf, swishxx-config.h: Upped TitleLines default to
      100.
 
-2016-01-09  Paul J. Lucas <paul@lucasmail.org>
+2016-01-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * mod/rtf/mod_rtf.cpp, mod/rtf/mod_rtf.h: Added RTF title parsing.
    * mod/rtf/mod_rtf.cpp: Much better RTF parser.
    * test/Makefile.am: Added WITH_WORD_POS conditional.
    * configure.ac: Added WITH_WORD_POS conditional.
 
-2016-01-05  Paul J. Lucas <paul@lucasmail.org>
+2016-01-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * scripts/searchmonitor: Formatting fix.
    * search.1, exit_codes.h, search_daemon.cpp: Got rid of exit code 72 in
@@ -396,26 +413,26 @@
    * extract.cpp, pjl/pjl_set.h, postscript.cpp, postscript.h: Now using C++11
      set initialization.
 
-2016-01-04  Paul J. Lucas <paul@lucasmail.org>
+2016-01-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * mod/html/elements.cpp, mod/html/entities.cpp, mod/id3/id3v2.cpp: Now using
      C++11 map initialization.
    * util.cpp: Now skipping whitespace.
 
-2016-01-03  Paul J. Lucas <paul@lucasmail.org>
+2016-01-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * encoded_char.cpp, encoded_char.h: Now default initializing iterator to
      null; added more relational operators; added trim functions.
    * mod/mail/mod_mail.cpp, mod/mail/mod_mail.h: Whitespace/comment fixes.
 
-2016-01-02  Paul J. Lucas <paul@lucasmail.org>
+2016-01-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * mod/latex/mod_latex.cpp: Whitespace fix.
    * run_test.sh: Now always echoing command line to log file.
    * SocketAddress.cpp, WordThreshold.cpp, conf_unsigned.cpp, util.cpp, util.h:
      Fixed parsing of integers.
 
-2016-01-01  Paul J. Lucas <paul@lucasmail.org>
+2016-01-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * src/Makefile.am: Moved config scripts.
    * FilesReserve.h, src/Makefile.am, ResultsMax.h, SocketQueueSize.h,
@@ -461,7 +478,7 @@
      search-text-s-01.test, search-text-w7,4.test, search-text-w7.test,
      search-text-wild-01.test: Now using separate text.index.
 
-2015-12-31  Paul J. Lucas <paul@lucasmail.org>
+2015-12-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swishxx-config.h: Got rid of #error.
    * scripts/httpindex.in, scripts/searchmonitor: Got rid of %%; made
@@ -491,7 +508,7 @@
      using std::numeric_limits.
    * config/init_modules-sh: Added cast to void.
 
-2015-12-29  Paul J. Lucas <paul@lucasmail.org>
+2015-12-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * conf_enum.cpp, conf_filter.cpp, conf_var.cpp, encoded_char.cpp,
      encoded_char.h, index.cpp, mod/html/elements.cpp, mod/html/entities.cpp,
@@ -502,7 +519,7 @@
    * configure.ac, ax_cxx_compile_stdcxx.m4: Now insisting on C++11.
    * encoded_char.cpp: Removed register.
 
-2015-12-28  Paul J. Lucas <paul@lucasmail.org>
+2015-12-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * classic_formatter.h, file_info.h, file_list.h, filter.h, index_segment.h,
      indexer.h, meta_map.h, postscript.h, query.h, query_node.h,
@@ -527,7 +544,7 @@
      charsets/utf7.cpp, charsets/utf8.cpp, conf_var.cpp, filter.cpp,
      swishxx-config.h, token.h, word_util.h: More clean-up.
 
-2015-12-27  Paul J. Lucas <paul@lucasmail.org>
+2015-12-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * conf_bool.cpp, conf_enum.cpp, conf_enum.h, conf_filter.cpp, conf_filter.h,
      conf_int.cpp, conf_int.h, conf_percent.cpp, conf_percent.h, conf_set.cpp,
@@ -543,7 +560,7 @@
    * scripts/searchc, scripts/splitmail: Made executable.
    * scripts/searchc, scripts/splitmail: Now using env; reformatted.
 
-2015-12-26  Paul J. Lucas <paul@lucasmail.org>
+2015-12-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * test/Makefile.am, index-man-v1.txt, index-man-v2.txt, index-man-v3.txt,
      index-man-v1.test, index-man-v2.test, index-man-v3.test: Added initial
@@ -607,7 +624,7 @@
    * conf_bool.cpp, index.cpp, util.cpp, util.h: Added SWISHXX_TEST for
      testing.
 
-2015-12-24  Paul J. Lucas <paul@lucasmail.org>
+2015-12-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * xml_formatter.cpp: Fixed XML namespaces (no longer at mac.com).
    * misc/SearchResults.xsd: Fixed targetNamespace.
@@ -622,7 +639,7 @@
      pjl/option_stream.cpp, pjl/option_stream.h, pjl/pjl_set.h,
      pjl/thread_pool.cpp, pjl/thread_pool.h, search.cpp: libpjl clean-up.
 
-2015-12-23  Paul J. Lucas <paul@lucasmail.org>
+2015-12-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * src/mod/html/Makefile.am, src/mod/id3/Makefile.am,
      src/mod/latex/Makefile.am, src/mod/mail/Makefile.am,
@@ -725,11 +742,11 @@
      word_info.cpp, word_info.h, word_markers.h, word_util.cpp, word_util.h,
      xml_formatter.cpp, xml_formatter.h: Massive clean-up.
 
-2015-12-22  Paul J. Lucas <paul@lucasmail.org>
+2015-12-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * query.cpp: Removed #include <memory>.
 
-2015-12-21  Paul J. Lucas <paul@lucasmail.org>
+2015-12-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * ExcludeFile.cpp, ExtractFile.cpp, Group.cpp, IncludeFile.cpp,
      IncludeMeta.cpp, SocketAddress.cpp, TempDirectory.cpp, User.cpp,
@@ -779,19 +796,19 @@
      snippet/c++defs.h, snippet/warn-on-use.h, src/Makefile.am: Major clean-up;
      initial autoconf-ization.
 
-2013-10-30  Paul J. Lucas <paul@lucasmail.org>
+2013-10-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/WWW.pm: Reformat.
 
-2010-11-10  Paul J. Lucas <paul@lucasmail.org>
+2010-11-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.index.4: s!x80!\\x80!
 
-2010-01-01  Paul J. Lucas <paul@lucasmail.org>
+2010-01-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/INSTALL.win32: Updated Windows versions.
 
-2009-12-30  Paul J. Lucas <paul@lucasmail.org>
+2009-12-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/src/conf_bool.c: s/tabs/spaces/
    * swish++/trunk/src/query_node.c, swish++/trunk/src/query_node.h:
@@ -829,23 +846,23 @@
      completeted de-tabbing source files. 3.
      s/pauljlucas@mac.com/paul@lucasmail.org/
 
-2009-06-24  Paul J. Lucas <paul@lucasmail.org>
+2009-06-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c, swish++/trunk/util.h, swish++/trunk/word_info.c:
      Added assert_stream.
 
-2009-05-14  Paul J. Lucas <paul@lucasmail.org>
+2009-05-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/word_info.c: Tabs to spaces.
    * swish++/trunk/conf_var.c: Reformatting.
    * swish++/trunk/exit_codes.h, swish++/trunk/my_set.h,
      swish++/trunk/stem_word.h: Tabs to spaces.
 
-2009-04-10  Paul J. Lucas <paul@lucasmail.org>
+2009-04-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/SWISH++.xcodeproj/project.pbxproj: Updated.
 
-2008-09-11  Paul J. Lucas <paul@lucasmail.org>
+2008-09-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1.6/AssociateMeta.h,
      swish++/tags/swish++-6.1.6/BUGS, swish++/tags/swish++-6.1.6/Changes,
@@ -1095,7 +1112,7 @@
    * swish++/trunk/enc_int.c, swish++/trunk/enc_int.h: Now using unsigned long.
    * swish++/trunk/conf_string.h: Now using string::size_type.
 
-2008-09-09  Paul J. Lucas <paul@lucasmail.org>
+2008-09-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/mail/mod_mail.c: 1. Now explicitly checking for
      US_ASCII. 2. Now not indexing unknown charsets. 3. Now using strncmp()
@@ -1111,7 +1128,7 @@
      swish++/trunk/encodings/base64.c,
      swish++/trunk/encodings/quoted_printable.c: s/An pointer/A pointer/
 
-2008-09-08  Paul J. Lucas <paul@lucasmail.org>
+2008-09-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes, swish++/trunk/Group.c, swish++/trunk/IncludeFile.c,
      swish++/trunk/IncludeMeta.c, swish++/trunk/SocketAddress.c,
@@ -1127,7 +1144,7 @@
      files.
    * swish++/trunk/conf_var.c: Added #include <cstdlib> for exit(3).
 
-2008-02-22  Paul J. Lucas <paul@lucasmail.org>
+2008-02-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/version.h: Updated version.
@@ -1136,7 +1153,7 @@
    * swish++/trunk/man/man4/swish++.index.4: Fixed number of lists.
    * swish++/trunk/man/man8/searchmonitor.8: Fixed bad formatting.
 
-2008-01-25  Paul J. Lucas <paul@lucasmail.org>
+2008-01-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1.5/AssociateMeta.h,
      swish++/tags/swish++-6.1.5/BUGS, swish++/tags/swish++-6.1.5/Changes,
@@ -1373,18 +1390,18 @@
      by cvs2svn to create tag 'swish++-6.1.5'.
    * swish++/trunk/Changes, swish++/trunk/version.h: Updated.
 
-2006-05-09  Paul J. Lucas <paul@lucasmail.org>
+2006-05-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/auto_vec.h, swish++/trunk/my_set.h, swish++/trunk/omanip.h,
      swish++/trunk/pattern_map.h, swish++/trunk/simple_pool.h,
      swish++/trunk/util.h, swish++/trunk/vector_adapter.h: s/class/typename/
 
-2006-05-03  Paul J. Lucas <paul@lucasmail.org>
+2006-05-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/elements.c: s/int const/long const/ for 64-bit
      systems.
 
-2006-03-15  Paul J. Lucas <paul@lucasmail.org>
+2006-03-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1.4/AssociateMeta.h,
      swish++/tags/swish++-6.1.4/BUGS, swish++/tags/swish++-6.1.4/Changes,
@@ -1627,40 +1644,40 @@
    * swish++/trunk/mod/id3/id3v1.h: s/unsigned int/unsigned/
    * swish++/trunk/mmap_file.c: Added comment.
 
-2006-03-06  Paul J. Lucas <paul@lucasmail.org>
+2006-03-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/id3/mod_id3.c: Fixed indentation for goto label.
    * swish++/trunk/mod/id3/id3v2.c: s/$/0x/ for printing hex numbers.
 
-2006-01-21  Paul J. Lucas <paul@lucasmail.org>
+2006-01-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.c: Tabs to spaces.
    * swish++/trunk/search_thread.c: Tabs to spaces.
    * swish++/trunk/postscript.c: Tabs to spaces.
 
-2005-11-17  Paul J. Lucas <paul@lucasmail.org>
+2005-11-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: Changed to using spaces.
 
-2005-10-17  Paul J. Lucas <paul@lucasmail.org>
+2005-10-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/auto_vec.h: Fixed operator=(T*)
 
-2005-08-28  Paul J. Lucas <paul@lucasmail.org>
+2005-08-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: Added comment.
    * swish++/trunk/version.h: Upped version to 6.1.4.
    * swish++/trunk/config/config.mk: Fixed broken MAKEDEPEND s/:=/=/.
    * swish++/trunk/config/makedepend.pl: Tabs -> spaces.
 
-2005-08-25  Paul J. Lucas <paul@lucasmail.org>
+2005-08-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/mod.mk, swish++/trunk/mod/html/GNUmakefile,
      swish++/trunk/mod/id3/GNUmakefile, swish++/trunk/mod/latex/GNUmakefile,
      swish++/trunk/mod/mail/GNUmakefile, swish++/trunk/mod/man/GNUmakefile,
      swish++/trunk/mod/rtf/GNUmakefile: Factored out TARGET.
 
-2005-08-16  Paul J. Lucas <paul@lucasmail.org>
+2005-08-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1.3/AssociateMeta.h,
      swish++/tags/swish++-6.1.3/BUGS, swish++/tags/swish++-6.1.3/Changes,
@@ -1906,7 +1923,7 @@
      virtual destructors.
    * swish++/trunk/version.h: Upped version to 6.1.4.
 
-2005-08-03  Paul J. Lucas <paul@lucasmail.org>
+2005-08-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/version.h: Upped version to 6.1.3.
@@ -1914,7 +1931,7 @@
    * swish++/trunk/man/man1/httpindex.1: Corrected use of multiple -e (and
      other) options.
 
-2005-07-13  Paul J. Lucas <paul@lucasmail.org>
+2005-07-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1.2/AssociateMeta.h,
      swish++/tags/swish++-6.1.2/BUGS, swish++/tags/swish++-6.1.2/Changes,
@@ -2154,7 +2171,7 @@
    * swish++/trunk/mod/latex/mod_latex.c: Reworked handling of '%' in
      index_words().
 
-2005-07-08  Paul J. Lucas <paul@lucasmail.org>
+2005-07-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/charsets/utf16.c, swish++/trunk/conf_int.h,
      swish++/trunk/enc_int.c, swish++/trunk/encoded_char.c,
@@ -2174,11 +2191,11 @@
      Changed tabs to spaces.
    * swish++/trunk/version.h: Upped version.
 
-2005-07-05  Paul J. Lucas <paul@lucasmail.org>
+2005-07-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.h: Tabs -> spaces.
 
-2005-07-04  Paul J. Lucas <paul@lucasmail.org>
+2005-07-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1.1/AssociateMeta.h,
      swish++/tags/swish++-6.1.1/BUGS, swish++/tags/swish++-6.1.1/Changes,
@@ -2417,7 +2434,7 @@
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/search.c: Fixed placement of ";".
 
-2005-07-03  Paul J. Lucas <paul@lucasmail.org>
+2005-07-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.1/AssociateMeta.h, swish++/tags/swish++-6.1/BUGS,
      swish++/tags/swish++-6.1/Changes, swish++/tags/swish++-6.1/Copying,
@@ -2644,17 +2661,17 @@
    * swish++/trunk/man/man1/search.1: Added mention of new -l/--launchd
      options.
 
-2005-06-23  Paul J. Lucas <paul@lucasmail.org>
+2005-06-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: Made 'dist' taarget remove all known versions
      of Xcode.
 
-2005-06-17  Paul J. Lucas <paul@lucasmail.org>
+2005-06-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search_daemon.c: Added checking of launchd_cooperation
      variable.
 
-2005-06-16  Paul J. Lucas <paul@lucasmail.org>
+2005-06-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/search_options.c: Added launchd.
@@ -2674,7 +2691,7 @@
      comment about -U.
    * swish++/trunk/SWISH++.xcodeproj/project.pbxproj: Upgraded Xcode files.
 
-2005-04-05  Paul J. Lucas <paul@lucasmail.org>
+2005-04-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.0.6/AssociateMeta.h,
      swish++/tags/swish++-6.0.6/BUGS, swish++/tags/swish++-6.0.6/Changes,
@@ -2912,7 +2929,7 @@
    * swish++/trunk/mod/man/mod_man.c: Changed to using "normal" way of using
      iso8859_1_to_ascii().
 
-2005-04-03  Paul J. Lucas <paul@lucasmail.org>
+2005-04-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/SWISH++.xcode/project.pbxproj: Setting changes.
    * swish++/trunk/mod/mail/mod_mail.c, swish++/trunk/mod/mail/mod_mail.h,
@@ -2921,19 +2938,19 @@
    * swish++/trunk/option_stream.c: s/int/unsignend/ -- get rid of Xcode
      warning.
 
-2005-03-16  Paul J. Lucas <paul@lucasmail.org>
+2005-03-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/id3/id3v2.c: s/int/unsigned/ to get rid of warning
    * swish++/trunk/mod/mail/mod_mail.c: Added ct_not_indexable case to get rid
      of warning.
 
-2005-03-11  Paul J. Lucas <paul@lucasmail.org>
+2005-03-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/GNUmakefile: 1. Added "dist" target". 2. Fixed SYSV
      start/stop symbolic links.
 
-2005-03-03  Paul J. Lucas <paul@lucasmail.org>
+2005-03-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6-0-6b1/AssociateMeta.h,
      swish++/tags/swish++-6-0-6b1/BUGS, swish++/tags/swish++-6-0-6b1/Changes,
@@ -3181,32 +3198,32 @@
      passed.
    * swish++/trunk/version.h: Upped version to 6.0.6.
 
-2005-02-23  Paul J. Lucas <paul@lucasmail.org>
+2005-02-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/SWISH++.xcode/project.pbxproj: Xcode project file
 
-2005-02-16  Paul J. Lucas <paul@lucasmail.org>
+2005-02-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/query.c: s/parse_optional_relop/parse_relop
    * swish++/trunk/search_daemon.c: Removed accept_fd -- not used.
 
-2005-02-13  Paul J. Lucas <paul@lucasmail.org>
+2005-02-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/do_file.c, swish++/trunk/extract.c: Reformatted.
 
-2005-02-02  Paul J. Lucas <paul@lucasmail.org>
+2005-02-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/search.1: Added "parentheses" to the note about
      shell meta-characters. Added that they can be quoted as an alternate to
      being backslashed.
 
-2005-01-31  Paul J. Lucas <paul@lucasmail.org>
+2005-01-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/query.c: 1. s/node_pool/node_pool_type/ 2. Added
      and_node_list_type. 3. Made parse_args::operator=( parse_args const& )
      private.
 
-2005-01-02  Paul J. Lucas <paul@lucasmail.org>
+2005-01-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/ExcludeFile.c, swish++/trunk/ExtractExtension.h,
      swish++/trunk/ExtractFile.c, swish++/trunk/Group.c,
@@ -3283,7 +3300,7 @@
      swish++/trunk/WordThreshold.c, swish++/trunk/WordThreshold.h,
      swish++/trunk/WordsNear.h: Redid spacing.
 
-2004-12-31  Paul J. Lucas <paul@lucasmail.org>
+2004-12-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/mail/mod_mail.c: Whitespace fix.
    * swish++/tags/swish++-6.0.5/AssociateMeta.h,
@@ -3519,7 +3536,7 @@
      by cvs2svn to create tag 'swish++-6.0.5'.
    * swish++/trunk/config.h: Redid spacing.
 
-2004-12-30  Paul J. Lucas <paul@lucasmail.org>
+2004-12-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/version.h: Upped version to 6.0.5.
@@ -3564,7 +3581,7 @@
      iso8859_1_to_ascii(). 2. s/No_Meta_ID/Meta_ID_None/
    * swish++/trunk/mod/latex/mod_latex.h: Redid spacing.
 
-2004-12-29  Paul J. Lucas <paul@lucasmail.org>
+2004-12-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/mail/mod_mail.c: 1. s/No_Meta_ID/Meta_ID_None/ 2. Moved
      stack_type, boundary_stack, and did_last_header here. 3. Renamed
@@ -3597,15 +3614,15 @@
    * swish++/trunk/mmap_file.c, swish++/trunk/mmap_file.h: 1.
      s/normal/bt_normal/ 2. s/random/bt_random/ 3. s/sequential/bt_sequential/
 
-2004-11-29  Paul J. Lucas <paul@lucasmail.org>
+2004-11-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/indexer.c: Fixed typo.
 
-2004-11-27  Paul J. Lucas <paul@lucasmail.org>
+2004-11-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/fdbuf.h: Removed streambuf.h.
 
-2004-11-15  Paul J. Lucas <paul@lucasmail.org>
+2004-11-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.0.4/AssociateMeta.h,
      swish++/tags/swish++-6.0.4/BUGS, swish++/tags/swish++-6.0.4/Changes,
@@ -3843,7 +3860,7 @@
    * swish++/trunk/version.h: Upped version to 6.0.4.
    * swish++/trunk/query.c: s/no_put_back/parsed_meta_id/
 
-2004-11-04  Paul J. Lucas <paul@lucasmail.org>
+2004-11-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.0.3/AssociateMeta.h,
      swish++/tags/swish++-6.0.3/BUGS, swish++/tags/swish++-6.0.3/Changes,
@@ -4083,17 +4100,17 @@
    * swish++/trunk/indexer.h: In resume_indexing(), added "if" statement.
    * swish++/trunk/index.c: Removed no-class and dump-html options.
 
-2004-10-13  Paul J. Lucas <paul@lucasmail.org>
+2004-10-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/omanip.h: Removed unneeded #define PJL.
 
-2004-09-09  Paul J. Lucas <paul@lucasmail.org>
+2004-09-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/mod_html.c: In parse_html_tag(), now additionally
      skipping XML processing instructions.
    * swish++/trunk/INSTALL.unix: Removed g++ 2.95.x support.
 
-2004-08-11  Paul J. Lucas <paul@lucasmail.org>
+2004-08-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.0.2/AssociateMeta.h,
      swish++/tags/swish++-6.0.2/BUGS, swish++/tags/swish++-6.0.2/Changes,
@@ -4330,16 +4347,16 @@
    * swish++/trunk/version.h: Upped version to 6.0.2.
    * swish++/trunk/util.h: Reworked error_string() for g++ 3.4.1.
 
-2004-08-10  Paul J. Lucas <paul@lucasmail.org>
+2004-08-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.conf.4: Added missing ID3 and LaTeX
      modules.
 
-2004-07-16  Paul J. Lucas <paul@lucasmail.org>
+2004-07-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: Added: max_out_limit( RLIMIT_FSIZE );
 
-2004-07-15  Paul J. Lucas <paul@lucasmail.org>
+2004-07-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.h: Added: error_string( int err_code )
    * swish++/trunk/index.c, swish++/trunk/search.c, swish++/trunk/stop_words.c:
@@ -4351,23 +4368,23 @@
    * swish++/trunk/Group.c, swish++/trunk/SocketAddress.c: Removed config
      variable name from error message.
 
-2004-06-30  Paul J. Lucas <paul@lucasmail.org>
+2004-06-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/entities.c: Fixed typo in comment.
 
-2004-06-16  Paul J. Lucas <paul@lucasmail.org>
+2004-06-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/mod_html.c: Made entity_to_ascii() and
      find_attribute() static.
 
-2004-04-30  Paul J. Lucas <paul@lucasmail.org>
+2004-04-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile, swish++/trunk/man/GNUmakefile,
      swish++/trunk/man/man1/GNUmakefile, swish++/trunk/man/man3/GNUmakefile,
      swish++/trunk/man/man4/GNUmakefile, swish++/trunk/man/man8/GNUmakefile:
      Added vim comment.
 
-2004-04-22  Paul J. Lucas <paul@lucasmail.org>
+2004-04-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.0.1/AssociateMeta.h,
      swish++/tags/swish++-6.0.1/BUGS, swish++/tags/swish++-6.0.1/Changes,
@@ -4606,7 +4623,7 @@
      s/end()/this->end()/ 2. Made __SUNPRO_CC section the only one.
    * swish++/trunk/version.h: Upped version to 6.0.1.
 
-2004-04-13  Paul J. Lucas <paul@lucasmail.org>
+2004-04-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-6.0/AssociateMeta.h, swish++/tags/swish++-6.0/BUGS,
      swish++/tags/swish++-6.0/Changes, swish++/tags/swish++-6.0/Copying,
@@ -4822,7 +4839,7 @@
      cvs2svn to create tag 'swish++-6.0'.
    * swish++/trunk/Changes: Added changes.
 
-2004-04-12  Paul J. Lucas <paul@lucasmail.org>
+2004-04-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/config/config.mk: 1. Added AR definition. 2. Added
@@ -4851,13 +4868,13 @@
      Sun's CC.
    * swish++/trunk/vector_adapter.h: Initial version in CVS.
 
-2004-04-07  Paul J. Lucas <paul@lucasmail.org>
+2004-04-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/GNUmakefile, swish++/trunk/config/config.pl,
      swish++/trunk/config/makedepend.pl, swish++/trunk/config/man.mk,
      swish++/trunk/config/mod.mk: Added vim comment.
 
-2004-04-01  Paul J. Lucas <paul@lucasmail.org>
+2004-04-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/makedepend.pl: Another directory fix.
    * swish++/trunk/mod/mail/mod_mail.h: Added #ifdef __SUNPRO_CC
@@ -4868,7 +4885,7 @@
    * swish++/trunk/mod/mail/mod_mail.h: 1. s/Multipart,/Multipart/ 2. Added:
      struct message_type;    friend struct message_type;
 
-2004-03-31  Paul J. Lucas <paul@lucasmail.org>
+2004-03-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mmap_file.h: Added #ifndef __SUNPRO_CC for problem with
      Sun's CC compiler.
@@ -4884,7 +4901,7 @@
    * swish++/trunk/query_node.c: Made and_node::eval() more efficient by
      copying an empty child results and simply swapping.
 
-2004-03-29  Paul J. Lucas <paul@lucasmail.org>
+2004-03-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/query.c: Removed TODO.
    * swish++/trunk/query.c: In parse_optional_relop(), moved #ifdef
@@ -4898,7 +4915,7 @@
    * swish++/trunk/man/man1/search.1: Fixed meta-data section.
    * swish++/trunk/query_node.c: Improved speed of "not near".
 
-2004-03-28  Paul J. Lucas <paul@lucasmail.org>
+2004-03-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index_segment.h: Added comments about default copy c'tor and
      assignment.
@@ -4912,7 +4929,7 @@
    * swish++/trunk/config/config.mk: Added MAKEDEPEND variable.
    * swish++/trunk/config/makedepend.pl: Initial version in CVS.
 
-2004-03-27  Paul J. Lucas <paul@lucasmail.org>
+2004-03-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: Moved scripts do subdirectory.
    * swish++/trunk/scripts/httpindex.in, swish++/trunk/scripts/searchc.in,
@@ -4939,7 +4956,7 @@
    * swish++/trunk/man/man1/search.1: 1. Added description of "near" for
      feature NS. 2. Reworked EXAMPLES section.
 
-2004-03-26  Paul J. Lucas <paul@lucasmail.org>
+2004-03-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: 1. Added FEATURE_LIST, FEATURE_DEFS, and
      word_pos. 2. Now no longer doing -fno-rtti when the word_pos feature is
@@ -4980,7 +4997,7 @@
      description. 3. Added description of the -P option. 4. Added mention of
      StoreWordPositions variable. 5. Added mention of WordsNear variable.
 
-2004-03-25  Paul J. Lucas <paul@lucasmail.org>
+2004-03-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.conf.4: 1. Added StoreWordPositions. 2.
      Added WordsNear.
@@ -5083,26 +5100,26 @@
      swish++/trunk/xml_formatter.h: Added vim comment.
    * swish++/trunk/filter.c: Got rid of newlines in error messages.
 
-2004-03-18  Paul J. Lucas <paul@lucasmail.org>
+2004-03-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/file_list.h: Made temp object in operator++(int) const.
 
-2004-03-17  Paul J. Lucas <paul@lucasmail.org>
+2004-03-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mmap_file.h: Removed trailing , from behavior_type.
    * swish++/trunk/config.h: Made comments for ShellFilenameDelimChars and
      ShellFilenameEscapeChars clear that they are for FILE (not path) names.
 
-2004-03-06  Paul J. Lucas <paul@lucasmail.org>
+2004-03-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/WordFilesMax.h: Fixed comment.
 
-2003-12-18  Paul J. Lucas <paul@lucasmail.org>
+2003-12-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/token.h: Reworked token_stream's base class (again).
    * swish++/trunk/token.h: Reworked token_stream's base class.
 
-2003-11-13  Paul J. Lucas <paul@lucasmail.org>
+2003-11-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.15.4/AssociateMeta.h,
      swish++/tags/swish++-5.15.4/BUGS, swish++/tags/swish++-5.15.4/Changes,
@@ -5339,12 +5356,12 @@
    * swish++/trunk/query.c: s/find_result/word_range/
    * swish++/trunk/swish++.conf: Removed premature StorePhraseData.
 
-2003-10-23  Paul J. Lucas <paul@lucasmail.org>
+2003-10-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/swish++.conf: 1. Removed -f and -p options from search(1).
      2. Added StorePhraseData.
 
-2003-10-21  Paul J. Lucas <paul@lucasmail.org>
+2003-10-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/extract.1, swish++/trunk/man/man1/httpindex.1,
      swish++/trunk/man/man1/splitmail.1, swish++/trunk/man/man3/WWW.3,
@@ -5354,18 +5371,18 @@
    * swish++/trunk/query.h, swish++/trunk/search.c: s/find_result/word_range/
    * swish++/trunk/man/man1/index.1: Added "English" to stop-word description.
 
-2003-10-09  Paul J. Lucas <paul@lucasmail.org>
+2003-10-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: Moved initialization of temp_file_name_prefix, take
      2.
    * swish++/trunk/index.c: Moved initialization of temp_file_name_prefix.
 
-2003-10-02  Paul J. Lucas <paul@lucasmail.org>
+2003-10-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/token.c: s/tin/ts/
    * swish++/trunk/token.h: Sorted tokens alphabetically.
 
-2003-09-27  Paul J. Lucas <paul@lucasmail.org>
+2003-09-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.15.3/AssociateMeta.h,
      swish++/tags/swish++-5.15.3/BUGS, swish++/tags/swish++-5.15.3/Changes,
@@ -5601,7 +5618,7 @@
    * swish++/trunk/index.c: In merge_indicies(), moves declaration of
      "continues" out of the loop.
 
-2003-09-17  Paul J. Lucas <paul@lucasmail.org>
+2003-09-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.15.2/AssociateMeta.h,
      swish++/tags/swish++-5.15.2/BUGS, swish++/tags/swish++-5.15.2/Changes,
@@ -5839,15 +5856,15 @@
    * swish++/trunk/file_list.c: 1. s/unsigned char/byte/ 2. In calc_size(),
      fixed list-skipping code. 3. In operator++(), added "sentinel" code.
 
-2003-09-11  Paul J. Lucas <paul@lucasmail.org>
+2003-09-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/SearchResults.xsd: s/homepage.mac.com/www.pauljlucas.org/
 
-2003-09-05  Paul J. Lucas <paul@lucasmail.org>
+2003-09-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/xml_formatter.c: Changed xmlns location.
 
-2003-08-29  Paul J. Lucas <paul@lucasmail.org>
+2003-08-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.15.1/AssociateMeta.h,
      swish++/tags/swish++-5.15.1/BUGS, swish++/tags/swish++-5.15.1/Changes,
@@ -6082,7 +6099,7 @@
    * swish++/trunk/file_list.c: In calc_size(), removed incorrect ++p.
    * swish++/trunk/version.h: Upped version.
 
-2003-08-28  Paul J. Lucas <paul@lucasmail.org>
+2003-08-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.15/AssociateMeta.h, swish++/tags/swish++-5.15/BUGS,
      swish++/tags/swish++-5.15/Changes, swish++/tags/swish++-5.15/Copying,
@@ -6318,12 +6335,12 @@
    * swish++/trunk/query.c: 1. s/bcd.h/enc_int.h/ 2. s/parse_bcd/dec_int/
    * swish++/trunk/GNUmakefile: s/bcd.c/enc_int.c/
 
-2003-08-27  Paul J. Lucas <paul@lucasmail.org>
+2003-08-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: Moved call to mmap_file::behavior() to right
      place.
 
-2003-08-18  Paul J. Lucas <paul@lucasmail.org>
+2003-08-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.14.2/AssociateMeta.h,
      swish++/tags/swish++-5.14.2/BUGS, swish++/tags/swish++-5.14.2/Changes,
@@ -6561,36 +6578,36 @@
    * swish++/trunk/config.h: Added ShellFilenameDelimChars and
      ShellFilenameEscapeChars.
 
-2003-08-14  Paul J. Lucas <paul@lucasmail.org>
+2003-08-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/filter.c: Fixed exec() comment.
 
-2003-08-13  Paul J. Lucas <paul@lucasmail.org>
+2003-08-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/man/man1/search.1: Added missing error codes 68 and 69
      (could not switch user/group).
 
-2003-07-25  Paul J. Lucas <paul@lucasmail.org>
+2003-07-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/searchc.in: Added -F
    * swish++/trunk/search.c: s/Output format/Results format/
    * swish++/trunk/searchc.in: Added -F option.
 
-2003-07-24  Paul J. Lucas <paul@lucasmail.org>
+2003-07-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/search.1: /routers/firewalls and routers/
 
-2003-07-22  Paul J. Lucas <paul@lucasmail.org>
+2003-07-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/index.1: s/subdiretories/subdirectories/
 
-2003-07-16  Paul J. Lucas <paul@lucasmail.org>
+2003-07-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config.h: Updated Word_Max_Consec_Consonants and
      Word_Max_Consec_Vowels.
 
-2003-07-08  Paul J. Lucas <paul@lucasmail.org>
+2003-07-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.14.1/AssociateMeta.h,
      swish++/tags/swish++-5.14.1/BUGS, swish++/tags/swish++-5.14.1/Changes,
@@ -6823,7 +6840,7 @@
    * swish++/trunk/mmap_file.c: Added cast to caddr_t in madvise() call.
    * swish++/trunk/version.h: Updated version.
 
-2003-06-27  Paul J. Lucas <paul@lucasmail.org>
+2003-06-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.14/AssociateMeta.h, swish++/tags/swish++-5.14/BUGS,
      swish++/tags/swish++-5.14/Changes, swish++/tags/swish++-5.14/Copying,
@@ -7042,7 +7059,7 @@
      cvs2svn to create tag 'swish++-5.14'.
    * swish++/trunk/Changes: Added changes.
 
-2003-06-25  Paul J. Lucas <paul@lucasmail.org>
+2003-06-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/charsets/utf8.c: Removed unused orig_c variable.
    * swish++/trunk/man/man1/index.1: For the ID3 module description, fixed
@@ -7055,28 +7072,28 @@
    * swish++/trunk/index.c: In rank_full_index(), fixed tha handling of the 'w'
      iterator.
 
-2003-05-13  Paul J. Lucas <paul@lucasmail.org>
+2003-05-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.h: Fixed comment.
 
-2003-04-16  Paul J. Lucas <paul@lucasmail.org>
+2003-04-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: In rank(), s/int r/int const r/
 
-2003-04-11  Paul J. Lucas <paul@lucasmail.org>
+2003-04-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/GNUmakefile: s/=/:=/
    * swish++/trunk/man/GNUmakefile, swish++/trunk/man/man1/GNUmakefile,
      swish++/trunk/man/man3/GNUmakefile, swish++/trunk/man/man4/GNUmakefile,
      swish++/trunk/man/man8/GNUmakefile: s/=/:=/
 
-2003-04-01  Paul J. Lucas <paul@lucasmail.org>
+2003-04-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search_daemon.c: Fixed comment.
    * swish++/trunk/searchd.in: 1. Added chkconfig information. 2.
      s!.echotmp!/tmp/.echotmp!
 
-2003-03-10  Paul J. Lucas <paul@lucasmail.org>
+2003-03-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.13.5/AssociateMeta.h,
      swish++/tags/swish++-5.13.5/BUGS, swish++/tags/swish++-5.13.5/Changes,
@@ -7310,7 +7327,7 @@
      line.
    * swish++/trunk/version.h: Upped version.
 
-2003-01-29  Paul J. Lucas <paul@lucasmail.org>
+2003-01-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.13.4/AssociateMeta.h,
      swish++/tags/swish++-5.13.4/BUGS, swish++/tags/swish++-5.13.4/Changes,
@@ -7774,12 +7791,12 @@
    * swish++/trunk/mod/man/mod_man.c: In index_words(), s/while ( true )/while
      ( c != e.end_pos() )/
 
-2002-12-28  Paul J. Lucas <paul@lucasmail.org>
+2002-12-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/file_info.c: Fixed comment.
    * swish++/trunk/FilesReserve.h, swish++/trunk/config.h: Fixed comment.
 
-2002-12-26  Paul J. Lucas <paul@lucasmail.org>
+2002-12-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/INSTALL.win32: 1. s!sources.redhat.com/cygwin!cygwin.com! 2.
      Removed mention of Windows 95 -- it's dead. 3. Added mention of Windows
@@ -7789,7 +7806,7 @@
    * swish++/trunk/man/man4/swish++.index.4: Added mention of MP3 file titles.
    * swish++/trunk/BUGS: Initial version in CVS.
 
-2002-12-25  Paul J. Lucas <paul@lucasmail.org>
+2002-12-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.13.2/AssociateMeta.h,
      swish++/tags/swish++-5.13.2/Changes, swish++/tags/swish++-5.13.2/Copying,
@@ -8022,7 +8039,7 @@
      $(PTHREAD_LINK) to E_LINK.
    * swish++/trunk/version.h: Upper version.
 
-2002-12-24  Paul J. Lucas <paul@lucasmail.org>
+2002-12-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.13.1/AssociateMeta.h,
      swish++/tags/swish++-5.13.1/Changes, swish++/tags/swish++-5.13.1/Copying,
@@ -8495,7 +8512,7 @@
    * swish++/trunk/indexer.h: Made index_word() public.
    * swish++/trunk/mod/id3/id3v2.h: Added parse_tcon().
 
-2002-12-23  Paul J. Lucas <paul@lucasmail.org>
+2002-12-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/do_file.c, swish++/trunk/encoded_char.c,
      swish++/trunk/encoded_char.h: s/#if defined( MOD_id3 ) || defined(
@@ -8506,7 +8523,7 @@
      index_headers(), Removed module #ifdef's since they weren't really
      needed.
 
-2002-12-22  Paul J. Lucas <paul@lucasmail.org>
+2002-12-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/mail/mod_mail.h: Removed module #ifdef's.
    * swish++/trunk/encodings/encodings.h: s/-1/~0/
@@ -8533,7 +8550,7 @@
    * swish++/trunk/charsets/charsets.h: 1. Added UNKNOWN_CHARSET. 2. Added
      charset_utf16be() and charset_utf16le().
 
-2002-12-21  Paul J. Lucas <paul@lucasmail.org>
+2002-12-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/id3/id3v2.h, swish++/trunk/mod/id3/mod_id3.c: Initial
      versions in CVS.
@@ -8541,20 +8558,20 @@
      swish++/trunk/mod/id3/id3v1.h, swish++/trunk/mod/id3/mod_id3.h: Initial
      versions in CVS.
 
-2002-12-20  Paul J. Lucas <paul@lucasmail.org>
+2002-12-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/indexer.c: Fixed tidy_title() comment.
 
-2002-12-17  Paul J. Lucas <paul@lucasmail.org>
+2002-12-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/www_example/search.cgi: Added "--" to end of options.
 
-2002-12-15  Paul J. Lucas <paul@lucasmail.org>
+2002-12-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/charsets/utf7.c, swish++/trunk/charsets/utf8.c: Added blank
      line.
 
-2002-12-14  Paul J. Lucas <paul@lucasmail.org>
+2002-12-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/mod_html.c, swish++/trunk/mod/mail/mod_mail.c,
      swish++/trunk/mod/man/mod_man.c: Tidied up find_meta() code.
@@ -8564,7 +8581,7 @@
    * swish++/trunk/word_util.c, swish++/trunk/word_util.h: Added
      move_if_match().
 
-2002-12-04  Paul J. Lucas <paul@lucasmail.org>
+2002-12-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.12.1/AssociateMeta.h,
      swish++/tags/swish++-5.12.1/Changes, swish++/tags/swish++-5.12.1/Copying,
@@ -8788,7 +8805,7 @@
      int.
    * swish++/trunk/version.h: Upped version to 5.12.1.
 
-2002-11-30  Paul J. Lucas <paul@lucasmail.org>
+2002-11-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.12/AssociateMeta.h,
      swish++/tags/swish++-5.12/Changes, swish++/tags/swish++-5.12/Copying,
@@ -9015,7 +9032,7 @@
      versions in CVS.
    * swish++/trunk/Group.h: Added to comment.
 
-2002-11-22  Paul J. Lucas <paul@lucasmail.org>
+2002-11-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.11.1/AssociateMeta.h,
      swish++/tags/swish++-5.11.1/Changes, swish++/tags/swish++-5.11.1/Copying,
@@ -9234,22 +9251,22 @@
      by cvs2svn to create tag 'swish++-5.11.1'.
    * swish++/trunk/Changes: Added changes.
 
-2002-11-19  Paul J. Lucas <paul@lucasmail.org>
+2002-11-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version to 5.11.1.
    * swish++/trunk/charsets/utf8.c: 1. Changed syncing to skip forward rather
      than back to prevent an infinite loop    with bad UTF-8. 2. Added check
      for FE and FF bytes.
 
-2002-11-16  Paul J. Lucas <paul@lucasmail.org>
+2002-11-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/index.1: Added missing 'n' argument for -g.
 
-2002-11-13  Paul J. Lucas <paul@lucasmail.org>
+2002-11-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/do_file.c: Added comments to #endif's.
 
-2002-11-01  Paul J. Lucas <paul@lucasmail.org>
+2002-11-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.11/AssociateMeta.h,
      swish++/tags/swish++-5.11/Changes, swish++/tags/swish++-5.11/Copying,
@@ -9467,7 +9484,7 @@
      filter to wvText and added URL for www.wvware.com. 3. Added (missing)
      LaTeX and Man IncludeFile lines.
 
-2002-10-31  Paul J. Lucas <paul@lucasmail.org>
+2002-10-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.10/AssociateMeta.h,
      swish++/tags/swish++-5.10/Changes, swish++/tags/swish++-5.10/Copying,
@@ -9682,22 +9699,22 @@
      2. In extract_words(), added comments.
    * swish++/trunk/do_file.c: In do_file(), added "out = &extracted_file;"
 
-2002-10-29  Paul J. Lucas <paul@lucasmail.org>
+2002-10-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: Added MAC_OS_X.
    * swish++/trunk/mmap_file.h: Added: #include <sys/types.h>
    * swish++/trunk/version.h: Upped version to 5.10.
 
-2002-10-25  Paul J. Lucas <paul@lucasmail.org>
+2002-10-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config-sh: Removed an extraneous blank line.
 
-2002-10-16  Paul J. Lucas <paul@lucasmail.org>
+2002-10-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/elements.c: 1. Added XHTML 2.0 reference. 2. Added
      the h, line, name, nl, quote, and section elements.
 
-2002-09-26  Paul J. Lucas <paul@lucasmail.org>
+2002-09-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: Added -D_BSD_SOURCE to LINUX definition.
    * swish++/trunk/stop_words.c: Added call to mmap_file::behavior().
@@ -9709,7 +9726,7 @@
      mmap_file::behavior().
    * swish++/trunk/config/src/madvise.c: Initial version in CVS.
 
-2002-09-12  Paul J. Lucas <paul@lucasmail.org>
+2002-09-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9.6/AssociateMeta.h,
      swish++/tags/swish++-5.9.6/Changes, swish++/tags/swish++-5.9.6/Copying,
@@ -9929,12 +9946,12 @@
    * swish++/trunk/iso8859-1.c: Changed ' ' to '\t', '\n', '\v', '\f', '\r'.
    * swish++/trunk/version.h: Upped version to 5.9.6.
 
-2002-09-10  Paul J. Lucas <paul@lucasmail.org>
+2002-09-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/latex/mod_latex.c: Fixed comment.
    * swish++/trunk/mod/latex/commands.c: Fixed comment.
 
-2002-08-26  Paul J. Lucas <paul@lucasmail.org>
+2002-08-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9.5/AssociateMeta.h,
      swish++/tags/swish++-5.9.5/Changes, swish++/tags/swish++-5.9.5/Copying,
@@ -10150,7 +10167,7 @@
    * swish++/trunk/index.c, swish++/trunk/indexer.c: Made num_indexed_words,
      num_total_words, and num_unique_words unsigned long rather than just long.
 
-2002-08-06  Paul J. Lucas <paul@lucasmail.org>
+2002-08-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9.4/AssociateMeta.h,
      swish++/tags/swish++-5.9.4/Changes, swish++/tags/swish++-5.9.4/Copying,
@@ -10375,7 +10392,7 @@
      swish++/trunk/search_thread.c: Made whatever can be declared static
      actually static.
 
-2002-07-20  Paul J. Lucas <paul@lucasmail.org>
+2002-07-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9.3/AssociateMeta.h,
      swish++/tags/swish++-5.9.3/Changes, swish++/tags/swish++-5.9.3/Copying,
@@ -10590,7 +10607,7 @@
    * swish++/trunk/directory.c: In do_check_add_file(), s!'/'!Dir_Sep_Char!
    * swish++/trunk/version.h: Upped version.
 
-2002-06-24  Paul J. Lucas <paul@lucasmail.org>
+2002-06-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9.2/AssociateMeta.h,
      swish++/tags/swish++-5.9.2/Changes, swish++/tags/swish++-5.9.2/Copying,
@@ -10807,11 +10824,11 @@
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/version.h: Upped version to 5.9.2.
 
-2002-06-14  Paul J. Lucas <paul@lucasmail.org>
+2002-06-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/encoded_char.h: Fixed typo in comment.
 
-2002-06-07  Paul J. Lucas <paul@lucasmail.org>
+2002-06-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9.1/AssociateMeta.h,
      swish++/tags/swish++-5.9.1/Changes, swish++/tags/swish++-5.9.1/Copying,
@@ -11028,7 +11045,7 @@
      s/parse_primary/parse_meta/
    * swish++/trunk/version.h: Upped version.
 
-2002-06-05  Paul J. Lucas <paul@lucasmail.org>
+2002-06-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.9/AssociateMeta.h,
      swish++/tags/swish++-5.9/Changes, swish++/tags/swish++-5.9/Copying,
@@ -11231,7 +11248,7 @@
      LaTeX to set of files that can have titles. 3. Added XML schema
      information for feature XMLS.
 
-2002-06-04  Paul J. Lucas <paul@lucasmail.org>
+2002-06-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/SearchResults.xsd: Initial version in CVS.
@@ -11242,7 +11259,7 @@
    * swish++/trunk/INSTALL.unix: Updated compiler prerequisites.
    * swish++/trunk/SearchResults.dtd: s/swishpp/SearchResults/
 
-2002-06-01  Paul J. Lucas <paul@lucasmail.org>
+2002-06-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.8/AssociateMeta.h,
      swish++/tags/swish++-5.8/Changes, swish++/tags/swish++-5.8/Copying,
@@ -11444,7 +11461,7 @@
      UTF-7 and UTF-8. 2. Added a caveat about an e-mail message having a
      simultaneous encoding and    character set. 3. Added Unicode references.
 
-2002-05-31  Paul J. Lucas <paul@lucasmail.org>
+2002-05-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/encoded_char.h: 1. Added: #include <set> 2. Added: #include
      "iso8859-1.h" 3. s/decoder_type/encoding_type/ 4. Added:
@@ -11478,7 +11495,7 @@
      version in CVS.
    * swish++/trunk/encodings/base64.c: Added decoder.
 
-2002-05-30  Paul J. Lucas <paul@lucasmail.org>
+2002-05-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/do_file.c: Added call to
      encoded_char_range::decoder::reset_all()
@@ -11491,7 +11508,7 @@
    * swish++/trunk/charsets/README, swish++/trunk/encodings/README: Initial
      version in CVS.
 
-2002-05-29  Paul J. Lucas <paul@lucasmail.org>
+2002-05-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/encodings/quoted_printable.c, swish++/trunk/fdbuf.c: s/while
      ( 1 )/while ( true )/
@@ -11506,7 +11523,7 @@
    * swish++/trunk/conf_percent.h: In constructor, removed spurious "= 0".
    * swish++/trunk/fdbuf.h: Added #if for streambuf vs. streambuf.h
 
-2002-05-03  Paul J. Lucas <paul@lucasmail.org>
+2002-05-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/encodings/base64.c: 1. Added: #include "iso8859-1.h" 2.
      Added call to iso8859_1_to_ascii().
@@ -11530,7 +11547,7 @@
    * swish++/trunk/iso8859-1.c, swish++/trunk/iso8859-1.h,
      swish++/trunk/word_util.c: Moved table from word_util.c.
 
-2002-04-29  Paul J. Lucas <paul@lucasmail.org>
+2002-04-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: 1. Added DECODER_* variables. 2. Remoced
      encoder_char.c from I_SOURCES. 3. Added DECODER_LIB target. 4. Added
@@ -11558,13 +11575,13 @@
      swish++/trunk/mod/man/mod_man.h, swish++/trunk/mod/rtf/mod_rtf.c,
      swish++/trunk/mod/rtf/mod_rtf.h: s/mod_/MOD_/
 
-2002-04-25  Paul J. Lucas <paul@lucasmail.org>
+2002-04-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/INSTALL.unix: Added mention of minimum GNU make version.
    * swish++/trunk/GNUmakefile: Added $(I_ETC) as a target of the $(MKDIR) $@
      line.
 
-2002-04-16  Paul J. Lucas <paul@lucasmail.org>
+2002-04-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.7.1/AssociateMeta.h,
      swish++/tags/swish++-5.7.1/Changes, swish++/tags/swish++-5.7.1/Copying,
@@ -11773,18 +11790,18 @@
      PARAMETERS comment.
    * swish++/trunk/search.c: In search(), added const to highest_rank.
 
-2002-04-07  Paul J. Lucas <paul@lucasmail.org>
+2002-04-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search.c: In search(), added code to ensure rank is not
      zero.
 
-2002-02-19  Paul J. Lucas <paul@lucasmail.org>
+2002-02-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.h: Made various thread_pool data members
      "volatile" because this should be done for variables that are accessed by
      multiple threads.
 
-2002-02-16  Paul J. Lucas <paul@lucasmail.org>
+2002-02-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile, swish++/trunk/config/GNUmakefile: Removed
      "dist" target.
@@ -11792,7 +11809,7 @@
      made "lower" non-const to work with updated auto_vec.
    * swish++/trunk/auto_vec.h: Made const/non-const versions of accessors.
 
-2002-02-07  Paul J. Lucas <paul@lucasmail.org>
+2002-02-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.7/AssociateMeta.h,
      swish++/tags/swish++-5.7/Changes, swish++/tags/swish++-5.7/Copying,
@@ -11981,7 +11998,7 @@
    * swish++/trunk/man/man1/index.1: 1. Added LaTeX section. 2. Added Leslie
      Lamport reference. 3. s/SCCS/CVS/ since nobody uses SCCS any more.
 
-2002-02-06  Paul J. Lucas <paul@lucasmail.org>
+2002-02-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/README.Solaris: Removed "ephemeral ports."
    * swish++/trunk/Changes: Added changes.
@@ -12012,19 +12029,19 @@
    * swish++/trunk/man/man4/swish++.conf.4: Added missing TempDirectory.
    * swish++/trunk/TempDirectory.c: Initial version in CVS.
 
-2002-01-27  Paul J. Lucas <paul@lucasmail.org>
+2002-01-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/indexer.c: In tidy_title(), added code to squeeze multiple
      whitespace characters.
    * swish++/trunk/man/man1/search.1: Added missing "encoding" to XML example.
 
-2002-01-26  Paul J. Lucas <paul@lucasmail.org>
+2002-01-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.c: In thread_pool_thread_main(), moved the
      pthread_cleanup_push( thread_pool_decrement_busy, t ); after
      MUTEX_UNLOCK() for q_lock because the scoping was wrong.
 
-2002-01-24  Paul J. Lucas <paul@lucasmail.org>
+2002-01-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/mod_html.c: In is_html_comment(), reworked code to
      fix -> bug.
@@ -12045,17 +12062,17 @@
      s/thread_pool_thread_destroy/thread_pool_thread_cleanup/
      2. Added: thread_pool_decrement_busy().
 
-2002-01-17  Paul J. Lucas <paul@lucasmail.org>
+2002-01-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod/html/mod_html.c: Added comment.
 
-2002-01-13  Paul J. Lucas <paul@lucasmail.org>
+2002-01-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/swish++.conf: Changed value for SocketQueueSize to 511.
    * swish++/trunk/config.h: Changed value for SocketQueueSize_Default to 511.
    * swish++/trunk/man/man1/search.1: Changed default value for -q to 511.
 
-2002-01-10  Paul J. Lucas <paul@lucasmail.org>
+2002-01-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.6/AssociateMeta.h,
      swish++/tags/swish++-5.6/Changes, swish++/tags/swish++-5.6/Copying,
@@ -12240,7 +12257,7 @@
    * swish++/trunk/INSTALL.unix: 1. s/www.objectspace.com/www.stlport.org/ 2.
      Fixed module wording in step 2 of building.
 
-2002-01-06  Paul J. Lucas <paul@lucasmail.org>
+2002-01-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added change.
    * swish++/trunk/INSTALL.unix: Added mention of README.Solaris.
@@ -12260,7 +12277,7 @@
      attribute. B. In ~thread_pool(), added DEFER_CANCEL(). C. In new_task(),
      reworked mutex locking. D. In new_task(), Added DEFER_CANCEL().
 
-2002-01-03  Paul J. Lucas <paul@lucasmail.org>
+2002-01-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: Fixed comment in map_ref().
    * swish++/trunk/Group.c, swish++/trunk/SocketAddress.c: Added: #include
@@ -12268,11 +12285,11 @@
    * swish++/trunk/search_thread.c: 1. Added flush. 2. Removed interrupt-proof
      code for close().
 
-2001-12-29  Paul J. Lucas <paul@lucasmail.org>
+2001-12-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/searchc.in: Added shutdown().
 
-2001-12-20  Paul J. Lucas <paul@lucasmail.org>
+2001-12-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/swish++.conf: Added: IncludeFile RTF *.rtf
@@ -12295,7 +12312,7 @@
      swish++/trunk/mod/rtf/mod_rtf.h: Initial version in CVS.
    * swish++/trunk/man/man1/index.1: Added description of RTF module.
 
-2001-12-19  Paul J. Lucas <paul@lucasmail.org>
+2001-12-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.5.3/AssociateMeta.h,
      swish++/tags/swish++-5.5.3/Changes, swish++/tags/swish++-5.5.3/Copying,
@@ -12494,13 +12511,13 @@
      in a few places. 3. Added "sleep 3" in restart case.
    * swish++/trunk/search.c: In search(), added "delete format".
 
-2001-12-08  Paul J. Lucas <paul@lucasmail.org>
+2001-12-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/INSTALL.unix: Added mention of Procmail.
    * swish++/trunk/procmailrc: Initial version in CVS.
    * swish++/trunk/www_example/search.html: Converted to XHTML.
 
-2001-12-02  Paul J. Lucas <paul@lucasmail.org>
+2001-12-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/www_example/search.cgi: 1. Changed upper-case HTML to lower
      case and added quotes around attribute    values. 2. Changed $SWISH_BIN to
@@ -12692,11 +12709,11 @@
      "else" back.
    * swish++/trunk/Changes: Added changes.
 
-2001-12-01  Paul J. Lucas <paul@lucasmail.org>
+2001-12-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version to 5.5.2.
 
-2001-11-24  Paul J. Lucas <paul@lucasmail.org>
+2001-11-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.5.1/AssociateMeta.h,
      swish++/tags/swish++-5.5.1/Changes, swish++/tags/swish++-5.5.1/Copying,
@@ -12890,7 +12907,7 @@
    * swish++/trunk/SocketAddress.c: s/atoi/::atoi/
    * swish++/trunk/version.h: Upped version.
 
-2001-11-12  Paul J. Lucas <paul@lucasmail.org>
+2001-11-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.5/AssociateMeta.h,
      swish++/tags/swish++-5.5/Changes, swish++/tags/swish++-5.5/Copying,
@@ -13076,7 +13093,7 @@
      background 2. Put test of $SEARCH before CONF_FILE. 3. Added code to put
      itself in the background as a daemon.
 
-2001-11-11  Paul J. Lucas <paul@lucasmail.org>
+2001-11-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man8/GNUmakefile,
      swish++/trunk/man/man8/searchmonitor.8, swish++/trunk/searchmonitor.in:
@@ -13117,7 +13134,7 @@
    * swish++/trunk/Group.c, swish++/trunk/Group.h, swish++/trunk/User.c,
      swish++/trunk/User.h: Initial version in CVS.
 
-2001-11-10  Paul J. Lucas <paul@lucasmail.org>
+2001-11-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.conf.4: Added mention of Group and User
      variables.
@@ -13127,11 +13144,11 @@
    * swish++/trunk/conf_enum.c, swish++/trunk/conf_enum.h: Added the is_legal()
      function.
 
-2001-11-09  Paul J. Lucas <paul@lucasmail.org>
+2001-11-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/swish++.conf: s!/tmp/search.pid!/var/run/search.pid!
 
-2001-11-08  Paul J. Lucas <paul@lucasmail.org>
+2001-11-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search.h: Added search_background_opt.
    * swish++/trunk/swish++.conf: Added SearchDaemon.
@@ -13140,12 +13157,12 @@
    * swish++/trunk/SearchBackground.h: Initial version in CVS.
    * swish++/trunk/man/man4/swish++.conf.4: Added mention of SearchBackground.
 
-2001-11-07  Paul J. Lucas <paul@lucasmail.org>
+2001-11-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: In main(), added maxing out of number of file
      descriptors to enable more partial indicies to be generated.
 
-2001-11-06  Paul J. Lucas <paul@lucasmail.org>
+2001-11-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.4.6/AssociateMeta.h,
      swish++/tags/swish++-5.4.6/Changes, swish++/tags/swish++-5.4.6/Copying,
@@ -13510,7 +13527,7 @@
    * swish++/trunk/conf_var.c: In parse_file(), removed call to reset_all().
    * swish++/trunk/version.h: Upped version to 5.4.5.
 
-2001-11-05  Paul J. Lucas <paul@lucasmail.org>
+2001-11-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.4.4/AssociateMeta.h,
      swish++/tags/swish++-5.4.4/Changes, swish++/tags/swish++-5.4.4/Copying,
@@ -13689,7 +13706,7 @@
      by cvs2svn to create tag 'swish++-5.4.4'.
    * swish++/trunk/Changes: Added changes.
 
-2001-11-03  Paul J. Lucas <paul@lucasmail.org>
+2001-11-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: In map_ref(), added call to init_mod_vars().
    * swish++/trunk/conf_var.h: Added init_mod_vars().
@@ -13704,7 +13721,7 @@
    * swish++/trunk/indexer.h: Added missing #include <string>.
    * swish++/trunk/version.h: Upped version to 5.4.4.
 
-2001-10-13  Paul J. Lucas <paul@lucasmail.org>
+2001-10-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.4.3/AssociateMeta.h,
      swish++/tags/swish++-5.4.3/Changes, swish++/tags/swish++-5.4.3/Copying,
@@ -13886,12 +13903,12 @@
    * swish++/trunk/thread_pool.c: Added "#ifndef FreeBSD" around use of
      PTHREAD_MUTEX_ERRORCHECK.
 
-2001-10-11  Paul J. Lucas <paul@lucasmail.org>
+2001-10-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/GNUmakefile: Moved conf_enum.c so that it's always compiled.
 
-2001-10-09  Paul J. Lucas <paul@lucasmail.org>
+2001-10-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.4.2/AssociateMeta.h,
      swish++/tags/swish++-5.4.2/Changes, swish++/tags/swish++-5.4.2/Copying,
@@ -14070,7 +14087,7 @@
      "results_separator".
    * swish++/trunk/version.h: Upped version.
 
-2001-10-03  Paul J. Lucas <paul@lucasmail.org>
+2001-10-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.4.1/AssociateMeta.h,
      swish++/tags/swish++-5.4.1/Changes, swish++/tags/swish++-5.4.1/Copying,
@@ -14249,7 +14266,7 @@
    * swish++/trunk/indexer.c: In indexer::all_mods_options(),
      s/++option_count/*c++ = *s/.
 
-2001-09-27  Paul J. Lucas <paul@lucasmail.org>
+2001-09-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.4/AssociateMeta.h,
      swish++/tags/swish++-5.4/Changes, swish++/tags/swish++-5.4/Copying,
@@ -14422,7 +14439,7 @@
    * swish++/trunk/README: Added XML results format.
    * swish++/trunk/SearchResults.dtd: Initial version in CVS.
 
-2001-09-24  Paul J. Lucas <paul@lucasmail.org>
+2001-09-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/xml_formatter.c: 1. Added SEARCH_RESULTS_DTD_URI. 2.
@@ -14461,7 +14478,7 @@
      swish++/trunk/results_formatter.c, swish++/trunk/results_formatter.h,
      swish++/trunk/xml_formatter.h: Initial version in CVS.
 
-2001-09-19  Paul J. Lucas <paul@lucasmail.org>
+2001-09-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/mod/html/mod_html.c: 1. Moved constructor definition here.
@@ -14490,7 +14507,7 @@
      FilterAttachment. 2. Added: register_var()
    * swish++/trunk/conf_var.h: Added register_var().
 
-2001-09-09  Paul J. Lucas <paul@lucasmail.org>
+2001-09-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3.6/AssociateMeta.h,
      swish++/tags/swish++-5.3.6/Changes, swish++/tags/swish++-5.3.6/Copying,
@@ -14660,7 +14677,7 @@
    * swish++/trunk/index.c: Moved definition of exlude_class_names to
      mod_html.c.
 
-2001-09-08  Paul J. Lucas <paul@lucasmail.org>
+2001-09-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/GNUmakefile: 1. Added DEBUGFLAGS. 2. For $(MOD_LIBS) rule,
@@ -14670,7 +14687,7 @@
      -fno-rtti to CCFLAGS. 3. Added -fomit-frame-pointer to OPTIM.
    * swish++/trunk/directory.h: Added missing #include "less.h".
 
-2001-09-07  Paul J. Lucas <paul@lucasmail.org>
+2001-09-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/swish++.conf: Removed DirectoriesGrow and
@@ -14695,7 +14712,7 @@
      DirectoriesReserve_Default.
    * swish++/trunk/conf_var.c: Removed DirectoriesGrow and DirectoriesReserve.
 
-2001-09-06  Paul J. Lucas <paul@lucasmail.org>
+2001-09-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: In load_old_index(), removed new_strdup()'s since
      file_info is now doing them.
@@ -14732,16 +14749,16 @@
      s/Exit_No_Init_Mutex/Exit_No_Init_Thread_Mutex/
    * swish++/trunk/conf_var.c: In reset_all(), added check for null pointer.
 
-2001-09-05  Paul J. Lucas <paul@lucasmail.org>
+2001-09-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version to 5.3.6.
 
-2001-09-01  Paul J. Lucas <paul@lucasmail.org>
+2001-09-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.c, swish++/trunk/thread_pool.h:
      s/t_min_/min_threads_/, s/t_max_/max_threads_/
 
-2001-08-31  Paul J. Lucas <paul@lucasmail.org>
+2001-08-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/httpindex.1: Added -e's to example.
    * swish++/trunk/conf_var.c: In parse_file(), added reset_all().
@@ -14751,7 +14768,7 @@
      while ( !::pthread_kill( thread_, 0 ) ) ; to ensure the thread is really
      killed before continuing.
 
-2001-08-30  Paul J. Lucas <paul@lucasmail.org>
+2001-08-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3.5/AssociateMeta.h,
      swish++/tags/swish++-5.3.5/Changes, swish++/tags/swish++-5.3.5/Copying,
@@ -14940,12 +14957,12 @@
      E_SOURCES for bug fix ESI.
    * swish++/trunk/FollowLinks.h: s/follow_links/follow_symbolic_links/
 
-2001-08-28  Paul J. Lucas <paul@lucasmail.org>
+2001-08-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.c: Fixed thread::~thread() so it kills itself
      rather than the calling thread.
 
-2001-08-26  Paul J. Lucas <paul@lucasmail.org>
+2001-08-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: 1. Moved target definition before include. 2.
      s/C_TARGET/CPP_TARGET/ 3. Added MOD_LIBS, MOD_LIB_PATHS, MOD_LINK. 4.
@@ -14986,15 +15003,15 @@
      RANLIB. 3. Moved auto-dependency generation here.
    * swish++/trunk/config/mod.mk: Initial version in CVS.
 
-2001-08-22  Paul J. Lucas <paul@lucasmail.org>
+2001-08-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.c: Removed unneeded #include's.
 
-2001-08-20  Paul J. Lucas <paul@lucasmail.org>
+2001-08-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.h: Removed unneeded #include "config.h".
 
-2001-08-19  Paul J. Lucas <paul@lucasmail.org>
+2001-08-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3.4/AssociateMeta.h,
      swish++/tags/swish++-5.3.4/Changes, swish++/tags/swish++-5.3.4/Copying,
@@ -15162,7 +15179,7 @@
      for the file's title. 3. In write_dir_index(), switched to using
      FOR_EACH().
 
-2001-08-18  Paul J. Lucas <paul@lucasmail.org>
+2001-08-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: In write_dir_index(), switched to using FOR_EACH().
    * swish++/trunk/option_stream.c: Added "return os;' at end of "option_error"
@@ -15178,7 +15195,7 @@
    * swish++/trunk/option_stream.c: Moved the test main() outside of the PJL
      namespace.
 
-2001-08-17  Paul J. Lucas <paul@lucasmail.org>
+2001-08-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3.3/AssociateMeta.h,
      swish++/tags/swish++-5.3.3/Changes, swish++/tags/swish++-5.3.3/Copying,
@@ -15353,7 +15370,7 @@
    * swish++/trunk/search.c: In main(), s/search_options opt/search_options
      const opt/
 
-2001-08-16  Paul J. Lucas <paul@lucasmail.org>
+2001-08-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3.2/AssociateMeta.h,
      swish++/tags/swish++-5.3.2/Changes, swish++/tags/swish++-5.3.2/Copying,
@@ -15538,7 +15555,7 @@
    * swish++/trunk/exit_codes.h: Added Exit_No_Init_Condition and
      Exit_No_Init_Mutex.
 
-2001-08-10  Paul J. Lucas <paul@lucasmail.org>
+2001-08-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3.1/AssociateMeta.h,
      swish++/tags/swish++-5.3.1/Changes, swish++/tags/swish++-5.3.1/Copying,
@@ -15703,7 +15720,7 @@
    * swish++/trunk/query.c: In perform_and(), added needed "break".
    * swish++/trunk/version.h: Upped version to 5.3.1.
 
-2001-08-09  Paul J. Lucas <paul@lucasmail.org>
+2001-08-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/ThreadTimeout.h: Fixed typo in comment.
    * swish++/trunk/init_modules.c: 1. Added #include "indexer". 2. Removed
@@ -15711,7 +15728,7 @@
    * swish++/trunk/conf_bool.h, swish++/trunk/conf_int.h: Removed extraneous
      backslash.
 
-2001-07-29  Paul J. Lucas <paul@lucasmail.org>
+2001-07-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.3/AssociateMeta.h,
      swish++/tags/swish++-5.3/Changes, swish++/tags/swish++-5.3/Copying,
@@ -15866,13 +15883,13 @@
    * swish++/trunk/query.h, swish++/trunk/search.c: 1.
      s/search_results_type/search_results/ 2. s/find_results_type/find_results/
 
-2001-07-23  Paul J. Lucas <paul@lucasmail.org>
+2001-07-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/index.1: Added paragraph at the end of the "Word
      Determination" subsection addressing conversion to lower case prior to
      indexing.
 
-2001-07-15  Paul J. Lucas <paul@lucasmail.org>
+2001-07-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/query.c: 1. In parse_meta() and parse_primary(), got rid of
      unused default value. 2. Changed what what parse_query() to
@@ -15894,7 +15911,7 @@
    * swish++/trunk/exit_codes.h: Added: Exit_Internal_Error
    * swish++/trunk/conf_var.h: Added comment.
 
-2001-07-14  Paul J. Lucas <paul@lucasmail.org>
+2001-07-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.2/AssociateMeta.h,
      swish++/tags/swish++-5.2/Changes, swish++/tags/swish++-5.2/Copying,
@@ -16055,14 +16072,14 @@
      section. 2. Added informaiton on filtering attachments. 3. Added more
      references.
 
-2001-07-12  Paul J. Lucas <paul@lucasmail.org>
+2001-07-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: In usage(), s/o/err/
    * swish++/trunk/man/man1/index.1: 1. Added mention of FilterAttachment for
      feature AFP. 2. s/-D/-G/
    * swish++/trunk/man/man1/extract.1: Added FilterAttachment.
 
-2001-07-11  Paul J. Lucas <paul@lucasmail.org>
+2001-07-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: 1. Added conf_filter.c. 2. Removed
      FilterFile.c.
@@ -16079,22 +16096,22 @@
    * swish++/trunk/filter.h: Added: substitute( std::string const &file_name );
    * swish++/trunk/version.h: Upped version.
 
-2001-07-08  Paul J. Lucas <paul@lucasmail.org>
+2001-07-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/encoded_char.c: Minor code restucture (added goto).
    * swish++/trunk/encoded_char.h: Added comments.
 
-2001-07-06  Paul J. Lucas <paul@lucasmail.org>
+2001-07-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_mail.c: In index_headers(), the code incorrectly always
      fell through to the multipart case.  This didn't actually cause indexing
      to eb wrong because the check for the boundary string would have failed.
 
-2001-07-05  Paul J. Lucas <paul@lucasmail.org>
+2001-07-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/swish++.conf: Added: FilterFile *.bz2 bunzip2 -c %f > @%F
 
-2001-07-04  Paul J. Lucas <paul@lucasmail.org>
+2001-07-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-5.1/AssociateMeta.h,
      swish++/tags/swish++-5.1/Changes, swish++/tags/swish++-5.1/Copying,
@@ -16257,7 +16274,7 @@
    * swish++/trunk/extract.c: s/do_directory( file_name )/do_directory(
      ::strdup( file_name ) )/
 
-2001-07-03  Paul J. Lucas <paul@lucasmail.org>
+2001-07-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.index.4: Made separate BCD subsection.
    * swish++/trunk/Changes: Added changes.
@@ -16303,7 +16320,7 @@
      swish++/trunk/search.h, swish++/trunk/util.h: Added: #include
      "fake_ansi.h"
 
-2001-07-02  Paul J. Lucas <paul@lucasmail.org>
+2001-07-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/fdbuf.h: 1. Added: #include "fake_ansi.h" 2. Added: #define
      PJL /* nothing */
@@ -16331,7 +16348,7 @@
      variable for bug fix MFR. 2. Added DirectoriesGrow and DirectoriesReserve
      vairable. 3. Added "Percentage variables" section.
 
-2001-07-01  Paul J. Lucas <paul@lucasmail.org>
+2001-07-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: Removed file_info.c from S_SRCS since
      file_info::out() has been moved to write_file_info() in search.c.
@@ -16378,7 +16395,7 @@
    * swish++/trunk/DirectoriesGrow.h, swish++/trunk/DirectoriesReserve.h:
      Initial versions in CVS.
 
-2001-06-26  Paul J. Lucas <paul@lucasmail.org>
+2001-06-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile, swish++/trunk/conf_var.h,
      swish++/trunk/config/config-sh, swish++/trunk/config/config.mk,
@@ -16392,7 +16409,7 @@
      branch.
    * swish++/trunk/bcd.h: Carry-forward of 5.0.1 branch.
 
-2001-06-21  Paul J. Lucas <paul@lucasmail.org>
+2001-06-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.c, swish++/trunk/thread_pool.h: Added
      start_function_type to thread() constructor.
@@ -16417,7 +16434,7 @@
    * swish++/branches/swish++-5.0.1/fake_ansi.h: Replaced __GNUC__, et al, with
      PJL_GCC_295.
 
-2001-06-20  Paul J. Lucas <paul@lucasmail.org>
+2001-06-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/branches/swish++-5.0.1/mmap_file.c:
      s/ios::open_mode/ios::openmode/
@@ -16460,7 +16477,7 @@
    * swish++/branches/swish++-5.0.1/less.h: Added needed "namespace std { ...
      }".
 
-2001-06-05  Paul J. Lucas <paul@lucasmail.org>
+2001-06-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index_segment.h:
      s/random_access_iterator_tag/std::random_access_iterator_tag/
@@ -16471,7 +16488,7 @@
      s/reverse_bidirectional_iterator/std::reverse_bidirectional_iterator/
    * swish++/trunk/less.h: Put specializations of less<> inside namespace std.
 
-2001-06-01  Paul J. Lucas <paul@lucasmail.org>
+2001-06-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/filter.h: Moved the definition of the destructor out of the
      class declaration.
@@ -16483,11 +16500,11 @@
      file_index ]/file_info::ith_info( file_index )/ 3. In write_file_index(),
      made use of new file_info::const_iterator.
 
-2001-05-31  Paul J. Lucas <paul@lucasmail.org>
+2001-05-31  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/file_info.c: s/off_t/size_t/
 
-2001-05-23  Paul J. Lucas <paul@lucasmail.org>
+2001-05-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/branches/swish++-5.0.1/AssociateMeta.h,
      swish++/branches/swish++-5.0.1/Changes,
@@ -16788,11 +16805,11 @@
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/thread_pool.h: Made ~thread() public.
 
-2001-05-13  Paul J. Lucas <paul@lucasmail.org>
+2001-05-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/thread_pool.h: s/queue/std::queue/ s/set/std::set/
 
-2001-05-12  Paul J. Lucas <paul@lucasmail.org>
+2001-05-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/man/man1/index.1: Changed -T option not to reference only
@@ -16807,14 +16824,14 @@
    * swish++/trunk/mod_html.c: In tag_cmp(), "fixed" increment and
      end-of-string test.
 
-2001-05-11  Paul J. Lucas <paul@lucasmail.org>
+2001-05-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/swish++.conf: Added "environment".
    * swish++/trunk/man/man1/index.1: Added ENVIRONMENT.
    * swish++/trunk/fake_ansi.h: Added check for gcc 2.95 since the STL problem
      is fixed in 2.96.
 
-2001-05-10  Paul J. Lucas <paul@lucasmail.org>
+2001-05-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/mod_man.c: Moved checking for meta_id until after the next
@@ -16839,7 +16856,7 @@
    * swish++/trunk/swish++.conf: Added meta names for mod_man.
    * swish++/trunk/man/man1/index.1: Added references for feature MAN.
 
-2001-05-09  Paul J. Lucas <paul@lucasmail.org>
+2001-05-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_man.c: Initial version in CVS.
    * swish++/trunk/mod_man.h: Initial version in CVS.
@@ -16861,7 +16878,7 @@
      s/isxdigit/is_xdigit/ 3. s/isdigit/is_digit/
    * swish++/trunk/conf_var.c: s/isspace/is_space/
 
-2001-05-08  Paul J. Lucas <paul@lucasmail.org>
+2001-05-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_html.c, swish++/trunk/mod_mail.c: Removed "buf" and now
      using "word" by itself.
@@ -16871,11 +16888,11 @@
      "word" exclusively.
    * swish++/trunk/stop_words.c: 1. s/word_buf/word/ 2. s/word_len/len/
 
-2001-05-02  Paul J. Lucas <paul@lucasmail.org>
+2001-05-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.h: Sorted functions.
 
-2001-05-01  Paul J. Lucas <paul@lucasmail.org>
+2001-05-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/do_file.c: Recalculated basename for bug fix WWF.
@@ -16884,7 +16901,7 @@
    * swish++/trunk/pattern_map.h: 1. Added "typename" to declaration of
      map_type. 2. s/value_type const&/argument_type/
 
-2001-04-29  Paul J. Lucas <paul@lucasmail.org>
+2001-04-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/file_info.h, swish++/trunk/index_segment.c,
      swish++/trunk/index_segment.h, swish++/trunk/indexer.c,
@@ -16904,13 +16921,13 @@
      swish++/trunk/option_stream.c, swish++/trunk/option_stream.h: Added PJL
      namespace.
 
-2001-04-28  Paul J. Lucas <paul@lucasmail.org>
+2001-04-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/auto_vec.h, swish++/trunk/itoa.c, swish++/trunk/itoa.h,
      swish++/trunk/thread_pool.c, swish++/trunk/thread_pool.h: Added PJL
      namespace.
 
-2001-04-26  Paul J. Lucas <paul@lucasmail.org>
+2001-04-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: 1. s/=/:=/ 2. Reworded C++ compiler
      section.
@@ -16925,18 +16942,18 @@
    * swish++/trunk/FilterFile.c: 1. Changed handling of @. 2. Consequently, now
      require only 1 substitution. 3. Added %E as a valid substitution.
 
-2001-04-25  Paul J. Lucas <paul@lucasmail.org>
+2001-04-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search_daemon.c: Partitioned the code into smaller
      functions.
 
-2001-04-24  Paul J. Lucas <paul@lucasmail.org>
+2001-04-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/filter.c: s/find()/rfind()/
    * swish++/trunk/INSTALL.unix, swish++/trunk/INSTALL.win32: Added statement
      about "GNUmakefile:169: dep/bcd.d: No such file or directory"
 
-2001-04-23  Paul J. Lucas <paul@lucasmail.org>
+2001-04-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mmap_file.c: s/fake_ansi.h/platform.h/
    * swish++/trunk/pattern_map.h: 1. s/::find_if/std::find_if/ 2. Added: #ifdef
@@ -16962,7 +16979,7 @@
    * swish++/trunk/IncludeFile.c: 1. Added: #include "platform.h" 2. Added:
      #include "util.h"
 
-2001-04-21  Paul J. Lucas <paul@lucasmail.org>
+2001-04-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/search.c: 1. Added: #include "ResultsSeparator.h". 2. In
@@ -16989,7 +17006,7 @@
      Added more IP address detail for SocketAddress. 4. Added "# WRONG!"
      comment to filter example.
 
-2001-04-19  Paul J. Lucas <paul@lucasmail.org>
+2001-04-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/token.h: s/istrstream/std::istrstream/
    * swish++/trunk/README: 1. Added new feature descriptions. 2.
@@ -17006,7 +17023,7 @@
      Removed all WIN32 special cases.
    * swish++/trunk/GNUmakefile: Removed WIN32 special case for platform.h.
 
-2001-04-18  Paul J. Lucas <paul@lucasmail.org>
+2001-04-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/elements.c: Added ruby elements.
    * swish++/trunk/file_list.h: 1. Removed pointer and reference type. 2. Made
@@ -17029,7 +17046,7 @@
    * swish++/trunk/mod_mail.h: Made key_value::key of type auto_vec<char> to be
      able to call to_lower_r() instead of to_lower().
 
-2001-04-17  Paul J. Lucas <paul@lucasmail.org>
+2001-04-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/token.c: Adding missing 't'.
    * swish++/trunk/token.c: s/(cfc)/static_cast<char (*)(char)>/
@@ -17039,7 +17056,7 @@
      Added public accessor functions for now-private data members. 3. Added
      inc_words() and seen_file().
 
-2001-04-14  Paul J. Lucas <paul@lucasmail.org>
+2001-04-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/do_file.c: Removed "filter_list.reserve( 5 )" so as not to
      waste time and thereby penalize the performance for files that are not
@@ -17054,7 +17071,7 @@
      swish++/trunk/search.c, swish++/trunk/stop_words.c,
      swish++/trunk/stop_words.h: s/file_vector/mmap_file/
 
-2001-04-09  Paul J. Lucas <paul@lucasmail.org>
+2001-04-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: 1. In rank(), s/num_words_/num_words()/ 2. In
      write_file_index(), made use of new file_info member functions.
@@ -17085,32 +17102,32 @@
    * swish++/trunk/do_file.c: 1. s/name_set_.contains()/seen_file()/ 2.
      s/file_info::current_file().num_words_/fi->num_words()/
 
-2001-04-05  Paul J. Lucas <paul@lucasmail.org>
+2001-04-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/encoded_char.c: s/file_vector::const_iterator/const_pointer/
    * swish++/trunk/encoded_char.h: 1. Removed use of
      file_vector::const_iterator. 2. Removed encoded_char_range( const_iterator
      const& ) since the default    assignment operator will slice the object.
 
-2001-03-25  Paul J. Lucas <paul@lucasmail.org>
+2001-03-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: s/remove_temp_files()/remove_temp_files( void )/
      for picky HP-UX compiler.
    * swish++/trunk/mod_html.c: In entity_to_ascii(), s/iso8859_map[ n
      ]/iso8859_to_ascii( n )/
 
-2001-03-08  Paul J. Lucas <paul@lucasmail.org>
+2001-03-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_html.c: 1. In parse_html_tag(), s/tag/name/ 2. Fixed
      some comments to be technically correct.
 
-2001-02-28  Paul J. Lucas <paul@lucasmail.org>
+2001-02-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/word_info.h: Added comments.
    * swish++/trunk/file_info.h, swish++/trunk/option_stream.h,
      swish++/trunk/word_info.h: s/ostream/std::ostream/
 
-2001-02-26  Paul J. Lucas <paul@lucasmail.org>
+2001-02-26  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.c: Added: to_lower_r(char const*,char const*).
    * swish++/trunk/util.h: 1. Removed #ifdef SEARCH_DAEMON around
@@ -17134,17 +17151,17 @@
    * swish++/trunk/encoded_char.h: Added:
      encoded_char_range::const_iterator::difference_type
 
-2001-02-25  Paul J. Lucas <paul@lucasmail.org>
+2001-02-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: In conf_var::map_ref(), changed to doing
      initialization via a table.  (This had the side-effect of making "search"
      work under FreeBSD.)
 
-2001-02-17  Paul J. Lucas <paul@lucasmail.org>
+2001-02-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/less.h: s/binary_function/std::binary_function/
 
-2001-02-16  Paul J. Lucas <paul@lucasmail.org>
+2001-02-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/indexer.c: In find_meta(): s/meta_names[ meta_name
      ]/meta_names[ ::strdup( meta_name ) ]/
@@ -17159,7 +17176,7 @@
    * swish++/trunk/man/man4/swish++.conf.4: Added "For variables_names, case is
      irrelevant."
 
-2001-02-15  Paul J. Lucas <paul@lucasmail.org>
+2001-02-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: Wrapped thread and socket stuff inside
      "ifdef SEARCH_DAEMON".
@@ -17191,7 +17208,7 @@
    * swish++/trunk/GNUmakefile: s/ifndef WIN32/ifdef SEARCH_DAEMON/
    * swish++/trunk/conf_var.h: Whitespace changes.
 
-2001-02-13  Paul J. Lucas <paul@lucasmail.org>
+2001-02-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search_daemon.c: 1. Added "#include <sys/time.h>" for
      FreeBSD systems. 2. In accept_failed(), added "#ifdef EPROTO" for FreeBSD
@@ -17205,30 +17222,30 @@
      <sys/types.h>" for FreeBSD systems.
    * swish++/trunk/config/config.mk: Removed definition of MAKE.
 
-2001-02-12  Paul J. Lucas <paul@lucasmail.org>
+2001-02-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
 
-2001-01-13  Paul J. Lucas <paul@lucasmail.org>
+2001-01-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/elements.c, swish++/trunk/entities.c,
      swish++/trunk/entities.h: In comments: s/html.c/mod_html.c/
 
-2001-01-02  Paul J. Lucas <paul@lucasmail.org>
+2001-01-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/indexer.c: In find_meta(), fixed bug where "m" wasn't always
      set.
 
-2001-01-01  Paul J. Lucas <paul@lucasmail.org>
+2001-01-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/INSTALL.unix: s/gcc 2.8.0/gcc 2.95.1/
 
-2000-12-16  Paul J. Lucas <paul@lucasmail.org>
+2000-12-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/INSTALL.unix: Added description for mod_mail.
    * swish++/trunk/swish++.conf: Added better explanation for SearchDaemon.
 
-2000-12-14  Paul J. Lucas <paul@lucasmail.org>
+2000-12-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/file_list.h: Removed: #include "fake_ansi.h".
    * swish++/trunk/fake_ansi.h: Got rid of faking "mutable" since all C++
@@ -17247,7 +17264,7 @@
      to use standard CGI.pm module. 5. Added code to do TCP sockets. 6. Fixed
      printing of file size in results.
 
-2000-12-13  Paul J. Lucas <paul@lucasmail.org>
+2000-12-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/index.1: 1. s/pjl@best.com/pauljlucas@mac.com/ 2.
      Added description of modules and mod_mail. 3. Removed -h, --html-pattern,
@@ -17268,7 +17285,7 @@
    * swish++/trunk/IncludeMeta.h: Changed base class from conf_set to conf_var
      and map.
 
-2000-12-11  Paul J. Lucas <paul@lucasmail.org>
+2000-12-11  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/stem_word.c: Added const to replace_suffix() declaration.
    * swish++/trunk/mod_mail.h: 1. Added: struct key_value. 2. Added:
@@ -17281,7 +17298,7 @@
    * swish++/trunk/GNUmakefile: Added IncludeMeta.c.
    * swish++/trunk/IncludeMeta.c: Initial version in CVS.
 
-2000-12-09  Paul J. Lucas <paul@lucasmail.org>
+2000-12-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c, swish++/trunk/indexer.c, swish++/trunk/mod_html.c:
      Moved configuration variable decalrations to .h files.
@@ -17314,7 +17331,7 @@
    * swish++/trunk/ExcludeClass.h: Added "extern ExcludeClass
      exclude_class_names;"
 
-2000-12-06  Paul J. Lucas <paul@lucasmail.org>
+2000-12-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_mail.c: 1. In find_title(), removed "register"
      declaration for 'c' since its address is    taken. 2. In index_headers(),
@@ -17326,7 +17343,7 @@
    * swish++/trunk/README: 1. Added mention of TCP sockets. 2. Added mail and
      news section. 3. Added modular indexer.
 
-2000-12-04  Paul J. Lucas <paul@lucasmail.org>
+2000-12-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/indexer.c: Added comments.
    * swish++/trunk/man/man3/WWW.3: Redid formatting of referneces.
@@ -17360,7 +17377,7 @@
      encoded_char_range::const_iterator& argument so they could parse HTML that
      is encoded.
 
-2000-12-03  Paul J. Lucas <paul@lucasmail.org>
+2000-12-03  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search.c: 1. s/html.h/indexer.h/ 2. s/ostream/std::ostream/
      3. Added #include "SocketAddress.h". 4. s/am_daemon/daemon_type/ and
@@ -17377,7 +17394,7 @@
    * swish++/trunk/searchc.in: 1. Added stuff to connect via a TCP socket to
      the search daemon. 2. Updated Perl book references for 3rd ed.
 
-2000-12-02  Paul J. Lucas <paul@lucasmail.org>
+2000-12-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/search_options.c: 1. Added "socket-address". 2.
      s/daemon/daemon-type/ and made it take an argument.
@@ -17410,7 +17427,7 @@
    * swish++/trunk/conf_var.c: In conf_var::conf_var(), added initialization of
      name_.
 
-2000-12-01  Paul J. Lucas <paul@lucasmail.org>
+2000-12-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/exit_codes.h: Created TCP and Unix versions of the search
      daemon exit codes.
@@ -17433,13 +17450,13 @@
      swish++/trunk/StopWordFile.h, swish++/trunk/TempDirectory.h,
      swish++/trunk/conf_string.h: s/string/std::string/
 
-2000-11-29  Paul J. Lucas <paul@lucasmail.org>
+2000-11-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_bool.c: Added "using namespace std;".
    * swish++/trunk/conf_bool.c: Added "default_value" to comment.
    * swish++/trunk/search_options.c: Added "socket-port".
 
-2000-11-19  Paul J. Lucas <paul@lucasmail.org>
+2000-11-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/IncludeFile.c: s/find()/find_indexer()/
    * swish++/trunk/conf_var.c: s/skip_line()/find_newline()/
@@ -17450,34 +17467,34 @@
      sources.
    * swish++/trunk/init_modules.c: Added comment.
 
-2000-11-13  Paul J. Lucas <paul@lucasmail.org>
+2000-11-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/stop_words.c: Added "shall".
 
-2000-10-30  Paul J. Lucas <paul@lucasmail.org>
+2000-10-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: Removed TempDirectory_Default.
    * swish++/trunk/index.c: Fixed -T option.
 
-2000-10-29  Paul J. Lucas <paul@lucasmail.org>
+2000-10-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/util.h: Added skip_line().
    * swish++/trunk/conf_var.c: In parse_file(), made use of skip_line().
 
-2000-10-19  Paul J. Lucas <paul@lucasmail.org>
+2000-10-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_mail.h: Initial version in CVS.
 
-2000-10-17  Paul J. Lucas <paul@lucasmail.org>
+2000-10-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: In parse_file(), redid the finding of a newline.
 
-2000-10-16  Paul J. Lucas <paul@lucasmail.org>
+2000-10-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: 1. Added MOD_* definitions. 2. Added
      MOD_LIST to CCFLAGS.
 
-2000-10-15  Paul J. Lucas <paul@lucasmail.org>
+2000-10-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/do_file.c: Added ExtractFile::const_iterator.
    * swish++/trunk/swish++.conf: 1. Added ExtractFile. 2. Removed HTMLFile. 3.
@@ -17494,7 +17511,7 @@
      orig_file_size and orig_file_name. 2. Reworked calling of the indexer.
    * swish++/trunk/indexer.c, swish++/trunk/indexer.h: Initial version.
 
-2000-10-14  Paul J. Lucas <paul@lucasmail.org>
+2000-10-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/mod_html.c: Removed register declaration from a variable
      that had its address taken.
@@ -17532,22 +17549,22 @@
    * swish++/trunk/IncludeFile.c: Changed form of line to include indexer.
    * swish++/trunk/ExcludeClass.h: Added #ifdef MOD_HTML
 
-2000-09-21  Paul J. Lucas <paul@lucasmail.org>
+2000-09-21  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/swish++.conf: Added "or XHTML" where appropriate.
 
-2000-09-20  Paul J. Lucas <paul@lucasmail.org>
+2000-09-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/search.1: s/In addition to results lines/Prior to
      results lines/
 
-2000-09-19  Paul J. Lucas <paul@lucasmail.org>
+2000-09-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/pattern_map.h: 1. Added some comments. 2. s/bool
      operator()/result_type operator()/
    * swish++/trunk/ExcludeFile.h: Fixed typo in comment.
 
-2000-09-15  Paul J. Lucas <paul@lucasmail.org>
+2000-09-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.8/Changes, swish++/tags/swish++-4.8/Copying,
      swish++/tags/swish++-4.8/ExcludeClass.h,
@@ -17676,7 +17693,7 @@
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/INSTALL.win32: Added note about "extract".
 
-2000-09-09  Paul J. Lucas <paul@lucasmail.org>
+2000-09-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version.
    * swish++/trunk/config.h: Added TempDirectory_Default[] = "/temp" when
@@ -17698,15 +17715,15 @@
    * swish++/trunk/conf_int.c: s/managed_ptr/auto_vec/
    * swish++/trunk/directory.c: Added Dir_Sep_Char.
 
-2000-09-08  Paul J. Lucas <paul@lucasmail.org>
+2000-09-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/auto_vec.h: Renamed and cleaned-up from managed_ptr.h.
 
-2000-09-07  Paul J. Lucas <paul@lucasmail.org>
+2000-09-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index_segment.c: s/long/size_type/
 
-2000-08-30  Paul J. Lucas <paul@lucasmail.org>
+2000-08-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.7/Changes, swish++/tags/swish++-4.7/Copying,
      swish++/tags/swish++-4.7/ExcludeClass.h,
@@ -17836,7 +17853,7 @@
      file. 2. Added 'b' and 'B' cases. 3. Renamed 'E' case to 'F' case for
      consistency. 4. Added to comments.
 
-2000-08-29  Paul J. Lucas <paul@lucasmail.org>
+2000-08-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.conf.4: 1. Added description of 'b' and
      'B'. 2. Changed 'E' to 'F' for consistency.
@@ -17845,7 +17862,7 @@
      error message.
    * swish++/trunk/version.h: Upped version number.
 
-2000-08-24  Paul J. Lucas <paul@lucasmail.org>
+2000-08-24  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6.6/Changes, swish++/tags/swish++-4.6.6/Copying,
      swish++/tags/swish++-4.6.6/ExcludeClass.h,
@@ -17984,21 +18001,21 @@
      overflow.
    * swish++/trunk/itoa.c: s/SWISH++/PJL C++ Library/
 
-2000-08-22  Paul J. Lucas <paul@lucasmail.org>
+2000-08-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version number.
    * swish++/trunk/man/man4/swish++.conf.4: Added (missing) mention of
      "HTMLFile".
 
-2000-08-14  Paul J. Lucas <paul@lucasmail.org>
+2000-08-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.index.4: s/numm/null/
 
-2000-08-06  Paul J. Lucas <paul@lucasmail.org>
+2000-08-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config-sh: Added `basename $TARGET`.
 
-2000-07-13  Paul J. Lucas <paul@lucasmail.org>
+2000-07-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6.5/Changes, swish++/tags/swish++-4.6.5/Copying,
      swish++/tags/swish++-4.6.5/ExcludeClass.h,
@@ -18136,7 +18153,7 @@
      parse_bcd( p );
    * swish++/trunk/version.h: Upped version number.
 
-2000-07-12  Paul J. Lucas <paul@lucasmail.org>
+2000-07-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6.4/Changes, swish++/tags/swish++-4.6.4/Copying,
      swish++/tags/swish++-4.6.4/ExcludeClass.h,
@@ -18274,7 +18291,7 @@
      s/NAME_MAX/PATH_MAX/
    * swish++/trunk/version.h: Upper version.
 
-2000-07-07  Paul J. Lucas <paul@lucasmail.org>
+2000-07-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6.3/Changes, swish++/tags/swish++-4.6.3/Copying,
      swish++/tags/swish++-4.6.3/ExcludeClass.h,
@@ -18408,20 +18425,20 @@
      manufactured by cvs2svn to create tag 'swish++-4.6.3'.
    * swish++/trunk/Changes: Added changes.
 
-2000-07-06  Paul J. Lucas <paul@lucasmail.org>
+2000-07-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/elements.c: Removed <bq> element.
 
-2000-07-01  Paul J. Lucas <paul@lucasmail.org>
+2000-07-01  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/elements.c: Added "dt", "/dt" to the "dd" line.
    * swish++/trunk/version.h: Upped version number.
 
-2000-06-22  Paul J. Lucas <paul@lucasmail.org>
+2000-06-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.c: Added comments.
 
-2000-06-20  Paul J. Lucas <paul@lucasmail.org>
+2000-06-20  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6.2/Changes, swish++/tags/swish++-4.6.2/Copying,
      swish++/tags/swish++-4.6.2/ExcludeClass.h,
@@ -18560,14 +18577,14 @@
      filter filename substitutions. 3. Changed "new file_info()" call to use
      orig_file_name and orig_file_size.
 
-2000-06-19  Paul J. Lucas <paul@lucasmail.org>
+2000-06-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version number to 4.6.2.
    * swish++/trunk/filter.h: Renamed target_file_ to target_file_name_.
    * swish++/trunk/filter.c: 1. Added comments. 2. Renamed target_file_ to
      target_file_name_.
 
-2000-06-17  Paul J. Lucas <paul@lucasmail.org>
+2000-06-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6.1/Changes, swish++/tags/swish++-4.6.1/Copying,
      swish++/tags/swish++-4.6.1/ExcludeClass.h,
@@ -18703,7 +18720,7 @@
    * swish++/trunk/extract.c: Fixed -l and -r options that incorrectly required
      an argument.
 
-2000-06-16  Paul J. Lucas <paul@lucasmail.org>
+2000-06-16  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.6/Changes, swish++/tags/swish++-4.6/Copying,
      swish++/tags/swish++-4.6/ExcludeClass.h,
@@ -18840,7 +18857,7 @@
      running as a filter.
    * swish++/trunk/conf_var.c: In map_ref(), added ExtractFilter.
 
-2000-06-15  Paul J. Lucas <paul@lucasmail.org>
+2000-06-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/extract.c: Changes ofstream argument to ostream.
    * swish++/trunk/config.h: Added ExtractExtension_Default.
@@ -18858,7 +18875,7 @@
    * swish++/trunk/do_file.c: Changed to use user-specified extension.
    * swish++/trunk/conf_var.c: In map_ref(), added ExtractExtension.
 
-2000-06-14  Paul J. Lucas <paul@lucasmail.org>
+2000-06-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.5/Changes, swish++/tags/swish++-4.5/Copying,
      swish++/tags/swish++-4.5/ExcludeClass.h,
@@ -18984,24 +19001,24 @@
    * swish++/trunk/INSTALL.win32: Added notes about 4.5 not compiling under
      Windows.
 
-2000-06-06  Paul J. Lucas <paul@lucasmail.org>
+2000-06-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/index.c: In main(), performed following substitution:
      s/verbose/verbosity/
 
-2000-05-30  Paul J. Lucas <paul@lucasmail.org>
+2000-05-30  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/file_list.h: Removed #include <sys/types.h> since it's
      apparantly not needed.
    * swish++/trunk/file_vector.h: Replaced off_t with size_t.
 
-2000-05-29  Paul J. Lucas <paul@lucasmail.org>
+2000-05-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/conf_var.h: Added comments.
    * swish++/trunk/Changes: Added Changes.
 
-2000-05-25  Paul J. Lucas <paul@lucasmail.org>
+2000-05-25  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/extract.1, swish++/trunk/man/man1/index.1,
      swish++/trunk/man/man1/search.1: Fixed some typos.
@@ -19009,7 +19026,7 @@
      swish++/trunk/thread_pool.h, swish++/trunk/www_example/search.cgi: Fixed
      spelling of "Sebastopol."
 
-2000-05-22  Paul J. Lucas <paul@lucasmail.org>
+2000-05-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/index.c: 1. Added is_new_file parameter to index_words. 2.
      Redid handling of is_new_file.
@@ -19019,7 +19036,7 @@
      is defined.
    * swish++/trunk/index.h: Added "is_new_file" argument.
 
-2000-05-19  Paul J. Lucas <paul@lucasmail.org>
+2000-05-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.mk: Added comment about g++ -pendantic.
    * swish++/trunk/file_info.c: In file_info::out(), eliminated unused
@@ -19059,7 +19076,7 @@
    * swish++/trunk/GNUmakefile: 1. Replaced *Extension files with *File files.
      2. Make "all" a .PHONY target.
 
-2000-05-18  Paul J. Lucas <paul@lucasmail.org>
+2000-05-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/search.1: Added mention of XHTML files.
    * swish++/trunk/search.c: Adjusted mention of "exit" in usage message to
@@ -19080,13 +19097,13 @@
    * swish++/trunk/exit_codes.h: Added Exit_End_Enum_Marker to make compile
      with -pedantic.
 
-2000-05-17  Paul J. Lucas <paul@lucasmail.org>
+2000-05-17  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/entities.c: Added "apos", "Scaron", "scaron", and "Yuml" for
      compatibility with XHTML.
    * swish++/trunk/stop_words.c: Added "mustn't" to the stop-word list.
 
-2000-05-15  Paul J. Lucas <paul@lucasmail.org>
+2000-05-15  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.4/Changes, swish++/tags/swish++-4.4/Copying,
      swish++/tags/swish++-4.4/ExcludeClass.h,
@@ -19205,29 +19222,29 @@
    * swish++/trunk/Changes: Added changes.
    * swish++/trunk/filter.c: Added special-case code for sleep(3) for Windows.
 
-2000-05-14  Paul J. Lucas <paul@lucasmail.org>
+2000-05-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man4/swish++.conf.4: Added description of %% and @@.
    * swish++/trunk/config/man.mk: Added "all" target.
 
-2000-05-07  Paul J. Lucas <paul@lucasmail.org>
+2000-05-07  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: Added conditionals so as not to regenerate .d
      files when making clean, distclean, or dist. Added "txt" as a target.
    * swish++/trunk/config/man.mk: Minor clean-up.
 
-2000-04-29  Paul J. Lucas <paul@lucasmail.org>
+2000-04-29  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/GNUmakefile: Performed substitutions of the form: s/@cd
      $(DIR) && $(MAKE) $@/@$(MAKE) -C $(DIR) $@/
    * swish++/trunk/install-sh: Added code to strip directories via basename and
      xargs.
 
-2000-04-28  Paul J. Lucas <paul@lucasmail.org>
+2000-04-28  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/Makefile: Replaced all targets with simpler %.
 
-2000-04-27  Paul J. Lucas <paul@lucasmail.org>
+2000-04-27  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/version.h: Upped version number.
    * swish++/trunk/FilterExtension.c, swish++/trunk/filter.c: Added code for
@@ -19238,19 +19255,19 @@
      swish++/trunk/search_daemon.c, swish++/trunk/util.h: Added #include
      <sys/types.h>.
 
-2000-04-23  Paul J. Lucas <paul@lucasmail.org>
+2000-04-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.pl: I think the stat() was in the wrong place.
 
-2000-04-22  Paul J. Lucas <paul@lucasmail.org>
+2000-04-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.pl: Fixed typo in comment.
 
-2000-04-18  Paul J. Lucas <paul@lucasmail.org>
+2000-04-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/config.pl: Fixed expanstion bug caused by literal $.
 
-2000-04-13  Paul J. Lucas <paul@lucasmail.org>
+2000-04-13  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.3.1/Changes, swish++/tags/swish++-4.3.1/Copying,
      swish++/tags/swish++-4.3.1/ExcludeClass.h,
@@ -19403,7 +19420,7 @@
      swish++/trunk/config/src/new_casts.c: Changed "DEFINE" to "FAIL" to rework
      the way compiler/system tests are done.
 
-2000-04-10  Paul J. Lucas <paul@lucasmail.org>
+2000-04-10  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.3/Changes, swish++/tags/swish++-4.3/Copying,
      swish++/tags/swish++-4.3/ExcludeClass.h,
@@ -19531,13 +19548,13 @@
    * swish++/trunk/man/man4/swish++.conf.4: Added PidFile.
    * swish++/trunk/FilesGrow.h: Added mixxing () to get precedence right.
 
-2000-04-09  Paul J. Lucas <paul@lucasmail.org>
+2000-04-09  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/config/Makefile: Condensed a few things.
    * swish++/trunk/config/config-sh: Changes corresponding to config.pl
    * swish++/trunk/config/config.pl: Brought up to date with current practices.
 
-2000-04-08  Paul J. Lucas <paul@lucasmail.org>
+2000-04-08  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/man/man1/Makefile, swish++/trunk/man/man3/Makefile,
      swish++/trunk/man/man4/Makefile: Changes for switch to GNU make.
@@ -19547,7 +19564,7 @@
      requirement of absolute path name. Fixed comments that were way wrong.
    * swish++/trunk/man/man1/search.1: Added description of new -P option.
 
-2000-04-06  Paul J. Lucas <paul@lucasmail.org>
+2000-04-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/www_example/search.cgi: Changed from swish++.socket to
      search.socket.
@@ -19576,7 +19593,7 @@
      namespace std;' -- it should have been there all along.
    * swish++/trunk/index.c: Changed char to file_vector::value_type.
 
-2000-03-19  Paul J. Lucas <paul@lucasmail.org>
+2000-03-19  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-4.2/Changes, swish++/tags/swish++-4.2/Copying,
      swish++/tags/swish++-4.2/ExcludeClass.h,
@@ -20729,7 +20746,7 @@
    * swish++/trunk/Makefile: Added new files for configuration files feature.
    * swish++/trunk/Changes: Added changes.
 
-2000-03-18  Paul J. Lucas <paul@lucasmail.org>
+2000-03-18  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/filter.c, swish++/trunk/filter.h: Added for on-the-fly
      filtering.
@@ -20896,7 +20913,7 @@
    * swish++/trunk/README: Added description for CLASS feature.
    * swish++/trunk/Makefile: Added elements.
 
-2000-03-14  Paul J. Lucas <paul@lucasmail.org>
+2000-03-14  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/trunk/Changes: Version 2.0 changes.
    * swish++/tags/swish++-1.8/Changes, swish++/tags/swish++-1.8/Copying,
@@ -20968,7 +20985,7 @@
    * swish++/trunk/stem_word.c, swish++/trunk/stem_word.h: Added for word
      stemming feature.
 
-2000-03-12  Paul J. Lucas <paul@lucasmail.org>
+2000-03-12  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * swish++/tags/swish++-1.7/Changes, swish++/tags/swish++-1.7/Copying,
      swish++/tags/swish++-1.7/INSTALLATION, swish++/tags/swish++-1.7/Makefile,
