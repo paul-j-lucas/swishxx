@@ -51,18 +51,18 @@ inline bool is_vowel( char c ) {
  * @return Returns \c true only if the character is a "word character."
  */
 inline bool is_word_char( char c ) {
-  return c > 0 &&
 #if OPTIMIZE_WORD_CHARS
-  ( isalnum( c ) ||
+  return isalnum( static_cast<unsigned char>( c ) ) ||
     //
     // If you change Word_Chars in config.h from the default set but would like
     // to keep the optimization, edit the line below to compare 'c' against
     // every non-alphanumeric character in your set of Word_Chars.
     //
-    c == '&' || c == '\'' || c == '-' || c == '_'
-  );
+    c == '&' || c == '\'' || c == '-' || c == '_';
 #else
-  std::strchr( Word_Chars, tolower( c ) ) != 0;
+  return 0 != std::strchr(
+    Word_Chars, tolower( static_cast<unsigned char>( c ) )
+  );
 #endif /* OPTIMIZE_WORD_CHARS */
 }
 
@@ -81,9 +81,11 @@ inline bool is_word_begin_char( char c ) {
   // like to keep the optimization, edit the line below to compare 'c' against
   // every character in your set of Word_Begin_Chars.
   //
-  return isalnum( c );
+  return isalnum( static_cast<unsigned char>( c ) );
 #else
-  return std::strchr( Word_Begin_Chars, tolower( c ) ) != 0;
+  return 0 != std::strchr(
+    Word_Begin_Chars, tolower( static_cast<unsigned char>( c ) )
+  );
 #endif /* OPTIMIZE_WORD_BEGIN_CHARS */
 }
 
@@ -99,9 +101,11 @@ inline bool is_word_end_char( char c ) {
   //
   // Same deal as with OPTIMIZE_WORD_BEGIN_CHARS.
   //
-  return isalnum( c );
+  return isalnum( static_cast<unsigned char>( c ) );
 #else
-  return std::strchr( Word_End_Chars, tolower( c ) ) != 0;
+  return 0 != std::strchr(
+    Word_End_Chars, tolower( static_cast<unsigned char>( c ) )
+  );
 #endif /* OPTIMIZE_WORD_END_CHARS */
 }
 
