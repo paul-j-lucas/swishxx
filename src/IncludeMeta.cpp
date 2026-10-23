@@ -67,9 +67,5 @@ void IncludeMeta::parse_value( char *line ) {
   } // for
 }
 
-void IncludeMeta::reset() {
-  clear();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

@@ -55,9 +55,5 @@ void conf<bool>::parse_value( char *line ) {
   }
 }
 
-void conf<bool>::reset() {
-  value_ = default_value_;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

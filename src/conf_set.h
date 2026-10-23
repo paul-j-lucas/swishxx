@@ -42,9 +42,6 @@ protected:
   CONF_VAR_ASSIGN_OPS( conf_set )
 
   void parse_value( char *line ) override;
-
-private:
-  void reset() override;
 };
 
 #define CONF_SET_ASSIGN_OPS(T)            \

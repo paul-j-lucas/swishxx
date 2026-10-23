@@ -57,8 +57,6 @@ protected:
 private:
   bool const default_value_;
   bool value_;
-
-  void reset() override;
 };
 
 #define CONF_BOOL_ASSIGN_OPS(T)           \

@@ -36,9 +36,5 @@ void ExcludeFile::parse_value( char *line ) {
     insert( new_strdup( s ) );
 }
 
-void ExcludeFile::reset() {
-  clear();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

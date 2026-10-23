@@ -35,9 +35,5 @@ void conf_set::parse_value( char *line ) {
     insert( s );
 }
 
-void conf_set::reset() {
-  clear();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

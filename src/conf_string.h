@@ -108,8 +108,6 @@ protected:
 private:
   std::string const default_value_;
   std::string       value_;
-
-  void reset() override;
 };
 
 #define CONF_STRING_ASSIGN_OPS(T)         \

@@ -80,9 +80,5 @@ void conf<unsigned>::parse_value( char *line ) {
   operator=( atou( line, name() ) );
 }
 
-void conf<unsigned>::reset() {
-  value_ = default_value_;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

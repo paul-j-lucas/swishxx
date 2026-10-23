@@ -60,7 +60,6 @@ protected:
   map_type map_;
 
   void parse_value( char *line ) override;
-  void reset() override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

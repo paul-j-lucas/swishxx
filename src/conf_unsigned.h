@@ -78,8 +78,6 @@ protected:
 private:
   unsigned const default_value_, min_, max_;
   unsigned       value_;
-
-  void reset() override;
 };
 
 #define CONF_INT_ASSIGN_OPS(T)            \

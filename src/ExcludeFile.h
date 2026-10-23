@@ -49,7 +49,6 @@ public:
 
 private:
   void parse_value( char *line ) override;
-  void reset() override;
 };
 
 extern ExcludeFile exclude_patterns;

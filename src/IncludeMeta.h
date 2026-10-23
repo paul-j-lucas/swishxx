@@ -44,9 +44,6 @@ public:
   CONF_VAR_ASSIGN_OPS( IncludeMeta )
 
   void parse_value( char *line ) override;
-
-private:
-  void reset() override;
 };
 
 extern IncludeMeta include_meta_names;

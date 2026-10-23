@@ -84,16 +84,6 @@ protected:
    */
   void parse_const_value( char const *line );
 
-  /**
-   * Resets value to default.
-   */
-  virtual void reset() = 0;
-
-  /**
-   * Resets all configuration variables to defaults.
-   */
-  static void reset_all();
-
   static std::ostream& error  ( std::ostream& = std::cerr );
   static std::ostream& warning( std::ostream& = std::cerr );
 

@@ -63,9 +63,5 @@ void conf<string>::parse_value( char *line ) {
   value_ = line;
 }
 
-void conf<string>::reset() {
-  value_ = default_value_;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

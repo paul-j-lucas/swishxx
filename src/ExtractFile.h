@@ -42,7 +42,6 @@ public:
 
 private:
   void parse_value( char *line ) override;
-  void reset() override { clear(); }
 };
 
 extern ExtractFile include_patterns;

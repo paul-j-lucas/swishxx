@@ -44,7 +44,6 @@ public:
 
 private:
   void parse_value( char *line ) override;
-  void reset() override;
 };
 
 extern IncludeFile include_patterns;

@@ -51,9 +51,5 @@ void IncludeFile::parse_value( char *line ) {
   }
 }
 
-void IncludeFile::reset() {
-  clear();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

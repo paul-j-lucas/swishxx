@@ -98,9 +98,5 @@ void conf_filter::parse_value( char *line ) {
   ) );
 }
 
-void conf_filter::reset() {
-  map_.clear();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

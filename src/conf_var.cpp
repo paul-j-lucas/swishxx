@@ -280,11 +280,5 @@ void conf_var::register_var( char const *name ) {
   map_ref()[ name ] = nullptr;
 }
 
-void conf_var::reset_all() {
-  for ( auto const &i : map_ref() )
-    if ( i.second )
-      i.second->reset();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
