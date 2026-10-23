@@ -304,19 +304,6 @@ inline char to_lower( char c ) {
 char* to_lower( char const* );
 
 /**
- * Converts a C string to lower case; the original string is untouched.  The
- * string returned is from an internal pool of string buffers.  The time you
- * get into trouble is if you hang on to more then Num_Buffers strings.  This
- * doesn't normally happen in practice, however.
- *
- * @param begin The iterator positioned at the first character of the string.
- * @param end The iterator postitioned one past the last character of the
- * string.
- * @return Returns a pointer to the lower-case string.
- */
-char* to_lower( char const *begin, char const *end );
-
-/**
  * Converts a C string to lower case using the given buffer; the original
  * string is untouched.
  *

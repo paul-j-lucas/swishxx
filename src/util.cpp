@@ -97,16 +97,6 @@ char *to_lower( char const *s ) {
   return lower_buf.current();
 }
 
-char *to_lower( char const *begin, char const *end ) {
-  assert( begin );
-  assert( end );
-  char *p = lower_buf.next();
-  while ( begin != end )
-    *p++ = to_lower( *begin++ );
-  *p = '\0';
-  return lower_buf.current();
-}
-
 char *to_lower_r( char const *s ) {
   assert( s );
   char *const buf = new char[ ::strlen( s ) + 1 ];
