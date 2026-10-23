@@ -85,13 +85,6 @@ constexpr int   Word_Max_Consec_Same        = 2;
 constexpr int   Word_Max_Consec_Puncts      = 1;
 
 /**
- * Characters that may be in a word.  Note that \c '&' is here so acronyms like
- * "AT&T" are treated as one word.  Unlike SWISH-E, \c ';' does not need to be
- * here to recognize and convert character entity references.
- */
-constexpr char  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
-
-/**
  * If you are using the default set of characters, that is the alphanumerics
  * and \c "&'-_" characters, then having this macro set to 1 will optimize the
  * \c is_word_char() function yielding about a 10% performance improvement;
@@ -101,25 +94,38 @@ constexpr char  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
  */
 #define OPTIMIZE_WORD_CHARS               1
 
+#if !OPTIMIZE_WORD_CHARS
 /**
- * Characters that may begin a word; should be a subset of the above.
+ * Characters that may be in a word.  Note that \c '&' is here so acronyms like
+ * "AT&T" are treated as one word.  Unlike SWISH-E, \c ';' does not need to be
+ * here to recognize and convert character entity references.
  */
-constexpr char  Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+constexpr char  Word_Chars[] = "&'-0123456789abcdefghijklmnopqrstuvwxyz_";
+#endif /* !OPTIMIZE_WORD_CHARS */
 
 /**
  * Same deal as with OPTIMIZE_WORD_CHARS.
  */
 #define OPTIMIZE_WORD_BEGIN_CHARS         1
 
+#if !OPTIMIZE_WORD_BEGIN_CHARS
 /**
- * Characters that may end a word; usually the same as the above.
+ * Characters that may begin a word; should be a subset of the above.
  */
-constexpr char  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+constexpr char  Word_Begin_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+#endif /* !OPTIMIZE_WORD_BEGIN_CHARS */
 
 /**
  * Same deal as with OPTIMIZE_WORD_CHARS.
  */
 #define OPTIMIZE_WORD_END_CHARS           1
+
+#if !OPTIMIZE_WORD_END_CHARS
+/**
+ * Characters that may end a word; usually the same as the above.
+ */
+constexpr char  Word_End_Chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+#endif /* !OPTIMIZE_WORD_END_CHARS */
 
 #ifdef WITH_SEARCH_DAEMON
 ////////// Search server daemon parameters ////////////////////////////////////
