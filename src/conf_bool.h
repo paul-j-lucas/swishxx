@@ -55,7 +55,6 @@ protected:
   void parse_value( char *line ) override;
 
 private:
-  bool const default_value_;
   bool value_;
 };
 

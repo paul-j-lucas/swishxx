@@ -76,7 +76,7 @@ protected:
   void parse_value( char *line ) override;
 
 private:
-  unsigned const default_value_, min_, max_;
+  unsigned const min_, max_;
   unsigned       value_;
 };
 

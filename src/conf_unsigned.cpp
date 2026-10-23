@@ -43,7 +43,7 @@ extern char const*  me;
 conf<unsigned>::conf( char const *name, value_type default_value,
                       value_type min, value_type max ) :
   conf_var{ name },
-  default_value_{ default_value }, min_{ min }, max_{ max },
+  min_{ min }, max_{ max },
   value_{ default_value }
 {
   // do nothing else
