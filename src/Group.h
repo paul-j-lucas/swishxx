@@ -48,7 +48,6 @@ public:
     CONF_STRING_ASSIGN_OPS( Group );
 
     bool change_to_gid() const;
-    gid_t gid() const { return gid_; }
 
 private:
     void parse_value( char *line ) override;

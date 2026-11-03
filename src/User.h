@@ -47,7 +47,6 @@ public:
   CONF_STRING_ASSIGN_OPS( User );
 
   bool change_to_uid() const;
-  uid_t uid() const { return uid_; }
 
 private:
   uid_t uid_;
