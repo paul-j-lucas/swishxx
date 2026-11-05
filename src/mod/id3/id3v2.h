@@ -96,7 +96,9 @@ struct id3v2_frame {
   char const     *content_begin_;
   char const     *content_end_;
   char            unsynchronized_buf_[ 4096 ];
+#ifdef HAVE_ZLIB
   char            uncompressed_buf_[ 4096 ];
+#endif /* HAVE_ZLIB */
 
   /**
    * Finds the parser for for a frame given its ID.
