@@ -38,7 +38,6 @@ extern char const*  me;
 
 conf<string>::conf( char const *name, char const *default_value ) :
   conf_var{ name },
-  default_value_{ default_value },
   value_{ default_value }
 {
   // do nothing else

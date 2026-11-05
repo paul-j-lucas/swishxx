@@ -106,8 +106,7 @@ protected:
   void parse_value( char *line ) override;
 
 private:
-  std::string const default_value_;
-  std::string       value_;
+  std::string value_;
 };
 
 #define CONF_STRING_ASSIGN_OPS(T)         \
