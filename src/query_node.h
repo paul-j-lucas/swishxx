@@ -208,7 +208,6 @@ public:
     query_node{ p }, child_{ child } { }
   ~not_node();
 
-  query_node* child() const { return child_; }
   void        eval( search_results& );
   query_node* visit( visitor const& );
 # ifdef DEBUG_eval_query
