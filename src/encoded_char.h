@@ -92,7 +92,6 @@ public:
   const_iterator  begin() const;
   const_pointer   begin_pos() const               { return begin_; }
   void            begin_pos( const_pointer p )    { begin_ = p; }
-  void            begin_pos( const_iterator const& );
   const_iterator  end() const;
   const_pointer   end_pos() const                 { return end_; }
   void            end_pos( const_pointer p )      { end_ = p; }
@@ -257,10 +256,6 @@ inline ECR_CI ECR::begin() const {
 
 inline ECR_CI ECR::end() const {
   return const_iterator( this, end_ );
-}
-
-inline void ECR::begin_pos( const_iterator const &i ) {
-  begin_ = i.pos_;
 }
 
 inline void ECR::end_pos( const_iterator const &i ) {
