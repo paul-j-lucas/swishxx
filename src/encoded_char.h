@@ -98,15 +98,6 @@ public:
   void            end_pos( const_pointer p )      { end_ = p; }
   void            end_pos( const_iterator const& );
 
-  /**
-   * Gets whether this iterator has been associated with an actual range.
-   *
-   * @return Returns \c true only if it is.
-   */
-  explicit operator bool() const {
-    return begin_ != nullptr;
-  }
-
 #ifdef WITH_DECODING
   class decoder;
 #endif /* WITH_DECODING */

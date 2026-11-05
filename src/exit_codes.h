@@ -77,8 +77,6 @@ enum {
   Exit_No_User                  = 78,
   Exit_No_Group                 = 79,
 #endif /* WITH_SEARCH_DAEMON */
-
-  Exit_End_Enum_Marker
 };
 
 ///////////////////////////////////////////////////////////////////////////////

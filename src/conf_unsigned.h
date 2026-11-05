@@ -41,28 +41,6 @@ class conf<unsigned> : public conf_var {
 public:
   using value_type = unsigned;
 
-  conf& operator++() {
-    ++value_;
-    return *this;
-  }
-
-  conf operator++(int) {
-    conf const tmp( *this );
-    ++value_;
-    return tmp;
-  }
-
-  conf& operator--() {
-    --value_;
-    return *this;
-  }
-
-  conf operator--(int) {
-    conf const tmp( *this );
-    --value_;
-    return tmp;
-  }
-
   operator value_type() const {
     return value_;
   }
