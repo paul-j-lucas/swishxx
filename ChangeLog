@@ -1,3 +1,37 @@
+2026-11-06  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * encoded_char.h: Removed encoded_char_range::encoded_char_range() -- not
+     used.
+
+2026-11-05  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * encoded_char.h: Removed begin_pos() -- not used.
+   * util.h: Removed unused functions.
+   * query_node.h: Removed child() -- not used.
+   * conf_string.cpp, conf_string.h: Eliminated defualt_value -- not used.
+
+2026-11-04  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * conf_unsigned.h, encoded_char.h, exit_codes.h: Removed unused functions.
+   * mod/id3/id3v2.h: Added #ifdef HAVE_ZLIB.
+
+2026-11-02  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * Group.h, User.h: Eliminated unused functions.
+
+2026-10-23  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
+
+   * conf_bool.cpp, conf_bool.h, conf_unsigned.cpp, conf_unsigned.h: Removed
+     _default_value --- not used.
+   * util.cpp, util.h: Removed to_lower() --- not used.
+   * ExcludeFile.cpp, ExcludeFile.h, ExtractFile.h, IncludeFile.cpp,
+     IncludeFile.h, IncludeMeta.cpp, IncludeMeta.h, conf_bool.cpp, conf_bool.h,
+     conf_filter.cpp, conf_filter.h, conf_set.cpp, conf_set.h, conf_string.cpp,
+     conf_string.h, conf_unsigned.cpp, conf_unsigned.h, conf_var.cpp,
+     conf_var.h: Removed reset_all() and reset() --- not used.
+   * swishxx-config.h: Added #if's.
+   * word_util.h: Added casts.
+
 2026-10-22  Paul J. Lucas <7366785+paul-j-lucas@users.noreply.github.com>
 
    * stem_word.cpp: Fixed cache_mutex locking.
