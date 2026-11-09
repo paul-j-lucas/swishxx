@@ -18,6 +18,11 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+##
+# Include-tidy configuration file.
+# See <https://github.com/paul-j-lucas/include-tidy>
+##
+
 [config.h]
 ignore-as-argument = true
 first = true
