@@ -71,7 +71,6 @@ Verbosity         verbosity;            // how much to print
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static bool extract_word( char *word, int len, ostream& );
 static void extract_words( mmap_file::const_iterator begin,
                            mmap_file::const_iterator end, ostream& );
 static ostream& usage( ostream& = cerr );
