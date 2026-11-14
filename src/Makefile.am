@@ -156,4 +156,11 @@ extract_LDADD =		$(top_builddir)/src/charsets/libcharsets.a \
 
 include $(top_srcdir)/src/include-tidy.am
 
+STIDY_FLAGS =	-Xtidy --files=- \
+		-Xtidy --verbose=F \
+		-Xtidy --error=never
+
+stidy:
+	@find . -name '*.cpp' | symbol-tidy $(STIDY_FLAGS) $(TIDY_CXXFLAGS)
+
 # vim:set noet sw=8 ts=8:

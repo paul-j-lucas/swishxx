@@ -1,0 +1,124 @@
+##
+#       SWISH++
+#       src/symbol-tidy.toml
+#
+#       Copyright (C) 2026  Paul J. Lucas
+#
+#       This program is free software: you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation, either version 3 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+
+##
+# Symbol-tidy configuration file.
+# See <https://github.com/paul-j-lucas/symbol-tidy>
+##
+
+[symbol-tidy]
+ignore-cxx-copy-assigns = true
+ignore-cxx-copy-ctors = true
+ignore-cxx-move-assigns = true
+ignore-cxx-move-ctors = true
+
+ignore-paths = [
+  "config.h",
+  "do_file.cpp",
+  "search_options.cpp"
+]
+
+ignore-symbols = [
+  "*::operator=",
+  "*::operator+=",
+  "operator==",
+  "operator!=",
+  "operator<",
+  "operator<=",
+  "operator>",
+  "operator>=",
+
+  "*::difference_type",
+  "*::value_type",
+  "*::pointer",
+  "*::const_pointer",
+  "*::reference",
+  "*::const_reference",
+  "*::iterator",
+  "*::const_iterator",
+  "*::reverse_iterator",
+  "*::const_reverse_iterator",
+  "*::begin",
+  "*::end",
+  "*::rbegin",
+  "*::rend",
+]
+
+[conf_string.h]
+ignore-symbols = [
+  "conf::size"
+]
+
+[index_segment.h]
+ignore-symbols = [
+  "operator+",
+  "operator-",
+]
+
+["mod/id3/id3v2.h"]
+ignore-symbols = [
+  "id3v2_frame::Flags::Flag_Data_Length",
+  "id3v2_frame::Flags::Flag_File_Alter",
+  "id3v2_frame::Flags::Flag_Grouping",
+  "id3v2_frame::Flags::Flag_Read_Only",
+  "id3v2_frame::Flags::Flag_Tag_Alter",
+  "id3v2_header::Flags::Flag_Experimental",
+  "id3v2_header::Flags::Flag_Footer_Present",
+]
+
+["pjl/fdbuf.h"]
+ignore-symbols = [
+  "PJL::fdbuf::attach"
+]
+
+["pjl/mmap_file.h"]
+ignore-symbols = [
+  "PJL::mmap_file::back",
+  "PJL::mmap_file::front",
+  "PJL::mmap_file::max_size",
+  "PJL::mmap_file::operator[]",
+  "PJL::mmap_file::size"
+]
+
+["pjl/option_stream.h"]
+ignore-symbols = [
+  "PJL::option_stream::eof",
+  "PJL::option_stream::rdstate"
+]
+
+["pjl/pattern_map.h"]
+ignore-symbols = [
+  "pattern_map::key_type"
+]
+
+["pjl/thread_pool.h"]
+ignore-symbols = [
+  "PJL::thread_pool::thread::argument_type::p",
+  "PJL::thread_pool::max_threads",
+  "PJL::thread_pool::min_threads",
+  "PJL::thread_pool::timeout"
+]
+
+[query_node.h]
+ignore-symbols = [
+  "empty_node::operator delete"
+]
+
+# vim:se et sw=2 ts=2:
